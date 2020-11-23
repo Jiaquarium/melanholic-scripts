@@ -1,0 +1,495 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.Playables;
+
+/// <summary>
+/// Main controller for Start Screen UI States
+/// </summary>
+[RequireComponent(typeof(AudioSource))]
+public class Script_StartOverviewController : Script_UIState
+{
+    [SerializeField] private SavedGameState savedGameState;
+    [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
+    [SerializeField] private CanvasGroup savedGameCanvasGroup;
+    [SerializeField] private CanvasGroup startScreenCanvasGroup;
+    [SerializeField] private CanvasGroup gameOverCanvasGroup;
+    [SerializeField] private Script_SavedGameViewController savedGameController;
+    [SerializeField] private Script_SavedGameSubmenuController submenuController;
+    [SerializeField] private Transform continueSubmenu;
+    [SerializeField] private Transform newGameSubmenu;
+    [SerializeField] private Transform deleteGameSubmenu;
+    [SerializeField] private Transform pasteGameSubmenu;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] continueChoices;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] newGameChoices;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] deleteGameChoices;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] pasteGameChoices;
+    [SerializeField] private Transform deleteBanner;
+    [SerializeField] private Transform copyBanner;
+    [SerializeField] private Transform pasteBanner;
+    [SerializeField] private Button[] fileActionButtons;
+    [SerializeField] private Button copyBtn;
+    [SerializeField] private Script_InventoryAudioSettings audioSettings;
+    [SerializeField] PlayableDirector crunchDirector;
+    [SerializeField] float crunchTimeDown; /// NOTE: ENSURE THIS MATCHES TIMELINE TIME FOR CRUNCH DOWN
+    [SerializeField] private Script_DeathByScreen[] deathByScreens;
+    [SerializeField] private Script_BackgroundMusicManager bgmManager;
+    [SerializeField] private float playGameOverBGWaitTime;
+    private Script_DeathByScreen activeDeathByScreen;
+    private Script_SavedGameSubmenuInputChoice[] choices;
+     
+    private int copiedSlotId;
+    
+    void OnEnable()
+    {
+        Script_StartEventsManager.OnExitSubmenu     += ActivateViewState;
+        Script_StartEventsManager.OnExitFileActions += DeactivateViewState;
+
+        crunchDirector.stopped += OnCrunchPlayableDone;
+    }
+
+    void OnDisable()
+    {
+        Script_StartEventsManager.OnExitSubmenu     -= ActivateViewState;
+        Script_StartEventsManager.OnExitFileActions -= DeactivateViewState;
+
+        crunchDirector.stopped -= OnCrunchPlayableDone;
+    }
+
+    public void InitializeStartScreenState()
+    {
+        bgmManager.Play(0);
+
+        startScreenCanvasGroup.gameObject.SetActive(true);
+        savedGameCanvasGroup.gameObject.SetActive(false);
+        gameOverCanvasGroup.gameObject.SetActive(false);
+        savedGameEventSystem.InitializeState();
+    }
+
+    public void InitializeGameOverState()
+    {
+        StartCoroutine(WaitToPlayBG());
+        IEnumerator WaitToPlayBG()
+        {
+            yield return new WaitForSeconds(playGameOverBGWaitTime);
+            bgmManager.Play(1);
+        }
+        
+        startScreenCanvasGroup.gameObject.SetActive(false);
+        savedGameCanvasGroup.gameObject.SetActive(false);
+        gameOverCanvasGroup.gameObject.SetActive(false); // Start out with black screen, until Teeth Come in
+        savedGameEventSystem.InitializeState();
+    }
+
+    public void ToGameOver(Script_GameOverController.DeathTypes deathType)
+    {
+        switch(deathType)
+        {
+            case(Script_GameOverController.DeathTypes.ThoughtsOverload):
+                Debug.Log("Thoughts Overload Screen");
+                activeDeathByScreen = deathByScreens[1];
+                break;
+
+            case(Script_GameOverController.DeathTypes.Impaled):
+                Debug.Log("Impaled Game Over Screen");
+                activeDeathByScreen = deathByScreens[2];
+                break;
+
+            case(Script_GameOverController.DeathTypes.DemoOver):
+                Debug.Log("Demo Over Game Over Screen");
+                activeDeathByScreen = deathByScreens[3];
+                break;
+
+            default:
+                Debug.LogWarning($"Default Game Over Screen -- you need to implement {deathType}");
+                activeDeathByScreen = deathByScreens[0];
+                break;
+        }
+
+        state = UIState.Disabled;
+        Script_Start.Main.CrunchTransitionDown();
+        
+        StartCoroutine(WaitToGameOver());
+        IEnumerator WaitToGameOver()
+        {
+            yield return new WaitForSeconds(crunchTimeDown);
+
+            // switch when teeth are opening
+            gameOverCanvasGroup.GetComponent<Script_GameOverParent>().Setup();
+            activeDeathByScreen.gameObject.SetActive(true);
+            gameOverCanvasGroup.gameObject.SetActive(true);
+        }
+    }
+    
+    /// Called from Game Over
+    public void ToStartScreen()
+    {
+        state = UIState.Disabled;
+        Script_Start.Main.CrunchTransitionDown();
+        
+        StartCoroutine(WaitToStartScreen());
+        IEnumerator WaitToStartScreen()
+        {
+            yield return new WaitForSeconds(crunchTimeDown);
+
+            // switch when teeth are opening
+            InitializeStartScreenState();
+        }
+    }
+
+    
+    public void ToSavedGames()
+    {
+        state = UIState.Disabled;
+        Script_Start.Main.CrunchTransitionDown();
+
+        StartCoroutine(WaitToSavedGames());
+    }
+
+    IEnumerator WaitToSavedGames()
+    {
+        yield return new WaitForSeconds(crunchTimeDown);
+
+        // switch when teeth are opening
+        savedGameCanvasGroup.gameObject.SetActive(true);
+        startScreenCanvasGroup.gameObject.SetActive(false);
+        InitializeSavedGamesState();
+    }
+
+    public void OnCrunchPlayableDone(PlayableDirector aDirector)
+    {
+        // After Crunch Down complete
+        if (aDirector.playableAsset == crunchDirector.GetComponent<Script_TimelineController>().timelines[0])
+        {
+            Script_Start.Main.CrunchTransitionUp();
+        }
+        // After Crunch Up complete
+        else if (aDirector.playableAsset == crunchDirector.GetComponent<Script_TimelineController>().timelines[1])
+        {
+            // unfreeze game
+            state = UIState.Interact;
+        }
+    }
+
+    public SavedGameState State
+    {
+        get { return savedGameState; }
+        set {
+            savedGameState = value;
+
+            HandleButtonsState();
+        }
+    }
+    
+    /// <summary>
+    /// Enter the saved games selection screen
+    /// Called from start game screen, and returning from submenu
+    /// </summary>
+    public void EnterSavedGamesSelectView()
+    {
+        submenuController.gameObject.SetActive(false);
+        savedGameController.gameObject.SetActive(true);
+        savedGameController.RehydrateState();
+        
+        continueSubmenu.gameObject.SetActive(false);
+        newGameSubmenu.gameObject.SetActive(false);
+        deleteGameSubmenu.gameObject.SetActive(false);
+        pasteGameSubmenu.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Called from Delete's OnClick
+    /// </summary>
+    public void EnterSavedGamesDeleteView()
+    {
+        State = SavedGameState.Delete;
+        savedGameController.InitializeState();
+        EnterSavedGamesSelectView();
+        ActivateViewState();
+    }
+
+    /// <summary>
+    /// Eventhandler for exitting submenu
+    /// </summary>
+    private void ReenterDeleteView()
+    {
+        ActivateViewState();
+    }
+
+    /// <summary>
+    /// Called from Copy's OnClick
+    /// </summary>
+    public void EnterSavedGamesCopyView()
+    {
+        State = SavedGameState.Copy;
+        savedGameController.InitializeState();
+        EnterSavedGamesSelectView();
+        ActivateViewState();
+    }
+
+    /// <summary>
+    /// Called from SavedGameTitle's OnClick in COPY STATE
+    /// </summary>
+    public void HandleEnterPasteView(Script_SavedGameTitle savedGame)
+    {
+        int slotId = savedGame.GetComponent<Script_Slot>().Id;
+        if (savedGame.isRendered)
+        {
+            copiedSlotId = slotId;
+            State = SavedGameState.Paste;
+
+            // initialize with next open slot
+            int nextOpenSlotId = slotId + 1;
+            Transform[] slots = savedGameController.GetSlots();
+            for(int j = 0; j < slots.Length - 1; nextOpenSlotId++, j++)
+            {
+                if (nextOpenSlotId >= slots.Length) nextOpenSlotId = 0;
+                if (!slots[nextOpenSlotId].GetComponent<Script_SavedGameTitle>().isRendered)
+                    break;
+            }
+
+            savedGameController.InitializeState(nextOpenSlotId);
+            EnterSavedGamesSelectView();
+            ActivateViewState();
+        }
+        else
+        {
+            // error SFX
+            GetComponent<AudioSource>().PlayOneShot(audioSettings.errorSFX, audioSettings.errorVolume);
+        }
+        
+    }
+    
+    private void ActivateViewState()
+    {
+        deleteBanner.gameObject.SetActive(false);
+        copyBanner.gameObject.SetActive(false);
+        pasteBanner.gameObject.SetActive(false);
+        
+        if (State == SavedGameState.Delete)
+            deleteBanner.gameObject.SetActive(true);
+        if (State == SavedGameState.Copy)
+            copyBanner.gameObject.SetActive(true);
+        if (State == SavedGameState.Paste)
+            pasteBanner.gameObject.SetActive(true);
+    }
+    private void DeactivateViewState()
+    {
+        deleteBanner.gameObject.SetActive(false);
+        copyBanner.gameObject.SetActive(false);
+        pasteBanner.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Called from Saved Game ClickHandler
+    /// In each OnClick handler, pass in 
+    /// </summary>
+    /// <param name="choices"></param>
+    public void EnterFileChoices(Script_SavedGameTitle savedGame)
+    {
+        int slotId = savedGame.GetComponent<Script_Slot>().Id;
+        if (savedGame.isRendered)
+        {
+            choices = continueChoices;
+            continueSubmenu.gameObject.SetActive(true);
+            // EnterSubmenuSFX();
+        }
+        else
+        {
+            choices = newGameChoices;
+            newGameSubmenu.gameObject.SetActive(true);
+        }
+        EnterSubmenuSFX();
+
+        /// Set slot Id in submenu
+        foreach (Script_SavedGameSubmenuInputChoice choice in choices)
+            choice.Id = slotId;
+        
+        EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
+        savedGameController.gameObject.SetActive(false);
+        submenuController.gameObject.SetActive(true);
+    }
+
+    public void ContinueGame(int i)
+    {
+        state = UIState.Disabled;
+
+        Script_SaveGameControl.saveSlotId = i;
+        Script_SceneManager.ToGameScene();
+    }
+
+    public void NewGame(int i)
+    {
+        state = UIState.Disabled;
+        
+        Script_SaveGameControl.saveSlotId = i;
+        Script_SceneManager.ToGameScene();
+    }
+
+    public void EnterDeleteFileChoices(Script_SavedGameTitle savedGame)
+    {
+        int slotId = savedGame.GetComponent<Script_Slot>().Id;
+        if (savedGame.isRendered)
+        {
+            deleteBanner.gameObject.SetActive(false);
+
+            choices = deleteGameChoices;
+            deleteGameSubmenu.gameObject.SetActive(true);
+
+            /// Set slot Id in submenu
+            foreach (Script_SavedGameSubmenuInputChoice choice in choices)
+            {
+                choice.Id = slotId;
+            }
+            
+            EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
+            savedGameController.gameObject.SetActive(false);
+            submenuController.gameObject.SetActive(true);
+            
+            EnterSubmenuSFX();
+            Debug.Log("Enter delete submenu");
+        }
+        else
+        {
+            // error SFX
+            GetComponent<AudioSource>().PlayOneShot(audioSettings.errorSFX, audioSettings.errorVolume);
+        }
+    }
+
+    public void DeleteGame(int i)
+    {
+        Script_SaveGameControl.saveSlotId = i;
+        
+        if (Script_SaveGameControl.Delete())
+        {
+            // update that slot
+            savedGameController
+                .GetSlotTransform(i)
+                .GetComponent<Script_SavedGameTitle>()
+                .InitializeState();
+        }
+        
+        // end delete mode
+        State = SavedGameState.Start;
+        EnterSavedGamesSelectView();
+    }
+
+    public void EnterPasteFileChoices(Script_SavedGameTitle savedGame)
+    {
+        int slotId = savedGame.GetComponent<Script_Slot>().Id;
+
+        // also check if it's the same slot we're copying from
+        if (slotId != copiedSlotId)
+        {
+            pasteBanner.gameObject.SetActive(false);
+
+            /// Only show submenu if overwriting a file
+
+            if (savedGame.isRendered)
+            {
+                choices = pasteGameChoices;
+                pasteGameSubmenu.gameObject.SetActive(true);
+
+                /// Set slot Id in submenu
+                foreach (Script_SavedGameSubmenuInputChoice choice in choices)
+                {
+                    choice.Id = slotId;
+                }
+                
+                EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
+                savedGameController.gameObject.SetActive(false);
+                submenuController.gameObject.SetActive(true);
+                EnterSubmenuSFX();
+            }
+            else
+            {
+                CopyGame(slotId);
+            }
+        }
+        else
+        {
+            // error SFX
+            GetComponent<AudioSource>().PlayOneShot(audioSettings.errorSFX, audioSettings.errorVolume);
+        }
+    }
+
+    public void CopyGame(int i)
+    {
+        Script_SaveGameControl.saveSlotId = copiedSlotId;
+        
+        if (Script_SaveGameControl.Copy(i))
+        {
+            // update that slot
+            savedGameController
+                .GetSlotTransform(i)
+                .GetComponent<Script_SavedGameTitle>()
+                .InitializeState();
+        }
+        
+        // end copy mode
+        State = SavedGameState.Start;
+        EnterSavedGamesSelectView();
+    }
+
+    private bool CheckFullSaveSlots()
+    {
+        foreach (Transform slot in savedGameController.GetSlots())
+        {
+            if (!slot.GetComponent<Script_SavedGameTitle>().isRendered)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void HandleButtonsState()
+    {
+        // disable copy button if slots are full
+        bool isSlotsFull = CheckFullSaveSlots();
+
+        if (isSlotsFull)
+            copyBtn.GetComponent<Script_ButtonHighlighter>().Activate(false);
+        else
+            copyBtn.GetComponent<Script_ButtonHighlighter>().Activate(true);
+        
+        foreach (Button btn in fileActionButtons)
+        {
+            bool isActive = savedGameState == SavedGameState.Start;
+
+            // don't reactivate copy button if it's disabled bc slots are full
+            if (isSlotsFull && isActive && btn == copyBtn)  continue;
+            
+            btn.GetComponent<Script_ButtonHighlighter>().Activate(isActive);
+        }
+    }
+
+    private void EnterSubmenuSFX()
+    {
+        Debug.Log("EnterSubmenuSFX()");
+        
+        GetComponent<AudioSource>().PlayOneShot(
+            audioSettings.clickEnterSubmenuSFX,
+            audioSettings.clickEnterSubemenuSFXVolume
+        );
+    }
+
+    public void InitializeSavedGamesState()
+    {
+        State = SavedGameState.Start;
+        
+        EnterSavedGamesSelectView();
+        
+        deleteBanner.gameObject.SetActive(false);
+        copyBanner.gameObject.SetActive(false);
+        pasteBanner.gameObject.SetActive(false);
+    }
+
+    public void Setup()
+    {
+        savedGameController.Setup();
+        // savedGameController.RehydrateState();
+    }
+}

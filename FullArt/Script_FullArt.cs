@@ -1,0 +1,68 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+using UnityEngine.UI;
+
+/// <summary>
+/// Should only be called from manager as it will set the BG
+/// </summary>
+[RequireComponent(typeof(Script_CanvasGroupFadeInOut))]
+public class Script_FullArt : MonoBehaviour
+{
+    public Script_FullArt nextFullArt;
+    public FadeSpeeds fadeInSpeed; /// used for Examine
+    public FadeSpeeds nextFadeSpeed; /// used for Examine
+    public Script_FullArtManager.Bgs bg;
+    [SerializeField] private Animator animator;
+    
+    public void FadeIn(FadeSpeeds fadeSpeed, Action cb)
+    {
+        float fadeInTime = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        StartCoroutine(
+            GetComponent<Script_CanvasGroupFadeInOut>()
+                .FadeInCo(fadeInTime, () =>
+                {
+                    if (cb != null)     cb();
+                }
+            )
+        );
+    }
+
+    public void FadeOut(FadeSpeeds fadeSpeed, Action cb)
+    {
+        float fadeOutTime = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        StartCoroutine(
+            GetComponent<Script_CanvasGroupFadeInOut>()
+                .FadeOutCo(fadeOutTime, () =>
+                {
+                    if (cb != null)     cb();
+                }
+            )
+        );
+    }
+
+    public void EntranceFromRight(CanvasGroup fullArtCanvasGroup)
+    {
+        /// Manager handles making this full art active
+        
+        animator.SetBool("IsOffScreen", true);
+        animator.SetTrigger("EntranceFromRight");
+        
+        /// Reveal the canvas group after animation already underway
+        fullArtCanvasGroup.alpha = 1f;
+
+        StartCoroutine(WaitToResetAnimator());
+
+        IEnumerator WaitToResetAnimator()
+        {
+            yield return null;
+            animator.SetBool("IsOffScreen", false);
+        }
+    }
+
+    public void Setup()
+    {
+        GetComponent<Script_CanvasGroupFadeInOut>().Initialize();
+    }
+}

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c900340151bc94e168fe8cc078af54d9, type: 3}
+  m_Name: Boar Needle
+  m_EditorClassIdentifier: 
+  id: sticker_boar-needle
+  focusedSprite: {fileID: 21300022, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
+  sprite: {fileID: 21300020, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
+  description: 'allows you to enter paintings with doormats. talk to the painting
+    while the @@BoarNeedle is stuck to your {5}. the painting must have a doormat.
+
+    ...only
+    way out is in! is what i always say!'
+  isDroppable: 0
+  isPersistentDrop: 0
