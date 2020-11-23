@@ -9,7 +9,7 @@ public class Script_SlotsViewController : MonoBehaviour
     public Transform slotsHolder;
     [SerializeField] protected Transform[] slots;
     [Space]
-    protected int lastSlotIndex;
+    public int lastSlotIndex;
     [SerializeField] protected Transform lastSelected;
     protected Script_ExitViewInputManager inputManager;
 
@@ -54,17 +54,25 @@ public class Script_SlotsViewController : MonoBehaviour
     }
 
     protected virtual void SetLast() {
-        lastSelected = EventSystem.current.currentSelectedGameObject.transform;
-        lastSlotIndex = lastSelected.GetComponent<Script_Slot>().Id;
+        try
+        {
+            lastSelected = EventSystem.current.currentSelectedGameObject.transform;
+            lastSlotIndex = lastSelected.GetComponent<Script_Slot>().Id;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"errored lastSelected was {lastSelected}");
+        }
     }
 
     public void RehydrateState()
     {
         if (lastSelected == null)
         {
+            Debug.Log("Can't rehydrate. Initializing Slots state.");
             InitializeState();
         }
-        Debug.Log($"SlotsViewController: Current event system is: {EventSystem.current} with lastSelected: {lastSelected}");
+        Debug.Log($"SlotsViewController: Rehydrating with lastSelected: {lastSelected}");
         EventSystem.current.SetSelectedGameObject(lastSelected.gameObject);
     }
 

@@ -9,6 +9,6 @@ public class Script_EnterSBookHandler : MonoBehaviour
     // called on button "click" (enter on button)
     public void OnEnter()
     {
-        SBookController.EnterSBook();
+        // SBookController.EnterSBook();
     }
 }

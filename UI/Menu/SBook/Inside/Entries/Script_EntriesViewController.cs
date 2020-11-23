@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// Handles the entries slots view
+/// Handles the entries slots view; this should only be active when INSIDE entries list
+/// Handles the state for children input managers
+/// Based on InventoryViewController
 /// </summary>
 public class Script_EntriesViewController : Script_SlotsViewController
 {
@@ -17,15 +19,28 @@ public class Script_EntriesViewController : Script_SlotsViewController
     [SerializeField] private Transform entryDetailNoneSelectedView;
     [SerializeField] private Transform entryDetailSelectedView;
     
+    private void Awake()
+    {
+        /// Set inactive by EntriesController
+        ClearState();
+    }
+    
+    private void OnEnable()
+    {
+        Setup();
+    }
+    
     public void EnterEntriesView()
     {
         RehydrateState();
-        
+        gameObject.SetActive(true);
+
         menuController.ChangeStateToEntriesView();
     }
 
     public void ExitEntriesView()
     {
+        gameObject.SetActive(false);
         menuController.ChangeStateToOverview();
 
         EventSystem.current.SetSelectedGameObject(entriesView.gameObject);
@@ -39,11 +54,11 @@ public class Script_EntriesViewController : Script_SlotsViewController
         ShowEntryDetail();
     }
 
-    protected override void SetLast()
-    {
-        base.SetLast();
-        lastSlotIndex = lastSelected.GetComponent<Script_Entry>().Id;
-    }
+    // protected override void SetLast()
+    // {
+    //     base.SetLast();
+    //     lastSlotIndex = lastSelected.GetComponent<Script_Entry>().Id;
+    // }
 
     public void UpdateCanvasState()
     {
@@ -63,7 +78,7 @@ public class Script_EntriesViewController : Script_SlotsViewController
         }
     }
 
-    void HideEntryDetail()
+    void ClearState()
     {
         entryDetailNoneSelectedView.gameObject.SetActive(true);
         entryDetailSelectedView.gameObject.SetActive(false);
@@ -80,17 +95,9 @@ public class Script_EntriesViewController : Script_SlotsViewController
         entriesDetailView.gameObject.SetActive(true);
     }
     
-    private void Awake()
-    {
-        
-    }
-    
     public override void Setup()
     {
         UpdateCanvasState();
-        Debug.Log("Hide entry detail in Setup()");
-        HideEntryDetail();
         base.Setup();
-        // InitializeState();
     }
 }

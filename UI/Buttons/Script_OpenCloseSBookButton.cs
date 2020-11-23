@@ -9,8 +9,7 @@ public class Script_OpenCloseSBookButton : MonoBehaviour, ISelectHandler
     public Script_SBookOverviewController SBookController;
     public GameObject fromLeftButton;
     public GameObject fromRightButton;
-    [SerializeField]
-    private GameObject lastSelectedNotThis;
+    [SerializeField] private GameObject lastSelectedNotThis;
     
 
     private void Update() {
@@ -46,11 +45,11 @@ public class Script_OpenCloseSBookButton : MonoBehaviour, ISelectHandler
     // called on button "click" (enter on button)
     public void OnEnterCloseSBook()
     {
-        SBookController.ExitSBook();
+        // SBookController.ExitSBook();
     }
 
     public void OnEnterOpenSBook()
     {
-        SBookController.EnterSBook();
+        // SBookController.EnterSBook();
     }
 }

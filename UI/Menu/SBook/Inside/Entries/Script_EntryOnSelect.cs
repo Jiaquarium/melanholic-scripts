@@ -16,6 +16,9 @@ public class Script_EntryOnSelect : MonoBehaviour, ISelectHandler
     {
         // call controller with appropriate data
         string text = GetComponent<Script_Entry>().text;
+
+        Debug.Log($"Entry is selected with text {text}");
+
         controller.OnEntrySelect(text);
     }
 

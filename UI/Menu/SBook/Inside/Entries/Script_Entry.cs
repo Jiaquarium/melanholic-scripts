@@ -4,9 +4,9 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class Script_Entry : MonoBehaviour
+public class Script_Entry : Script_Slot
 {
-    public int Id;
+    // public int Id;
     public string text;
     public string nameId;
     public DateTime timestamp;

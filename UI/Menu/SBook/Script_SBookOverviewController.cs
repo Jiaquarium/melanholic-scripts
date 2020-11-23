@@ -15,37 +15,20 @@ using UnityEngine.UI;
 public class Script_SBookOverviewController : Script_CanvasGroupController
 {
     public GameObject SBookOutsideCanvas;
-    public GameObject SBookInsideCanvas;
-    public GameObject insideSBookInitialStateSelected;
-    public GameObject outsideSBookInitialStateSelected;
-    public GameObject topBarButtonToChangeNav;
-    public GameObject insideSBookSelectOnDownFromTopBar;
     public GameObject outsideSBookSelectOnDownFromTopBar;
-    public GameObject[] insideSBookBtnsToTrack;
     public GameObject[] outsideSBookBtnsToTrack;
     public Script_InventoryViewController inventoryViewController;
     public Script_EquipmentViewController equipmentViewController;
     public Script_MenuController inventoryController;
-    public Script_EntriesViewController entriesViewController;
     [SerializeField] private Script_ItemChoices itemChoices;
     [SerializeField] private Script_EventSystemLastSelected myEventSystem;
     [Space]
-    [SerializeField] private bool isInsideSBook;
     [SerializeField] private GameObject lastSelectedBeforeExit;
 
     
     private void Update() {
         if (inventoryController.inventoryState != Const_States_InventoryOverview.Overview)   return;
         
-        // if (isInsideSBook)
-        // {
-        //     SetInsideLastSelected();
-        // }
-        // else
-        // {
-        //     SetOutsideLastSelected();
-        // }
-
         SetOutsideLastSelected();
     }
 
@@ -111,80 +94,6 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
         EnterInventoryView();
     }
 
-    /// <summary> =========================================================================
-    /// INSIDE S-BOOK FUNCS
-    /// </summary> ========================================================================
-    // public void EnterEntriesView()
-    // {
-    //     entriesViewController.gameObject.SetActive(true);
-    //     entriesViewController.RehydrateState();
-        
-    //     inventoryController.ChangeStateToEntriesView();
-    // }
-    
-
-    public void ExitEntriesView()
-    {
-        inventoryController.ChangeStateToOverview();
-        entriesViewController.gameObject.SetActive(false);
-
-        EventSystem.current.SetSelectedGameObject(lastSelectedBeforeExit);
-    }
-    
-    public void EnterSBook()
-    {
-        // SetOverviewNavigationInsideSBook();
-        
-        SBookInsideCanvas.SetActive(true);
-        SBookOutsideCanvas.SetActive(false);
-
-        EventSystem.current.SetSelectedGameObject(insideSBookInitialStateSelected);
-        isInsideSBook = true;
-    }
-
-    public void ExitSBook()
-    {
-        // SetOverviewNavigationOutsideSBook();
-
-        SBookInsideCanvas.SetActive(false);
-        SBookOutsideCanvas.SetActive(true);
-
-        EventSystem.current.SetSelectedGameObject(outsideSBookInitialStateSelected);
-        isInsideSBook = false;
-    }
-
-    /// <summary>
-    /// Set the explicit movement from topBar (changes if on inside/outside SBook)
-    /// </summary>
-    // void SetOverviewNavigationInsideSBook()
-    // {
-    //     Navigation btnNav = topBarButtonToChangeNav.GetComponent<Selectable>().navigation;
-    //     btnNav.selectOnDown = insideSBookSelectOnDownFromTopBar.GetComponent<Button>();
-    //     topBarButtonToChangeNav.GetComponent<Selectable>().navigation = btnNav;
-    // }
-    // void SetOverviewNavigationOutsideSBook()
-    // {
-    //     Navigation btnNav = topBarButtonToChangeNav.GetComponent<Selectable>().navigation;
-    //     btnNav.selectOnDown = outsideSBookSelectOnDownFromTopBar.GetComponent<Button>();
-    //     topBarButtonToChangeNav.GetComponent<Selectable>().navigation = btnNav;
-    // }
-
-    // void SetInsideLastSelected()
-    // {
-    //     foreach (GameObject b in insideSBookBtnsToTrack)
-    //     {
-    //         if (
-    //             EventSystem.current.currentSelectedGameObject == b
-    //             && insideSBookSelectOnDownFromTopBar != b
-    //         )
-    //         {
-    //             lastSelectedBeforeExit = b;
-    //             // insideSBookSelectOnDownFromTopBar = b;
-    //             SetOverviewNavigationInsideSBook();
-    //         }
-    //     }
-    // }
-
     /// <summary>
     /// saves the slot we were on -- this object needs to be set inactive to keep the reference
     /// </summary>
@@ -207,14 +116,9 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
 
     void InitializeState()
     {
-        // SetOverviewNavigationOutsideSBook();
-
-        // SBookInsideCanvas.SetActive(false);
         SBookOutsideCanvas.SetActive(true);
-        isInsideSBook = false;
         inventoryViewController.gameObject.SetActive(false);
         equipmentViewController.gameObject.SetActive(false);
-        entriesViewController.gameObject.SetActive(false);
     }
 
     public override void Setup()
@@ -222,6 +126,5 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
         InitializeState();
         inventoryViewController.Setup();
         equipmentViewController.Setup();
-        entriesViewController.Setup();
     }
 }

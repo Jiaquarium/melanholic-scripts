@@ -21,6 +21,6 @@ public class Script_CanvasGroupController : MonoBehaviour
 
     public virtual void Setup()
     {
-
+    
     } 
 }
