@@ -15,6 +15,6 @@ public class Script_EntriesController : Script_CanvasGroupController
     public override void Setup()
     {
         // start off inactive as we must enter into slots view from overview anyways
-        entriesViewController.gameObject.SetActive(false);
+        entriesViewController.InitializeState();
     }
 }

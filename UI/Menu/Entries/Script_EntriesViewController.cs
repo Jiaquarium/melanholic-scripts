@@ -6,7 +6,9 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Handles the entries slots view; this should only be active when INSIDE entries list
 /// Handles the state for children input managers
-/// Based on InventoryViewController
+/// Based on InventoryViewController and MemoriesViewController is a copy of this
+/// 
+/// Initialize is called by higher level controller
 /// </summary>
 public class Script_EntriesViewController : Script_SlotsViewController
 {
@@ -15,15 +17,8 @@ public class Script_EntriesViewController : Script_SlotsViewController
     [SerializeField] private Transform noEntriesView;
     [SerializeField] private Transform entriesView;
     [SerializeField] private Transform entriesDetailView;
-    [SerializeField] private Transform entriesHolder;
     [SerializeField] private Transform entryDetailNoneSelectedView;
     [SerializeField] private Transform entryDetailSelectedView;
-    
-    private void Awake()
-    {
-        /// Set inactive by EntriesController
-        ClearState();
-    }
     
     private void OnEnable()
     {
@@ -54,17 +49,11 @@ public class Script_EntriesViewController : Script_SlotsViewController
         ShowEntryDetail();
     }
 
-    // protected override void SetLast()
-    // {
-    //     base.SetLast();
-    //     lastSlotIndex = lastSelected.GetComponent<Script_Entry>().Id;
-    // }
-
     public void UpdateCanvasState()
     {
         UpdateSlots();
         
-        if (entriesHolder.childCount == 0)
+        if (slotsHolder.childCount == 0)
         {
             noEntriesView.gameObject.SetActive(true);
             entriesView.gameObject.SetActive(false);
@@ -78,12 +67,15 @@ public class Script_EntriesViewController : Script_SlotsViewController
         }
     }
 
-    void ClearState()
+    /// <summary>
+    /// None selected but there are available entries to focus / highlight
+    /// </summary>
+    void NoneSelectedState()
     {
         entryDetailNoneSelectedView.gameObject.SetActive(true);
         entryDetailSelectedView.gameObject.SetActive(false);
 
-        Debug.Log("HideEntryDetauk() Hiding entriesDetailSelectedView");
+        Debug.Log("HideEntryDefault() Hiding entriesDetailSelectedView");
     }
 
     void ShowEntryDetail()
@@ -93,6 +85,15 @@ public class Script_EntriesViewController : Script_SlotsViewController
         entryDetailSelectedView.gameObject.SetActive(true);
         entryDetailNoneSelectedView.gameObject.SetActive(false);
         entriesDetailView.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Should be only called once on init by higher level controller
+    /// </summary>
+    public void InitializeState()
+    {
+        gameObject.SetActive(false);   
+        if (lastSelected == null)   NoneSelectedState();
     }
     
     public override void Setup()

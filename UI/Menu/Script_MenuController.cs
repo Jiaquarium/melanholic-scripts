@@ -7,31 +7,33 @@ using UnityEngine.EventSystems;
 /// Handles overall inventory inventoryState tracking and settings
 /// does not handle visibility
 /// 
-/// Keeps track of selected based on their UIId
+/// TBD DELETE ButtonMetadata & UIIds, not being used anymore
 /// </summary>
 public class Script_MenuController : Script_UIState
 {
     
     public TopBarStates topBarState;
     public enum TopBarStates{
-        thoughts,
         inventory,
-        entries
+        notes,
+        entries,
+        thoughts,
+        memories
     }
     public string inventoryState;
     public bool isSBookDisabled;
     public GameObject SBookOverviewButton;
     public GameObject initialStateSelected;
-    public Script_CanvasGroupController_Thoughts thoughtsController;
     public Script_SBookOverviewController SBookController;
+    [SerializeField] private Script_NotesController notesController;
     [SerializeField] private Script_EntriesController entriesController;
+    public Script_CanvasGroupController_Thoughts thoughtsController;
+    [SerializeField] private Script_MemoriesController memoriesController;
     public Script_InventoryViewSettings inventorySettings;
     public Script_EntriesViewSettings entriesSettings;
     public Script_InventoryOverviewSettings inventoryOverviewSettings;
     
     [SerializeField] private Script_MenuInputManager inputManager;
-    [SerializeField] private string newlySelected;
-    [SerializeField] private string currentSelected;
     [SerializeField] private Script_InventoryManager inventoryManager;
     // [SerializeField] private AudioSource submenuEnterAudioSource;
 
@@ -49,8 +51,6 @@ public class Script_MenuController : Script_UIState
         }
         else if (inventoryState == Const_States_InventoryOverview.Overview)
         {
-            HandleActiveButton();
-            ShowActivePanel();
             inputManager.HandleExitInput();
         }
     }
@@ -58,108 +58,83 @@ public class Script_MenuController : Script_UIState
     public void ChangeStateToOverview()
     {
         inventoryState = Const_States_InventoryOverview.Overview;
-        ChangeRepeatDelay(inventoryOverviewSettings.repeatDelay, inventoryOverviewSettings.inputActionsPerSecond);
     }
 
     public void ChangeStateToInventoryView()
     {
         Debug.Log($"MenuController inventoryState before stickers view: {inventoryState}");
         inventoryState = Const_States_InventoryOverview.InventoryView;
-        ChangeRepeatDelay(inventorySettings.repeatDelay, inventorySettings.inputActionsPerSecond);
     }
 
     public void ChangeStateToEquipmentView()
     {
         inventoryState = Const_States_InventoryOverview.EquipmentView;
-        ChangeRepeatDelay(inventorySettings.repeatDelay, inventorySettings.inputActionsPerSecond);
     }
 
     public void ChangeStateToEntriesView()
     {
         inventoryState = Const_States_InventoryOverview.EntriesView;
-        ChangeRepeatDelay(entriesSettings.repeatDelay, entriesSettings.inputActionsPerSecond);
-    }
-
-    void HandleActiveButton()
-    {    
-        if (EventSystem.current.currentSelectedGameObject != null)
-        {
-            Script_ButtonMetadata lastSelectedBtn = EventSystem
-                .current.currentSelectedGameObject
-                .GetComponent<Script_ButtonMetadata>();
-            
-            // TODO: remove Script_ButtonMetadata, too confusing...
-            if (lastSelectedBtn != null)
-            {
-                newlySelected = lastSelectedBtn.UIId;
-                // ChangeRepeatDelay(lastSelectedBtn.repeatDelay, lastSelectedBtn.inputActionsPerSecond);
-            }
-            else
-            {
-                Debug.LogError($"Trying to update MenuController inventoryState to "
-                    + EventSystem.current.currentSelectedGameObject.name
-                    + ". You're probably missing a Script_ButtonMetadata on a menu button.");
-            }
-        }
-    }
-
-    /// <summary>
-    /// TODO: make this cleaner, REMOVE BUTTON METADATA, way too confusing...
-    /// Currently the top bar state is set by checking the UIIds of which
-    /// last top bar Id was selected last; the state is saved so we know
-    /// which top bar element we're on
-    /// </summary>
-    void ShowActivePanel()
-    {
-        // if (newlySelected == Script_UIIds.Thoughts || topBarState == TopBarStates.thoughts)
-        // {
-        //     currentSelected = Script_UIIds.Thoughts;
-        //     thoughtsController.Open();
-        //     SBookController.Close();
-            
-        //     topBarState = TopBarStates.thoughts;
-        // }
-        // else if (newlySelected == Script_UIIds.SBook || topBarState == TopBarStates.inventory)
-        // {
-        //     currentSelected = Script_UIIds.SBook;
-        //     SBookController.Open();
-        //     thoughtsController.Close();
-
-        //     topBarState = TopBarStates.inventory;
-        // }
     }
 
     public void ChangeTopBarState(TopBarStates state)
     {
         switch(state)
         {
-            case TopBarStates.thoughts:
-                topBarState = TopBarStates.thoughts;
-
-                currentSelected = Script_UIIds.Thoughts;
-                thoughtsController.Open();
-                SBookController.Close();
-                entriesController.Close();
-
-                break;
             case TopBarStates.inventory:
                 topBarState = TopBarStates.inventory;
 
-                currentSelected = Script_UIIds.SBook;
                 SBookController.Open();
                 thoughtsController.Close();
                 entriesController.Close();
+                memoriesController.Close();
+                notesController.Close();
 
                 break;
+
+            case TopBarStates.notes:
+                topBarState = TopBarStates.notes;
+
+                SBookController.Close();
+                notesController.Open();
+                thoughtsController.Close();
+                entriesController.Close();
+                memoriesController.Close();
+
+                break;            
+
             case TopBarStates.entries:
                 topBarState = TopBarStates.entries;
 
-                currentSelected = Script_UIIds.Entries;
-                entriesController.Open();
                 SBookController.Close();
+                notesController.Close();
+                entriesController.Open();
                 thoughtsController.Close();
+                memoriesController.Close();
 
                 break;
+
+            case TopBarStates.thoughts:
+                topBarState = TopBarStates.thoughts;
+
+                SBookController.Close();
+                notesController.Close();
+                entriesController.Close();
+                thoughtsController.Open();
+                memoriesController.Close();
+
+                break;
+
+            case TopBarStates.memories:
+                topBarState = TopBarStates.memories;
+
+                SBookController.Close();
+                notesController.Close();
+                entriesController.Close();
+                thoughtsController.Close();
+                memoriesController.Open();
+
+                break;
+                
             default:
                 break;
         }
@@ -253,6 +228,7 @@ public class Script_MenuController : Script_UIState
         thoughtsController.Setup();
         SBookController.Setup();
         entriesController.Setup();
+        memoriesController.Setup();
         inventoryManager.Setup();
 
         isSBookDisabled = true;
