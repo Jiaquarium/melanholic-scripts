@@ -48,11 +48,7 @@ public class Script_DemonCreator : MonoBehaviour
         List<Script_Demon> demons
     )
     {
-        Script_Demon[] demonsInScene = new Script_Demon[demonsParent.childCount];
-        for (int i = 0; i < demonsInScene.Length; i++)
-        {
-            demonsInScene[i] = demonsParent.GetChild(i).GetComponent<Script_Demon>();
-        }
+        Script_Demon[] demonsInScene = demonsParent.GetComponentsInChildren<Script_Demon>(true);
 
         for (int i = 0; i < demonsInScene.Length; i++)
         {

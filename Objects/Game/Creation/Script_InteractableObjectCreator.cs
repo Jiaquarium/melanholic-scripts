@@ -27,11 +27,13 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         bool isInitialize
     )
     {
-        for (int i = 0; i < textObjectParent.childCount; i++)
+        Script_InteractableObjectText[] texts = textObjectParent
+            .GetComponentsInChildren<Script_InteractableObjectText>(true);
+        
+        for (int i = 0; i < texts.Length; i++)
         {
-            Script_InteractableObjectText iObj = textObjectParent.GetChild(i)
-                .GetComponent<Script_InteractableObjectText>();
-            if (isInitialize)   InitializeTextObject(iObj, interactableObjects, dm, player);
+            Script_InteractableObjectText text = texts[i];
+            if (isInitialize)   InitializeTextObject(text, interactableObjects, dm, player);
         }
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
@@ -90,23 +92,24 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         bool isInitialize
     )
     {
-        for (int i = 0; i < fullArtParent.childCount; i++)
+        Script_InteractableFullArt[] fullArts = fullArtParent
+            .GetComponentsInChildren<Script_InteractableFullArt>(true);
+        
+        for (int i = 0; i < fullArts.Length; i++)
         {
-            Script_InteractableFullArt iObj = fullArtParent.GetChild(i)
-                .GetComponent<Script_InteractableFullArt>();
-            if (iObj == null)   continue;
-            interactableObjects.Add(iObj);
+            Script_InteractableFullArt fullArt = fullArts[i];
+            if (fullArt == null)   continue;
+            interactableObjects.Add(fullArt);
             
-            print("child is: " + fullArtParent.GetChild(i));
-            print("iObj is: " + iObj);
+            print("fullArt is: " + fullArt);
             
             if (isInitialize)
             {
-                iObj.SetupDialogueNodeText(dialogueManager, player);
-                iObj.Id = interactableObjects.Count - 1;
+                fullArt.SetupDialogueNodeText(dialogueManager, player);
+                fullArt.Id = interactableObjects.Count - 1;
                 
-                Script_SortingOrder so = iObj.GetRendererChild().GetComponent<Script_SortingOrder>();
-                iObj.Setup(so.enabled, so.sortingOrderIsAxisZ, so.offset);
+                Script_SortingOrder so = fullArt.GetRendererChild().GetComponent<Script_SortingOrder>();
+                fullArt.Setup(so.enabled, so.sortingOrderIsAxisZ, so.offset);
             }
         }
 
@@ -132,16 +135,18 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         bool isEmptySwitchesState = false;
         if  (switchesState == null || switchesState.Length == 0)
         {
-            switchesState = new bool[allSwitchesParent.childCount];
+            switchesState = new bool[allSwitchesParent.GetComponentsInChildren<Script_Switch>(true).Length];
             isEmptySwitchesState = true;
         }
+
+        Script_Switch[] switchesChildren = allSwitchesParent.GetComponentsInChildren<Script_Switch>(true);
         
-        for (int i = 0; i < allSwitchesParent.childCount; i++)
+        for (int i = 0; i < switchesChildren.Length; i++)
         {
             Script_LightSwitch lightSwitch = null;
             Script_Switch switchObj = null;
             
-            Script_Switch child = allSwitchesParent.GetChild(i).GetComponent<Script_Switch>();
+            Script_Switch child = switches[i];
             if (child is Script_LightSwitch)
             {
                 lightSwitch = (Script_LightSwitch)child;

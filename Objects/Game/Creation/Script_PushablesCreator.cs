@@ -11,9 +11,11 @@ public class Script_PushablesCreator : MonoBehaviour
         bool isInit
     )
     {
-        for (int i = 0; i < pushablesParent.childCount; i++)
+        Script_Pushable[] pushableChildren = pushablesParent.GetComponentsInChildren<Script_Pushable>(true);
+        
+        for (int i = 0; i < pushableChildren.Length; i++)
         {
-            Script_Pushable p = pushablesParent.GetChild(i).GetComponent<Script_Pushable>();
+            Script_Pushable p = pushableChildren[i];
             if (p == null)  continue;
             
             interactableObjects.Add(p);

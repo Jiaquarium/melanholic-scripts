@@ -15,7 +15,9 @@ public class Script_PlayerMovement : MonoBehaviour
 
 
     [SerializeField] private float defaultRepeatDelay;
-    [SerializeField] private float speedWalkRepeatDelay;
+    [SerializeField] private float runRepeatDelay;
+    [SerializeField] private float defaultGhostSpeed;
+    [SerializeField] private float runGhostSpeed;
     public int exitUpStairsOrderLayer;
     public bool isMoving;
     [SerializeField] private TimelineAsset moveUpTimeline;
@@ -48,9 +50,15 @@ public class Script_PlayerMovement : MonoBehaviour
     public void HandleSpeedWalkInput()
     {
         if (Input.GetButton(Const_KeyCodes.Action3))
-            repeatDelay = speedWalkRepeatDelay;
+        {
+            repeatDelay = runRepeatDelay;
+            playerGhost.Speed = runGhostSpeed;
+        }
         else
+        {
             repeatDelay = defaultRepeatDelay;
+            playerGhost.Speed = defaultGhostSpeed;
+        }
     }
     
     public void HandleMoveInput()

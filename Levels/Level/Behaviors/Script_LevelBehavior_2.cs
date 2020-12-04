@@ -11,7 +11,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     /* =======================================================================
         STATE DATA
     ======================================================================= */
-    public bool isInitialized = false;
+    
     public bool isDone = false;
     public bool isActivated = false;
     public int activeTriggerIndex = 0;
@@ -20,6 +20,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     public bool[] switchesStates;
     /* ======================================================================= */
     
+    public static int EroIntroRun = -1;
     public Script_DialogueManager dm;
     public Script_MovingNPC Ero;
     public Script_DialogueNode[] TriggerNodes;
@@ -39,67 +40,115 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     [SerializeField] private bool isPRCSActive; /// Used to not trigger move when we want to call PRCS
     // private Queue<string> cachedCurrentMoves = new Queue<string>();
     // private Queue<string[]> cachedAllMoves = new Queue<string[]>();
+
+    private bool isInitialized = false;
     
     protected override void OnEnable()
     {
-        nameplateDirector.stopped += OnNameplateDone;
+        if (game.Run == EroIntroRun)
+        {
+            nameplateDirector.stopped += OnNameplateDone;
+        }
     }
 
     protected override void OnDisable()
     {
-        nameplateDirector.stopped -= OnNameplateDone;
+        if (game.Run == EroIntroRun)
+        {
+            nameplateDirector.stopped -= OnNameplateDone;
+        }
     }
     
     public override bool ActivateTrigger(string Id)
     {
-        if (
-            (
-                (Id == "hallway_1" && activeTriggerIndex == 0)
-                || (Id == "hallway_2" && activeTriggerIndex == 1)
-                || (Id == "hallway_3" && activeTriggerIndex == 2)
-            )
-            && !isDone
-        )
+        if (game.Run == EroIntroRun)
         {
-            OnTrigger();
-            return true;
+            if (
+                (
+                    (Id == "hallway_1" && activeTriggerIndex == 0)
+                    || (Id == "hallway_2" && activeTriggerIndex == 1)
+                    || (Id == "hallway_3" && activeTriggerIndex == 2)
+                )
+                && !isDone
+            )
+            {
+                OnTrigger();
+                return true;
+            }
         }
 
         return false;
     }
 
-    void OnTrigger()
+    private void OnTrigger()
     {
-        game.PauseBgMusic();
-        if (game.GetNPCBgThemeActive())     game.UnPauseNPCBgTheme();
-        else                                game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
-        
-        CacheMovingNPCMoves(0);
-        game.ChangeStateCutSceneNPCMoving();
-        activeTriggerIndex++;
-        if (activeTriggerIndex > 2) isDone = true;
-        
-        game.GetMovingNPC(0).ApproachTarget(
-            game.GetPlayerLocation(),
-            new Vector3(1f, 0, 0),
-            Directions.Left,
-            NPCEndCommands.None
-        );
+        if (game.Run == EroIntroRun)
+        {
+            game.PauseBgMusic();
+            if (game.GetNPCBgThemeActive())     game.UnPauseNPCBgTheme();
+            else                                game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
+            
+            CacheMovingNPCMoves(0);
+            game.ChangeStateCutSceneNPCMoving();
+            activeTriggerIndex++;
+            if (activeTriggerIndex > 2) isDone = true;
+            
+            game.GetMovingNPC(0).ApproachTarget(
+                game.GetPlayerLocation(),
+                new Vector3(1f, 0, 0),
+                Directions.Left,
+                NPCEndCommands.None
+            );
+        }
+
+        // need this to save NPC moves since ForceMove will erase its moveSets
+        void CacheMovingNPCMoves(int Id)
+        {
+            Script_MovingNPC npc = game.GetMovingNPC(Id);
+            
+            // Model_NPC NPCData = game.Levels.levelsData[game.level].NPCsData[Id];
+            // Model_MoveSet[] allMoveSets = NPCData.moveSets;
+            // use GameObject, don't use gameData NPCData
+            Model_MoveSet[] allMoveSets = moveSetsData.moveSets;
+            truncatedMoveSet = new Model_MoveSet[
+                Mathf.Max(allMoveSets.Length - activeTriggerIndex - 1, 0)
+            ];
+            
+            for (int j = 0, k = activeTriggerIndex + 1; j < truncatedMoveSet.Length; j++, k++)
+            {
+                truncatedMoveSet[j] = allMoveSets[k];
+            }
+        }
     }
     
-    protected override void HandleOnEntrance() {
-        if (!exitsHandler.isFadeIn && !isActivated)
+    public override void OnLevelInitComplete() {
+        if (game.Run == EroIntroRun)
         {
-            isActivated = true;
-            game.ChangeStateCutSceneNPCMoving();
-            game.TriggerMovingNPCMove(0);            
+            if (!isActivated)
+            {
+                isActivated = true;
+                game.ChangeStateCutSceneNPCMoving();
+                game.TriggerMovingNPCMove(0);            
+            }
         }
     }
     public override void HandleMovingNPCOnApproachedTarget(int i)
     {
-        dm.StartDialogueNode(TriggerNodes[activeTriggerIndex - 1]);
-        RehydrateMovingNPCMoves(0);
-        game.ChangeStateCutScene();
+        if (game.Run == EroIntroRun)
+        {
+            dm.StartDialogueNode(TriggerNodes[activeTriggerIndex - 1]);
+            RehydrateMovingNPCMoves(0);
+            game.ChangeStateCutScene();
+        }
+
+        void RehydrateMovingNPCMoves(int Id)
+        {
+            Script_MovingNPC npc = game.GetMovingNPC(Id);
+            
+            npc.moveSets = truncatedMoveSet;
+
+            npc.QueueMoves();
+        }
     }
 
     /*
@@ -108,15 +157,18 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     */
     protected override void HandleAction()
     {
-        if (
-            game.state == "cut-scene"
-            && !game.GetPlayerIsTalking()
-            && !isPRCSActive
-        )
+        if (game.Run == EroIntroRun)
         {
-            game.ChangeStateCutSceneNPCMoving();
-            // need this bc once leave room, no longer inProgress
-            game.TriggerMovingNPCMove(0);
+            if (
+                game.state == "cut-scene"
+                && !game.GetPlayerIsTalking()
+                && !isPRCSActive
+            )
+            {
+                game.ChangeStateCutSceneNPCMoving();
+                // need this bc once leave room, no longer inProgress
+                game.TriggerMovingNPCMove(0);
+            }
         }
 
         base.HandleDialogueAction();
@@ -127,34 +179,9 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
         switchHandler.SetSwitchState(switchesStates, Id, isOn);
     }
 
-    // need this to save NPC moves since ForceMove will erase its moveSets
-    void CacheMovingNPCMoves(int Id)
-    {
-        Script_MovingNPC npc = game.GetMovingNPC(Id);
-        
-        // Model_NPC NPCData = game.Levels.levelsData[game.level].NPCsData[Id];
-        // Model_MoveSet[] allMoveSets = NPCData.moveSets;
-        // use GameObject, don't use gameData NPCData
-        Model_MoveSet[] allMoveSets = moveSetsData.moveSets;
-        truncatedMoveSet = new Model_MoveSet[
-            Mathf.Max(allMoveSets.Length - activeTriggerIndex - 1, 0)
-        ];
-        
-        for (int j = 0, k = activeTriggerIndex + 1; j < truncatedMoveSet.Length; j++, k++)
-        {
-            truncatedMoveSet[j] = allMoveSets[k];
-        }
-    }
-
-    void RehydrateMovingNPCMoves(int Id)
-    {
-        Script_MovingNPC npc = game.GetMovingNPC(Id);
-        
-        npc.moveSets = truncatedMoveSet;
-
-        npc.QueueMoves();
-    }
-
+    /// <summary> ============================================================
+    /// Next Node Actions START
+    /// </summary>============================================================
     public void NameplateTimeline()
     {
         Debug.Log("Calling from node");
@@ -162,6 +189,8 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
         game.ChangeStateCutScene();
         namePlatePRCSPlayer.Play();
     }
+    /// Next Node Actions END
+    /// <summary> ============================================================
 
     private void OnNameplateDone(PlayableDirector aDirector)
     {

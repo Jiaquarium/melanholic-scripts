@@ -17,7 +17,11 @@ public class Script_PlayerGhost : MonoBehaviour
     [SerializeField] private Animator animator;
     
     
-    public float speed;
+    [SerializeField] private float _speed;
+    public float Speed {
+        get { return _speed; }
+        set { _speed = value; }
+    }
     public Vector3 startLocation;
     public Vector3 location;
     public float progress;
@@ -53,7 +57,7 @@ public class Script_PlayerGhost : MonoBehaviour
 
     void ActuallyMove()
     {
-        progress += speed * Time.deltaTime;
+        progress += _speed * Time.deltaTime;
         transform.position = Vector3.Lerp(
             startLocation,
             location,
