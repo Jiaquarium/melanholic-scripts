@@ -156,8 +156,22 @@ public static class Script_Utils
             Script_ItemStringBuilder.Params
         );
         
+        string itemAndDynamicFormattedStr = itemFormattedStr;
+        try
+        {
+            Script_DynamicStringBuilder.BuildParams();
+            itemAndDynamicFormattedStr = ReplaceParams(
+                itemFormattedStr,
+                Script_DynamicStringBuilder.Params
+            );
+        }
+        catch (SystemException e)
+        {
+            Debug.LogError(e);
+        }
+
         return string.Format(
-            itemFormattedStr,
+            itemAndDynamicFormattedStr,
             Script_Names.Player,                        // {0}
             Script_Names.Melz,                          // {1}
             Script_Names.MelzTheGreat,                  // {2}
@@ -427,24 +441,56 @@ public static class Script_Utils
 
     /// <summary>
     /// ex: myClassInstance.GetProperty("isPuzzleComplete");
+    /// Properties have getters and setters
     /// </summary>
     /// <param name="obj">instance type</param>
     /// <param name="propertyName"></param>
     /// <returns></returns>
     public static bool HasProp(this object obj, string propertyName) 
     {
-        return obj.GetType().GetProperty(propertyName) != null;
+        return obj.GetType().GetProperty(
+            propertyName,
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+        ) != null;
     }
     
     public static T GetProp<T>(this object obj, string propertyName) 
     {
-        return (T)obj.GetType().GetProperty(propertyName).GetValue(obj);
+        return (T)obj.GetType().GetProperty(
+            propertyName,
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+        ).GetValue(obj);
+    }
+
+    /// <summary>
+    /// ex: myClassInstance.GetProperty("isPuzzleComplete");
+    /// </summary>
+    /// <param name="obj">instance type</param>
+    /// <param name="propertyName"></param>
+    /// <returns></returns>
+    public static bool HasField(this object obj, string propertyName) 
+    {
+        return obj.GetType().GetField(
+            propertyName,
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+        ) != null;
+    }
+    
+    public static T GetField<T>(this object obj, string propertyName) 
+    {
+        return (T)obj.GetType().GetField(
+            propertyName,
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+        ).GetValue(obj);
     }
 
     public static bool HasMethod(this object obj, string name)
     {
-        Debug.Log($"Checking for method: {name}; got {obj.GetType().GetMethod(name)}");
-        return obj.GetType().GetMethod(name) != null;
+        Debug.Log($"Checking for method: {name}; got {obj.GetType().GetMethod(name, BindingFlags.NonPublic)}");
+        return obj.GetType().GetMethod(
+            name,
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+        ) != null;
     }
 
     public static void InvokeMethod(this object obj, string name)

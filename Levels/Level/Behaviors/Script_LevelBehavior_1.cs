@@ -104,10 +104,10 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
             game.DisableExits(false, 0);
             Ero.gameObject.SetActive(false);
         }
-        else
-        {
-            game.DisableExits(true, 0);
-        }
+        // else
+        // {
+        //     game.DisableExits(true, 0);
+        // }
         
         isInit = false;
     }

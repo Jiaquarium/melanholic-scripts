@@ -394,6 +394,20 @@ public class Script_Player : Script_Character
         playerEffect.DropSFX();
     }
 
+    /// Timeline ==========================================================================
+    
+    public void TimelineMoveUp()
+    {
+        playerMovementHandler.TimelineMoveUp();
+    }
+
+    public void EnterElevator()
+    {
+        playerMovementHandler.EnterElevator();
+    }
+    
+    /// ===================================================================================
+
     public void InitializeOnLevel(
         Model_PlayerState playerState,
         bool isLightOn,

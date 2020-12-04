@@ -16,9 +16,15 @@ public class Script_Game : MonoBehaviour
     /* =======================================================================
         STATE DATA
     ======================================================================= */
+    [SerializeField] private int _run;
+    public int Run {
+        get { return _run; }
+        set { _run = value; }
+    }
     public int level;
     public float totalPlayTime;
-    
+    /* ======================================================================= */
+
     /* -----------------------------------------------------------------------
         RUNTIME SYSTEM OPTIONS
     ----------------------------------------------------------------------- */
@@ -33,7 +39,6 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_ThoughtSlotHolder thoughtSlotHolder;
     public Vector3 levelZeroCameraPosition;
     
-    /* ======================================================================= */
 
     public static Script_Game Game;
     public Script_DDRManager DDRManager;
@@ -49,7 +54,7 @@ public class Script_Game : MonoBehaviour
     public Script_PlayerThoughtHandler playerThoughtHandler;
     public Script_PlayerThoughtsInventoryManager playerThoughtsInventoryManager;
     public Script_HealthManager healthManager;
-    public Script_TransitionManager transitionManager;
+    [SerializeField] private Script_TransitionManager transitionManager;
     public PlayableDirector dieTimelineDirector;
     public Script_CutSceneManager cutSceneManager;
     public Script_Exits exitsHandler;
@@ -59,6 +64,7 @@ public class Script_Game : MonoBehaviour
     public Script_HintManager hintManager;
     public Script_BackgroundMusicManager bgMusicManager;
     public Script_FullArtManager fullArtManager;
+    [SerializeField] private Script_ElevatorManager elevatorManager;
     [SerializeField] private Script_InventoryAudioSettings canvasesAudioSource;
     [SerializeField] private Script_MenuController menuController;
     [SerializeField] private Script_CutSceneActionHandler cutSceneActionHandler;
@@ -103,7 +109,7 @@ public class Script_Game : MonoBehaviour
     private Script_Demon DemonPrefab;
     private AudioSource backgroundMusicAudioSource;
     public Script_BgThemePlayer npcBgThemePlayer;
-    private Script_LevelBehavior levelBehavior;
+    public Script_LevelBehavior levelBehavior { get; private set; }
     public Script_LevelBehavior lastLevelBehavior { get; private set; }
     private Vector3 worldOffset;
     public string lastState;
@@ -113,7 +119,7 @@ public class Script_Game : MonoBehaviour
 
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Transform newGameSpawnDestination;
-
+    
     void OnEnable()
     {
         dieTimelineDirector.stopped += OnDiePlayableDone;
@@ -177,6 +183,7 @@ public class Script_Game : MonoBehaviour
         transitionManager.Setup();
         cutSceneManager.Setup();
         canvasGroupsParent.Setup();
+        elevatorManager.Setup();
     }
 
     // Load Save Data and Initiate level
@@ -814,7 +821,7 @@ public class Script_Game : MonoBehaviour
     }
 
     /* =======================================================================
-        _CANVASES_
+        _CANVASES_CUTSCENES_THEATRICS
     ======================================================================= */
     public void ShowHint(string s)
     {
@@ -840,6 +847,26 @@ public class Script_Game : MonoBehaviour
     public IEnumerator TransitionFadeOut(float t, Action action)
     {
         return transitionManager.FadeOut(t, action);
+    }
+
+    public void UnderDialogueBlackScreen()
+    {
+        transitionManager.UnderDialogueBlackScreen();
+    }
+
+    public void UnderDialogueTransitionFadeIn(float t, Action action)
+    {
+        transitionManager.UnderDialogueFadeIn(t, action);   
+    }
+    
+    public void UnderDialogueTransitionFadeOut(float t, Action action)
+    {
+        transitionManager.UnderDialogueFadeOut(t, action);   
+    }
+
+    public float GetUnderDialogueFadeTime()
+    {
+        return transitionManager.UnderDialogueFadeTime;
     }
 
     public void ManagePlayerViews(string type)
@@ -1031,6 +1058,8 @@ public class Script_Game : MonoBehaviour
         _INTERACTABLE OBJECTS_
     ======================================================================= */
     
+    
+    
     // must give world offset bc IOs in Scene are parented by world
     public void SetupInteractableObjectsText(
         Transform textObjectParent,
@@ -1040,10 +1069,8 @@ public class Script_Game : MonoBehaviour
         interactableObjectCreator.SetupInteractableObjectsText(
             textObjectParent,
             interactableObjects,
-            GetRotationToFaceCamera(),
             dialogueManager,
             player,
-            worldOffset,
             isInitialize
         );
     }
@@ -1061,10 +1088,8 @@ public class Script_Game : MonoBehaviour
         interactableObjectCreator.SetupInteractableObjectsTextManually(
             textObjs,
             interactableObjects,
-            GetRotationToFaceCamera(),
             dialogueManager,
             player,
-            worldOffset,
             isInitialize
         );
     }
@@ -1077,10 +1102,8 @@ public class Script_Game : MonoBehaviour
         interactableObjectCreator.SetupInteractableFullArt(
             fullArtParent,
             interactableObjects,
-            GetRotationToFaceCamera(),
             dialogueManager,
             player,
-            worldOffset,
             isInitialize
         );
     }
@@ -1095,7 +1118,6 @@ public class Script_Game : MonoBehaviour
             switchesParent,
             interactableObjects,
             switches,
-            GetRotationToFaceCamera(),
             switchesState,
             isInitialize
         );
@@ -1114,26 +1136,17 @@ public class Script_Game : MonoBehaviour
         );
     }
 
-    // public void CreateInteractableObjects(
-    //     bool[] switchesState,
-    //     bool isForceSortingLayer,
-    //     bool isSortingLayerAxisZ = true,
-    //     int offset = 0
-    // )
-    // {
-    //     interactableObjectCreator.CreateInteractableObjects(
-    //         Levels.levelsData[level].InteractableObjectsData,
-    //         interactableObjects,
-    //         switches,
-    //         GetRotationToFaceCamera(),
-    //         dialogueManager,
-    //         player,
-    //         switchesState,
-    //         isForceSortingLayer,
-    //         isSortingLayerAxisZ,
-    //         offset
-    //     );
-    // }
+    public void SetupInteractableObjectsExit(
+        Transform parent,
+        bool isInit
+    )
+    {
+        interactableObjectCreator.SetupInteractableObjectsExit(
+            parent,
+            interactableObjects,
+            isInit
+        );
+    }
 
     void DestroyInteractableObjects()
     {
@@ -1575,15 +1588,18 @@ public class Script_Game : MonoBehaviour
         Vector3 playerNextSpawnPosition,
         Directions playerFacingDirection,
         bool isExit,
-        bool isSilent = false
+        bool isSilent = false,
+        Script_Exits.FollowUp followUp = Script_Exits.FollowUp.Default
     )
     {
+        Debug.Log($"Follow up passed to ExitsHandler is {followUp}");
         exitsHandler.Exit(
             level,
             playerNextSpawnPosition,
             playerFacingDirection,
             isExit,
-            isSilent
+            isSilent,
+            followUp
         );
     }
 
@@ -1603,6 +1619,11 @@ public class Script_Game : MonoBehaviour
     public void MelanholicTitleCutScene()
     {
         cutSceneManager.MelanholicTitleCutScene();
+    }
+
+    public void ElevatorCloseDoorsCutScene(Script_ExitMetadataObject exit)
+    {
+        elevatorManager.CloseDoorsCutScene(exit);
     }
 
     /* =========================================================================

@@ -9,6 +9,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
     public Script_LightSwitch LightSwitchPrefab;
     public Script_InteractableObjectText InteractableObjectTextPrefab;
     public Script_PushablesCreator pushablesCreator;
+    [SerializeField] private Script_InteractableObjectExitCreator exitCreator;
     
     private Light[] lights;
     private Sprite OnSprite;
@@ -21,10 +22,8 @@ public class Script_InteractableObjectCreator : MonoBehaviour
     public void SetupInteractableObjectsText(
         Transform textObjectParent,
         List<Script_InteractableObject> interactableObjects,
-        Vector3 rotationAdjustment,
         Script_DialogueManager dm,
         Script_Player player,
-        Vector3 worldOffset,
         bool isInitialize
     )
     {
@@ -32,10 +31,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         {
             Script_InteractableObjectText iObj = textObjectParent.GetChild(i)
                 .GetComponent<Script_InteractableObjectText>();
-            interactableObjects.Add(iObj);
-            
-            if (isInitialize)
-                InitializeTextObject(iObj, interactableObjects, dm, player, worldOffset);
+            if (isInitialize)   InitializeTextObject(iObj, interactableObjects, dm, player);
         }
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
@@ -50,10 +46,8 @@ public class Script_InteractableObjectCreator : MonoBehaviour
     public void SetupInteractableObjectsTextManually(
         Script_InteractableObjectText[] textObjs,
         List<Script_InteractableObject> interactableObjects,
-        Vector3 rotationAdjustment,
         Script_DialogueManager dm,
         Script_Player player,
-        Vector3 worldOffset,
         bool isInitialize
     )
     {
@@ -63,7 +57,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
             interactableObjects.Add(iObj);
             
             if (isInitialize)
-                InitializeTextObject(iObj, interactableObjects, dm, player, worldOffset);
+                InitializeTextObject(iObj, interactableObjects, dm, player);
         }
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
@@ -76,11 +70,11 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         Script_InteractableObjectText iObj,
         List<Script_InteractableObject> interactableObjects,
         Script_DialogueManager dialogueManager,
-        Script_Player player,
-        Vector3 worldOffset
+        Script_Player player
     )
     {
-        iObj.SetupDialogueNodeText(dialogueManager, player, worldOffset);
+        interactableObjects.Add(iObj);
+        iObj.SetupDialogueNodeText(dialogueManager, player);
         iObj.Id = interactableObjects.Count - 1;
         
         Script_SortingOrder so = iObj.GetRendererChild().GetComponent<Script_SortingOrder>();
@@ -91,11 +85,9 @@ public class Script_InteractableObjectCreator : MonoBehaviour
     (
         Transform fullArtParent,
         List<Script_InteractableObject> interactableObjects,
-        Vector3 rotationAdjustment,
         Script_DialogueManager dialogueManager,
         Script_Player player,
-        Vector3 worldOffset,
-        bool isInitialize   
+        bool isInitialize
     )
     {
         for (int i = 0; i < fullArtParent.childCount; i++)
@@ -110,7 +102,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
             
             if (isInitialize)
             {
-                iObj.SetupDialogueNodeText(dialogueManager, player, worldOffset);
+                iObj.SetupDialogueNodeText(dialogueManager, player);
                 iObj.Id = interactableObjects.Count - 1;
                 
                 Script_SortingOrder so = iObj.GetRendererChild().GetComponent<Script_SortingOrder>();
@@ -132,7 +124,6 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         Transform allSwitchesParent,
         List<Script_InteractableObject> interactableObjects,
         List<Script_Switch> switches,
-        Vector3 rotationAdjustment,
         bool[] switchesState,
         bool isInitialize
     )
@@ -214,119 +205,6 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         return switchesState;
     }
 
-    // public void CreateInteractableObjects(
-    //     Model_InteractableObject[] interactableObjectsData,
-    //     List<Script_InteractableObject> interactableObjects,
-    //     List<Script_Switch> switches,
-    //     Vector3 rotationAdjustment,
-    //     Script_DialogueManager dialogueManager,
-    //     Script_Player player,
-    //     bool[] switchesState,
-    //     bool isForceSortingLayer,
-    //     bool isSortingLayerAxisZ,
-    //     int offset
-    // )
-    // {
-    //     if (interactableObjectsData.Length == 0)    return;
-
-    //     for (int i = 0; i < interactableObjectsData.Length; i++)
-    //     {
-    //         if (interactableObjectsData[i].type == "text")
-    //         {
-    //             Script_InteractableObjectText iObj;
-
-    //             iObj = Instantiate(
-    //                 InteractableObjectTextPrefab,
-    //                 interactableObjectsData[i].objectSpawnLocation,
-    //                 Quaternion.Euler(rotationAdjustment)
-    //             );
-                
-    //             iObj.SetupText(dialogueManager, player, interactableObjectsData[i].dialogue);
-    //             interactableObjects.Add(iObj);
-    //             iObj.Id = i;
-    //             iObj.nameId = interactableObjectsData[i].nameId;
-    //             iObj.Setup(isForceSortingLayer, isSortingLayerAxisZ, offset);
-    //         }
-    //         else if (interactableObjectsData[i].type == "lightswitch")
-    //         {
-    //             Script_LightSwitch iObj;
-                
-    //             iObj = Instantiate(
-    //                 LightSwitchPrefab,
-    //                 interactableObjectsData[i].objectSpawnLocation,
-    //                 Quaternion.Euler(rotationAdjustment)
-    //             );
-                
-    //             lights = interactableObjectsData[i].lights;
-    //             OnSprite = interactableObjectsData[i].onSprite;
-    //             OffSprite = interactableObjectsData[i].offSprite;
-
-    //             // if didn't customize, then use default
-    //             float onIntensity = interactableObjectsData[i].lightOnIntensity;
-    //             float offIntensity = interactableObjectsData[i].lightOffIntensity;
-    //             if (onIntensity == 0f && offIntensity == 0)
-    //             {
-    //                 onIntensity = defaultOnIntensity;
-    //                 offIntensity = defaultOffIntensity;
-    //             }
-    //             // TODO 
-    //             interactableObjects.Add(iObj);
-    //             switches.Add(iObj);
-    //             iObj.Id = i;
-    //             iObj.nameId = interactableObjectsData[i].nameId;
-    //             iObj.switchId = switches.Count - 1;
-    //             iObj.SetupLights(
-    //                 lights,
-    //                 onIntensity,
-    //                 offIntensity,
-    //                 switchesState == null
-    //                     ? interactableObjectsData[i].isOn
-    //                     : switchesState[switches.Count - 1],
-    //                 OnSprite,
-    //                 OffSprite
-    //             );
-    //             iObj.Setup(isForceSortingLayer, isSortingLayerAxisZ, offset);
-    //         }
-    //         else if (interactableObjectsData[i].type == "switch")
-    //         {
-    //             Script_Switch iObj;
-
-    //             iObj = Instantiate(
-    //                 SwitchPrefab,
-    //                 interactableObjectsData[i].objectSpawnLocation,
-    //                 Quaternion.Euler(rotationAdjustment)
-    //             );
-    //             // TODO 
-    //             interactableObjects.Add(iObj);
-    //             switches.Add(iObj);
-    //             iObj.Id = i;
-    //             iObj.nameId = interactableObjectsData[i].nameId;
-    //             iObj.switchId = switches.Count - 1;
-    //             iObj.SetupSwitch(
-    //                 switchesState == null        
-    //                     ? interactableObjectsData[i].isOn
-    //                     : switchesState[switches.Count - 1],
-    //                 OnSprite,
-    //                 OffSprite
-    //             );
-    //             iObj.Setup(isForceSortingLayer, isSortingLayerAxisZ, offset);
-    //         } else
-    //         {
-    //             Script_InteractableObject iObj;
-                
-    //             iObj = Instantiate(
-    //                 InteractableObjectPrefab,
-    //                 interactableObjectsData[i].objectSpawnLocation,
-    //                 Quaternion.Euler(rotationAdjustment)
-    //             );
-    //             interactableObjects.Add(iObj);
-    //             iObj.Id = i;
-    //             iObj.nameId = interactableObjectsData[i].nameId;
-    //             iObj.Setup(isForceSortingLayer, isSortingLayerAxisZ, offset);
-    //         }
-    //     }
-    // }
-
     public void SetupPushables(
         Transform pushablesParent,
         List<Script_InteractableObject> interactableObjects,
@@ -337,6 +215,15 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         pushablesCreator.SetupPushables(
             pushablesParent, interactableObjects, pushables, isInit
         );
+    }
+
+    public void SetupInteractableObjectsExit(
+        Transform parent,
+        List<Script_InteractableObject> interactableObjects,
+        bool isInit
+    )
+    {
+        exitCreator.SetupExits(parent, interactableObjects, isInit);
     }
 
     public void DestroyInteractableObjects(

@@ -31,7 +31,11 @@ public class Script_PlayerAction : MonoBehaviour
             else if (Input.GetButtonDown(Const_KeyCodes.Action2))
             {
                 /// attack handler here, to choose which attack will be done
-                attacks.Eat(facingDirection);
+                /// need to check here if Sticker is equipped
+                if (Script_Game.Game.CheckStickerEquippedById(Const_Items.EatingStickerId))
+                {
+                    attacks.Eat(facingDirection);
+                }
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Inventory))
             {

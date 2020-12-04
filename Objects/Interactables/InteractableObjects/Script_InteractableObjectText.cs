@@ -14,19 +14,15 @@ public class Script_InteractableObjectText : Script_InteractableObject
     [SerializeField] private bool disableDown;
     [SerializeField] private Script_LightSwitch myLightSwitch;
     [SerializeField] private bool allowNonreadDialogueNodes;
-    private Model_Dialogue dialogue;
     protected Script_DialogueManager dialogueManager;
         
 
     public void SetupDialogueNodeText(
         Script_DialogueManager _dialogueManager,
-        Script_Player _player,
-        Vector3 _worldOffset
+        Script_Player _player
     )
     {
         dialogueManager = _dialogueManager;
-        // need bc we're parented by World Transform
-        worldOffset = _worldOffset;
     }
 
     public override void SwitchDialogueNodes(

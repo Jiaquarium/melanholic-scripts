@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// For simple non-interactable cut scenes
+/// </summary>
 public class Script_CutSceneManager : MonoBehaviour
 {
     public Script_Game g;

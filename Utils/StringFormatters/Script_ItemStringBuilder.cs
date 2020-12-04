@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Used to allow replacement of @@NAME in text; use for
+/// Items
+/// </summary>
 public class Script_ItemStringBuilder : MonoBehaviour
 {
     public static Dictionary<string, string> Params = new Dictionary<string, string>();

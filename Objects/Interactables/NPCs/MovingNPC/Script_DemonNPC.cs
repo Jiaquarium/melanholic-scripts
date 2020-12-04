@@ -8,8 +8,6 @@ using UnityEngine;
 /// </summary>
 public class Script_DemonNPC : Script_MovingNPC
 {
-    static readonly string PsychicDuckId = "sticker_psychic-duck";
-    
     public Script_DialogueNode[] psychicNodes;
     [SerializeField] private Script_DialogueNode[] defaultNodes;
     private bool isPsychicNodes;
@@ -22,7 +20,9 @@ public class Script_DemonNPC : Script_MovingNPC
 
     private void HandlePsychicDuck()
     {
-        bool isPlayerPsychicDuckEquipped = Script_Game.Game.CheckStickerEquippedById(PsychicDuckId);
+        bool isPlayerPsychicDuckEquipped = Script_Game.Game.CheckStickerEquippedById(
+            Const_Items.PsychicDuckId
+        );
         Debug.Log($"isPlayerPsychicDuckEquipped: {isPlayerPsychicDuckEquipped}");
 
         if (isPlayerPsychicDuckEquipped)

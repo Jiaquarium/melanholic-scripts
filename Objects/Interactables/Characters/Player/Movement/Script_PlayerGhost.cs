@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Shows as a lag animation to Player to give illusion of moving smoothly
+/// Doing it this way so changing direction is incredibly crisp
+/// 
+/// NOTE: Ensure the Graphics offset here is same as Player
+/// </summary>
 public class Script_PlayerGhost : MonoBehaviour
 {
     public AnimationCurve progressCurve;
     public SpriteRenderer spriteRenderer;
     
     
-    private Animator animator;
+    [SerializeField] private Animator animator;
     
     
     public float speed;
@@ -120,11 +126,9 @@ public class Script_PlayerGhost : MonoBehaviour
 
     public void Setup(Vector3 loc)
     {
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        
         progress = 1f;
-        location = loc;
+        transform.position = loc;
+        UpdateLocation(loc);
         spriteRenderer.enabled = false;
         
         AdjustRotation();

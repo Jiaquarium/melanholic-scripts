@@ -23,7 +23,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     [SerializeField] private SpriteRenderer playerGhostToFade;
     private Script_PlayerMovementAnimator playerMovementAnimator;
     private Script_PlayerGhost playerGhost;
-    [SerializeField] private Script_DialogueNode startNode;
     [SerializeField] private Script_DialogueNode eroPanicNode;
     [SerializeField] private Transform demonsParent;
     [SerializeField] private string triggerId;
@@ -36,8 +35,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     // set equal to VCam0 cut time to VCam Main so player doesn't see Ero vanish
     [SerializeField] private float eroExitWaitTime;
     [SerializeField] private Script_Hint hint; 
-    [SerializeField] private Script_CanvasGroupFadeInOut blackCanvas;
-    [SerializeField] private float fadeTime;
+    [SerializeField] private Script_PRCS wellJustOpened; 
 
     private bool isInit = true;
 
@@ -45,20 +43,26 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         if (!didStartThought)
         {
-            blackCanvas.SetAlpha(1f);
+            Script_PRCSManager.Control.OpenPRCSNoFade(wellJustOpened);
         }
     }
     
     protected override void OnEnable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    += OnInitDialogue;
         woodsIntroDirector.stopped                      += OnBadSpectersIntroDone;
     }
 
     protected override void OnDisable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    -= OnInitDialogue;
         woodsIntroDirector.stopped                      -= OnBadSpectersIntroDone;
+    }
+
+    public override void OnLevelInitComplete()
+    {
+        game.ChangeStateCutScene();
+
+        /// Start Timeline fading in the well light
+        wellJustOpened.PlayMyTimeline();
     }
     
     public override bool ActivateTrigger(string Id){
@@ -101,16 +105,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
         return false;
     }
-    
-    private void OnInitDialogue()
-    {
-        if (!didStartThought)
-        {
-            game.ChangeStateCutScene();
-            Script_DialogueManager.DialogueManager.StartDialogueNode(startNode);
-            didStartThought = true;
-        }
-    }
 
     private void OnBadSpectersIntroDone(PlayableDirector aDirector)
     {
@@ -131,12 +125,9 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     /// <summary>
     /// NextNodeAction START ===============================================================
     /// </summary>
-    public void EndOnInitDialogue()
+    public void OnWellCutSceneDone()
     {
-        /// Fade out black canvas
-        StartCoroutine(blackCanvas.FadeOutCo(fadeTime, () => {
-            game.ChangeStateInteract();
-        }));
+        
     }
     public void OnEndEroPanic()
     {
@@ -157,6 +148,17 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     /// <summary>
     /// NextNodeAction END ===============================================================
     /// </summary>
+    /// ===========================================================================================
+    /// Signal Reactions START 
+    /// ===========================================================================================
+    public void OnWellJustOpenedDone()
+    {
+        Script_PRCSManager.Control.HidePRCS(wellJustOpened, FadeSpeeds.Slow, () => {
+            game.ChangeStateInteract();
+        });
+    }
+    /// Signal Reactions END ========================================================================
+
 
     protected override void HandleAction()
     {
@@ -169,7 +171,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         playerMovementAnimator = game.GetPlayerMovementAnimator();
         playerGhost = game.GetPlayerGhost();
         fadingPlayer = playerMovementAnimator.GetComponent<SpriteRenderer>();
-        playerGhostToFade = playerGhost.GetComponent<SpriteRenderer>();
+        playerGhostToFade = playerGhost.spriteRenderer;
 
         SpriteRenderer[] toFade = new SpriteRenderer[]{
             fadingPlayer,

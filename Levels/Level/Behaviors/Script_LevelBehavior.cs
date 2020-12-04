@@ -28,6 +28,14 @@ public class Script_LevelBehavior : MonoBehaviour
         HandleOnEntrance();
     }
 
+    /// <summary>
+    /// Meant to be overriden
+    /// Do any on start reactions here to when level has finished fading in
+    /// </summary>
+    public virtual void OnLevelInitComplete()
+    {
+    }
+
     protected virtual void HandleAction() {}
     protected virtual void HandlePuzzle() {}
     protected virtual void HandleOnEntrance() {}

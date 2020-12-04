@@ -59,6 +59,23 @@ public class Script_PRCSManager : MonoBehaviour
         });
     }
 
+    public void OpenPRCSNoFade(Script_PRCS PRCS)
+    {
+        PRCSCanvasGroup.alpha = 1f;
+        PRCSCanvasGroup.gameObject.SetActive(true);
+
+        PRCS.Setup();
+        PRCS.Open();   
+    }
+
+    public void ClosePRCSNoFade(Script_PRCS PRCS)
+    {
+        PRCS.Close();
+        
+        PRCSCanvasGroup.alpha = 0f;
+        PRCSCanvasGroup.gameObject.SetActive(false);
+    }
+
     public void Initialize()
     {
         /// Hide CanvasGroup but ensure the PRCS canvas and ready to use

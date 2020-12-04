@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Should only be called from manager as it will set the BG
+/// Serves as a Canvas Group Controller
 /// </summary>
 [RequireComponent(typeof(Script_CanvasGroupFadeInOut))]
+[RequireComponent(typeof(CanvasGroup))]
 public class Script_FullArt : MonoBehaviour
 {
     public Script_FullArt nextFullArt;
@@ -15,6 +17,25 @@ public class Script_FullArt : MonoBehaviour
     public FadeSpeeds nextFadeSpeed; /// used for Examine
     public Script_FullArtManager.Bgs bg;
     [SerializeField] private Animator animator;
+    
+    /// <summary>
+    /// Show without fade and no callbacks
+    /// </summary>
+    public void Open()
+    {
+        CanvasGroup c = GetComponent<CanvasGroup>();
+        c.alpha = 1f;
+        c.gameObject.SetActive(true);
+    }
+    /// <summary>
+    /// Close without fade and no callbacks
+    /// </summary>
+    public virtual void Close()
+    {
+        CanvasGroup c = GetComponent<CanvasGroup>();
+        c.alpha = 0f;
+        c.gameObject.SetActive(false);
+    }
     
     public void FadeIn(FadeSpeeds fadeSpeed, Action cb)
     {

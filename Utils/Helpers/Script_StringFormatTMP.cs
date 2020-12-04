@@ -12,6 +12,7 @@ using TMPro;
 public class Script_StringFormatTMP : MonoBehaviour
 {
     [SerializeField] private bool useDynamicDisplay;
+    [SerializeField] private bool alwaysUpdate;
     [TextArea(3,10)]
     [SerializeField] private string dynamicText;
     
@@ -23,9 +24,26 @@ public class Script_StringFormatTMP : MonoBehaviour
 
     void OnValidate()
     {
-        if (useDynamicDisplay)
+        if (useDynamicDisplay)  DynamicDisplay();
+    }
+
+    void Update()
+    {
+        if (alwaysUpdate)
         {
-            GetComponent<TextMeshProUGUI>().text = Script_Utils.FormatString(dynamicText);
+            if (useDynamicDisplay)  DynamicDisplay();
+            else                    FormatTMPText();
         }
+    }
+
+    private void FormatTMPText()
+    {
+        string unformattedStr = GetComponent<TextMeshProUGUI>().text; 
+        GetComponent<TextMeshProUGUI>().text = Script_Utils.FormatString(unformattedStr);   
+    }
+
+    private void DynamicDisplay()
+    {
+        GetComponent<TextMeshProUGUI>().text = Script_Utils.FormatString(dynamicText);
     }
 }

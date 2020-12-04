@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
+[RequireComponent(typeof(PlayableDirector))]
 [RequireComponent(typeof(Script_PlayerCheckCollisions))]
 public class Script_PlayerMovement : MonoBehaviour
 {
@@ -15,6 +18,8 @@ public class Script_PlayerMovement : MonoBehaviour
     [SerializeField] private float speedWalkRepeatDelay;
     public int exitUpStairsOrderLayer;
     public bool isMoving;
+    [SerializeField] private TimelineAsset moveUpTimeline;
+    [SerializeField] private TimelineAsset enterElevatorTimeline;
     
 
     private float repeatDelay;
@@ -341,6 +346,32 @@ public class Script_PlayerMovement : MonoBehaviour
         playerGhost.Setup(player.transform.position);
         grid = _grid;
     }
+
+    /// Timeline ==========================================================================
+    /// NOTE: should only be called from Player
+    /// <summary>
+    /// Move up one space via Timeline
+    /// </summary>
+    public void TimelineMoveUp()
+    {
+        PlayableDirector playerDirector = GetComponent<PlayableDirector>();
+        playerDirector.Play(moveUpTimeline);
+    }
+
+    public void EnterElevator()
+    {
+        PlayableDirector playerDirector = GetComponent<PlayableDirector>();
+        playerDirector.Play(enterElevatorTimeline);
+    }
+    /// <summary>
+    /// Called from Timeline
+    /// </summary>
+    public void EnteredElevatorEvent()
+    {
+        Debug.Log("Calling this Enter Elevator EVENT!!!");
+        Script_PlayerEventsManager.EnteredElevator();
+    }
+    /// ===================================================================================
 
     public void Setup(Script_Game _game, bool isLightOn)
     {

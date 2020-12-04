@@ -115,7 +115,7 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         // game.SetupSavePoint(sp, isInit);
         
         /// go to game over screen
-        game.GetPlayer().GetComponent<Script_PlayerStats>().Hurt(999, gameOverHitBox);
+        // game.GetPlayer().GetComponent<Script_PlayerStats>().Hurt(999, gameOverHitBox);
 
         isInit = false;
     }

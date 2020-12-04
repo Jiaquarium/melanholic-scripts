@@ -3,8 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.Tilemaps;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+/// <summary>
+/// Manages exiting and entering levels
+/// 
+/// Pass in FollowUp.CutScene to Exit if you want to exit into a black screen
+/// Then call StartFadeIn() to fade back into World
+/// </summary>
 public class Script_Exits : MonoBehaviour
 {
+    public enum FollowUp
+    {
+        Default,
+        CutSceneNoFade,
+        CutScene
+    }
     public CanvasGroup canvas;
 
     private AudioSource audioSource;
@@ -15,16 +32,17 @@ public class Script_Exits : MonoBehaviour
     public bool isFadeIn;
     public float InitiateLevelWaitTime;
     public float fadeSpeed;
+    [SerializeField] private bool isHandlingExit; /// Used to prevent multiple exitting and crashing
 
     private bool exitsDisabled;
     private bool isFadeOut;
-    private bool isHandlingExit;
     private int levelToGo;
+    private FollowUp currentFollowUp;
     
     void Update()
     {
-        if (isFadeOut)  FadeOut();
-        if (isFadeIn)   FadeIn();    
+        if (isFadeOut)  ChangeLevelFade();
+        if (isFadeIn)   FadeInLevel();    
     }
 
     public void Exit(
@@ -32,7 +50,8 @@ public class Script_Exits : MonoBehaviour
         Vector3 playerNextSpawnPosition,
         Directions playerFacingDirection,
         bool isExit,
-        bool isSilent = false
+        bool isSilent = false,
+        FollowUp followUp = FollowUp.Default
     )
     {
         if (isHandlingExit)             return;
@@ -50,10 +69,26 @@ public class Script_Exits : MonoBehaviour
             new Model_PlayerState(x, y, z, playerFacingDirection)
         );
         
-        isFadeOut = true;
-        levelToGo = level;
-
         if (!isSilent)  audioSource.PlayOneShot(Script_SFXManager.SFX.exitSFX, Script_SFXManager.SFX.exitSFXVol);
+        
+        currentFollowUp = followUp;
+        levelToGo = level;
+        
+        switch (currentFollowUp)
+        {
+            case (FollowUp.CutSceneNoFade):
+            {
+                Debug.Log("Changing Level without Fade");
+                ChangeLevelNoFade();
+                break;
+            }
+            default:
+            {
+                Debug.Log("Default Fading Out");
+                isFadeOut = true;
+                break;
+            }
+        }
     }
 
     public void DisableExits(bool isDisabled, int i)
@@ -83,7 +118,15 @@ public class Script_Exits : MonoBehaviour
         isFadeOut = true;
     }
 
-    void FadeOut()
+    public bool GetIsExitsDisabled()
+    {
+        return exitsDisabled;
+    }
+
+    /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /// FOR CHANGING OUT LEVELS: START
+    /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    void ChangeLevelFade()
     {
         canvas.alpha += fadeSpeed * Time.deltaTime;
 
@@ -92,48 +135,92 @@ public class Script_Exits : MonoBehaviour
             canvas.alpha = 1f;
             isFadeOut = false;
             
-            Script_GameEventsManager.LevelBeforeDestroy();
-            game.DestroyLevel();
+            ChangeLevel();
             
-            // isHandlingExit = false;
-            game.level = levelToGo;
+            switch (currentFollowUp)
+            {
+                case (FollowUp.CutSceneNoFade):
+                {
+                    break;
+                }
+                default:
+                {
+                    isFadeIn = true;
+                    break;
+                }
+            }
 
-            Script_Player p = game.GetPlayer();
-            Vector3 playerPrevPosition = p.transform.position;
-            // player state has loaded here
-            game.InitiateLevel();
-            // cut to player spawn to avoid slow camera tracking
-            game.SnapToPlayer(playerPrevPosition);
-            
-            isFadeIn = true;
+            /// OnDoneExitingTransition() to be called in FadeInLevel()
         }
     }
 
-    void FadeIn()
+    /// <summary>
+    /// Don't put up the canvas
+    /// Use when covering the screen with another cut scene before
+    /// changing levels
+    /// </summary>
+    void ChangeLevelNoFade()
+    {
+        ChangeLevel();
+        OnDoneExitingTransition();
+    }
+
+    void ChangeLevel()
+    {
+        Script_GameEventsManager.LevelBeforeDestroy();
+        game.DestroyLevel();
+        
+        game.level = levelToGo;
+
+        Script_Player p = game.GetPlayer();
+        Vector3 playerPrevPosition = p.transform.position;
+        // player state has loaded here
+        game.InitiateLevel();
+        
+        /// Cut to player spawn to avoid slow camera tracking
+        game.SnapToPlayer(playerPrevPosition);
+    }
+    
+    /// FOR CHANGING OUT LEVELS: END
+    /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    /// <summary>
+    /// Fade in the level (fade out the canvas)
+    /// </summary>
+    void FadeInLevel()
     {
         canvas.alpha -= fadeSpeed * Time.deltaTime;
 
         if (canvas.alpha <= 0f)
         {
-            isHandlingExit = false;
             canvas.alpha = 0f;
 
-            // after faded in, player can then move
-            // change from initiate-level state
-            game.ChangeStateInteract();
-            
-            /// Event fires after setting game state
-            /// Allows us to define new initial game state in level behavior
-            Script_GameEventsManager.LevelInitComplete();
-            
+            OnDoneExitingTransition();
             // must happen last so handlers can interact with fade in sequence.
             isFadeIn = false;
         }
     }
 
-    public bool GetIsExitsDisabled()
+    void OnDoneExitingTransition()
     {
-        return exitsDisabled;
+        isHandlingExit = false;
+        
+        // after faded in, player can then move
+        // leave the state as cut scene if the exit FollowUp is a cut scene though
+        if (
+            game.state == Const_States_Game.InitiateLevel
+            && currentFollowUp == FollowUp.Default
+        )
+        {
+            game.ChangeStateInteract();
+        }
+        
+        /// Allows us to define new initial game state in level behavior
+        /// Also fire event, so other objects can react
+        game.levelBehavior.OnLevelInitComplete();
+        Script_GameEventsManager.LevelInitComplete();
+
+        currentFollowUp = FollowUp.Default;
     }
 
     public void Setup(Script_Game _game)
@@ -142,3 +229,19 @@ public class Script_Exits : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_Exits))]
+public class Script_ExitsTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_Exits lb = (Script_Exits)target;
+        if (GUILayout.Button("StartFadeIn()"))
+        {
+            lb.StartFadeIn();
+        }
+    }
+}
+#endif
