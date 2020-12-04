@@ -133,20 +133,20 @@ public class Script_InteractableObjectCreator : MonoBehaviour
     {
         /// Initializing level for the first time with no loaded state data
         bool isEmptySwitchesState = false;
+        Script_Switch[] switchesChildren = allSwitchesParent.GetComponentsInChildren<Script_Switch>(true);
+
         if  (switchesState == null || switchesState.Length == 0)
         {
-            switchesState = new bool[allSwitchesParent.GetComponentsInChildren<Script_Switch>(true).Length];
+            switchesState = new bool[switchesChildren.Length];
             isEmptySwitchesState = true;
         }
-
-        Script_Switch[] switchesChildren = allSwitchesParent.GetComponentsInChildren<Script_Switch>(true);
         
         for (int i = 0; i < switchesChildren.Length; i++)
         {
             Script_LightSwitch lightSwitch = null;
             Script_Switch switchObj = null;
             
-            Script_Switch child = switches[i];
+            Script_Switch child = switchesChildren[i];
             if (child is Script_LightSwitch)
             {
                 lightSwitch = (Script_LightSwitch)child;
