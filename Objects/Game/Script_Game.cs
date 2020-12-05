@@ -65,6 +65,7 @@ public class Script_Game : MonoBehaviour
     public Script_BackgroundMusicManager bgMusicManager;
     public Script_FullArtManager fullArtManager;
     [SerializeField] private Script_ElevatorManager elevatorManager;
+    [SerializeField] private Script_ClockManager clockManager;
     [SerializeField] private Script_InventoryAudioSettings canvasesAudioSource;
     [SerializeField] private Script_MenuController menuController;
     [SerializeField] private Script_CutSceneActionHandler cutSceneActionHandler;
@@ -119,6 +120,7 @@ public class Script_Game : MonoBehaviour
 
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Transform newGameSpawnDestination;
+    [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
     
     void OnEnable()
     {
@@ -200,6 +202,7 @@ public class Script_Game : MonoBehaviour
         exitsHandler.StartFadeIn();
 
         timeManager.Setup();
+        clockManager.Setup(); // needs to happen after level is set so we know if we're in lobby or not
     }
 
     private void DevCleanup()
@@ -426,6 +429,16 @@ public class Script_Game : MonoBehaviour
     public bool ActivateTrigger(string Id)
     {
         return levelBehavior.ActivateTrigger(Id);
+    }
+
+    public bool IsInHotel()
+    {
+        foreach (Script_LevelBehavior lb in hotelLevelBehaviors)
+        {
+            if (levelBehavior == lb)    return true;
+        }
+
+        return false;
     }
 
     /* =======================================================================

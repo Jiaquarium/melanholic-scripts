@@ -65,6 +65,13 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_BgThemePlayer bellsBgPlayer;
     [SerializeField] private float shakeDuration;
 
+    /// =======================================================================
+    /// Melz Intro START
+    /// =======================================================================
+    public Transform MelzIntroMelzParent;
+    /// Melz Intro END
+    /// =======================================================================
+
     private bool isInitialCutScene;
     private bool isInit = true;
     
@@ -98,10 +105,14 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                                                         trig.gameObject.SetActive(false);
         foreach(GameObject buff in buffs)               buff.SetActive(false);
 
-        if (!entranceCutSceneDone)
+        /// Melz Intro Run
+        if (game.Run == Script_RunsManager.MelzIntroRun)
         {
-            EntranceCutScene();
-        }
+            if (!entranceCutSceneDone)
+            {
+                EntranceCutScene();
+            }
+        }        
 
         void EntranceCutScene()
         {
@@ -122,30 +133,38 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    += CheckEntranceCutScene;
         Script_PuzzlesEventsManager.OnPuzzleSuccess     += OnPuzzleSuccess;
         Script_PuzzlesEventsManager.OnPuzzleProgress    += OnPuzzleProgress;
         Script_ItemsEventsManager.OnItemPickUp          += OnItemPickUp;
         Script_ItemsEventsManager.OnUnlock              += OnUnlockMasterLock;
         Script_PRCSEventsManager.OnPRCSDone             += PRCSClimaxDoneReaction;
         SuccessDirector.stopped                         += OnSuccessPlayableDone;
-        IntroDirector.stopped                           += OnIntroPlayableDone;
-        IntroExitDirector.stopped                       += OnIntroExitPlayableDone;
         AftermathDirector.stopped                       += OnAftermathPlayableDone; 
+        
+        /// Melz Intro Run
+        if (game.Run == Script_RunsManager.MelzIntroRun)
+        {
+            IntroDirector.stopped                           += OnIntroPlayableDone;
+            IntroExitDirector.stopped                       += OnIntroExitPlayableDone;
+        }
     }
 
     protected override void OnDisable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    -= CheckEntranceCutScene;
         Script_PuzzlesEventsManager.OnPuzzleSuccess     -= OnPuzzleSuccess;
         Script_PuzzlesEventsManager.OnPuzzleProgress    -= OnPuzzleProgress;
         Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
         Script_ItemsEventsManager.OnUnlock              -= OnUnlockMasterLock;
         Script_PRCSEventsManager.OnPRCSDone             -= PRCSClimaxDoneReaction;
         SuccessDirector.stopped                         -= OnSuccessPlayableDone;
-        IntroDirector.stopped                           -= OnIntroPlayableDone;
-        IntroExitDirector.stopped                       -= OnIntroExitPlayableDone;
         AftermathDirector.stopped                       -= OnAftermathPlayableDone; 
+        
+        /// Melz Intro Run
+        if (game.Run == Script_RunsManager.MelzIntroRun)
+        {
+            IntroDirector.stopped                           -= OnIntroPlayableDone;
+            IntroExitDirector.stopped                       -= OnIntroExitPlayableDone;
+        }
     }
 
     protected override void Update()
@@ -157,6 +176,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
 
         base.Update();
+    }
+
+    public override void OnLevelInitComplete()
+    {
+        OnMelzIntroCutScene();
     }
 
     protected override void HandleAction()
@@ -191,7 +215,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
             shakeDuration,
             Const_Camera.Shake.AmplitudeMed,
-            Const_Camera.Shake.FrequencyMed, 
+            Const_Camera.Shake.FrequencyMed,
             () => game.ChangeStateInteract()
         );           
     }
@@ -327,9 +351,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
     }
     
-    /// <summary>
-    /// NextNodeAction(s) Start =============================================================================
-    /// </summary>
+    /// <summary> ==============================================================================
+    /// NextNodeAction(s) Start 
+    /// </summary> =============================================================================
     public void MelzExit()
     {
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(2, 2);
@@ -357,9 +381,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     {
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(3, 4);
     }
-    /// <summary>
-    /// NextNodeAction(s) End =============================================================================
-    /// </summary>
+    /// NextNodeAction(s) End
+    /// =============================================================================
 
     public void ChangeSeason(string seasonStoneId, Action cb = null)
     {   
@@ -429,12 +452,17 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
     }
 
-    private void CheckEntranceCutScene()
+    private void OnMelzIntroCutScene()
     {
-        if (isInitialCutScene)
+        /// Melz Intro Run
+        if (game.Run == Script_RunsManager.MelzIntroRun)
         {
-            game.ChangeStateCutScene();
-            isInitialCutScene = false;
+            /// Set in Awake() to signal we're doing Melz intro cut scene
+            if (isInitialCutScene)
+            {
+                game.ChangeStateCutScene();
+                isInitialCutScene = false;
+            }
         }
     }
 
@@ -448,17 +476,19 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         game.SetupSavePoint(savePoint, isInit);
         game.SetupMovingNPC(Kaffe, isInit);
         game.SetupMovingNPC(Latte, isInit);
-        game.SetupMovingNPC(Melz, isInit);
         game.SetupMovingNPC(Ids, isInit);
         Ids.gameObject.SetActive(false);
-        
+
         SuccessExplosion.SetActive(false);
 
-        if (didUnlockMasterLock)
-        {
-            masterLock.gameObject.SetActive(false);
-            lastExit.IsDisabled = false;
-        }
+        /// No Master Lock on default runs
+        // if (didUnlockMasterLock)
+        // {
+        //     masterLock.gameObject.SetActive(false);
+        //     lastExit.IsDisabled = false;
+        // }
+        masterLock.gameObject.SetActive(false);
+        lastExit.IsDisabled = false;
         
         if (isPuzzleComplete)
         {
@@ -494,6 +524,17 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         {
             rock.SetActive(true);
             masterKey.gameObject.SetActive(false);
+        }
+
+        /// Melz Intro Run
+        if (game.Run == Script_RunsManager.MelzIntroRun)
+        {
+            game.SetupMovingNPC(Melz, isInit);
+            MelzIntroMelzParent.gameObject.SetActive(true);   
+        }
+        else
+        {
+            MelzIntroMelzParent.gameObject.SetActive(false);   
         }
 
         isInit = false;

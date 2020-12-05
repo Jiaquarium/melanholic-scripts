@@ -20,9 +20,10 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     public bool[] switchesStates;
     /* ======================================================================= */
     
-    public static int EroIntroRun = -1;
     public Script_DialogueManager dm;
+    public Transform EroParent;
     public Script_MovingNPC Ero;
+    public Transform EroIntroTriggersParent;
     public Script_DialogueNode[] TriggerNodes;
     public Script_Exits exitsHandler;
     public Script_BgThemePlayer EroBgThemePlayerPrefab;
@@ -45,7 +46,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        if (game.Run == EroIntroRun)
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
             nameplateDirector.stopped += OnNameplateDone;
         }
@@ -53,7 +54,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
 
     protected override void OnDisable()
     {
-        if (game.Run == EroIntroRun)
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
             nameplateDirector.stopped -= OnNameplateDone;
         }
@@ -61,7 +62,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     
     public override bool ActivateTrigger(string Id)
     {
-        if (game.Run == EroIntroRun)
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
             if (
                 (
@@ -82,7 +83,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
 
     private void OnTrigger()
     {
-        if (game.Run == EroIntroRun)
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
             game.PauseBgMusic();
             if (game.GetNPCBgThemeActive())     game.UnPauseNPCBgTheme();
@@ -122,7 +123,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     }
     
     public override void OnLevelInitComplete() {
-        if (game.Run == EroIntroRun)
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
             if (!isActivated)
             {
@@ -134,7 +135,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     }
     public override void HandleMovingNPCOnApproachedTarget(int i)
     {
-        if (game.Run == EroIntroRun)
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
             dm.StartDialogueNode(TriggerNodes[activeTriggerIndex - 1]);
             RehydrateMovingNPCMoves(0);
@@ -157,7 +158,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     */
     protected override void HandleAction()
     {
-        if (game.Run == EroIntroRun)
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
             if (
                 game.state == "cut-scene"
@@ -211,7 +212,19 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
         game.SetupInteractableObjectsText(painting1Parent, !isInitialized);
         game.SetupInteractableObjectsText(painting2Parent, !isInitialized);
         game.SetupInteractableObjectsText(painting3Parent, !isInitialized);
-        game.SetupMovingNPC(Ero, isInitialize: !isInitialized);
+        
+        if (game.Run == Script_RunsManager.EroIntroRun)
+        {
+            game.SetupMovingNPC(Ero, isInitialize: !isInitialized);
+            
+            EroParent.gameObject.SetActive(true);            
+            EroIntroTriggersParent.gameObject.SetActive(true);
+        }
+        else
+        {
+            EroParent.gameObject.SetActive(false);            
+            EroIntroTriggersParent.gameObject.SetActive(false);
+        }
         
         isInitialized = true;
     }

@@ -35,6 +35,13 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
     private List<Script_InteractableObject> interactableObjects;
     
     private bool isInit = true;
+
+    /// =======================================================================
+    /// Light Up Paintings Puzzle START
+    /// =======================================================================
+    public Transform LightUpPaintingsPuzzleNoteParent;
+    /// Light Up Paintings Puzzle END
+    /// =======================================================================
     
 
     protected override void OnDisable()
@@ -49,18 +56,26 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
 
     protected override void HandlePuzzle()
     {
-        // check switchesStates with winState
-        if (switchesStates == null)    return;
-
-        for (int i = 0; i < puzzleCompleteSwitchesStates.Length; i++)
+        if (game.Run == Script_RunsManager.LightupPaintingsPuzzleRun)
         {
-            if (switchesStates[i] != puzzleCompleteSwitchesStates[i])
-            {
-                return;
-            }
+            HandleLightupPaintingsPuzzle();
         }
+        
+        void HandleLightupPaintingsPuzzle()
+        {
+            // check switchesStates with winState
+            if (switchesStates == null)    return;
 
-        if (!isPuzzleCompleted)    OnPuzzleCompletion();
+            for (int i = 0; i < puzzleCompleteSwitchesStates.Length; i++)
+            {
+                if (switchesStates[i] != puzzleCompleteSwitchesStates[i])
+                {
+                    return;
+                }
+            }
+
+            if (!isPuzzleCompleted)    OnPuzzleCompletion();
+        }
     }
 
     private void OnPuzzleCompletion()
@@ -144,7 +159,16 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
             mirrorReflection.SetActive(true);
         }
 
-        game.SetupInteractableFullArt(fullArtParent, isInit);
+        if (game.Run == Script_RunsManager.LightupPaintingsPuzzleRun)
+        {
+            game.SetupInteractableFullArt(fullArtParent, isInit);
+
+            LightUpPaintingsPuzzleNoteParent.gameObject.SetActive(true);
+        }
+        else
+        {
+            LightUpPaintingsPuzzleNoteParent.gameObject.SetActive(false);
+        }
         
         isInit = false;
     }

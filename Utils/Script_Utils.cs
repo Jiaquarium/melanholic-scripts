@@ -371,6 +371,30 @@ public static class Script_Utils
         return $"{hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)}";
     }
 
+    public static string FormatSecondsClock(this float t, bool isClose, bool hideColons = false)
+    {
+        string fmt = "00";
+
+        int tRemainder = (int)t; 
+
+        int hours = Mathf.FloorToInt(tRemainder / 3600);
+        tRemainder -= hours * 3600;
+        
+        int min = Mathf.FloorToInt(tRemainder / 60);
+        tRemainder -= min * 60;
+
+        int sec = tRemainder;
+
+        string timeDisplay = isClose
+            ? $"『 {hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)} a.m. 』"
+            // : $"『 {hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)} a.m. 』"; // testing
+            : $"『 {hours.ToString(fmt)}:{min.ToString(fmt)} a.m. 』";
+        
+        return hideColons
+            ? timeDisplay.Replace(":", " ")
+            : timeDisplay;
+    }
+
     public static string FormatDateTime(this DateTime date)
     {
         return date.ToString("MMMM dd, yyyy hh:mm tt").ToLower();
@@ -530,5 +554,10 @@ public static class Script_Utils
             else if (list[i - 1] > list[i])         return false;
         }
         return true;
+    }
+
+    public static float ToFadeTime(this FadeSpeeds fadeSpeed)
+    {
+        return Script_GraphicsManager.GetFadeTime(fadeSpeed);
     }
 }

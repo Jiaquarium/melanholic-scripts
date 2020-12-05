@@ -26,55 +26,75 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
     [SerializeField] private Script_PRCSPlayer IntroPlayerPart1;
     [SerializeField] private Script_PRCSPlayer IntroPlayerPart2;
 
+    /// =======================================================================
+    /// Ero Intro START
+    /// =======================================================================
+    public Transform EroIntroParent;
+    public Transform EroIntroTriggersParent;
+    /// Ero Intro END
+    /// =======================================================================
+
     public Script_BgThemePlayer EroBgThemePlayerPrefab;
     
     protected override void OnEnable()
     {
-        ErasDirector.stopped += OnErasMovesDone;
-        Script_PRCSEventsManager.OnPRCSDone += PRCSDoneReaction;
+        if (game.Run == Script_RunsManager.EroIntroRun)
+        {
+            ErasDirector.stopped += OnErasMovesDone;
+            Script_PRCSEventsManager.OnPRCSDone += PRCSDoneReaction;
+        }
     }
 
     protected override void OnDisable()
     {
-        ErasDirector.stopped -= OnErasMovesDone;
-        Script_PRCSEventsManager.OnPRCSDone -= PRCSDoneReaction;
+        if (game.Run == Script_RunsManager.EroIntroRun)
+        {
+            ErasDirector.stopped -= OnErasMovesDone;
+            Script_PRCSEventsManager.OnPRCSDone -= PRCSDoneReaction;
+        }
     }
     
     public override void Cleanup() {
-        if (isDone)     game.DestroyNPCs();
+        if (game.Run == Script_RunsManager.EroIntroRun)
+        {
+            if (isDone)     game.DestroyNPCs();
+        }
     }
     
     public override bool ActivateTrigger(string Id)
     {
-        if (
-            (
-                (Id == "room_1" && activeTriggerIndex == 0 )
-                || (Id == "room_2" && activeTriggerIndex == 1)
-            ) && !isDone
-        )
+        if (game.Run == Script_RunsManager.EroIntroRun)
         {
-            game.ChangeStateCutScene();
-            
-            if (activeTriggerIndex == 0)
+            if (
+                (
+                    (Id == "room_1" && activeTriggerIndex == 0 )
+                    || (Id == "room_2" && activeTriggerIndex == 1)
+                ) && !isDone
+            )
             {
-                game.PauseBgMusic();
-                game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
-                game.PlayerFaceDirection(Directions.Down);
-                Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
-            }
-            else if (activeTriggerIndex == 1)
-            {
-                game.PlayerFaceDirection(Directions.Right);
-                Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
-                Script_VCamManager.VCamMain.SetNewVCam(VCamLB3);
-            }
-            
-            dm.StartDialogueNode(triggerNodes[activeTriggerIndex]);
-            
-            activeTriggerIndex++;
-            if (activeTriggerIndex > 1)     isDone = true;
+                game.ChangeStateCutScene();
+                
+                if (activeTriggerIndex == 0)
+                {
+                    game.PauseBgMusic();
+                    game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
+                    game.PlayerFaceDirection(Directions.Down);
+                    Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
+                }
+                else if (activeTriggerIndex == 1)
+                {
+                    game.PlayerFaceDirection(Directions.Right);
+                    Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
+                    Script_VCamManager.VCamMain.SetNewVCam(VCamLB3);
+                }
+                
+                dm.StartDialogueNode(triggerNodes[activeTriggerIndex]);
+                
+                activeTriggerIndex++;
+                if (activeTriggerIndex > 1)     isDone = true;
 
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -93,10 +113,10 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
         base.HandleDialogueAction();
     }
 
-    /// <summary>
-    /// Start NextNodeAction(s)
+    /// <summary> =============================================================
+    /// NextNodeAction(s) START
+    /// </summary> ============================================================
     /// Called from NextNodeAction after moving cut scene finishes
-    /// </summary>
     public void ErasMoveToGuardExitCutScene()
     {
         game.ChangeStateCutScene();
@@ -122,7 +142,8 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
         // Remove PRCS
         IntroPlayerPart2.Stop();
     }
-    /// End NextNodeAction(s)
+    /// NextNodeAction(s) END
+    /// ===========================================================================
     
     private void PRCSDoneReaction(Script_PRCSPlayer PRCSPlayer)
     {
@@ -162,8 +183,20 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
                 demonSpawns[i] = true;
         }
         
-        game.SetupMovingNPC(Ero, !isActivated);
         game.SetupDemons(demonsParent, demonSpawns);
+        
+        if (game.Run == Script_RunsManager.EroIntroRun)
+        {
+            game.SetupMovingNPC(Ero, !isActivated);
+            
+            EroIntroParent.gameObject.SetActive(true);
+            EroIntroTriggersParent.gameObject.SetActive(true);    
+        }
+        else
+        {
+            EroIntroParent.gameObject.SetActive(false);
+            EroIntroTriggersParent.gameObject.SetActive(false);    
+        }
         
         isActivated = true;
     }

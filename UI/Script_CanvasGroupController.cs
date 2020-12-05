@@ -9,6 +9,11 @@ using System;
 [RequireComponent(typeof(CanvasGroup))]
 public class Script_CanvasGroupController : MonoBehaviour
 {
+    private Coroutine fadeOutCoroutine;
+    private Coroutine fadeInCoroutine;
+    private bool isFadedIn;
+    private bool isFadedOut;
+    
     public virtual void Open()
     {
         CanvasGroup c = GetComponent<CanvasGroup>();
@@ -25,11 +30,24 @@ public class Script_CanvasGroupController : MonoBehaviour
 
     public virtual void FadeIn(float t, Action a)
     {
-        Open();
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
+        fader.gameObject.SetActive(true);
         if (fader == null)  return;
 
-        StartCoroutine(fader.FadeInCo(t, a));
+        if (fadeOutCoroutine != null)
+        {
+            StopCoroutine(fadeOutCoroutine);
+            fadeOutCoroutine = null;
+        }
+        if (isFadedIn || fadeInCoroutine != null)     return;
+
+        Debug.Log("Fading in Canvas Group");
+
+        isFadedOut = false;
+        fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
+            if (a != null) a();
+            isFadedIn = true;
+        }));
     }
 
     /// <summary>
@@ -40,9 +58,20 @@ public class Script_CanvasGroupController : MonoBehaviour
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         if (fader == null)  return;
 
-        StartCoroutine(fader.FadeOutCo(t, () => {
+        if (fadeInCoroutine != null)
+        {
+            StopCoroutine(fadeInCoroutine);
+            fadeInCoroutine = null;
+        }
+        if (isFadedOut || fadeOutCoroutine != null)     return;
+
+        Debug.Log("Fading out Canvas Group");
+
+        isFadedIn = false;
+        fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(t, () => {
             if (a != null) a();
-            Close();
+            isFadedOut = true;
+            fader.gameObject.SetActive(false);
         }));
     }
 
