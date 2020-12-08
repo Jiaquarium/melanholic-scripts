@@ -70,6 +70,9 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_MenuController menuController;
     [SerializeField] private Script_CutSceneActionHandler cutSceneActionHandler;
     [SerializeField] private Script_TimeManager timeManager;
+    [SerializeField] private Script_ScarletCipher scarletCipher;
+
+
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
     [SerializeField] private Transform actsContainer;
@@ -235,6 +238,8 @@ public class Script_Game : MonoBehaviour
         // TODO: REMOVE (only for dev)
         if (!isLoadedGame && (Debug.isDebugBuild || Const_Dev.IsDevMode))
         {
+            OnNewGameDev();
+
             Dev_GameHelper gameHelper = GetComponent<Dev_GameHelper>();
             level = gameHelper.level;
             Debug.Log("DEV/Setting level to "+ level);
@@ -251,11 +256,19 @@ public class Script_Game : MonoBehaviour
                 )
             );
         }
-        /// If not dev mode and no loaded game data, it's a new game
         else if (!isLoadedGame)
         {
-            NewGamePlayerSpawn();
+            OnNewGame();
         }
+    }
+
+    private void OnDidLoad() { }
+
+    private void OnNewGame()
+    {
+        scarletCipher.Initialize();
+        
+        NewGamePlayerSpawn();
 
         void NewGamePlayerSpawn()
         {
@@ -267,9 +280,9 @@ public class Script_Game : MonoBehaviour
         }
     }
 
-    private void OnDidLoad()
+    private void OnNewGameDev()
     {
-
+        scarletCipher.Initialize();   
     }
 
     /// <summary>

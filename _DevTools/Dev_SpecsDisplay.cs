@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
  
+[ExecuteAlways]
 public class Dev_SpecsDisplay : MonoBehaviour
 {
 	float deltaTime = 0.0f;
