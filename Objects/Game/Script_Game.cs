@@ -194,11 +194,13 @@ public class Script_Game : MonoBehaviour
     // Load Save Data and Initiate level
     void Start()
     {
-        Load();
+        Load(); // load Scarlet Cipher
+        
         OnLoadTasks();
+        
         // player creation must happen before level creation as LB needs reference to player
         CreatePlayer();
-        healthManager.Setup(player);
+        
         InitiateLevel();
 
         exitsHandler.canvas.alpha = 1.0f;
@@ -206,6 +208,7 @@ public class Script_Game : MonoBehaviour
 
         timeManager.Setup();
         clockManager.Setup(); // needs to happen after level is set so we know if we're in lobby or not
+        healthManager.Setup(player);
     }
 
     private void DevCleanup()
@@ -267,7 +270,7 @@ public class Script_Game : MonoBehaviour
     private void OnNewGame()
     {
         scarletCipher.Initialize();
-        
+
         NewGamePlayerSpawn();
 
         void NewGamePlayerSpawn()

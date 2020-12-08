@@ -92,7 +92,7 @@ public class Script_InventoryEditor : Editor
 {
     private SerializedProperty itemsProperty;
     private SerializedProperty itemImagesProperty;
-    private bool[] showItemSlots = new bool[Script_Inventory.numItemSlots];
+    private static bool[] showItemSlots = new bool[Script_Inventory.numItemSlots];
 
     private const string InventoryPropItemImagesName = "itemImages";
     private const string InventoryPropItemName = "items";

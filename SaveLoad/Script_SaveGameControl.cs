@@ -27,6 +27,7 @@ public class Script_SaveGameControl : MonoBehaviour
     public Script_SaveLoadDrops dropsHandler;
     public Script_SaveLoadLevels levelsHandler;
     public Script_SaveLoadNames namesHandler;
+    [SerializeField] Script_SaveLoadScarletCipher scarletCipherHandler;
 
     void Awake() {
         if (control == null)
@@ -78,6 +79,7 @@ public class Script_SaveGameControl : MonoBehaviour
             dropsHandler.SaveDrops(gameInfo);
             levelsHandler.SaveLevels(gameInfo);
             namesHandler.SaveNames(gameInfo);
+            scarletCipherHandler.SaveScarletCipher(gameInfo);
 
             bf.Serialize(gameFile, gameInfo);
             gameFile.Close();
@@ -120,6 +122,7 @@ public class Script_SaveGameControl : MonoBehaviour
                 dropsHandler.LoadDrops(data);
                 levelsHandler.LoadLevels(data);
                 namesHandler.LoadNames(data);
+                scarletCipherHandler.LoadScarletCipher(data);
 
                 if (Debug.isDebugBuild) Debug.Log("Successful load at: " + saveFilePath);
                 return true;
