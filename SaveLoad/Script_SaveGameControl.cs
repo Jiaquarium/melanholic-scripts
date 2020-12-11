@@ -10,8 +10,11 @@ using System.IO;
 public class Script_SaveGameControl : MonoBehaviour
 {
     public enum Saves {
+        /// Saves run data and game 
         SavePoint,
+        /// Saves game data, erasing run data
         Initialize,
+        /// Overwrites game data with the last initialize save
         RestartInitialized
     }
     

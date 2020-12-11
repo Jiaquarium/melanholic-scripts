@@ -84,8 +84,6 @@ public class Script_Game : MonoBehaviour
 
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
-    [SerializeField] private Transform actsContainer;
-    [SerializeField] private Script_LevelContainer[] levelsContainers;
 
     public Script_Player PlayerPrefab;
     public Script_AudioOneShotSource AudioOneShotSourcePrefab;
@@ -127,7 +125,6 @@ public class Script_Game : MonoBehaviour
     private Vector3 worldOffset;
     public string lastState;
     private bool isLoadedGame = false;
-    private Script_GameOverController.DeathTypes deathType;
     public CinemachineBrain cinemachineBrain;
 
     [SerializeField] private int tutorialEndLevel;
@@ -136,11 +133,13 @@ public class Script_Game : MonoBehaviour
     
     void OnEnable()
     {
+        Script_ClockEventsManager.OnTimesUp += TimesUpEffects;
         dieTimelineDirector.stopped += OnDiePlayableDone;
     }
 
     void OnDisable()
     {
+        Script_ClockEventsManager.OnTimesUp -= TimesUpEffects;
         dieTimelineDirector.stopped -= OnDiePlayableDone;
     }
 
@@ -149,8 +148,6 @@ public class Script_Game : MonoBehaviour
         thoughtSlots = thoughtSlotHolder.transform
             .GetChildren<Script_PlayerThoughtsInventoryButton>(true);
         thoughtSlots.SetExplicitListNav();
-
-        levelsContainers = actsContainer.GetComponentsInChildren<Script_LevelContainer>();
     }
 
     /// All managers are setup as singletons in their respective Awake()
@@ -240,11 +237,8 @@ public class Script_Game : MonoBehaviour
         {
             Debug.Log("Disabling all level grids");
 
-            foreach (Script_LevelContainer levelsContainer in levelsContainers)
-            {
-                Script_LevelGrid[] children = levelsContainer.transform.GetComponentsInChildren<Script_LevelGrid>();
-                foreach (Script_LevelGrid c in children)   c.gameObject.SetActive(false);
-            }
+            Script_LevelGrid[] children = world.transform.GetComponentsInChildren<Script_LevelGrid>(true);
+            foreach (Script_LevelGrid c in children)   c.gameObject.SetActive(false);
         }
     }
 
@@ -458,6 +452,39 @@ public class Script_Game : MonoBehaviour
         persistentDropsContainer.DeactivatePersistentDrops();
     }
 
+    /* =======================================================================
+        _ENDING SEQENCES_DEATH_TIMESUP_TRANSITIONS
+    ======================================================================= */
+    public void DieEffects(Script_GameOverController.DeathTypes deathType)
+    {
+        transitionManager.DieEffects(deathType);
+    }
+    void OnDiePlayableDone(PlayableDirector aDirector)
+    {
+        transitionManager.OnDiePlayableDone(aDirector);
+    }
+
+    /// <summary>
+    /// Called on TimesUp Event Firing
+    /// </summary>
+    public void TimesUpEffects()
+    {
+        transitionManager.TimesUpEffects();
+    }
+
+    public void ToTitleScreen()
+    {
+        Script_SceneManager.ToTitleScene();
+    }
+
+    /// <summary> =======================================================================
+    /// Signal
+    /// </summary> ======================================================================
+    public void OnTimesUpPlayableDone()
+    {
+        transitionManager.OnTimesUpPlayableDone();
+    }
+    
     /* =======================================================================
         _LEVEL BEHAVIOR_
     ======================================================================= */
@@ -711,32 +738,6 @@ public class Script_Game : MonoBehaviour
         player.QuestionMark(isShow);
     }
 
-    public void DieEffects(Script_GameOverController.DeathTypes _deathType)
-    {
-        deathType = _deathType;
-        
-        ChangeStateCutScene();
-
-        // fade screen to black
-        Time.timeScale = timeManager.dieTimeScale;
-        transitionManager.GetComponent<Script_TimelineController>()
-            .PlayableDirectorPlayFromTimelines(0, 0);
-    }
-    void OnDiePlayableDone(PlayableDirector aDirector)
-    {
-        if (
-            aDirector.playableAsset == transitionManager
-                .GetComponent<Script_TimelineController>().timelines[0]
-        )
-        {
-            // return timeScale to normal
-            Time.timeScale = 1.0f;
-            
-            
-            Script_SceneManager.ToGameOver(deathType); 
-            // Script_SceneManager.ToTitleScene();
-        }
-    }
     public int PlayerFullHeal()
     {
         return GetPlayer().FullHeal();
@@ -917,7 +918,7 @@ public class Script_Game : MonoBehaviour
 
     public float GetUnderDialogueFadeTime()
     {
-        return transitionManager.UnderDialogueFadeTime;
+        return transitionManager.underDialogueFadeTime;
     }
 
     public void ManagePlayerViews(string type)
@@ -1692,6 +1693,9 @@ public class Script_Game : MonoBehaviour
         saveGameControl.Save(Script_SaveGameControl.Saves.Initialize, playerStateOverride);
     }
 
+    /// <summary>
+    /// Restart from the initialized run, will erase game data
+    /// </summary>
     public void RestartInitialized()
     {
         Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.RestartInitialized);

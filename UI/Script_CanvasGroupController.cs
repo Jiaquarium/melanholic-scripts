@@ -9,6 +9,7 @@ using System;
 [RequireComponent(typeof(CanvasGroup))]
 public class Script_CanvasGroupController : MonoBehaviour
 {
+    private const float DefaultFadeTime = 0.5f;
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
     private bool isFadedIn;
@@ -28,7 +29,7 @@ public class Script_CanvasGroupController : MonoBehaviour
         c.gameObject.SetActive(false);
     }
 
-    public virtual void FadeIn(float t, Action a)
+    public virtual void FadeIn(float t = DefaultFadeTime, Action a = null)
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         fader.gameObject.SetActive(true);
@@ -53,7 +54,7 @@ public class Script_CanvasGroupController : MonoBehaviour
     /// <summary>
     /// NOTE: will close canvas group afterwards
     /// </summary>
-    public virtual void FadeOut(float t, Action a)
+    public virtual void FadeOut(float t = DefaultFadeTime, Action a = null)
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         if (fader == null)  return;

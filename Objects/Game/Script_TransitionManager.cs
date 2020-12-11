@@ -1,21 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+/// <summary>
+/// Handles ending sequences, fading in and out, etc.
+/// </summary>
+[RequireComponent(typeof(Script_TimelineController))]
 public class Script_TransitionManager : MonoBehaviour
 {
     public Script_CanvasGroupFadeInOut fader;
     [SerializeField] private Script_CanvasGroupController underDialogueController;
-    public readonly static float RestartPlayerFadeInTime = 0.25f;
-    public readonly static float RestartPlayerFadeOutTime = 1f;
-    [SerializeField] private float _underDialogueFadeTime;
-    public float UnderDialogueFadeTime {
-        get
-        {
-            return _underDialogueFadeTime;
-        }
-    }
+    [SerializeField] private Script_Game game;
+    [SerializeField] private Script_TimeManager timeManager;
+    public const float RestartPlayerFadeInTime = 0.25f;
+    public const float RestartPlayerFadeOutTime = 1f;
+    public float underDialogueFadeTime = 1.5f;
+    public Script_CanvasGroupController restartPrompt;
+
+    private Script_GameOverController.DeathTypes deathType;
     
     public IEnumerator FadeIn(float t, Action action)
     {
@@ -42,8 +50,126 @@ public class Script_TransitionManager : MonoBehaviour
         underDialogueController.FadeOut(t, action);
     }
 
+    public void DieEffects(Script_GameOverController.DeathTypes _deathType)
+    {
+        deathType = _deathType;
+        
+        game.ChangeStateCutScene();
+
+        /// Slow down time and fade screen to black
+        Time.timeScale = timeManager.dieTimeScale;
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+    }
+
+    public void OnDiePlayableDone(PlayableDirector aDirector)
+    {
+        if (
+            aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[0]
+        )
+        {
+            // return timeScale to normal
+            Time.timeScale = 1.0f;
+            
+            Script_SceneManager.ToGameOver(deathType);
+        }
+    }
+
+    public void TimesUpEffects()
+    {
+        game.ChangeStateCutScene();
+
+        /// Slow down time and fade screen to black
+        Time.timeScale = timeManager.dieTimeScale;
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+
+        /// TBD Showing the Sieving Timeline Sequence
+    }
+
+    public void OnTimesUpPlayableDone()
+    {
+        Time.timeScale = 1.0f;
+
+        /// Prompt User
+        FadeInRestartPrompt();
+    }
+
+    public void FadeInRestartPrompt()
+    {
+        Debug.Log("Show prompt to player on how they would like to restart");
+        
+        restartPrompt.Close();
+        restartPrompt.FadeIn();
+    }
+
+    public void FadeOutRestartPrompt()
+    {
+        Debug.Log("Show prompt to player on how they would like to restart");
+        
+        restartPrompt.FadeOut(default, () => {
+            restartPrompt.Close();
+        });
+    }
+
+    /// ------------------------------------------------------------
+    /// Called from RestartPrompt UIChoices
+    /// ------------------------------------------------------------
+    /// <summary>
+    /// Restart from last save (Tedmunch or initialized)
+    /// </summary>
+    public void RestartRun()
+    {
+        game.RestartRun();
+    }
+
+    /// <summary>
+    /// Restart from the initialized run, will erase game data
+    /// </summary>
+    public void RestartGameInitialized()
+    {
+        game.RestartInitialized();
+    }
+
+    public void ToTitleScreen()
+    {
+        game.ToTitleScreen();
+    }
+    
+    /// ------------------------------------------------------------
+
     public void Setup()
     {
         fader.gameObject.SetActive(true);
+        restartPrompt.Close();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_TransitionManager))]
+public class Script_TransitionManagerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_TransitionManager t = (Script_TransitionManager)target;
+        if (GUILayout.Button("TimesUpEffects()"))
+        {
+            t.TimesUpEffects();
+        }
+
+        if (GUILayout.Button("OnTimesUpPlayableDone()"))
+        {
+            t.OnTimesUpPlayableDone();
+        }
+
+        if (GUILayout.Button("FadeInRestartPrompt()"))
+        {
+            t.FadeInRestartPrompt();
+        }
+
+        if (GUILayout.Button("FadeOutRestartPrompt()"))
+        {
+            t.FadeOutRestartPrompt();
+        }
+    }
+}
+#endif

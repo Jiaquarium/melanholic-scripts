@@ -219,7 +219,8 @@ public static class Script_Utils
             Script_Names.HouseMaster,                   // {44}
             Script_Names.Thoughts,                      // {45}
             Script_Names.HeartsCapacity,                // {46}
-            Script_Names.Vx                             // {47}
+            Script_Names.Vx,                            // {47}
+            Script_Names.Dan                            // {48}
         );
     }
 

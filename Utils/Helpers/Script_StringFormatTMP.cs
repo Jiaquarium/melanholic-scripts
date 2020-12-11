@@ -12,9 +12,9 @@ using TMPro;
 public class Script_StringFormatTMP : MonoBehaviour
 {
     [SerializeField] private bool useDynamicDisplay;
+    [Tooltip("True: will update so when Names change will show")]
     [SerializeField] private bool alwaysUpdate;
-    [TextArea(3,10)]
-    [SerializeField] private string dynamicText;
+    [TextArea(3,10)] [SerializeField] private string dynamicText;
     
     void Start()
     {

@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
-/// Manages Clock Visibility
+/// Manages Clock Visibility and Firing of Times Up Event
 /// </summary>
 public class Script_ClockManager : MonoBehaviour
 {
@@ -16,11 +20,7 @@ public class Script_ClockManager : MonoBehaviour
     {
         if (clock.State == Script_Clock.States.Done && !didFireDoneEvent)
         {
-            Debug.Log("TIMES UP@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            
-            /// Fire Done Event
-            Script_ClockEventsManager.TimesUp();
-            didFireDoneEvent = true;
+            TimesUp();
         }
         
         if (
@@ -38,6 +38,17 @@ public class Script_ClockManager : MonoBehaviour
         }
     }
 
+    public void TimesUp()
+    {
+        Debug.Log("TIMES UP@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+        clock.CurrentTime = Script_Clock.EndTime;
+        
+        /// Fire Done Event
+        Script_ClockEventsManager.TimesUp();
+        didFireDoneEvent = true;
+    }
+
     public void InitialState()
     {
         Script_Clock.States initialClockState = game.IsInHotel()
@@ -52,3 +63,19 @@ public class Script_ClockManager : MonoBehaviour
         InitialState();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_ClockManager))]
+public class Script_ClockManagerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_ClockManager t = (Script_ClockManager)target;
+        if (GUILayout.Button("TimesUp()"))
+        {
+            t.TimesUp();
+        }
+    }
+}
+#endif

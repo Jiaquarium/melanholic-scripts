@@ -32,6 +32,8 @@ public class Script_SceneManager : MonoBehaviour
     
     /// <summary>
     /// Will erase all current Run data and start at the beginning of the Run
+    /// 
+    /// NOTE: TO BE CALLED BY GAME
     /// </summary>
     public static void RestartGame()
     {

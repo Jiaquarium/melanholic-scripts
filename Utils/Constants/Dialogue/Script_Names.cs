@@ -62,6 +62,7 @@ public class Script_Names: MonoBehaviour
     public static readonly string Thoughts          = "<b>Thoughts</b>";    // {45}
     public static readonly string HeartsCapacity          = "<b>Hearts Capacity</b>";    // {46}
     public static readonly string Vx                = "<b>Vx</b>";    // {47}
+    public static readonly string Dan                = "<b>dan</b>";    // {48}
     
 
 
