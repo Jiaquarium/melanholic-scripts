@@ -9,13 +9,21 @@ using System.IO;
 /// </summary>
 public class Script_SaveGameControl : MonoBehaviour
 {
+    public enum Saves {
+        SavePoint,
+        Initialize,
+        RestartInitialized
+    }
+    
     public static Script_SaveGameControl control;
     public Script_Game game;
     public static string path;
     public static int saveSlotId;
-    public static string saveFileName = "gameInfo";
+    public static string saveFileName;
+    public static string saveInitializeFileName;
     public static string saveFilePath;
-    public static string savedGameTitleDataFileName = "savedGameTitleData";
+    public static string saveInitializeFilePath;
+    public static string savedGameTitleDataFileName;
     public static string savedGameTitleDataPath;
     
     public Script_SaveSavedGameTitleData savedGameTitleDataHandler;
@@ -29,60 +37,65 @@ public class Script_SaveGameControl : MonoBehaviour
     public Script_SaveLoadNames namesHandler;
     [SerializeField] Script_SaveLoadScarletCipher scarletCipherHandler;
 
-    void Awake() {
-        if (control == null)
-        {
-            control = this;
-        }
-        else if (control != this)
-        {
-            Destroy(this.gameObject);
-        }
-
-        SetPath();
-    }
-
     public static void SetPath()
     {
-        path                    = Application.persistentDataPath;
+        saveFileName                = $"saveData{Application.version}";
+        saveInitializeFileName      = $"saveDataInitialize{Application.version}";
+        savedGameTitleDataFileName  = $"savedGameTitleData{Application.version}";
+        
+        path                        = Application.persistentDataPath;
 
-        saveFilePath            = $"{path}{saveFileName}{saveSlotId}.dat";
-        savedGameTitleDataPath  = $"{path}{savedGameTitleDataFileName}{saveSlotId}.dat";
+        saveFilePath                = $"{path}/{saveFileName}_{saveSlotId}.dat";
+        saveInitializeFilePath      = $"{path}/{saveInitializeFileName}_{saveSlotId}.dat";
+        savedGameTitleDataPath      = $"{path}/{savedGameTitleDataFileName}_{saveSlotId}.dat";
 
         Debug.Log($"Persistent path is: {Application.persistentDataPath}");
         Debug.Log($"Currently using path: {path}");
     }
 
-    public virtual void OnInspectorGUI(){}
-
-    public void Save()
+    /// <param name="type">SavePoint saves within Kelsingor</param>
+    /// <param name="playerStateOverride">Option to override player state</param>
+    public void Save(
+        Saves type,
+        Model_PlayerState playerStateOverride = null
+    )
     {
         SetPath();
 
         try
         {
+            /// Update total play time
             game.OnSaveTasks();
             
-            BinaryFormatter bf = new BinaryFormatter();
-            // will overwrite existing file
-            FileStream gameFile     = File.Create(saveFilePath);
+            BinaryFormatter bf  = new BinaryFormatter();
 
             /// Main data to pass around and modify
-            Model_SaveData gameInfo = new Model_SaveData();
-            
-            // modify with all necessary persistent state gameInfo
-            gameHandler.SaveGameData(gameInfo);
-            playerHandler.SavePlayerData(gameInfo);
-            entriesHandler.SaveEntries(gameInfo);
-            inventoryHandler.SaveInventory(gameInfo);
-            equipmentHandler.SaveEquipment(gameInfo);
-            dropsHandler.SaveDrops(gameInfo);
-            levelsHandler.SaveLevels(gameInfo);
-            namesHandler.SaveNames(gameInfo);
-            scarletCipherHandler.SaveScarletCipher(gameInfo);
+            Model_SaveData saveData = new Model_SaveData();
 
-            bf.Serialize(gameFile, gameInfo);
-            gameFile.Close();
+            /// Depending on what type of save, we need to modify Run data appropriately
+            switch (type)
+            {
+                case (Saves.SavePoint):
+                    SaveGame(saveData);
+                    OverridePlayerData(saveData, playerStateOverride);
+                    HandleSaveRun(saveData);
+                    WriteSaveDataFile(bf, saveFilePath, saveData);
+                    break;
+                /// Should only be called before beginning a new run 
+                case (Saves.Initialize):
+                    SaveGame(saveData);
+                    OverridePlayerData(saveData, playerStateOverride);
+                    HandleInitialSave(saveData);
+                    WriteSaveDataFile(bf, saveFilePath, saveData);
+                    /// Create a copy of the file at the beginning of the run in case player wants
+                    /// to restart back to this point 
+                    WriteSaveDataFile(bf, saveInitializeFilePath, saveData);
+                    break;
+                /// Replace current game saved data and with the SaveDataInitialize
+                case (Saves.RestartInitialized):
+                    HandleRestartFromInitialSave();
+                    break;
+            }
 
             /// Create SavedGameTitleData
             FileStream titleFile    = File.Create(savedGameTitleDataPath);            
@@ -90,14 +103,79 @@ public class Script_SaveGameControl : MonoBehaviour
             bf.Serialize(titleFile, savedGameTitleData);
             titleFile.Close();
 
-            // TODO: CREATE FILES AS bleh.dat, then change name once all files have succeeded,
-            // so we don't get corrupt files
-
             if (Debug.isDebugBuild) Debug.Log("Save successful at: " + saveFilePath);
         }
         catch (System.Exception e)
         {
             Debug.LogError("Failed Save with exception: " + e.ToString());
+        }
+
+        void SaveGame(Model_SaveData data)
+        {
+            gameHandler.SaveGameData(data);
+            playerHandler.SavePlayerData(data);
+            entriesHandler.SaveEntries(data);
+            inventoryHandler.SaveInventory(data);
+            equipmentHandler.SaveEquipment(data);
+            dropsHandler.SaveDrops(data);
+            namesHandler.SaveNames(data);
+            scarletCipherHandler.SaveScarletCipher(data);
+        }
+
+        void WriteSaveDataFile(BinaryFormatter bf, string filePath, Model_SaveData data)
+        {
+            // will overwrite existing file
+            FileStream gameFile = File.Create(filePath);
+            bf.Serialize(gameFile, data);
+            gameFile.Close();
+        }
+
+        void OverridePlayerData(Model_SaveData data, Model_PlayerState playerState)
+        {
+            data.playerData = playerState ?? data.playerData;
+        }
+
+        void HandleSaveRun(Model_SaveData data)
+        {
+            levelsHandler.SaveLevels(data);
+        }
+        
+        void HandleInitialSave(Model_SaveData data)
+        {
+            data.runData = new Model_RunData();
+        }
+
+        void HandleRestartFromInitialSave()
+        {
+            try
+            {
+                if (File.Exists(saveFilePath) && File.Exists(saveInitializeFilePath))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    FileStream initFile = File.Open(saveInitializeFilePath, FileMode.Open);
+                    Model_SaveData data = (Model_SaveData)bf.Deserialize(initFile);
+                    initFile.Close();
+                    
+                    /// Update playtime
+                    gameHandler.UpdatePlayTime(data);
+                    
+                    /// Update init file with new play time
+                    WriteSaveDataFile(bf, saveInitializeFilePath, data);
+                    
+                    /// Replace saveFile with the updated init file
+                    File.Copy(saveInitializeFilePath, saveFilePath, true);
+                }
+                else
+                {
+                    Debug.LogError(
+                        $"You are missing the save file and/or saveInitialize file when you should have both"
+                    );
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Failed copying saveInitialized file with exception: " + e.ToString());
+            }
         }
     }
 
@@ -183,7 +261,7 @@ public class Script_SaveGameControl : MonoBehaviour
 
         try
         {
-            // copy gameInfo
+            // copy saveData
             if (File.Exists(saveFilePath))
             {
                 string newSaveFilePath                = $"{path}{saveFileName}{newSlotId}.dat";
@@ -204,5 +282,19 @@ public class Script_SaveGameControl : MonoBehaviour
             Debug.LogError("Failed Copy with exception: " + e.ToString());
             return false;
         }
+    }
+
+    public void Setup()
+    {
+        if (control == null)
+        {
+            control = this;
+        }
+        else if (control != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        SetPath();
     }
 }

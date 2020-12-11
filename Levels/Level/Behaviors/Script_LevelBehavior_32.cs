@@ -35,6 +35,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         /// Fade out black canvas
         game.UnderDialogueTransitionFadeOut(game.GetUnderDialogueFadeTime(), () => {
+            /// Initial Save
+            
             game.ChangeStateInteract();
         });
     }

@@ -17,7 +17,7 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
         
         if (Script_Game.Game.CheckStickerEquippedById(BoarNeedle))
         {
-            if (!Script_Game.Game.GetPlayer().GetIsTalking())
+            if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
             {
                 InitiatePaintingEntrance();
             }

@@ -12,8 +12,9 @@ public class Script_PlayerAction : MonoBehaviour
     private Script_Player player;
     private Dictionary<Directions, Vector3> directions;
     private Script_InteractionBoxController interactionBoxController;
-    [SerializeField] AudioSource itemStashAudioSource;
-    [SerializeField] AudioSource pickUpErrorAudioSource;
+    [SerializeField] private AudioSource itemStashAudioSource;
+    [SerializeField] private AudioSource pickUpErrorAudioSource;
+    [SerializeField] private Script_StickerEffectsController stickerEffectsController;
 
     public Script_Item itemShown { get; set; }
     
@@ -22,7 +23,23 @@ public class Script_PlayerAction : MonoBehaviour
         /// <summary>
         /// interact state available actions
         /// </summary>
-        if (player.GetIsInteract())
+        switch (player.State)
+        {
+            case Const_States_Player.Interact:
+                HandleInteraction();
+                break;
+            case Const_States_Player.Dialogue:
+                HandleDefaultAction(facingDirection, location);
+                break;
+            case Const_States_Player.Viewing:
+                HandleDefaultAction(facingDirection, location);
+                break;
+            case Const_States_Player.PickingUp:
+                HandlePickingUp();
+                break;
+        }
+
+        void HandleInteraction()
         {
             if (Input.GetButtonDown(Const_KeyCodes.Action1))
             {
@@ -41,18 +58,51 @@ public class Script_PlayerAction : MonoBehaviour
             {
                 OpenInventory();
             }
-        }
-        else if (player.GetIsTalking())
-        {
-            HandleDefaultAction(facingDirection, location);
-        }
-        else if (player.GetIsViewing())
-        {
-            HandleDefaultAction(facingDirection, location);
-        }
-        else if (player.GetIsPickingUp())
-        {
-            HandlePickingUp();   
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect1))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect1}");
+                stickerEffectsController.Effect(0);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect2))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect2}");
+                stickerEffectsController.Effect(1);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect3))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect3}");
+                stickerEffectsController.Effect(2);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect4))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect4}");
+                stickerEffectsController.Effect(3);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect5))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect5}");
+                stickerEffectsController.Effect(4);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect6))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect6}");
+                stickerEffectsController.Effect(5);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect7))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect7}");
+                stickerEffectsController.Effect(6);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect8))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect8}");
+                stickerEffectsController.Effect(7);
+            }
+            else if (Input.GetButtonDown(Const_KeyCodes.Effect9))
+            {
+                Debug.Log($"Player action for {Const_KeyCodes.Effect9}");
+                stickerEffectsController.Effect(8);
+            }
         }
     }
 
@@ -144,7 +194,7 @@ public class Script_PlayerAction : MonoBehaviour
                 itemShown = null;
                 /// state may have already been modified away from PickingUp
                 /// in that case, allow that state to override here
-                if (player.GetIsPickingUp())
+                if (player.State == Const_States_Player.PickingUp)
                 {
                     player.SetIsInteract();
                     print("player state set to Interact from PlayerActions HandleEndItemDescriptionDialogue()");

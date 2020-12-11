@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Script_InventoryViewSlot))]
+// [RequireComponent(typeof(Script_InventoryViewSlot))]
 public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelectHandler, IDeselectHandler
 {
     public bool isEnterPressed;

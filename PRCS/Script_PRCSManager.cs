@@ -12,18 +12,6 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
     
-    public void Awake()
-    {
-        if (Control == null)
-        {
-            Control = this;
-        }
-        else if (Control != this)
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    
     public void Start()
     {
         Initialize();
@@ -52,7 +40,7 @@ public class Script_PRCSManager : MonoBehaviour
         PRCS.FadeOut(fadeOutSpeed, () =>
         {
             Initialize();
-            if (Script_Game.Game.GetPlayer().GetIsViewing())
+            if (Script_Game.Game.GetPlayer().State == Const_States_Player.Viewing)
                 Script_Game.Game.GetPlayer().SetIsInteract();
 
             if (cb != null)     cb();
@@ -87,6 +75,18 @@ public class Script_PRCSManager : MonoBehaviour
         foreach (Script_PRCS prcs in allPRCS)
         {
             prcs.gameObject.SetActive(false);
+        }
+    }
+
+    public void Setup()
+    {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
         }
     }
 }

@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class Script_SceneManager : MonoBehaviour
 {
     public static Script_SceneManager SM;
-    public static readonly string TitleScene = "Title";
-    public static readonly string GameScene = "Game";
+    public const string TitleScene = "Title";
+    public const string GameScene = "Game";
     [SerializeField] private Transform LoadingScreen;
-    void Awake()
+
+    /// <summary>
+    /// Singleton needs to be in Awake because there are multiple 
+    /// of this, don't want to have to set up by both Start and Game
+    /// </summary>
+    public void Awake()
     {
         if (SM == null)
         {
@@ -21,7 +29,15 @@ public class Script_SceneManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
+    
+    /// <summary>
+    /// Will erase all current Run data and start at the beginning of the Run
+    /// </summary>
+    public static void RestartGame()
+    {
+        SceneManager.LoadScene(GameScene);
+    }
+    
     public static void ToTitleScene()
     {
         Script_Start.startState = Script_Start.StartStates.Start;
@@ -54,4 +70,25 @@ public class Script_SceneManager : MonoBehaviour
 
         SM.LoadingScreen.gameObject.SetActive(false);
     }
+
+    public void Setup()
+    {
+        
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_SceneManager))]
+public class Script_SceneManagerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_SceneManager t = (Script_SceneManager)target;
+        if (GUILayout.Button("Restart Game"))
+        {
+            Script_SceneManager.RestartGame();
+        }
+    }
+}
+#endif

@@ -21,4 +21,13 @@ public class Script_SaveLoadGame : MonoBehaviour
         game.level = data.gameData.level;
         game.totalPlayTime = data.gameData.totalPlayTime;
     }
+
+    public void UpdatePlayTime(Model_SaveData data)
+    {
+        data.gameData = new Model_GameData(
+            data.gameData.run,
+            data.gameData.level,
+            game.totalPlayTime
+        );
+    }
 }

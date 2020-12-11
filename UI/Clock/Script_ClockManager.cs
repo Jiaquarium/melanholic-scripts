@@ -10,7 +10,6 @@ public class Script_ClockManager : MonoBehaviour
     [SerializeField] private Script_Clock clock;
     [SerializeField] private Script_Game game;
     [SerializeField] private FadeSpeeds fadeSpeed;
-    private Coroutine clockFadeCoroutine;
     private bool didFireDoneEvent;
 
     void Update()
@@ -26,7 +25,7 @@ public class Script_ClockManager : MonoBehaviour
         
         if (
             game.state == Const_States_Game.Interact
-            && game.GetPlayer().GetIsInteract()
+            && game.GetPlayer().State == Const_States_Player.Interact
         )
         {
             clock.GetComponent<Script_CanvasGroupController>().FadeIn(fadeSpeed.ToFadeTime(), null);
@@ -39,13 +38,17 @@ public class Script_ClockManager : MonoBehaviour
         }
     }
 
-    public void Setup()
+    public void InitialState()
     {
-        didFireDoneEvent = false;
         Script_Clock.States initialClockState = game.IsInHotel()
             ? Script_Clock.States.Paused
             : Script_Clock.States.Active;
         
         clock.Setup(initialClockState);
+    }
+
+    public void Setup()
+    {
+        InitialState();
     }
 }

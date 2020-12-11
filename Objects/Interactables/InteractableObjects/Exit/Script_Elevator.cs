@@ -12,6 +12,7 @@ public class Script_Elevator : Script_InteractableObjectExit
     public static float preDoorCloseWaitTime        = 0.5f;
     [SerializeField] private bool isClosed          = true;
     [SerializeField] private Animator doorsAnimator;
+    [SerializeField] private Script_ElevatorBehavior elevatorExitBehavior;
 
     void OnEnable()
     {
@@ -76,12 +77,17 @@ public class Script_Elevator : Script_InteractableObjectExit
     /// </summary>
     public void OnElevatorDoorsOpened()
     {
-        Script_Game.Game.GetPlayer().EnterElevator();
+        game.GetPlayer().EnterElevator();
     }
 
+    /// <summary>
+    /// Called after World elevator doors are done closing on current active Elevator
+    /// (To:Elevator)
+    /// </summary>
     public void OnElevatorDoorsClosedArrival()
     {
-        Script_Game.Game.ChangeStateInteract();
+        Debug.Log($"{name} OnElevatorDoorsClosedArrival()");
+        game.ChangeStateInteract();
     }
 
     /// Signal Reactions END ========================================================================
@@ -98,7 +104,7 @@ public class Script_Elevator : Script_InteractableObjectExit
             yield return new WaitForSeconds(preDoorCloseWaitTime);
 
             /// Call manager to handle Canvas UI
-            game.ElevatorCloseDoorsCutScene(exit);
+            game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior);
         }    
     }
 }

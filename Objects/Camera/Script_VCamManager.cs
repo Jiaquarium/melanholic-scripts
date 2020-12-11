@@ -13,23 +13,6 @@ public class Script_VCamManager : MonoBehaviour
     public static Script_VCamManager VCamMain;
     public static readonly float defaultBlendTime = 2f;
 
-    private void Awake()
-    {
-        if (VCamMain == null)
-        {
-            VCamMain = this;
-        }
-        else if (VCamMain != this)
-        {
-            Destroy(this.gameObject);
-            Debug.LogError("Script_VCamManager.VCamMain: You are trying to create multiple instances of me.");
-        }
-        
-        // reset noise when starting game
-        CinemachineBasicMultiChannelPerlin noise = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
-        noise.m_AmplitudeGain = 0f;
-        noise.m_FrequencyGain = 0f;
-    }
 
     public static Script_VCamera ActiveVCamera
     {
@@ -78,6 +61,24 @@ public class Script_VCamManager : MonoBehaviour
     {
         vCam2.SetPriority(1);
         vCam1.SetPriority(0);
+    }
+
+    public void Setup()
+    {
+        if (VCamMain == null)
+        {
+            VCamMain = this;
+        }
+        else if (VCamMain != this)
+        {
+            Destroy(this.gameObject);
+            Debug.LogError("Script_VCamManager.VCamMain: You are trying to create multiple instances of me.");
+        }
+        
+        // reset noise when starting game
+        CinemachineBasicMultiChannelPerlin noise = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
+        noise.m_AmplitudeGain = 0f;
+        noise.m_FrequencyGain = 0f;
     }
 }
 

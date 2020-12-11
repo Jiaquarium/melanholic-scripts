@@ -6,7 +6,7 @@ public class Script_SaveLoadLevelBehavior_22 : Script_SaveLoadLevelBehavior
 {
     [SerializeField] private Script_LevelBehavior_22 LB22;
 
-    public override void Save(Model_SaveData data)
+    public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_22 lvlModel = new Model_LevelBehavior_22(
             LB22.isMyneCutSceneDone
@@ -15,7 +15,7 @@ public class Script_SaveLoadLevelBehavior_22 : Script_SaveLoadLevelBehavior
         data.levelsData.LB22 = lvlModel;
     }
 
-    public override void Load(Model_SaveData data)
+    public override void Load(Model_RunData data)
     {
         if (data.levelsData == null)
         {

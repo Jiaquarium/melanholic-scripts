@@ -37,18 +37,6 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private float bgAlpha;
     [SerializeField] private Transform[] fullArtParentsToSetActive;
     
-    void Awake()
-    {
-        if (Control == null)
-        {
-            Control = this;
-        }
-        else if (Control != this)
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    
     /// <summary>
     /// fades out fullArt canvases and does callback after finishing fadeOut
     /// </summary>
@@ -84,7 +72,7 @@ public class Script_FullArtManager : MonoBehaviour
         // player should only be able to go to lastState from inventory state
         // DialogueManager doesn't set the player to viewing
         if (
-            Script_Game.Game.GetPlayer().GetIsInteract()
+            Script_Game.Game.GetPlayer().State == Const_States_Player.Interact
             && state != FullArtState.DialogueManager
         )
         {
@@ -126,7 +114,7 @@ public class Script_FullArtManager : MonoBehaviour
         {
             fullArtCanvas.alpha = 0f;
             fullArtCanvas.gameObject.SetActive(false);
-            if (Script_Game.Game.GetPlayer().GetIsViewing())
+            if (Script_Game.Game.GetPlayer().State == Const_States_Player.Viewing)
                 Script_Game.Game.GetPlayer().SetIsInteract();
 
             activeFullArt = null;
@@ -164,6 +152,15 @@ public class Script_FullArtManager : MonoBehaviour
     
     public void Setup()
     {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
+        
         Hide(FadeSpeeds.None, null);
         fullArtBgCanvasGroup.gameObject.SetActive(true);
         

@@ -53,8 +53,10 @@ public class Script_SFXManager : MonoBehaviour
     public float fireLightUp2Vol;
     public AudioClip shellShock;
     public float shellShockVol;
+    public AudioClip psychicDuckQuack;
+    public float psychicDuckQuackVol;
     
-    private void Awake()
+    public void Setup()
     {
         if (SFX == null)
         {

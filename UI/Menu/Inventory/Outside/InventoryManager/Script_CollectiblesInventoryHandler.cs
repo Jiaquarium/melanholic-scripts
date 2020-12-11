@@ -36,7 +36,7 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
 
                 Script_Game.Game.fullArtManager.HideFullArt(fullArt, collectible.fadeOutSpeed, () =>
                 {
-                    print("isplayer state interact: " + Script_Game.Game.GetPlayer().GetIsInteract());
+                    print("isplayer state interact: " + Script_Game.Game.GetPlayer().State == Const_States_Player.Interact);
                     isInputDisabled = false;
                     mainController.state = UIState.Interact;
                     isFullArtMode = false;

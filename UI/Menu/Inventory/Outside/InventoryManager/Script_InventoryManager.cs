@@ -201,7 +201,9 @@ public class Script_InventoryManager : MonoBehaviour
                 Drop(inventory.GetItemInSlot(itemSlotId), itemSlotId);
                 break;
             case ItemChoices.Use:
-                Use((Script_Usable)inventory.GetItemInSlot(itemSlotId), itemSlotId);
+                Use(
+                    (Script_Usable)inventory.GetItemInSlot(itemSlotId), itemSlotId
+                );
                 /// DON'T EnterInventory() here in case we need to exit on successful use
                 /// CutScene will exit for us
                 break;

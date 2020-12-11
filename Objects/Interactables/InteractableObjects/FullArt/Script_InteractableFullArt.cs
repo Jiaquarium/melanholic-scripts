@@ -104,7 +104,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
 
     private void HandlePromptDialogue()
     {
-        if (!Script_Game.Game.GetPlayer().GetIsTalking())
+        if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
         {
             if (dialogueNodes == null || dialogueNodes.Length == 0)
             {

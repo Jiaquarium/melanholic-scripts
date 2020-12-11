@@ -8,8 +8,7 @@ using UnityEngine;
 public class Script_ProximitySpeaker_Persist : Script_ProximitySpeaker
 {
     public int levelToPersistUntil;
-    [SerializeField]
-    private int originLevel;
+    [SerializeField] private int originLevel;
     
     
     protected override void OnDisable()

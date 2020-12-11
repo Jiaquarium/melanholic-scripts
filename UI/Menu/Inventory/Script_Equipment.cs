@@ -25,7 +25,7 @@ public class Script_Equipment : MonoBehaviour
     }
     
     /// <returns>false, if stickers are full</returns>
-    public bool AddSticker(Script_Sticker stickerToAdd)
+    public bool AddSticker(Script_Sticker stickerToAdd, out int stickerSlotId)
     {
         for (int i = 0; i < stickers.Length; i++)
         {
@@ -34,10 +34,15 @@ public class Script_Equipment : MonoBehaviour
                 stickers[i] = stickerToAdd;
                 stickerImages[i].sprite = stickerToAdd.sprite;
                 stickerImages[i].enabled = true;
+                stickerSlotId = i;
+
+                HandleStickerHolsterAdd(stickerToAdd, i);
+
                 return true;
             }
         }
 
+        stickerSlotId = -1;
         return false;
     }
 
@@ -49,6 +54,9 @@ public class Script_Equipment : MonoBehaviour
         stickers[i] = stickerToAdd;
         stickerImages[i].sprite = stickerToAdd.sprite;
         stickerImages[i].enabled = true;
+
+        HandleStickerHolsterAdd(stickerToAdd, i);
+
         return true;
     }
 
@@ -61,6 +69,8 @@ public class Script_Equipment : MonoBehaviour
         stickerImages[i].sprite = null;
         stickerImages[i].enabled = false;
         
+        HandleStickerHolsterRemove(i);
+
         return true;
     }
 
@@ -78,6 +88,16 @@ public class Script_Equipment : MonoBehaviour
             if (stickers[i] != null && stickers[i].id == IdToFind)   return true;
 
         return false;
+    }
+
+    void HandleStickerHolsterAdd(Script_Sticker stickerToAdd, int i)
+    {
+        Script_StickerHolsterManager.Control.AddSticker(stickerToAdd, i);   
+    }
+
+    void HandleStickerHolsterRemove(int i)
+    {
+        Script_StickerHolsterManager.Control.RemoveSticker(i);
     }
 }
 

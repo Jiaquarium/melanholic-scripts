@@ -47,6 +47,14 @@ public class Script_Player : Script_Character
     private const string PlayerGlitch = "Base Layer.Player_Glitch";
     private Dictionary<Directions, Vector3> directionsToVector;
        
+    public string State {
+        get {
+            return state;
+        }
+        private set {
+            state = value;
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -71,11 +79,11 @@ public class Script_Player : Script_Character
             // animator.SetBool("PlayerMoving", false);
             playerActionHandler.HandleActionInput(facingDirection, location);
             if (
-                GetIsAttacking()
-                || GetIsTalking()
-                || GetIsViewing()
-                || GetIsPickingUp()
-                || GetIsStandby()
+                State == Const_States_Player.Attack
+                || State == Const_States_Player.Dialogue
+                || State == Const_States_Player.Viewing
+                || State == Const_States_Player.PickingUp
+                || State == Const_States_Player.Standby
             ) {
                 animator.SetBool("PlayerMoving", false);
             }
@@ -104,8 +112,8 @@ public class Script_Player : Script_Character
     /// =========================================================================================
     public void SetState(string s)
     {
-        lastState = state;
-        state = s;
+        lastState = State;
+        State = s;
     }
 
     public void SetLastState()
@@ -159,41 +167,6 @@ public class Script_Player : Script_Character
     {
         SetState(Const_States_Player.Standby);
         Debug.Log($"Player state set to {state}!");
-    }
-
-    public bool GetIsTalking()
-    {
-        return state == Const_States_Player.Dialogue;
-    }
-
-    public bool GetIsViewing()
-    {
-        return state == Const_States_Player.Viewing;
-    }
-
-    public bool GetIsAttacking()
-    {
-        return state == Const_States_Player.Attack;
-    }
-
-    public bool GetIsInteract()
-    {
-        return state == Const_States_Player.Interact;
-    }
-
-    public bool GetIsInventory()
-    {
-        return state == Const_States_Player.Inventory;
-    }
-
-    public bool GetIsPickingUp()
-    {
-        return state == Const_States_Player.PickingUp;
-    }
-
-    public bool GetIsStandby()
-    {
-        return state == Const_States_Player.Standby;
     }
 
     /// =========================================================================================

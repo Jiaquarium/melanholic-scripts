@@ -40,7 +40,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
         if (myLightSwitch != null && !myLightSwitch.isOn)   return;
         
         /// Initiate dialogue node
-        if (!Script_Game.Game.GetPlayer().GetIsTalking())
+        if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
         {
             if (dialogueNodes == null || dialogueNodes.Length == 0)
             {

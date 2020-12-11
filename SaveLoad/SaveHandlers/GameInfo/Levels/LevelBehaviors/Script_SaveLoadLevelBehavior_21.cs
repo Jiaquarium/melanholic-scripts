@@ -6,7 +6,7 @@ public class Script_SaveLoadLevelBehavior_21 : Script_SaveLoadLevelBehavior
 {
     [SerializeField] private Script_LevelBehavior_21 LB21;
 
-    public override void Save(Model_SaveData data)
+    public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_21 lvlModel = new Model_LevelBehavior_21(
             LB21.spokenWithEileen,
@@ -16,7 +16,7 @@ public class Script_SaveLoadLevelBehavior_21 : Script_SaveLoadLevelBehavior
         data.levelsData.LB21 = lvlModel;
     }
 
-    public override void Load(Model_SaveData data)
+    public override void Load(Model_RunData data)
     {
         if (data.levelsData == null)
         {

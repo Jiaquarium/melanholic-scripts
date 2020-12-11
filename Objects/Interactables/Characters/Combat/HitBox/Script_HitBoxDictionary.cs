@@ -16,7 +16,7 @@ public class Script_HitBoxDictionary : MonoBehaviour
     public const int numItems = 50;
     public static Script_HitBoxDictionary HitBoxDictionary;
 
-    void Awake()
+    public void Setup()
     {
         myDictionary = new Dictionary<string, Script_HitBoxMetadata>();
         string[] noNullsHitBoxIds                       = hitBoxIds.Where(q => !string.IsNullOrEmpty(q)).ToArray();

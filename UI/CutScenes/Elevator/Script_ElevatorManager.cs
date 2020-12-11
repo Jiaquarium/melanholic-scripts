@@ -11,21 +11,27 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private bool isExitSFXSilent = true;
     [SerializeField] private Script_Exits.FollowUp followUp = Script_Exits.FollowUp.CutSceneNoFade;
     [SerializeField] private Script_ExitMetadataObject currentExit;
+    [SerializeField] private Script_ElevatorBehavior currentExitBehavior;
     [SerializeField] private Script_Elevator currentElevator;
     
     /// <summary>
+    /// UI Closes Elevator Doors
+    /// We also set the currentExitBehavior that was passed from the From:Elevator
+    /// to be passed to the To:Elevator and called when player is about to interact
     /// -> OnDoorsClosed()
     /// </summary>
-    public void CloseDoorsCutScene(Script_ExitMetadataObject exit)
+    public void CloseDoorsCutScene(Script_ExitMetadataObject exit, Script_ElevatorBehavior exitBehavior)
     {
         currentExit = exit;
+        currentExitBehavior = exitBehavior;
         elevatorCanvasGroupController.Open();
         elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
     }
 
     /// Signal Reactions START ========================================================================
     /// <summary>
-    /// Called when elevator UI canvas done closing 
+    /// Called when elevator UI canvas done closing
+    /// Calls any exit behaviors right after Game.Exit() is called
     /// </summary>
     public void OnDoorsClosed()
     {
@@ -40,8 +46,14 @@ public class Script_ElevatorManager : MonoBehaviour
         );
 
         currentExit = null;
-
+        UseCurrentExitBehavior();
         SetInitialElevatorState();
+
+        void UseCurrentExitBehavior()
+        {
+            currentExitBehavior.Effect();
+            currentExitBehavior = null;
+        }
 
         void SetInitialElevatorState()
         {
@@ -68,7 +80,7 @@ public class Script_ElevatorManager : MonoBehaviour
         elevatorCanvasGroupController.Close();
 
         /// Animate doors closed
-        Debug.Log("Done opening UI elevator doors; animate doors closing");
+        Debug.Log("Done opening UI elevator doors; animate World elevator doors closing");
         
         currentElevator.SetClosing();
     }

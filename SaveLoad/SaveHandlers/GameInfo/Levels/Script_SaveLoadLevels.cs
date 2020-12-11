@@ -15,7 +15,7 @@ public class Script_SaveLoadLevels : MonoBehaviour
         levelBehaviors = transform.GetComponentsInChildren<Script_SaveLoadLevelBehavior>(true);
         foreach (Script_SaveLoadLevelBehavior LB in levelBehaviors)
         {
-            LB.Save(data);
+            LB.Save(data.runData);
         }
     }
 
@@ -24,7 +24,7 @@ public class Script_SaveLoadLevels : MonoBehaviour
         levelBehaviors = transform.GetComponentsInChildren<Script_SaveLoadLevelBehavior>(true);
         foreach (Script_SaveLoadLevelBehavior LB in levelBehaviors)
         {
-            LB.Load(data);
+            LB.Load(data.runData);
         }
     }
 }

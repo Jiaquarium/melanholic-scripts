@@ -71,6 +71,15 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_CutSceneActionHandler cutSceneActionHandler;
     [SerializeField] private Script_TimeManager timeManager;
     [SerializeField] private Script_ScarletCipher scarletCipher;
+    [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
+    [SerializeField] private Script_SFXManager SFXManager;
+    [SerializeField] private Script_VCamManager VCamManager;
+    [SerializeField] private Script_RunsManager runsManager;
+    [SerializeField] private Script_HitBoxDictionary hitBoxDictionary;
+    [SerializeField] private Script_ItemPickUpTheatricsManager itemPickUpTheatricsManager;
+    [SerializeField] private Script_PRCSManager PRCSManager;
+    [SerializeField] private Script_SaveGameControl saveGameControl;
+    [SerializeField] private Script_Names namesManager;
 
 
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
@@ -159,6 +168,8 @@ public class Script_Game : MonoBehaviour
             Destroy(this.gameObject);
         }
         
+        saveGameControl.Setup();
+
         Script_SystemSettings.TargetFrameRate();
         Script_SystemSettings.FullScreen();
         PlayerPrefs.DeleteAll();
@@ -168,13 +179,20 @@ public class Script_Game : MonoBehaviour
 
         Script_Utils.MakeFontsCrispy(fonts);
         
-        /*
-            set up handlers that affect state
-        */
         ChangeStateToInitiateLevel();
-        exitsHandler.Setup(this);
 
-        // setup canvases and Managers
+        // Setup Singletons, Dicts, Managers and Canvases
+        namesManager.Setup();
+        exitsHandler.Setup(this);
+        SFXManager.Setup();
+        hitBoxDictionary.Setup();
+        hintManager.Setup();
+        VCamManager.Setup();
+        runsManager.Setup();
+        fullArtManager.Setup();
+        PRCSManager.Setup();
+        itemPickUpTheatricsManager.Setup();
+
         canvasesAudioSource.gameObject.SetActive(true);
         dialogueManager.HideDialogue();
         thoughtManager.HideThought();
@@ -189,6 +207,7 @@ public class Script_Game : MonoBehaviour
         cutSceneManager.Setup();
         canvasGroupsParent.Setup();
         elevatorManager.Setup();
+        stickerHolsterManager.Setup();
     }
 
     // Load Save Data and Initiate level
@@ -387,7 +406,7 @@ public class Script_Game : MonoBehaviour
 
         SetupDialogueManager();
         SetupThoughtManager();
-        SetupHintManager();
+        InitializeHintManager();
 
         // must occur last to have references set
         InitLevelBehavior();
@@ -449,6 +468,9 @@ public class Script_Game : MonoBehaviour
 
     public bool IsInHotel()
     {
+        if (hotelLevelBehaviors.Length == 0)
+            Debug.LogError("You need to specify hotel behaviors; otherwise, the clock will always be running.");
+        
         foreach (Script_LevelBehavior lb in hotelLevelBehaviors)
         {
             if (levelBehavior == lb)    return true;
@@ -671,7 +693,7 @@ public class Script_Game : MonoBehaviour
 
     public bool GetPlayerIsTalking()
     {
-        return player.GetIsTalking();
+        return player.State == Const_States_Player.Dialogue;
     }
 
     public void PlayerFaceDirection(Directions direction)
@@ -862,9 +884,9 @@ public class Script_Game : MonoBehaviour
         hintManager.HideTextHint();
     }
 
-    public void SetupHintManager()
+    public void InitializeHintManager()
     {
-        hintManager.Setup();
+        hintManager.Initialize();
     }
 
     // separate vs. default level fader
@@ -1650,9 +1672,9 @@ public class Script_Game : MonoBehaviour
         cutSceneManager.MelanholicTitleCutScene();
     }
 
-    public void ElevatorCloseDoorsCutScene(Script_ExitMetadataObject exit)
+    public void ElevatorCloseDoorsCutScene(Script_ExitMetadataObject exit, Script_ElevatorBehavior exitBehavior)
     {
-        elevatorManager.CloseDoorsCutScene(exit);
+        elevatorManager.CloseDoorsCutScene(exit, exitBehavior);
     }
 
     /* =========================================================================
@@ -1661,5 +1683,23 @@ public class Script_Game : MonoBehaviour
     public Model_PersistentDrop[] GetPersistentDrops()
     {
         return persistentDropsContainer.GetPersistentDropModels();
+    }
+
+    public void SaveInitialize(Model_PlayerState playerStateOverride)
+    {
+        Run++;
+        clockManager.InitialState();
+        saveGameControl.Save(Script_SaveGameControl.Saves.Initialize, playerStateOverride);
+    }
+
+    public void RestartInitialized()
+    {
+        Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.RestartInitialized);
+        Script_SceneManager.RestartGame();
+    }
+
+    public void RestartRun()
+    {
+        Script_SceneManager.RestartGame();
     }
 }

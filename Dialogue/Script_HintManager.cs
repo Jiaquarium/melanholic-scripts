@@ -12,20 +12,6 @@ public class Script_HintManager : MonoBehaviour
     public Script_CanvasGroupFadeInOut hintCanvasGroup;
     public TextMeshProUGUI hintCanvasText;
 
-    private void Awake()
-    {
-        if (Control == null)
-        {
-            Control = this;
-        }
-        else if (Control != this)
-        {
-            Destroy(this.gameObject);
-        }
-
-        Script_Hint[] allHints = hintCanvasGroup.GetComponentsInChildren<Script_Hint>();
-        foreach (Script_Hint h in allHints)     h.gameObject.SetActive(false);
-    }
 
     /// <summary>
     /// Used to show predefined hint canvases
@@ -71,9 +57,24 @@ public class Script_HintManager : MonoBehaviour
         hintCanvasGroup.gameObject.SetActive(false);
         hintCanvasText.text = "";
     }
+    
+    public void Initialize()
+    {
+        HideTextHint();
+    }
 
     public void Setup()
     {
-        HideTextHint();
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        Script_Hint[] allHints = hintCanvasGroup.GetComponentsInChildren<Script_Hint>();
+        foreach (Script_Hint h in allHints)     h.gameObject.SetActive(false);   
     }
 }

@@ -58,7 +58,7 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
 
     public void SaveGame()
     {
-        Script_SaveGameControl.control.Save();        
+        // Script_SaveGameControl.control.Save();
     }
 
     /// <summary>
@@ -95,8 +95,8 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         
         if (isInit && (!Debug.isDebugBuild || !Const_Dev.IsDevMode))
         {
-            
-            Script_SaveGameControl.control.Save();
+            /// Save to skip the whole woods part in case Player has died
+            // Script_SaveGameControl.control.Save();
         }
 
         if (isDone)

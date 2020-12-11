@@ -18,18 +18,6 @@ public class Script_ItemPickUpTheatricsManager : MonoBehaviour
     [SerializeField] private Canvas ItemPickUpTheatricsCanvas;
     [SerializeField] private string prevState;
     
-    public void Awake()
-    {
-        if (Control == null)
-        {
-            Control = this;
-        }
-        else if (Control != this)
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    
     public void Start()
     {
         Initialize();
@@ -79,6 +67,18 @@ public class Script_ItemPickUpTheatricsManager : MonoBehaviour
         foreach (Script_ItemPickUpTheatric theatric in allTheatrics)
         {
             theatric.gameObject.SetActive(false);
+        }
+    }
+
+    public void Setup()
+    {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
         }
     }
 }

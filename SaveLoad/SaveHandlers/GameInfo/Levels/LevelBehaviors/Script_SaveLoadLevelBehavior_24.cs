@@ -6,7 +6,7 @@ public class Script_SaveLoadLevelBehavior_24 : Script_SaveLoadLevelBehavior
 {
     [SerializeField] private Script_LevelBehavior_24 LB24;
 
-    public override void Save(Model_SaveData data)
+    public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_24 lvlModel = new Model_LevelBehavior_24(
             LB24.isPuzzleComplete,
@@ -16,7 +16,7 @@ public class Script_SaveLoadLevelBehavior_24 : Script_SaveLoadLevelBehavior
         data.levelsData.LB24 = lvlModel;
     }
 
-    public override void Load(Model_SaveData data)
+    public override void Load(Model_RunData data)
     {
         if (data.levelsData == null)
         {

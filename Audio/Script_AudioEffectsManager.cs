@@ -7,9 +7,9 @@ using UnityEngine;
 /// </summary>
 public class Script_AudioEffectsManager : MonoBehaviour
 {
-    static private float fadeFastTime = 0.25f;
-    static private float fadeMedTime = 0.75f;
-    static private float fadeSlowTime = 1.25f;
+    private const float fadeFastTime = 0.25f;
+    private const float fadeMedTime = 0.75f;
+    private const float fadeSlowTime = 1.25f;
 
     public static float GetFadeTime(FadeSpeeds fadeSpeed)
     {

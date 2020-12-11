@@ -81,7 +81,7 @@ public class Script_StaticNPC : Script_Interactable
     Action OnFadeOut()
     {
         return new Action(() => {
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         });
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[RequireComponent(typeof(Script_CanvasGroupController))]
 public class Script_Clock : MonoBehaviour
 {
     public enum States {
@@ -10,10 +11,9 @@ public class Script_Clock : MonoBehaviour
         Paused,
         Done
     }
-    public static float StartTime   = 21060f; // 5:51:00
-    public static float IsCloseTime = 21960; // 5:30:00 ; 19795 is 5:29:55
-    public static float EndTime     = 22260f; // 6:11:00 ; 20095 is 5:34:55 (nautical dawn Chicago, IL Jan 1 2021)
-    public static float blinkRate = 1f;
+    public const float StartTime   = 21060f; // 5:51:00
+    public const float IsCloseTime = 21960; // 5:30:00 ; 19795 is 5:29:55
+    public const float EndTime     = 22260f; // 6:11:00 ; 20095 is 5:34:55 (nautical dawn Chicago, IL Jan 1 2021)
     [SerializeField] private float _currentTime;
     [SerializeField] private States _state;
     [SerializeField] private TextMeshProUGUI display;
@@ -90,9 +90,14 @@ public class Script_Clock : MonoBehaviour
         display.text = displayTime;
     }
 
-    public void Setup(States _State)
+    public void InitialState()
     {
         CurrentTime = StartTime;
+    }
+
+    public void Setup(States _State)
+    {
+        InitialState();
         State = _State;
     }
 }

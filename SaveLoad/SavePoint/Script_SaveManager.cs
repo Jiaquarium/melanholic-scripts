@@ -90,7 +90,7 @@ public class Script_SaveManager : MonoBehaviour
             );
             
             saveProgressCanvas.SetActive(true);
-            Script_SaveGameControl.control.Save();
+            Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.SavePoint);
 
             isShowingSaving = true;
             Script_AwaitFile.AwaitFile(Script_SaveGameControl.saveFilePath);

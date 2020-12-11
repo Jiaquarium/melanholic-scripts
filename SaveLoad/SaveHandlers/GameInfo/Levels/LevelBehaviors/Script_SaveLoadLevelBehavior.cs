@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Script_SaveLoadLevelBehavior : MonoBehaviour
 {
-    public virtual void Save(Model_SaveData data) { }
-    public virtual void Load(Model_SaveData data) { }
+    public virtual void Save(Model_RunData data) { }
+    public virtual void Load(Model_RunData data) { }
 }

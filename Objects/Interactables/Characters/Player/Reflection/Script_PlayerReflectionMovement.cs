@@ -44,7 +44,7 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
         if (
             (
                 Script_Game.Game.state == Const_States_Game.Interact
-                && player.GetIsInteract()
+                && player.State == Const_States_Player.Interact
             )
             && (
                 Input.GetButton(Const_KeyCodes.Up)

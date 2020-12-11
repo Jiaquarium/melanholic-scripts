@@ -14,11 +14,14 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         int itemSlotId
     )
     {
-        // try to equip, checking if we can equip it & if equipment is full
-        if (equipment.AddSticker(sticker))
+        /// Try to equip, checking if we can equip it & if equipment is full
+        int equipmentSlotId;
+        if (equipment.AddSticker(sticker, out equipmentSlotId))
         {
-            // if can equip, remove item from inventory
+            /// On successful equip, remove sticker from Inventory
+            /// and also update Sticker Holster (done in Equipment)
             inventory.RemoveItemInSlot(itemSlotId);
+
             StickerOnSFX();
             return true;
         }
@@ -40,8 +43,10 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         // try to unequip, checking if inventory is full
         if (equipment.RemoveStickerInSlot(stickerSlotId))
         {
-            // if can equip, remove item from inventory
+            /// On successful unequip, remove sticker from Equipment
+            /// and also update Sticker Holster (done in Equipment)
             inventory.AddItem(sticker);
+
             StickerOffSFX();
         }
         else

@@ -15,9 +15,19 @@ public class Script_SaveTester : Editor
         DrawDefaultInspector();
 
         Script_SaveGameControl control = (Script_SaveGameControl)target;
-        if (GUILayout.Button("Save Game"))
+        if (GUILayout.Button("Save Run"))
         {
-            control.Save();
+            control.Save(Script_SaveGameControl.Saves.SavePoint);
+        }
+
+        if (GUILayout.Button("Save Initialize"))
+        {
+            control.Save(Script_SaveGameControl.Saves.Initialize);
+        }
+
+        if (GUILayout.Button("Save Restart From Initialized"))
+        {
+            control.Save(Script_SaveGameControl.Saves.RestartInitialized);
         }
 
         if (GUILayout.Button("Delete Game Data"))

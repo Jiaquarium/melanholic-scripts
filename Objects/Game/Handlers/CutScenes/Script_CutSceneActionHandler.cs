@@ -9,14 +9,14 @@ public class Script_CutSceneActionHandler : MonoBehaviour
     {
         if (action == Const_KeyCodes.Action1)
         {
-            if (player.GetIsTalking())
+            if (player.State == Const_States_Player.Dialogue)
             {
                 if (Script_DialogueManager.DialogueManager.IsDialogueSkippable())
                     Script_DialogueManager.DialogueManager.SkipTypingSentence();
                 else
                     game.dialogueManager.ContinueDialogue();
             }
-            else if (player.GetIsPickingUp())   HandleEndItemDescriptionDialogue(player);
+            else if (player.State == Const_States_Player.PickingUp)   HandleEndItemDescriptionDialogue(player);
         }
     }
 

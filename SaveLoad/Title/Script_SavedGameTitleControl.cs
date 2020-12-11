@@ -8,19 +8,6 @@ public class Script_SavedGameTitleControl : MonoBehaviour
 {
     public static Script_SavedGameTitleControl Control;
     
-    private void Awake()
-    {
-        Script_SaveGameControl.SetPath();
-        if (Control == null)
-        {
-            Control = this;
-        }
-        else if (Control != this)
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    
     public Model_SavedGameTitleData Load(int saveSlotId)
     {
         string path = Script_SaveGameControl.path;
@@ -51,4 +38,17 @@ public class Script_SavedGameTitleControl : MonoBehaviour
             return null;
         }      
     } 
+
+    public void Setup()
+    {
+        Script_SaveGameControl.SetPath();
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

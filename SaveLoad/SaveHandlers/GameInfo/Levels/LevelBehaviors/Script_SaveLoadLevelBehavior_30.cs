@@ -6,7 +6,7 @@ public class Script_SaveLoadLevelBehavior_30 : Script_SaveLoadLevelBehavior
 {
     [SerializeField] private Script_LevelBehavior_30 LB30;
 
-    public override void Save(Model_SaveData data)
+    public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_30 lvlModel = new Model_LevelBehavior_30(
             _isDone           : LB30.isDone
@@ -15,7 +15,7 @@ public class Script_SaveLoadLevelBehavior_30 : Script_SaveLoadLevelBehavior
         data.levelsData.LB30 = lvlModel;
     }
 
-    public override void Load(Model_SaveData data)
+    public override void Load(Model_RunData data)
     {
         if (data.levelsData == null)
         {

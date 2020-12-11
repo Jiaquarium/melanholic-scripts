@@ -59,10 +59,12 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     public override void OnLevelInitComplete()
     {
-        game.ChangeStateCutScene();
-
-        /// Start Timeline fading in the well light
-        wellJustOpened.PlayMyTimeline();
+        if (!didStartThought)
+        {
+            game.ChangeStateCutScene();
+            /// Start Timeline fading in the well light
+            wellJustOpened.PlayMyTimeline();
+        }
     }
     
     public override bool ActivateTrigger(string Id){
@@ -155,6 +157,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         Script_PRCSManager.Control.HidePRCS(wellJustOpened, FadeSpeeds.Slow, () => {
             game.ChangeStateInteract();
+            didStartThought = true;
         });
     }
     /// Signal Reactions END ========================================================================

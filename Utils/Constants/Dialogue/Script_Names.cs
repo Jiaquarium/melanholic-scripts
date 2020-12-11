@@ -93,7 +93,7 @@ public class Script_Names: MonoBehaviour
         Ursie                   = names.Ursie;
     }
 
-    void Awake()
+    public void Setup()
     {
         if (Names == null)
         {

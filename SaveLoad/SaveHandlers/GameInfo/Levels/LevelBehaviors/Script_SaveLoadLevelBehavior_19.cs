@@ -6,14 +6,14 @@ public class Script_SaveLoadLevelBehavior_19 : Script_SaveLoadLevelBehavior
 {
     [SerializeField] private Script_LevelBehavior_19 LB19;
 
-    public override void Save(Model_SaveData data)
+    public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_19 lvlModel = new Model_LevelBehavior_19();
         
         data.levelsData.LB19 = lvlModel;
     }
 
-    public override void Load(Model_SaveData data)
+    public override void Load(Model_RunData data)
     {
         if (data.levelsData == null)
         {

@@ -138,7 +138,7 @@ public class Script_EnergySpikeAttack : Script_Attack
 
     protected void SpikesSFX()
     {
-        if (noSFXWhenTalking && Script_Game.Game.GetPlayer().GetIsTalking())
+        if (noSFXWhenTalking && Script_Game.Game.GetPlayer().State == Const_States_Player.Dialogue)
             return;
 
         GetComponent<AudioSource>().PlayOneShot(

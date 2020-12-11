@@ -16,6 +16,8 @@ public class Script_Start : MonoBehaviour
         Start,
         GameOver
     }
+    [SerializeField] private Script_SavedGameTitleControl savedGameTitleControl;
+    [SerializeField] private Script_SceneManager sceneManager;
     [SerializeField] private Script_TimelineController crunchTimelineCtrl;
 
     
@@ -29,6 +31,9 @@ public class Script_Start : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        savedGameTitleControl.Setup();
+        sceneManager.Setup();
 
         Script_SystemSettings.TargetFrameRate();
         // Script_SystemSettings.FullScreen();
