@@ -12,8 +12,7 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
     // describes gameObject where we don't want to play SFX when coming from it
     public GameObject transition;
     public Transform noSFXTransitionParent;
-    [SerializeField]
-    private Button button { get { return GetComponent<Button>(); } }
+    [SerializeField] private Button button { get { return GetComponent<Button>(); } }
     private AudioSource source;
     
 

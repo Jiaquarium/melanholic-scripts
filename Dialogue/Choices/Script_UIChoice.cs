@@ -27,8 +27,19 @@ public class Script_UIChoice : MonoBehaviour
         
         if (EventSystem.current.currentSelectedGameObject == this.gameObject)
         {
-            cursor.enabled = true;
             isSelected = true;
+            
+            /// Give Buttonhighlighter precedence to hide cursor
+            /// if the button is not in an active state
+            Script_ButtonHighlighter myHighlighter = GetComponent<Script_ButtonHighlighter>();
+            if (myHighlighter != null)
+            {
+                if (myHighlighter.isLoading)    cursor.enabled = false;
+            }
+            else            
+            {
+                cursor.enabled = true;
+            }
         }
         else
         {

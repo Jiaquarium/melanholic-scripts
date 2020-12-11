@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public bool isActive = true;
+    public bool isLoading = false;
     public Image[] outlines;
     [SerializeField] protected bool isHighlighted;
     [SerializeField] protected Image deactivateOverlay;
@@ -27,15 +28,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
 
     void Update()
     {
-        /// Don't show highlight for Slow Awake Event Systems (Choices) 
-        if (EventSystem.current != null && !EventSystem.current.sendNavigationEvents)
-        {
-            foreach (Image img in outlines)     img.enabled = false;
-        }
-        else
-        {
-            if (isHighlighted)                  foreach (Image img in outlines) img.enabled = true;
-        }
+        HandleSlowAwake();
     }
     
     /// <summary>
@@ -43,22 +36,26 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     /// </summary>
     public void Select()
     {
+        Debug.Log($"Select {name}");
         HighlightOutline(true);
     }
     
     public virtual void OnSelect(BaseEventData e)
     {
+        Debug.Log($"OnSelect {name}");
         HighlightOutline(true);
     }
 
     public virtual void OnDeselect(BaseEventData e)
     {
+        Debug.Log($"OnDeselect {name}");
         HighlightOutline(false);
     }
 
     public void InitializeState()
     {
         isActive = true;
+        isLoading = true;
         // isHighlighted = true;
         if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject)
             return;
@@ -66,6 +63,10 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         HighlightOutline(false);
     }
 
+    /// <summary>
+    /// For use when needing to fade out deactivated buttons (start menu)
+    /// </summary>
+    /// <param name="_isActive"></param>
     public void Activate(bool _isActive)
     {
         GetComponent<Button>().enabled = _isActive;
@@ -77,8 +78,27 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         }
     }
 
+    /// <summary>
+    /// SlowAwakeEventSystem will disable sendNavigationEvents until it is ready to be interacted with
+    /// </summary>
+    void HandleSlowAwake()
+    {
+        /// Don't show highlight for Slow Awake Event Systems (Choices) 
+        if (EventSystem.current != null && !EventSystem.current.sendNavigationEvents)
+        {
+            isLoading = true;
+            foreach (Image img in outlines) img.enabled = false;
+        }
+        else
+        {
+            isLoading = false;
+            if (isHighlighted)  foreach (Image img in outlines) img.enabled = true;
+        }
+    }
+
     protected virtual void HighlightOutline(bool isOn)
     {
+        if (isOn)   Debug.Log($"{name}: HighlightOutline {isOn}");
         // if (isHighlighted == isOn)  return;)
 
         foreach (Image img in outlines)
