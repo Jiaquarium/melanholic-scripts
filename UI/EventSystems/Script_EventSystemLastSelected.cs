@@ -4,11 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>
-/// Ensures the last selected is preserved to ensure clicking outside doesn't deactivate the menu
-/// 
-/// Also ensures first active is set bc Unity EventSystem's is faulty
-/// </summary>
 [RequireComponent(typeof(EventSystem))]
 public class Script_EventSystemLastSelected : MonoBehaviour {
     public GameObject currentSelected;
@@ -19,7 +14,7 @@ public class Script_EventSystemLastSelected : MonoBehaviour {
     void OnEnable()
     {
         SetFirstSelected();
-        UpdateCurrentSelected();
+        // UpdateCurrentSelected();
         
         // need this to manually refresh its current selected
         // e.g. some cases Event System's Update() won't fire if we're
@@ -62,12 +57,10 @@ public class Script_EventSystemLastSelected : MonoBehaviour {
 
     /// <summary>
     /// Extra safety, bc EventSystem's firstSelected seems faulty
-    /// </summary>
+    /// /// </summary>
     void SetFirstSelected()
     {
-        if (EventSystem.current.firstSelectedGameObject != null)
-        {
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
-        }
+        
+        EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
     }
 }
