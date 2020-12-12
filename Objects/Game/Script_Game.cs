@@ -72,6 +72,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_TimeManager timeManager;
     [SerializeField] private Script_ScarletCipher scarletCipher;
     [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
+    [SerializeField] private Script_ActiveStickerManager activeStickerManager;
     [SerializeField] private Script_SFXManager SFXManager;
     [SerializeField] private Script_VCamManager VCamManager;
     [SerializeField] private Script_RunsManager runsManager;
@@ -205,6 +206,7 @@ public class Script_Game : MonoBehaviour
         canvasGroupsParent.Setup();
         elevatorManager.Setup();
         stickerHolsterManager.Setup();
+        activeStickerManager.Setup();
     }
 
     // Load Save Data and Initiate level

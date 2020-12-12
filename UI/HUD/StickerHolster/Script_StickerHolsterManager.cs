@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages StickerHolster
+/// </summary>
 public class Script_StickerHolsterManager : MonoBehaviour
 {
     public static Script_StickerHolsterManager Control;

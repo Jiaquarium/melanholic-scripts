@@ -47,12 +47,13 @@ public class Script_PlayerAction : MonoBehaviour
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Action2))
             {
-                /// attack handler here, to choose which attack will be done
-                /// need to check here if Sticker is equipped
-                if (Script_Game.Game.CheckStickerEquippedById(Const_Items.EatingStickerId))
-                {
-                    attacks.Eat(facingDirection);
-                }
+                stickerEffectsController.Effect();
+
+                /// TBD move this to the actual sticker effect
+                // if (Script_Game.Game.CheckStickerEquippedById(Const_Items.EatingStickerId))
+                // {
+                //     attacks.Eat(facingDirection);
+                // }
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Inventory))
             {
@@ -61,47 +62,47 @@ public class Script_PlayerAction : MonoBehaviour
             else if (Input.GetButtonDown(Const_KeyCodes.Effect1))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect1}");
-                stickerEffectsController.Effect(0);
+                stickerEffectsController.Switch(0);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect2))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect2}");
-                stickerEffectsController.Effect(1);
+                stickerEffectsController.Switch(1);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect3))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect3}");
-                stickerEffectsController.Effect(2);
+                stickerEffectsController.Switch(2);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect4))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect4}");
-                stickerEffectsController.Effect(3);
+                stickerEffectsController.Switch(3);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect5))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect5}");
-                stickerEffectsController.Effect(4);
+                stickerEffectsController.Switch(4);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect6))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect6}");
-                stickerEffectsController.Effect(5);
+                stickerEffectsController.Switch(5);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect7))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect7}");
-                stickerEffectsController.Effect(6);
+                stickerEffectsController.Switch(6);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect8))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect8}");
-                stickerEffectsController.Effect(7);
+                stickerEffectsController.Switch(7);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Effect9))
             {
                 Debug.Log($"Player action for {Const_KeyCodes.Effect9}");
-                stickerEffectsController.Effect(8);
+                stickerEffectsController.Switch(8);
             }
         }
     }

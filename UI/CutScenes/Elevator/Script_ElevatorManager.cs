@@ -51,7 +51,7 @@ public class Script_ElevatorManager : MonoBehaviour
 
         void UseCurrentExitBehavior()
         {
-            currentExitBehavior.Effect();
+            currentExitBehavior?.Effect();
             currentExitBehavior = null;
         }
 
