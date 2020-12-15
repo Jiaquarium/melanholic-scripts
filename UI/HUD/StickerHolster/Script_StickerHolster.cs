@@ -10,13 +10,26 @@ using UnityEditor;
 /// <summary>
 /// Handles Sticker Holster data
 /// Should only be called by StickerHolsterManager and InventoryManager
+/// 
+/// Handles adding and removing "Skills" into the holster;
+/// NOTE: StickerEffectsController manages actually calling them!
 /// </summary>
 [RequireComponent(typeof(Script_CanvasGroupController))] // Used by StickerHolsterManager
 public class Script_StickerHolster : MonoBehaviour
 {
+    public enum States
+    {
+        Active
+    }
+    [SerializeField] private States _state = States.Active;
     [SerializeField] private Image[] stickerImages = new Image[numItemSlots]; 
     [SerializeField] private Script_Sticker[] stickers = new Script_Sticker[numItemSlots];
     public const int numItemSlots = 9;
+    public States State
+    {
+        get { return _state; }
+        set { _state = value;}
+    }
     
     public Script_Sticker GetStickerInSlot(int Id)
     {
@@ -25,6 +38,8 @@ public class Script_StickerHolster : MonoBehaviour
 
     /// <summary>
     /// Add item to the Sticker Holster.
+    /// 
+    /// NOTE: These should work regardless of State
     /// </summary>
     public bool AddStickerInSlot(Script_Sticker stickerToAdd, int i)
     {
@@ -42,7 +57,7 @@ public class Script_StickerHolster : MonoBehaviour
         stickers[i] = null;
         stickerImages[i].sprite = null;
         stickerImages[i].enabled = false;
-        return true;
+        return true;        
     }
 }
 
@@ -52,28 +67,34 @@ public class Script_StickerHolsterEditor : Editor
 {
     private SerializedProperty stickersProperty;
     private SerializedProperty stickerImagesProperty;
+    private SerializedProperty stateProperty;
     private static bool[] showItemSlots = new bool[Script_StickerHolster.numItemSlots];
 
     private const string InventoryPropItemImagesName = "stickerImages";
     private const string InventoryPropItemName = "stickers";
+    private const string StateName = "_state";
 
     private void OnEnable()
     {
         stickerImagesProperty = serializedObject.FindProperty(InventoryPropItemImagesName);
         stickersProperty = serializedObject.FindProperty(InventoryPropItemName);
+        stateProperty = serializedObject.FindProperty(StateName);
     }
 
     public override void OnInspectorGUI()
     {
-        // ensure our serialized object is up-to-date with the Inventory
+        /// Ensure our serialized object is up-to-date with the Inventory
         serializedObject.Update();
+
+        /// Show other properties we want
+        EditorGUILayout.PropertyField(stateProperty);
         
         for (int i = 0; i < Script_StickerHolster.numItemSlots; i++)
         {
             ItemSlotGUI(i);
         }
 
-        // ensure changes in our serialized object go back into the game object
+        /// Ensure changes in our serialized object go back into the game object
         serializedObject.ApplyModifiedProperties();
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages ActiveSticker
+/// Manages ActiveSticker, the View is controlled by StickerHolster
 /// </summary>
 public class Script_ActiveStickerManager : MonoBehaviour
 {
@@ -12,21 +12,6 @@ public class Script_ActiveStickerManager : MonoBehaviour
     [SerializeField] private Script_ActiveSticker activeSticker;
     [SerializeField] private FadeSpeeds fadeSpeed;
 
-    void Update()
-    {
-        if (
-            game.state == Const_States_Game.Interact
-            && game.GetPlayer().State == Const_States_Player.Interact
-        )
-        {
-            activeSticker.GetComponent<Script_CanvasGroupController>().FadeIn(fadeSpeed.ToFadeTime(), null);
-        }
-        else
-        {
-            activeSticker.GetComponent<Script_CanvasGroupController>().FadeOut(fadeSpeed.ToFadeTime(), null);
-        }
-    }
-    
     public Script_Sticker GetSticker()
     {
         return activeSticker.GetSticker();

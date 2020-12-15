@@ -18,14 +18,11 @@ public class Script_Clock : MonoBehaviour
     [SerializeField] private States _state;
     [SerializeField] private TextMeshProUGUI display;
     private float blinkTimer;
-    
-    
     public float CurrentTime
     {
         get { return _currentTime; }
         set { _currentTime = value; }
     }
-
     public States State
     {
         get { return _state; }

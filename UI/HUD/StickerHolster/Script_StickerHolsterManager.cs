@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// Manages StickerHolster
+/// Also Controls the view that contains Sticker Holster which nests Active Sticker
 /// </summary>
 public class Script_StickerHolsterManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Script_StickerHolsterManager : MonoBehaviour
         if (
             game.state == Const_States_Game.Interact
             && game.GetPlayer().State == Const_States_Player.Interact
+            && !game.IsInHotel()
         )
         {
             stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(fadeSpeed.ToFadeTime(), null);

@@ -18,6 +18,12 @@ public class Script_StickerEffectsController : MonoBehaviour
     /// </summary>
     public void Switch(int i)
     {
+        /// Disable for when in Hotel
+        if (Script_Game.Game.IsInHotel())
+        {
+            return;
+        }
+        
         Script_Sticker stickerToSwitch = Script_StickerHolsterManager.Control.GetSticker(i);
         Script_Sticker activeSticker = Script_ActiveStickerManager.Control.GetSticker();
 
