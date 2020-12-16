@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Handles button highlighting and disabled state
+/// 
+/// initializes as isLoading
+/// until Slow Awake Event System activated nav events this stays in isLoading state
+/// 
+/// InitializeState() -> HandleSlowAwake()
 /// </summary>
 public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -31,15 +36,6 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         HandleSlowAwake();
     }
     
-    /// <summary>
-    /// For public use
-    /// </summary>
-    public void Select()
-    {
-        Debug.Log($"Select {name}");
-        HighlightOutline(true);
-    }
-    
     public virtual void OnSelect(BaseEventData e)
     {
         Debug.Log($"OnSelect {name}");
@@ -52,29 +48,22 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         HighlightOutline(false);
     }
 
+    public void Select()
+    {
+        Debug.Log($"Select {name}");
+        HighlightOutline(true);
+    }
+
     public void InitializeState()
     {
         isActive = true;
         isLoading = true;
-        // isHighlighted = true;
-        if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject)
-            return;
-        
         HighlightOutline(false);
-    }
-
-    /// <summary>
-    /// For use when needing to fade out deactivated buttons (start menu)
-    /// </summary>
-    /// <param name="_isActive"></param>
-    public void Activate(bool _isActive)
-    {
-        GetComponent<Button>().enabled = _isActive;
-        isActive = _isActive;
-
-        if (deactivateOverlay != null)
+        
+        /// If this is slow awakening UI store if this should be highlighted 
+        if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject)
         {
-            deactivateOverlay.gameObject.SetActive(!_isActive);
+            isHighlighted = true;
         }
     }
 
@@ -84,9 +73,12 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     void HandleSlowAwake()
     {
         /// Don't show highlight for Slow Awake Event Systems (Choices) 
-        if (EventSystem.current != null && !EventSystem.current.sendNavigationEvents)
+        if (
+            EventSystem.current != null
+            && !EventSystem.current.sendNavigationEvents
+            && isLoading
+        )
         {
-            isLoading = true;
             foreach (Image img in outlines) img.enabled = false;
         }
         else
@@ -107,5 +99,20 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         }
         
         isHighlighted = isOn;
+    }
+
+    /// <summary>
+    /// For use when needing to fade out deactivated buttons (start menu)
+    /// </summary>
+    /// <param name="_isActive"></param>
+    public void Activate(bool _isActive)
+    {
+        GetComponent<Button>().enabled = _isActive;
+        isActive = _isActive;
+
+        if (deactivateOverlay != null)
+        {
+            deactivateOverlay.gameObject.SetActive(!_isActive);
+        }
     }
 }
