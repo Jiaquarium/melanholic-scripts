@@ -1112,7 +1112,11 @@ public class Script_Game : MonoBehaviour
         _INTERACTABLE OBJECTS_
     ======================================================================= */
     
-    
+    /// Better way to hook up interactables to Game
+    public void AddInteractableObject(Script_InteractableObject interactableObject)
+    {
+        interactableObjects.Add(interactableObject);
+    }
     
     // must give world offset bc IOs in Scene are parented by world
     public void SetupInteractableObjectsText(

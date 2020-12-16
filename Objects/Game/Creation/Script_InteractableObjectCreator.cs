@@ -18,6 +18,14 @@ public class Script_InteractableObjectCreator : MonoBehaviour
 
     public float defaultOnIntensity;
     public float defaultOffIntensity;
+    
+    public void AddInteractableObject(
+        Script_InteractableObject interactableObject,
+        List<Script_InteractableObject> interactableObjects
+    )
+    {
+        interactableObjects.Add(interactableObject);
+    }
 
     public void SetupInteractableObjectsText(
         Transform textObjectParent,

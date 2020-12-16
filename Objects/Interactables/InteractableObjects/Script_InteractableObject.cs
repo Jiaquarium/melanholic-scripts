@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Script_InteractableObject : Script_Interactable
 {
@@ -9,6 +10,20 @@ public class Script_InteractableObject : Script_Interactable
     public bool isActive = true;
     [SerializeField] protected Transform rendererChild;
     protected Script_Game game;
+    [SerializeField] private UnityEvent action;
+    /// <summary>
+    /// Easier way to reference Game if we don't care about Setup()
+    /// </summary>
+    [SerializeField] private bool autoHookToGame;
+    
+    protected virtual void Start()
+    {
+        if (autoHookToGame)
+        {
+            game = Script_Game.Game;
+            Script_Game.Game.AddInteractableObject(this);
+        }
+    }
     
     // Update is called once per frame
     protected virtual void Update() {}
@@ -22,7 +37,10 @@ public class Script_InteractableObject : Script_Interactable
         }
     }
     
-    public virtual void ActionDefault() {}
+    public virtual void ActionDefault()
+    {
+        if (action.CheckUnityEventAction()) action.Invoke();
+    }
     
     public virtual void ActionB() {}
     

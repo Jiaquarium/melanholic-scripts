@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using UnityEngine.UI;
 using System.Reflection;
+using UnityEngine.Events;
 
 public delegate void modifierCallback(Vector3Int tileLoc);
 
@@ -220,7 +221,8 @@ public static class Script_Utils
             Script_Names.Thoughts,                      // {45}
             Script_Names.HeartsCapacity,                // {46}
             Script_Names.Vx,                            // {47}
-            Script_Names.Dan                            // {48}
+            Script_Names.Dan,                           // {48}
+            Script_Names.NauticalDawn                   // {49}
         );
     }
 
@@ -560,5 +562,20 @@ public static class Script_Utils
     public static float ToFadeTime(this FadeSpeeds fadeSpeed)
     {
         return Script_GraphicsManager.GetFadeTime(fadeSpeed);
+    }
+
+    /// <summary>
+    /// checks if there are any events on the event handler
+    /// counts as not null if has attached an object target;
+    /// doesn't need to have to specify a function
+    /// </summary>
+    public static bool CheckUnityEventAction(this UnityEvent onClickEvent)
+    {
+        for (int i = 0; i < onClickEvent.GetPersistentEventCount(); i++)
+        {
+            if (onClickEvent.GetPersistentTarget(i) != null)    return true;
+        }
+
+        return false;
     }
 }

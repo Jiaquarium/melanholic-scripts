@@ -147,7 +147,7 @@ public class Script_DialogueManager : MonoBehaviour
 
         SetupTypingSpeed();
 
-        if (CheckUnityEventAction(currentNode.data.OnBeforeNodeAction))
+        if (currentNode.data.OnBeforeNodeAction.CheckUnityEventAction())
         {
             currentNode.data.OnBeforeNodeAction.Invoke();
         }
@@ -657,22 +657,6 @@ public class Script_DialogueManager : MonoBehaviour
 
         return false;
     }
-
-    /// <summary>
-    /// checks if there are any events on the event handler
-    /// counts as not null if has attached an object target;
-    /// doesn't need to have to specify a function
-    /// </summary>
-    bool CheckUnityEventAction(UnityEvent onClickEvent)
-    {
-        for (int i = 0; i < onClickEvent.GetPersistentEventCount(); i++)
-        {
-            if (onClickEvent.GetPersistentTarget(i) != null)    return true;
-        }
-
-        return false;
-    }
-
     bool CheckForInputMode()
     {   
         if (
@@ -876,7 +860,7 @@ public class Script_DialogueManager : MonoBehaviour
     // actions will be activated after "space" is pressed to move to next dialogue
     void HandleDialogueNodeAction()
     {
-        if (CheckUnityEventAction(currentNode.data.OnNextNodeAction))
+        if (currentNode.data.OnNextNodeAction.CheckUnityEventAction())
         {
             currentNode.data.OnNextNodeAction.Invoke();
         }

@@ -23,9 +23,6 @@ public class Script_PlayerInteractionBox : Script_InteractionBox
     {
         ExposeBox();
         
-        Script_Utils.PrintArray(colliders, "interactableObjects:");
-        Debug.Log(colliders.Length);
-
         Script_InteractableObject[] objs = new Script_InteractableObject[colliders.Length];
         for (int i = 0; i < colliders.Length; i++)
         {
