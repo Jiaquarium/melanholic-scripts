@@ -19,17 +19,17 @@ public class Script_ProximitySpeaker_Persist : Script_ProximitySpeaker
     protected override void Awake() {
         base.Awake();
         
-        originLevel = game.level;
+        originLevel = Script_Game.Game.level;
     }
 
     protected override void Update()
     {
-        if (game.level == originLevel)
+        if (Script_Game.Game.level == originLevel)
         {
             audioSource.volume = 1f;
             AdjustVolume();
         }
-        else if (game.level < originLevel || game.level > levelToPersistUntil)
+        else if (Script_Game.Game.level < originLevel || Script_Game.Game.level > levelToPersistUntil)
         {
             audioSource.Stop();
             Destroy(this.gameObject);

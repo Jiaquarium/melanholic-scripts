@@ -10,18 +10,11 @@ public class Script_ProximityFader : MonoBehaviour
     public SpriteRenderer target;
     public SpriteRenderer[] spriteRenderers;
     
-    [SerializeField]
-    private float distance;
-    [SerializeField]
+    [SerializeField] private float distance;
 
     void Awake()
     {
-        GetComponent<SpriteRenderer>().enabled = false;
-
-        if (Debug.isDebugBuild && Const_Dev.IsDevMode)
-        {
-            GetComponent<SpriteRenderer>().enabled = true;
-        }    
+            
     }
     
     void Update()

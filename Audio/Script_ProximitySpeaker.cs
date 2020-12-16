@@ -7,10 +7,10 @@ using UnityEngine;
 */
 public class Script_ProximitySpeaker : MonoBehaviour
 {
-    protected Script_Game game;
     public AudioSource audioSource;
     public float maxDistance;
     public float maxVol;
+    [SerializeField] private float currentDistance; // for Dev
 
     protected virtual void OnDisable()
     {
@@ -22,6 +22,12 @@ public class Script_ProximitySpeaker : MonoBehaviour
         AdjustVolume();
         audioSource.Play();
     }
+
+    protected virtual void Awake()
+    {
+        maxVol = maxVol == 0 ? 1f : maxVol;
+        AdjustVolume();
+    }
     
     protected virtual void Update()
     {
@@ -30,29 +36,22 @@ public class Script_ProximitySpeaker : MonoBehaviour
 
     protected void AdjustVolume()
     {   
-        if (!game.GetPlayerIsSpawned())    return;
+        if (Script_Game.Game == null || !Script_Game.Game.GetPlayerIsSpawned())
+        {
+            audioSource.volume = 0f;
+            return;
+        }
         
-        float distance = Vector3.Distance(game.GetPlayerLocation(), transform.position);
-        if (distance >= maxDistance)
+        currentDistance = Vector3.Distance(Script_Game.Game.GetPlayerLocation(), transform.position);
+        
+        if (currentDistance >= maxDistance)
         {
             audioSource.volume = 0f;
         }
         else
         {
-            float v = distance / maxDistance;
+            float v = currentDistance / maxDistance;
             audioSource.volume = maxVol - (maxVol * v);
-        }
-    }
-
-    protected virtual void Awake()
-    {
-        game = Object.FindObjectOfType<Script_Game>();
-        GetComponent<SpriteRenderer>().enabled = false;
-        maxVol = maxVol == 0 ? 1f : maxVol;
-
-        if (Debug.isDebugBuild && Const_Dev.IsDevMode)
-        {
-            GetComponent<SpriteRenderer>().enabled = true;
         }
     }
 }
