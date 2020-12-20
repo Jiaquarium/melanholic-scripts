@@ -6,7 +6,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Either hook up to Game which calls LB or use UnityEvent
 /// </summary>
-public class Script_TriggerEnterOnce : Script_Trigger
+public class Script_TriggerPlayerEnter : Script_Trigger
 {
     public Script_Game game;
     [SerializeField] private UnityEvent action;
@@ -18,10 +18,6 @@ public class Script_TriggerEnterOnce : Script_Trigger
             if (action.CheckUnityEventAction())
             {
                 action.Invoke();
-            }
-            else if (game.ActivateTrigger(Id))
-            {
-                this.gameObject.SetActive(false);
             }
         }
     }

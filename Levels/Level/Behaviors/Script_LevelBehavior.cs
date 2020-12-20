@@ -75,6 +75,7 @@ public class Script_LevelBehavior : MonoBehaviour
     public virtual void Cleanup() {}
     public virtual int OnSubmit(string s) { return -1; }
     public virtual void HandlePlayableDirectorStopped(PlayableDirector aDirector) {}
+    public virtual void InitialState() { }
     public virtual void Setup()
     {
         // game.CreateNPCs();

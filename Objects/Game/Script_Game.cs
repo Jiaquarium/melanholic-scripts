@@ -93,7 +93,6 @@ public class Script_Game : MonoBehaviour
     public Script_Camera camera;
     public Script_VCamera VCam;
     public Script_VCamera VCamDramaticZoom;
-    public Transform world;
     public Transform playerContainer;
     public Transform bgThemeSpeakersContainer;
     public Transform tmpTargetsContainer;
@@ -123,10 +122,10 @@ public class Script_Game : MonoBehaviour
     public Script_BgThemePlayer npcBgThemePlayer;
     public Script_LevelBehavior levelBehavior { get; private set; }
     public Script_LevelBehavior lastLevelBehavior { get; private set; }
-    private Vector3 worldOffset;
     public string lastState;
     private bool isLoadedGame = false;
     public CinemachineBrain cinemachineBrain;
+    public Vector3 gridOffset;
 
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Transform newGameSpawnDestination;
@@ -197,7 +196,6 @@ public class Script_Game : MonoBehaviour
         DDRManager.Deactivate();
         SetupMenu();
 
-        worldOffset = world.position;
         camera = Camera.main.GetComponent<Script_Camera>();
         camera.Setup(levelZeroCameraPosition);
         backgroundMusicAudioSource = bgMusicManager.GetComponent<AudioSource>();
@@ -231,6 +229,7 @@ public class Script_Game : MonoBehaviour
 
     private void DevCleanup()
     {
+        GetComponent<CinemachineBrain>().enabled = true;
         ClearEntries(); // clear entry null objects left when exitting Play Mode
         totalPlayTime = 0;
         LevelsInactivate();
@@ -239,8 +238,8 @@ public class Script_Game : MonoBehaviour
         {
             Debug.Log("Disabling all level grids");
 
-            Script_LevelGrid[] children = world.transform.GetComponentsInChildren<Script_LevelGrid>(true);
-            foreach (Script_LevelGrid c in children)   c.gameObject.SetActive(false);
+            Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
+            foreach (Script_LevelGrid lvl in lvls)   lvl.gameObject.SetActive(false);
         }
     }
 
@@ -263,8 +262,12 @@ public class Script_Game : MonoBehaviour
             Debug.Log("DEV/Setting level to "+ level);
             
             Tilemap tileMap = Levels.levelsData[level].tileMap;
-            Vector3 tileLocation = tileMap.CellToWorld(gameHelper.playerSpawn);
-            Debug.Log($"player dev spawn tileLocation: {tileLocation}");
+            GameObject grid = Levels.levelsData[level].grid;
+            gridOffset = grid.transform.position;
+            Vector3 tileLocation = gameHelper.playerSpawn + gridOffset;
+            
+            // Vector3 tileLocation = tileMap.CellToWorld(gameHelper.playerSpawn);
+            Debug.Log($"player dev spawn tileLocation: {tileLocation} on Tilemap: {tileMap}");
 
             SetPlayerState(new Model_PlayerState(
                     (int)tileLocation.x,
@@ -530,6 +533,7 @@ public class Script_Game : MonoBehaviour
     void SetTileMaps()
     {
         grid = Levels.levelsData[level].grid;
+        gridOffset = grid.transform.position;
         tileMap = Levels.levelsData[level].tileMap;
         exitsTileMaps = Levels.levelsData[level].exitsTileMaps;
         entrancesTileMap = Levels.levelsData[level].entrancesTileMap;

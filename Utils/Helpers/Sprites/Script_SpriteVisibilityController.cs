@@ -4,19 +4,22 @@ using UnityEngine;
 
 /// <summary>
 /// May be used on a parent of sprites or on the sprite itself
+/// Used to hide the sprite when Player passes a certain location
 /// </summary>
 /// <param name="t">AUTO-SET to children or the Transform of which script is attached</param>
 [RequireComponent(typeof(Script_SpriteFadeOut))]
 public class Script_SpriteVisibilityController : MonoBehaviour
 {
+    [SerializeField] private Transform target;
     public Vector3 targetLoc;
     public bool isAxisZ = true;
     public float timer;
     public float maxTimer;
-    private Script_Game g;
+    protected Script_Game g;
     [SerializeField] private bool isParent;
+    [Tooltip("Hide until meets the Transform")][SerializeField] private bool isShowOnReachedTarget;
     [SerializeField] private Script_SpriteFadeOut spriteFader;
-    [SerializeField] private FadeSpeeds fadeSpeed;
+    [SerializeField] protected FadeSpeeds fadeSpeed;
 
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
@@ -25,8 +28,9 @@ public class Script_SpriteVisibilityController : MonoBehaviour
     
     
     void Awake() {
-        spriteFader = GetComponent<Script_SpriteFadeOut>();
+        if (spriteFader == null)    spriteFader = GetComponent<Script_SpriteFadeOut>();
         if (isParent)   spriteFader.isParent = true;
+        SetVisibilityTargetByTransform();
     }
     
     void Start()
@@ -53,8 +57,9 @@ public class Script_SpriteVisibilityController : MonoBehaviour
     }
 
     void OnValidate() {
-        spriteFader = GetComponent<Script_SpriteFadeOut>();
+        if (spriteFader == null)    spriteFader = GetComponent<Script_SpriteFadeOut>();
         if (isParent)   spriteFader.isParent = true;
+        SetVisibilityTargetByTransform();
     }
     
     // Update is called once per frame
@@ -69,6 +74,51 @@ public class Script_SpriteVisibilityController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Ensures other coroutine stops running
+    /// Check if we're already fading out
+    /// </summary>
+    public void FadeOut()
+    {
+        if (fadeInCoroutine != null)
+        {
+            StopCoroutine(fadeInCoroutine);
+            fadeInCoroutine = null;
+        }
+        if (isFadedOut || fadeOutCoroutine != null)     return;
+        
+        Debug.Log("Fading out");
+
+        float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        isFadedIn = false;
+        fadeOutCoroutine = StartCoroutine(spriteFader.FadeOutCo(
+            () => {
+                isFadedOut = true;
+            }, t
+        ));
+    }
+
+    public void FadeIn()
+    {
+        // if is fully faded out, then upon fading in, match up with player position    
+        if (fadeOutCoroutine != null)
+        {
+            StopCoroutine(fadeOutCoroutine);
+            fadeOutCoroutine = null;
+        }
+        if (isFadedIn || fadeInCoroutine != null)       return;
+        
+        Debug.Log("Fading in");
+
+        float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        isFadedOut = false;
+        fadeInCoroutine = StartCoroutine(spriteFader.FadeInCo(
+            () => {
+                isFadedIn = true;
+            }, t
+        ));
+    }
+    
     void HandleVisibility()
     {
         if (g.GetPlayer() != null)
@@ -77,62 +127,30 @@ public class Script_SpriteVisibilityController : MonoBehaviour
         }
     }
 
-    private bool CheckShouldFadeIn()
+    protected virtual bool CheckShouldFadeIn()
     {
         Vector3 playerLoc = g.GetPlayerLocation();
 
-        if (isAxisZ)    return !(playerLoc.z >= targetLoc.z);
-        else            return !(playerLoc.x >= targetLoc.x);
+        bool isPlayerReachedTarget;
+
+        if (isAxisZ)    isPlayerReachedTarget = playerLoc.z >= targetLoc.z;
+        else            isPlayerReachedTarget = playerLoc.x >= targetLoc.x;
+
+        if (isShowOnReachedTarget)  return isPlayerReachedTarget;
+        else                        return !isPlayerReachedTarget;
     }
 
     private void HandleFadeOut(bool isFadeIn)
     {
         if (isFadeIn)  FadeIn();
         else           FadeOut();
+    }
 
-        /// <summary>
-        /// Ensure other coroutine stops running
-        /// Check if we're already fading out
-        /// </summary>
-        void FadeOut()
+    private void SetVisibilityTargetByTransform()
+    {
+        if (target != null)
         {
-            if (fadeInCoroutine != null)
-            {
-                StopCoroutine(fadeInCoroutine);
-                fadeInCoroutine = null;
-            }
-            if (isFadedOut || fadeOutCoroutine != null)     return;
-            
-            Debug.Log("Fading out");
-
-            float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
-            isFadedIn = false;
-            fadeOutCoroutine = StartCoroutine(spriteFader.FadeOutCo(
-                () => {
-                    isFadedOut = true;
-                }, t
-            ));
-        }
-
-        void FadeIn()
-        {
-            // if is fully faded out, then upon fading in, match up with player position    
-            if (fadeOutCoroutine != null)
-            {
-                StopCoroutine(fadeOutCoroutine);
-                fadeOutCoroutine = null;
-            }
-            if (isFadedIn || fadeInCoroutine != null)       return;
-            
-            Debug.Log("Fading in");
-
-            float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
-            isFadedOut = false;
-            fadeInCoroutine = StartCoroutine(spriteFader.FadeInCo(
-                () => {
-                    isFadedIn = true;
-                }, t
-            ));
+            targetLoc = target.transform.position;           
         }
     }
 }

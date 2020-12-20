@@ -62,7 +62,14 @@ public class Script_ElevatorManager : MonoBehaviour
             if (currentLevelBehavior.HasField(elevatorName))
             {
                 Debug.Log($"Setting initial state of: {elevatorName}");
+
                 currentElevator = currentLevelBehavior.GetField<Script_Elevator>(elevatorName);
+                
+                if (!currentElevator.gameObject.activeSelf)
+                {
+                    Debug.LogWarning("The Elevator exposed by Level Behavior is inactive");
+                }
+
                 currentElevator.SetClosedState(false);
             }
             else

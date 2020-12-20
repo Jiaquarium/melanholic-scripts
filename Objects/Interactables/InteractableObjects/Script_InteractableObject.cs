@@ -14,15 +14,20 @@ public class Script_InteractableObject : Script_Interactable
     /// <summary>
     /// Easier way to reference Game if we don't care about Setup()
     /// </summary>
-    [SerializeField] private bool autoHookToGame;
+    [SerializeField] private bool autoSetup;
     
     protected virtual void Start()
     {
-        if (autoHookToGame)
+        if (autoSetup)
         {
-            game = Script_Game.Game;
-            Script_Game.Game.AddInteractableObject(this);
+            AutoSetup();
         }
+    }
+
+    protected virtual void AutoSetup()
+    {
+        game = Script_Game.Game;
+        Script_Game.Game.AddInteractableObject(this);
     }
     
     // Update is called once per frame
