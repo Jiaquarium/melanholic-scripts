@@ -27,4 +27,17 @@ public class Script_MovingNPCCreator : MonoBehaviour
             movingNPC.Setup();
         }
     }
+
+    public void AutoSetup(
+        Script_MovingNPC npc,
+        List<Script_StaticNPC> NPCs,
+        List<Script_MovingNPC> movingNPCs
+    )
+    {
+        NPCs.Add(npc);
+        movingNPCs.Add(npc);
+
+        npc.StaticNPCId = NPCs.Count - 1;
+        npc.MovingNPCId = movingNPCs.Count - 1;
+    }
 }

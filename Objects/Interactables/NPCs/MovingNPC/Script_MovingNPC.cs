@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 /// <summary>
 /// Changes game state to interact after moves are done
@@ -37,6 +38,7 @@ public class Script_MovingNPC : Script_StaticNPC
     private Animator animator;
     [SerializeField] private bool isApproachingTarget; // bool used to know if current moves are result of appraoching
     [SerializeField] private Directions lastFacingDirection;
+    [SerializeField] private PlayableDirector myDirector;
     
     void OnEnable() {
         if (lastFacingDirection != Directions.None && animator != null)
@@ -50,6 +52,8 @@ public class Script_MovingNPC : Script_StaticNPC
         {
             ActuallyMove();
         }
+
+        if (myDirector != null)     HandleTimelineAutoMove();
     }
 
     public override void TriggerDialogue()
@@ -63,18 +67,22 @@ public class Script_MovingNPC : Script_StaticNPC
     /// <summary>
     /// if is ending the conversation, NPC should return to original
     ///  specified facing direction if any
+    /// 
     /// </summary>
-    public override void ContinueDialogue()
+    public override bool? ContinueDialogue()
     {
-        // check the current node before switching to the next node to check
-        if (dialogueManager.currentNode.data.disableReturnToDefaultFaceDir)
-        {
-            dialogueManager.ContinueDialogue();
-            return;
-        }
-
         bool? didContinue = dialogueManager.ContinueDialogue();
         
+        HandleReturnToDefaultDirection(didContinue);
+        if (didContinue == false)   State = States.Interact;
+        return didContinue;
+    }
+
+    void HandleReturnToDefaultDirection(bool? didContinue)
+    {
+        // check the current node before switching to the next node to check
+        if (dialogueManager.currentNode.data.disableReturnToDefaultFaceDir) return;
+
         // meaning it was a valid continuation but there are no more nodes
         if (
             didContinue == false
@@ -84,6 +92,18 @@ public class Script_MovingNPC : Script_StaticNPC
         {
             FaceDefaultDirection();
             Debug.Log($"MovingNPC returning to default direction: {defaultFacingDirection}");
+        }
+    }
+
+    private void HandleTimelineAutoMove()
+    {
+        if (State == States.Dialogue)
+        {
+            if (myDirector.playableGraph.IsPlaying())   myDirector.Pause();
+        }
+        else if (State == States.Interact)
+        {
+            if (!myDirector.playableGraph.IsPlaying())   myDirector.Play();
         }
     }
 
@@ -301,6 +321,15 @@ public class Script_MovingNPC : Script_StaticNPC
     public virtual void SetMoveSpeedRun(){}
     public virtual void SetMoveSpeedWalk(){}
 
+    protected override void AutoSetup()
+    {
+        base.AutoSetup();
+        
+        game.AutoSetupMovingNPC(this);
+
+        Setup();
+    }
+    
     public override void Setup()
     {
         directionToVector = Script_Utils.GetDirectionToVectorDict();

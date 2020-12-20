@@ -954,6 +954,11 @@ public class Script_Game : MonoBehaviour
         movingNPCCreator.SetupMovingNPC(movingNPC, NPCs, movingNPCs, isInitialize);
     }
 
+    public void AutoSetupMovingNPC(Script_MovingNPC npc)
+    {
+        movingNPCCreator.AutoSetup(npc, NPCs, movingNPCs);
+    }
+
     public void DestroyNPCs()
     {
         foreach(Script_StaticNPC NPC in NPCs)

@@ -5,6 +5,12 @@ using System;
 
 public class Script_StaticNPC : Script_Interactable
 {
+    public enum States
+    {
+        Interact,
+        Dialogue
+    }
+    
     public int StaticNPCId;
     public Script_Game game {get; set;}
     [SerializeField] protected Script_DialogueNode[] dialogueNodes;
@@ -15,7 +21,20 @@ public class Script_StaticNPC : Script_Interactable
     protected Script_DialogueManager dialogueManager;
     [SerializeField] protected bool isMute;
     private Coroutine fadeOutCo;
+    [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] private bool isAutoSetup;
+    [SerializeField] private States _state;
 
+    public States State
+    {
+        get { return _state; }
+        protected set { _state = value; }
+    }
+
+    protected virtual void Start()
+    {
+        if (isAutoSetup)  AutoSetup();
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -43,6 +62,8 @@ public class Script_StaticNPC : Script_Interactable
         
         if (dialogueNodes.Length > 0)
         {
+            State = States.Dialogue;
+            
             dialogueManager.StartDialogueNode(
                 dialogueNodes[dialogueIndex],
                 SFXOn: true,
@@ -95,9 +116,13 @@ public class Script_StaticNPC : Script_Interactable
         );
     }
 
-    public virtual void ContinueDialogue()
+    public virtual bool? ContinueDialogue()
     {
-        dialogueManager.ContinueDialogue();
+        bool? didContinue = dialogueManager.ContinueDialogue();
+        
+        if (didContinue == false)   State = States.Interact;
+        
+        return didContinue;
     }
 
     public void SkipTypingSentence()
@@ -113,6 +138,11 @@ public class Script_StaticNPC : Script_Interactable
     public virtual void Move() {}
     public virtual void Glimmer() {}
     public virtual void Freeze(bool isFrozen) {}
+
+    protected virtual void AutoSetup()
+    {
+        game = Script_Game.Game;
+    }
 
     public virtual void Setup()
     {
