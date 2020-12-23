@@ -8,15 +8,10 @@ public class Script_InteractableObjectText : Script_InteractableObject
     public bool isBlocking;
     
     [SerializeField] protected int dialogueIndex;
-    [SerializeField] private bool disableLeft;
-    [SerializeField] private bool disableUp;
-    [SerializeField] private bool disableRight;
-    [SerializeField] private bool disableDown;
     [SerializeField] private Script_LightSwitch myLightSwitch;
     [SerializeField] private bool allowNonreadDialogueNodes;
     protected Script_DialogueManager dialogueManager;
-        
-
+    
     protected override void AutoSetup()
     {
         base.AutoSetup();
@@ -75,25 +70,6 @@ public class Script_InteractableObjectText : Script_InteractableObject
                 dialogueManager.ContinueDialogue();
             }
         }
-    }
-
-    protected bool CheckDisabledDirections()
-    {
-        Directions directionToPlayer = Script_Utils.GetDirectionToTarget(
-                                            transform.position,
-                                            Script_Game.Game.GetPlayer().transform.position
-                                        );
-        if (
-            directionToPlayer == Directions.Left && disableLeft
-            || directionToPlayer == Directions.Up && disableUp
-            || directionToPlayer == Directions.Right && disableRight
-            || directionToPlayer == Directions.Down && disableDown
-        )
-        {
-            return true;
-        }
-
-        return false;
     }
 
     void HandleDialogueNodeIndex()

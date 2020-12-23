@@ -62,6 +62,14 @@ public class Script_ClockManager : MonoBehaviour
     {
         InitialState();
     }
+
+    /// <summary> ====================================================================================================
+    /// ONLY FOR DEV
+    /// </summary> ===================================================================================================
+    public void AlmostTimesUp()
+    {
+        clock.CurrentTime = 22250f;
+    }
 }
 
 #if UNITY_EDITOR
@@ -75,6 +83,11 @@ public class Script_ClockManagerTester : Editor
         if (GUILayout.Button("TimesUp()"))
         {
             t.TimesUp();
+        }
+
+        if (GUILayout.Button("AlmostTimesUp()"))
+        {
+            t.AlmostTimesUp();
         }
     }
 }

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Script_InteractableObjectCreator : MonoBehaviour
 {
     public Script_InteractableObject InteractableObjectPrefab;
@@ -265,4 +269,29 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         switches.Clear();
         pushables.Clear();
     }
+
+    public void CleanupTextDisabledFields()
+    {
+        Object[] allText = GameObject.FindObjectsOfType(typeof(Script_InteractableObjectText));
+        foreach (Script_InteractableObjectText t in allText)
+        {
+            Debug.Log(t.name);
+        }
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_InteractableObjectCreator))]
+public class Script_InteractableObjectCreatorTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_InteractableObjectCreator t = (Script_InteractableObjectCreator)target;
+        if (GUILayout.Button("Clean Up Text Objects"))
+        {
+            t.CleanupTextDisabledFields();
+        }
+    }
+}
+#endif

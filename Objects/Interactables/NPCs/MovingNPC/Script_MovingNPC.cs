@@ -22,7 +22,10 @@ public class Script_MovingNPC : Script_StaticNPC
     public string localState;
     public bool shouldExit = true;
     public int moveSetIndex;
+    [Tooltip("Maintain direction after talking with.")]
     [SerializeField] private bool defaultFacingDirectionDisabled;
+    [Tooltip("Disable turning to Player when speaking.")]
+    [SerializeField] private bool disableFacingPlayerOnDialogue;
 
 
     public Model_MoveSet[] moveSets = new Model_MoveSet[0];
@@ -58,9 +61,7 @@ public class Script_MovingNPC : Script_StaticNPC
 
     public override void TriggerDialogue()
     {
-        Script_Player player = Script_Game.Game.GetPlayer();
-        Directions dir = Script_Utils.GetDirectionToTarget(transform.position, player.transform.position);
-        FaceDirection(dir);
+        if (!disableFacingPlayerOnDialogue)     FacePlayer();
         base.TriggerDialogue();
     }
 
@@ -80,26 +81,40 @@ public class Script_MovingNPC : Script_StaticNPC
 
     void HandleReturnToDefaultDirection(bool? didContinue)
     {
-        // check the current node before switching to the next node to check
-        if (dialogueManager.currentNode.data.disableReturnToDefaultFaceDir) return;
-
-        // meaning it was a valid continuation but there are no more nodes
         if (
-            didContinue == false
-            && defaultFacingDirection != Directions.None
-            && !defaultFacingDirectionDisabled
+            dialogueManager.currentNode.data.disableReturnToDefaultFaceDir
+            || disableFacingPlayerOnDialogue
+            || defaultFacingDirectionDisabled
         )
+        {
+            return;
+        }
+
+        // Meaning it was a valid continuation but there are no more nodes
+        if (didContinue == false && defaultFacingDirection != Directions.None)
         {
             FaceDefaultDirection();
             Debug.Log($"MovingNPC returning to default direction: {defaultFacingDirection}");
         }
     }
 
+    /// <summary>
+    /// For MovingNPCs controlled via Timeline, allows to pause their moves to speak with Player
+    /// 
+    /// Default behavior is to face the player.
+    /// 
+    /// NOTE: For not to face player working properly, must update the animator for facing state
+    /// (Call public timeline faceDirection functions).
+    /// </summary>
     private void HandleTimelineAutoMove()
     {
         if (State == States.Dialogue)
         {
-            if (myDirector.playableGraph.IsPlaying())   myDirector.Pause();
+            if (myDirector.playableGraph.IsPlaying())
+            {
+                myDirector.Pause();
+                if (!disableFacingPlayerOnDialogue) FacePlayer();
+            }
         }
         else if (State == States.Interact)
         {
@@ -320,6 +335,31 @@ public class Script_MovingNPC : Script_StaticNPC
 
     public virtual void SetMoveSpeedRun(){}
     public virtual void SetMoveSpeedWalk(){}
+
+    /// <summary> =================================================================================
+    /// Timeline Signal Functions START
+    /// </summary> ================================================================================
+    public void FaceLeft()
+    {
+        FaceDirection(Directions.Left);
+    }
+
+    public void FaceRight()
+    {
+        FaceDirection(Directions.Right);
+    }
+
+    public void FaceUp()
+    {
+        FaceDirection(Directions.Up);
+    }
+
+    public void FaceDown()
+    {
+        FaceDirection(Directions.Down);
+    }
+    
+    /// Timeline Signal Functions END =============================================================
 
     protected override void AutoSetup()
     {
