@@ -18,6 +18,7 @@ public class Script_StaticNPC : Script_Interactable
     [SerializeField] protected Directions defaultFacingDirection;
 
     [SerializeField] protected int dialogueIndex;
+    public Directions facingDirection;
     protected Script_DialogueManager dialogueManager;
     [SerializeField] protected bool isMute;
     private Coroutine fadeOutCo;

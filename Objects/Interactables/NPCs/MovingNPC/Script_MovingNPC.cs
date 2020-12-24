@@ -42,6 +42,7 @@ public class Script_MovingNPC : Script_StaticNPC
     [SerializeField] private bool isApproachingTarget; // bool used to know if current moves are result of appraoching
     [SerializeField] private Directions lastFacingDirection;
     [SerializeField] private PlayableDirector myDirector;
+    private Script_InteractionBoxController interactionBoxController { get; set; }
     
     void OnEnable() {
         if (lastFacingDirection != Directions.None && animator != null)
@@ -118,7 +119,14 @@ public class Script_MovingNPC : Script_StaticNPC
         }
         else if (State == States.Interact)
         {
-            if (!myDirector.playableGraph.IsPlaying())   myDirector.Play();
+            if (HandleBlocking(facingDirection))                myDirector.Pause();
+            else if (!myDirector.playableGraph.IsPlaying())     myDirector.Play();
+        }
+
+        bool HandleBlocking(Directions dir)
+        {
+            List<Script_Interactable> interactables = interactionBoxController.GetInteractablesBlocking(dir);
+            return interactables.Count > 0;
         }
     }
 
@@ -151,15 +159,16 @@ public class Script_MovingNPC : Script_StaticNPC
 
     public override void Move()
     {
-        Vector3 desiredDirection = directionToVector[currentMoves.Dequeue()];
+        Directions desiredDir = currentMoves.Dequeue();
+        Vector3 desiredVector = directionToVector[desiredDir];
 
         startLocation = location;
-        location += desiredDirection;
+        location += desiredVector;
         localState = "move";
 
         progress = 0f;
 
-        AnimatorSetDirection(desiredDirection.x, desiredDirection.z);
+        AnimatorSetDirection(desiredDir);
         animator.SetBool("NPCMoving", true);
     }
 
@@ -223,8 +232,32 @@ public class Script_MovingNPC : Script_StaticNPC
         game.DestroyMovingNPC(MovingNPCId);
     }
 
-    void AnimatorSetDirection(float x, float z)
+    void AnimatorSetDirection(Directions dir)
     {
+        interactionBoxController?.HandleActiveInteractionBox(dir);
+        facingDirection = dir;
+        
+        float x = 0f, z = 0f;
+        if (dir == Directions.Up) {
+            x = 0f;
+            z = 1f;
+        }
+        else if (dir == Directions.Down)
+        {
+            x = 0f;
+            z = -1f;
+        }
+        else if (dir == Directions.Left)
+        {
+            x = -1f;
+            z = 0f;
+        }
+        else if (dir == Directions.Right)
+        {
+            x = 1f;
+            z = 0f;
+        }
+        
         animator.SetFloat(LastMoveX, x);
         animator.SetFloat(LastMoveZ, z);
         animator.SetFloat(MoveX, x);
@@ -233,13 +266,9 @@ public class Script_MovingNPC : Script_StaticNPC
 
     public void FaceDirection(Directions direction)
     {
-        if (direction == Directions.Down)        AnimatorSetDirection(0  , -1f);
-        else if (direction == Directions.Up)     AnimatorSetDirection(0  ,  1f);
-        else if (direction == Directions.Left)   AnimatorSetDirection(-1f,  0f);
-        else if (direction == Directions.Right)  AnimatorSetDirection(1f ,  0f );
+        AnimatorSetDirection(direction);
 
-        if (direction != Directions.None)
-            lastFacingDirection = direction;
+        if (direction != Directions.None)   lastFacingDirection = direction;
     }
 
     /// Face the last set direction by FaceDirection()
@@ -373,7 +402,8 @@ public class Script_MovingNPC : Script_StaticNPC
     public override void Setup()
     {
         directionToVector = Script_Utils.GetDirectionToVectorDict();
-        
+        interactionBoxController = GetComponent<Script_InteractionBoxController>();
+
         base.Setup();
 
         animator = rendererChild.GetComponent<Animator>();

@@ -26,7 +26,6 @@ public class Script_Player : Script_Character
     private Script_PlayerEffect playerEffect;
     private Script_PlayerMovementAnimator playerMovementAnimator;
     public Script_InteractionBoxController interactionBoxController { get; private set; }
-    public bool isMoving { get { return playerMovementHandler.isMoving; } }
 
 
     private Script_PlayerStats playerStats;
