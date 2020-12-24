@@ -36,14 +36,15 @@ public class Script_Demon : Script_Character
     }
     
     /// <summary>
-    /// start demon dying sequence
+    /// Start demon dying sequence
     /// </summary>
     public void Die()
     {
         if (isInvincible)   return;
         isInvincible = true;
 
-        Script_Game.Game.PlayerHurtFromThought(swallowedFillCount, thought);
+        /// Only apply damage as time deductions
+        // Script_Game.Game.PlayerHurtFromThought(swallowedFillCount, thought);
         Swallowed();
     }
     

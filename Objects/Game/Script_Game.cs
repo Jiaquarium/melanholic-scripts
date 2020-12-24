@@ -53,7 +53,6 @@ public class Script_Game : MonoBehaviour
     public Script_ReflectionCreator reflectionCreator;
     public Script_PlayerThoughtHandler playerThoughtHandler;
     public Script_PlayerThoughtsInventoryManager playerThoughtsInventoryManager;
-    public Script_HealthManager healthManager;
     [SerializeField] private Script_TransitionManager transitionManager;
     public PlayableDirector dieTimelineDirector;
     public Script_CutSceneManager cutSceneManager;
@@ -224,7 +223,6 @@ public class Script_Game : MonoBehaviour
 
         timeManager.Setup();
         clockManager.Setup(); // needs to happen after level is set so we know if we're in lobby or not
-        healthManager.Setup(player);
     }
 
     private void DevCleanup()
@@ -754,11 +752,6 @@ public class Script_Game : MonoBehaviour
         return GetPlayer().Hurt(dmg, hitBox);
     }
 
-    public int PlayerHurtFromThought(int dmg, Model_Thought thought)
-    {
-        return GetPlayer().HurtThoughts(dmg, thought);
-    }
-
     /* =======================================================================
         _REFLECTION_
     ======================================================================= */
@@ -866,19 +859,6 @@ public class Script_Game : MonoBehaviour
     }
 
     /* =======================================================================
-        _HEALTH_
-    ======================================================================= */
-    public void HideHealth()
-    {
-        healthManager.Close();
-    }
-
-    public void ShowHealth()
-    {
-        healthManager.Open();
-    }
-
-    /* =======================================================================
         _CANVASES_CUTSCENES_THEATRICS
     ======================================================================= */
     public void ShowHint(string s)
@@ -931,12 +911,12 @@ public class Script_Game : MonoBehaviour
     {
         if (type == Const_States_PlayerViews.DDR)
         {
-            HideHealth();
+            /// TODO: Handle Runs Canvas on DDR   
         }
 
         if (type == Const_States_PlayerViews.Health)
         {
-            ShowHealth();
+            /// TODO: Handle Runs Canvas on DDR   
         }
     }
 

@@ -21,7 +21,7 @@ public class Script_Clock : MonoBehaviour
     public float CurrentTime
     {
         get { return _currentTime; }
-        set { _currentTime = value; }
+        set { _currentTime = Mathf.Clamp(value, StartTime, EndTime); }
     }
     public States State
     {
@@ -51,6 +51,11 @@ public class Script_Clock : MonoBehaviour
         }
         CheckDone();
         DisplayTime();
+    }
+
+    public void FastForwardTime(int sec)
+    {
+        CurrentTime += (float)sec;
     }
 
     private void CheckDone()

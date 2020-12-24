@@ -11,11 +11,18 @@ using UnityEditor;
 /// </summary>
 public class Script_ClockManager : MonoBehaviour
 {
+    public static Script_ClockManager Control;
+    
     [SerializeField] private Script_Clock clock;
     [SerializeField] private Script_Game game;
     [SerializeField] private FadeSpeeds fadeSpeed;
     private bool didFireDoneEvent;
-
+    
+    public float ClockTime {
+        get { return clock.CurrentTime; }
+    }
+    
+    
     void Update()
     {
         if (clock.State == Script_Clock.States.Done && !didFireDoneEvent)
@@ -58,8 +65,25 @@ public class Script_ClockManager : MonoBehaviour
         clock.Setup(initialClockState);
     }
 
+    public void FastForwardTime(int sec)
+    {
+        clock.FastForwardTime(sec);
+    }
+
+    /// <summary>
+    /// Meant to be called only once to instantiate and set dependencies/refs
+    /// </summary>
     public void Setup()
     {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }   
+
         InitialState();
     }
 

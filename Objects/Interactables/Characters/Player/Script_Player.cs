@@ -181,11 +181,6 @@ public class Script_Player : Script_Character
     {
         return GetComponent<Script_PlayerStats>().Hurt(dmg, hitBox);
     }
-
-    public int HurtThoughts(int dmg, Model_Thought thought)
-    {
-        return GetComponent<Script_PlayerStats>().HurtThoughts(dmg, thought);
-    }
     /// =========================================================================================
 
     public bool isInvincible
