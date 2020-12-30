@@ -7,7 +7,7 @@ public class Script_InteractableObject : Script_Interactable
 {
     public int Id;
     public string nameId;
-    public bool isActive = true;
+    protected bool isActive = true;
     [SerializeField] protected Transform rendererChild;
     protected Script_Game game;
     [SerializeField] private UnityEvent action;

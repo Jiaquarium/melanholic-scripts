@@ -8,7 +8,7 @@ public class Script_RunsManager : MonoBehaviour
     public static readonly int LightupPaintingsPuzzleRun = -1;
     public static readonly int MelzIntroRun = -1;
     public static Script_RunsManager Control;
-    
+
     public void Setup()
     {
         if (Control == null)

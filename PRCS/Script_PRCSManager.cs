@@ -11,7 +11,26 @@ public class Script_PRCSManager : MonoBehaviour
     public static Script_PRCSManager Control;
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
+    [SerializeField] private Transform customCanvasesParent;
+    [SerializeField] private Canvas[] customCanvases;
+    [SerializeField] private Script_PRCS MynesMirrorPRCS;
+
+
     
+    /// <summary>
+    /// More specific canvases for special behavior
+    /// </summary>
+    public enum CustomTypes
+    {
+        None,
+        MynesMirror
+    }
+
+    void OnValidate()
+    {
+        customCanvases = customCanvasesParent.GetComponentsInChildren<Canvas>(true);
+    }
+
     public void Start()
     {
         Initialize();
@@ -64,12 +83,44 @@ public class Script_PRCSManager : MonoBehaviour
         PRCSCanvasGroup.gameObject.SetActive(false);
     }
 
+    public void OpenPRCSCustom(CustomTypes type)
+    {
+        switch (type)
+        {
+            case CustomTypes.MynesMirror:
+                PRCSCanvasGroup.alpha = 1f;
+                PRCSCanvasGroup.gameObject.SetActive(true);
+                
+                MynesMirrorPRCS.Setup();
+                MynesMirrorPRCS.Open();
+                MynesMirrorPRCS.PlayMyTimeline();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ClosePRCSCustom(CustomTypes type, Action cb = null)
+    {
+        switch (type)
+        {
+            case CustomTypes.MynesMirror:
+                HidePRCS(MynesMirrorPRCS, FadeSpeeds.Slow, cb);
+                break;
+            default:
+                break;
+        }
+    }
+
     public void Initialize()
     {
         /// Hide CanvasGroup but ensure the PRCS canvas and ready to use
         PRCSCanvasGroup.gameObject.SetActive(false);
         PRCSCanvasGroup.alpha = 0f;
         PRCSCanvas.gameObject.SetActive(true);
+
+        customCanvasesParent.gameObject.SetActive(true);
+        foreach (Canvas c in customCanvases)    c.gameObject.SetActive(true);
 
         Script_PRCS []allPRCS = PRCSCanvasGroup.GetComponentsInChildren<Script_PRCS>(true);
         foreach (Script_PRCS prcs in allPRCS)

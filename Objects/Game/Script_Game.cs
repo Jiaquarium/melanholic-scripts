@@ -69,7 +69,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_MenuController menuController;
     [SerializeField] private Script_CutSceneActionHandler cutSceneActionHandler;
     [SerializeField] private Script_TimeManager timeManager;
-    [SerializeField] private Script_ScarletCipher scarletCipher;
+    [SerializeField] private Script_ScarletCipherManager scarletCipherManager;
     [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
     [SerializeField] private Script_ActiveStickerManager activeStickerManager;
     [SerializeField] private Script_SFXManager SFXManager;
@@ -80,6 +80,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_PRCSManager PRCSManager;
     [SerializeField] private Script_SaveGameControl saveGameControl;
     [SerializeField] private Script_Names namesManager;
+    [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
 
 
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
@@ -178,6 +179,7 @@ public class Script_Game : MonoBehaviour
         ChangeStateToInitiateLevel();
 
         // Setup Singletons, Dicts, Managers and Canvases
+        scarletCipherManager.Setup();
         namesManager.Setup();
         exitsHandler.Setup(this);
         SFXManager.Setup();
@@ -204,6 +206,7 @@ public class Script_Game : MonoBehaviour
         elevatorManager.Setup();
         stickerHolsterManager.Setup();
         activeStickerManager.Setup();
+        mynesMirrorManager.Setup();
     }
 
     // Load Save Data and Initiate level
@@ -285,7 +288,7 @@ public class Script_Game : MonoBehaviour
 
     private void OnNewGame()
     {
-        scarletCipher.Initialize();
+        scarletCipherManager.Initialize();
 
         NewGamePlayerSpawn();
 
@@ -301,7 +304,7 @@ public class Script_Game : MonoBehaviour
 
     private void OnNewGameDev()
     {
-        scarletCipher.Initialize();   
+        scarletCipherManager.Initialize();   
     }
 
     /// <summary>
@@ -1681,23 +1684,57 @@ public class Script_Game : MonoBehaviour
         return persistentDropsContainer.GetPersistentDropModels();
     }
 
-    public void SaveInitialize(Model_PlayerState playerStateOverride)
+    /* =========================================================================
+        _RESTARTING_
+    ========================================================================= */
+    /// <summary>
+    /// There are three ways to restart
+    /// 1. Moving to the next run
+    /// 2. Restarting from the current initialized run
+    /// 3. Restarting from any last save
+    /// </summary>
+    
+    /// 1. <!-- Move to Next Run -->
+    /// <summary>
+    /// Called from Last Elevator
+    /// </summary>
+    /// <param name="playerStateOverride"></param>
+    public void NextRunSaveInitialize(Model_PlayerState playerStateOverride)
     {
         Run++;
-        clockManager.InitialState();
+        CleanRun();
         saveGameControl.Save(Script_SaveGameControl.Saves.Initialize, playerStateOverride);
+
+        /// TBD Need to Restart Game
     }
 
+    /// 2. <!-- Restart from Current Initialized Run -->
     /// <summary>
     /// Restart from the initialized run, will erase game data
     /// </summary>
     public void RestartInitialized()
     {
+        CleanRun();
         Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.RestartInitialized);
-        Script_SceneManager.RestartGame();
+        RestartGame();
     }
 
+    /// 3. <!-- Restart from Last Save -->
+    /// <summary>
+    /// Restarts from any last save, whether it is the initialized or last SavePoint (Tedmunch)
+    /// </summary>
     public void RestartRun()
+    {
+        RestartGame();
+    }
+
+    private void CleanRun()
+    {
+        clockManager.InitialState();
+        scarletCipherManager.InitialState();
+    }
+    
+    private void RestartGame()
     {
         Script_SceneManager.RestartGame();
     }

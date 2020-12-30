@@ -35,10 +35,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
 
     public override void ActionDefault()
     {
-        if (isDialogueCoolDown)     return;
-
-        if (CheckDisabledDirections())  return;
-        if (myLightSwitch != null && !myLightSwitch.isOn)   return;
+        if (CheckIsDisabled())  return;
         
         /// Initiate dialogue node
         if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
@@ -70,6 +67,16 @@ public class Script_InteractableObjectText : Script_InteractableObject
                 dialogueManager.ContinueDialogue();
             }
         }
+    }
+
+    protected virtual bool CheckIsDisabled()
+    {
+        return
+        (
+            isDialogueCoolDown
+            || CheckDisabledDirections()
+            || (myLightSwitch != null && !myLightSwitch.isOn)
+        );
     }
 
     void HandleDialogueNodeIndex()

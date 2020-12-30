@@ -15,6 +15,6 @@ public class Script_ElevatorBehavior_SaveNewRun : Script_ElevatorBehavior
             playerSpawn.data.facingDirection
         );
         
-        Script_Game.Game.SaveInitialize(playerSavePos);
+        Script_Game.Game.NextRunSaveInitialize(playerSavePos);
     }
 }

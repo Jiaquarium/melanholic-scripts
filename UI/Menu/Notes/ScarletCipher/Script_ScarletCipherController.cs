@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Script_ScarletCipherController : MonoBehaviour
 {
-    [SerializeField] private Script_ScarletCipher scarletCipher;
+    [SerializeField] private Script_ScarletCipherManager scarletCipherManager;
     [SerializeField] private Script_ScarletCipherSlot[] slots;
     
     void OnValidate()
@@ -24,13 +24,13 @@ public class Script_ScarletCipherController : MonoBehaviour
     {
         slots = GetComponentsInChildren<Script_ScarletCipherSlot>(true);
         
-        for (int i = 0; i < Script_ScarletCipher.QuestionCount; i++)
+        for (int i = 0; i < Script_ScarletCipherManager.QuestionCount; i++)
         {
             slots[i].Id = i;
             
-            bool isVisible = scarletCipher.ScarletCipherVisibility[i];
+            bool isVisible = scarletCipherManager.ScarletCipherVisibility[i];
             int? cipherCode = null;
-            if (isVisible)  cipherCode = scarletCipher.ScarletCipher[i];
+            if (isVisible)  cipherCode = scarletCipherManager.ScarletCipher[i];
             slots[i].Setup(cipherCode);
         }
     }

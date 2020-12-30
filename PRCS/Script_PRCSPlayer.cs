@@ -6,10 +6,11 @@ using UnityEngine.Timeline;
 using System;
 
 /// <summary>
-/// Plays PRCS using 1 myTimeline
+/// Plays PRCS using 1 myTimeline and lets you define a finished state (e.g. myTimeline done and/or nodes done)
+/// and this'll fire a finished event once reached which gameObjects can react to
 /// 
-/// Define what the finished state is (e.g. myTimeline done and/or nodes done)
-/// and this'll fire a finished event once reached which LB can react to
+/// If you don't need this extra behavior and just need to play a Timeline, consider just using Timeline + Signals
+/// instead
 /// 
 /// Detects when playable is done
 /// Can hook up a PRCSLastNode to do isNodesDone

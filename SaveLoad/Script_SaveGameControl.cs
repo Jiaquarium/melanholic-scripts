@@ -84,6 +84,7 @@ public class Script_SaveGameControl : MonoBehaviour
                     HandleSaveRun(saveData);
                     WriteSaveDataFile(bf, saveFilePath, saveData);
                     break;
+                
                 /// Should only be called before beginning a new run 
                 case (Saves.Initialize):
                     SaveGame(saveData);
@@ -94,6 +95,7 @@ public class Script_SaveGameControl : MonoBehaviour
                     /// to restart back to this point 
                     WriteSaveDataFile(bf, saveInitializeFilePath, saveData);
                     break;
+                
                 /// Replace current game saved data and with the SaveDataInitialize
                 case (Saves.RestartInitialized):
                     HandleRestartFromInitialSave();
