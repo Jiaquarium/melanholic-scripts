@@ -55,15 +55,22 @@ public class Script_EntriesViewController : Script_SlotsViewController
         
         if (slotsHolder.childCount == 0)
         {
-            noEntriesView.gameObject.SetActive(true);
-            entriesView.gameObject.SetActive(false);
-            entriesDetailView.gameObject.SetActive(false);
-            Debug.Log("entriesDetailView set inactive UpdateCanvasState()");
+            NoEntriesState();
         }
         else
         {
             entriesView.gameObject.SetActive(true);
             noEntriesView.gameObject.SetActive(false);
+        }
+
+        void NoEntriesState()
+        {
+            /// Show No Entries Panel
+            noEntriesView.gameObject.SetActive(true);
+            entriesView.gameObject.SetActive(false);
+            entriesDetailView.gameObject.SetActive(false);
+
+            /// Disabling navigation from TopBar handled in MenuController
         }
     }
 

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class Script_SlotsViewController : MonoBehaviour
 {
     public Transform slotsHolder;
-    [SerializeField] protected Transform[] slots;
+    public Transform[] slots;
     [Space]
     public int lastSlotIndex;
     [SerializeField] protected Transform lastSelected;

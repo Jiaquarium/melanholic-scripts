@@ -85,6 +85,7 @@ public class Script_TransitionManager : MonoBehaviour
         /// TBD Showing the Sieving Timeline Sequence
     }
 
+    /// Signal Reactions START ========================================================================
     public void OnTimesUpPlayableDone()
     {
         Time.timeScale = 1.0f;
@@ -92,6 +93,7 @@ public class Script_TransitionManager : MonoBehaviour
         /// Prompt User
         FadeInRestartPrompt();
     }
+    /// Signal Reactions END ==========================================================================
 
     public void FadeInRestartPrompt()
     {
@@ -133,7 +135,6 @@ public class Script_TransitionManager : MonoBehaviour
     {
         game.ToTitleScreen();
     }
-    
     /// ------------------------------------------------------------
 
     public void Setup()

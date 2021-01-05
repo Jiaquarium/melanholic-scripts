@@ -81,6 +81,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_SaveGameControl saveGameControl;
     [SerializeField] private Script_Names namesManager;
     [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
+    [SerializeField] private Script_HUDManager HUDManager;
 
 
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
@@ -207,6 +208,7 @@ public class Script_Game : MonoBehaviour
         stickerHolsterManager.Setup();
         activeStickerManager.Setup();
         mynesMirrorManager.Setup();
+        HUDManager.Setup();
     }
 
     // Load Save Data and Initiate level

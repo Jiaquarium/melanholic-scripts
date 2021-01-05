@@ -7,6 +7,7 @@ using System;
 /// Entry point to easily control canvas groups
 /// </summary>
 [RequireComponent(typeof(CanvasGroup))]
+[RequireComponent(typeof(Script_CanvasGroupFadeInOut))]
 public class Script_CanvasGroupController : MonoBehaviour
 {
     private const float DefaultFadeTime = 0.5f;

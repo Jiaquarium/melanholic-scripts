@@ -9,17 +9,20 @@ public class Script_SaveSavedGameTitleData : MonoBehaviour
     
     public Model_SavedGameTitleData Create()
     {
-        int maxHp = game.GetPlayer().GetComponent<Script_PlayerStats>().stats.maxHp.GetVal();
-        string name = Script_Names.Player;
+        int run                 = game.Run;
+        float clockTime         = Script_ClockManager.Control.ClockTime;
         
-        Script_Entry lastEntry = game.entryManager.GetLastEntry();
-        string headline = lastEntry ? lastEntry.headline : string.Empty;
+        string name             = Script_Names.Player;
         
-        long date = lastEntry ? lastEntry.timestamp.ToBinary() : DateTime.Now.ToBinary();
-        float playTime = game.totalPlayTime;
+        Script_Entry lastEntry  = game.entryManager.GetLastEntry();
+        string headline         = lastEntry ? lastEntry.headline : string.Empty;
+        
+        long date               = lastEntry ? lastEntry.timestamp.ToBinary() : DateTime.Now.ToBinary();
+        float playTime          = game.totalPlayTime;
 
         return new Model_SavedGameTitleData(
-            maxHp,
+            run,
+            clockTime,
             name,
             headline,
             date,

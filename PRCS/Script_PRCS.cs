@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+/// <summary>
+/// Standardized Pre Rendered Cut Scenes
+/// Allows for interaction with dialogue nodes
+/// </summary>
 public class Script_PRCS : Script_FullArt
 {
     /// <summary>

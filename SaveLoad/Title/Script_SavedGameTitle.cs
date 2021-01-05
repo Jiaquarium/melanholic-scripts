@@ -12,8 +12,8 @@ public class Script_SavedGameTitle : MonoBehaviour
     [SerializeField] private Script_StartOverviewController mainController;
     [SerializeField] private GameObject savedState;
     [SerializeField] private GameObject emptyState;
-    [SerializeField] private Transform heartsParent;
-    [SerializeField] private GameObject[] heartObjs;
+    [SerializeField] private TextMeshProUGUI runText;
+    [SerializeField] private TextMeshProUGUI clockTimeText;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI headlineText;
     [SerializeField] private TextMeshProUGUI dateText;
@@ -22,16 +22,6 @@ public class Script_SavedGameTitle : MonoBehaviour
     [SerializeField] private Transform newGameSubmenu;
     public bool isRendered { get; private set; }
     
-    void OnValidate()
-    {
-        Image[] heartImgs = heartsParent.GetChildren<Image>();
-        heartObjs = new GameObject[heartImgs.Length];
-        for (int i = 0; i < heartImgs.Length; i++)
-        {
-            heartObjs[i] = heartImgs[i].gameObject;
-        }
-    }
-
     public void OnClick()
     {
         switch (mainController.State)
@@ -64,17 +54,22 @@ public class Script_SavedGameTitle : MonoBehaviour
 
     private void Render(Model_SavedGameTitleData savedGame)
     {
-        int maxHp               = savedGame.health;
+        int run                 = savedGame.run;
+        float clockTime         = savedGame.clockTime;
         string name             = savedGame.name;
         string headline         = savedGame.headline;
         DateTime dateTime       = DateTime.FromBinary(savedGame.date);
         float playTime          = savedGame.playTime;
 
-        GetComponent<Script_HideGameObjects>().HideAfterNum(maxHp, heartObjs);
+        runText.text            = run.FormatRun();
+        clockTimeText.text      = clockTime.FormatSecondsClock(isClose: clockTime >= Script_Clock.IsCloseTime);
         nameText.text           = name;
-        headlineText.text       = headline;
+        
+        /// Empty means we are initializing a run, use default headline
+        headlineText.text       = String.IsNullOrEmpty(headline) ? headlineText.text : headline;
+        
         dateText.text           = dateTime.FormatDateTime();
-        playTimeText.text       = playTime.FormatSecondsHHMMSS();
+        playTimeText.text       = playTime.FormatTotalPlayTime();
         
         savedState.gameObject.SetActive(true);
         emptyState.gameObject.SetActive(false);

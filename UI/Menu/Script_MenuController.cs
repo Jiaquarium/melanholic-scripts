@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
-/// Handles overall inventory inventoryState tracking and settings
-/// does not handle visibility
+/// Handles overall menu state based on TopBar and settings
 /// 
 /// TBD DELETE ButtonMetadata & UIIds, not being used anymore
 /// </summary>
@@ -35,8 +35,12 @@ public class Script_MenuController : Script_UIState
     
     [SerializeField] private Script_MenuInputManager inputManager;
     [SerializeField] private Script_InventoryManager inventoryManager;
-    // [SerializeField] private AudioSource submenuEnterAudioSource;
-
+    [SerializeField] private Script_EntriesViewController entriesViewController;
+    [SerializeField] private Button entriesTopBarButton;
+    private Selectable entriesTopBarSelectOnDownButton;
+    [SerializeField] private Script_MemoriesViewController memoriesViewController;
+    [SerializeField] private Button memoriesTopBarButton;
+    private Selectable memoriesTopBarSelectOnDownButton;
 
     void OnEnable()
     {
@@ -53,6 +57,8 @@ public class Script_MenuController : Script_UIState
         {
             inputManager.HandleExitInput();
         }
+
+        HandleNullViewStates();
     }
 
     public void ChangeStateToOverview()
@@ -206,6 +212,45 @@ public class Script_MenuController : Script_UIState
         return inventoryManager.InstantiateDropById(itemId, location, LB);
     }
 
+    public void HandleNullViewStates()
+    {
+        EntriesTopBarState();
+        MemoriesTopBarState();
+
+        void EntriesTopBarState()
+        {
+            Navigation entriesNav = entriesTopBarButton.GetComponent<Selectable>().navigation;    
+            entriesNav.selectOnDown = entriesViewController.slots.Length == 0 ? null : entriesTopBarSelectOnDownButton;
+            entriesTopBarButton.GetComponent<Selectable>().navigation = entriesNav;
+        }
+
+        void MemoriesTopBarState()
+        {
+            Navigation memoriesNav = memoriesTopBarButton.GetComponent<Selectable>().navigation;    
+            memoriesNav.selectOnDown = memoriesViewController.slots.Length == 0 ? null : memoriesTopBarSelectOnDownButton;
+            memoriesTopBarButton.GetComponent<Selectable>().navigation = memoriesNav;
+        }
+    }
+
+    private void CacheTopBarNav()
+    {
+        CacheEntriesTopBarNav();
+        CacheMemoriesTopBarNav();
+        
+        void CacheEntriesTopBarNav()
+        {
+            Navigation entriesNav = entriesTopBarButton.GetComponent<Selectable>().navigation;    
+            entriesTopBarSelectOnDownButton = entriesNav.selectOnDown;
+        }
+        
+        void CacheMemoriesTopBarNav()
+        {
+            Navigation memoriesNav = memoriesTopBarButton.GetComponent<Selectable>().navigation;    
+            memoriesTopBarSelectOnDownButton = memoriesNav.selectOnDown;
+        }
+    }
+    
+
     public void InitializeState(EventSystem eventSystem = null)
     {
         if (eventSystem != null)
@@ -222,6 +267,8 @@ public class Script_MenuController : Script_UIState
 
     public void Setup()
     {
+        CacheTopBarNav();
+        
         inputManager = GetComponent<Script_MenuInputManager>();
 
         inputManager.Setup();

@@ -374,6 +374,11 @@ public static class Script_Utils
         return $"{hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)}";
     }
 
+    public static string FormatTotalPlayTime(this float t)
+    {
+        return $"total play time: {t.FormatSecondsHHMMSS()}";
+    }
+
     public static string FormatSecondsClock(this float t, bool isClose, bool hideColons = false)
     {
         string fmt = "00";
@@ -401,6 +406,11 @@ public static class Script_Utils
     public static string FormatDateTime(this DateTime date)
     {
         return date.ToString("MMMM dd, yyyy hh:mm tt").ToLower();
+    }
+
+    public static string FormatRun(this int run)
+    {
+        return $"{run.ToString()} dan";
     }
 
     /// <summary>

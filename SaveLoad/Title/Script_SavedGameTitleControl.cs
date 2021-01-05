@@ -12,7 +12,7 @@ public class Script_SavedGameTitleControl : MonoBehaviour
     {
         string path = Script_SaveGameControl.path;
         string fileName = Script_SaveGameControl.savedGameTitleDataFileName;
-        string filePath = $"{path}{fileName}{saveSlotId}.dat";
+        string filePath = $"{path}/{fileName}_{saveSlotId}.dat";
         
         try 
         {

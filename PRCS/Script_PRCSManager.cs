@@ -94,6 +94,7 @@ public class Script_PRCSManager : MonoBehaviour
                 MynesMirrorPRCS.Setup();
                 MynesMirrorPRCS.Open();
                 MynesMirrorPRCS.PlayMyTimeline();
+                /// MynesMirror Timeline controls Fade
                 break;
             default:
                 break;
