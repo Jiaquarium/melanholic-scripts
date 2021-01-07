@@ -32,7 +32,6 @@ public class Script_Demon : Script_Character
     // Update is called once per frame
     void Update()
     {
-        AdjustRotation();    
     }
     
     /// <summary>
@@ -69,11 +68,6 @@ public class Script_Demon : Script_Character
     /// </summary>
     public virtual void Attack() { }
 
-    public void AdjustRotation()
-    {
-        spriteRenderer.transform.forward = Camera.main.transform.forward;
-    }
-
     public virtual void Setup(
         Model_Thought _thought,
         AudioClip _deathCry
@@ -86,7 +80,5 @@ public class Script_Demon : Script_Character
 
         /// Setup character stats
         base.Setup();
-
-        AdjustRotation();
     }
 }

@@ -25,11 +25,6 @@ public class Script_PlayerReflection : MonoBehaviour
         else                                         return Directions.Up;
     }
 
-    public void AdjustRotation()
-    {
-        graphics.transform.forward = Camera.main.transform.forward;
-    }
-    
     public void Setup(
         Script_PlayerGhost _playerGhost,
         Script_Player _player,
@@ -43,7 +38,5 @@ public class Script_PlayerReflection : MonoBehaviour
         axis = axisObject == null ? axis = _axis : axis = axisObject.position;
 
         transform.position = reflectionMovement.GetReflectionPosition(player.transform.position);
-
-        AdjustRotation();
     }
 }

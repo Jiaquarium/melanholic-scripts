@@ -393,10 +393,6 @@ public class Script_PlayerMovement : MonoBehaviour
         playerGhost.Setup(player.transform.position);
         playerGhost.transform.SetParent(game.playerContainer, false);
         
-        Script_Utils.FindComponentInChildWithTag<Script_PlayerMovementAnimator>(
-            this.gameObject, Const_Tags.PlayerAnimator
-        ).Setup();
-
         directionToVector = Script_Utils.GetDirectionToVectorDict();
 
         timer = repeatDelay;

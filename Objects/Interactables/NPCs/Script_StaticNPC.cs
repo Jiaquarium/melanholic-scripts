@@ -39,7 +39,6 @@ public class Script_StaticNPC : Script_Interactable
     // Update is called once per frame
     void Update()
     {
-        AdjustRotation();
     }
 
     public void HandleAction(string action)
@@ -135,11 +134,6 @@ public class Script_StaticNPC : Script_Interactable
         dialogueManager.SkipTypingSentence();
     }
 
-    public void AdjustRotation()
-    {
-        rendererChild.transform.forward = Camera.main.transform.forward;
-    }
-
     public virtual void Move() {}
     public virtual void Glimmer() {}
     public virtual void Freeze(bool isFrozen) {}
@@ -153,7 +147,5 @@ public class Script_StaticNPC : Script_Interactable
     {
         game = Script_Game.Game;
         dialogueManager = game.dialogueManager;
-
-        AdjustRotation();
     }
 }

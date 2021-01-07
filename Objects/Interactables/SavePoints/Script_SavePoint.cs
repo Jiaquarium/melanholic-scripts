@@ -37,13 +37,7 @@ public class Script_SavePoint : Script_Interactable
         }
     }
 
-    void AdjustRotation()
-    {
-        spriteRenderer.transform.forward = Camera.main.transform.forward;
-    }
-
     public void Setup()
     {
-        AdjustRotation();
     }
 }

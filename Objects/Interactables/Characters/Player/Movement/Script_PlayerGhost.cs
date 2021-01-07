@@ -123,18 +123,11 @@ public class Script_PlayerGhost : MonoBehaviour
         startLocation = location;
     }
 
-    public void AdjustRotation()
-    {
-        transform.forward = Camera.main.transform.forward;
-    }
-
     public void Setup(Vector3 loc)
     {
         progress = 1f;
         transform.position = loc;
         UpdateLocation(loc);
         spriteRenderer.enabled = false;
-        
-        AdjustRotation();
     }
 }
