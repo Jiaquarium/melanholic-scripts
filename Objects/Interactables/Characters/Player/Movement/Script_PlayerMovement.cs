@@ -46,27 +46,15 @@ public class Script_PlayerMovement : MonoBehaviour
     void OnDestroy() {
         if (playerGhost != null)    Destroy(playerGhost.gameObject);
     }
-
-    public void HandleSpeedWalkInput()
-    {
-        if (Input.GetButton(Const_KeyCodes.Action3))
-        {
-            repeatDelay = runRepeatDelay;
-            playerGhost.Speed = runGhostSpeed;
-        }
-        else
-        {
-            repeatDelay = defaultRepeatDelay;
-            playerGhost.Speed = defaultGhostSpeed;
-        }
-    }
     
     public void HandleMoveInput()
     {
+        HandleSpeedWalkInput();
+        
         timer = Mathf.Max(0f, timer - Time.deltaTime);
-        
+
         SetMoveAnimation();
-        
+
         Vector2 dirVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if (dirVector == Vector2.zero)  return;
         
@@ -92,6 +80,20 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
+    private void HandleSpeedWalkInput()
+    {
+        if (Input.GetButton(Const_KeyCodes.Action3))
+        {
+            repeatDelay = runRepeatDelay;
+            playerGhost.Speed = runGhostSpeed;
+        }
+        else
+        {
+            repeatDelay = defaultRepeatDelay;
+            playerGhost.Speed = defaultGhostSpeed;
+        }
+    }
+
     void SetMoveAnimation()
     {
         // move animation when direction button down 
@@ -105,17 +107,12 @@ public class Script_PlayerMovement : MonoBehaviour
 
     bool CheckRepeatMove(Directions dir)
     {
-        if (timer == 0.0f)
-        {   
-            return true;
-        }
-
-        return false;
+        return timer == 0f;
     }
 
     void Move(Directions dir)
     {
-        /// on ButtonDown allow instant repeat
+        /// on button presses reset timer to allow for instant direction changes
         if (
             Input.GetButtonDown(Const_KeyCodes.Up)
             || Input.GetButtonDown(Const_KeyCodes.Right)
@@ -139,18 +136,14 @@ public class Script_PlayerMovement : MonoBehaviour
 
         if (CheckCollisions(dir))  return;
 
-        /*
-            in DDR mode, only changing directions to look like dancing
-        */
+        /// in DDR mode, only changing directions to look like dancing
         if (game.state == "ddr")    return;
         
         progress = 0f;
         timer = repeatDelay;
 
-        /*
-            move player to desired loc, and start playerGhost's animation
-            after-the-fact
-        */
+        // move player to desired loc, and start playerGhost's animation
+        // after-the-fact
         playerGhost.startLocation = player.location;
 
         player.location += desiredDirection;

@@ -77,13 +77,8 @@ public class Script_Player : Script_Character
             // playerMovementHandler.FinishMoveAnimation();
             // animator.SetBool("PlayerMoving", false);
             playerActionHandler.HandleActionInput(facingDirection, location);
-            if (
-                State == Const_States_Player.Attack
-                || State == Const_States_Player.Dialogue
-                || State == Const_States_Player.Viewing
-                || State == Const_States_Player.PickingUp
-                || State == Const_States_Player.Standby
-            ) {
+            if (IsNotMovingState())
+            {
                 animator.SetBool("PlayerMoving", false);
             }
             else
@@ -91,7 +86,6 @@ public class Script_Player : Script_Character
                 // once we know we move onto an exit space
                 // begin fading the screen out
                 playerMovementHandler.HandleExitTile();
-                playerMovementHandler.HandleSpeedWalkInput();
                 playerMovementHandler.HandleMoveInput();
             }
         }
@@ -99,12 +93,26 @@ public class Script_Player : Script_Character
         {
             if (game.state == Const_States_Game.DDR)
             {
-                playerMovementHandler.HandleMoveInput();
+                playerMovementHandler.HandleMoveInput();   
             }
-            
-            animator.SetBool("PlayerMoving", false);
+            else
+            {
+                animator.SetBool("PlayerMoving", false);
+            }
         }
     }
+
+    // For migrating to new Input System
+    // public void OnMove(InputValue input)
+    // {
+    //     if (
+    //         game.state == Const_States_Game.Interact & IsMovingState()
+    //         || game.state == Const_States_Game.DDR
+    //     )
+    //     {
+    //         playerMovementHandler.HandleMoveInput(input.Get<Vector2>());
+    //     }
+    // }
 
     /// =========================================================================================
     /// STATE FUNCTIONS
@@ -168,6 +176,15 @@ public class Script_Player : Script_Character
         Debug.Log($"Player state set to {state}!");
     }
 
+    private bool IsNotMovingState()
+    {
+        return State == Const_States_Player.Attack
+                || State == Const_States_Player.Dialogue
+                || State == Const_States_Player.Viewing
+                || State == Const_States_Player.PickingUp
+                || State == Const_States_Player.Standby
+                || State == Const_States_Player.Inventory;
+    }
     /// =========================================================================================
     /// COMBAT
     /// =========================================================================================
