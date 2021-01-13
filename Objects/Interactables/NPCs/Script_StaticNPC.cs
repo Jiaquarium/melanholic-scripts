@@ -45,6 +45,8 @@ public class Script_StaticNPC : Script_Interactable
     {
         if (action == Const_KeyCodes.Action1)
         {
+            Debug.Log($"CHECKING DISABLED DIRECTIONS: {CheckDisabledDirections()}");
+            
             if (isDialogueCoolDown || CheckDisabledDirections())
             {
                 Debug.Log($"Cannot interact with {name}, either still dialogue cool down or disabled direction");

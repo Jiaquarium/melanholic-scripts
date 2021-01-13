@@ -21,6 +21,15 @@ public class Script_TileMapExitEntrance : MonoBehaviour
     [SerializeField] private string type;
     [SerializeField] private bool isDisabled;
 
+    void OnValidate() {
+        if (exitEntranceMetadata != null)
+        {
+            level                   = exitEntranceMetadata.data.level;
+            playerNextSpawnPosition = exitEntranceMetadata.data.playerSpawn;
+            playerFacingDirection   = exitEntranceMetadata.data.facingDirection;
+        }    
+    }
+    
     void Awake()
     {
         if (!Debug.isDebugBuild || !Const_Dev.IsDevMode)

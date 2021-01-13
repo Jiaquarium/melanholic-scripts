@@ -28,6 +28,6 @@ public class Script_ItemsEventsManager : MonoBehaviour
     public static event ItemPickUpTheatricDoneDelegate OnItemPickUpTheatricDone;
     public static void ItemPickUpTheatricDone(Script_ItemPickUpTheatricsPlayer player)
     {
-        if (OnUnlock != null)   OnItemPickUpTheatricDone(player);
+        if (OnItemPickUpTheatricDone != null)   OnItemPickUpTheatricDone(player);
     }
 }

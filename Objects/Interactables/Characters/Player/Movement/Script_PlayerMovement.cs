@@ -227,7 +227,7 @@ public class Script_PlayerMovement : MonoBehaviour
         {
             foreach(Tilemap tm in exitsTileMaps)
             {
-                if (tm.HasTile(tileLocation))
+                if (tm.HasTile(tileLocation) && tm.gameObject.activeSelf)
                 {
                     Script_TileMapExitEntrance exitInfo = tm.GetComponent<Script_TileMapExitEntrance>();
                     
@@ -254,7 +254,7 @@ public class Script_PlayerMovement : MonoBehaviour
             }
         }
 
-        if (entrancesTileMap != null && entrancesTileMap.HasTile(tileLocation))
+        if (entrancesTileMap != null && entrancesTileMap.HasTile(tileLocation) && entrancesTileMap.gameObject.activeSelf)
         {
             Script_TileMapExitEntrance entranceInfo = entrancesTileMap.GetComponent<Script_TileMapExitEntrance>();
             

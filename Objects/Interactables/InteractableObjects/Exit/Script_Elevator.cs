@@ -25,8 +25,10 @@ public class Script_Elevator : Script_InteractableObjectExit
         Script_PlayerEventsManager.OnEnteredElevator -= OnEnteredElevator;
     }
     
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+        
         Debug.Log($"Setting Elevator IsClosed: {isClosed}");
         // UpdateState();
     }

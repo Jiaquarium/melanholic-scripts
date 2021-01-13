@@ -39,6 +39,7 @@ public class Script_LevelBehavior : MonoBehaviour
     protected virtual void HandleAction() {}
     protected virtual void HandlePuzzle() {}
     protected virtual void HandleOnEntrance() {}
+    
     /// <summary>
     /// this is for moving forward in dialogue during cut scenes
     /// best place is here because this could be separate of player logic

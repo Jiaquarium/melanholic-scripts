@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
 public class Script_InteractableBox : MonoBehaviour
 {
-    [SerializeField] Vector3 boxSize; // half extants
+    [SerializeField] protected Vector3 boxSize; // half extants
     [SerializeField] Color color;
 
     private void OnDrawGizmos() {

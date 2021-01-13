@@ -33,24 +33,26 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
         // tiles map from (xyz) to (xz)
         if (!tileMap.HasTile(tileLocation))
         {
-            // check to see if current tile not in Ground Tilemap
-            // is possibly in exit/entrance tilemaps
-            if (entrancesTileMap != null && entrancesTileMap.HasTile(tileLocation))
+            // tile may not be in current tilemap but could still be in an entrance tilemap
+            if (
+                entrancesTileMap != null
+                && entrancesTileMap.HasTile(tileLocation)
+                && !entrancesTileMap.GetComponent<Script_TileMapExitEntrance>().IsDisabled
+                && entrancesTileMap.gameObject.activeSelf
+            )
             {
                 return false;
             }
             
             foreach(Tilemap tm in exitsTileMaps)
             {
+                // tile may not be in current tilemap but could still be in an exit tilemap
                 if (
                     tm != null
                     && tm.HasTile(tileLocation)
-                    && tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled)
-                {
-                    return true;
-                }
-
-                else if (exitsTileMaps != null && tm.HasTile(tileLocation))
+                    && !tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled
+                    && tm.gameObject.activeSelf
+                )
                 {
                     return false;
                 }

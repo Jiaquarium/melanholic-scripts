@@ -9,6 +9,8 @@ using System;
 /// For TimelineAndEnter, this will start tracking Enter/Space input after timeline is done
 /// 
 /// NOTE: Ensure to activate a CTA at the end of the theatric that tells player to press enter/space
+/// NOTE: Because this reacts in LateUpdate() ensure to wrap this call with a bool check or before 
+/// this properly exits it'll activate another theatric
 /// </summary>
 public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
 {
@@ -20,13 +22,18 @@ public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
 
     [SerializeField] private DoneStates DoneCondition;
     [SerializeField] private bool isDone;
-    [SerializeField] private Script_ItemPickUpTheatric theatric;
+    [SerializeField] private Script_ItemPickUpTheatric _theatric;
     [SerializeField] private PlayableDirector director;
     [SerializeField] private TimelineAsset myTimeline;
     [SerializeField] private bool isTimelineDone;
     [SerializeField] private bool isEnterOrSpacePressed;
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     private bool isDetectingEnter;
+
+    public Script_ItemPickUpTheatric Theatric
+    {
+        get => _theatric;
+    }
 
     void OnEnable()
     {
@@ -72,15 +79,15 @@ public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
         {
             Stop();
             FadeBgMusicIn();
+            isDone = true;
+
             Debug.Log($"!!!Firing ItemPickUpTheatricDone Done for Director {director}, this: {this}");
             Script_ItemsEventsManager.ItemPickUpTheatricDone(this);
-            
-            isDone = true;
         }
 
         void Stop()
         {
-            Script_ItemPickUpTheatricsManager.Control.HideItemPickUpTheatric(theatric);
+            Script_ItemPickUpTheatricsManager.Control.HideItemPickUpTheatric(Theatric);
         }
 
         void FadeBgMusicIn()
@@ -103,7 +110,7 @@ public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
         isDone = false;
         isTimelineDone = false;
 
-        Script_ItemPickUpTheatricsManager.Control.ShowItemPickUpTheatric(theatric);
+        Script_ItemPickUpTheatricsManager.Control.ShowItemPickUpTheatric(Theatric);
         
         Debug.Log($"Playing myTimeline asset: {myTimeline}");
         director.Play(myTimeline);

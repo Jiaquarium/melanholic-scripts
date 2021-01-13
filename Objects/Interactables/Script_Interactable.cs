@@ -14,21 +14,22 @@ public class Script_Interactable : MonoBehaviour
     [SerializeField] private bool _disableR;
     [SerializeField] private bool _disableU;
     [SerializeField] private bool _disableD;
+    [SerializeField] private Script_DisablerController disablerController;
 
     protected bool DisableL {
-        get { return _disableL; }
+        get => _disableL;
     }
 
     protected bool DisableR {
-        get { return _disableR; }
+        get => _disableR;
     }
 
     protected bool DisableU {
-        get { return _disableU; }
+        get => _disableU;
     }
 
     protected bool DisableD {
-        get { return _disableD; }
+        get => _disableD;
     }
 
     /// <summary>
@@ -56,23 +57,46 @@ public class Script_Interactable : MonoBehaviour
         }
     }
 
-    public virtual bool CheckDisabledDirections()
+    public bool CheckDisabledDirections()
     {
-        Directions directionToPlayer = Script_Utils.GetDirectionToTarget(
-                                            transform.position,
-                                            Script_Game.Game.GetPlayer().transform.position
-                                        );
-        
-        if (
-            directionToPlayer == Directions.Left && DisableL
-            || directionToPlayer == Directions.Up && DisableU
-            || directionToPlayer == Directions.Right && DisableR
-            || directionToPlayer == Directions.Down && DisableD
-        )
+        if (disablerController != null) return GetDisablerControllerPlayerCollision();
+        else                            return GetDisabledDirectionVector();        
+
+        bool GetDisablerControllerPlayerCollision()
         {
-            return true;
+            bool isPlayerInLeftBox = disablerController.GetPlayerInBox(Directions.Left);
+            bool isPlayerInRightBox = disablerController.GetPlayerInBox(Directions.Right);
+            bool isPlayerInUpBox = disablerController.GetPlayerInBox(Directions.Up);
+            bool isPlayerInDownBox = disablerController.GetPlayerInBox(Directions.Down);
+            
+            Debug.Log($"Left {isPlayerInLeftBox}");
+            Debug.Log($"Right {isPlayerInRightBox}");
+            Debug.Log($"Up {isPlayerInUpBox}");
+            Debug.Log($"Down {isPlayerInDownBox}");
+            
+            return (
+                (isPlayerInLeftBox && DisableL)
+                || (isPlayerInRightBox&& DisableR)
+                || (isPlayerInUpBox && DisableU)
+                || (isPlayerInDownBox&& DisableD)
+            );
         }
 
-        return false;
+        bool GetDisabledDirectionVector()
+        {
+            Directions directionToPlayer = Script_Utils.GetDirectionToTarget(
+                                                transform.position,
+                                                Script_Game.Game.GetPlayer().transform.position
+                                            );
+            
+            return (
+                directionToPlayer == Directions.Left && DisableL
+                || directionToPlayer == Directions.Up && DisableU
+                || directionToPlayer == Directions.Right && DisableR
+                || directionToPlayer == Directions.Down && DisableD
+            );
+        }
     }
+
+
 }

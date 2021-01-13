@@ -43,6 +43,8 @@ public class Script_ItemPickUpTheatricsManager : MonoBehaviour
 
     public void HideItemPickUpTheatric(Script_ItemPickUpTheatric theatric)
     {
+        Debug.Log("***Calling HideItemPickUpTheatric now***");
+        
         ItemPickUpTheatricsCanvasGroup.alpha = 0f;
         ItemPickUpTheatricsCanvasGroup.gameObject.SetActive(false);
 

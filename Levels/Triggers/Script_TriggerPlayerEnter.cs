@@ -13,6 +13,9 @@ public class Script_TriggerPlayerEnter : Script_Trigger
 
     void OnTriggerEnter(Collider other)
     {
+        if (isColliding)    return;
+        isColliding = true;
+
         if (other.tag == Const_Tags.Player)
         {
             if (action.CheckUnityEventAction())
