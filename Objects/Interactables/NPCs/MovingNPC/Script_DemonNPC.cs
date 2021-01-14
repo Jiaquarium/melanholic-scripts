@@ -20,12 +20,10 @@ public class Script_DemonNPC : Script_MovingNPC
 
     private void HandlePsychicDuck()
     {
-        bool isPlayerPsychicDuckEquipped = Script_Game.Game.CheckStickerEquippedById(
-            Const_Items.PsychicDuckId
-        );
-        Debug.Log($"isPlayerPsychicDuckEquipped: {isPlayerPsychicDuckEquipped}");
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.GetSticker()?.id == Const_Items.PsychicDuckId;
+        Debug.Log($"isPsychicDuckActive: {isPsychicDuckActive}");
 
-        if (isPlayerPsychicDuckEquipped)
+        if (isPsychicDuckActive)
         {
             // if previously talked default, then need to switch and reset idx
             if (!isPsychicNodes)

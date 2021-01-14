@@ -21,7 +21,6 @@ public class Script_InventoryManager : MonoBehaviour
     [SerializeField] private Script_InventoryAudioSettings settings;
     [SerializeField] private Script_ItemChoicesInputManager itemChoicesInputManager;
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
-    public Script_Item activeItem {get; set;}
     private Script_StickersInventoryHandler stickersHandler;
     private Script_CollectiblesInventoryHandler collectiblesHandler;
     private Script_UsablesInventoryHandler usablesHandler;
