@@ -22,6 +22,15 @@ public class Script_MynesMirror : Script_InteractableObjectText
         set => _MynesConversationNode = value;
     }
 
+    void OnValidate()
+    {
+        if (Id != MynesMirrorId)
+        {
+            Debug.LogError($"This Mynes Mirror {name} Id and MynesMirrorId were not matching");
+        }
+        Id = MynesMirrorId;
+    }
+    
     void OnEnable()
     {
         Script_MynesMirrorEventsManager.OnEndTimeline += StartDialogue;
