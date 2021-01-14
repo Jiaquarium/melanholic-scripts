@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "Usable", menuName = "Inventory/Usables/Usable")]
 /// <summary>
 /// Can be used
 /// Actions:

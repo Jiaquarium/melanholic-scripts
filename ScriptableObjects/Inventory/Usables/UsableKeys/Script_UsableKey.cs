@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "UsableKey", menuName = "Inventory/Usables/UsableKey")]
 /// <summary>
 /// Use action will try to detect a UsableKeyTarget
 /// </summary>

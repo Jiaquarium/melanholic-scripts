@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "Collectible", menuName = "Inventory/Collectible")]
 /// <summary>
 /// Used as quest items and interesting things player can view
 /// to reveal more about characters and the story
