@@ -38,7 +38,7 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             ErasDirector.stopped += OnErasMovesDone;
             Script_PRCSEventsManager.OnPRCSDone += PRCSDoneReaction;
@@ -47,7 +47,7 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
 
     protected override void OnDisable()
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             ErasDirector.stopped -= OnErasMovesDone;
             Script_PRCSEventsManager.OnPRCSDone -= PRCSDoneReaction;
@@ -55,7 +55,7 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
     }
     
     public override void Cleanup() {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             if (isDone)     game.DestroyNPCs();
         }
@@ -63,7 +63,7 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
     
     public override bool ActivateTrigger(string Id)
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             if (
                 (
@@ -185,7 +185,7 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
         
         game.SetupDemons(demonsParent, demonSpawns);
         
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             game.SetupMovingNPC(Ero, !isActivated);
             

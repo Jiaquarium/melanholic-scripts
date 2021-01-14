@@ -16,10 +16,11 @@ public class Script_Game : MonoBehaviour
     /* =======================================================================
         STATE DATA
     ======================================================================= */
-    [SerializeField] private int _run;
-    public int Run {
-        get { return _run; }
-        set { _run = value; }
+    public Script_Run Run {
+        get { return runsManager.Run; }
+    }
+    public int RunIdx {
+        get { return runsManager.RunIdx; }
     }
     public int level;
     public float totalPlayTime;
@@ -291,8 +292,7 @@ public class Script_Game : MonoBehaviour
 
     private void OnNewGame()
     {
-        scarletCipherManager.Initialize();
-
+        NewGame();
         NewGamePlayerSpawn();
 
         void NewGamePlayerSpawn()
@@ -307,7 +307,13 @@ public class Script_Game : MonoBehaviour
 
     private void OnNewGameDev()
     {
-        scarletCipherManager.Initialize();   
+        NewGame();
+    }
+
+    private void NewGame()
+    {
+        scarletCipherManager.Initialize();
+        runsManager.Initialize();
     }
 
     /// <summary>
@@ -459,6 +465,11 @@ public class Script_Game : MonoBehaviour
     private void ClearDrops()
     {
         persistentDropsContainer.DeactivatePersistentDrops();
+    }
+
+    public void LoadRun(int runIdx)
+    {
+        runsManager.Load(runIdx);
     }
 
     /* =======================================================================
@@ -1723,7 +1734,7 @@ public class Script_Game : MonoBehaviour
     /// <param name="playerStateOverride"></param>
     public void NextRunSaveInitialize()
     {
-        Run++;
+        runsManager.IncrementRun();
         CleanRun();
         
         Model_PlayerState playerData = new Model_PlayerState(
@@ -1734,7 +1745,7 @@ public class Script_Game : MonoBehaviour
         );
 
         Model_GameData gameData = new Model_GameData(
-            Run,
+            runsManager.RunIdx,
             32, // Hotel Lobby
             totalPlayTime
         );

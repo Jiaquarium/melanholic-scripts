@@ -9,7 +9,7 @@ public class Script_SaveSavedGameTitleData : MonoBehaviour
     
     public Model_SavedGameTitleData Create()
     {
-        int run                 = game.Run;
+        string run              = game.Run.dayName;
         float clockTime         = Script_ClockManager.Control.ClockTime;
         
         string name             = Script_Names.Player;

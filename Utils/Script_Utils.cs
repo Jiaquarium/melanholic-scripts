@@ -408,9 +408,9 @@ public static class Script_Utils
         return date.ToString("MMMM dd, yyyy hh:mm tt").ToLower();
     }
 
-    public static string FormatRun(this int run)
+    public static string FormatRun(this string run)
     {
-        return $"{run.ToString()} dan";
+        return $"{run.ToString()}";
     }
 
     /// <summary>

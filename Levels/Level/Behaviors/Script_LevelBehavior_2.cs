@@ -46,7 +46,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             nameplateDirector.stopped += OnNameplateDone;
         }
@@ -54,7 +54,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
 
     protected override void OnDisable()
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             nameplateDirector.stopped -= OnNameplateDone;
         }
@@ -62,7 +62,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     
     public override bool ActivateTrigger(string Id)
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             if (
                 (
@@ -83,7 +83,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
 
     private void OnTrigger()
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             game.PauseBgMusic();
             if (game.GetNPCBgThemeActive())     game.UnPauseNPCBgTheme();
@@ -123,7 +123,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     }
     
     public override void OnLevelInitComplete() {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             if (!isActivated)
             {
@@ -135,7 +135,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     }
     public override void HandleMovingNPCOnApproachedTarget(int i)
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             dm.StartDialogueNode(TriggerNodes[activeTriggerIndex - 1]);
             RehydrateMovingNPCMoves(0);
@@ -158,7 +158,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     */
     protected override void HandleAction()
     {
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             if (
                 game.state == "cut-scene"
@@ -213,7 +213,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
         game.SetupInteractableObjectsText(painting2Parent, !isInitialized);
         game.SetupInteractableObjectsText(painting3Parent, !isInitialized);
         
-        if (game.Run == Script_RunsManager.EroIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             game.SetupMovingNPC(Ero, isInitialize: !isInitialized);
             

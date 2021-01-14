@@ -26,6 +26,6 @@ public class Script_DynamicStringBuilder : MonoBehaviour
     {
         Params = new Dictionary<string, string>();
         
-        Params.Add("@@Run",             Script_Game.Game?.Run.ToString() ?? "?");
+        Params.Add("@@Run",             Script_Game.Game?.Run.dayName.FormatRun() ?? "?");
     }
 }

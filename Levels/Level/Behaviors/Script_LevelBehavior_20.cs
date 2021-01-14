@@ -106,7 +106,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         foreach(GameObject buff in buffs)               buff.SetActive(false);
 
         /// Melz Intro Run
-        if (game.Run == Script_RunsManager.MelzIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             if (!entranceCutSceneDone)
             {
@@ -142,7 +142,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         AftermathDirector.stopped                       += OnAftermathPlayableDone; 
         
         /// Melz Intro Run
-        if (game.Run == Script_RunsManager.MelzIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             IntroDirector.stopped                           += OnIntroPlayableDone;
             IntroExitDirector.stopped                       += OnIntroExitPlayableDone;
@@ -160,7 +160,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         AftermathDirector.stopped                       -= OnAftermathPlayableDone; 
         
         /// Melz Intro Run
-        if (game.Run == Script_RunsManager.MelzIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             IntroDirector.stopped                           -= OnIntroPlayableDone;
             IntroExitDirector.stopped                       -= OnIntroExitPlayableDone;
@@ -455,7 +455,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     private void OnMelzIntroCutScene()
     {
         /// Melz Intro Run
-        if (game.Run == Script_RunsManager.MelzIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             /// Set in Awake() to signal we're doing Melz intro cut scene
             if (isInitialCutScene)
@@ -527,7 +527,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
 
         /// Melz Intro Run
-        if (game.Run == Script_RunsManager.MelzIntroRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             game.SetupMovingNPC(Melz, isInit);
             MelzIntroMelzParent.gameObject.SetActive(true);   

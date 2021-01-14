@@ -54,7 +54,7 @@ public class Script_SavedGameTitle : MonoBehaviour
 
     private void Render(Model_SavedGameTitleData savedGame)
     {
-        int run                 = savedGame.run;
+        string run              = savedGame.run;
         float clockTime         = savedGame.clockTime;
         string name             = savedGame.name;
         string headline         = savedGame.headline;

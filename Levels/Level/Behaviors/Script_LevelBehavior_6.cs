@@ -56,7 +56,7 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
 
     protected override void HandlePuzzle()
     {
-        if (game.Run == Script_RunsManager.LightupPaintingsPuzzleRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             HandleLightupPaintingsPuzzle();
         }
@@ -159,7 +159,7 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
             mirrorReflection.SetActive(true);
         }
 
-        if (game.Run == Script_RunsManager.LightupPaintingsPuzzleRun)
+        if (game.Run.dayId == Script_Run.DayId.none)
         {
             game.SetupInteractableFullArt(fullArtParent, isInit);
 
