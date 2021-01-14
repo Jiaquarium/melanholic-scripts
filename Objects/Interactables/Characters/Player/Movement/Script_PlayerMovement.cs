@@ -231,13 +231,13 @@ public class Script_PlayerMovement : MonoBehaviour
                 {
                     Script_TileMapExitEntrance exitInfo = tm.GetComponent<Script_TileMapExitEntrance>();
                     
-                    if (exitInfo.Type == Script_ExitTypes.StairsUp)
+                    if (exitInfo.Type == Script_Exits.ExitType.StairsUp)
                     {
                         Debug.Log("HandleStairsExitAnimation()");
                         HandleStairsExitAnimation();
                     }
 
-                    if (exitInfo.Type == Script_ExitTypes.ExitCutSceneLB)
+                    if (exitInfo.Type == Script_Exits.ExitType.CutScene)
                     {
                         game.HandleExitCutSceneLevelBehavior();
                         return;
@@ -247,7 +247,9 @@ public class Script_PlayerMovement : MonoBehaviour
                         exitInfo.Level,
                         exitInfo.PlayerNextSpawnPosition,
                         exitInfo.PlayerFacingDirection,
-                        true
+                        true,
+                        exitInfo.IsSilent,
+                        exitInfo.Type
                     );
                     return;
                 }
@@ -258,7 +260,7 @@ public class Script_PlayerMovement : MonoBehaviour
         {
             Script_TileMapExitEntrance entranceInfo = entrancesTileMap.GetComponent<Script_TileMapExitEntrance>();
             
-            if (entranceInfo.Type == Script_ExitTypes.StairsUp)
+            if (entranceInfo.Type == Script_Exits.ExitType.StairsUp)
             {
                 HandleStairsExitAnimation();
             }
@@ -267,7 +269,9 @@ public class Script_PlayerMovement : MonoBehaviour
                 entranceInfo.Level,
                 entranceInfo.PlayerNextSpawnPosition,
                 entranceInfo.PlayerFacingDirection,
-                false
+                false,
+                entranceInfo.IsSilent,
+                entranceInfo.Type
             );
             return;
         }

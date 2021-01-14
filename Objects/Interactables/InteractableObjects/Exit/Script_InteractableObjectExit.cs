@@ -6,7 +6,7 @@ public class Script_InteractableObjectExit : Script_InteractableObject
 {
     [SerializeField] protected Script_ExitMetadataObject exit;
     [SerializeField] private bool isExitSFXSilent = true;
-    [SerializeField] private Script_Exits.FollowUp followUp;
+    [SerializeField] private Script_Exits.ExitType exitType;
     
     public override void ActionDefault()
     {
@@ -22,7 +22,7 @@ public class Script_InteractableObjectExit : Script_InteractableObject
             exit.data.facingDirection,
             true,
             isExitSFXSilent,
-            followUp
+            exitType
         );
     }
 }

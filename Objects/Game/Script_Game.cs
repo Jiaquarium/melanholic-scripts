@@ -1641,10 +1641,29 @@ public class Script_Game : MonoBehaviour
         Directions playerFacingDirection,
         bool isExit,
         bool isSilent = false,
-        Script_Exits.FollowUp followUp = Script_Exits.FollowUp.Default
+        Script_Exits.ExitType exitType = Script_Exits.ExitType.Default
     )
     {
+        Script_Exits.FollowUp followUp; 
+        
+        switch(exitType)
+        {
+            case (Script_Exits.ExitType.SaveAndRestart):
+                followUp = Script_Exits.FollowUp.Default; // TBD CHANGE TO SAVE
+                break;
+            case (Script_Exits.ExitType.Elevator):
+                followUp = Script_Exits.FollowUp.CutSceneNoFade; // TBD CHANGE TO SAVE
+                break;
+            case (Script_Exits.ExitType.StairsUp):
+                followUp = Script_Exits.FollowUp.Default; // TBD CHANGE TO SAVE
+                break;
+            default:
+                followUp = Script_Exits.FollowUp.Default;
+                break;
+        }
+        
         Debug.Log($"Follow up passed to ExitsHandler is {followUp}");
+        
         exitsHandler.Exit(
             level,
             playerNextSpawnPosition,

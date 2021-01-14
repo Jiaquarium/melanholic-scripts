@@ -9,7 +9,7 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private Script_TimelineController elevatorTimelineController;
     [SerializeField] private Script_CanvasGroupController elevatorCanvasGroupController;
     [SerializeField] private bool isExitSFXSilent = true;
-    [SerializeField] private Script_Exits.FollowUp followUp = Script_Exits.FollowUp.CutSceneNoFade;
+    [SerializeField] private Script_Exits.ExitType exitType = Script_Exits.ExitType.Elevator;
     [SerializeField] private Script_ExitMetadataObject currentExit;
     [SerializeField] private Script_ElevatorBehavior currentExitBehavior;
     [SerializeField] private Script_Elevator currentElevator;
@@ -42,7 +42,7 @@ public class Script_ElevatorManager : MonoBehaviour
             currentExit.data.facingDirection,
             true,
             isExitSFXSilent,
-            followUp
+            exitType
         );
 
         currentExit = null;

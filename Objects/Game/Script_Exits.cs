@@ -16,6 +16,15 @@ using UnityEditor;
 /// </summary>
 public class Script_Exits : MonoBehaviour
 {
+    public enum ExitType
+    {
+        Default             = 0,
+        SaveAndRestart      = 1,
+        Elevator            = 2,
+        CutScene            = 3,
+        StairsUp            = 10,
+    }
+    
     public enum FollowUp
     {
         Default,
@@ -35,13 +44,13 @@ public class Script_Exits : MonoBehaviour
     [SerializeField] private bool isHandlingExit; /// Used to prevent multiple exitting and crashing
 
     private bool exitsDisabled;
-    private bool isFadeOut;
+    private bool isDefaultFadeOut;
     private int levelToGo;
     private FollowUp currentFollowUp;
     
     void Update()
     {
-        if (isFadeOut)  ChangeLevelFade();
+        if (isDefaultFadeOut)  ChangeLevelFade();
         if (isFadeIn)   FadeInLevel();    
     }
 
@@ -85,7 +94,7 @@ public class Script_Exits : MonoBehaviour
             default:
             {
                 Debug.Log("Default Fading Out");
-                isFadeOut = true;
+                isDefaultFadeOut = true;
                 break;
             }
         }
@@ -115,7 +124,7 @@ public class Script_Exits : MonoBehaviour
 
     public void StartFadeOut()
     {
-        isFadeOut = true;
+        isDefaultFadeOut = true;
     }
 
     public bool GetIsExitsDisabled()
@@ -123,9 +132,8 @@ public class Script_Exits : MonoBehaviour
         return exitsDisabled;
     }
 
-    /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    /// FOR CHANGING OUT LEVELS: START
-    /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // -------------------------------------------------------------------------------------
+    // FOR CHANGING OUT LEVELS: START
     void ChangeLevelFade()
     {
         canvas.alpha += fadeSpeed * Time.deltaTime;
@@ -133,7 +141,7 @@ public class Script_Exits : MonoBehaviour
         if (canvas.alpha >= 1f)
         {
             canvas.alpha = 1f;
-            isFadeOut = false;
+            isDefaultFadeOut = false;
             
             ChangeLevel();
             
@@ -181,8 +189,8 @@ public class Script_Exits : MonoBehaviour
         game.SnapToPlayer(playerPrevPosition);
     }
     
-    /// FOR CHANGING OUT LEVELS: END
-    /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // FOR CHANGING OUT LEVELS: END
+    // -------------------------------------------------------------------------------------
 
     /// <summary>
     /// Fade in the level (fade out the canvas)
