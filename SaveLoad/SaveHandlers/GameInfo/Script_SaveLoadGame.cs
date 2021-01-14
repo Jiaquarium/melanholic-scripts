@@ -6,12 +6,12 @@ public class Script_SaveLoadGame : MonoBehaviour
 {
     [SerializeField] private Script_Game game;
 
-    public void SaveGameData(Model_SaveData data)
+    public void SaveGameData(Model_SaveData data, Model_GameData gameDataOverride)
     {
         data.gameData = new Model_GameData(
-            game.Run,
-            game.level,
-            game.totalPlayTime
+            gameDataOverride?.run           ?? game.Run,
+            gameDataOverride?.level         ?? game.level,
+            gameDataOverride?.totalPlayTime ?? game.totalPlayTime
         );
     }
 

@@ -60,7 +60,8 @@ public class Script_SaveGameControl : MonoBehaviour
     /// <param name="playerStateOverride">Option to override player state</param>
     public void Save(
         Saves type,
-        Model_PlayerState playerStateOverride = null
+        Model_PlayerState playerStateOverride = null,
+        Model_GameData gameDataOverride = null
     )
     {
         SetPath();
@@ -117,7 +118,7 @@ public class Script_SaveGameControl : MonoBehaviour
 
         void SaveGame(Model_SaveData data)
         {
-            gameHandler.SaveGameData(data);
+            gameHandler.SaveGameData(data, gameDataOverride);
             playerHandler.SavePlayerData(data);
             entriesHandler.SaveEntries(data);
             inventoryHandler.SaveInventory(data);

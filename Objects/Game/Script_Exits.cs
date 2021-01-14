@@ -27,9 +27,10 @@ public class Script_Exits : MonoBehaviour
     
     public enum FollowUp
     {
-        Default,
-        CutSceneNoFade,
-        CutScene
+        Default             = 0,
+        CutSceneNoFade      = 1,
+        CutScene            = 2,
+        SaveAndRestart      = 3,
     }
     public CanvasGroup canvas;
 
@@ -50,8 +51,8 @@ public class Script_Exits : MonoBehaviour
     
     void Update()
     {
-        if (isDefaultFadeOut)  ChangeLevelFade();
-        if (isFadeIn)   FadeInLevel();    
+        if (isDefaultFadeOut)   ChangeLevelFade();
+        if (isFadeIn)           FadeInLevel();    
     }
 
     public void Exit(
@@ -91,10 +92,16 @@ public class Script_Exits : MonoBehaviour
                 ChangeLevelNoFade();
                 break;
             }
+            case (FollowUp.SaveAndRestart):
+            {
+                Debug.Log("SaveAndRestart Exit Follow Up");
+                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                break;
+            }
             default:
             {
                 Debug.Log("Default Fading Out");
-                isDefaultFadeOut = true;
+                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
                 break;
             }
         }
@@ -143,16 +150,23 @@ public class Script_Exits : MonoBehaviour
             canvas.alpha = 1f;
             isDefaultFadeOut = false;
             
-            ChangeLevel();
             
             switch (currentFollowUp)
             {
                 case (FollowUp.CutSceneNoFade):
                 {
+                    ChangeLevel();
+                    break;
+                }
+                case (FollowUp.SaveAndRestart):
+                {
+                    Debug.Log("------------ SAVE STATE AND RESTART ------------");
+                    game.NextRunSaveInitialize();
                     break;
                 }
                 default:
                 {
+                    ChangeLevel();
                     isFadeIn = true;
                     break;
                 }
@@ -223,12 +237,12 @@ public class Script_Exits : MonoBehaviour
             game.ChangeStateInteract();
         }
         
+        currentFollowUp = FollowUp.Default;
+
         /// Allows us to define new initial game state in level behavior
         /// Also fire event, so other objects can react
         game.levelBehavior.OnLevelInitComplete();
         Script_GameEventsManager.LevelInitComplete();
-
-        currentFollowUp = FollowUp.Default;
     }
 
     public void Setup(Script_Game _game)

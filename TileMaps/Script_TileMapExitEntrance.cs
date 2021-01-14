@@ -56,6 +56,7 @@ public class Script_TileMapExitEntrance : MonoBehaviour
     public Script_Exits.ExitType Type
     {
         get => _type;
+        set => _type = value;
     }
 
     public bool IsDisabled

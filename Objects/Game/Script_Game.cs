@@ -131,6 +131,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Transform newGameSpawnDestination;
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
+    [SerializeField] private Script_ExitMetadataObject playerSpawn;
     
     void OnEnable()
     {
@@ -1649,13 +1650,13 @@ public class Script_Game : MonoBehaviour
         switch(exitType)
         {
             case (Script_Exits.ExitType.SaveAndRestart):
-                followUp = Script_Exits.FollowUp.Default; // TBD CHANGE TO SAVE
+                followUp = Script_Exits.FollowUp.SaveAndRestart;
                 break;
             case (Script_Exits.ExitType.Elevator):
-                followUp = Script_Exits.FollowUp.CutSceneNoFade; // TBD CHANGE TO SAVE
+                followUp = Script_Exits.FollowUp.CutSceneNoFade;
                 break;
             case (Script_Exits.ExitType.StairsUp):
-                followUp = Script_Exits.FollowUp.Default; // TBD CHANGE TO SAVE
+                followUp = Script_Exits.FollowUp.Default;
                 break;
             default:
                 followUp = Script_Exits.FollowUp.Default;
@@ -1717,16 +1718,34 @@ public class Script_Game : MonoBehaviour
     
     /// 1. <!-- Move to Next Run -->
     /// <summary>
-    /// Called from Last Elevator
+    /// Called when exiting the Elevator Bay after exiting via a Last Elevator
     /// </summary>
     /// <param name="playerStateOverride"></param>
-    public void NextRunSaveInitialize(Model_PlayerState playerStateOverride)
+    public void NextRunSaveInitialize()
     {
         Run++;
         CleanRun();
-        saveGameControl.Save(Script_SaveGameControl.Saves.Initialize, playerStateOverride);
+        
+        Model_PlayerState playerData = new Model_PlayerState(
+            (int)playerSpawn.data.playerSpawn.x,
+            (int)playerSpawn.data.playerSpawn.y,
+            (int)playerSpawn.data.playerSpawn.z,
+            playerSpawn.data.facingDirection
+        );
 
-        /// TBD Need to Restart Game
+        Model_GameData gameData = new Model_GameData(
+            Run,
+            32, // Hotel Lobby
+            totalPlayTime
+        );
+        
+        saveGameControl.Save(
+            Script_SaveGameControl.Saves.Initialize,
+            playerData,
+            gameData
+        );
+
+        RestartGame();
     }
 
     /// 2. <!-- Restart from Current Initialized Run -->

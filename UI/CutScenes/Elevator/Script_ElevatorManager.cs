@@ -35,6 +35,8 @@ public class Script_ElevatorManager : MonoBehaviour
     /// </summary>
     public void OnDoorsClosed()
     {
+        ExitBehavior();
+        
         /// Set up the new level in the background
         Script_Game.Game.Exit(
             currentExit.data.level,
@@ -46,10 +48,9 @@ public class Script_ElevatorManager : MonoBehaviour
         );
 
         currentExit = null;
-        UseCurrentExitBehavior();
         SetInitialElevatorState();
 
-        void UseCurrentExitBehavior()
+        void ExitBehavior()
         {
             currentExitBehavior?.Effect();
             currentExitBehavior = null;
