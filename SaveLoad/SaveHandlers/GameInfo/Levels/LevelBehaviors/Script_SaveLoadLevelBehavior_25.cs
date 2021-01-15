@@ -10,8 +10,7 @@ public class Script_SaveLoadLevelBehavior_25 : Script_SaveLoadLevelBehavior
     {
         Model_LevelBehavior_25 lvlModel = new Model_LevelBehavior_25(
             _isPuzzleComplete: LB25.isPuzzleComplete,
-            _spokenWithEllenia: LB25.spokenWithEllenia,
-            _gotBoarNeedle: LB25.gotBoarNeedle
+            _spokenWithEllenia: LB25.spokenWithEllenia
         );
         
         data.levelsData.LB25 = lvlModel;
@@ -34,6 +33,5 @@ public class Script_SaveLoadLevelBehavior_25 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_25 lvlModel = data.levelsData.LB25;
         LB25.isPuzzleComplete           = lvlModel.isPuzzleComplete;
         LB25.spokenWithEllenia          = lvlModel.spokenWithEllenia;
-        LB25.gotBoarNeedle              = lvlModel.gotBoarNeedle;
     }
 }

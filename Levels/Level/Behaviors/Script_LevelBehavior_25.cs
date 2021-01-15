@@ -17,7 +17,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     ======================================================================= */
     public bool isPuzzleComplete;
     public bool spokenWithEllenia;
-    public bool gotBoarNeedle;
 
     /* ======================================================================= */
     [SerializeField] private Script_DemonNPC Ellenia;
@@ -33,13 +32,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private float bgMusicEndIntroFadeOutTime;
     [SerializeField] private float waitToTurnTime; // should match with music
     [SerializeField] private Script_CollectibleObject SummerStone;
-    [SerializeField] private Script_ItemObject BoarNeedle;
     [SerializeField] private Script_DialogueNode onItemDescriptionDoneNode;
     [SerializeField] private Transform textParent;
     [SerializeField] private Transform fullArtParent;
     [SerializeField] private Script_InteractableFullArt easleFullArt;
-    [SerializeField] private Script_DialogueNode easleDialogueWithBoarNeedle;
-    [SerializeField] private Script_DialogueNode easleDialogueDefault;
     [SerializeField] private Script_InteractableFullArt dirtyMagazine;
     
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
@@ -90,17 +86,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     {
         Ellenia.SwitchPsychicNodes(NoIntroElleniaNodes);
     }
-
-    public void SetEasleDefaultNodes()
-    {
-        easleFullArt.dialogueNodes = new Script_DialogueNode[]{ easleDialogueDefault };
-    }
-
-    void SetEasleBoarNeedleNode()
-    {
-        easleFullArt.dialogueNodes = new Script_DialogueNode[]{ easleDialogueWithBoarNeedle };
-    }
-
     /* ===========================================================================================
         CUTSCENE
     =========================================================================================== */
@@ -302,7 +287,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 5);
         Script_Names.UpdateEllenia();
         isPuzzleComplete = true;
-        SetEasleBoarNeedleNode();
     }
 
     public void GiveStone()
@@ -338,13 +322,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     {
         Ellenia.FaceDefaultDirection();
     }
-
-    public void GiveBoarNeedle()
-    {
-        game.HandleItemReceive(BoarNeedle);
-        gotBoarNeedle = true;
-        SetEasleDefaultNodes();
-    }
     /// <summary>
     /// NextNodeAction() END =====================================================================
     /// </summary>
@@ -360,31 +337,25 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                 bgMusicEndIntroFadeOutTime,
                 1f,
                 () => {
+                    easleFullArt.gameObject.SetActive(true);
                     game.ChangeStateInteract();
                 }
             )
         );   
     }
     /* =========================================================================================== */
-
-    void Awake()
-    {
-    }
     
     public override void Setup()
     {
         if (isPuzzleComplete)
         {
             Ellenia.gameObject.SetActive(false);
-            
-            /// Sets the talking to easle node to give player Boar Needle
-            if (!gotBoarNeedle)     SetEasleBoarNeedleNode();
-            else                    SetEasleDefaultNodes();                    
+            easleFullArt.gameObject.SetActive(true);
         }
         else
         {
             game.SetupMovingNPC(Ellenia, isInitialization);
-            SetEasleDefaultNodes();
+            easleFullArt.gameObject.SetActive(false);
 
             if (spokenWithEllenia)
             {
