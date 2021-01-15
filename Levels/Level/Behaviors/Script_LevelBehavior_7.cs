@@ -69,10 +69,12 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
 
     protected override void OnEnable()
     {
+        Script_GameEventsManager.OnLevelInitComplete += OnEntrance;
         nameplateDirector.stopped += OnNameplateDone;
     }
 
     protected override void OnDisable() {
+        Script_GameEventsManager.OnLevelInitComplete += OnEntrance;
         nameplateDirector.stopped -= OnNameplateDone;
         
         if (game.camera != null)
@@ -97,7 +99,7 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
         if (action == "inventory-open")         HandleInventoryOpenAndClose();
     }
 
-    protected override void HandleOnEntrance()
+    void OnEntrance()
     {
         if (game.state == "interact" && !isActivated && !isDone)
         {

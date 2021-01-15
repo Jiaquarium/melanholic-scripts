@@ -134,7 +134,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         // HandleNPCActuallyMove();
         HandleAction();
-        HandleOnEntrance();
 
         HandleIdsDanceScene();
         if (game.state == "ddr" && DDR)    HandlePlayerDDRFinish();

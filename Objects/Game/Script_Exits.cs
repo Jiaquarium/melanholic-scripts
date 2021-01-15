@@ -52,7 +52,7 @@ public class Script_Exits : MonoBehaviour
     void Update()
     {
         if (isDefaultFadeOut)   ChangeLevelFade();
-        if (isFadeIn)           FadeInLevel();    
+        if (isFadeIn)           FadeInLevel();
     }
 
     public void Exit(
@@ -167,7 +167,7 @@ public class Script_Exits : MonoBehaviour
                 default:
                 {
                     ChangeLevel();
-                    isFadeIn = true;
+                    isFadeIn = true; // OnDoneExitingTransition will be called after fadeIn is complete
                     break;
                 }
             }
@@ -196,6 +196,7 @@ public class Script_Exits : MonoBehaviour
 
         Script_Player p = game.GetPlayer();
         Vector3 playerPrevPosition = p.transform.position;
+        
         // player state has loaded here
         game.InitiateLevel();
         
@@ -213,10 +214,10 @@ public class Script_Exits : MonoBehaviour
     {
         canvas.alpha -= fadeSpeed * Time.deltaTime;
 
-        if (canvas.alpha <= 0f)
+        if (canvas.alpha <= 0f && isFadeIn)
         {
             canvas.alpha = 0f;
-
+            
             OnDoneExitingTransition();
             // must happen last so handlers can interact with fade in sequence.
             isFadeIn = false;

@@ -408,7 +408,7 @@ public class Script_Game : MonoBehaviour
         
         StartBgMusic();
         SetTileMaps();
-        ActivateLevel();    /// Unity startup lifeCycle events are called here
+        grid.SetActive(true);    /// Unity startup lifeCycle events are called here
         // CreatePlayer();
         SetupPlayerOnLevel();
         CameraMoveToTarget();
@@ -446,7 +446,7 @@ public class Script_Game : MonoBehaviour
         ClearDemons();
         DestroyTmpTargets();
         DestroyAudioOneShotSources();
-        ClearTilemaps();
+        grid.SetActive(false);
         ClearDrops();
         
         StopMovingNPCThemes();
@@ -553,16 +553,6 @@ public class Script_Game : MonoBehaviour
         exitsTileMaps = Levels.levelsData[level].exitsTileMaps;
         entrancesTileMap = Levels.levelsData[level].entrancesTileMap;
         pushableTileMap = Levels.levelsData[level].pushableTileMap;
-    }
-
-    private void ActivateLevel()
-    {
-        grid.SetActive(true);
-    }
-
-    void ClearTilemaps()
-    {
-        grid.SetActive(false);
     }
 
     public void SetNewTileMapGround(Tilemap _tileMap)

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Script_VCamera : MonoBehaviour
 {
     public void FollowTarget(Transform target)

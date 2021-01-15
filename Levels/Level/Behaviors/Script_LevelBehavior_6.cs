@@ -48,18 +48,21 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
     {
         // game.RemovePlayerReflection();
     }
+
+    protected override void Update()
+    {
+        base.Update();
+        HandlePuzzle();
+    }
     
     public override void SetSwitchState(int Id, bool isOn)
     {
         switchHandler.SetSwitchState(switchesStates, Id, isOn);
     }
 
-    protected override void HandlePuzzle()
+    void HandlePuzzle()
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            HandleLightupPaintingsPuzzle();
-        }
+        HandleLightupPaintingsPuzzle();
         
         void HandleLightupPaintingsPuzzle()
         {
@@ -68,10 +71,7 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
 
             for (int i = 0; i < puzzleCompleteSwitchesStates.Length; i++)
             {
-                if (switchesStates[i] != puzzleCompleteSwitchesStates[i])
-                {
-                    return;
-                }
+                if (switchesStates[i] != puzzleCompleteSwitchesStates[i])   return;
             }
 
             if (!isPuzzleCompleted)    OnPuzzleCompletion();
@@ -159,16 +159,9 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
             mirrorReflection.SetActive(true);
         }
 
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            game.SetupInteractableFullArt(fullArtParent, isInit);
+        game.SetupInteractableFullArt(fullArtParent, isInit);
 
-            LightUpPaintingsPuzzleNoteParent.gameObject.SetActive(true);
-        }
-        else
-        {
-            LightUpPaintingsPuzzleNoteParent.gameObject.SetActive(false);
-        }
+        LightUpPaintingsPuzzleNoteParent.gameObject.SetActive(true);
         
         isInit = false;
     }

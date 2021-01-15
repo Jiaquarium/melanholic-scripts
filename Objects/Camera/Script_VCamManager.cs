@@ -63,6 +63,19 @@ public class Script_VCamManager : MonoBehaviour
         vCam1.SetPriority(0);
     }
 
+    public void GetAllVCamPrioritiesNotEqual(int i)
+    {
+        List<CinemachineVirtualCamera> vCams = new List<CinemachineVirtualCamera>();
+
+        foreach (CinemachineVirtualCamera vCam in Resources.FindObjectsOfTypeAll<CinemachineVirtualCamera>())
+        {
+            if (vCam.Priority != i)
+            {
+                Debug.Log($"{vCam.name} != {i}; priority: {vCam.Priority} ");
+            }
+        }
+    }
+
     public void Setup()
     {
         if (VCamMain == null)
@@ -82,3 +95,18 @@ public class Script_VCamManager : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_VCamManager))]
+public class Script_VCamManagerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_VCamManager t = (Script_VCamManager)target;
+        if (GUILayout.Button("GetAllVCamPrioritiesNotEqual(0)"))
+        {
+            t.GetAllVCamPrioritiesNotEqual(0);
+        }
+    }
+}
+#endif
