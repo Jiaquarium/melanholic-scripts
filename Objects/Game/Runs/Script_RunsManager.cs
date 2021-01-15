@@ -18,7 +18,7 @@ public class Script_RunsManager : MonoBehaviour
         Weekday = 1,
     }
     
-    static private Script_Run.DayId _startDay = Script_Run.DayId.fri;
+    [SerializeField] private Script_Run.DayId _startDay = Script_Run.DayId.fri;
     
     [Tooltip("Current run index")] [SerializeField] private int _runIdx;
     [SerializeField] private Cycle _runCycle;
