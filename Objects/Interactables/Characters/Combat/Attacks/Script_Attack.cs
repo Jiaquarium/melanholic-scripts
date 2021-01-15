@@ -52,7 +52,6 @@ public class Script_Attack : MonoBehaviour, IHitBoxResponder
     /// </summary>
     /// <param name="collider">the hurtbox</param>
     public virtual void CollisionedWith(Collider collider, Script_HitBox hitBox) {
-        // TODO: UNCOMMENT?!
         // Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
         // hurtbox?.getHitBy(damage);
     }

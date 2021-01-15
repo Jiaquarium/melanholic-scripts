@@ -9,6 +9,7 @@ using UnityEngine;
 public class Script_StickerEffectsController : MonoBehaviour
 {
     [SerializeField] private Script_PsychicDuckEffect psychicDuckEffect;
+    [SerializeField] private Script_PlayerAttackEat eatAttack;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     /// <summary>
@@ -46,7 +47,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     /// Use the Active Sticker Effect
     /// </summary>
     /// <param name="i">Sticker Holster Slot</param>
-    public void Effect()
+    public void Effect(Directions dir)
     {
         Script_Sticker activeSticker = Script_ActiveStickerManager.Control.GetSticker();
         if (activeSticker == null)  return;
@@ -59,6 +60,10 @@ public class Script_StickerEffectsController : MonoBehaviour
                 break;
             case Const_Items.BoarNeedleId:
                 Debug.Log("Boar Needle Effect Activated");
+                break;
+            case Const_Items.AnimalWithinId:
+                Debug.Log("Animal Within Effect Activated");
+                eatAttack.Eat(dir);
                 break;
         }
     }

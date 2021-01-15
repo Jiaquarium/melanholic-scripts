@@ -15,9 +15,7 @@ public class Script_PlayerAttackEat : Script_Attack
 
     private bool didHit;
     private Coroutine eatingCoroutine;
-    private Script_Game game;
     private Script_AudioOneShotSource audioOneShotSource;
-    private IEnumerator co;
 
     /* =============================================================        
         ANIMATION FUNCS BEGIN: called from animation

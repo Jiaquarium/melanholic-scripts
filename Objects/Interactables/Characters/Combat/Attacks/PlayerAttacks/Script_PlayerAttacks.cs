@@ -4,10 +4,5 @@ using UnityEngine;
 
 public class Script_PlayerAttacks : MonoBehaviour
 {
-    [SerializeField] private Script_PlayerAttackEat eatAttack;
-
-    public void Eat(Directions direction)
-    {
-        eatAttack.Eat(direction);
-    }
+    
 }

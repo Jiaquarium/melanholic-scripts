@@ -7,7 +7,6 @@ using UnityEngine;
 [RequireComponent(typeof(Script_Player))]
 public class Script_PlayerAction : MonoBehaviour
 {
-    private Script_PlayerAttacks attacks;
     private Script_Game game;
     private Script_Player player;
     private Dictionary<Directions, Vector3> directions;
@@ -47,13 +46,7 @@ public class Script_PlayerAction : MonoBehaviour
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Action2))
             {
-                stickerEffectsController.Effect();
-
-                /// TBD move this to the actual sticker effect
-                // if (Script_Game.Game.CheckStickerEquippedById(Const_Items.EatingStickerId))
-                // {
-                //     attacks.Eat(facingDirection);
-                // }
+                stickerEffectsController.Effect(facingDirection);
             }
             else if (Input.GetButtonDown(Const_KeyCodes.Inventory))
             {
@@ -310,7 +303,6 @@ public class Script_PlayerAction : MonoBehaviour
 
     public void Setup(Script_Game _game)
     {
-        attacks = GetComponent<Script_PlayerAttacks>();
         player = GetComponent<Script_Player>(); 
         interactionBoxController = GetComponent<Script_InteractionBoxController>();
         game = _game;

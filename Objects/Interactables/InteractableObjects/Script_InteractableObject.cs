@@ -11,7 +11,7 @@ public class Script_InteractableObject : Script_Interactable
     [SerializeField] protected Transform rendererChild;
     protected Script_Game game;
     [SerializeField] private UnityEvent action;
-    [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] private bool autoSetup;
+    [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] protected bool autoSetup;
     
     protected virtual void Start()
     {

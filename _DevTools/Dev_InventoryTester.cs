@@ -17,37 +17,42 @@ public class Dev_InventoryTester : MonoBehaviour
 
     public void AddPsychicDuck()
     {
-        Script_Game.Game.AddItemById("sticker_psychic-duck");
+        Script_Game.Game.AddItemById(Const_Items.PsychicDuckId);
     }
 
     public void AddBoarNeedle()
     {
-        Script_Game.Game.AddItemById("sticker_boar-needle");
+        Script_Game.Game.AddItemById(Const_Items.BoarNeedleId);
+    }
+
+    public void AddAnimalWithin()
+    {
+        Script_Game.Game.AddItemById(Const_Items.AnimalWithinId);
     }
 
     public void AddMasterKey()
     {
-        Script_Game.Game.AddItemById("usable_master-key");
+        Script_Game.Game.AddItemById(Const_Items.MasterKeyId);
     }
 
     public void AddWinterStone()
     {
-        Script_Game.Game.AddItemById("collectible_winter-stone");
+        Script_Game.Game.AddItemById(Const_Items.WinterStoneId);
     }
 
     public void AddSpringStone()
     {
-        Script_Game.Game.AddItemById("collectible_spring-stone");
+        Script_Game.Game.AddItemById(Const_Items.SpringStoneId);
     }
 
     public void AddSummerStone()
     {
-        Script_Game.Game.AddItemById("collectible_summer-stone");
+        Script_Game.Game.AddItemById(Const_Items.SummerStoneId);
     }
 
     public void AddAutumnStone()
     {
-        Script_Game.Game.AddItemById("collectible_autumn-stone");
+        Script_Game.Game.AddItemById(Const_Items.AutumnStoneId);
     }
 }
 
@@ -62,6 +67,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("AddItemById()"))
         {
             inventoryTester.AddItemById();
+        }
+
+        if (GUILayout.Button("Add: Animal Within"))
+        {
+            inventoryTester.AddAnimalWithin();
         }
 
         if (GUILayout.Button("Add: Psychic Duck"))
