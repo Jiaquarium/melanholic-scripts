@@ -60,6 +60,5 @@ public class Script_CutSceneActionHandler : MonoBehaviour
     void HandleEndItemDescriptionDialogue(Script_Player player)
     {
         player.HandleEndItemDescriptionDialogue();
-        player.SetItemShown(null);
     }
 }

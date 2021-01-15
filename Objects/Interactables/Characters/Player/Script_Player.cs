@@ -355,6 +355,7 @@ public class Script_Player : Script_Character
     /// </summary>
     public void HandleEndItemDescriptionDialogue()
     {
+        Debug.Log($"{name}: HandleEndItemDescriptionDialogue() itemShown: {playerActionHandler.itemShown}");
         playerActionHandler.HandleEndItemDescriptionDialogue(playerActionHandler.itemShown);
     }
 

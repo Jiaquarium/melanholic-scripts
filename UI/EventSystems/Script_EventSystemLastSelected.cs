@@ -60,7 +60,6 @@ public class Script_EventSystemLastSelected : MonoBehaviour {
     /// /// </summary>
     void SetFirstSelected()
     {
-        
         EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
     }
 }

@@ -31,7 +31,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private float bgMusicFadeOutTime;
     [SerializeField] private float bgMusicEndIntroFadeOutTime;
     [SerializeField] private float waitToTurnTime; // should match with music
-    [SerializeField] private Script_CollectibleObject SummerStone;
+    [SerializeField] private Script_StickerObject AnimalWithinSticker;
     [SerializeField] private Script_DialogueNode onItemDescriptionDoneNode;
     [SerializeField] private Transform textParent;
     [SerializeField] private Transform fullArtParent;
@@ -292,10 +292,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     public void GiveStone()
     {
         // jump animation; when finished, triggers correct dialogue
-        game.HandleItemReceive(SummerStone);
+        game.HandleItemReceive(AnimalWithinSticker);
     }
 
-    public void OnStoneDescriptionDone()
+    public void OnAnimalWitinDescriptionDone()
     {
         Script_DialogueManager.DialogueManager.StartDialogueNode(onItemDescriptionDoneNode, false);
     }

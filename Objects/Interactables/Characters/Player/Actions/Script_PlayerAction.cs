@@ -14,8 +14,13 @@ public class Script_PlayerAction : MonoBehaviour
     [SerializeField] private AudioSource itemStashAudioSource;
     [SerializeField] private AudioSource pickUpErrorAudioSource;
     [SerializeField] private Script_StickerEffectsController stickerEffectsController;
-
-    public Script_Item itemShown { get; set; }
+    [SerializeField] private Script_Item _itemShown;
+    
+    public Script_Item itemShown
+    {
+        get => _itemShown;
+        set => _itemShown = value;
+    }
     
     public void HandleActionInput(Directions facingDirection, Vector3 location)
     {   
@@ -191,7 +196,7 @@ public class Script_PlayerAction : MonoBehaviour
                 if (player.State == Const_States_Player.PickingUp)
                 {
                     player.SetIsInteract();
-                    print("player state set to Interact from PlayerActions HandleEndItemDescriptionDialogue()");
+                    Debug.Log("player state set to Interact from PlayerActions HandleEndItemDescriptionDialogue()");
                 }
             }
             else
