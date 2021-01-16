@@ -31,6 +31,18 @@ public class Script_StaticNPC : Script_Interactable
         protected set { _state = value; }
     }
 
+    public bool IsMute
+    {
+        get => isMute;
+        set => isMute = value;
+    }
+
+    public Directions DefaultFacingDirection
+    {
+        get => defaultFacingDirection;
+        set => defaultFacingDirection = value;
+    }
+
     protected virtual void Start()
     {
         if (isAutoSetup)  AutoSetup();

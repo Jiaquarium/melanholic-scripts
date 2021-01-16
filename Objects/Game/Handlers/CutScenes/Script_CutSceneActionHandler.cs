@@ -26,7 +26,7 @@ public class Script_CutSceneActionHandler : MonoBehaviour
     /// <param name="itemObject"></param>
     public void HandleItemReceive(Script_ItemObject itemObject, Script_Player player)
     {
-        Script_Item item = itemObject.GetItem();
+        Script_Item item = itemObject.Item;
         bool pickUpSuccess = game.AddItem(item);
 
         if (!pickUpSuccess)

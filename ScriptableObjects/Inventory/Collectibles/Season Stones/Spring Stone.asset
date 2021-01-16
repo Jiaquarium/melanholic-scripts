@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebdf3c711beea4dc0b3abf8b6d265eca, type: 3}
-  m_Name: Summer Stone
+  m_Name: Spring Stone
   m_EditorClassIdentifier: 
-  id: collectible_summer-stone
-  focusedSprite: {fileID: 21300006, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  sprite: {fileID: 21300004, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: "legend has it these season stones were once used to keep the seasons
-    flowing in this still town of Kelsing\xF8r."
+  id: collectible_spring-stone
+  focusedSprite: {fileID: 21300010, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
+  sprite: {fileID: 21300008, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
+  description: why's spring so shortlived?
   isDroppable: 1
-  isPersistentDrop: 1
-  fullArtId: fullart_summer-stone
+  _isSpecial: 1
+  fullArtId: fullart_spring-stone
   fadeInSpeed: 0
   fadeOutSpeed: 0

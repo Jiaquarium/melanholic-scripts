@@ -41,6 +41,7 @@ public class Script_InteractableObject : Script_Interactable
     
     public virtual void ActionDefault()
     {
+        Debug.Log($"{name} Action default called in InteractableObject");
         if (action.CheckUnityEventAction()) action.Invoke();
     }
     

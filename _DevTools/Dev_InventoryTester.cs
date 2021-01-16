@@ -15,6 +15,8 @@ public class Dev_InventoryTester : MonoBehaviour
         Script_Game.Game.AddItemById(itemId);
     }
 
+    // ------------------------------------------------------------------------
+    //  Stickers
     public void AddPsychicDuck()
     {
         Script_Game.Game.AddItemById(Const_Items.PsychicDuckId);
@@ -30,10 +32,20 @@ public class Dev_InventoryTester : MonoBehaviour
         Script_Game.Game.AddItemById(Const_Items.AnimalWithinId);
     }
 
+    // ------------------------------------------------------------------------
+    //  Usables
     public void AddMasterKey()
     {
         Script_Game.Game.AddItemById(Const_Items.MasterKeyId);
     }
+
+    public void AddSuperSmallKey()
+    {
+        Script_Game.Game.AddItemById(Const_Items.SuperSmallKeyId);
+    }
+
+    // ------------------------------------------------------------------------
+    //  Collectibles
 
     public void AddWinterStone()
     {
@@ -68,12 +80,9 @@ public class Dev_InventoryTesterTester : Editor
         {
             inventoryTester.AddItemById();
         }
-
-        if (GUILayout.Button("Add: Animal Within"))
-        {
-            inventoryTester.AddAnimalWithin();
-        }
-
+        
+        GUILayout.Space(8);
+        
         if (GUILayout.Button("Add: Psychic Duck"))
         {
             inventoryTester.AddPsychicDuck();
@@ -84,10 +93,24 @@ public class Dev_InventoryTesterTester : Editor
             inventoryTester.AddBoarNeedle();
         }
 
+        if (GUILayout.Button("Add: Animal Within"))
+        {
+            inventoryTester.AddAnimalWithin();
+        }
+
+        GUILayout.Space(8);
+
         if (GUILayout.Button("Add: Master Key"))
         {
             inventoryTester.AddMasterKey();
         }
+
+        if (GUILayout.Button("Add: Super Small Key"))
+        {
+            inventoryTester.AddSuperSmallKey();
+        }
+
+        GUILayout.Space(8);
 
         if (GUILayout.Button("Add: Winter Stone"))
         {

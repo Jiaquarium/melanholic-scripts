@@ -26,24 +26,25 @@ public class Script_MovingNPC : Script_StaticNPC
     [SerializeField] private bool defaultFacingDirectionDisabled;
     [Tooltip("Disable turning to Player when speaking.")]
     [SerializeField] private bool disableFacingPlayerOnDialogue;
-
-
     public Model_MoveSet[] moveSets = new Model_MoveSet[0];
     // use this to keep reference to model moveSets
     public Script_MovingNPCMoveSets movingNPCMoveSets;
-    
     public AnimationCurve progressCurve;
     public Dictionary<Directions, Vector3> directionToVector;
     public Queue<Directions> currentMoves = new Queue<Directions>();
     public Queue<Directions[]> allMoves = new Queue<Directions[]>();
 
-
-    private Animator animator;
     [SerializeField] private bool isApproachingTarget; // bool used to know if current moves are result of appraoching
     [SerializeField] private Directions lastFacingDirection;
     [SerializeField] private PlayableDirector myDirector;
-    private Script_InteractionBoxController interactionBoxController { get; set; }
+    [SerializeField] private float runSpeed;
+    [SerializeField] private float walkSpeed;
+
+    private Animator animator;
     
+    
+    private Script_InteractionBoxController interactionBoxController { get; set; }
+
     void OnEnable() {
         if (lastFacingDirection != Directions.None && animator != null)
             FaceLastDirection();
@@ -362,8 +363,14 @@ public class Script_MovingNPC : Script_StaticNPC
         location = transform.position;
     }
 
-    public virtual void SetMoveSpeedRun(){}
-    public virtual void SetMoveSpeedWalk(){}
+    public void SetMoveSpeedRun()
+    {
+        speed = runSpeed;
+    }
+    public void SetMoveSpeedWalk()
+    {
+        speed = walkSpeed;
+    }
 
     /// <summary> =================================================================================
     /// Timeline Signal Functions START

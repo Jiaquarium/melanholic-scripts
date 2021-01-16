@@ -9,7 +9,7 @@ using UnityEngine;
 public class Script_DemonNPC : Script_MovingNPC
 {
     public Script_DialogueNode[] psychicNodes;
-    [SerializeField] private Script_DialogueNode[] defaultNodes;
+    private Script_DialogueNode[] defaultNodes;
     private bool isPsychicNodes;
 
     public override void TriggerDialogue()

@@ -24,7 +24,7 @@ public class Script_PersistentDropsContainer : MonoBehaviour
             
             persistentDrops[i] = new Model_PersistentDrop(
                 location,
-                myItemObjects[i].GetItem().id,
+                myItemObjects[i].Item.id,
                 myItemObjects[i].myLevelBehavior
             );
         }

@@ -28,11 +28,12 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@BoarNeedle",          "<b>Boar Needle</b>");
         Params.Add("@@AnimalWithin",        "<b>Animal Within</b>");
         
+        Params.Add("@@MasterKey",           "<b>Master Key</b>");
+        Params.Add("@@SuperSmallKey",       "<b>Super Small Key</b>");
+
         Params.Add("@@WinterStone",         "<b>Winter Stone</b>");
         Params.Add("@@AutumnStone",         "<b>Autumn Stone</b>");
         Params.Add("@@SummerStone",         "<b>Summer Stone</b>");
         Params.Add("@@SpringStone",         "<b>Spring Stone</b>");
-
-        Params.Add("@@MasterKey",           "<b>Master Key</b>");
     }
 }

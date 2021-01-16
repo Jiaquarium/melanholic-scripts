@@ -7,6 +7,17 @@ public class Script_Marker : MonoBehaviour
     [SerializeField] protected Vector3 boxSize; // half extants
     [SerializeField] Color color;
     [SerializeField] protected Vector3 drawOffset;
+    [SerializeField] Directions _direction;
+
+    public Vector3 Position
+    {
+        get => transform.position;
+    }
+
+    public Directions Direction
+    {
+        get => _direction;
+    }
     
     private void OnDrawGizmos() {
         Vector3 drawPos = new Vector3(

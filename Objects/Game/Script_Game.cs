@@ -197,7 +197,7 @@ public class Script_Game : MonoBehaviour
         canvasesAudioSource.gameObject.SetActive(true);
         dialogueManager.HideDialogue();
         thoughtManager.HideThought();
-        DDRManager.Deactivate();
+        DDRManager.Setup();
         SetupMenu();
 
         camera = Camera.main.GetComponent<Script_Camera>();
@@ -1407,7 +1407,7 @@ public class Script_Game : MonoBehaviour
             bgMusicManager.UnPause();
     }
 
-    public void PlayNPCBgTheme(Script_BgThemePlayer bgThemePlayerPrefab)
+    public Script_BgThemePlayer PlayNPCBgTheme(Script_BgThemePlayer bgThemePlayerPrefab)
     {
         npcBgThemePlayer = Instantiate(
             bgThemePlayerPrefab,
@@ -1415,6 +1415,7 @@ public class Script_Game : MonoBehaviour
             Quaternion.identity
         );
         npcBgThemePlayer.transform.SetParent(bgThemeSpeakersContainer, false);
+        return npcBgThemePlayer;
     }
 
     public void PauseNPCBgTheme()
@@ -1679,11 +1680,6 @@ public class Script_Game : MonoBehaviour
     public void HandleExitCutSceneLevelBehavior()
     {
         levelBehavior.HandleExitCutScene();
-    }
-
-    public void OnDoorLockUnlock(int id)
-    {
-        levelBehavior.OnDoorLockUnlock(id);
     }
 
     /* =========================================================================

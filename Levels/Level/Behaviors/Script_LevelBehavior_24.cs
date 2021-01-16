@@ -169,7 +169,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
 
     private void OnItemPickUp(string itemId)
     {
-        if (itemId == springStone.GetItem().id)
+        if (itemId == springStone.Item.id)
         {
             didPickUpSpringStone = true;
         }

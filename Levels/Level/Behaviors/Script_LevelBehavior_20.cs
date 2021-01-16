@@ -199,7 +199,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     private void OnItemPickUp(string itemId)
     {
-        if (itemId == masterKey.GetItem().id)
+        if (itemId == masterKey.Item.id)
         {
             didPickUpMasterKey = true;
         }

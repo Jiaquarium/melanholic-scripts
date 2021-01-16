@@ -33,11 +33,6 @@ public class Script_DoorLock : MonoBehaviour
         audioSource.PlayOneShot(unlockClip, unlockSFXVolScale);
     }
 
-    public void UnlockCallback()
-    {
-        game.OnDoorLockUnlock(id);
-    }
-
     public void Setup()
     {
         a = GetComponent<Animator>();

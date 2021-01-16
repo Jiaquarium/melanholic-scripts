@@ -43,7 +43,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
                 {
                     Script_PuzzlesEventsManager.PuzzleSuccess(
                         other.transform.parent
-                            .GetComponent<Script_CollectibleObject>().GetItem().id
+                            .GetComponent<Script_CollectibleObject>().Item.id
                     );
                 }
             }
@@ -61,7 +61,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
             {
                 LB20.ChangeSeason(
                     other.transform.parent
-                        .GetComponent<Script_CollectibleObject>().GetItem().id
+                        .GetComponent<Script_CollectibleObject>().Item.id
                 );
             }   
         }
@@ -108,9 +108,9 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
 
             Debug.Log($"current trigger collectible: " + triggers[currIdx].GetComponent<Script_CollectibleTriggerStay>());
             string currId = triggers[currIdx]
-                .GetComponent<Script_CollectibleTriggerStay>().collectibles[0].GetItem().id;
+                .GetComponent<Script_CollectibleTriggerStay>().collectibles[0].Item.id;
             string nextId = triggers[nextIdx]
-                .GetComponent<Script_CollectibleTriggerStay>().collectibles[0].GetItem().id;
+                .GetComponent<Script_CollectibleTriggerStay>().collectibles[0].Item.id;
  
             int currSeasonStoneId;
             int nextSeasonStoneId;
@@ -149,7 +149,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
             
             if (t.collectibles.Count == 0)  continue;
             
-            string currId = t.collectibles[0]?.GetItem()?.id;
+            string currId = t.collectibles[0]?.Item?.id;
             if (!SeasonStonesIntIds.TryGetValue(currId, out stoneId))   continue;
             stoneIds[i] = stoneId;
         }

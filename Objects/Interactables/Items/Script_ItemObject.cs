@@ -11,6 +11,11 @@ public class Script_ItemObject : Script_Interactable
     public bool showTyping;
     [SerializeField] private SpriteRenderer graphics;
 
+    public Script_Item Item
+    {
+        get => item;
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -22,11 +27,6 @@ public class Script_ItemObject : Script_Interactable
         {
             PickUp();
         }
-    }
-
-    public Script_Item GetItem()
-    {
-        return item;
     }
 
     /// <summary>

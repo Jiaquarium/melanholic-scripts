@@ -42,13 +42,11 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
         if (game.Run.dayId == Script_Run.DayId.sun)
         {
             IdsNote.gameObject.SetActive(false);
-            exitToIdsRoom.IsDisabled = false;
             speaker.gameObject.SetActive(true);
         }
         else
         {
             IdsNote.gameObject.SetActive(true);
-            exitToIdsRoom.IsDisabled = true;
             speaker.gameObject.SetActive(false);
         }
 

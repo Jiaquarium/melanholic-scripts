@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Playables;
+using System;
 
 /// <summary>
 /// Respawns are handled with IdsSpawns which will auto reset Ids positions
@@ -15,26 +16,18 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public bool isDone;
     [SerializeField] private int activeTriggerIndex;
     [SerializeField] private int timelineCount;
-    [SerializeField] private Vector3[] IdsSpawns;
-    [SerializeField] Script_TileMapExitEntrance exitInfo;
-    [SerializeField] Script_AudioOneShotSource oneShotPrefab;
+    [SerializeField] private Script_Marker[] IdsSpawns;
     public bool isDeskSwitchedIn;
-    public bool isUnlocked;
-    public bool isSpecterStoryStarted;
     public bool isInitialized;
 
 
     public float afterPRCSWaitTime;
     public float dropDiscoBallTime;
     public float postIdsDanceWaitTime;
-    public float IdsWaitTimeBeforeUnlocking;
-    public float IdsExitWaitTimeAfterUnlock;
-    public Vector3 IdsExitLocation;
     
 
     public Script_DialogueManager dm;
     public Script_DDRManager DDRManager;
-    public Script_Exits exitsHandler;
     public Script_LevelBehavior_9 lb9;
     public Script_BgThemePlayer IdsBgThemePlayerPrefab;
     public Script_BgThemePlayer IdsCandyDanceShortThemePlayerPrefab;
@@ -47,8 +40,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Script_DialogueNode playerDanceIntroNode;
     public Script_DialogueNode badDanceOutroNode;
     public Script_DialogueNode goodDanceOutroNode;
-    public Script_DialogueNode specterStoryNode;
-    public Script_DialogueNode finalComplimentNode;
     public Script_DialogueNode deskIONode;
     public Script_DialogueNode chaiseLoungeIONode;
     [SerializeField] private Script_DialogueNode showIdsOnKelsingorPRCSNode;
@@ -61,23 +52,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Vector3 lightsDownOffset;
     public Vector3 crystalChandelierDownOffset;
     public Vector3 crystalChandelierUpOffset;
-    public Script_DoorLock doorLock;
     public GameObject chaiseLoungeObject;
     public GameObject deskObject;
-    public AudioSource audioSource;
     public AudioMixer audioMixer;
-    public AudioMixerGroup audioMixerGroup;
-    public AudioClip exitSFX;
-    public float exitVol;
-    public AudioClip onExitFadeOutDoneSFX;
-    public float onExitFadeOutDoneVol;
-    public float fadeOutTransitionTime;
     
     public Model_SongMoves playerSongMoves;
     public Model_SongMoves IdsSongMoves;
     public int mistakesAllowed;
     public Transform[] IOTexts;
-    public Script_MovingNPC_Ids Ids;
+    public Script_MovingNPC Ids;
     [SerializeField] private PlayableDirector IdsDirector;
     [SerializeField] private PlayableDirector ZoomDirector;
     [SerializeField] private Script_VCamera VCamLB10FollowIds;
@@ -85,6 +68,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private PlayableDirector magicCircleDirector; 
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
     [SerializeField] private PlayableDirector nameplateDirector;
+    [SerializeField] private Script_ItemObject smallKey;
 
     private bool DDR = false;
     private bool isIdsDancing = false;
@@ -97,18 +81,23 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     private bool downMoveDone;
     private bool upMoveDone;
     private bool rightMoveDone;
-    private bool isFinalComplimentDone;
 
     protected override void OnEnable()
     {
-        IdsDirector.stopped                 += OnIdsMovesDone;    
-        ZoomDirector.stopped                += OnZoomDirectorDone;
-        magicCircleDirector.stopped         += OnPRCSIntroDone;
-        Script_PRCSEventsManager.OnPRCSDone += PRCSAenimalsRoleReaction;
-        nameplateDirector.stopped           += OnNameplateDone;
+        IdsDirector.stopped                     += OnIdsMovesDone;    
+        ZoomDirector.stopped                    += OnZoomDirectorDone;
+        magicCircleDirector.stopped             += OnPRCSIntroDone;
+        Script_PRCSEventsManager.OnPRCSDone     += PRCSAenimalsRoleReaction;
+        nameplateDirector.stopped               += OnNameplateDone;
+        Script_DDREventsManager.OnDDRDone       += OnDDRDone;
+        Script_ItemsEventsManager.OnItemStash   += OnItemStash;
         
         if (timelineCount >= IdsSpawns.Length)  Ids.gameObject.SetActive(false);
-        else                                    Ids.transform.position = IdsSpawns[timelineCount];
+        else
+        {
+            Ids.transform.position = IdsSpawns[timelineCount].Position;
+            Ids.DefaultFacingDirection = IdsSpawns[timelineCount].Direction;
+        }
 
         Ids.UpdateLocation();
         if (timelineCount == 0)
@@ -122,6 +111,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         magicCircleDirector.stopped             -= OnPRCSIntroDone;
         Script_PRCSEventsManager.OnPRCSDone     -= PRCSAenimalsRoleReaction;
         nameplateDirector.stopped               -= OnNameplateDone;
+        Script_DDREventsManager.OnDDRDone       -= OnDDRDone;
+        Script_ItemsEventsManager.OnItemStash   -= OnItemStash;
         
         Script_AudioMixerVolume.SetVolume(
             audioMixer,
@@ -132,41 +123,17 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     protected override void Update()
     {
-        // HandleNPCActuallyMove();
         HandleAction();
-
         HandleIdsDanceScene();
-        if (game.state == "ddr" && DDR)    HandlePlayerDDRFinish();
     }
 
-    public override void HandleDialogueNodeAction(string a)
-    {
-        if (a == "ids-dance")      WaitToIdsDance();
-        else if (a == "DDR")
-        {
-            DDR = true;
-            WaitToDDR();
-        }
-        else if (a == "no-to-go-deeper")
-        {
-            game.ChangeStateInteract();
-        }
-        else if (a == "approach-exit")
-        {
-            game.ChangeStateCutSceneNPCMoving();
-            game.GetMovingNPC(0).ApproachTarget(
-                IdsExitLocation,
-                Vector3.zero,
-                Directions.Left,
-                NPCEndCommands.None
-            );
-        }
-        else if (a == "exit")            StartCoroutine(WaitToIdsExit());
+    protected override void HandleAction()
+    {   
+        base.HandleDialogueAction();
     }
 
-    /// <summary>
-    /// NextNodeAction START ===========================================================================
-    /// </summary>
+    // ------------------------------------------------------------------------------------
+    // Next Node Action Start
     public void NameplateTimeline()
     {
         game.ChangeStateCutScene();
@@ -179,11 +146,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SwitchToMainVCam(Script_VCamManager.ActiveVCamera);
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
     }
-    public void IdsWalkToWRoom()
+
+    // pass DDR node
+    public void IdsGivesSmallKey()
     {
         game.ChangeStateCutScene();
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+        game.HandleItemReceive(smallKey);
     }
+
     public void ZoomInOnPlayer()
     {
         GetComponent<Script_TimelineController>().PlayableDirectorPlay(1);
@@ -207,9 +177,73 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             dm.StartDialogueNode(introNode2, SFXOn: false);
         }
     }
-    /// <summary>
-    /// NextNodeAction END  ===========================================================================
-    /// </summary>
+
+    public void WaitToIdsDance()
+    {
+        game.ChangeStateCutScene();
+        SwitchLightsOutAnimation(OnIdsDance);
+
+        void OnIdsDance()
+        {
+            game.PlayNPCBgTheme(IdsCandyDanceShortThemePlayerPrefab);
+            isIdsDancing = true;
+            crystalChandelier.GetComponent<Script_CrystalChandelier>()
+                .StartSpinning();
+
+            DeskSwitchIn();
+            isDeskSwitchedIn = true;
+        }
+    }
+
+    public void WaitToDDR()
+    {
+        DDRManager.Activate();
+        DDRManager.StartMusic(
+            playerSongMoves,
+            PlayerCandyDanceThemePlayerPrefab,
+            mistakesAllowed
+        );
+        crystalChandelier.GetComponent<Script_CrystalChandelier>()
+            .StartSpinning();
+        
+        DDR = true;
+        game.ChangeStateDDR(); // this triggers the HandleDDRFinish
+    }
+
+    public void OnDDRFailDialogueDone()
+    {
+        game.ChangeStateInteract();
+    }
+
+    public void DDRTryAgain()
+    {
+        game.ChangeStateCutScene();
+        SwitchLightsOutAnimation(WaitToDDR);
+    }
+    // Next Node Action END
+    // ------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------
+    // Timeline Signals START
+    public void OnIdsExitsIdsRoom()
+    {
+        Ids.gameObject.SetActive(false);
+        game.ChangeStateInteract();
+
+        isDone = true;
+    }
+
+    // Timeline Signals END
+    // ------------------------------------------------------------------------------------
+    private void OnItemStash(string stashItemId)
+    {
+        if (stashItemId == smallKey.Item.id)    IdsExits();
+
+        void IdsExits()
+        {
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+        }
+    }
+    
 
     private void OnNameplateDone(PlayableDirector aDirector)
     {
@@ -244,10 +278,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[0])
         {
             Ids.FaceDirection(Directions.Down);
+            Ids.DefaultFacingDirection = Directions.Down;
         }
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[1])
         {
             Ids.FaceDirection(Directions.Left);
+            Ids.DefaultFacingDirection = Directions.Left;
             game.ChangeStateInteract();
         }
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[2])
@@ -307,67 +343,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 activeTriggerIndex++;
                 return true;
         }
-        else if (Id == "room_W" && activeTriggerIndex == 2)
-        {
-            if (lb9.speaker != null)
-            {
-                lb9.speaker.audioSource.Pause();
-                Destroy(lb9.speaker.gameObject);
-            }
-            
-            game.ChangeStateCutSceneNPCMoving();
-            game.PlayerFaceDirection(Directions.Left);
-            game.GetMovingNPC(0).ApproachTarget(
-                game.GetPlayerLocation(),
-                new Vector3(-2f, 0, 0),
-                Directions.Right,
-                NPCEndCommands.None
-            );
-            
-            activeTriggerIndex++;
-            return true;
-        }
 
         return false;
     }    
 
-    void WaitToIdsDance()
-    {
-        game.ChangeStateCutScene();
-        SwitchLightsOutAnimation();
-    }
-
-    void WaitToDDR()
-    {
-        DDRManager.Activate();
-        DDRManager.StartMusic(
-            playerSongMoves,
-            PlayerCandyDanceThemePlayerPrefab,
-            mistakesAllowed
-        );
-        crystalChandelier.GetComponent<Script_CrystalChandelier>()
-            .StartSpinning();
-        
-        game.ChangeStateDDR(); // this triggers the HandleDDRFinish
-    }
-
-    IEnumerator WaitToTalkAfterIdsDance()
-    {
-        yield return new WaitForSeconds(postIdsDanceWaitTime);
-        
-        game.GetMovingNPC(0).FaceDirection(Directions.Left);
-        dm.StartDialogueNode(playerDanceIntroNode);
-    }
-
-    IEnumerator WaitToIdsExit()
-    {
-        yield return new WaitForSeconds(IdsWaitTimeBeforeUnlocking);
-        doorLock.Unlock();
-    }
-
     void HandleIdsDanceScene()
     {
-        if (isIdsDancing && game.GetNPCBgThemeActive())
+        if (isIdsDancing)
         {
             timer += Time.deltaTime;
             
@@ -376,6 +358,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             HandleUpMove();
             HandleRightMove();
 
+            /// Once stops playing Ids song
             if (!game.GetNPCThemeMusicIsPlaying())
             {
                 crystalChandelier.GetComponent<Script_CrystalChandelier>()
@@ -384,20 +367,28 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 StartCoroutine(WaitToTalkAfterIdsDance());
             }
         }
+
+        IEnumerator WaitToTalkAfterIdsDance()
+        {
+            yield return new WaitForSeconds(postIdsDanceWaitTime);
+            
+            game.GetMovingNPC(0).FaceDirection(Directions.Left);
+            dm.StartDialogueNode(playerDanceIntroNode);
+        }
     }
 
-    void HandlePlayerDDRFinish()
+    void OnDDRDone()
     {
-        // handle fail case
         if (DDRManager.didFail)
         {
+            Debug.Log($"OnDDRDone starting Bad Node");
             DDRFinish(badDanceOutroNode);
         }
-        else if (!game.GetNPCThemeMusicIsPlaying())
+        else
         {
-            DDRManager.Deactivate();
+            Debug.Log($"OnDDRDone starting Good Node");
             DDRFinish(goodDanceOutroNode);
-        }   
+        }
     }
 
     void DDRFinish(Script_DialogueNode node)
@@ -478,12 +469,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
     }
 
-    protected override void HandleAction()
-    {   
-        base.HandleDialogueAction();
-    }
-
-    void SwitchLightsOutAnimation()
+    void SwitchLightsOutAnimation(Action cb)
     {
         // todo: setinactive after
         crystalChandelier.SetActive(true);
@@ -492,13 +478,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 dropDiscoBallTime,
                 lightsUpOffset,
                 () => {
-                    game.PlayNPCBgTheme(IdsCandyDanceShortThemePlayerPrefab);
-                    isIdsDancing = true;
-                    crystalChandelier.GetComponent<Script_CrystalChandelier>()
-                        .StartSpinning();
-
-                    DeskSwitchIn();
-                    isDeskSwitchedIn = true;
+                    if (cb != null) cb();
                 }
             )
         );
@@ -549,32 +529,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         ));
     }
 
-    public override void HandleDDRArrowClick(int tier) {
-
-    }
-
-    public override void HandleMovingNPCAllMovesDone()
-    {
-        if (activeTriggerIndex == 3 && !isSpecterStoryStarted)
-        {
-            isSpecterStoryStarted = true;
-            game.ChangeStateCutScene();
-            dm.StartDialogueNode(specterStoryNode);
-            Ids.SetMute(false);
-        }
-        else if (activeTriggerIndex == 3 && !isFinalComplimentDone)
-        {
-            isFinalComplimentDone = true;
-            game.ChangeStateCutScene();
-            dm.StartDialogueNode(finalComplimentNode);
-        }
-    }
-
-    // animation done callback
-    public override void OnDoorLockUnlock(int id)
-    {
-        StartCoroutine(DoorLockUnlockAction(id));
-    }
+    public override void HandleDDRArrowClick(int tier) {}
 
     void ChaseLoungeSwitchIn()
     {
@@ -590,17 +545,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         deskObject.SetActive(true);
     }
 
-    IEnumerator DoorLockUnlockAction(int id)
-    {
-        yield return new WaitForSeconds(IdsExitWaitTimeAfterUnlock);
-
-        Ids.gameObject.SetActive(false);
-        game.ChangeStateInteract();
-        game.DisableExits(false, 0);
-        isUnlocked = true;
-        isDone = true;
-    }
-
     void SetupIOsDialogue(Script_DialogueNode node)
     {
         List<Script_InteractableObject> IOs = game.GetInteractableObjects();
@@ -611,50 +555,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 IO.SwitchDialogueNodes(new Script_DialogueNode[]{node});
             }
         }
-    }
-
-    public override void HandleExitCutScene()
-    {
-        game.ChangeStateCutScene();
-        game.GetPlayer().isInvisible = true;
-        audioSource.PlayOneShot(exitSFX, exitVol);
-        
-        // handle if player went back a room and activated persisting proximity speaker
-        if (lb9.speaker != null)
-        {
-            lb9.speaker.audioSource.outputAudioMixerGroup = audioMixerGroup;
-        }
-
-        StartCoroutine(
-            Script_AudioMixerFader.Fade(
-                audioMixer,
-                Const_AudioMixerParams.ExposedBGVolume,
-                fadeOutTransitionTime,
-                0f,
-                // continue to handle if player activated persisting proximity speaker from previous room
-                () => {
-                    if (lb9.speaker != null)
-                    {
-                        lb9.speaker.audioSource.Stop();
-                        Destroy(lb9.speaker.gameObject);
-                    }           
-                }
-            )
-        );
-        StartCoroutine(
-            game.TransitionFadeIn(fadeOutTransitionTime, () => {
-                audioSource.PlayOneShot(onExitFadeOutDoneSFX, onExitFadeOutDoneVol);
-                Instantiate(oneShotPrefab, Vector2.zero, Quaternion.identity);
-                // game.MelanholicTitleCutScene();
-                game.Exit(
-                    exitInfo.Level,
-                    exitInfo.PlayerNextSpawnPosition,
-                    exitInfo.PlayerFacingDirection,
-                    true,
-                    true
-                );
-            })
-        );
     }
 
     public override void Setup()
@@ -670,48 +570,16 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         game.SetupMovingNPC(Ids, !isInitialized);
         isInitialized = true;
         
-        if (!isDeskSwitchedIn)
-        {
-            ChaseLoungeSwitchIn();
-        }
-        else
-        {
-            DeskSwitchIn();
-        }
+        if (!isDeskSwitchedIn)      ChaseLoungeSwitchIn();
+        else                        DeskSwitchIn();
         
-        if (lb9.speaker == null)
-        {
-            game.SwitchBgMusic(4);
-        }
+        if (lb9.speaker == null)    game.SwitchBgMusic(4);
 
-        // TODO: COMBINE THIS STATE WITH DOOR LOCK?
-        if (!isDone)
-        {
-            // we're in mid convo in last room
-            if (activeTriggerIndex >= 3)
-            {
-                // if isSpecterStoryStarted = false, will go back to question
-                isSpecterStoryStarted = true;
-                Ids.SetMute(false);
-            }
-            else
-            {
-                Ids.SetMute(true);
-            }
-        }
-        else
+        if (isDone)
         {
             Ids.gameObject.SetActive(false);
         }
 
-        if (!isUnlocked)
-        {
-            game.DisableExits(true, 0);
-        }
-        else
-        {
-            game.DisableExits(false, 0);
-            doorLock.gameObject.SetActive(false);
-        }
+        game.DisableExits(isDisabled: true, 0);
     }
 }

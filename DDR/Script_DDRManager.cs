@@ -81,6 +81,11 @@ public class Script_DDRManager : MonoBehaviour
         get => _state;
         private set => _state = value;
     }
+
+    public bool IsPlaying
+    {
+        get => DDRBgThemePlayer?.GetComponent<AudioSource>().isPlaying ?? false;
+    }
     
     void Update()
     {
@@ -407,10 +412,7 @@ public class Script_DDRManager : MonoBehaviour
 
     private void HandleSongFinish()
     {
-        if (
-            DDRBgThemePlayer != null
-            && !DDRBgThemePlayer.GetComponent<AudioSource>().isPlaying
-        )
+        if (!IsPlaying)
         {
             didFail = false;
             Deactivate();

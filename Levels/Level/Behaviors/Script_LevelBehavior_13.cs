@@ -25,7 +25,7 @@ public class Script_LevelBehavior_13 : Script_LevelBehavior
     
     private void OnItemPickUp(string itemId)
     {
-        if (itemId == autumnStone.GetItem().id)
+        if (itemId == autumnStone.Item.id)
         {
             didPickUpAutumnStone = true;
         }

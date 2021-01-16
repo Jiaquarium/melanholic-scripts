@@ -7,6 +7,8 @@ using TMPro;
 using UnityEngine.Events;
 
 /// <summary>
+/// NOTE: DialogueManager is Setup on EVERY level
+/// 
 /// Entry point for dialogue canvas related logic
 /// CurrentNode switches on NextDialogueNode(); is left in state on EndDialogue()
 /// Unity Event handlers on Nodes fire at end of Node
@@ -951,7 +953,6 @@ public class Script_DialogueManager : MonoBehaviour
         {
             Debug.Log("SetupCanvases(): clearing all canvases now");
             ClearAllCanvasTexts();
-            // canvasHandler.DisableInactiveCanvases();
             canvasHandler.DisableCanvases();
         }
         
@@ -1101,6 +1102,14 @@ public class Script_DialogueManager : MonoBehaviour
         activeCanvasTexts = ReadChoiceDialogueTexts;
     }
 
+    void InitialState()
+    {
+        HideDialogue();
+        ClearAllCanvasTexts();
+        canvasHandler.DisableCanvases();
+    }
+
+    // NOTE: DialogueManager is Setup on EVERY level
     public void Setup()
     {
         if (DialogueManager == null)
@@ -1126,6 +1135,6 @@ public class Script_DialogueManager : MonoBehaviour
         
         fullArtManager.Setup();
 
-        HideDialogue();
+        InitialState();
     }
 }

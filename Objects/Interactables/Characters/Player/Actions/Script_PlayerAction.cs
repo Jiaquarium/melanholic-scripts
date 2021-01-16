@@ -189,10 +189,14 @@ public class Script_PlayerAction : MonoBehaviour
             if (isContinuingDialogue == false)
             {
                 player.ItemPickUpEffect(false, null);
-                StashItem(item);
+                
+                StashItem(item);    // will fire Stash event
+                
                 itemShown = null;
+                
                 /// state may have already been modified away from PickingUp
                 /// in that case, allow that state to override here
+                /// e.g. may want to react to the Stash Event and change to cut scene
                 if (player.State == Const_States_Player.PickingUp)
                 {
                     player.SetIsInteract();
@@ -271,9 +275,9 @@ public class Script_PlayerAction : MonoBehaviour
         }
         
         /// Able to add item to inventory
-        if (game.AddItem(itemObject.GetItem()))
+        if (game.AddItem(itemObject.Item))
         {
-            outItem = itemObject.GetItem();
+            outItem = itemObject.Item;
             itemObject.HandleAction(action);
             
             // send Event of what item was picked up successfully

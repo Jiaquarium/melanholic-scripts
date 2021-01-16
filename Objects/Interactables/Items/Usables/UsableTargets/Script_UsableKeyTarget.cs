@@ -7,6 +7,7 @@ public class Script_UsableKeyTarget : Script_UsableTarget
     [SerializeField] protected bool isLocked = true;
     [SerializeField] protected string myKey;
     [SerializeField] protected Script_TileMapExitEntrance myExit;
+    [SerializeField] private Script_TreasureChestLocked myTreasureChest;
     
     public virtual bool Unlock(Script_UsableKey key)
     {
@@ -24,10 +25,12 @@ public class Script_UsableKeyTarget : Script_UsableTarget
 
     protected virtual void OnUnlock(Script_UsableKey key)
     {
-        Debug.Log($"YAY UNLOCKED!!! YA DUN SUUUUUUN");
+        Debug.Log($"YAY UNLOCKED!!!");
         // unlock animation
         isLocked = false;
-        myExit.IsDisabled = false;
+        if (myExit != null)             myExit.IsDisabled = false;
+        if (myTreasureChest != null)    myTreasureChest.UnlockWithKey();
+
         Script_ItemsEventsManager.Unlock(key, Id);
     }
 }

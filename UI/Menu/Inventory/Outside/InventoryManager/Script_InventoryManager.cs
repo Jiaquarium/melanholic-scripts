@@ -52,7 +52,7 @@ public class Script_InventoryManager : MonoBehaviour
         Script_ItemObject itemToAdd;
         GetItemObjectById(itemId, out itemToAdd);
 
-        return AddItem(itemToAdd.GetItem());
+        return AddItem(itemToAdd.Item);
     }
 
     public bool AddItemInSlotById(string itemId, int i)
@@ -60,7 +60,7 @@ public class Script_InventoryManager : MonoBehaviour
         Script_ItemObject itemToAdd;
         GetItemObjectById(itemId, out itemToAdd);
 
-        return inventory.AddItemInSlot(itemToAdd.GetItem(), i);
+        return inventory.AddItemInSlot(itemToAdd.Item, i);
     }
 
     public bool AddEquippedItemInSlotById(string equipmentId, int i)
@@ -68,7 +68,7 @@ public class Script_InventoryManager : MonoBehaviour
         Script_ItemObject itemToAdd;
         GetItemObjectById(equipmentId, out itemToAdd);
 
-        return equipment.AddStickerInSlot((Script_Sticker)itemToAdd.GetItem(), i);
+        return equipment.AddStickerInSlot((Script_Sticker)itemToAdd.Item, i);
     }
 
     public Script_ItemObject InstantiateDropById(string itemId, Vector3 location, int levelBehavior)
@@ -268,8 +268,13 @@ public class Script_InventoryManager : MonoBehaviour
             location,
             Quaternion.identity
         );
-        itemObj.transform.SetParent(persistentDropsContainer.transform, true);
-        itemObj.myLevelBehavior = LB;
+        
+        // only make persistent if is Special
+        if (itemObj.Item.IsSpecial)
+        {
+            itemObj.transform.SetParent(persistentDropsContainer.transform, true);
+            itemObj.myLevelBehavior = LB;
+        }
         
         return itemObj;
     }

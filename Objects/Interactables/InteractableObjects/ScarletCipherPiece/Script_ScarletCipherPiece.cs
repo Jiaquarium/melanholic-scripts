@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Script_ScarletCipherPiece : Script_InteractableObject
 {
-    private int _scarletCipherId;
+    [SerializeField] private int _scarletCipherId;
     
     private int ScarletCipherId
     {

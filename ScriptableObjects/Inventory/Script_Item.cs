@@ -10,5 +10,11 @@ public class Script_Item : ScriptableObject
     [TextArea(1, 3)]
     public string description;
     public bool isDroppable;
-    public bool isPersistentDrop;
+    [Tooltip("Items that will be persistent after leaving Kelsingor. Stickers by default are special.")]
+    public bool _isSpecial;
+
+    public bool IsSpecial
+    {
+        get => _isSpecial;
+    }
 }
