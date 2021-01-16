@@ -5,7 +5,14 @@ using UnityEngine.UI;
 
 public class Script_DDRManager : MonoBehaviour
 {
+    public enum DDRState
+    {
+        Inactive = 0,
+        Active = 1
+    }
+    
     public Script_Game game;
+    [SerializeField] private DDRState _state;
     public CanvasGroup DDRCanvasGroup;
     public Script_Arrow ArrowPrefabLeft;
     public Script_Arrow ArrowPrefabDown;
@@ -31,10 +38,10 @@ public class Script_DDRManager : MonoBehaviour
     public float outlineLightUpTimeLength;
 
 
-    public Script_Arrow[] activeLeftArrows;
-    public Script_Arrow[] activeDownArrows;
-    public Script_Arrow[] activeUpArrows;
-    public Script_Arrow[] activeRightArrows;
+    public Script_Arrow[] activeLeftArrows      = new Script_Arrow[0];
+    public Script_Arrow[] activeDownArrows      = new Script_Arrow[0];
+    public Script_Arrow[] activeUpArrows        = new Script_Arrow[0];
+    public Script_Arrow[] activeRightArrows     = new Script_Arrow[0];
 
     public int leftArrowsCounter;
     public int downArrowsCounter;
@@ -58,6 +65,7 @@ public class Script_DDRManager : MonoBehaviour
     private Script_ArrowOutline ScriptArrowOutlineRight;
     public int mistakes;
     public int mistakesAllowed;
+    [SerializeField] private Script_BgThemePlayer DDRBgThemePlayer;
 
 
     public float timeToRise;
@@ -67,6 +75,12 @@ public class Script_DDRManager : MonoBehaviour
         for dev
     */
     public Text timerText;
+
+    public DDRState State
+    {
+        get => _state;
+        private set => _state = value;
+    }
     
     void Update()
     {
@@ -80,9 +94,12 @@ public class Script_DDRManager : MonoBehaviour
         HandleUpArrowSpawn();
         HandleRightArrowSpawn();
         
-        HandleAction();
-
-        HandleMistakes();
+        if (State == DDRState.Active)
+        {
+            HandleInput();
+            HandleMistakes();
+            HandleSongFinish();
+        }
     }
     
     public void Activate()
@@ -90,23 +107,20 @@ public class Script_DDRManager : MonoBehaviour
         this.gameObject.SetActive(true);
         game.ManagePlayerViews(Const_States_PlayerViews.DDR);
 
-        DDRCanvasGroup.alpha = 1f;
-        DDRCanvasGroup.blocksRaycasts = true;
-        DDRCanvasGroup.gameObject.SetActive(true);
+        DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().Open();
     }
 
     public void Deactivate()
     {
-        game.StopMovingNPCThemes();
-        isTimerOn = false;
-        ClearState();
+        if (State != DDRState.Active)   return;
 
-        DDRCanvasGroup.alpha = 1f;
-        DDRCanvasGroup.blocksRaycasts = false;
-        DDRCanvasGroup.gameObject.SetActive(false);
+        InitialState();
 
         this.gameObject.SetActive(false);
         game.ManagePlayerViews(Const_States_PlayerViews.Health);
+
+        /// Fire done event
+        Script_DDREventsManager.DDRDone();
     }
 
     void ClearState()
@@ -141,6 +155,8 @@ public class Script_DDRManager : MonoBehaviour
 
     void DestroyArrows(Script_Arrow[] arrows)
     {
+        if (arrows == null)     return;
+        
         foreach (Script_Arrow a in arrows)
         {
             if (a != null)  Destroy(a.gameObject);
@@ -249,7 +265,7 @@ public class Script_DDRManager : MonoBehaviour
         arrow.BeginRising();
     }
 
-    void HandleAction()
+    void HandleInput()
     {
         // ask arrow where it is, and manager will post that event
         // for game -> level behavior to handle
@@ -380,11 +396,23 @@ public class Script_DDRManager : MonoBehaviour
         return -1;
     }
 
-    void HandleMistakes()
+    private void HandleMistakes()
     {
         if (mistakesAllowed != -1 && mistakes >= mistakesAllowed)
         {
             didFail = true;
+            Deactivate();
+        }
+    }
+
+    private void HandleSongFinish()
+    {
+        if (
+            DDRBgThemePlayer != null
+            && !DDRBgThemePlayer.GetComponent<AudioSource>().isPlaying
+        )
+        {
+            didFail = false;
             Deactivate();
         }
     }
@@ -428,8 +456,24 @@ public class Script_DDRManager : MonoBehaviour
         Tier2Comment.Setup(tierCommentActivationLength);
         Tier3Comment.Setup(tierCommentActivationLength);
 
-        game.PlayNPCBgTheme(bgThemePlayer);
+        DDRBgThemePlayer = game.PlayNPCBgTheme(bgThemePlayer);
 
+        State = DDRState.Active;
         StartTimer();
+    }
+
+    private void InitialState()
+    {
+        State = DDRState.Inactive;
+        game.StopMovingNPCThemes();
+        isTimerOn = false;
+        ClearState();
+
+        DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().Close();
+    }
+
+    public void Setup()
+    {
+        InitialState();
     }
 }
