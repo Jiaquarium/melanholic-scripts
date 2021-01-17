@@ -18,9 +18,9 @@ public class Script_ActiveSticker : MonoBehaviour
     [SerializeField] private Script_Sticker[] stickers = new Script_Sticker[numItemSlots];
     public const int numItemSlots = 1;
     
-    public Script_Sticker GetSticker()
+    public Script_Sticker Sticker
     {
-        return stickers[0];
+        get => stickers[0];
     }
     
     public bool AddSticker(Script_Sticker stickerToAdd)

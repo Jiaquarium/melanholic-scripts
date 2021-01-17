@@ -33,7 +33,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     // called from Trigger in front of Guard
     public void StartGuardDialogue()
     {
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.GetSticker()?.id == Const_Items.PsychicDuckId;
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
         
         /// If already spoken with guard by either interacting with or activating trigger
         /// then don't activate trigger anymore and let Vx pass automatically 

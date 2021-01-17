@@ -20,7 +20,7 @@ public class Script_DemonNPC : Script_MovingNPC
 
     private void HandlePsychicDuck()
     {
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.GetSticker()?.id == Const_Items.PsychicDuckId;
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
         Debug.Log($"isPsychicDuckActive: {isPsychicDuckActive}");
 
         if (isPsychicDuckActive)

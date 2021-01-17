@@ -26,7 +26,7 @@ public class Script_StickerEffectsController : MonoBehaviour
         }
         
         Script_Sticker stickerToSwitch = Script_StickerHolsterManager.Control.GetSticker(i);
-        Script_Sticker activeSticker = Script_ActiveStickerManager.Control.GetSticker();
+        Script_Sticker activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;
 
         if (stickerToSwitch == null)
         {
@@ -49,7 +49,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     /// <param name="i">Sticker Holster Slot</param>
     public void Effect(Directions dir)
     {
-        Script_Sticker activeSticker = Script_ActiveStickerManager.Control.GetSticker();
+        Script_Sticker activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;
         if (activeSticker == null)  return;
         
         switch (activeSticker.id)

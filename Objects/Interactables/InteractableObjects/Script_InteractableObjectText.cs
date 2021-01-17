@@ -57,15 +57,20 @@ public class Script_InteractableObjectText : Script_InteractableObject
         /// Player is mid-dialogue, can either 1) skip 2) continue if no longer rendering dialogue
         else
         {
-            if (dialogueManager.IsDialogueSkippable())
-            {
-                Debug.Log("Attempting to skip typing sentence via IOText");
-                dialogueManager.SkipTypingSentence();
-            }
-            else
-            {
-                dialogueManager.ContinueDialogue();
-            }
+            ContinueDialogue();
+        }
+    }
+
+    protected void ContinueDialogue()
+    {
+        if (dialogueManager.IsDialogueSkippable())
+        {
+            Debug.Log("Attempting to skip typing sentence via IOText");
+            dialogueManager.SkipTypingSentence();
+        }
+        else
+        {
+            dialogueManager.ContinueDialogue();
         }
     }
 

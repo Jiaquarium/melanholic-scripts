@@ -12,9 +12,14 @@ public class Script_ActiveStickerManager : MonoBehaviour
     [SerializeField] private Script_ActiveSticker activeSticker;
     [SerializeField] private FadeSpeeds fadeSpeed;
 
-    public Script_Sticker GetSticker()
+    public Script_Sticker ActiveSticker
     {
-        return activeSticker.GetSticker();
+        get => activeSticker.Sticker;
+    }
+
+    public bool IsActiveSticker(string id)
+    {
+        return ActiveSticker?.id == id;
     }
     
     public bool AddSticker(Script_Sticker stickerToAdd)

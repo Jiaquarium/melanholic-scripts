@@ -579,7 +579,5 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         {
             Ids.gameObject.SetActive(false);
         }
-
-        game.DisableExits(isDisabled: true, 0);
     }
 }

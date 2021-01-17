@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
 {
-    static readonly private string BoarNeedle = "sticker_boar-needle"; 
+    static readonly private string BoarNeedle = Const_Items.BoarNeedleId; 
     static readonly private float BoarNeedleWaitTime = 0.5f; 
     [SerializeField] private Script_ExitMetadataObject exit;
     public Script_DialogueNode[] paintingDialogueNodes;
@@ -15,13 +15,12 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
         if (isDialogueCoolDown)     return;
         if (CheckDisabledDirections())  return;
         
-        if (Script_Game.Game.CheckStickerEquippedById(BoarNeedle))
+        if (Script_ActiveStickerManager.Control.IsActiveSticker(BoarNeedle))
         {
             if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
-            {
                 InitiatePaintingEntrance();
-            }
-            else    Script_DialogueManager.DialogueManager.ContinueDialogue();
+            else 
+                ContinueDialogue();
         }
         else
         {
