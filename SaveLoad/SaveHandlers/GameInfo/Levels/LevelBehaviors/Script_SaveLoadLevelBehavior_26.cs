@@ -37,5 +37,8 @@ public class Script_SaveLoadLevelBehavior_26 : Script_SaveLoadLevelBehavior
         LB26.isPuzzleComplete               = lvlModel.isPuzzleComplete;
         LB26.didActivateDramaticThoughts    = lvlModel.didActivateDramaticThoughts;
         LB26.didPickUpWinterStone           = lvlModel.didPickUpWinterStone;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

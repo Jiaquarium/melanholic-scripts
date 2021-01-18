@@ -15,14 +15,14 @@ public class Script_SaveTester : Editor
         DrawDefaultInspector();
 
         Script_SaveGameControl control = (Script_SaveGameControl)target;
+        if (GUILayout.Button("Save Initialize (Last Elevator)"))
+        {
+            control.Save(Script_SaveGameControl.Saves.Initialize);
+        }
+        
         if (GUILayout.Button("Save Run (Tedmunch Save)"))
         {
             control.Save(Script_SaveGameControl.Saves.SavePoint);
-        }
-
-        if (GUILayout.Button("Save Initialize"))
-        {
-            control.Save(Script_SaveGameControl.Saves.Initialize);
         }
 
         if (GUILayout.Button("Save Restart From Initialized (Erase Run Data)"))

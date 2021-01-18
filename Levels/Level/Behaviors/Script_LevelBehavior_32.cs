@@ -15,10 +15,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform interactableObjectsParent;
     private bool isInit = true;
 
-    private void Awake()
+    private void Start()
     {
+        Debug.Log($"{name} didStartThought: {didStartThought}");
+        
         if (!didStartThought)
         {
+            Debug.Log($"**** {name} starting openeing cut scene ****");
             game.UnderDialogueBlackScreen();            
         }
     }

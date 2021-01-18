@@ -86,15 +86,13 @@ public class Script_SaveGameControl : MonoBehaviour
                     WriteSaveDataFile(bf, saveFilePath, saveData);
                     break;
                 
-                /// Should only be called before beginning a new run 
+                /// Called when passing a Last Elevator. Currently exactly like SavePoint save
                 case (Saves.Initialize):
                     SaveGame(saveData);
                     OverridePlayerData(saveData, playerStateOverride);
-                    HandleInitialSave(saveData);
+                    HandleSaveRun(saveData);
                     WriteSaveDataFile(bf, saveFilePath, saveData);
-                    /// Create a copy of the file at the beginning of the run in case player wants
-                    /// to restart back to this point 
-                    WriteSaveDataFile(bf, saveInitializeFilePath, saveData);
+                    // WriteSaveDataFile(bf, saveInitializeFilePath, saveData);
                     break;
                 
                 /// Replace current game saved data and with the SaveDataInitialize
@@ -146,10 +144,10 @@ public class Script_SaveGameControl : MonoBehaviour
             levelsHandler.SaveLevels(data);
         }
         
-        void HandleInitialSave(Model_SaveData data)
-        {
-            data.runData = new Model_RunData();
-        }
+        // void HandleInitialSave(Model_SaveData data)
+        // {
+        //     data.runData = new Model_RunData();
+        // }
 
         void HandleRestartFromInitialSave()
         {

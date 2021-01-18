@@ -35,5 +35,8 @@ public class Script_SaveLoadLevelBehavior_0 : Script_SaveLoadLevelBehavior
         LB0.didStartThought             = lvlModel.didStartThought;
         LB0.demonSpawns                 = lvlModel.demonSpawns;
         LB0.isDone                      = lvlModel.isDone;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

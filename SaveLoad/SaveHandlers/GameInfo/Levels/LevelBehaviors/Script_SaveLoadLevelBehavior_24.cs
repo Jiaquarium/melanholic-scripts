@@ -33,5 +33,8 @@ public class Script_SaveLoadLevelBehavior_24 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_24 lvlModel = data.levelsData.LB24;
         LB24.isPuzzleComplete       = lvlModel.isPuzzleComplete;
         LB24.didPickUpSpringStone         = lvlModel.didPickUpSpringStone;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

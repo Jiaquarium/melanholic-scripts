@@ -39,10 +39,13 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     private bool isInit = true;
 
-    private void Awake()
+    private void Start()
     {
+        Debug.Log($"{name} didStartThought: {didStartThought}");
+        
         if (!didStartThought)
         {
+            Debug.Log($"**** {name} starting wells cut scene ****");
             Script_PRCSManager.Control.OpenPRCSNoFade(wellJustOpened);
         }
     }

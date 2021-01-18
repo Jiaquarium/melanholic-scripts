@@ -39,5 +39,8 @@ public class Script_SaveLoadLevelBehavior_29 : Script_SaveLoadLevelBehavior
         LB29.questActive                    = lvlModel.questActive;
         LB29.questComplete                  = lvlModel.questComplete;
         LB29.isSaloonLocked                 = lvlModel.isSaloonLocked;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

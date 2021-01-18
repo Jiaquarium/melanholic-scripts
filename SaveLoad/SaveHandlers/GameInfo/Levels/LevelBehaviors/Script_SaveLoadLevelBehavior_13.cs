@@ -31,5 +31,8 @@ public class Script_SaveLoadLevelBehavior_13 : Script_SaveLoadLevelBehavior
 
         Model_LevelBehavior_13 lvlModel = data.levelsData.LB13;
         LB13.didPickUpAutumnStone       = lvlModel.didPickUpAutumnStone;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

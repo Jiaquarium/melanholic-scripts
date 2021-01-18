@@ -33,5 +33,8 @@ public class Script_SaveLoadLevelBehavior_21 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_21 lvlModel = data.levelsData.LB21;
         LB21.spokenWithEileen             = lvlModel.spokenWithEileen;
         LB21.didOnEntranceAttack          = lvlModel.didOnEntranceAttack;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

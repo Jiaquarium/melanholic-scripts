@@ -31,5 +31,8 @@ public class Script_SaveLoadLevelBehavior_31 : Script_SaveLoadLevelBehavior
 
         Model_LevelBehavior_31 lvlModel     = data.levelsData.LB31;
         LB31.isDone                         = lvlModel.isDone;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

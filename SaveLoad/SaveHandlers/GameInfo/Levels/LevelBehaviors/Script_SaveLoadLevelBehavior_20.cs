@@ -39,5 +39,8 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
         LB20.isPuzzleComplete       = lvlModel.isPuzzleComplete;
         LB20.didPickUpMasterKey     = lvlModel.didPickUpMasterKey;
         LB20.didUnlockMasterLock    = lvlModel.didUnlockMasterLock;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

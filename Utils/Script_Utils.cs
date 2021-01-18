@@ -595,4 +595,10 @@ public static class Script_Utils
 
         return false;
     }
+
+    public static void DebugToConsole(object obj)
+    {
+        var output = JsonUtility.ToJson(obj, true);
+        Debug.Log(output);
+    }
 }

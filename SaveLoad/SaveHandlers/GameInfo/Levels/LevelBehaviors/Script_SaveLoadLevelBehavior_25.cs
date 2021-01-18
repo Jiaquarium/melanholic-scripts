@@ -33,5 +33,8 @@ public class Script_SaveLoadLevelBehavior_25 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_25 lvlModel = data.levelsData.LB25;
         LB25.isPuzzleComplete           = lvlModel.isPuzzleComplete;
         LB25.spokenWithEllenia          = lvlModel.spokenWithEllenia;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

@@ -33,5 +33,8 @@ public class Script_SaveLoadLevelBehavior_12 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_12 lvlModel = data.levelsData.LB12;
         LB12.isDone             = lvlModel.isDone;
         LB12.isCutSceneDone     = lvlModel.isCutSceneDone;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }

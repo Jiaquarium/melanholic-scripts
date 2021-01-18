@@ -31,5 +31,8 @@ public class Script_SaveLoadLevelBehavior_22 : Script_SaveLoadLevelBehavior
 
         Model_LevelBehavior_22 lvlModel = data.levelsData.LB22;
         LB22.isMyneCutSceneDone         = lvlModel.isMyneCutSceneDone;
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(lvlModel);
     }
 }
