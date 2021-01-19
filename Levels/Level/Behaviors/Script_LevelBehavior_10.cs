@@ -9,11 +9,15 @@ using System;
 /// Respawns are handled with IdsSpawns which will auto reset Ids positions
 /// timelines to play are tracked with timelineCount
 /// Uses MoveSets for approaching player
+/// 
+/// Events:
+/// Ids should only be here on Sunday
 /// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_10 : Script_LevelBehavior
 {
     public bool isDone;
+    [SerializeField] private Script_Trigger[] triggers;
     [SerializeField] private int activeTriggerIndex;
     [SerializeField] private int timelineCount;
     [SerializeField] private Script_Marker[] IdsSpawns;
@@ -381,12 +385,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         if (DDRManager.didFail)
         {
-            Debug.Log($"OnDDRDone starting Bad Node");
+            Debug.Log($"**** OnDDRDone starting Bad Node ****");
             DDRFinish(badDanceOutroNode);
         }
         else
         {
-            Debug.Log($"OnDDRDone starting Good Node");
+            Debug.Log($"**** OnDDRDone starting Good Node ****");
             DDRFinish(goodDanceOutroNode);
         }
     }
@@ -575,9 +579,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         if (lb9.speaker == null)    game.SwitchBgMusic(4);
 
-        if (isDone)
+        if (isDone || !game.IsRunDay(Script_Run.DayId.sun))
         {
             Ids.gameObject.SetActive(false);
+            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+        }
+        else
+        {
+            Ids.gameObject.SetActive(true);
+            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
         }
     }
 }

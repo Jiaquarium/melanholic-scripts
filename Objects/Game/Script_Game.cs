@@ -16,12 +16,6 @@ public class Script_Game : MonoBehaviour
     /* =======================================================================
         STATE DATA
     ======================================================================= */
-    public Script_Run Run {
-        get { return runsManager.Run; }
-    }
-    public int RunIdx {
-        get { return runsManager.RunIdx; }
-    }
     public int level;
     public float totalPlayTime;
     /* ======================================================================= */
@@ -134,6 +128,16 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
     [SerializeField] private Script_ExitMetadataObject playerSpawn;
     
+    public Script_Run Run
+    {
+        get => runsManager.Run;
+    }
+    
+    public int RunIdx
+    {
+        get => runsManager.RunIdx;
+    }
+
     void OnEnable()
     {
         Script_ClockEventsManager.OnTimesUp += TimesUpEffects;
@@ -470,6 +474,11 @@ public class Script_Game : MonoBehaviour
     public void LoadRun(int runIdx)
     {
         runsManager.Load(runIdx);
+    }
+
+    public bool IsRunDay(Script_Run.DayId dayId)
+    {
+        return runsManager.Run.dayId == dayId;
     }
 
     /* =======================================================================
