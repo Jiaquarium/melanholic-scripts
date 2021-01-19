@@ -579,7 +579,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         if (lb9.speaker == null)    game.SwitchBgMusic(4);
 
-        if (isDone || !game.IsRunDay(Script_Run.DayId.sun))
+        if (!game.IsRunDay(Script_Run.DayId.sun))
         {
             Ids.gameObject.SetActive(false);
             foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
