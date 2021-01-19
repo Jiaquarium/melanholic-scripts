@@ -5,6 +5,11 @@ using System;
 
 public class Script_LightsController : MonoBehaviour
 {
+    public enum RenderMode
+    {
+        None,
+        Important
+    }
     [Tooltip("Updates lights in Update() instead of just in the editor")]
     [SerializeField] private bool shouldUpdate;
     [SerializeField] private float intensity;
@@ -16,10 +21,16 @@ public class Script_LightsController : MonoBehaviour
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
 
-    public enum RenderMode
+    public bool ShouldUpdate
     {
-        None,
-        Important
+        get => shouldUpdate;
+        set => shouldUpdate = value;
+    }
+    
+    public float Intensity
+    {
+        get => intensity;
+        set => intensity = value;
     }
 
     void OnDisable()

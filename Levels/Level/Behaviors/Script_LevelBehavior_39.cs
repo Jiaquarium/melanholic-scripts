@@ -37,7 +37,8 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         
         /// If already spoken with guard by either interacting with or activating trigger
         /// then don't activate trigger anymore and let Vx pass automatically 
-        if (isPsychicDuckActive && didGuardConfirm)
+        /// except on Sunday, where it's always blocking
+        if (isPsychicDuckActive && didGuardConfirm && game.Run.dayId != Script_Run.DayId.sun)
         {
             return;
         }
@@ -49,7 +50,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         /// NOTE Flan's last dialogue node needs to call EndGuardDialogue()
     }
 
-    public void OnEndGuardDialogue()
+    public void OnEndGuardDialogueBlock()
     {
         /// Reinstate barrier
         barrier.gameObject.SetActive(true);
@@ -62,7 +63,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         didGuardConfirm = false;
     }
 
-    public void OnEndGuardPsychicDialogue()
+    public void OnEndGuardDialogueUnblock()
     {
         /// Remove barrier
         barrier.gameObject.SetActive(false);

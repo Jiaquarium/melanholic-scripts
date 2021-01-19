@@ -35,7 +35,7 @@ public class Script_RunsManager : MonoBehaviour
     public int RunIdx
     {
         get => _runIdx;      
-        set => _runIdx = value;
+        private set => _runIdx = value;
     }
     
     public Script_Run Run

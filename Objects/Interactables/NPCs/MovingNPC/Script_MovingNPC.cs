@@ -45,7 +45,7 @@ public class Script_MovingNPC : Script_StaticNPC
     
     private Script_InteractionBoxController interactionBoxController { get; set; }
 
-    void OnEnable() {
+    protected virtual void OnEnable() {
         if (lastFacingDirection != Directions.None && animator != null)
             FaceLastDirection();
     }

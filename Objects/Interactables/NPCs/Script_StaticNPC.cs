@@ -152,6 +152,9 @@ public class Script_StaticNPC : Script_Interactable
     public virtual void Glimmer() {}
     public virtual void Freeze(bool isFrozen) {}
 
+    /// <summary>
+    /// Doing autoSetup means Setup will only be called once
+    /// </summary>
     protected virtual void AutoSetup()
     {
         game = Script_Game.Game;

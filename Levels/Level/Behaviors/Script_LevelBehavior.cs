@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+/// <summary>
+/// NOTE: Setup is called on EVERY level change
+/// </summary>
 public class Script_LevelBehavior : MonoBehaviour
 {
     public Script_Game game;
@@ -73,6 +76,9 @@ public class Script_LevelBehavior : MonoBehaviour
     public virtual int OnSubmit(string s) { return -1; }
     public virtual void HandlePlayableDirectorStopped(PlayableDirector aDirector) {}
     public virtual void InitialState() { }
+    /// <summary>
+    /// Called on EVERY level init
+    /// </summary>
     public virtual void Setup()
     {
         // game.CreateNPCs();

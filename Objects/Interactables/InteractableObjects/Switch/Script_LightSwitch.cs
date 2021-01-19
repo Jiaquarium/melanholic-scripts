@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Can either directly reference specific lights or reference
+/// LightControllers
+/// </summary>
 public class Script_LightSwitch : Script_Switch
 {
     public Light[] lights;
+    [SerializeField] private Script_LightsController[] lightsControllers;
     
     public float onIntensity;
     public float offIntensity;
@@ -12,16 +17,29 @@ public class Script_LightSwitch : Script_Switch
     public AudioSource audioSource;
     public AudioClip onOffSFX;
 
+    protected override void Start()
+    {
+        base.Start();
+        if (lightsControllers.Length > 0)
+        {
+            foreach (Script_LightsController lc in lightsControllers)   lc.ShouldUpdate = true;
+            return;
+        }
+    }
+    
     public override void TurnOn()
     {
         base.TurnOn();
         
         audioSource.PlayOneShot(onOffSFX, volumeScale);
 
-        foreach (Light l in lights)
+        if (lightsControllers.Length > 0)
         {
-            l.intensity = onIntensity;
+            foreach (Script_LightsController lc in lightsControllers)   lc.Intensity = onIntensity;
+            return;
         }
+        
+        foreach (Light l in lights)     l.intensity = onIntensity;
     }
 
     public override void TurnOff()
@@ -30,10 +48,13 @@ public class Script_LightSwitch : Script_Switch
 
         audioSource.PlayOneShot(onOffSFX, volumeScale);
         
-        foreach (Light l in lights)
+        if (lightsControllers.Length > 0)
         {
-            l.intensity = offIntensity;
+            foreach (Script_LightsController lc in lightsControllers)   lc.Intensity = offIntensity;
+            return;
         }
+        
+        foreach (Light l in lights)     l.intensity = offIntensity;
     }
 
     public override void SetupSwitch(
@@ -73,6 +94,15 @@ public class Script_LightSwitch : Script_Switch
     {
         SetupSwitch(isOn, onSprite, offSprite);
 
+        if (lightsControllers.Length > 0)
+        {
+            foreach (Script_LightsController lc in lightsControllers)
+            {
+                lc.Intensity = isOn ? onIntensity : offIntensity;
+            }
+            return;
+        }
+        
         foreach (Light l in lights)
         {
             l.intensity = isOn ? onIntensity : offIntensity;

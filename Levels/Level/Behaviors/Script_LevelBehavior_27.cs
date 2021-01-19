@@ -10,12 +10,24 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_27 : Script_LevelBehavior
 {
+    // =======================================================================
+    // State Data START
+    [SerializeField] private bool _gotPsychicDuck;
+    // State Data END
+    // =======================================================================
+
     [SerializeField] private Transform exitParent;
     [SerializeField] private Script_Elevator elevator; /// Ref'ed by ElevatorManager
     [SerializeField] private Script_StickerObject PsychicDuck;
     [SerializeField] private Script_TimelineController IdsTimelineController;
+    [SerializeField] private Transform Ids;
     private bool isInit = true;
-    private bool gotPsychicDuck = false;
+
+    public bool GotPsychicDuck
+    {
+        get => _gotPsychicDuck;
+        set => _gotPsychicDuck = value;
+    }
     
     protected override void OnEnable()
     {
@@ -26,7 +38,7 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     {
         Script_ItemsEventsManager.OnItemPickUpTheatricDone -= OnItemPickUpTheatricsDone;
     }
-    
+
     public void OnItemPickUpTheatricsDone(Script_ItemPickUpTheatricsPlayer theatricsPlayer)
     {
         if (theatricsPlayer == PsychicDuck.pickUpTheatricsPlayer)
@@ -42,10 +54,10 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     // Next Node Action Unity Events START
     public void GivePsychicDuck()
     {
-        if (gotPsychicDuck)     return; // need to properly exit out, see note in ItemPickUpTheatricsPlayer
+        if (GotPsychicDuck)     return; // need to properly exit out, see note in ItemPickUpTheatricsPlayer
 
         game.HandleItemReceive(PsychicDuck);
-        gotPsychicDuck = true;
+        GotPsychicDuck = true;
     }
     // Next Node Action Unity Events END
     // ----------------------------------------------------------------------
@@ -61,6 +73,10 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     public override void Setup()
     {
         game.SetupInteractableObjectsExit(exitParent, isInit);
+
+        /// Setup Ids intro on Run 0
+        if (!GotPsychicDuck && game.Run.dayId == Script_Run.DayId.fri)      Ids.gameObject.SetActive(true);
+        else                                                                Ids.gameObject.SetActive(false);
         
         isInit = false;
     }
