@@ -13,12 +13,17 @@ public class Script_InteractableObject : Script_Interactable
     [SerializeField] private UnityEvent action;
     [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] protected bool autoSetup;
     
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
         if (autoSetup)
         {
             AutoSetup();
         }
+    }
+    
+    protected virtual void Start()
+    {
+        
     }
 
     protected virtual void AutoSetup()

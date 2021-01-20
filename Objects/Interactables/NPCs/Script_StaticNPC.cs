@@ -22,7 +22,8 @@ public class Script_StaticNPC : Script_Interactable
     protected Script_DialogueManager dialogueManager;
     [SerializeField] protected bool isMute;
     private Coroutine fadeOutCo;
-    [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] private bool isAutoSetup;
+    [Tooltip("Easier way to reference Game if we don't care about Setup()")]
+    [SerializeField] protected bool isAutoSetup;
     [SerializeField] private States _state;
 
     public States State
@@ -43,7 +44,7 @@ public class Script_StaticNPC : Script_Interactable
         set => defaultFacingDirection = value;
     }
 
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
         if (isAutoSetup)  AutoSetup();
     }
@@ -152,9 +153,6 @@ public class Script_StaticNPC : Script_Interactable
     public virtual void Glimmer() {}
     public virtual void Freeze(bool isFrozen) {}
 
-    /// <summary>
-    /// Doing autoSetup means Setup will only be called once
-    /// </summary>
     protected virtual void AutoSetup()
     {
         game = Script_Game.Game;

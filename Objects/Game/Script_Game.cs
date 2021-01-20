@@ -136,6 +136,34 @@ public class Script_Game : MonoBehaviour
         get => runsManager.RunIdx;
     }
 
+    /// <summary>
+    /// (DEV): Sets all levels to inactive from Dev'ing
+    /// to avoid errors when a level is active on load where their GameObjects's
+    /// OnEnable and Awake functions will be called before Singletons are set
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void OnBeforeSceneLoadRuntimeMethod()
+    {
+        Debug.Log("~~~~~~~~ TASKS RIGHT AFTER GAME SCENE LOAD ~~~~~~~~");
+        LevelsInactivate();
+
+        void LevelsInactivate()
+        {
+            Debug.Log("~~~~~~~~ Disabling all level grids; ensure these are inactive in prod ~~~~~~~~");
+
+            Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
+            foreach (Script_LevelGrid lvl in lvls)
+            {
+                if (lvl.gameObject.activeSelf && !Const_Dev.IsDevMode)
+                {
+                    Debug.LogError($"{lvl.name} is active. You need to set this inactive at game load for prod.");
+                }
+                
+                lvl.gameObject.SetActive(false);
+            }
+        }
+    }
+    
     void OnEnable()
     {
         Script_ClockEventsManager.OnTimesUp += TimesUpEffects;
@@ -239,15 +267,6 @@ public class Script_Game : MonoBehaviour
         GetComponent<CinemachineBrain>().enabled = true;
         ClearEntries(); // clear entry null objects left when exitting Play Mode
         totalPlayTime = 0;
-        LevelsInactivate();
-
-        void LevelsInactivate()
-        {
-            Debug.Log("Disabling all level grids");
-
-            Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
-            foreach (Script_LevelGrid lvl in lvls)   lvl.gameObject.SetActive(false);
-        }
     }
 
     private void Load()
@@ -477,6 +496,17 @@ public class Script_Game : MonoBehaviour
     public bool IsRunDay(Script_Run.DayId dayId)
     {
         return runsManager.Run.dayId == dayId;
+    }
+
+    /// <returns>current Cycle</returns>
+    public Script_RunsManager.Cycle SetNextCycle(Script_RunsManager.Cycle cycle)
+    {
+        Debug.Log(
+            $"Set <color=green>NextRunCycle:</color>{cycle}. <color=blue>Current RunCycle:</color>{runsManager.RunCycle}"
+        );
+
+        runsManager.NextRunCycle = cycle;
+        return runsManager.RunCycle;
     }
 
     /* =======================================================================

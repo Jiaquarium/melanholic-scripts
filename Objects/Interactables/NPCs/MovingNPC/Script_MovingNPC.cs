@@ -45,7 +45,9 @@ public class Script_MovingNPC : Script_StaticNPC
     
     private Script_InteractionBoxController interactionBoxController { get; set; }
 
-    protected virtual void OnEnable() {
+    protected override void OnEnable() {
+        base.OnEnable();
+        
         if (lastFacingDirection != Directions.None && animator != null)
             FaceLastDirection();
     }
@@ -400,9 +402,7 @@ public class Script_MovingNPC : Script_StaticNPC
     protected override void AutoSetup()
     {
         base.AutoSetup();
-        
         game.AutoSetupMovingNPC(this);
-
         Setup();
     }
     

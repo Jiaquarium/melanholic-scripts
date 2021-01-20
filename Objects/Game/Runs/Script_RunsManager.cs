@@ -21,6 +21,7 @@ public class Script_RunsManager : MonoBehaviour
     
     [Tooltip("Current run index")] [SerializeField] private int _runIdx;
     [SerializeField] private Cycle _runCycle;
+    [SerializeField] private Cycle _nextRunCycle;
     [SerializeField] private Script_Run[] weekdayCycle;
     [SerializeField] private Script_Run[] weekendCycle;
     [SerializeField] private Script_Run[] all;
@@ -46,6 +47,12 @@ public class Script_RunsManager : MonoBehaviour
     {
         get => _runCycle;
         set => _runCycle = value;
+    }
+
+    public Cycle NextRunCycle
+    {
+        get => _nextRunCycle;
+        set => _nextRunCycle = value;
     }
 
     private Script_Run.DayId StartDay
