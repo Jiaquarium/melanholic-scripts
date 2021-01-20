@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_1 : Script_LevelBehavior
 {
@@ -20,16 +24,20 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     public Script_DialogueManager dialogueManager;
     public Script_VCamera VCamLB1;
     [SerializeField] private PlayableDirector ErasDirector;
+
+    private bool didIdsMusicCutScene;
     
 
     public Script_BgThemePlayer EroBgThemePlayerPrefab;
     
     protected override void OnEnable() {
         ErasDirector.stopped += OnErasExitDone;
+        Script_GameEventsManager.OnLevelInitComplete += OnLevelInit;
     }
 
     protected override void OnDisable() {
         ErasDirector.stopped -= OnErasExitDone;
+        Script_GameEventsManager.OnLevelInitComplete -= OnLevelInit;
     }
     
     public override bool ActivateTrigger(string Id){
@@ -45,9 +53,20 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         return false;
     }
 
-    /// <summary>
+    protected override void HandleAction()
+    {
+        base.HandleDialogueAction();
+    }
+
+    private void OnLevelInit()
+    {
+        if (game.IsRunDay(Script_Run.DayId.sun) && !didIdsMusicCutScene)
+        {
+            IdsMusicCutScene();
+        }
+    }
+
     /// OnNextNodeAction handler START ================================================================================
-    /// </summary>
     public void ExitCutScene()
     {
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
@@ -61,9 +80,37 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         // Script_SaveGameControl.control.Save();
     }
 
-    /// <summary>
     /// OnNextNodeAction handler END ================================================================================
-    /// </summary>
+    // ------------------------------------------------------------------------------------
+    // Timeline Signals Start
+    public void FadeOutMusic()
+    {
+        Script_BackgroundMusicManager.Control.FadeOutMasterFast(() => {
+            Script_BackgroundMusicManager.Control.Pause();
+        });
+    }
+
+    public void FadeInMusic()
+    {
+        Script_BackgroundMusicManager.Control.FadeInMasterFast(null);
+    }
+
+    public void OnIdsMusicTimelineDone()
+    {
+        Script_BackgroundMusicManager.Control.UnPause();
+        Script_BackgroundMusicManager.Control.FadeInMasterFast(null);
+        game.ChangeStateInteract();
+    }
+    // Timeline Signals End
+    // ------------------------------------------------------------------------------------
+
+    public void IdsMusicCutScene()
+    {
+        game.ChangeStateCutScene();
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
+
+        didIdsMusicCutScene = true;
+    }
 
     private void OnErasExitDone(PlayableDirector aDirector)
     {
@@ -80,11 +127,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         game.NPCFaceDirection(0, Directions.Up);
         game.ChangeCameraTargetToNPC(0);
         dialogueManager.StartDialogueNode(EroNode);
-    }
-
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
     }
 
     public override void Setup()
@@ -112,3 +154,27 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         isInit = false;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_LevelBehavior_1))]
+public class Script_LevelBehavior_1Tester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_LevelBehavior_1 t = (Script_LevelBehavior_1)target;
+        if (GUILayout.Button("IdsMusicCutScene()"))
+        {
+            t.IdsMusicCutScene();
+        }
+        if (GUILayout.Button("FadeOutMusic()"))
+        {
+            t.FadeOutMusic();
+        }
+        if (GUILayout.Button("FadeInMusic()"))
+        {
+            t.FadeInMusic();
+        }
+    }
+}
+#endif

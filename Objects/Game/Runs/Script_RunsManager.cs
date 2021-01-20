@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-
 /// <summary>
 /// Store the run by idx
 /// </summary>

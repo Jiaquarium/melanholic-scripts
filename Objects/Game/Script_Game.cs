@@ -56,7 +56,6 @@ public class Script_Game : MonoBehaviour
     public Script_EntryManager entryManager;
     public Script_ThoughtManager thoughtManager;
     public Script_HintManager hintManager;
-    public Script_BackgroundMusicManager bgMusicManager;
     public Script_FullArtManager fullArtManager;
     [SerializeField] private Script_ElevatorManager elevatorManager;
     [SerializeField] private Script_ClockManager clockManager;
@@ -67,6 +66,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_ScarletCipherManager scarletCipherManager;
     [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
     [SerializeField] private Script_ActiveStickerManager activeStickerManager;
+    public Script_BackgroundMusicManager BGMManager;
     [SerializeField] private Script_SFXManager SFXManager;
     [SerializeField] private Script_VCamManager VCamManager;
     [SerializeField] private Script_RunsManager runsManager;
@@ -113,8 +113,6 @@ public class Script_Game : MonoBehaviour
     public List<Script_Pushable> pushables = new List<Script_Pushable>();
     public List<Script_Demon> demons = new List<Script_Demon>();
     public List<Script_AudioOneShotSource> audioOneShotSources = new List<Script_AudioOneShotSource>();
-    private Script_Demon DemonPrefab;
-    private AudioSource backgroundMusicAudioSource;
     public Script_BgThemePlayer npcBgThemePlayer;
     public Script_LevelBehavior levelBehavior { get; private set; }
     public Script_LevelBehavior lastLevelBehavior { get; private set; }
@@ -190,6 +188,7 @@ public class Script_Game : MonoBehaviour
         namesManager.Setup();
         exitsHandler.Setup(this);
         SFXManager.Setup();
+        BGMManager.Setup();
         hitBoxDictionary.Setup();
         hintManager.Setup();
         VCamManager.Setup();
@@ -206,7 +205,6 @@ public class Script_Game : MonoBehaviour
 
         camera = Camera.main.GetComponent<Script_Camera>();
         camera.Setup(levelZeroCameraPosition);
-        backgroundMusicAudioSource = bgMusicManager.GetComponent<AudioSource>();
         transitionManager.Setup();
         cutSceneManager.Setup();
         canvasGroupsParent.Setup();
@@ -1065,7 +1063,7 @@ public class Script_Game : MonoBehaviour
     public void CurrentMovesDoneAction()
     {
         Levels.levelsData[level].behavior.HandleMovingNPCCurrentMovesDone();
-        // if (!bgMusicManager.GetIsPlaying())    UnPauseBgMusic();
+        // if (!BGMManager.GetIsPlaying())    UnPauseBgMusic();
         
         // if (eroBgThemePlayer != null)
         // {
@@ -1392,28 +1390,28 @@ public class Script_Game : MonoBehaviour
         
         int i = Levels.levelsData[level].bgMusicAudioClipIndex;
         
-        bgMusicManager.Play(i);
+        BGMManager.Play(i);
     }
 
     public void SwitchBgMusic(int i)
     {
-        bgMusicManager.Play(i, forcePlay: true);
+        BGMManager.Play(i, forcePlay: true);
     }
 
     public void StopBgMusic()
     {
-        bgMusicManager.Stop();
+        BGMManager.Stop();
     }
 
     public void PauseBgMusic()
     {
-        bgMusicManager.Pause();
+        BGMManager.Pause();
     }
 
     public void UnPauseBgMusic()
     {
-        if (bgMusicManager != null)
-            bgMusicManager.UnPause();
+        if (BGMManager != null)
+            BGMManager.UnPause();
     }
 
     public Script_BgThemePlayer PlayNPCBgTheme(Script_BgThemePlayer bgThemePlayerPrefab)

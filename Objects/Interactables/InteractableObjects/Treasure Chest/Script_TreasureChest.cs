@@ -13,13 +13,17 @@ public class Script_TreasureChest : Script_InteractableObject
     [SerializeField] private Sprite openSprite;
     [SerializeField] private Sprite closedSprite;
 
-    private bool IsOpen
+    public bool IsOpen
     {
         get => _isOpen;
-        set => _isOpen = value;
+        set
+        {
+            _isOpen = value;
+            ChangeSprite(_isOpen ? openSprite : closedSprite);
+        }
     }
 
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         Script_ItemsEventsManager.OnItemStash += OnItemStash;
     }
@@ -32,8 +36,7 @@ public class Script_TreasureChest : Script_InteractableObject
     protected override void Start()
     {
         base.Start();
-        if (_isOpen)    ChangeSprite(openSprite);
-        else            ChangeSprite(closedSprite);
+        ChangeSprite(IsOpen ? openSprite : closedSprite);
     }
 
     public override void ActionDefault()
@@ -45,7 +48,6 @@ public class Script_TreasureChest : Script_InteractableObject
         if (!IsOpen)
         {
             Script_Game.Game.HandleItemReceive(item);
-            ChangeSprite(openSprite);
             IsOpen = true;
         }
     }

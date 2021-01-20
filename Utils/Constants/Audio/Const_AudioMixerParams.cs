@@ -1,6 +1,6 @@
 ﻿public static class Const_AudioMixerParams
 {
-    public static readonly string ExposedMasterVolume   = "ExposedMasterVolume";
-    public static readonly string ExposedBGVolume       = "ExposedBGVolume";
-    public static readonly string ExposedSFXVolume      = "ExposedSFXVolume";
+    public const string ExposedMasterVolume   = "ExposedMasterVolume";
+    public const string ExposedBGVolume       = "ExposedBGVolume";
+    public const string ExposedSFXVolume      = "ExposedSFXVolume";
 }

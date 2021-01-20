@@ -7,15 +7,12 @@ using UnityEngine.Playables;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_0 : Script_LevelBehavior
 {
-    /* =======================================================================
-        STATE DATA
-    ======================================================================= */
+    // =======================================================================
+    //  STATE DATA
     public bool didStartThought;
     public bool[] demonSpawns;
     public bool isDone;
-    /* ======================================================================= */
-    // TODO: put into state if we end up needing to track state for TUTORIAL
-    /* ======================================================================= */
+    // =======================================================================
 
     [SerializeField] private AudioMixer audioMixer;
     public Script_ProximityFader fader;

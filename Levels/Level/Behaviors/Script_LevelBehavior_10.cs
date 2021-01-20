@@ -16,6 +16,11 @@ using System;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_10 : Script_LevelBehavior
 {
+    // =======================================================================
+    //  STATE DATA
+    public bool gotBoarNeedle;
+    // =======================================================================
+    
     public bool isDone;
     [SerializeField] private Script_Trigger[] triggers;
     [SerializeField] private int activeTriggerIndex;
@@ -73,6 +78,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
     [SerializeField] private PlayableDirector nameplateDirector;
     [SerializeField] private Script_ItemObject smallKey;
+    [SerializeField] private Script_ItemObject boarNeedle;
+    [SerializeField] private Script_TreasureChest treasureChest;
 
     private bool DDR = false;
     private bool isIdsDancing = false;
@@ -240,7 +247,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // ------------------------------------------------------------------------------------
     private void OnItemStash(string stashItemId)
     {
-        if (stashItemId == smallKey.Item.id)    IdsExits();
+        if (stashItemId == smallKey.Item.id)            IdsExits();
+        else if (stashItemId == boarNeedle.Item.id)     gotBoarNeedle = true;
 
         void IdsExits()
         {
@@ -588,6 +596,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         {
             Ids.gameObject.SetActive(true);
             foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
+        }
+
+        // meaning Ids DDR quest is completed and the Locked Treasure Chest was opened
+        if (gotBoarNeedle)
+        {
+            treasureChest.IsOpen = true;
         }
     }
 }

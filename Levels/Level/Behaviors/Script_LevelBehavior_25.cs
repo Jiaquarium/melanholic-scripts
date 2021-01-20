@@ -139,7 +139,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                             ElleniaAudio.Stop();
                             ElleniaAudio.gameObject.SetActive(false);
                         }
-                        if (game.bgMusicManager.GetIsPlaying())
+                        if (game.BGMManager.GetIsPlaying())
                             game.PauseBgMusic();
                     }
                 )

@@ -10,6 +10,13 @@ public class Script_TreasureChestLocked : Script_TreasureChest
 {
     [SerializeField] private bool _isLocked = true;
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if (IsOpen)     IsLocked = false;
+    }
+    
     public bool IsLocked
     {
         get => _isLocked;
