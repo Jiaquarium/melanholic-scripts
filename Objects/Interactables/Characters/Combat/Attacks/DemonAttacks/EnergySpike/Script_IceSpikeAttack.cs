@@ -26,6 +26,7 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
     public override void Spike(Directions dir)
     {
         player.SetIsAttacking();
+        didHit = false;
         
         switch (dir)
         {
