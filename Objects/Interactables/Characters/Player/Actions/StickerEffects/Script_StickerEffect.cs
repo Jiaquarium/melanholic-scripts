@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Script_StickerEffect : MonoBehaviour
+public abstract class Script_StickerEffect : MonoBehaviour
 {
-    public virtual void Effect()
-    {
-        
-    }    
+    public abstract void Effect();
 }

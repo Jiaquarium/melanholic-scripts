@@ -22,7 +22,7 @@ public class Script_EnergySpikeAttack : Script_Attack
 {
     /// IMPORTANT: MAKE SURE THIS MATCHES THE TIMELINE LENGTH FOR ACCURATE ENDATTACK EVENTS
     [SerializeField] private float spikeTime;
-    [SerializeField] private Transform[] spikes;
+    [SerializeField] protected Transform[] spikes;
     [SerializeField] private Script_HitBox[] hitBoxes;
     [SerializeField] private bool noSFXWhenTalking;
     [SerializeField] protected bool isInUse;
@@ -62,7 +62,7 @@ public class Script_EnergySpikeAttack : Script_Attack
         InitialState();    
     }
     
-    void Awake()
+    protected virtual void Awake()
     {
         // ShowSpikes(false);
     }
@@ -127,14 +127,10 @@ public class Script_EnergySpikeAttack : Script_Attack
             attackTileLocs.RemoveAt(randomIdx);
         }
         
-        SetHitBoxes();
-        SpikesSFX();
-        // animation to move spikes up
-        ResetSpikesElevation();
-        GetComponent<Script_TimelineController>().PlayAllPlayables();
-
-        StartCoroutine(WaitToEndSpike());
+        SpikeSequence();
     }
+
+    public virtual void Spike(Directions dir) {}
 
     protected void SpikesSFX()
     {
@@ -161,7 +157,7 @@ public class Script_EnergySpikeAttack : Script_Attack
         EndSpike();
     }
 
-    private void EndSpike()
+    protected virtual void EndSpike()
     {
         // ShowSpikes(false);
         Script_CombatEventsManager.EnemyAttackEnd(hitBoxId);
@@ -179,6 +175,17 @@ public class Script_EnergySpikeAttack : Script_Attack
         {
             spike.position = new Vector3(spike.position.x, 0f, spike.position.z);
         }
+    }
+
+    protected virtual void SpikeSequence()
+    {
+        SetHitBoxes();
+        SpikesSFX();
+        // animation to move spikes up
+        ResetSpikesElevation();
+        GetComponent<Script_TimelineController>().PlayAllPlayables();
+
+        StartCoroutine(WaitToEndSpike());   
     }
 
     public void InitialState()
@@ -200,6 +207,10 @@ public class Script_EnergySpikeAttackTester : Editor
         if (GUILayout.Button("InitialState()"))
         {
             attack.InitialState();
+        }
+        if (GUILayout.Button("Spike(Up)"))
+        {
+            attack.Spike(Directions.Up);
         }
     }
 }

@@ -63,7 +63,7 @@ public class Script_PlayerEffect : MonoBehaviour
 
     public void GiantBoarNeedle()
     {
-        giantBoarNeedle.Play();
+        giantBoarNeedle.Effect();
     }
 
     public void Setup()

@@ -16,7 +16,7 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
     public void HandleMove()
     {
         ActuallyMove();
-        MoveAnimation(player.facingDirection);
+        MoveAnimation(player.FacingDirection);
         // if (Script_Game.Game.state != Const_States_Game.Interact)   SetNotMoving();
     }
     protected virtual void ActuallyMove()

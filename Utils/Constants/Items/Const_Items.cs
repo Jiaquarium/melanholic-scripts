@@ -12,6 +12,7 @@ public class Const_Items : MonoBehaviour
     public const string PsychicDuckId           = "sticker_psychic-duck";
     public const string BoarNeedleId            = "sticker_boar-needle";
     public const string AnimalWithinId          = "sticker_animal-within";
+    public const string IceSpikeId              = "sticker_ice-spike";
     
     // ------------------------------------------------------------------------
     //  Usables

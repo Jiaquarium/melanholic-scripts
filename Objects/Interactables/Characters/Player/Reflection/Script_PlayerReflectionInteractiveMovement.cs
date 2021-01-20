@@ -38,14 +38,14 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
     /// </summary>
     protected override void ActuallyMove()
     {
-        Directions myFacingDir = ToOppositeDirectionZ(player.facingDirection);
+        Directions myFacingDir = ToOppositeDirectionZ(player.FacingDirection);
         HandleActiveInteractionBox(myFacingDir);
         base.ActuallyMove();
     }
 
     public bool CanMove()
     {
-        Directions myFacingDir = ToOppositeDirectionZ(player.facingDirection);
+        Directions myFacingDir = ToOppositeDirectionZ(player.FacingDirection);
         HandleActiveInteractionBox(myFacingDir);
 
         if (

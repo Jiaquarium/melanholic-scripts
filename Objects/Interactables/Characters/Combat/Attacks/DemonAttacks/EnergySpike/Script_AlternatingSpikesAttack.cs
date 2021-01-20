@@ -51,13 +51,7 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
         if (isInUse)     return;
         isInUse = true;
 
-        SetHitBoxes();
-        SpikesSFX();
-        // animation to move spikes up
-        ResetSpikesElevation();
-        GetComponent<Script_TimelineController>().PlayAllPlayables();
-
-        StartCoroutine(WaitToEndSpike());
+        SpikeSequence();
     }
 
     public override void CollisionedWith(Collider collider, Script_HitBox hitBox)

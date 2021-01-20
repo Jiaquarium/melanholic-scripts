@@ -32,6 +32,11 @@ public class Dev_InventoryTester : MonoBehaviour
         Script_Game.Game.AddItemById(Const_Items.AnimalWithinId);
     }
 
+    public void AddIceSpike()
+    {
+        Script_Game.Game.AddItemById(Const_Items.IceSpikeId);
+    }
+
     // ------------------------------------------------------------------------
     //  Usables
     public void AddMasterKey()
@@ -96,6 +101,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Animal Within"))
         {
             inventoryTester.AddAnimalWithin();
+        }
+
+        if (GUILayout.Button("Add: Ice Spike"))
+        {
+            inventoryTester.AddIceSpike();
         }
 
         GUILayout.Space(8);

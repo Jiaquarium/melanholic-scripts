@@ -651,7 +651,7 @@ public class Script_Game : MonoBehaviour
             (int)Mathf.Round(player.transform.position.x),
             (int)Mathf.Round(player.transform.position.y),
             (int)Mathf.Round(player.transform.position.z),
-            player.facingDirection
+            player.FacingDirection
         );
         SetPlayerState(p);
     }

@@ -9,7 +9,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(PlayableDirector))]
-public class Script_GiantBoarNeedleEffect : MonoBehaviour
+public class Script_GiantBoarNeedleEffect : Script_StickerEffect
 {
     [SerializeField] private TimelineAsset timeline;
     private PlayableDirector myDirector;
@@ -19,7 +19,13 @@ public class Script_GiantBoarNeedleEffect : MonoBehaviour
         myDirector = GetComponent<PlayableDirector>();
     }
 
-    public void Play()
+    public override void Effect()
+    {
+        Debug.Log($"{name} Effect()");
+        Play();
+    }
+
+    void Play()
     {
         myDirector.Play(timeline);
     }
@@ -35,7 +41,7 @@ public class Script_GiantBoarNeedleEffectTester : Editor
         Script_GiantBoarNeedleEffect bn = (Script_GiantBoarNeedleEffect)target;
         if (GUILayout.Button("Play Boar Needle Effect"))
         {
-            bn.Play();
+            bn.Effect();
         }
     }
 }

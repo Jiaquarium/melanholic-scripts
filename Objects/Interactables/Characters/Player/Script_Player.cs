@@ -29,7 +29,7 @@ public class Script_Player : Script_Character
 
 
     private Script_PlayerStats playerStats;
-    public Directions facingDirection;
+    [SerializeField] private Directions _facingDirection;
     public Vector3 location;
 
 
@@ -47,12 +47,14 @@ public class Script_Player : Script_Character
     private Dictionary<Directions, Vector3> directionsToVector;
        
     public string State {
-        get {
-            return state;
-        }
-        private set {
-            state = value;
-        }
+        get => state;
+        private set => state = value;
+    }
+
+    public Directions FacingDirection
+    {
+        get => _facingDirection;
+        set => _facingDirection = value;
     }
 
     // Update is called once per frame
@@ -76,7 +78,7 @@ public class Script_Player : Script_Character
         {
             // playerMovementHandler.FinishMoveAnimation();
             // animator.SetBool("PlayerMoving", false);
-            playerActionHandler.HandleActionInput(facingDirection, location);
+            playerActionHandler.HandleActionInput(FacingDirection, location);
             if (IsNotMovingState())
             {
                 animator.SetBool("PlayerMoving", false);
@@ -236,7 +238,7 @@ public class Script_Player : Script_Character
     public void AnimatorSetDirection(Directions dir)
     {
         interactionBoxController.HandleActiveInteractionBox(dir);
-        facingDirection = dir;
+        FacingDirection = dir;
 
         if (dir == Directions.Up)
         {
@@ -347,7 +349,7 @@ public class Script_Player : Script_Character
 
     public bool UseUsableKey(Script_UsableKey key)
     {
-        return playerActionHandler.UseUsableKey(key, facingDirection);
+        return playerActionHandler.UseUsableKey(key, FacingDirection);
     }
 
     /// <summary>

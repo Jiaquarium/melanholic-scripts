@@ -9,7 +9,9 @@ using UnityEngine;
 public class Script_StickerEffectsController : MonoBehaviour
 {
     [SerializeField] private Script_PsychicDuckEffect psychicDuckEffect;
-    [SerializeField] private Script_PlayerAttackEat eatAttack;
+    [SerializeField] private Script_GiantBoarNeedleEffect boarNeedleEffect;
+    [SerializeField] private Script_PlayerAttackEat eatAttack; // TBD make into Effect
+    [SerializeField] private Script_IceSpikeEffect iceSpikeEffect;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     /// <summary>
@@ -60,10 +62,15 @@ public class Script_StickerEffectsController : MonoBehaviour
                 break;
             case Const_Items.BoarNeedleId:
                 Debug.Log("Boar Needle Effect Activated");
+                boarNeedleEffect.Effect();
                 break;
             case Const_Items.AnimalWithinId:
                 Debug.Log("Animal Within Effect Activated");
-                eatAttack.Eat(dir);
+                eatAttack.Eat(dir); // TBD Implement as effect
+                break;
+            case Const_Items.IceSpikeId:
+                Debug.Log("Ice Spike Effect Activated");
+                iceSpikeEffect.Effect();
                 break;
         }
     }
