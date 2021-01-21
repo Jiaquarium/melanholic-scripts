@@ -11,6 +11,10 @@ public class Script_DemonNPC : Script_MovingNPC
 {
     [SerializeField] private Script_DialogueNode[] psychicNodes;
     [SerializeField] Script_PsychicNodesController psychicNodesController;
+    [SerializeField] private Script_DialogueNode _introPsychicNode;
+    [SerializeField] bool _isIntroPsychicNode;
+    [Tooltip("Combine the intro node with the first Psychic Node")]
+    [SerializeField] bool _shouldPrependIntroNode;
     private Script_DialogueNode[] defaultNodes;
     private bool didTalkPsychic;
 
@@ -20,11 +24,29 @@ public class Script_DemonNPC : Script_MovingNPC
         set => psychicNodes = value;
     }
 
+    public Script_DialogueNode IntroPsychicNode
+    {
+        get => _introPsychicNode;
+    }
+
+    public bool IsIntroPsychicNodes
+    {
+        get => _isIntroPsychicNode;
+        set => _isIntroPsychicNode = value;
+    }
+
+    private bool ShouldPrependIntroNode {
+        get => _shouldPrependIntroNode;
+    }
+
     protected override void OnEnable()
     {
         InitialDialogueState();
         
-        if (psychicNodesController != null)     PsychicNodes = psychicNodesController.Nodes;
+        if (psychicNodesController != null)
+        {
+            PsychicNodes = psychicNodesController.Nodes;
+        }
 
         defaultNodes = dialogueNodes;
         base.OnEnable();
@@ -43,6 +65,14 @@ public class Script_DemonNPC : Script_MovingNPC
 
         if (isPsychicDuckActive)
         {
+            // If is an intro, we first append the necessary Psychic dialogue as a child of the Intro node
+            // and use that node.
+            if (IsIntroPsychicNodes && IntroPsychicNode != null)
+            {
+                HandleIntroPsychicNode();
+                return;
+            }
+            
             // if previously talked default, then need to switch and reset idx
             if (!didTalkPsychic)
             {
@@ -74,6 +104,21 @@ public class Script_DemonNPC : Script_MovingNPC
         didTalkPsychic = false;
     }
 
+    /// <summary>
+    /// Use to introduce NPC name
+    /// </summary>
+    private void HandleIntroPsychicNode()
+    {
+        Script_DialogueNode[] introNodeChild = { PsychicNodes[0] };
+        
+        if (ShouldPrependIntroNode)     IntroPsychicNode.data.children = introNodeChild;
+        
+        // Switch the current dialogue node to the intro Psychic one 
+        SwitchDialogueNodes(new Script_DialogueNode[]{IntroPsychicNode}, isReset: true);
+        
+        IsIntroPsychicNodes = false;
+    }
+    
     private void InitialDialogueState()
     {
         didTalkPsychic = false;

@@ -6,6 +6,13 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// All the proper names.
+/// In game the names will start out as ??? until the player becomes aware of them in which case
+/// we'll update and save the name to state.
+/// 
+/// Call one of the Updater functions on Next Node Action event to update the name permanently.
+/// </summary>
 public class Script_Names: MonoBehaviour
 {
     public static Script_Names Names;
@@ -91,27 +98,24 @@ public class Script_Names: MonoBehaviour
     public static readonly string Fri                   = "<b>Friday</b>";                      // {54}
     public static readonly string Sat                   = "<b>Saturday</b>";                    // {55}
     public static readonly string Sun                   = "<b>Sunday</b>";                      // {56}
-    
+    public static readonly string KingEclaire           = "<b>King Eclaire</b>";                // {57}
 
-
-    /// Give these getters and setters so we can see Names while dev'ing!!!
+    // Give these getters and setters so we can see Names while dev'ing
     [SerializeField] private string _Player             = "<b>???</b>";
     [SerializeField] private string _Eileen             = "<b>???</b>";
     [SerializeField] private string _Ellenia            = "<b>???</b>";
     [SerializeField] private string _ElleniaPassword    = null;
     [SerializeField] private string _Tedwich            = "<b>???</b>";
     [SerializeField] private string _Ursie              = "<b>???</b>";
-    
 
+    // Updater functions. Call from dialogue to update the updateable name.
     public static void UpdateEileen() { Eileen = "<b>Eileen</b>"; }
     public static void UpdateEllenia() { Ellenia = "<b>Ellenia</b>"; }
     public static void UpdateElleniaPassword(string s) { ElleniaPassword = s; }
     public static void UpdateTedwich() { Tedwich = "<b>Tedwich</b>"; }
     public static void UpdateUrsie() { Ursie = "<b>Ursie</b>"; }
 
-    /// <summary>
-    /// For loading game
-    /// </summary>
+    // For loading game.
     public static void LoadNames(Model_Names names)
     {
         Player                  = names.Player;

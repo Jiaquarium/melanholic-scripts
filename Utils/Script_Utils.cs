@@ -229,7 +229,8 @@ public static class Script_Utils
             Script_Names.Thu,                           // {53}
             Script_Names.Fri,                           // {54}
             Script_Names.Sat,                           // {55}
-            Script_Names.Sun                            // {56}
+            Script_Names.Sun,                           // {56}
+            Script_Names.KingEclaire                    // {57}
         );
     }
 
