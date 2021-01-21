@@ -12,7 +12,7 @@ public class Script_SaveLoadLevelBehavior_26 : Script_SaveLoadLevelBehavior
             _switchesState                  : LB26.switchesState,
             _isPuzzleComplete               : LB26.isPuzzleComplete,
             _didActivateDramaticThoughts    : LB26.didActivateDramaticThoughts,
-            _didPickUpWinterStone           : LB26.didPickUpWinterStone
+            _gotIceSpikeSticker             : LB26.gotIceSpikeSticker
         );
         
         data.levelsData.LB26 = lvlModel;
@@ -36,7 +36,7 @@ public class Script_SaveLoadLevelBehavior_26 : Script_SaveLoadLevelBehavior
         LB26.switchesState                  = lvlModel.switchesState;
         LB26.isPuzzleComplete               = lvlModel.isPuzzleComplete;
         LB26.didActivateDramaticThoughts    = lvlModel.didActivateDramaticThoughts;
-        LB26.didPickUpWinterStone           = lvlModel.didPickUpWinterStone;
+        LB26.gotIceSpikeSticker             = lvlModel.gotIceSpikeSticker;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);

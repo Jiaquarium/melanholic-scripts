@@ -13,10 +13,12 @@ public class Script_CharacterStats : MonoBehaviour
 {
     public Model_CharacterStats stats;
     [SerializeField] protected int currentHp;
+
+    void Awake()
+    {
+        InitialState();
+    }
     
-    /// <summary>
-    /// 
-    /// </summary>
     public virtual int Hurt(int dmg, Script_HitBox hitBox)
     {
         // reduce dmg by defense
@@ -61,10 +63,12 @@ public class Script_CharacterStats : MonoBehaviour
     /// </summary>
     protected virtual void Die(Script_GameOverController.DeathTypes deathType) { }
 
-    public void Setup()
+    public void InitialState()
     {
         currentHp = stats.maxHp.GetVal();
     }
+
+    public void Setup() {}
 }
 
 #if UNITY_EDITOR
@@ -75,9 +79,9 @@ public class Script_StatsTester : Editor
         DrawDefaultInspector();
 
         Script_CharacterStats stats = (Script_CharacterStats)target;
-        if (GUILayout.Button("Setup()"))
+        if (GUILayout.Button("InitialState()"))
         {
-            stats.Setup();
+            stats.InitialState();
         }
         if (GUILayout.Button("Hurt(1)"))
         {

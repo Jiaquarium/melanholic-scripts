@@ -23,9 +23,9 @@ public class Script_DemonStatsTester : Editor
         DrawDefaultInspector();
 
         Script_DemonStats stats = (Script_DemonStats)target;
-        if (GUILayout.Button("Setup()"))
+        if (GUILayout.Button("InitialState()"))
         {
-            stats.Setup();
+            stats.InitialState();
         }
         if (GUILayout.Button("Hurt(1)"))
         {

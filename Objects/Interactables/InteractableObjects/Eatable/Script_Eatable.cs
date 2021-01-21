@@ -8,6 +8,5 @@ public class Script_Eatable : Script_InteractableObject
     protected override void AutoSetup()
     {
         base.AutoSetup();
-        GetComponent<Script_EatableStats>().Setup();
     }
 }

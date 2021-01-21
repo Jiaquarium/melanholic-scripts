@@ -60,8 +60,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         playerPlayableDirector.stopped -= OnDropTimelineDone;
         playerPlayableDirector = null;
         
-        AudioSource audio = EileenThemePlayer.GetComponent<AudioSource>();
-        if (audio)
+        AudioSource audio = EileenThemePlayer?.GetComponent<AudioSource>();
+        if (audio != null)
         {
             audio.volume = 0f;
             audio.Pause();

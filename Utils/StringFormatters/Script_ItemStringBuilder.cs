@@ -27,6 +27,7 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@PsychicDuck",         "<b>Psychic Duck</b>");
         Params.Add("@@BoarNeedle",          "<b>Boar Needle</b>");
         Params.Add("@@AnimalWithin",        "<b>Animal Within</b>");
+        Params.Add("@@IceSpike",            "<b>Ice Spike</b>");
         
         Params.Add("@@MasterKey",           "<b>Master Key</b>");
         Params.Add("@@SuperSmallKey",       "<b>Super Small Key</b>");

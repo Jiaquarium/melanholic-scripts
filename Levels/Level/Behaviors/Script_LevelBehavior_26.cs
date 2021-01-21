@@ -19,7 +19,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public bool[] switchesState;
     public bool isPuzzleComplete;
     public bool didActivateDramaticThoughts;
-    public bool didPickUpWinterStone;
+    public bool gotIceSpikeSticker;
     /* ======================================================================= */
     
     [SerializeField] private Transform switchParent;
@@ -30,12 +30,13 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private PlayableDirector spikeCageDirector;
     [SerializeField] private PlayableDirector dramaticThoughtsDirector;
     [SerializeField] Script_TriggerEnterOnce dramaticThoughtsCutSceneTrigger;
-    [SerializeField] Script_CollectibleObject winterStone;
+    [SerializeField] Script_StickerObject iceSpike;
     [SerializeField] Transform spikeCage;
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private FadeSpeeds musicFadeOutSpeed;
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     [SerializeField] private Transform textParent;
+    [SerializeField] private Script_LightsController lightsToVictoryController;
 
     private Script_LBSwitchHandler switchHandler;
     private bool isPauseSpikes;
@@ -69,9 +70,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     private void OnItemPickUp(string itemId)
     {
-        if (itemId == winterStone.Item.id)
+        if (itemId == iceSpike.Item.id)
         {
-            didPickUpWinterStone = true;
+            gotIceSpikeSticker = true;
         }
     }
 
@@ -104,7 +105,11 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         else if (Id == "drama-done")
         {
             if (!isPuzzleComplete)
+            {
                 FadeOutDramaticMusic();
+                // Need to also fade out these lights for the 8 max light count
+                FadeOutDramaticLights();
+            }
         }
 
         return false;
@@ -120,6 +125,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                     () => bgThemePlayer.gameObject.SetActive(false)
                 )
             );
+        }
+
+        void FadeOutDramaticLights()
+        {
+            Debug.Log("Fading out lights to victory!!!");
+            lightsToVictoryController.ShouldUpdate = true;
         }
     }
 
@@ -209,8 +220,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         if (isPuzzleComplete)       spikeCage.gameObject.SetActive(false);
         else                        spikeCage.gameObject.SetActive(true);
 
-        if (didPickUpWinterStone)   winterStone.gameObject.SetActive(false);
-        else                        winterStone.gameObject.SetActive(true);
+        if (gotIceSpikeSticker)     iceSpike.gameObject.SetActive(false);
+        else                        iceSpike.gameObject.SetActive(true);
     }
     
     public override void Setup()

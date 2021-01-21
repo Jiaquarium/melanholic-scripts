@@ -7,9 +7,9 @@ using UnityEngine;
 /// </summary>
 public class Script_GraphicsManager : MonoBehaviour
 {
-    private const float fadeFastTime = 0.25f;
-    private const float fadeMedTime = 0.75f;
-    private const float fadeSlowTime = 1.25f;
+    public const float fadeFastTime = 0.25f;
+    public const float fadeMedTime = 0.75f;
+    public const float fadeSlowTime = 1.25f;
 
     public static float GetFadeTime(FadeSpeeds fadeSpeed)
     {
