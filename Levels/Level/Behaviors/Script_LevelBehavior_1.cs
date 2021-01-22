@@ -133,7 +133,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     {
         game.SetupInteractableObjectsText(pianoTextParent, isInit);
         game.SetupInteractableObjectsText(paintingTextParent, isInit);
-        game.SetupMovingNPC(Ero, isInit);
         
         if (isInit && (!Debug.isDebugBuild || !Const_Dev.IsDevMode))
         {

@@ -17,6 +17,8 @@ public class Script_Names: MonoBehaviour
 {
     public static Script_Names Names;
     
+    // ------------------------------------------------------------------
+    // Name fields and properties. Properties used when the name should begin as ???.
     public static string Player
     {
         get { return $"<b>{Names?._Player}</b>"; }
@@ -26,7 +28,13 @@ public class Script_Names: MonoBehaviour
     public const string Melz                            = "<b>Melz</b>";                        // {1}
     public const string MelzTheGreat                    = "<b>Melz the Great</b>";              // {2}
     public const string Ids                             = "<b>Ids</b>";                         // {3}
-    public const string Ero                             = "<b>Ero</b>";                         // {4}
+    
+    public static string Ero                                                                    // {4}
+    {
+        get => Names?._Ero;
+        set => Names._Ero = value;
+    }
+
     public const string SBook                           = "<b>S-book</b>";                      // {5}
     public const string Urselk                          = "<b>Urselk</b>";                      // {6}
     public const string Urselks                         = "<b>Urselks</b>";                     // {7}
@@ -155,8 +163,10 @@ public class Script_Names: MonoBehaviour
     
     public const string Flan                            = "<b>Flan the Guard</b>";              // {64}
 
+    // ------------------------------------------------------------------
     // Give these getters and setters so we can see Names while dev'ing
     [SerializeField] private string _Player             = "<b>???</b>";
+    [SerializeField] private string _Ero                = "<b>???</b>";
     [SerializeField] private string _Eileen             = "<b>???</b>";
     [SerializeField] private string _Ellenia            = "<b>???</b>";
     [SerializeField] private string _ElleniaPassword    = null;
@@ -170,34 +180,48 @@ public class Script_Names: MonoBehaviour
     [SerializeField] private string _Melba              = "<b>???</b>";
     [SerializeField] private string _Moose              = "<b>???</b>";
 
-    
+    // ------------------------------------------------------------------
     // Updater functions. Call from dialogue to update the updateable name.
+    public static void UpdateEro() { Ero                                        = "<b>Ero</b>"; }
+
     // Refs: (1) Eileen's room
     public static void UpdateEileen() { Eileen                                  = "<b>Eileen</b>"; }
     // Refs: (1) Eileen's room
+    
     public static void UpdateEllenia() { Ellenia                                = "<b>Ellenia</b>"; }
+    
     public static void UpdateElleniaPassword(string s) { ElleniaPassword        = s; }
+    
     public static void UpdateTedwich() { Tedwich                                = "<b>Tedwich</b>"; }
+    
     public static void UpdateUrsie() { Ursie                                    = "<b>Ursie</b>"; }
+    
     // Refs: (1) Kaffe & Latte's Dialogue in Ballroom
     public static void UpdateKaffe() { Kaffe                                    = "<b>Kaffe</b>"; }
+    
     // Refs: (1) Kaffe & Latte's Dialogue in Ballroom
     public static void UpdateLatte() { Latte                                    = "<b>Latte</b>"; }
+    
     // Refs: (1) King's Dialogue in Ballroom
     public static void UpdateKingEclaire() { KingEclaire                        = "<b>King Eclaire</b>"; }
+    
     // Refs: (1) Suzette's Dialogue in Ballroom
     public static void UpdateSuzette() { Suzette                                = "<b>Suzette</b>"; }
+    
     // Refs: (1) Peche & Melba's Dialogue in Ballroom
     public static void UpdatePeche() { Peche                                    = "<b>Peche</b>"; }
+    
     // Refs: (1) Peche & Melba's Dialogue in Ballroom
     public static void UpdateMelba() { Melba                                    = "<b>Melba</b>"; }
+    
     public static void UpdateMoose() { Moose                                    = "<b>Moose</b>"; }
 
-    
-    // For loading game.
+    // ------------------------------------------------------------------
+    // For Game Load.
     public static void LoadNames(Model_Names names)
     {
         Player                  = names.Player;
+        Ero                     = names.Ero;
         Eileen                  = names.Eileen;
         Ellenia                 = names.Ellenia;
         ElleniaPassword         = names.ElleniaPassword;
