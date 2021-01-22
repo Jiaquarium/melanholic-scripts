@@ -83,17 +83,19 @@ public class Script_StaticNPC : Script_Interactable
         {
             State = States.Dialogue;
             
+            Debug.Log($"{name} Dialogue idx: {dialogueIndex}");
+
             dialogueManager.StartDialogueNode(
                 dialogueNodes[dialogueIndex],
                 SFXOn: true,
                 null,
                 this
             );
-            HandleDialogueNodeIndex();
+            HandleIncrementDialogueNodeIndex();
         }
     }
 
-    protected void HandleDialogueNodeIndex()
+    protected void HandleIncrementDialogueNodeIndex()
     {
         if (dialogueIndex == dialogueNodes.Length - 1)  dialogueIndex = 0;    
         else                                            dialogueIndex++;

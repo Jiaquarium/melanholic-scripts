@@ -43,8 +43,6 @@ public class Script_CanvasGroupController : MonoBehaviour
         }
         if (isFadedIn || fadeInCoroutine != null)     return;
 
-        Debug.Log("Fading in Canvas Group");
-
         isFadedOut = false;
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
             if (a != null) a();
@@ -66,8 +64,6 @@ public class Script_CanvasGroupController : MonoBehaviour
             fadeInCoroutine = null;
         }
         if (isFadedOut || fadeOutCoroutine != null)     return;
-
-        Debug.Log("Fading out Canvas Group");
 
         isFadedIn = false;
         fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(t, () => {

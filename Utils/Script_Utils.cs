@@ -181,7 +181,7 @@ public static class Script_Utils
             Script_Names.SBook,                         // {5}
             Script_Names.Urselk,                        // {6}
             Script_Names.Urselks,                       // {7}
-            Script_Names.Anima,                         // {8}
+            Script_Names.MaskedOne,                     // {8}
             Script_Names.Aenimals,                      // {9}
             Script_Names.Myne,                          // {10}
             Script_Names.Eileen,                        // {11}  
@@ -195,7 +195,7 @@ public static class Script_Utils
             Script_Names.Specters,                      // {19}
             Script_Names.Aenimal,                       // {20}
             Script_Names.Sheepluff,                     // {21}
-            Script_Names.Sieving,                       // {22}
+            Script_Names.Sealing,                       // {22}
             Script_Names.Action1, // SPACE              // {23}
             Script_Names.Action2, // X                  // {24}
             Script_Names.Action3, // LEFT SHIFT         // {25}
@@ -230,7 +230,14 @@ public static class Script_Utils
             Script_Names.Fri,                           // {54}
             Script_Names.Sat,                           // {55}
             Script_Names.Sun,                           // {56}
-            Script_Names.KingEclaire                    // {57}
+            Script_Names.KingEclaire,                   // {57}
+            Script_Names.Suzette,                       // {58}
+            Script_Names.Shiteater,                     // {59}
+            Script_Names.Shiteaters,                    // {60}
+            Script_Names.Peche,                         // {61}
+            Script_Names.Melba,                         // {62}
+            Script_Names.Moose,                         // {63}
+            Script_Names.Flan                           // {64}
         );
     }
 

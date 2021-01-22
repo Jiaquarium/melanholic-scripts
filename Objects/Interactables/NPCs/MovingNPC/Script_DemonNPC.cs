@@ -16,7 +16,8 @@ public class Script_DemonNPC : Script_MovingNPC
     [Tooltip("Combine the intro node with the first Psychic Node")]
     [SerializeField] bool _shouldPrependIntroNode;
     private Script_DialogueNode[] defaultNodes;
-    private bool didTalkPsychic;
+    [SerializeField] private bool didTalkPsychic;
+    [SerializeField] private bool didTalkPrependedIntroNode;
 
     public Script_DialogueNode[] PsychicNodes
     {
@@ -65,18 +66,27 @@ public class Script_DemonNPC : Script_MovingNPC
 
         if (isPsychicDuckActive)
         {
-            // If is an intro, we first append the necessary Psychic dialogue as a child of the Intro node
-            // and use that node.
+            // If is an Intro, we replace the current Dialogue Nodes with the Intro Node
             if (IsIntroPsychicNodes && IntroPsychicNode != null)
             {
                 HandleIntroPsychicNode();
+                IsIntroPsychicNodes = false;
+                // Set flag so on next interaction we know we need to skip the first Psychic Node
+                didTalkPrependedIntroNode = ShouldPrependIntroNode;
                 return;
             }
             
-            // if previously talked default, then need to switch and reset idx
+            // If previously talked default or intro Psychic node, then need to switch and reset idx.
             if (!didTalkPsychic)
             {
                 SwitchDialogueNodes(PsychicNodes, isReset: true);
+
+                // Skip the first Psychic node if we prepended it already to the Intro Node.
+                if (didTalkPrependedIntroNode)
+                {
+                    HandleIncrementDialogueNodeIndex();
+                    didTalkPrependedIntroNode = false;
+                }
             }
             
             didTalkPsychic = true;
@@ -111,12 +121,13 @@ public class Script_DemonNPC : Script_MovingNPC
     {
         Script_DialogueNode[] introNodeChild = { PsychicNodes[0] };
         
-        if (ShouldPrependIntroNode)     IntroPsychicNode.data.children = introNodeChild;
+        if (ShouldPrependIntroNode)
+        {
+            IntroPsychicNode.data.children = introNodeChild;
+        }
         
         // Switch the current dialogue node to the intro Psychic one 
         SwitchDialogueNodes(new Script_DialogueNode[]{IntroPsychicNode}, isReset: true);
-        
-        IsIntroPsychicNodes = false;
     }
     
     private void InitialDialogueState()
