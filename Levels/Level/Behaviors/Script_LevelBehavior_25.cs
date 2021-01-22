@@ -23,19 +23,24 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode[] NoIntroElleniaNodes;
     [SerializeField] private Script_VCamera followElleniaVCam;
     [SerializeField] private PlayableDirector ElleniaDirector;
+    
     [SerializeField] private Script_DialogueNode[] cutSceneNodes;
     [SerializeField] private Script_DialogueNode introContinuationNode;
     [SerializeField] private Script_DialogueNode beforeExitNode;
+    
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Script_BgThemePlayer ElleniaBgThemePlayer;
+    
     [SerializeField] private float bgMusicFadeOutTime;
     [SerializeField] private float bgMusicEndIntroFadeOutTime;
     [SerializeField] private float waitToTurnTime; // should match with music
+    
     [SerializeField] private Script_StickerObject AnimalWithinSticker;
     [SerializeField] private Script_DialogueNode onItemDescriptionDoneNode;
     [SerializeField] private Transform textParent;
     [SerializeField] private Transform fullArtParent;
     [SerializeField] private Script_InteractableFullArt easleFullArt;
+    [SerializeField] private Script_InteractableObjectText easleYellAtPlayerIOText;
     [SerializeField] private Script_InteractableFullArt dirtyMagazine;
     
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
@@ -118,7 +123,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         // return to easle
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[4])
         {
-            Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[4], false);
+            OnReturnedToEasle();
         }
         /// OnCorrect Timeline
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[5])
@@ -152,6 +157,12 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[7])
         {
             OnElleniaExitsDone();
+        }
+
+        void OnReturnedToEasle()
+        {
+            Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaVCam);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[4], false);
         }
     }
     /// <summary>
@@ -203,7 +214,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         print("Ellenia walking to paintings cut scene");
         game.ChangeStateCutScene();
 
-        // play different timeline based on where player is
         Script_VCamManager.VCamMain.SetNewVCam(followElleniaVCam);
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
@@ -262,7 +272,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                         /// Need to wait for music to fade out before return facing easle
                         /// otherwise, would use controller/NextNodeAction
                         Ellenia.FaceDirection(Directions.Left);
-                        Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaVCam);
                         
                         // need to change state in LateUpdate so NPC doesn't read the button event
                         shouldChangeGameStateToInteract = true;
@@ -285,13 +294,11 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         // jump animation; when finished, triggers correct dialogue
         game.ChangeStateCutScene();
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 5);
-        Script_Names.UpdateEllenia();
         isPuzzleComplete = true;
     }
 
-    public void GiveStone()
+    public void GiveSticker()
     {
-        // jump animation; when finished, triggers correct dialogue
         game.HandleItemReceive(AnimalWithinSticker);
     }
 
@@ -330,6 +337,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     {
         Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaVCam);
         game.UnPauseBgMusic();
+        easleYellAtPlayerIOText.gameObject.SetActive(false);
         StartCoroutine(
             Script_AudioMixerFader.Fade(
                 audioMixer,
@@ -350,11 +358,13 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         if (isPuzzleComplete)
         {
             Ellenia.gameObject.SetActive(false);
+            easleYellAtPlayerIOText.gameObject.SetActive(false);
             easleFullArt.gameObject.SetActive(true);
         }
         else
         {
             game.SetupMovingNPC(Ellenia, isInitialization);
+            easleYellAtPlayerIOText.gameObject.SetActive(true);
             easleFullArt.gameObject.SetActive(false);
 
             if (spokenWithEllenia)

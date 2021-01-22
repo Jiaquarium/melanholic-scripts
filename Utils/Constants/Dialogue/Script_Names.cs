@@ -172,7 +172,9 @@ public class Script_Names: MonoBehaviour
 
     
     // Updater functions. Call from dialogue to update the updateable name.
+    // Refs: (1) Eileen's room
     public static void UpdateEileen() { Eileen                                  = "<b>Eileen</b>"; }
+    // Refs: (1) Eileen's room
     public static void UpdateEllenia() { Ellenia                                = "<b>Ellenia</b>"; }
     public static void UpdateElleniaPassword(string s) { ElleniaPassword        = s; }
     public static void UpdateTedwich() { Tedwich                                = "<b>Tedwich</b>"; }

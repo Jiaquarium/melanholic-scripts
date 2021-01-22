@@ -71,21 +71,15 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         game.UnPauseBgMusic();
     }
     
-    /*
-        EVENT HANDLERS
-    */
-    /// <summary>
-    /// Called from NextNodeAction()
-    /// </summary>
+    // ----------------------------------------------------------------------
+    // Next Node Action START
     public void UpdateSistersNames()
     {
         Script_Names.UpdateEileen();
         Script_Names.UpdateEllenia();
     }
-    /// <summary>
-    /// Called from NextNodeAction()
-    /// Node: she has talent
-    /// </summary>
+    
+    // Node: she has talent
     public void OnElleniaPassword()
     {
         if (string.IsNullOrEmpty(Script_Names.ElleniaPassword))
@@ -104,10 +98,12 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         Script_DemonNPC specter = (Script_DemonNPC)Eileen;
         specter.SwitchPsychicNodes(psychicNodesTalked);
     }
-
-    /// <summary>
-    /// Called from OnAutoChoice()
-    /// </summary>
+    
+    // Next Node Action END
+    // ----------------------------------------------------------------------
+    
+    // ----------------------------------------------------------------------
+    // Auto Choice Action START
     public void OnDidTalkToEllenia(OnNextNodeChoiceArgs modifiableEventArgs)
     {
         Debug.Log("Spoken with Ellenia: " + LB25.spokenWithEllenia);
@@ -115,6 +111,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         if (LB25.spokenWithEllenia)     modifiableEventArgs.choice = 1;
         else                            modifiableEventArgs.choice = 0;
     }
+    // Auto Choice Action END
+    // ----------------------------------------------------------------------
 
     public void SetNewElleniaPassword()
     {
