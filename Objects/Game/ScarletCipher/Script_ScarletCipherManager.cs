@@ -103,8 +103,6 @@ public class Script_ScarletCipherManager : MonoBehaviour
             /// Choose a random choice for the node Random.Range(inclusive, exclusive)
             int choice = Random.Range(0, choicesCount);
             
-            Debug.Log($"choice: {choice}");
-            
             newCipher[i] = choice;
         }
 

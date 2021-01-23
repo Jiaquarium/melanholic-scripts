@@ -47,9 +47,6 @@ public class Script_MovingNPC : Script_StaticNPC
 
     protected override void OnEnable() {
         base.OnEnable();
-        
-        if (lastFacingDirection != Directions.None && animator != null)
-            FaceLastDirection();
     }
     
     // Update is called once per frame
@@ -405,6 +402,21 @@ public class Script_MovingNPC : Script_StaticNPC
         game.AutoSetupMovingNPC(this);
         Setup();
     }
+
+    void HandleSpawnFacingDirection()
+    {
+        if (animator != null)
+        {
+            if (lastFacingDirection == Directions.None)
+            {
+                FaceDefaultDirection();
+            }
+            else
+            {
+                FaceLastDirection();
+            }
+        }
+    }
     
     public override void Setup()
     {
@@ -416,15 +428,6 @@ public class Script_MovingNPC : Script_StaticNPC
         animator = rendererChild.GetComponent<Animator>();
         animator.SetBool("NPCMoving", false);
         
-        if (lastFacingDirection == Directions.None)
-        {
-            FaceDefaultDirection();
-        }
-        else
-        {
-            FaceLastDirection();
-        }
-
         progress = 1f;
         location = transform.position;
 
@@ -435,5 +438,7 @@ public class Script_MovingNPC : Script_StaticNPC
             QueueUpAllMoves();
             QueueUpCurrentMoves();
         }
+
+        HandleSpawnFacingDirection();
     }
 }

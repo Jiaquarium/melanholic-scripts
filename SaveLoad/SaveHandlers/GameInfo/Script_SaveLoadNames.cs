@@ -8,6 +8,7 @@ public class Script_SaveLoadNames : MonoBehaviour
     {
         Model_Names names = new Model_Names(
             _Player:                    Script_Names.Player,
+            _Ids:                       Script_Names.Ids,
             _Ero:                       Script_Names.Ero,
             _Eileen:                    Script_Names.Eileen,
             _Ellenia:                   Script_Names.Ellenia,
@@ -35,6 +36,7 @@ public class Script_SaveLoadNames : MonoBehaviour
 
         Model_Names names = new Model_Names(
             _Player:                    data.namesData.Player,
+            _Ids:                       data.namesData.Ids,
             _Ero:                       data.namesData.Ero,
             _Eileen:                    data.namesData.Eileen,
             _Ellenia:                   data.namesData.Ellenia,

@@ -2,26 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class Script_InteractableFullArt : Script_InteractableObjectText
 {
     [SerializeField] private Script_FullArt fullArt;
     [SerializeField] private FadeSpeeds fadeInSpeed;
     [SerializeField] private FadeSpeeds fadeOutSpeed;
+    
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private FadeSpeeds musicFadeSpeed;
+    
     [SerializeField] private Script_DialogueNode promptDialogueNode;
+    [SerializeField] private UnityEvent _preFullArtAction;
+    
     private bool isFullArtMode;
     private bool isInputDisabled;
     private Script_FullArt activeFullArt;
     private Coroutine musicFadeCoroutine;
     private bool isPromptDialogueDone;
 
-    private void OnEnable()
+    protected UnityEvent PreFullArtAction
+    {
+        get => _preFullArtAction;
+    }
+
+    protected override void OnEnable()
     {
         Script_DialogueEventsManager.OnDialogueEnd += OnMyDialogueEnd;
         InitializeState();
+
+        base.OnEnable();
     }
 
     private void OnDisable()
@@ -56,6 +68,9 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     {
         if (isDialogueCoolDown)         return;
         if (CheckDisabledDirections())  return;
+        
+        InvokeFullArtPreAction();
+        
         if (promptDialogueNode != null && !isPromptDialogueDone)
         {
            HandlePromptDialogue();
@@ -254,6 +269,12 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     private void StopBgThemePlayer()
     {
         bgThemePlayer.SoftStop();
+    }
+
+    // Invoke an action before displaying the full art.
+    private void InvokeFullArtPreAction()
+    {
+        if (PreFullArtAction.CheckUnityEventAction()) PreFullArtAction.Invoke();
     }
 
     public override void InitializeState()

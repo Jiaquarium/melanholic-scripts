@@ -47,11 +47,6 @@ public class Script_InteractableObjectCreator : MonoBehaviour
             Script_InteractableObjectText text = texts[i];
             if (isInitialize)   InitializeTextObject(text, interactableObjects, dm, player);
         }
-
-        if (Debug.isDebugBuild && Const_Dev.IsDevMode)
-        {
-            Debug.Log("interactable objects count: " + interactableObjects.Count);
-        }
     }
 
     /// <summary>

@@ -1109,8 +1109,7 @@ public class Script_DialogueManager : MonoBehaviour
         canvasHandler.DisableCanvases();
     }
 
-    // NOTE: DialogueManager is Setup on EVERY level
-    public void Setup()
+    public void Initialize()
     {
         if (DialogueManager == null)
         {
@@ -1120,7 +1119,11 @@ public class Script_DialogueManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        
+    }
+
+    // NOTE: DialogueManager is Setup on EVERY level
+    public void Setup()
+    {
         dialogueSections = new Queue<Model_DialogueSection>();
         lines = new Queue<string>();
 

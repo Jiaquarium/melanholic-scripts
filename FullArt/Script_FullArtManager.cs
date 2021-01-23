@@ -94,6 +94,7 @@ public class Script_FullArtManager : MonoBehaviour
         bg.gameObject.SetActive(true);
         bg.FadeIn(fadeInSpeed, null, bgAlpha);
     }
+    
     /// <summary>
     /// fade out the designated prefab canvas
     /// this ends the viewing state,
@@ -114,6 +115,7 @@ public class Script_FullArtManager : MonoBehaviour
         {
             fullArtCanvas.alpha = 0f;
             fullArtCanvas.gameObject.SetActive(false);
+            
             if (Script_Game.Game.GetPlayer().State == Const_States_Player.Viewing)
                 Script_Game.Game.GetPlayer().SetIsInteract();
 

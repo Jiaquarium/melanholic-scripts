@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Script_InteractableObjectText : Script_InteractableObject
 {
@@ -10,7 +11,18 @@ public class Script_InteractableObjectText : Script_InteractableObject
     [SerializeField] protected int dialogueIndex;
     [SerializeField] private Script_LightSwitch myLightSwitch;
     [SerializeField] private bool allowNonreadDialogueNodes;
-    protected Script_DialogueManager dialogueManager;
+    [SerializeField] protected Script_DialogueManager dialogueManager;
+    [SerializeField] private UnityEvent _preTextAction;
+
+    private UnityEvent PreTextAction
+    {
+        get => _preTextAction;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
     
     protected override void AutoSetup()
     {
@@ -40,6 +52,8 @@ public class Script_InteractableObjectText : Script_InteractableObject
         /// Initiate dialogue node
         if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
         {
+            InvokePreAction();
+            
             if (dialogueNodes == null || dialogueNodes.Length == 0)
             {
                 Debug.LogWarning("No dialogue nodes provided for text object");
@@ -52,6 +66,9 @@ public class Script_InteractableObjectText : Script_InteractableObject
                 type: allowNonreadDialogueNodes ? null : Const_DialogueTypes.Type.Read,
                 this
             );
+            
+            // Invoke binded Events only upon initially prompting the text object.
+            InvokeAction();
             HandleDialogueNodeIndex();
         }
         /// Player is mid-dialogue, can either 1) skip 2) continue if no longer rendering dialogue
@@ -94,5 +111,11 @@ public class Script_InteractableObjectText : Script_InteractableObject
         {
             dialogueIndex++;
         }
+    }
+
+    // Invoke an action before starting the dialogue node.
+    protected void InvokePreAction()
+    {
+        if (PreTextAction.CheckUnityEventAction()) PreTextAction.Invoke();
     }
 }

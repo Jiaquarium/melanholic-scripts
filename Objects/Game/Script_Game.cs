@@ -154,9 +154,11 @@ public class Script_Game : MonoBehaviour
             Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
             foreach (Script_LevelGrid lvl in lvls)
             {
-                if (lvl.gameObject.activeSelf && !Const_Dev.IsDevMode)
+                if (lvl.gameObject.activeSelf)
                 {
-                    Debug.LogError($"{lvl.name} is active. You need to set this inactive at game load for prod.");
+                    string s = $"{lvl.name} is active. You need to set this inactive at game load for prod.";
+                    if (Const_Dev.IsDevMode)    Debug.Log(s);
+                    else                        Debug.LogError(s);
                 }
                 
                 lvl.gameObject.SetActive(false);
@@ -226,7 +228,7 @@ public class Script_Game : MonoBehaviour
         itemPickUpTheatricsManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
-        dialogueManager.HideDialogue();
+        dialogueManager.Initialize();
         thoughtManager.HideThought();
         DDRManager.Setup();
         SetupMenu();
@@ -434,7 +436,7 @@ public class Script_Game : MonoBehaviour
         SetupPlayerOnLevel();
         CameraMoveToTarget();
 
-        SetupDialogueManager();
+        SetupDialogueManagerOnLevel();
         SetupThoughtManager();
         InitializeHintManager();
 
@@ -1366,7 +1368,7 @@ public class Script_Game : MonoBehaviour
         _DIALOGUE & THOUGHTS_
     ========================================================================= */    
 
-    void SetupDialogueManager()
+    void SetupDialogueManagerOnLevel()
     {
         dialogueManager.Setup();
     }

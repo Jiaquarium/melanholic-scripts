@@ -27,7 +27,11 @@ public class Script_Names: MonoBehaviour
     
     public const string Melz                            = "<b>Melz</b>";                        // {1}
     public const string MelzTheGreat                    = "<b>Melz the Great</b>";              // {2}
-    public const string Ids                             = "<b>Ids</b>";                         // {3}
+    public static string Ids                                                                     // {3}
+    {
+        get => Names?._Ids;
+        set => Names._Ids = value;
+    }
     
     public static string Ero                                                                    // {4}
     {
@@ -166,6 +170,7 @@ public class Script_Names: MonoBehaviour
     // ------------------------------------------------------------------
     // Give these getters and setters so we can see Names while dev'ing
     [SerializeField] private string _Player             = "<b>???</b>";
+    [SerializeField] private string _Ids                = "<b>???</b>";
     [SerializeField] private string _Ero                = "<b>???</b>";
     [SerializeField] private string _Eileen             = "<b>???</b>";
     [SerializeField] private string _Ellenia            = "<b>???</b>";
@@ -182,6 +187,10 @@ public class Script_Names: MonoBehaviour
 
     // ------------------------------------------------------------------
     // Updater functions. Call from dialogue to update the updateable name.
+    // Refs:    (1) Full Art Note PreFullArtAction on door to Ids room (lvl 9)
+    //          (2) In Ids' room introduction, when calling Nameplate Timeline (IntroNode_NRoom)
+    public static void UpdateIds() { Ids                                        = "<b>Ids</b>"; }
+    
     public static void UpdateEro() { Ero                                        = "<b>Ero</b>"; }
 
     // Refs: (1) Eileen's room
@@ -221,6 +230,7 @@ public class Script_Names: MonoBehaviour
     public static void LoadNames(Model_Names names)
     {
         Player                  = names.Player;
+        Ids                     = names.Ids;
         Ero                     = names.Ero;
         Eileen                  = names.Eileen;
         Ellenia                 = names.Ellenia;

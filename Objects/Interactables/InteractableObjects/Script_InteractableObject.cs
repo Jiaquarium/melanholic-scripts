@@ -13,6 +13,11 @@ public class Script_InteractableObject : Script_Interactable
     [SerializeField] private UnityEvent action;
     [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] protected bool autoSetup;
     
+    protected UnityEvent MyAction
+    {
+        get => action;
+    }
+
     protected virtual void OnEnable()
     {
         if (autoSetup)
@@ -47,7 +52,12 @@ public class Script_InteractableObject : Script_Interactable
     public virtual void ActionDefault()
     {
         Debug.Log($"{name} Action default called in InteractableObject");
-        if (action.CheckUnityEventAction()) action.Invoke();
+        InvokeAction();
+    }
+
+    protected void InvokeAction()
+    {
+        if (MyAction.CheckUnityEventAction()) MyAction.Invoke();
     }
     
     public virtual void ActionB() {}

@@ -12,10 +12,17 @@ using TMPro;
 public class Script_StringFormatTMP : MonoBehaviour
 {
     [SerializeField] private bool useDynamicDisplay;
+    
+    // For now, we'll make every dynamic display auto update
     [Tooltip("True: will update so when Names change will show")]
-    [SerializeField] private bool alwaysUpdate;
+    [HideInInspector][SerializeField] private bool alwaysUpdate;
     [TextArea(3,10)] [SerializeField] private string dynamicText;
     
+    public bool AlwaysUpdate
+    {
+        get => alwaysUpdate;
+    }
+
     void Start()
     {
         string unformattedStr = GetComponent<TextMeshProUGUI>().text; 
@@ -29,11 +36,8 @@ public class Script_StringFormatTMP : MonoBehaviour
 
     void Update()
     {
-        if (alwaysUpdate)
-        {
-            if (useDynamicDisplay)  DynamicDisplay();
-            else                    FormatTMPText();
-        }
+        if (useDynamicDisplay)  DynamicDisplay();
+        else                    FormatTMPText();
     }
 
     private void FormatTMPText()

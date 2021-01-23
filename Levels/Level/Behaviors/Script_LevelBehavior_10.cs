@@ -7,7 +7,7 @@ using System;
 
 /// <summary>
 /// Respawns are handled with IdsSpawns which will auto reset Ids positions
-/// timelines to play are tracked with timelineCount
+/// timelines to play are tracked with timelinesDoneCount
 /// Uses MoveSets for approaching player
 /// 
 /// Events:
@@ -24,13 +24,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public bool isDone;
     [SerializeField] private Script_Trigger[] triggers;
     [SerializeField] private int activeTriggerIndex;
-    [SerializeField] private int timelineCount;
+    [SerializeField] private int timelinesDoneCount;
+    
+    // Tells us where Ids should spawn.
     [SerializeField] private Script_Marker[] IdsSpawns;
+    
     public bool isDeskSwitchedIn;
     public bool isInitialized;
 
 
-    public float afterPRCSWaitTime;
     public float dropDiscoBallTime;
     public float postIdsDanceWaitTime;
     
@@ -41,18 +43,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Script_BgThemePlayer IdsBgThemePlayerPrefab;
     public Script_BgThemePlayer IdsCandyDanceShortThemePlayerPrefab;
     public Script_BgThemePlayer PlayerCandyDanceThemePlayerPrefab;
+    
     public Script_DialogueNode introNode;
     [SerializeField] private Script_DialogueNode afterIntroRevealNode;
-    public Script_DialogueNode introNode2;
-    public Script_DialogueNode introNode3;
     public Script_DialogueNode danceIntroNode;
     public Script_DialogueNode playerDanceIntroNode;
     public Script_DialogueNode badDanceOutroNode;
     public Script_DialogueNode goodDanceOutroNode;
     public Script_DialogueNode deskIONode;
     public Script_DialogueNode chaiseLoungeIONode;
-    [SerializeField] private Script_DialogueNode showIdsOnKelsingorPRCSNode;
-    [SerializeField] private Script_DialogueNode showMagicCircleOnKelsingorNode;
     public GameObject lights;
     public GameObject crystalChandelier;
     public Script_LightFadeIn playerSpotLight;
@@ -71,10 +70,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Transform[] IOTexts;
     public Script_MovingNPC Ids;
     [SerializeField] private PlayableDirector IdsDirector;
-    [SerializeField] private PlayableDirector ZoomDirector;
     [SerializeField] private Script_VCamera VCamLB10FollowIds;
-    [SerializeField] private Script_PRCSPlayer magicCirclePlayer;
-    [SerializeField] private PlayableDirector magicCircleDirector; 
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
     [SerializeField] private PlayableDirector nameplateDirector;
     [SerializeField] private Script_ItemObject smallKey;
@@ -96,31 +92,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     protected override void OnEnable()
     {
         IdsDirector.stopped                     += OnIdsMovesDone;    
-        ZoomDirector.stopped                    += OnZoomDirectorDone;
-        magicCircleDirector.stopped             += OnPRCSIntroDone;
-        Script_PRCSEventsManager.OnPRCSDone     += PRCSAenimalsRoleReaction;
         nameplateDirector.stopped               += OnNameplateDone;
         Script_DDREventsManager.OnDDRDone       += OnDDRDone;
         Script_ItemsEventsManager.OnItemStash   += OnItemStash;
-        
-        if (timelineCount >= IdsSpawns.Length)  Ids.gameObject.SetActive(false);
-        else
-        {
-            Ids.transform.position = IdsSpawns[timelineCount].Position;
-            Ids.DefaultFacingDirection = IdsSpawns[timelineCount].Direction;
-        }
-
-        Ids.UpdateLocation();
-        if (timelineCount == 0)
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
 
     protected override void OnDisable()
     {
         IdsDirector.stopped                     -= OnIdsMovesDone;
-        ZoomDirector.stopped                    -= OnZoomDirectorDone;
-        magicCircleDirector.stopped             -= OnPRCSIntroDone;
-        Script_PRCSEventsManager.OnPRCSDone     -= PRCSAenimalsRoleReaction;
         nameplateDirector.stopped               -= OnNameplateDone;
         Script_DDREventsManager.OnDDRDone       -= OnDDRDone;
         Script_ItemsEventsManager.OnItemStash   -= OnItemStash;
@@ -163,30 +142,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         game.ChangeStateCutScene();
         game.HandleItemReceive(smallKey);
-    }
-
-    public void ZoomInOnPlayer()
-    {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlay(1);
-    }
-    public void MagicCircleIntro()
-    {
-        magicCirclePlayer.Play();
-    }
-    public void PRCSShowMagicCircle()
-    {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(2, 4);
-    }
-    public void PRCSIntroStop()
-    {
-        magicCirclePlayer.Stop();
-        StartCoroutine(WaitToStartSBookIntroNode());
-
-        IEnumerator WaitToStartSBookIntroNode()
-        {
-            yield return new WaitForSeconds(afterPRCSWaitTime);
-            dm.StartDialogueNode(introNode2, SFXOn: false);
-        }
     }
 
     public void WaitToIdsDance()
@@ -233,6 +188,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     }
     // Next Node Action END
     // ------------------------------------------------------------------------------------
+    
     // ------------------------------------------------------------------------------------
     // Timeline Signals START
     public void OnIdsExitsIdsRoom()
@@ -242,9 +198,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         isDone = true;
     }
-
     // Timeline Signals END
     // ------------------------------------------------------------------------------------
+
     private void OnItemStash(string stashItemId)
     {
         if (stashItemId == smallKey.Item.id)            IdsExits();
@@ -256,33 +212,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
     }
     
-
     private void OnNameplateDone(PlayableDirector aDirector)
     {
         namePlatePRCSPlayer.Stop();
         dm.StartDialogueNode(afterIntroRevealNode, SFXOn: false);
-    }
-
-    private void PRCSAenimalsRoleReaction(Script_PRCSPlayer PRCSPlayer)
-    {
-        if (PRCSPlayer == magicCirclePlayer)
-        {
-            Debug.Log("PRCS (Aenimals Role) DONE");
-
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(2, 3);
-        }
-    }
-
-    private void OnPRCSIntroDone(PlayableDirector aDirector)
-    {
-        if (magicCircleDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[3])
-        {
-            dm.StartDialogueNode(showIdsOnKelsingorPRCSNode, SFXOn: false);
-        }
-        else if (magicCircleDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[4])
-        {
-            dm.StartDialogueNode(showMagicCircleOnKelsingorNode, SFXOn: false);
-        }
     }
 
     private void OnIdsMovesDone(PlayableDirector aDirector)
@@ -298,22 +231,18 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             Ids.DefaultFacingDirection = Directions.Left;
             game.ChangeStateInteract();
         }
-        else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[2])
-        {
-            Ids.FaceDirection(Directions.Right);
-            game.ChangeStateInteract();
-        }
+        
+        /// timeliens[2] exit is handled by Timeline Signal
+
         Ids.UpdateLocation();
-        timelineCount++;
-    }
-    private void OnZoomDirectorDone(PlayableDirector aDirector)
-    {
-        dm.StartDialogueNode(introNode3, false);
-        game.EnableSBook(true);
+        timelinesDoneCount++;
     }
 
     public override bool ActivateTrigger(string Id)
     {
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+        if (!isPsychicDuckActive)   return false;
+
         if (Id == "room_N" && activeTriggerIndex == 0)
         {
             if (lb9.speaker != null)
@@ -387,6 +316,70 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             game.GetMovingNPC(0).FaceDirection(Directions.Left);
             dm.StartDialogueNode(playerDanceIntroNode);
         }
+
+        void HandleLeftMove()
+        {
+            if (leftMoveCount > IdsSongMoves.leftMoveTimes.Length - 1)    return;
+
+            if (timer >= IdsSongMoves.leftMoveTimes[leftMoveCount] && !leftMoveDone)
+            {
+                game.GetMovingNPC(0).FaceDirection(Directions.Left);
+                leftMoveCount++;
+                leftMoveDone = true;
+            }
+            else
+            {
+                leftMoveDone = false;
+            }
+        }
+
+        void HandleDownMove()
+        {
+            if (downMoveCount > IdsSongMoves.downMoveTimes.Length - 1)    return;
+
+            if (timer >= IdsSongMoves.downMoveTimes[downMoveCount] && !downMoveDone)
+            {
+                game.GetMovingNPC(0).FaceDirection(Directions.Down);
+                downMoveCount++;
+                downMoveDone = true;
+            }
+            else
+            {
+                downMoveDone = false;
+            }
+        }
+
+        void HandleUpMove()
+        {
+            if (upMoveCount > IdsSongMoves.upMoveTimes.Length - 1)    return;
+
+            if (timer >= IdsSongMoves.upMoveTimes[upMoveCount] && !upMoveDone)
+            {
+                game.GetMovingNPC(0).FaceDirection(Directions.Up);
+                upMoveCount++;
+                upMoveDone = true;
+            }
+            else
+            {
+                upMoveDone = false;
+            }
+        }
+
+        void HandleRightMove()
+        {
+            if (rightMoveCount > IdsSongMoves.rightMoveTimes.Length - 1)    return;
+
+            if (timer >= IdsSongMoves.rightMoveTimes[rightMoveCount] && !rightMoveDone)
+            {
+                game.GetMovingNPC(0).FaceDirection(Directions.Right);
+                rightMoveCount++;
+                rightMoveDone = true;
+            }
+            else
+            {
+                rightMoveDone = false;
+            }
+        }
     }
 
     void OnDDRDone()
@@ -415,70 +408,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         SwitchLightsInAnimation();
 
         dm.StartDialogueNode(node);
-    }
-
-    void HandleLeftMove()
-    {
-        if (leftMoveCount > IdsSongMoves.leftMoveTimes.Length - 1)    return;
-
-        if (timer >= IdsSongMoves.leftMoveTimes[leftMoveCount] && !leftMoveDone)
-        {
-            game.GetMovingNPC(0).FaceDirection(Directions.Left);
-            leftMoveCount++;
-            leftMoveDone = true;
-        }
-        else
-        {
-            leftMoveDone = false;
-        }
-    }
-
-    void HandleDownMove()
-    {
-        if (downMoveCount > IdsSongMoves.downMoveTimes.Length - 1)    return;
-
-        if (timer >= IdsSongMoves.downMoveTimes[downMoveCount] && !downMoveDone)
-        {
-            game.GetMovingNPC(0).FaceDirection(Directions.Down);
-            downMoveCount++;
-            downMoveDone = true;
-        }
-        else
-        {
-            downMoveDone = false;
-        }
-    }
-
-    void HandleUpMove()
-    {
-        if (upMoveCount > IdsSongMoves.upMoveTimes.Length - 1)    return;
-
-        if (timer >= IdsSongMoves.upMoveTimes[upMoveCount] && !upMoveDone)
-        {
-            game.GetMovingNPC(0).FaceDirection(Directions.Up);
-            upMoveCount++;
-            upMoveDone = true;
-        }
-        else
-        {
-            upMoveDone = false;
-        }
-    }
-
-    void HandleRightMove()
-    {
-        if (rightMoveCount > IdsSongMoves.rightMoveTimes.Length - 1)    return;
-
-        if (timer >= IdsSongMoves.rightMoveTimes[rightMoveCount] && !rightMoveDone)
-        {
-            game.GetMovingNPC(0).FaceDirection(Directions.Right);
-            rightMoveCount++;
-            rightMoveDone = true;
-        }
-        else
-        {
-            rightMoveDone = false;
-        }
     }
 
     void SwitchLightsOutAnimation(Action cb)
@@ -580,28 +509,57 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
         foreach (Transform t in IOTexts )   game.SetupInteractableObjectsText(t, !isInitialized);
         game.SetupMovingNPC(Ids, !isInitialized);
-        isInitialized = true;
         
         if (!isDeskSwitchedIn)      ChaseLoungeSwitchIn();
         else                        DeskSwitchIn();
         
         if (lb9.speaker == null)    game.SwitchBgMusic(4);
 
-        if (!game.IsRunDay(Script_Run.DayId.sun))
-        {
-            Ids.gameObject.SetActive(false);
-            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
-        }
-        else
-        {
-            Ids.gameObject.SetActive(true);
-            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
-        }
-
         // meaning Ids DDR quest is completed and the Locked Treasure Chest was opened
         if (gotBoarNeedle)
         {
             treasureChest.IsOpen = true;
+        }
+
+        HandleIdsInRoom();
+        HandleIdsSpawn();
+
+        isInitialized = true;
+
+        void HandleIdsInRoom()
+        {
+            if (!game.IsRunDay(Script_Run.DayId.sun))
+            {
+                Ids.gameObject.SetActive(false);
+                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+            }
+            else
+            {
+                Ids.gameObject.SetActive(true);
+                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
+            }
+        }
+        
+        // Only if the timeline is finished do we increment Timeline count. Based on where
+        // we are on Timeline count, spawn Ids accordingly
+        void HandleIdsSpawn()
+        {
+            if (timelinesDoneCount > IdsSpawns.Length)
+            {
+                Ids.gameObject.SetActive(false);
+            }
+            else if (timelinesDoneCount == 0)
+            {
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+            }
+            else
+            {
+                Ids.transform.position = IdsSpawns[timelinesDoneCount - 1].Position;
+                Ids.DefaultFacingDirection = IdsSpawns[timelinesDoneCount - 1].Direction;
+                Ids.FaceDefaultDirection();
+            }
+
+            Ids.UpdateLocation();
         }
     }
 }
