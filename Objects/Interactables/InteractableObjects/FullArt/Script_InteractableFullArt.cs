@@ -141,6 +141,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     {
         isInputDisabled = true;
         // fade in via fullartmanager
+        Script_Game.Game.GetPlayer().SetIsViewing();
         Script_Game.Game.fullArtManager.ShowFullArt(
             activeFullArt,
             fadeInSpeed, () => {    // Use iobject fadeIn speed so fullArt can be extensible

@@ -68,16 +68,6 @@ public class Script_FullArtManager : MonoBehaviour
     )
     {   
         state = _state;
-        // inventory is the master non-interactive state for player
-        // player should only be able to go to lastState from inventory state
-        // DialogueManager doesn't set the player to viewing
-        if (
-            Script_Game.Game.GetPlayer().State == Const_States_Player.Interact
-            && state != FullArtState.DialogueManager
-        )
-        {
-            Script_Game.Game.GetPlayer().SetIsViewing();
-        }
         
         fullArtCanvas.alpha = 1;
         fullArtCanvas.gameObject.SetActive(true);
