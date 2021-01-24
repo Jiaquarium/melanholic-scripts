@@ -36,7 +36,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         }
     }
 
-    /// NextNodeAction START ===============================================================
+    // ------------------------------------------------------------------
+    // Next Node Action START
     public void OnEndStartDialogue()
     {
         /// Fade out black canvas
@@ -46,9 +47,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             game.ChangeStateInteract();
         });
     }
-    /// NextNodeAction END =================================================================
-    /// InteractableObject UnityEvents START ===============================================
-    
+    // Next Node Action END
+    // ------------------------------------------------------------------
+
+    // ------------------------------------------------------------------
+    // InteractableObject UnityEvents START
     public void OnTryToExitFrontDoor()
     {
         Debug.Log("Move camera to hotel camera cut scene!!!");
@@ -56,8 +59,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         game.ChangeStateCutScene();
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
-    /// InteractableObject UnityEvents END =================================================
-    /// Timeline Signals START =============================================================
+    // InteractableObject UnityEvents END
+    // ------------------------------------------------------------------
+    
+    // ------------------------------------------------------------------
+    // Timeline Signals START
     public void OnHotelCameraPan()
     {
         game.GetPlayer().FaceDirection(Directions.Right);
@@ -67,7 +73,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         game.ChangeStateInteract();
     }
-    /// Timeline Signals END ===============================================================
+    // Timeline Signals END
+    // ------------------------------------------------------------------
 
     protected override void HandleAction()
     {

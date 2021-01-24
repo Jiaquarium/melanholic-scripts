@@ -665,7 +665,7 @@ public class Script_DialogueManager : MonoBehaviour
             dialogueSections != null
             && dialogueSections.Count == 0
             && !isRenderingDialogueSection
-            && currentNode.data.action == Const_DialogueActions.InputMode
+            && currentNode.data.inputMode != InputMode.None
         )
         {
             return true;

@@ -39,8 +39,8 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         // set cursor to end when we initialize with existing entry (this already happens on deselect)
         TMPInputField.caretPosition = TMPInputField.text.Length;
-        Debug.Log($"Setting caret position to: {TMPInputField.caretPosition}");
-        Debug.Log($"Caret blinkrate is: {TMPInputField.caretBlinkRate}");
+        Debug.Log($"Setting caret position to: {TMPInputField?.caretPosition}");
+        Debug.Log($"Caret blinkrate is: {TMPInputField?.caretBlinkRate}");
         SetCaretVisible(true);
     }
 
@@ -66,10 +66,13 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         }
         else
         {
-            TMPInputField.caretBlinkRate    = 0f;
-            Color newCaretColor             = caretColor;
-            newCaretColor.a                 = 0f;
-            TMPInputField.caretColor        = newCaretColor;
+            if (TMPInputField != null)
+            {
+                TMPInputField.caretBlinkRate    = 0f;
+                Color newCaretColor             = caretColor;
+                newCaretColor.a                 = 0f;
+                TMPInputField.caretColor        = newCaretColor;
+            }
         }
     }
 

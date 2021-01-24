@@ -132,21 +132,6 @@ public static class Script_Utils
         }
     }
 
-    // TODO REMOVE THESE, CALL FROM DM NODE
-    public static bool CheckLastNodeActionCutScene(
-        Script_Game g,
-        Script_DialogueManager dm,
-        string s
-    )
-    {
-        return g.state == "cut-scene"
-            && g.GetPlayerIsTalking()
-            && dm.dialogueSections.Count == 0
-            && dm.lines.Count == 0
-            && !dm.isRenderingDialogueSection
-            && dm.currentNode.data.action == s;
-    }
-
     /// <summary>
     /// Params for item names defined in Script_ItemStringBuilder
     /// </summary>
