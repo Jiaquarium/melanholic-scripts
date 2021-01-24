@@ -1111,6 +1111,8 @@ public class Script_DialogueManager : MonoBehaviour
 
     public void Initialize()
     {
+        Debug.Log($"{name} INITIALIZED");
+        
         if (DialogueManager == null)
         {
             DialogueManager = this;

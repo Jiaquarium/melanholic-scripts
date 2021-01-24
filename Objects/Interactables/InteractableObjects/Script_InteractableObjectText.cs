@@ -27,6 +27,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
     protected override void AutoSetup()
     {
         base.AutoSetup();
+        
         dialogueManager = Script_DialogueManager.DialogueManager;
     }
     

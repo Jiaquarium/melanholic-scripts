@@ -31,8 +31,10 @@ public class Script_MynesMirror : Script_InteractableObjectText
         Id = MynesMirrorId;
     }
     
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        
         Script_MynesMirrorEventsManager.OnEndTimeline += StartDialogue;
     }
 
