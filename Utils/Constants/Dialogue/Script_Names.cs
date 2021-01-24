@@ -44,7 +44,12 @@ public class Script_Names: MonoBehaviour
     public const string Urselks                         = "<b>Urselks</b>";                     // {7}
     public const string MaskedOne                       = "<b>Masked One</b>";                  // {8}
     public const string Aenimals                        = "<b>ænimals</b>";                     // {9}
-    public const string Myne                            = "<b>Myne</b>";                        // {10}
+    
+    public static string Myne                                                                    // {10}
+    {
+        get => Names?._Myne;
+        set => Names._Myne = value;
+    }
     
     public static string Eileen                                                                 // {11}
     {
@@ -172,6 +177,7 @@ public class Script_Names: MonoBehaviour
     [SerializeField] private string _Player             = "<b>???</b>";
     [SerializeField] private string _Ids                = "<b>???</b>";
     [SerializeField] private string _Ero                = "<b>???</b>";
+    [SerializeField] private string _Myne               = "<b>???</b>";
     [SerializeField] private string _Eileen             = "<b>???</b>";
     [SerializeField] private string _Ellenia            = "<b>???</b>";
     [SerializeField] private string _ElleniaPassword    = null;
@@ -192,17 +198,22 @@ public class Script_Names: MonoBehaviour
     public static void UpdateIds() { Ids                                        = "<b>Ids</b>"; }
     
     public static void UpdateEro() { Ero                                        = "<b>Ero</b>"; }
-
-    // Refs: (1) Eileen's room
-    public static void UpdateEileen() { Eileen                                  = "<b>Eileen</b>"; }
-    // Refs: (1) Eileen's room
     
+    public static void UpdateMyne() { Myne                                      = "<b>Myne</b>"; }
+
+    // Refs: (1) Eileen's room via UpdateSisters in Level Behavior
+    public static void UpdateEileen() { Eileen                                  = "<b>Eileen</b>"; }
+    
+    // Refs: (1) Eileen's room via UpdateSisters in Level Behavior
     public static void UpdateEllenia() { Ellenia                                = "<b>Ellenia</b>"; }
     
+    // Refs: (1) Eileen's room
     public static void UpdateElleniaPassword(string s) { ElleniaPassword        = s; }
     
+    // Refs: (1) Updated in SavePoint L11
     public static void UpdateTedwich() { Tedwich                                = "<b>Tedwich</b>"; }
     
+    // Refs: (1) Updated in Saloon Hallway L29
     public static void UpdateUrsie() { Ursie                                    = "<b>Ursie</b>"; }
     
     // Refs: (1) Kaffe & Latte's Dialogue in Ballroom
@@ -232,6 +243,7 @@ public class Script_Names: MonoBehaviour
         Player                  = names.Player;
         Ids                     = names.Ids;
         Ero                     = names.Ero;
+        Myne                    = names.Myne;
         Eileen                  = names.Eileen;
         Ellenia                 = names.Ellenia;
         ElleniaPassword         = names.ElleniaPassword;
