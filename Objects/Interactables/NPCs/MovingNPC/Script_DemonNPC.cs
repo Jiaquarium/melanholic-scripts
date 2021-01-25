@@ -13,14 +13,24 @@ using UnityEditor;
 /// </summary>
 public class Script_DemonNPC : Script_MovingNPC
 {
-    public enum QuestState
+    public enum DialogueState
     {
         None        = 0,
-        Active      = 1,
+        Talked      = 1
+    }
+
+    // Quest state to be for more complex quests where we don't want the Level Behavior to handle state.
+    public enum PastQuestState
+    {
+        None        = 0,
         Done        = 2,
     }
-    public QuestState _questState;
+
+    public DialogueState _dialogueState;
+    public PastQuestState _pastQuestState;
+
     [SerializeField] private Script_DialogueNode[] psychicNodes;
+    [SerializeField] private Script_DialogueNode[] talkedPsychicNodes;
     [SerializeField] Script_PsychicNodesController psychicNodesController;
     
     [SerializeField] bool _isIntroPsychicNode;
@@ -32,10 +42,38 @@ public class Script_DemonNPC : Script_MovingNPC
     private bool didTalkPsychic;
     private bool didTalkPrependedIntroNode;
 
-    public QuestState MyQuestState
+    public DialogueState MyDialogueState
     {
-        get => _questState;
-        set => _questState = value;
+        get => _dialogueState;
+        set
+        {
+            _dialogueState = value;
+
+            switch (value)
+            {
+                // Switch psychic nodes with done state ones
+                case (DialogueState.Talked):
+                    OnDialogueTalked();
+                    break;
+            }
+        }
+    }
+    
+    public PastQuestState MyPastQuestState
+    {
+        get => _pastQuestState;
+        set
+        {
+            _pastQuestState = value;
+
+            switch (value)
+            {
+                // Switch psychic nodes with done state ones
+                case (PastQuestState.Done):
+                    OnPastQuestDone();
+                    break;
+            }   
+        }
     }
     
     public Script_DialogueNode[] PsychicNodes
@@ -152,6 +190,19 @@ public class Script_DemonNPC : Script_MovingNPC
     private void InitialDialogueState()
     {
         didTalkPsychic = false;
+    }
+
+    private void OnDialogueTalked()
+    {
+        psychicNodes = talkedPsychicNodes;
+        SwitchDialogueNodes(psychicNodes, isReset: true);
+    }
+    
+    private void OnPastQuestDone()
+    {
+        Debug.Log($"{name} doing OnQuestStateDone() actions");
+
+        // specify quest state done nodes
     }
 
     /// For now, just start a convo if is hurt

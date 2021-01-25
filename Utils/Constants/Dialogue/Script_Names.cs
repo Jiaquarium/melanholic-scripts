@@ -246,7 +246,6 @@ public class Script_Names: MonoBehaviour
         Myne                    = names.Myne;
         Eileen                  = names.Eileen;
         Ellenia                 = names.Ellenia;
-        ElleniaPassword         = names.ElleniaPassword;
         Tedwich                 = names.Tedwich;
         Ursie                   = names.Ursie;
         Kaffe                   = names.Kaffe;

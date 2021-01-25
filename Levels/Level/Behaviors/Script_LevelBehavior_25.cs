@@ -20,11 +20,17 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     /* ======================================================================= */
     [SerializeField] private Script_DemonNPC Ellenia;
+    
+    // To track if the puzzle is completed, to be reset on new Day
+    [SerializeField] private bool isCurrentPuzzleComplete;
+
     [SerializeField] private Script_DialogueNode[] NoIntroElleniaNodes;
     [SerializeField] private Script_VCamera followElleniaVCam;
     [SerializeField] private PlayableDirector ElleniaDirector;
     
     [SerializeField] private Script_DialogueNode[] cutSceneNodes;
+    [SerializeField] private Script_DialogueNode onCorrectDoneNode;
+    [SerializeField] private Script_DialogueNode onCorrectDonePastQuestDoneNode;
     [SerializeField] private Script_DialogueNode introContinuationNode;
     [SerializeField] private Script_DialogueNode beforeExitNode;
     
@@ -89,7 +95,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     public void ElleniaIntroDoneDialogueNodes()
     {
-        Ellenia.SwitchPsychicNodes(NoIntroElleniaNodes);
+        Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
     }
     /* ===========================================================================================
         CUTSCENE
@@ -128,8 +134,12 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         /// OnCorrect Timeline
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[5])
         {
+            Script_DialogueNode onSubmitCorrectNode = Ellenia.MyPastQuestState == Script_DemonNPC.PastQuestState.Done
+                ? onCorrectDonePastQuestDoneNode
+                : onCorrectDoneNode;
+            
             // start dialogue & fade out music
-            Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[5], false);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(onSubmitCorrectNode, false);
             StartCoroutine(
                 Script_AudioMixerFader.Fade(
                     audioMixer,
@@ -295,6 +305,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         game.ChangeStateCutScene();
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 5);
         isPuzzleComplete = true;
+        isCurrentPuzzleComplete = true;
     }
 
     public void GiveSticker()
@@ -355,7 +366,14 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     
     public override void Setup()
     {
-        if (isPuzzleComplete)
+        // Ellenia should always be there on new runs. We'll save states to skip Ellenia's intro
+        // and to skip the giving Animal Within dialogue.
+        game.SetupMovingNPC(Ellenia, isInitialization);
+        
+        if (spokenWithEllenia)  Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+        if (isPuzzleComplete)   Ellenia.MyPastQuestState = Script_DemonNPC.PastQuestState.Done;
+        
+        if (isCurrentPuzzleComplete)
         {
             Ellenia.gameObject.SetActive(false);
             easleYellAtPlayerIOText.gameObject.SetActive(false);
@@ -363,14 +381,9 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         }
         else
         {
-            game.SetupMovingNPC(Ellenia, isInitialization);
+            Ellenia.gameObject.SetActive(true);
             easleYellAtPlayerIOText.gameObject.SetActive(true);
             easleFullArt.gameObject.SetActive(false);
-
-            if (spokenWithEllenia)
-            {
-                ElleniaIntroDoneDialogueNodes();
-            }
         }
         
         game.SetupInteractableObjectsText(textParent, isInitialization);
