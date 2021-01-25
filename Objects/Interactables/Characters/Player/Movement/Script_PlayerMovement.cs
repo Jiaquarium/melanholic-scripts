@@ -49,7 +49,7 @@ public class Script_PlayerMovement : MonoBehaviour
     
     public void HandleMoveInput()
     {
-        HandleSpeedWalkInput();
+        HandleWalkSpeed();
         
         timer = Mathf.Max(0f, timer - Time.deltaTime);
 
@@ -80,27 +80,25 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleSpeedWalkInput()
+    private void HandleWalkSpeed()
     {
         /// TBD Check active sticker for speedwalk 
         bool isSpeedwalkStickerActive = Script_ActiveStickerManager.Control.IsActiveSticker("speedwalk-sticker");
         bool isDev = Debug.isDebugBuild && Const_Dev.IsDevMode;
 
-        if (isSpeedwalkStickerActive || isDev)  HandleSpeedWalk();
-
-        void HandleSpeedWalk()
+        if (
+            Input.GetButton(Const_KeyCodes.Action3) &
+            (isSpeedwalkStickerActive || isDev)
+        )
         {
-            if (Input.GetButton(Const_KeyCodes.Action3))
-            {
-                repeatDelay = runRepeatDelay;
-                playerGhost.Speed = runGhostSpeed;
-            }
-            else
-            {
-                repeatDelay = defaultRepeatDelay;
-                playerGhost.Speed = defaultGhostSpeed;
-            }
-        } 
+            repeatDelay = runRepeatDelay;
+            playerGhost.Speed = runGhostSpeed;
+        }
+        else
+        {
+            repeatDelay = defaultRepeatDelay;
+            playerGhost.Speed = defaultGhostSpeed;
+        }
     }
 
     void SetMoveAnimation()
