@@ -22,6 +22,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public bool gotIceSpikeSticker;
     /* ======================================================================= */
     
+    public bool isCurrentPuzzleComplete;
     [SerializeField] private Transform switchParent;
     [SerializeField] private Script_UrselkAttacks urselkAttacks;
     [SerializeField] private float attackInterval;
@@ -104,7 +105,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         }
         else if (Id == "drama-done")
         {
-            if (!isPuzzleComplete)
+            if (!isCurrentPuzzleComplete)
             {
                 FadeOutDramaticMusic();
                 // Need to also fade out these lights for the 8 max light count
@@ -180,6 +181,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
             isPuzzleComplete = true;
+            isCurrentPuzzleComplete = true;
         }
     }
 
@@ -217,11 +219,11 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             dramaticThoughtsCutSceneTrigger.gameObject.SetActive(true);
         }
 
-        if (isPuzzleComplete)       spikeCage.gameObject.SetActive(false);
-        else                        spikeCage.gameObject.SetActive(true);
+        if (isCurrentPuzzleComplete)    spikeCage.gameObject.SetActive(false);
+        else                            spikeCage.gameObject.SetActive(true);
 
-        if (gotIceSpikeSticker)     iceSpike.gameObject.SetActive(false);
-        else                        iceSpike.gameObject.SetActive(true);
+        if (gotIceSpikeSticker)         iceSpike.gameObject.SetActive(false);
+        else                            iceSpike.gameObject.SetActive(true);
     }
     
     public override void Setup()
@@ -237,7 +239,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         
         // If player activated the dramatic thoughts, and came back later
         // start off with dramatic music
-        if (didActivateDramaticThoughts && !isPuzzleComplete)
+        if (didActivateDramaticThoughts && !isCurrentPuzzleComplete)
         {
             bgThemePlayer.gameObject.SetActive(true);
             game.PauseBgMusic();

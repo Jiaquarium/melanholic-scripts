@@ -21,7 +21,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     
     [SerializeField] private Script_LevelBehavior_25 LB25;
     [SerializeField] private Script_LevelBehavior_26 LB26;
-    [SerializeField] private Script_MovingNPC Eileen;
+    [SerializeField] private Script_DemonNPC Eileen;
     [SerializeField] private Script_DialogueNode[] psychicNodesTalked;
     [SerializeField] private Script_BgThemePlayer EileenThemePlayer;
     [SerializeField] private Script_InteractableObjectTextParent textParent;
@@ -60,9 +60,9 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         playerPlayableDirector.stopped -= OnDropTimelineDone;
         playerPlayableDirector = null;
         
-        AudioSource audio = EileenThemePlayer?.GetComponent<AudioSource>();
-        if (audio != null)
+        if (EileenThemePlayer != null)
         {
+            AudioSource audio = EileenThemePlayer?.GetComponent<AudioSource>();
             audio.volume = 0f;
             audio.Pause();
             // audio.gameObject.SetActive(false);
@@ -87,16 +87,12 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             SetNewElleniaPassword();
         }
     }
-    /// <summary>
-    /// Called from NextNodeAction()
-    /// after dialogue is done
-    /// </summary>
+
     public void OnFinishedTalking()
     {
         Debug.Log("OnFinishedTalking() switching out Eileen's dialogue nodes now...");
         spokenWithEileen = true;
-        Script_DemonNPC specter = (Script_DemonNPC)Eileen;
-        specter.SwitchPsychicNodes(psychicNodesTalked);
+        Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
     }
     
     // Next Node Action END
@@ -198,6 +194,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     public override void Setup()
     {
         game.SetupInteractableObjectsText(textParent.transform, isInitialize);
+        
         game.PauseBgMusic();
         AudioSource audio = EileenThemePlayer.GetComponent<AudioSource>();
         audio.volume = 1f;
@@ -213,7 +210,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         }
 
         /// Handle Eileen leaving the room after you "fix" her mind
-        if (LB26.isPuzzleComplete)
+        if (LB26.isCurrentPuzzleComplete)
         {
             Eileen.gameObject.SetActive(false);
             noteFullArt.gameObject.SetActive(true);
@@ -223,7 +220,14 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             game.SetupMovingNPC(Eileen, isInitialize);
             Eileen.gameObject.SetActive(true);
             noteFullArt.gameObject.SetActive(false);
+            
+            if (spokenWithEileen)       Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+            
+            // We need to set a new password, since the talked nodes don't call the password
+            // set function and we are not saving the password from run to run
+            if (LB26.isPuzzleComplete)  OnElleniaPassword(); 
         }
+
 
         // setup interactable fullart either way bc of drawing fullart is always active on bookshelf
         drawingFullArt.gameObject.SetActive(true);
