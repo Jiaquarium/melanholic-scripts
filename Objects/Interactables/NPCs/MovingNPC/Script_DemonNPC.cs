@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Urselk NPCs 
 /// Have Psychic Nodes mechanic
@@ -9,16 +13,31 @@ using UnityEngine;
 /// </summary>
 public class Script_DemonNPC : Script_MovingNPC
 {
+    public enum QuestState
+    {
+        None        = 0,
+        Active      = 1,
+        Done        = 2,
+    }
+    public QuestState _questState;
     [SerializeField] private Script_DialogueNode[] psychicNodes;
     [SerializeField] Script_PsychicNodesController psychicNodesController;
-    [SerializeField] private Script_DialogueNode _introPsychicNode;
+    
     [SerializeField] bool _isIntroPsychicNode;
+    [HideInInspector][SerializeField] private Script_DialogueNode _introPsychicNode;
     [Tooltip("Combine the intro node with the first Psychic Node")]
-    [SerializeField] bool _shouldPrependIntroNode;
+    [HideInInspector][SerializeField] bool _shouldPrependIntroNode;
+    
     private Script_DialogueNode[] defaultNodes;
-    [SerializeField] private bool didTalkPsychic;
-    [SerializeField] private bool didTalkPrependedIntroNode;
+    private bool didTalkPsychic;
+    private bool didTalkPrependedIntroNode;
 
+    public QuestState MyQuestState
+    {
+        get => _questState;
+        set => _questState = value;
+    }
+    
     public Script_DialogueNode[] PsychicNodes
     {
         get => psychicNodes;
@@ -140,4 +159,33 @@ public class Script_DemonNPC : Script_MovingNPC
     {
         base.Setup();
     }
+
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_DemonNPC))]
+    public class Script_DemonNPCEditor : Editor
+    {
+        SerializedProperty _introPsychicNodeProperty;
+        private const string introPsychicNodePropertyName = "_introPsychicNode";
+        
+        void OnEnable()
+        {
+            _introPsychicNodeProperty = serializedObject.FindProperty(introPsychicNodePropertyName);
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            var t = target as Script_DemonNPC;
+
+            if (t.IsIntroPsychicNodes)
+            {
+                t._shouldPrependIntroNode   = EditorGUILayout.Toggle("Should Prepend Intro Node", t._shouldPrependIntroNode);
+                EditorGUILayout.PropertyField(_introPsychicNodeProperty);
+
+                // Apply changes to the serializedProperty - always do this at the end of OnInspectorGUI.
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+    #endif
 }
