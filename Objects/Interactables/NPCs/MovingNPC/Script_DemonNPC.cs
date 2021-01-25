@@ -13,6 +13,8 @@ using UnityEditor;
 /// </summary>
 public class Script_DemonNPC : Script_MovingNPC
 {
+    // Used if we specifically need to define a Talked state. Otherwise just leave as None.
+    // When state is changed to Talked, it will switch out Psychic Nodes. 
     public enum DialogueState
     {
         None        = 0,
@@ -30,11 +32,15 @@ public class Script_DemonNPC : Script_MovingNPC
     public PastQuestState _pastQuestState;
 
     [SerializeField] private Script_DialogueNode[] psychicNodes;
+    
+    [Tooltip("If specified, the NPC will use these nodes if DialogueState is set to Talked")]
     [SerializeField] private Script_DialogueNode[] talkedPsychicNodes;
+    
     [SerializeField] Script_PsychicNodesController psychicNodesController;
     
     [SerializeField] bool _isIntroPsychicNode;
     [HideInInspector][SerializeField] private Script_DialogueNode _introPsychicNode;
+    
     [Tooltip("Combine the intro node with the first Psychic Node")]
     [HideInInspector][SerializeField] bool _shouldPrependIntroNode;
     
@@ -53,7 +59,7 @@ public class Script_DemonNPC : Script_MovingNPC
             {
                 // Switch psychic nodes with done state ones
                 case (DialogueState.Talked):
-                    OnDialogueTalked();
+                    OnPsychicDialogueTalked();
                     break;
             }
         }
@@ -192,17 +198,20 @@ public class Script_DemonNPC : Script_MovingNPC
         didTalkPsychic = false;
     }
 
-    private void OnDialogueTalked()
+    private void OnPsychicDialogueTalked()
     {
-        psychicNodes = talkedPsychicNodes;
-        SwitchDialogueNodes(psychicNodes, isReset: true);
+        if (talkedPsychicNodes?.Length > 0)
+        {
+            psychicNodes = talkedPsychicNodes;
+            SwitchPsychicNodes(psychicNodes);
+        }
     }
     
     private void OnPastQuestDone()
     {
         Debug.Log($"{name} doing OnQuestStateDone() actions");
 
-        // specify quest state done nodes
+        // specify quest state done behavior
     }
 
     /// For now, just start a convo if is hurt
