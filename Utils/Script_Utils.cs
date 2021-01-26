@@ -586,11 +586,25 @@ public static class Script_Utils
     }
 
     /// <summary>
-    /// checks if there are any events on the event handler
+    /// Checks if there are any events on the event handler
     /// counts as not null if has attached an object target;
-    /// doesn't need to have to specify a function
+    /// doesn't need to have to specify a function.
     /// </summary>
     public static bool CheckUnityEventAction(this UnityEvent onClickEvent)
+    {
+        for (int i = 0; i < onClickEvent.GetPersistentEventCount(); i++)
+        {
+            if (onClickEvent.GetPersistentTarget(i) != null)    return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Same as CheckUnityEventAction but allows to specify passing a param
+    /// through the Event.
+    /// </summary>
+    public static bool CheckUnityEvent<T>(this UnityEvent<T> onClickEvent)
     {
         for (int i = 0; i < onClickEvent.GetPersistentEventCount(); i++)
         {

@@ -21,6 +21,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public bool gotBoarNeedle;
     // =======================================================================
     
+    public const string NRoomTriggerId = "room_N";
+    public const string ERoomTriggerId = "room_E";
+    
     public bool isDone;
     [SerializeField] private Script_Trigger[] triggers;
     [SerializeField] private int activeTriggerIndex;
@@ -243,50 +246,80 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
         if (!isPsychicDuckActive)   return false;
 
-        if (Id == "room_N" && activeTriggerIndex == 0)
+        if (Id == NRoomTriggerId && activeTriggerIndex == 0)
         {
-            if (lb9.speaker != null)
-            {
-                lb9.speaker.audioSource.Pause();
-                Destroy(lb9.speaker.gameObject);
-            }
-            else
-            {
-                game.PauseBgMusic();
-            }
-            game.PlayNPCBgTheme(IdsBgThemePlayerPrefab);
-            game.ChangeStateCutScene();
-            game.PlayerFaceDirection(Directions.Up);
-            dm.StartDialogueNode(introNode);
-            
-            Script_VCamManager.VCamMain.SetNewVCam(VCamLB10FollowIds);
-            
-            // if (activeTriggerIndex == triggerLocations.Length - 1) isDone = true;
-            activeTriggerIndex++;
-            return true;
+            return NRoomTriggerReaction();
         }
-        else if (Id == "room_E" && activeTriggerIndex == 1)
+        else if (Id == ERoomTriggerId && activeTriggerIndex == 1)
         {
-            game.PauseNPCBgTheme();
-
-                if (lb9.speaker != null)
-                {
-                    lb9.speaker.audioSource.Pause();
-                    Destroy(lb9.speaker.gameObject);
-                }
-
-                game.ChangeStateCutScene();
-                
-                game.PlayerFaceDirection(Directions.Right);
-                game.GetMovingNPC(0).FaceDirection(Directions.Left);
-                dm.StartDialogueNode(danceIntroNode);
-                
-                activeTriggerIndex++;
-                return true;
+            return ERoomTriggerReaction();
         }
 
         return false;
-    }    
+    }
+
+    public void OnNRoomTriggerPlayerStay(string Id)
+    {
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+        if (!isPsychicDuckActive)    return;
+        
+        if (activeTriggerIndex == 0)    NRoomTriggerReaction();
+    }
+
+    public void OnERoomTriggerPlayerStay(string Id)
+    {
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+        if (!isPsychicDuckActive)    return;
+        
+        if (activeTriggerIndex == 1)    ERoomTriggerReaction();
+    }
+
+    public bool NRoomTriggerReaction()
+    {
+        triggers[0].gameObject.SetActive(false);
+        
+        if (lb9.speaker != null)
+        {
+            lb9.speaker.audioSource.Pause();
+            Destroy(lb9.speaker.gameObject);
+        }
+        else
+        {
+            game.PauseBgMusic();
+        }
+        game.PlayNPCBgTheme(IdsBgThemePlayerPrefab);
+        game.ChangeStateCutScene();
+        game.PlayerFaceDirection(Directions.Up);
+        dm.StartDialogueNode(introNode);
+        
+        Script_VCamManager.VCamMain.SetNewVCam(VCamLB10FollowIds);
+        
+        // if (activeTriggerIndex == triggerLocations.Length - 1) isDone = true;
+        activeTriggerIndex++;
+        return true;
+    }
+
+    public bool ERoomTriggerReaction()
+    {
+        triggers[1].gameObject.SetActive(false);
+        
+        game.PauseNPCBgTheme();
+
+        if (lb9.speaker != null)
+        {
+            lb9.speaker.audioSource.Pause();
+            Destroy(lb9.speaker.gameObject);
+        }
+
+        game.ChangeStateCutScene();
+        
+        game.PlayerFaceDirection(Directions.Right);
+        game.GetMovingNPC(0).FaceDirection(Directions.Left);
+        dm.StartDialogueNode(danceIntroNode);
+        
+        activeTriggerIndex++;
+        return true;
+    }
 
     void HandleIdsDanceScene()
     {
