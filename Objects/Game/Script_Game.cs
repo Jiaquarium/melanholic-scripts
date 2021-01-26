@@ -6,6 +6,7 @@ using System;
 using UnityEngine.Playables;
 using Cinemachine;
 using UnityEngine.EventSystems;
+using UnityEngine.Experimental.Rendering.Universal;
 
 /// <summary>
 /// Entry point for Game scene
@@ -86,7 +87,6 @@ public class Script_Game : MonoBehaviour
     public Script_AudioOneShotSource AudioOneShotSourcePrefab;
 
     public Font[] fonts;
-    public Script_Camera camera;
     public Script_VCamera VCam;
     public Script_VCamera VCamDramaticZoom;
     public Transform playerContainer;
@@ -158,7 +158,7 @@ public class Script_Game : MonoBehaviour
                 {
                     string s = $"{lvl.name} is active. You need to set this inactive at game load for prod.";
                     if (Const_Dev.IsDevMode)    Debug.Log(s);
-                    else                        Debug.LogError(s);
+                    else                        Debug.LogWarning($"<color=red>{s}</color>");
                 }
                 
                 lvl.gameObject.SetActive(false);
@@ -233,8 +233,6 @@ public class Script_Game : MonoBehaviour
         DDRManager.Setup();
         SetupMenu();
 
-        camera = Camera.main.GetComponent<Script_Camera>();
-        camera.Setup(levelZeroCameraPosition);
         transitionManager.Setup();
         cutSceneManager.Setup();
         canvasGroupsParent.Setup();
@@ -388,7 +386,6 @@ public class Script_Game : MonoBehaviour
         Debug.Log($"Game.state changed to: {Const_States_Game.Interact}; Game.lastState before this = {lastState}");
         lastState = state;
         state = Const_States_Game.Interact;
-        CameraTargetToPlayer();
     }
 
     public void ChangeStateToInventory()
@@ -434,7 +431,6 @@ public class Script_Game : MonoBehaviour
         grid.SetActive(true);    /// Unity startup lifeCycle events are called here
         // CreatePlayer();
         SetupPlayerOnLevel();
-        CameraMoveToTarget();
 
         SetupDialogueManagerOnLevel();
         SetupThoughtManager();
@@ -641,8 +637,6 @@ public class Script_Game : MonoBehaviour
             playerData.isLightOn
         );
         player.transform.SetParent(playerContainer, false);
-        // camera tracking
-        camera.target = player.transform;
         
         SetVCamsFollowPlayer();
     }
@@ -1578,84 +1572,9 @@ public class Script_Game : MonoBehaviour
         VCamDramaticZoom.FollowTarget(player.transform);
     }
 
-    /* =========================================================================
-        _CAMERA_
-    ========================================================================= */
-    /// <summary>
-    /// TODO: REMOVE MOST THESE METHODS BC USING VCAM NOW
-    /// </summary>
-    public void ChangeCameraTargetToNPC(int i)
+    public void PixelPerfectEnable(bool isEnable)
     {
-        camera.SetTarget(NPCs[i].transform);
-        // move camera fast
-        CameraMoveToTarget();
-    }
-
-    public void ChangeCameraTargetToGameObject(GameObject obj)
-    {
-        camera.SetTarget(obj.transform);
-        CameraMoveToTarget();
-    }
-
-    public void CameraTargetToPlayer()
-    {
-        camera.target = player.transform;
-        CameraMoveToTarget();
-    }
-
-    public void CameraMoveToTarget()
-    {
-        camera.MoveToTarget();
-    }
-
-    public void SetOrthographicSizeDefault()
-    {
-        camera.SetOrthographicSizeDefault();
-    }
-
-    public void SetOrthographicSize(float size)
-    {
-        camera.SetOrthographicSize(size);
-    }
-
-    public void CameraZoomSmooth(float size, float time, Vector3 loc, Action cb)
-    {
-        camera.ZoomSmooth(size, time, loc, cb);
-    }
-
-    public void CameraMoveToTargetSmooth(float time, Vector3 loc, Action cb)
-    {
-        camera.MoveToTargetSmooth(time, loc, cb);
-    }
-
-    public void CameraSetIsTrackingTarget(bool isTracking)
-    {
-        camera.SetIsTrackingTarget(isTracking);
-    }
-
-    public void SetCameraOffset(Vector3 offset)
-    {
-        camera.SetOffset(offset);
-    }
-
-    public void SetCameraOffsetDefault()
-    {
-        camera.SetOffsetToDefault();
-    }
-    
-    public void CameraInstantMoveSpeed()
-    {
-        camera.InstantTrackSpeed();
-    }
-
-    public void CameraDefaultMoveSpeed()
-    {
-        camera.DefaultSpeed();
-    }
-
-    public Vector3 GetRotationToFaceCamera()
-    {
-        return camera.GetRotationAdjustment();
+        GetComponent<PixelPerfectCamera>().enabled = isEnable;
     }
 
     /* =========================================================================

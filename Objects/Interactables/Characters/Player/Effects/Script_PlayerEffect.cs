@@ -7,6 +7,7 @@ public class Script_PlayerEffect : MonoBehaviour
 {
     [SerializeField] private Script_PlayerEffectQuestionMarkAnimate questionMark;
     [SerializeField] private Script_EffectItemPickUp itemDisplay;
+    [SerializeField] private AudioSource defaultSFXsource;
     [SerializeField] private AudioSource dropSFXsource;
     [SerializeField] private Script_GiantBoarNeedleEffect giantBoarNeedle;
 
@@ -59,6 +60,11 @@ public class Script_PlayerEffect : MonoBehaviour
     public void DropSFX()
     {
         dropSFXsource.PlayOneShot(Script_SFXManager.SFX.playerDropFinishSFX, Script_SFXManager.SFX.playerDropFinishSFXVol);
+    }
+
+    public void ScarletCipherPickUpSFX()
+    {
+        defaultSFXsource.PlayOneShot(Script_SFXManager.SFX.PlayerStashItem, Script_SFXManager.SFX.PlayerStashItemVol);
     }
 
     public void GiantBoarNeedle()

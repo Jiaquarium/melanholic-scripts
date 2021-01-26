@@ -55,6 +55,8 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     protected override void OnDisable()
     {
         woodsIntroDirector.stopped                      -= OnBadSpectersIntroDone;
+
+        HandlePlayerSolidColor();
     }
 
     public override void OnLevelInitComplete()
@@ -167,6 +169,13 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         // for cutScene dialogue
         base.HandleDialogueAction();
+    }
+
+    private void HandlePlayerSolidColor()
+    {
+        Color solidColor = fadingPlayer.color;
+        solidColor.a = 1.0f;
+        fadingPlayer.color = solidColor; 
     }
 
     public override void Setup()

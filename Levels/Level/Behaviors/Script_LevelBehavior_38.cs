@@ -15,11 +15,16 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     /* ======================================================================= */
     [SerializeField] private bool isTriggerActivated;
        
-    public void Start()
-    {
-    
+    protected override void OnEnable() {
+        // Disable Pixel Perfect for now, because it's causing really bad shaking with the Screen Space
+        // bg Canvas not set to World Space. We want it to be screen space so it gives a different effect.
+        game.PixelPerfectEnable(false);
     }
 
+    protected override void OnDisable() {
+        game.PixelPerfectEnable(true);
+    }    
+    
     public void OnTriggerWallTransition()
     {
         Debug.Log("Change wall sprites");

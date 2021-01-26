@@ -77,11 +77,6 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete += OnEntrance;
         nameplateDirector.stopped -= OnNameplateDone;
         
-        if (game.camera != null)
-        {
-            game.SetOrthographicSizeDefault();
-        }
-
         DefaultVCams();
     }
 

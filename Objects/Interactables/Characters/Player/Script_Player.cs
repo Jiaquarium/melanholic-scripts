@@ -381,6 +381,11 @@ public class Script_Player : Script_Character
         playerEffect.DropSFX();
     }
 
+    public void ScarletCipherPickUpSFX()
+    {
+        playerEffect.ScarletCipherPickUpSFX();   
+    }
+
     /// Timeline ==========================================================================
     
     public void TimelineMoveUp()

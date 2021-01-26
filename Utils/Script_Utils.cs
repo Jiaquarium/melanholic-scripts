@@ -245,6 +245,17 @@ public static class Script_Utils
         return array2;
     }
 
+    /// <summary>
+    /// Returns a new array w/o nulls. Does not mutate the original.
+    /// </summary>
+    /// <param name="arr">Any array</param>
+    /// <typeparam name="T">Type</typeparam>
+    /// <returns>A new array without nulls</returns>
+    public static T[] FilterNulls<T>(this T[] arr)
+    {
+        return arr.Where(x => x != null && !x.Equals(null)).ToArray();
+    }
+
     public static void MakeFontsCrispy(Font[] fonts)
     {
         foreach (Font f in fonts)

@@ -125,7 +125,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SetNewVCam(VCamLB1);
         game.PlayerFaceDirection(Directions.Down);
         game.NPCFaceDirection(0, Directions.Up);
-        game.ChangeCameraTargetToNPC(0);
         dialogueManager.StartDialogueNode(EroNode);
     }
 

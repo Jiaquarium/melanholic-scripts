@@ -26,6 +26,8 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
     {
         Script_ScarletCipherManager.Control.RevealScarletCipherSlot(ScarletCipherId);
         Hide();
+
+        game.GetPlayer().ScarletCipherPickUpSFX();
     }
 
     private void Hide()

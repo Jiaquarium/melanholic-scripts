@@ -44,7 +44,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     private void OnMyDialogueEnd()
     {
         // check if currentNode we finished on is one of ours and we're in fullArtMode
-        if (CheckInMyNodes(dialogueManager.currentNode))
+        if (dialogueManager?.currentNode != null && CheckInMyNodes(dialogueManager.currentNode))
         {
             if (isFullArtMode)
             {

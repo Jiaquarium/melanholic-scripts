@@ -78,7 +78,9 @@ public class Script_StaticNPC : Script_Interactable
     public virtual void TriggerDialogue()
     {
         if (isMute)                 return;
-        
+
+        dialogueNodes = dialogueNodes.FilterNulls();
+
         if (dialogueNodes.Length > 0)
         {
             State = States.Dialogue;
