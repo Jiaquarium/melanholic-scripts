@@ -92,7 +92,7 @@ public class Script_ClockManager : MonoBehaviour
     /// </summary> ===================================================================================================
     public void AlmostTimesUp()
     {
-        clock.CurrentTime = 22250f;
+        clock.CurrentTime = Script_Clock.OneMinTilTime;
     }
 }
 

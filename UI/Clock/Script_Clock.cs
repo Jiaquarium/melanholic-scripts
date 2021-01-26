@@ -11,9 +11,11 @@ public class Script_Clock : MonoBehaviour
         Paused,
         Done
     }
-    public const float StartTime   = 21060f; // 5:51:00
-    public const float IsCloseTime = 21960; // 5:30:00 ; 19795 is 5:29:55
-    public const float EndTime     = 22260f; // 6:11:00 ; 20095 is 5:34:55 (nautical dawn Chicago, IL Jan 1 2021)
+    public const float StartTime        = 18660f; // 5:11:00
+    public const float IsCloseTime      = 21660f; // 6:01:00
+    public const float OneMinTilTime    = 22200f; // 6:10:00
+    public const float EndTime          = 22260f; // 6:11:00 nautical dawn Chicago, IL Jan 1 2021
+    public float TimeMultipler          = 4f;
     [SerializeField] private float _currentTime;
     [SerializeField] private States _state;
     [SerializeField] private TextMeshProUGUI display;
@@ -36,7 +38,7 @@ public class Script_Clock : MonoBehaviour
         {
             case (States.Active):
             {
-                CurrentTime += Time.deltaTime;
+                CurrentTime += Time.deltaTime * TimeMultipler;
                 if (CurrentTime > EndTime)  CurrentTime = EndTime;
                 break;
             }
@@ -68,26 +70,30 @@ public class Script_Clock : MonoBehaviour
     
     private void DisplayTime()
     {
-        bool isClose = CurrentTime >= IsCloseTime;
+        bool isClose                = CurrentTime >= IsCloseTime;
         bool hideColons;
+        float MultiplierHalf        = TimeMultipler / 2;
+        float MultiplierFourth      = MultiplierHalf / 2;
+        float MultiplierEigth       = MultiplierFourth / 2;
         
         // if the current second is odd and active clock, hide colons to show blinking
         if (isClose)
         {
-            // blinking every 0.1 sec
-            hideColons = State == States.Active && (int)Mathf.Floor(CurrentTime * 10) % 2 == 1;
+            // blinking every other in game time
+            hideColons = State == States.Active
+                && (int)Mathf.Floor(CurrentTime) % 2 == 0;
         }
         else
         {
-            // blinking every 0.5 sec
-            hideColons = State == States.Active && (int)Mathf.Floor(CurrentTime * 10) % 10 >= 5;
+            // blinking every 2 sec in game time, every .5 sec real time
+            hideColons = State == States.Active
+                && (int)Mathf.Floor(CurrentTime) % TimeMultipler >= MultiplierHalf;
         }
 
         string displayTime = (CurrentTime).FormatSecondsClock(isClose, hideColons);
         
         if (isClose)    display.fontStyle = FontStyles.Bold;
         else            display.fontStyle = FontStyles.Normal;
-
         
         display.text = displayTime;
     }
