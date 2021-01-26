@@ -18,7 +18,7 @@ public class Script_LevelBehavior_34 : Script_LevelBehavior
     [SerializeField] private Script_Elevator elevator; /// Ref'ed by ElevatorManager
 
     private bool isInit = true;
-    
+
     public override void Setup()
     {
         game.SetupInteractableObjectsExit(exitParent, isInit);

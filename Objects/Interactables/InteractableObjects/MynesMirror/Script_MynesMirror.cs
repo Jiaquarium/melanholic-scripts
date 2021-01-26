@@ -57,9 +57,8 @@ public class Script_MynesMirror : Script_InteractableObjectText
         return (Script_ScarletCipherManager.Control.HandleCipherSlot(MynesMirrorId, choiceIdx));
     }
 
-    /// ===========================================================================================
-    /// Signal Reactions START 
-    /// ===========================================================================================
+    // ------------------------------------------------------------------
+    // Signal Reactions START
     /// <summary>
     /// Begin Myne's dialogue, the end of Timeline calls MynesMirrorManager to fire this event
     /// </summary>
@@ -67,11 +66,11 @@ public class Script_MynesMirror : Script_InteractableObjectText
     {
         Script_DialogueManager.DialogueManager.StartDialogueNode(MynesConversationNode);
     }
-    /// Signal Reactions END ======================================================================
+    // Signal Reactions END
+    // ------------------------------------------------------------------
     
-    /// ===========================================================================================
-    /// NextNodeAction START 
-    /// ===========================================================================================
+    // ------------------------------------------------------------------
+    // Next Node Actions START
     /// <summary>
     /// Shows Myne's dramatic entrance
     /// </summary>
@@ -92,5 +91,6 @@ public class Script_MynesMirror : Script_InteractableObjectText
             Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId] = true;
         });
     } 
-    /// NextNodeAction END ========================================================================
+    // Next Node Actions END
+    // ------------------------------------------------------------------
 }

@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class Script_InteractableObject : Script_Interactable
 {
+    [SerializeField] private States _state;
+
     public int Id;
     public string nameId;
     protected bool isActive = true;
@@ -12,7 +14,19 @@ public class Script_InteractableObject : Script_Interactable
     protected Script_Game game;
     [SerializeField] private UnityEvent action;
     [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] protected bool autoSetup;
-    
+
+    public enum States
+    {
+        Active = 0,
+        Disabled = 1
+    }
+
+    public States State
+    {
+        get => _state;
+        set => _state = value;
+    }
+
     protected UnityEvent MyAction
     {
         get => action;
@@ -43,7 +57,7 @@ public class Script_InteractableObject : Script_Interactable
     public virtual void HandleAction(string action)
     {
         print($"Handling action: {action}");
-        if (action == Const_KeyCodes.Action1)
+        if (action == Const_KeyCodes.Action1 && State == States.Active)
         {
             ActionDefault();
         }

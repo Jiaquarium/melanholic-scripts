@@ -14,8 +14,10 @@ public class Script_Elevator : Script_InteractableObjectExit
     [SerializeField] private Animator doorsAnimator;
     [SerializeField] private Script_ElevatorBehavior elevatorExitBehavior;
 
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        
         Script_PlayerEventsManager.OnEnteredElevator += OnEnteredElevator;
         UpdateState();
     }
@@ -32,7 +34,7 @@ public class Script_Elevator : Script_InteractableObjectExit
         Debug.Log($"Setting Elevator IsClosed: {isClosed}");
         // UpdateState();
     }
-    
+
     public override void ActionDefault()
     {
         if (isClosed)
@@ -68,8 +70,8 @@ public class Script_Elevator : Script_InteractableObjectExit
         doorsAnimator.SetBool(IsClosed, isClosed);
     }
 
-
-    /// Signal Reactions START ========================================================================
+    // ------------------------------------------------------------------
+    // Signal Reactions START
     
     /// <summary>
     /// -> OnEnteredElevator()
@@ -91,8 +93,8 @@ public class Script_Elevator : Script_InteractableObjectExit
         Debug.Log($"{name} OnElevatorDoorsClosedArrival()");
         game.ChangeStateInteract();
     }
-
-    /// Signal Reactions END ========================================================================
+    // Signal Reactions END
+    // ------------------------------------------------------------------
     
     private void OnEnteredElevator()
     {

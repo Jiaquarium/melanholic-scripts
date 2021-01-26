@@ -19,11 +19,11 @@ public class Script_Names: MonoBehaviour
     
     // ------------------------------------------------------------------
     // Name fields and properties. Properties used when the name should begin as ???.
-    public static string Player
+    public static string Player                                                                  // {0}
     {
         get { return $"<b>{Names?._Player}</b>"; }
         set { Names._Player = value; }
-    } // {0}
+    }
     
     public const string Melz                            = "<b>Melz</b>";                        // {1}
     public const string MelzTheGreat                    = "<b>Melz the Great</b>";              // {2}
