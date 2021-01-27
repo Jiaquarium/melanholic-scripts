@@ -6,10 +6,25 @@ using System;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
+/// <summary>
+/// For movement, uses PlayerGhost to simulate movement. We actually move Player as the pointer
+/// immediately and have the visual representation PlayerGhost follow.
+/// 
+/// We do so by turning off the Player Sprite when moving positions and turning on PlayerGhost Sprite.
+/// If we're not moving in world space, then we don't do this since we don't need the PlayerGhost lag visuals.
+/// </summary>
 [RequireComponent(typeof(PlayableDirector))]
 [RequireComponent(typeof(Script_PlayerCheckCollisions))]
 public class Script_PlayerMovement : MonoBehaviour
 {
+    public const string PlayerMovingAnimatorParam   = "PlayerMoving";
+    public const string MoveXAnimatorParam          = "MoveX";
+    public const string MoveZAnimatorParam          = "MoveZ";
+    public const string LastMoveXAnimatorParam      = "LastMoveX";
+    public const string LastMoveZAnimatorParam      = "LastMoveZ";
+    
+    [SerializeField] private Animator animator;
+    
     public Script_PlayerGhost PlayerGhostPrefab;
     public Script_PlayerReflection PlayerReflectionPrefab;
 
@@ -18,12 +33,13 @@ public class Script_PlayerMovement : MonoBehaviour
     [SerializeField] private float runRepeatDelay;
     [SerializeField] private float defaultGhostSpeed;
     [SerializeField] private float runGhostSpeed;
+    
     public int exitUpStairsOrderLayer;
-    public bool isMoving;
+    [SerializeField] private bool isMoving;
+    
     [SerializeField] private TimelineAsset moveUpTimeline;
     [SerializeField] private TimelineAsset enterElevatorTimeline;
     
-
     private float repeatDelay;
     private Script_Game game;
     private Script_Player player;
@@ -31,19 +47,30 @@ public class Script_PlayerMovement : MonoBehaviour
     private Script_PlayerReflection playerReflection;
     private Dictionary<Directions, Vector3> directionToVector;
     private SpriteRenderer spriteRenderer;
-    private Vector3[] NPCLocations = new Vector3[0];
-    private Vector3[] DemonLocations = new Vector3[0];
-    private Vector3[] InteractableObjectLocations = new Vector3[0];
     private Transform grid;
-
 
     public float progress;
     
-    
     public Directions lastMove;
     public float timer;
+
+    public Animator MyAnimator
+    {
+        get => animator;
+    }
+
+    public Script_PlayerGhost PlayerGhost
+    {
+        get => playerGhost;
+    }
+
+    public Script_InteractionBoxController InteractionBoxController
+    {
+        get => player.interactionBoxController;
+    }
     
-    void OnDestroy() {
+    void OnDestroy()
+    {
         if (playerGhost != null)    Destroy(playerGhost.gameObject);
     }
     
@@ -104,17 +131,12 @@ public class Script_PlayerMovement : MonoBehaviour
     void SetMoveAnimation()
     {
         // move animation when direction button down 
-        player.animator.SetBool(
-            "PlayerMoving",
+        animator.SetBool(
+            PlayerMovingAnimatorParam,
             Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f
         );
 
         playerGhost.SetMoveAnimation();
-    }
-
-    bool CheckRepeatMove(Directions dir)
-    {
-        return timer == 0f;
     }
 
     void Move(Directions dir)
@@ -130,32 +152,30 @@ public class Script_PlayerMovement : MonoBehaviour
             timer = 0;
         }
 
-        if (dir == lastMove)
-        {
-            if (!CheckRepeatMove(dir)) return;
-        }
+        // Repeat moves throttled by timer.
+        if (dir == lastMove && timer != 0f)         return;
 
         Vector3 desiredDirection = directionToVector[dir];
         
-        player.AnimatorSetDirection(dir);
+        AnimatorSetDirection(dir);
         playerGhost.AnimatorSetDirection(dir);
         PushPushables(dir);
 
-        if (CheckCollisions(dir))  return;
+        // If there is a collision, the PlayerGhost will remain invisible.
+        if (CheckCollisions(dir))                   return;
 
-        /// in DDR mode, only changing directions to look like dancing
-        if (game.state == "ddr")    return;
+        // DDR mode, only changing directions to look like dancing.
+        if (game.state == Const_States_Game.DDR)    return;
         
         progress = 0f;
         timer = repeatDelay;
 
-        // move player to desired loc, and start playerGhost's animation
-        // after-the-fact
+        // Move player to desired loc, and start PlayerGhost's animation after-the-fact.
         playerGhost.startLocation = player.location;
-
         player.location += desiredDirection;
         playerGhost.location += desiredDirection;
-        // move player pointer immediately
+        
+        // Move player pointer immediately.
         transform.position = player.location;
         HandleMoveAnimation(dir);
 
@@ -167,6 +187,41 @@ public class Script_PlayerMovement : MonoBehaviour
         isMoving = true;
         playerGhost.Move(dir);
         spriteRenderer.enabled = false;
+    }
+
+    public void AnimatorSetDirection(Directions dir)
+    {
+        InteractionBoxController.HandleActiveInteractionBox(dir);
+        player.FacingDirection = dir;
+
+        if (dir == Directions.Up)
+        {
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, 1f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     0f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     1f);
+        }
+        else if (dir == Directions.Down)
+        {
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, -1f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     0f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     -1f);
+        }
+        else if (dir == Directions.Left)
+        {
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, -1f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     -1f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     0f);
+        }
+        else if (dir == Directions.Right)
+        {
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, 1f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     1f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     0f);
+        }
     }
 
     bool CheckCollisions(Directions dir)
@@ -286,9 +341,6 @@ public class Script_PlayerMovement : MonoBehaviour
 
     void HandleStairsExitAnimation()
     {
-        // Script_Utils.FindComponentInChildWithTag<SpriteRenderer>(
-        //     this.gameObject, Const_Tags.PlayerAnimator
-        // ).sortingOrder = exitUpStairsOrderLayer;
         spriteRenderer.GetComponent<Script_SortingOrder>().enabled = false;
         spriteRenderer.sortingOrder = exitUpStairsOrderLayer;
         player.PlayerGhostMatchSortingLayer();
@@ -343,11 +395,6 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    public Script_PlayerGhost GetPlayerGhost()
-    {
-        return playerGhost;
-    }
-
     public void SwitchLight(bool isOn)
     {
         playerGhost.SwitchLight(isOn);
@@ -359,7 +406,8 @@ public class Script_PlayerMovement : MonoBehaviour
         grid = _grid;
     }
 
-    /// Timeline ==========================================================================
+    // ------------------------------------------------------------------
+    // Timeline
     /// NOTE: should only be called from Player
     /// <summary>
     /// Move up one space via Timeline
@@ -383,7 +431,7 @@ public class Script_PlayerMovement : MonoBehaviour
         Debug.Log("Calling this Enter Elevator EVENT!!!");
         Script_PlayerEventsManager.EnteredElevator();
     }
-    /// ===================================================================================
+    // ------------------------------------------------------------------
 
     public void Setup(Script_Game _game, bool isLightOn)
     {

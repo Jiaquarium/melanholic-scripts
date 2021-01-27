@@ -13,15 +13,16 @@ public class Script_PlayerGhost : MonoBehaviour
     public AnimationCurve progressCurve;
     public SpriteRenderer spriteRenderer;
     
-    
     [SerializeField] private Animator animator;
     
-    
     [SerializeField] private float _speed;
-    public float Speed {
-        get { return _speed; }
-        set { _speed = value; }
+
+    public float Speed
+    {
+        get => _speed;
+        set => _speed = value;
     }
+
     public Vector3 startLocation;
     public Vector3 location;
     public float progress;
@@ -29,12 +30,11 @@ public class Script_PlayerGhost : MonoBehaviour
 
     [SerializeField] private Light l;
 
-
     private bool isMoving;
 
     void Update()
     {
-        if (isMoving)   ActuallyMove();   
+        if (isMoving)   ActuallyMove();
     }
 
     public void Move(Directions dir)
@@ -47,6 +47,8 @@ public class Script_PlayerGhost : MonoBehaviour
     {
         isMoving = false;
         spriteRenderer.enabled = false;
+
+        StopMoveAnimation();
     }
 
     void SetIsMoving()
@@ -76,40 +78,45 @@ public class Script_PlayerGhost : MonoBehaviour
         
         if (dir == Directions.Up)
         {
-            animator.SetFloat("LastMoveX", 0f);
-            animator.SetFloat("LastMoveZ", 1f);
-            animator.SetFloat("MoveX", 0f);
-            animator.SetFloat("MoveZ", 1f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, 1f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     0f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     1f);
         }
         else if (dir == Directions.Down)
         {
-            animator.SetFloat("LastMoveX", 0f);
-            animator.SetFloat("LastMoveZ", -1f);
-            animator.SetFloat("MoveX", 0f);
-            animator.SetFloat("MoveZ", -1f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, -1f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     0f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     -1f);
         }
         else if (dir == Directions.Left)
         {
-            animator.SetFloat("LastMoveX", -1f);
-            animator.SetFloat("LastMoveZ", 0f);
-            animator.SetFloat("MoveX", -1f);
-            animator.SetFloat("MoveZ", 0f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, -1f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     -1f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     0f);
         }
         else if (dir == Directions.Right)
         {
-            animator.SetFloat("LastMoveX", 1f);
-            animator.SetFloat("LastMoveZ", 0f);
-            animator.SetFloat("MoveX", 1f);
-            animator.SetFloat("MoveZ", 0f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveXAnimatorParam, 1f);
+            animator.SetFloat(Script_PlayerMovement.LastMoveZAnimatorParam, 0f);
+            animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     1f);
+            animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     0f);
         }
     }
 
     public void SetMoveAnimation()
     {
         animator.SetBool(
-            "PlayerMoving",
+            Script_PlayerMovement.PlayerMovingAnimatorParam,
             Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f
         );
+    }
+
+    public void StopMoveAnimation()
+    {
+        animator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
     }
     
     public void SwitchLight(bool isOn)

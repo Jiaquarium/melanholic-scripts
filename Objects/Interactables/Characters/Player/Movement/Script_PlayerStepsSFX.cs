@@ -17,6 +17,8 @@ public class Script_PlayerStepsSFX : MonoBehaviour
 
     private void Step()
     {
+        if (stepSFXs?.Count == 0)   return;
+        
         AudioClip clip = stepSFXs[stepIdx];
         audioSource.PlayOneShot(clip, stepSFXVol);
         

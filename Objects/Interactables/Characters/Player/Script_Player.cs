@@ -10,14 +10,6 @@ using UnityEditor;
 [RequireComponent(typeof(Script_PlayerStats))]
 public class Script_Player : Script_Character
 {
-    /*
-        persistent data, start
-    */
-    /*
-        persistent data, end
-    */
-    public Animator animator;
-
     public Renderer graphics;
     public Action onAttackDone; 
     private Script_PlayerAction playerActionHandler;
@@ -57,12 +49,16 @@ public class Script_Player : Script_Character
         set => _facingDirection = value;
     }
 
+    public Animator MyAnimator
+    {
+        get => playerMovementHandler.MyAnimator;
+    }
+
     // Update is called once per frame
     void Update()
     {   
-        /* ========================================================
-            visuals
-        ======================================================== */
+        // ------------------------------------------------------------------
+        // Visuals
         if (isPlayerGhostMatchSortingLayer)
         {
             playerMovementHandler.PlayerGhostSortOrder(
@@ -72,16 +68,15 @@ public class Script_Player : Script_Character
             );
         }
         playerMovementHandler.TrackPlayerGhost();
-        /* ======================================================== */
+        // ------------------------------------------------------------------
 
         if (game.state == Const_States_Game.Interact)
         {
-            // playerMovementHandler.FinishMoveAnimation();
-            // animator.SetBool("PlayerMoving", false);
             playerActionHandler.HandleActionInput(FacingDirection, location);
+            
             if (IsNotMovingState())
             {
-                animator.SetBool("PlayerMoving", false);
+                StopMovingAnimations();
             }
             else
             {
@@ -99,26 +94,13 @@ public class Script_Player : Script_Character
             }
             else
             {
-                animator.SetBool("PlayerMoving", false);
+                StopMovingAnimations();
             }
         }
     }
 
-    // For migrating to new Input System
-    // public void OnMove(InputValue input)
-    // {
-    //     if (
-    //         game.state == Const_States_Game.Interact & IsMovingState()
-    //         || game.state == Const_States_Game.DDR
-    //     )
-    //     {
-    //         playerMovementHandler.HandleMoveInput(input.Get<Vector2>());
-    //     }
-    // }
-
-    /// =========================================================================================
-    /// STATE FUNCTIONS
-    /// =========================================================================================
+    // ------------------------------------------------------------------
+    // State
     public void SetState(string s)
     {
         lastState = State;
@@ -129,29 +111,6 @@ public class Script_Player : Script_Character
     {
         SetState(lastState);
     }
-    
-    public void SetIsTalking()
-    {
-        SetState(Const_States_Player.Dialogue);
-        animator.SetBool("PlayerMoving", false);
-        Debug.Log($"Player state set to {state}!");
-    }
-
-    public void SetIsViewing()
-    {
-        SetState(Const_States_Player.Viewing);
-        animator.SetBool("PlayerMoving", false);
-        Debug.Log($"Player state set to {state}!");
-    }
-
-    public void SetIsPickingUp(Script_Item item)
-    {
-        SetState(Const_States_Player.PickingUp);
-        animator.SetBool("PlayerMoving", false);
-        Debug.Log($"Player state set to {state}!");
-        
-        SetItemShown(item);
-    }
 
     public void SetIsInteract()
     {
@@ -159,22 +118,47 @@ public class Script_Player : Script_Character
         Debug.Log($"Player state set to {state}!");
     }
 
+    public void SetIsTalking()
+    {
+        SetState(Const_States_Player.Dialogue);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
+    }
+
+    public void SetIsViewing()
+    {
+        SetState(Const_States_Player.Viewing);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
+    }
+
+    public void SetIsPickingUp(Script_Item item)
+    {
+        SetState(Const_States_Player.PickingUp);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
+        
+        SetItemShown(item);
+    }
+
     public void SetIsInventory()
     {
         SetState(Const_States_Player.Inventory);
+        StopMovingAnimations();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsAttacking()
     {
         SetState(Const_States_Player.Attack);
-        animator.SetBool("PlayerMoving", false);
+        StopMovingAnimations();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsStandby()
     {
         SetState(Const_States_Player.Standby);
+        StopMovingAnimations();
         Debug.Log($"Player state set to {state}!");
     }
 
@@ -187,9 +171,15 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.Standby
                 || State == Const_States_Player.Inventory;
     }
-    /// =========================================================================================
-    /// COMBAT
-    /// =========================================================================================
+
+    private void StopMovingAnimations()
+    {
+        MyAnimator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
+        playerMovementHandler.PlayerGhost.StopMoveAnimation();    
+    }
+
+    // ------------------------------------------------------------------
+    // COMBAT
     public int FullHeal()
     {
         return GetComponent<Script_PlayerStats>().FullHeal();
@@ -199,7 +189,7 @@ public class Script_Player : Script_Character
     {
         return GetComponent<Script_PlayerStats>().Hurt(dmg, hitBox);
     }
-    /// =========================================================================================
+    // ------------------------------------------------------------------
 
     public bool isInvincible
     {
@@ -235,41 +225,6 @@ public class Script_Player : Script_Character
         return playerActionHandler.itemShown;
     }
 
-    public void AnimatorSetDirection(Directions dir)
-    {
-        interactionBoxController.HandleActiveInteractionBox(dir);
-        FacingDirection = dir;
-
-        if (dir == Directions.Up)
-        {
-            animator.SetFloat("LastMoveX", 0f);
-            animator.SetFloat("LastMoveZ", 1f);
-            animator.SetFloat("MoveX", 0f);
-            animator.SetFloat("MoveZ", 1f);
-        }
-        else if (dir == Directions.Down)
-        {
-            animator.SetFloat("LastMoveX", 0f);
-            animator.SetFloat("LastMoveZ", -1f);
-            animator.SetFloat("MoveX", 0f);
-            animator.SetFloat("MoveZ", -1f);
-        }
-        else if (dir == Directions.Left)
-        {
-            animator.SetFloat("LastMoveX", -1f);
-            animator.SetFloat("LastMoveZ", 0f);
-            animator.SetFloat("MoveX", -1f);
-            animator.SetFloat("MoveZ", 0f);
-        }
-        else if (dir == Directions.Right)
-        {
-            animator.SetFloat("LastMoveX", 1f);
-            animator.SetFloat("LastMoveZ", 0f);
-            animator.SetFloat("MoveX", 1f);
-            animator.SetFloat("MoveZ", 0f);
-        }
-    }
-
     public void CreatePlayerReflection(Vector3 axis)
     {
         playerMovementHandler.CreatePlayerReflection(axis);
@@ -282,7 +237,7 @@ public class Script_Player : Script_Character
 
     public void FaceDirection(Directions direction)
     {
-        AnimatorSetDirection(direction);
+        playerMovementHandler.AnimatorSetDirection(direction);
     }
 
     public void QuestionMark(bool isShow)
@@ -329,7 +284,7 @@ public class Script_Player : Script_Character
 
     public Script_PlayerGhost GetPlayerGhost()
     {
-        return playerMovementHandler.GetPlayerGhost();
+        return playerMovementHandler.PlayerGhost;
     }
 
     public Script_PlayerMovementAnimator GetPlayerMovementAnimator()
@@ -386,8 +341,8 @@ public class Script_Player : Script_Character
         playerEffect.ScarletCipherPickUpSFX();   
     }
 
-    /// Timeline ==========================================================================
-    
+    // ------------------------------------------------------------------
+    // Timeline
     public void TimelineMoveUp()
     {
         playerMovementHandler.TimelineMoveUp();
@@ -397,8 +352,7 @@ public class Script_Player : Script_Character
     {
         playerMovementHandler.EnterElevator();
     }
-    
-    /// ===================================================================================
+    // ------------------------------------------------------------------
 
     public void InitializeOnLevel(
         Model_PlayerState playerState,
@@ -435,11 +389,6 @@ public class Script_Player : Script_Character
     )
     {   
         game = Script_Game.Game;
-        // animator = GetComponent<Animator>();
-        animator = Script_Utils.FindComponentInChildWithTag<Animator>(
-            this.gameObject,
-            Const_Tags.PlayerAnimator
-        );
         directionsToVector = Script_Utils.GetDirectionToVectorDict();
         
         playerMovementHandler = GetComponent<Script_PlayerMovement>();

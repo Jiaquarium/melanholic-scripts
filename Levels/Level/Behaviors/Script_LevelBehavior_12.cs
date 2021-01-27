@@ -281,7 +281,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         // bind player to the retreat timeline & play
         Script_Player player = Script_Game.Game.GetPlayer();
         playerObjsToBind.Add(player.gameObject);
-        playerObjsToBind.Add(player.animator.gameObject);
+        playerObjsToBind.Add(player.MyAnimator.gameObject);
 
         // foreach (GameObject obj in playerObjsToBind) Debug.Log($"player obj to bind: {obj}");
         // foreach (var output in playerRetreatTimeline.outputs) Debug.Log($"track outputs to bind: {output}");
