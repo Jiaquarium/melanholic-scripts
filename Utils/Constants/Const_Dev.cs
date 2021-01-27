@@ -10,7 +10,10 @@ public static class Const_Dev
     ///     if (Debug.IsDebugMode && Const_Dev.IsDevMode)       { do dev tasks; } OR
     ///     if (!Debug.isDebugBuild || !Const_Dev.IsDevMode)    { do prod tasks; }
     /// </summary>
-    public readonly static bool IsDevMode = false;
-    public readonly static bool IsPersisting = true;
-    public readonly static bool IsPGVersion = false;
+    
+    // Use for dev prod
+    public readonly static bool IsDevMode       = false;
+    public readonly static bool IsPersisting    = true;
+    public readonly static bool IsPGVersion     = false;
+    public readonly static bool IsProd          = true;
 }

@@ -279,7 +279,7 @@ public class Script_Game : MonoBehaviour
         }
         
         // TODO: REMOVE (only for dev)
-        if (!isLoadedGame && (Debug.isDebugBuild || Const_Dev.IsDevMode))
+        if (!Const_Dev.IsProd && !isLoadedGame && (Debug.isDebugBuild || Const_Dev.IsDevMode))
         {
             OnNewGameDev();
 
@@ -318,11 +318,15 @@ public class Script_Game : MonoBehaviour
 
         void NewGamePlayerSpawn()
         {
-            level = 0;
-            Vector3Int newGameSpawn = newGameSpawnDestination.position.ToVector3Int();
-            SetPlayerState(new Model_PlayerState(
-                newGameSpawn.x, newGameSpawn.y, newGameSpawn.z, Directions.Up
-            ));
+            var newGamePlayerSpawn = new Model_PlayerState(
+                (int)playerSpawn.data.playerSpawn.x,
+                (int)playerSpawn.data.playerSpawn.y,
+                (int)playerSpawn.data.playerSpawn.z,
+                playerSpawn.data.facingDirection
+            );
+
+            level = playerSpawn.data.level;
+            SetPlayerState(newGamePlayerSpawn);
         }
     }
 
