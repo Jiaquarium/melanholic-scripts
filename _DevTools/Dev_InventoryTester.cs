@@ -37,6 +37,11 @@ public class Dev_InventoryTester : MonoBehaviour
         Script_Game.Game.AddItemById(Const_Items.IceSpikeId);
     }
 
+    public void AddMelancholyPiano()
+    {
+        Script_Game.Game.AddItemById(Const_Items.MelancholyPianoId);
+    }
+
     // ------------------------------------------------------------------------
     //  Usables
     public void AddMasterKey()
@@ -106,6 +111,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Ice Spike"))
         {
             inventoryTester.AddIceSpike();
+        }
+
+        if (GUILayout.Button("Add: Melancholy Piano"))
+        {
+            inventoryTester.AddMelancholyPiano();
         }
 
         GUILayout.Space(8);

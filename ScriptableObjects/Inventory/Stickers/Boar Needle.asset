@@ -16,9 +16,9 @@ MonoBehaviour:
   focusedSprite: {fileID: 21300022, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
   sprite: {fileID: 21300020, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
   description: 'allows you to enter paintings with doormats. talk to the painting
-    while the @@BoarNeedle is stuck to your {5}. the painting must have a doormat.
+    while the @@BoarNeedle is your {65}. the painting must have a doormat.
 
     ...only
     way out is in! is what i always say!'
   isDroppable: 0
-  isPersistentDrop: 0
+  _isSpecial: 0

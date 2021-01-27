@@ -29,12 +29,21 @@ public class Script_PlayerGhost : MonoBehaviour
     public Directions facingDirection;
 
     [SerializeField] private Light l;
+    [SerializeField] private Script_Player player;
+
+    private Script_Player Player
+    {
+        get => player;
+        set => player = value;
+    }
 
     private bool isMoving;
 
     void Update()
     {
         if (isMoving)   ActuallyMove();
+
+        CopyPlayerColor();
     }
 
     public void Move(Directions dir)
@@ -130,11 +139,19 @@ public class Script_PlayerGhost : MonoBehaviour
         startLocation = location;
     }
 
-    public void Setup(Vector3 loc)
+    private void CopyPlayerColor()
     {
+        SpriteRenderer playerSpriteRenderer = (SpriteRenderer)player.graphics;
+        spriteRenderer.color = playerSpriteRenderer.color;
+    }
+
+    public void Setup(Script_Player _player)
+    {
+        player = _player;
+        
         progress = 1f;
-        transform.position = loc;
-        UpdateLocation(loc);
+        transform.position = player.transform.position;
+        UpdateLocation(player.transform.position);
         spriteRenderer.enabled = false;
     }
 }

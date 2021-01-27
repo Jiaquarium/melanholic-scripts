@@ -125,6 +125,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Transform newGameSpawnDestination;
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
     [SerializeField] private Script_ExitMetadataObject playerSpawn;
+    [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
     
     public Script_Run Run
     {
@@ -134,6 +135,11 @@ public class Script_Game : MonoBehaviour
     public int RunIdx
     {
         get => runsManager.RunIdx;
+    }
+
+    public List<Script_ExitMetadataObject> PianoSpawns
+    {
+        get => pianoSpawns;
     }
 
     /// <summary>

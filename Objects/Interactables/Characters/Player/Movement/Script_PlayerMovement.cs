@@ -356,6 +356,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
         pg.SwitchLight(isLightOn);
 
+
         return pg;
     }
 
@@ -402,7 +403,7 @@ public class Script_PlayerMovement : MonoBehaviour
     
     public void InitializeOnLevel(Transform _grid)
     {
-        playerGhost.Setup(player.transform.position);
+        playerGhost.Setup(player);
         grid = _grid;
     }
 
@@ -442,7 +443,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
         // setup ghost for smooth movement (allows cancellation of mid-animation)
         playerGhost = CreatePlayerGhost(isLightOn);
-        playerGhost.Setup(player.transform.position);
+        playerGhost.Setup(player);
         playerGhost.transform.SetParent(game.playerContainer, false);
         
         directionToVector = Script_Utils.GetDirectionToVectorDict();

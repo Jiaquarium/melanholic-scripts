@@ -312,9 +312,11 @@ public class Script_PlayerAction : MonoBehaviour
 
     public void Setup(Script_Game _game)
     {
+        game = _game;
+        
         player = GetComponent<Script_Player>(); 
         interactionBoxController = GetComponent<Script_InteractionBoxController>();
-        game = _game;
         directions = Script_Utils.GetDirectionToVectorDict();
+        stickerEffectsController.Setup();
     }
 }

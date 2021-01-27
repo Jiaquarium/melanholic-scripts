@@ -222,7 +222,8 @@ public static class Script_Utils
             Script_Names.Peche,                         // {61}
             Script_Names.Melba,                         // {62}
             Script_Names.Moose,                         // {63}
-            Script_Names.Flan                           // {64}
+            Script_Names.Flan,                          // {64}
+            Script_Names.ActionSticker                  // {65}
         );
     }
 

@@ -12,6 +12,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     [SerializeField] private Script_GiantBoarNeedleEffect boarNeedleEffect;
     [SerializeField] private Script_PlayerAttackEat eatAttack; // TBD make into Effect
     [SerializeField] private Script_IceSpikeEffect iceSpikeEffect;
+    [SerializeField] private Script_MelancholyPianoEffect melancholyPianoEffect;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     /// <summary>
@@ -72,6 +73,10 @@ public class Script_StickerEffectsController : MonoBehaviour
                 Debug.Log("Ice Spike Effect Activated");
                 iceSpikeEffect.Effect();
                 break;
+            case Const_Items.MelancholyPianoId:
+                Debug.Log("Melancholy Piano Effect Activated");
+                melancholyPianoEffect.Effect();
+                break;
         }
     }
 
@@ -80,5 +85,10 @@ public class Script_StickerEffectsController : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.empty, Script_SFXManager.SFX.emptyVol
         );
+    }
+
+    public void Setup()
+    {
+        melancholyPianoEffect.Setup();
     }
 }
