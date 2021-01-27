@@ -32,7 +32,6 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
     [SerializeField] private Transform fullArtParent;
 
     private Script_LBSwitchHandler switchHandler;
-    private List<Script_InteractableObject> interactableObjects;
     
     private bool isInit = true;
 
@@ -134,19 +133,19 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
             lightSwitchesParent,
             switchesStates,
             isInitialize: isInit
-        );      
+        );
         foreach(Transform t in ptgTextParents)  game.SetupInteractableObjectsText(t, isInit);
         
-        // for HandleWallTextActive polling
-        interactableObjects = game.GetInteractableObjects();
-
         completionGrid.SetActive(isPuzzleCompleted);
+        
         if (isPuzzleCompleted)
         {
             mirrorReflection.SetActive(false);
+            
             // game.RemovePlayerReflection();
             if (playerReflectionEro != null)
                 playerReflectionEro.gameObject.SetActive(false);
+
             game.SetNewTileMapGround(completionGround);
         }
         else
@@ -155,6 +154,7 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
             // game.CreatePlayerReflection(game.Levels.levelsData[6].playerData.reflectionVector);
             if (playerReflectionEro != null)
                 playerReflectionEro.gameObject.SetActive(true);
+
             game.SetupPlayerReflection(playerReflectionEro);
             mirrorReflection.SetActive(true);
         }

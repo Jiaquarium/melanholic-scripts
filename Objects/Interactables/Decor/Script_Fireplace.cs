@@ -11,14 +11,7 @@ public class Script_Fireplace : Script_Interactable
     // Start is called before the first frame update
     void Start()
     {
-        if (isDisabled)     return;
-        
-        // set first flame up
-        for (int i = 0; i < flames.Length; i++)
-        {
-            if (i == 0)     flames[i].gameObject.SetActive(true);
-            else            flames[i].gameObject.SetActive(false);
-        }
+        InitializeFire();
     }
 
     public void InitializeFire()

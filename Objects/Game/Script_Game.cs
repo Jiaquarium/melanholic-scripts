@@ -1723,6 +1723,11 @@ public class Script_Game : MonoBehaviour
         RestartGame();
     }
 
+    public void SaveDefault()
+    {
+        saveGameControl.Save(Script_SaveGameControl.Saves.Initialize);   
+    }
+
     private void CleanRun()
     {
         clockManager.InitialState();

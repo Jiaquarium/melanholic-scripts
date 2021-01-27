@@ -6,7 +6,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Ordering:
 /// 
-/// 1. Intro() from prompt -> yes node NextNodeAction
+/// 1. Intro() from prompt (BG Music is faded out here) -> yes node NextNodeAction
 /// 2. StartDialogue() from Timeline End Signal
 /// 3. End() from Dialogue End NextNodeAction
 /// </summary>
@@ -14,7 +14,10 @@ public class Script_MynesMirror : Script_InteractableObjectText
 {
     [Tooltip("Specifies which mirror to save as")]
     public int MynesMirrorId;
+    
     [SerializeField] private Script_DialogueNode _MynesConversationNode;
+
+    [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     
     private Script_DialogueNode MynesConversationNode
     {
@@ -41,6 +44,20 @@ public class Script_MynesMirror : Script_InteractableObjectText
     void OnDisable()
     {
         Script_MynesMirrorEventsManager.OnEndTimeline -= StartDialogue;
+    }
+
+    public override void ActionDefault()
+    {
+        // Although this check is repeated in base, we need to check before we do other actions.
+        if (CheckIsDisabled())  return;
+
+        // Fade out BG Music
+        Script_BackgroundMusicManager.Control.FadeOutMed(
+            () => game.PauseBgMusic(),
+            Const_AudioMixerParams.ExposedBGVolume
+        );
+
+        base.ActionDefault();
     }
 
     protected override bool CheckIsDisabled()
@@ -78,6 +95,13 @@ public class Script_MynesMirror : Script_InteractableObjectText
     {
         game.ChangeStateCutScene();
         Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror);
+
+        // BGM coroutine may still be running, so ensure to Pause in case it was stopped prematurely
+        // and never called its callback to pause BGM
+        game.PauseBgMusic();
+        
+        Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+        bgThemePlayer.gameObject.SetActive(true);
     }
     
     /// <summary>
@@ -86,6 +110,13 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public void End()
     {
+        // Fade out BG Theme Player and Fade in Game BGM
+        Script_BackgroundMusicManager.Control.FadeOutMed(() => {
+            bgThemePlayer.gameObject.SetActive(false);
+            game.UnPauseBgMusic();
+            Script_BackgroundMusicManager.Control.FadeInSlow();
+        });
+        
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
             game.ChangeStateInteract();
             Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId] = true;

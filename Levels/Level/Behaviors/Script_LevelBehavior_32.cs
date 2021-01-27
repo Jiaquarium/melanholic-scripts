@@ -13,6 +13,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     
     [SerializeField] private Script_DialogueNode startNode;
     [SerializeField] private Transform interactableObjectsParent;
+    [SerializeField] private Script_BgThemePlayer dreamBgmPlayer;
     private bool isInit = true;
 
     private void Start()
@@ -40,9 +41,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // Next Node Action START
     public void OnEndStartDialogue()
     {
+        dreamBgmPlayer.gameObject.SetActive(false);
+        game.UnPauseBgMusic();
+        
         /// Fade out black canvas
         game.UnderDialogueTransitionFadeOut(game.GetUnderDialogueFadeTime(), () => {
             /// Initial Save
+            // game.SaveDefault();
             
             game.ChangeStateInteract();
         });
@@ -86,6 +91,16 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         game.SetupInteractableObjectsText(interactableObjectsParent, isInit);
 
-        isInit = false;      
+        if (!didStartThought)
+        {
+            game.PauseBgMusic();
+            dreamBgmPlayer.gameObject.SetActive(true);
+        }
+        else
+        {
+            dreamBgmPlayer.gameObject.SetActive(false);
+        }
+
+        isInit = false;
     }        
 }

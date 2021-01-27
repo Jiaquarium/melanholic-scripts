@@ -85,20 +85,20 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     // Timeline Signals Start
     public void FadeOutMusic()
     {
-        Script_BackgroundMusicManager.Control.FadeOutMasterFast(() => {
+        Script_BackgroundMusicManager.Control.FadeOutFast(() => {
             Script_BackgroundMusicManager.Control.Pause();
         });
     }
 
     public void FadeInMusic()
     {
-        Script_BackgroundMusicManager.Control.FadeInMasterFast(null);
+        Script_BackgroundMusicManager.Control.FadeInFast(null);
     }
 
     public void OnIdsMusicTimelineDone()
     {
         Script_BackgroundMusicManager.Control.UnPause();
-        Script_BackgroundMusicManager.Control.FadeInMasterFast(null);
+        Script_BackgroundMusicManager.Control.FadeInFast(null);
         game.ChangeStateInteract();
     }
     // Timeline Signals End

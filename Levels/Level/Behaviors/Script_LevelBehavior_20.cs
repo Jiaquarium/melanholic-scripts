@@ -357,6 +357,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     public void SetNextCycleWeekday()
     {
         game.SetNextCycle(Script_RunsManager.Cycle.Weekday);
+
+        // TBD Remove After Demo
+        game.DieEffects(Script_GameOverController.DeathTypes.DemoOver);   
     }
 
     public void SetNextCycleWeekend()
