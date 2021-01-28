@@ -23,7 +23,7 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
             pianoSpawn.data.facingDirection,
             isExit: true,
             isSilent: false,
-            exitType: Script_Exits.ExitType.Default
+            exitType: Script_Exits.ExitType.Piano
         );
 
         pianoIdx++;

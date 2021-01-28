@@ -1628,6 +1628,9 @@ public class Script_Game : MonoBehaviour
             case (Script_Exits.ExitType.StairsUp):
                 followUp = Script_Exits.FollowUp.Default;
                 break;
+            case (Script_Exits.ExitType.Piano):
+                followUp = Script_Exits.FollowUp.Piano;
+                break;
             default:
                 followUp = Script_Exits.FollowUp.Default;
                 break;

@@ -22,6 +22,7 @@ public class Script_Exits : MonoBehaviour
         SaveAndRestart      = 1,
         Elevator            = 2,
         CutScene            = 3,
+        Piano               = 4,
         StairsUp            = 10,
     }
     
@@ -31,6 +32,7 @@ public class Script_Exits : MonoBehaviour
         CutSceneNoFade      = 1,
         CutScene            = 2,
         SaveAndRestart      = 3,
+        Piano               = 4
     }
     public CanvasGroup canvas;
 
@@ -79,10 +81,10 @@ public class Script_Exits : MonoBehaviour
             new Model_PlayerState(x, y, z, playerFacingDirection)
         );
         
-        if (!isSilent)  audioSource.PlayOneShot(Script_SFXManager.SFX.exitSFX, Script_SFXManager.SFX.exitSFXVol);
-        
         currentFollowUp = followUp;
         levelToGo = level;
+
+        if (!isSilent)  HandleSFX(currentFollowUp);
         
         switch (currentFollowUp)
         {
@@ -98,12 +100,30 @@ public class Script_Exits : MonoBehaviour
                 isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
                 break;
             }
+            case (FollowUp.Piano):
+            {
+                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                break;
+            }
             default:
             {
                 Debug.Log("Default Fading Out");
                 isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
                 break;
             }
+        }
+    }
+
+    private void HandleSFX(FollowUp followUp)
+    {
+        switch(currentFollowUp)
+        {
+            case (FollowUp.Piano):
+                audioSource.PlayOneShot(Script_SFXManager.SFX.piano, Script_SFXManager.SFX.pianoVol);
+                break;
+            default:
+                audioSource.PlayOneShot(Script_SFXManager.SFX.exitSFX, Script_SFXManager.SFX.exitSFXVol);
+                break;
         }
     }
 
@@ -230,12 +250,19 @@ public class Script_Exits : MonoBehaviour
         
         // after faded in, player can then move
         // leave the state as cut scene if the exit FollowUp is a cut scene though
-        if (
-            game.state == Const_States_Game.InitiateLevel
-            && currentFollowUp == FollowUp.Default
-        )
+        if (game.state == Const_States_Game.InitiateLevel)
         {
-            game.ChangeStateInteract();
+            switch(currentFollowUp)
+            {
+                case (FollowUp.Default):
+                    game.ChangeStateInteract();
+                    break;
+                case (FollowUp.Piano):
+                    game.ChangeStateInteract();
+                    break;
+                default:
+                    break;
+            }
         }
         
         currentFollowUp = FollowUp.Default;
