@@ -1661,9 +1661,13 @@ public class Script_Game : MonoBehaviour
         cutSceneManager.MelanholicTitleCutScene();
     }
 
-    public void ElevatorCloseDoorsCutScene(Script_ExitMetadataObject exit, Script_ElevatorBehavior exitBehavior)
+    public void ElevatorCloseDoorsCutScene(
+        Script_ExitMetadataObject exit,
+        Script_ElevatorBehavior exitBehavior,
+        Script_Elevator.Types type
+    )
     {
-        elevatorManager.CloseDoorsCutScene(exit, exitBehavior);
+        elevatorManager.CloseDoorsCutScene(exit, exitBehavior, type);
     }
 
     /* =========================================================================

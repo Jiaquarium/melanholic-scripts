@@ -20,12 +20,25 @@ public class Script_ElevatorManager : MonoBehaviour
     /// to be passed to the To:Elevator and called when player is about to interact
     /// -> OnDoorsClosed()
     /// </summary>
-    public void CloseDoorsCutScene(Script_ExitMetadataObject exit, Script_ElevatorBehavior exitBehavior)
+    public void CloseDoorsCutScene(
+        Script_ExitMetadataObject exit,
+        Script_ElevatorBehavior exitBehavior,
+        Script_Elevator.Types type
+    )
     {
         currentExit = exit;
         currentExitBehavior = exitBehavior;
         elevatorCanvasGroupController.Open();
-        elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
+        
+        switch (type)
+        {
+            case (Script_Elevator.Types.Default):
+                elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
+                break;
+            case (Script_Elevator.Types.Last):
+                elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 1);
+                break;
+        }
     }
 
     /// Signal Reactions START ========================================================================

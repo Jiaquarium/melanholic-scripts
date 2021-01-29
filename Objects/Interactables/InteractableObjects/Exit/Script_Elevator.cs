@@ -7,12 +7,24 @@ using UnityEngine.Timeline;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_Elevator : Script_InteractableObjectExit
 {
+    public enum Types
+    {
+        Default = 0,
+        Last    = 1,
+    }
     public static string IsClosed                   = "IsClosed";
     public static string CloseTrigger               = "Close";
     public static float preDoorCloseWaitTime        = 0.5f;
+    
+    [SerializeField] private Types type;
     [SerializeField] private bool isClosed          = true;
     [SerializeField] private Animator doorsAnimator;
     [SerializeField] private Script_ElevatorBehavior elevatorExitBehavior;
+
+    public Types Type
+    {
+        get => type;
+    }
 
     protected override void OnEnable()
     {
@@ -76,8 +88,9 @@ public class Script_Elevator : Script_InteractableObjectExit
     /// <summary>
     /// -> OnEnteredElevator()
     /// Afterwards:
-    /// 1) Player steps
-    /// 2) Canvas shows closing of elevator doors
+    /// 1) Player steps in
+    /// 2) Emits EnterElevator signal
+    /// 2) Script_Elevator:OnEnteredElevatorCanvas() reacts, shows closing of elevator doors
     /// </summary>
     public void OnElevatorDoorsOpened()
     {
@@ -108,7 +121,7 @@ public class Script_Elevator : Script_InteractableObjectExit
             yield return new WaitForSeconds(preDoorCloseWaitTime);
 
             /// Call manager to handle Canvas UI
-            game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior);
+            game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior, Type);
         }    
     }
 }
