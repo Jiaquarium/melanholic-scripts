@@ -4,20 +4,37 @@ using UnityEngine;
 
 public class Script_LevelBehavior_4 : Script_LevelBehavior
 {
-    /* =======================================================================
-        STATE DATA
-    ======================================================================= */
-    public bool isInitialized = false;
-    public bool[] switchesStates;
-    /* ======================================================================= */
+    // ==================================================================
+    // State Data
+    public bool didPickUpMelancholyPianoSticker;
+    // ==================================================================
 
-
-    public Transform lightSwitchesParent;
-
+    [SerializeField] private bool[] switchesStates;
+    [SerializeField] private Transform lightSwitchesParent;
+    [SerializeField] private Script_StickerObject melancholyPianoSticker;
 
     private Script_LBSwitchHandler switchHandler;
+    private bool isInitialized = false;
     
 
+    protected override void OnEnable()
+    {
+        Script_ItemsEventsManager.OnItemPickUp += OnItemPickUp;
+    }
+
+    protected override void OnDisable()
+    {
+        Script_ItemsEventsManager.OnItemPickUp -= OnItemPickUp;
+    }
+    
+    private void OnItemPickUp(string itemId)
+    {
+        if (itemId == melancholyPianoSticker.Item.id)
+        {
+            didPickUpMelancholyPianoSticker = true;
+        }
+    }
+    
     public override void SetSwitchState(int Id, bool isOn)
     {
         switchHandler.SetSwitchState(switchesStates, Id, isOn);
@@ -31,7 +48,10 @@ public class Script_LevelBehavior_4 : Script_LevelBehavior
             lightSwitchesParent,
             switchesStates,
             isInitialize: !isInitialized
-        ); 
+        );
+
+        if (didPickUpMelancholyPianoSticker)    melancholyPianoSticker?.gameObject.SetActive(false);
+        else                                    melancholyPianoSticker.gameObject.SetActive(true);
 
         isInitialized = true;
     }

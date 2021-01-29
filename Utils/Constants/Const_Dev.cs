@@ -11,11 +11,12 @@ public static class Const_Dev
     ///     if (!Debug.isDebugBuild || !Const_Dev.IsDevMode)    { do prod tasks; }
     /// </summary>
     
-    // Use for dev and dev prod.
+    // False for dev prod.
     public readonly static bool IsDevMode       = false;
     public readonly static bool IsPersisting    = true;
     public readonly static bool IsPGVersion     = false;
     
-    // Use for actual prod builds.
+    // True for release builds. For things we want only in prod
+    // but not in dev-prod.
     public readonly static bool IsProd          = false;
 }

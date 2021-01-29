@@ -41,11 +41,13 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
         /// Disable exit and show Ids note if not Sunday
         if (game.Run.dayId == Script_Run.DayId.sun)
         {
+            exitToIdsRoom.IsDisabled = false;
             IdsNote.gameObject.SetActive(false);
             speaker.gameObject.SetActive(true);
         }
         else
         {
+            exitToIdsRoom.IsDisabled = true;
             IdsNote.gameObject.SetActive(true);
             speaker.gameObject.SetActive(false);
         }

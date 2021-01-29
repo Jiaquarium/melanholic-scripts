@@ -113,15 +113,27 @@ public class Script_MynesMirror : Script_InteractableObjectText
         // Fade out BG Theme Player and Fade in Game BGM
         Script_BackgroundMusicManager.Control.FadeOutMed(() => {
             bgThemePlayer.gameObject.SetActive(false);
-            game.UnPauseBgMusic();
-            Script_BackgroundMusicManager.Control.FadeInSlow();
-        });
+            FadeInBGMusic();
+        },
+        Const_AudioMixerParams.ExposedBGVolume
+        );
         
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
             game.ChangeStateInteract();
             Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId] = true;
         });
-    } 
+    }
+
+    /// <summary>
+    /// Note! Call this on end dialogue node No because music will be faded out
+    /// on interaction with the mirror.
+    /// </summary>
+    public void FadeInBGMusic()
+    {
+        game.UnPauseBgMusic();
+        Script_BackgroundMusicManager.Control.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+    }
     // Next Node Actions END
     // ------------------------------------------------------------------
+
 }
