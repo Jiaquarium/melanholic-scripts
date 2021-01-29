@@ -37,8 +37,10 @@ public class Script_Game : MonoBehaviour
     
 
     public static Script_Game Game;
+    
     public Script_DDRManager DDRManager;
     public Script_DDRHandler DDRHandler;
+    
     public Script_InteractableObjectHandler interactableObjectHandler;
     public Script_InteractableObjectCreator interactableObjectCreator;
     public Script_DemonHandler demonHandler;
@@ -47,39 +49,50 @@ public class Script_Game : MonoBehaviour
     public Script_CutSceneNPCCreator cutSceneNPCCreator;
     public Script_SavePointCreator savePointCreator;
     public Script_ReflectionCreator reflectionCreator;
+    
     public Script_PlayerThoughtHandler playerThoughtHandler;
     public Script_PlayerThoughtsInventoryManager playerThoughtsInventoryManager;
     [SerializeField] private Script_TransitionManager transitionManager;
     public PlayableDirector dieTimelineDirector;
     public Script_CutSceneManager cutSceneManager;
     public Script_Exits exitsHandler;
+    
+    // ------------------------------------------------------------------
+    // Managers
     public Script_DialogueManager dialogueManager;
+    [SerializeField] private Script_SaveViewManager saveManager;
+    [SerializeField] private Script_MenuController menuController;
+    [SerializeField] private Script_InventoryAudioSettings canvasesAudioSource;
     public Script_EntryManager entryManager;
     public Script_ThoughtManager thoughtManager;
     public Script_HintManager hintManager;
     public Script_FullArtManager fullArtManager;
+    [SerializeField] private Script_PRCSManager PRCSManager;
+    
     [SerializeField] private Script_ElevatorManager elevatorManager;
     [SerializeField] private Script_ClockManager clockManager;
-    [SerializeField] private Script_InventoryAudioSettings canvasesAudioSource;
-    [SerializeField] private Script_MenuController menuController;
-    [SerializeField] private Script_CutSceneActionHandler cutSceneActionHandler;
     [SerializeField] private Script_TimeManager timeManager;
+    
+    [SerializeField] private Script_CutSceneActionHandler cutSceneActionHandler;
     [SerializeField] private Script_ScarletCipherManager scarletCipherManager;
     [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
     [SerializeField] private Script_ActiveStickerManager activeStickerManager;
+    
     public Script_BackgroundMusicManager BGMManager;
     [SerializeField] private Script_SFXManager SFXManager;
+    
     [SerializeField] private Script_VCamManager VCamManager;
+    [SerializeField] private Script_HUDManager HUDManager;
     [SerializeField] private Script_RunsManager runsManager;
-    [SerializeField] private Script_HitBoxDictionary hitBoxDictionary;
     [SerializeField] private Script_ItemPickUpTheatricsManager itemPickUpTheatricsManager;
-    [SerializeField] private Script_PRCSManager PRCSManager;
-    [SerializeField] private Script_SaveGameControl saveGameControl;
     [SerializeField] private Script_Names namesManager;
     [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
-    [SerializeField] private Script_HUDManager HUDManager;
+    
+    [SerializeField] private Script_HitBoxDictionary hitBoxDictionary;
+    [SerializeField] private Script_SaveGameControl saveGameControl;
 
-
+    // ------------------------------------------------------------------
+    // Canvases
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
 
@@ -247,6 +260,7 @@ public class Script_Game : MonoBehaviour
         activeStickerManager.Setup();
         mynesMirrorManager.Setup();
         HUDManager.Setup();
+        saveManager.Setup();
     }
 
     // Load Save Data and Initiate level
@@ -1717,7 +1731,16 @@ public class Script_Game : MonoBehaviour
             gameData
         );
 
-        RestartGame();
+        // Show save screen. And restart game after a specified wait time.
+        saveManager.ShowSaveAndRestarMessage();
+        
+        StartCoroutine(WaitToRestartGame());
+
+        IEnumerator WaitToRestartGame()
+        {
+            yield return new WaitForSeconds(saveManager.RestartGameTime);
+            RestartGame();
+        }
     }
 
     /// 2. <!-- Restart from Current Initialized Run -->

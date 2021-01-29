@@ -2,7 +2,7 @@
 
 public class Script_SaveEntryChoice : Script_UIChoice
 {
-    public Script_SaveManager saveManager;
+    public Script_SaveViewManager saveManager;
     public TMP_InputField inputField;
     
     /// <summary>

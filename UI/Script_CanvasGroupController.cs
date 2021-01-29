@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Entry point to easily control canvas groups
 /// </summary>
@@ -78,3 +82,19 @@ public class Script_CanvasGroupController : MonoBehaviour
 
     } 
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_CanvasGroupController))]
+public class Script_CanvasGroupControllerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_CanvasGroupController t = (Script_CanvasGroupController)target;
+        if (GUILayout.Button("FadeIn()"))
+        {
+            t.FadeIn();
+        }
+    }
+}
+#endif

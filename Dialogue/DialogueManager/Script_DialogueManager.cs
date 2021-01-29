@@ -73,7 +73,7 @@ public class Script_DialogueManager : MonoBehaviour
     public TextMeshProUGUI[] ItemDescriptionCanvasTextsBottom;
     public Canvas ItemDescriptionCanvasTop;
     public TextMeshProUGUI[] ItemDescriptionCanvasTextsTop;
-    public Script_SaveManager saveManager;
+    public Script_SaveViewManager saveManager;
     public Script_PaintingEntranceManager paintingEntranceManager;
     [SerializeField] private Script_InputManager inputManager;
     [SerializeField] private Script_FullArtManager fullArtManager;
@@ -1135,7 +1135,6 @@ public class Script_DialogueManager : MonoBehaviour
         choiceManager = GetComponent<Script_ChoiceManager>();
         choiceManager.Setup();
         
-        saveManager.Setup();
         paintingEntranceManager.Setup();
         
         fullArtManager.Setup();

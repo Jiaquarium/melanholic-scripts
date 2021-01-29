@@ -7,30 +7,53 @@ using TMPro;
 /// <summary>
 /// Save Point manager, similar to InputManager
 /// </summary>
-public class Script_SaveManager : MonoBehaviour
+public class Script_SaveViewManager : MonoBehaviour
 {
-    public Script_Game game;
-    public CanvasGroup saveChoiceCanvas;
-    public CanvasGroup saveEntryCanvas;
-    public GameObject saveProgressCanvasGroup;
-    public GameObject saveProgressCanvas;
-    public GameObject saveCompleteCanvas;
-    public Script_DialogueChoice[] choices;
-    public Script_DialogueManager dm;
-    public Script_EntryInput entryInput;
-    public Script_EntryManager entryManager;
+    public static Script_SaveViewManager Control;
+    
+    [SerializeField] private float restartGameTime;
+    
+    [SerializeField] private Script_Game game;
+    
+    [SerializeField] private Script_CanvasGroupController saveAndRestartCanvasGroup;
+    
+    [SerializeField] private CanvasGroup saveChoiceCanvas;
+    [SerializeField] private CanvasGroup saveEntryCanvas;
+    
+    [SerializeField] private GameObject saveProgressCanvasGroup;
+    [SerializeField] private GameObject saveProgressCanvas;
+    [SerializeField] private GameObject saveCompleteCanvas;
+    
+    [SerializeField] private Script_DialogueChoice[] choices;
+    
+    [SerializeField] private Script_DialogueManager dm;
+    
+    [SerializeField] private Script_EntryInput entryInput;
+    [SerializeField] private Script_EntryManager entryManager;
+    
     [SerializeField] private TextMeshProUGUI timestampDisplayText;
     [SerializeField] private TMP_InputValidator TMPInputEntryValidator;
     
     [SerializeField] private float showSavingMinTime;
     [SerializeField] private float showSavingCompleteTime;
+    
     private bool isShowingSaving;
 
+    public float RestartGameTime
+    {
+        get => restartGameTime;
+    }
+    
     void Update()
     {
         string timestampNow = DateTime.Now.FormatDateTime();
         if (timestampNow != timestampDisplayText.text)
             timestampDisplayText.text = timestampNow;
+    }
+
+    public void ShowSaveAndRestarMessage()
+    {
+        saveAndRestartCanvasGroup.FadeIn();
     }
     
     public void StartSavePromptMode()
@@ -144,11 +167,22 @@ public class Script_SaveManager : MonoBehaviour
 
     public void Setup()
     {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
+        
         saveChoiceCanvas.gameObject.SetActive(false);
         saveEntryCanvas.gameObject.SetActive(false);
         saveProgressCanvasGroup.SetActive(true);
         saveProgressCanvas.SetActive(false);
         saveCompleteCanvas.SetActive(false);
         entryInput.Setup();
+        
+        saveAndRestartCanvasGroup.Close();
     }
 }
