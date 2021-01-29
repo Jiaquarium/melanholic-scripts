@@ -16,12 +16,15 @@ public class Script_MynesMirror : Script_InteractableObjectText
     public int MynesMirrorId;
     
     [SerializeField] private Script_DialogueNode _MynesConversationNode;
+    [SerializeField] private Script_MynesMirrorNodesController dialogueController;
 
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     
     private Script_DialogueNode MynesConversationNode
     {
-        get => _MynesConversationNode;
+        get => dialogueController.Nodes?.Length > 0
+                ? dialogueController.Nodes[0]
+                : _MynesConversationNode;
         set => _MynesConversationNode = value;
     }
 
@@ -135,5 +138,4 @@ public class Script_MynesMirror : Script_InteractableObjectText
     }
     // Next Node Actions END
     // ------------------------------------------------------------------
-
 }
