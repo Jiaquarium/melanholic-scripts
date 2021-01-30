@@ -12,7 +12,12 @@ public class Script_SaveLoadInventory : MonoBehaviour
         string[] inventoryIds = new string[inventoryItems.Length];
         for (int i = 0; i < inventoryIds.Length; i++)
         {
-            inventoryIds[i] = inventoryItems[i] != null ? inventoryItems[i].id : null;
+            if (inventoryItems[i] == null)  continue;
+            
+            bool isSticker = inventoryItems[i] is Script_Sticker;
+            bool isPersistent = isSticker || inventoryItems[i].IsSpecial;
+
+            if (isPersistent)   inventoryIds[i] = inventoryItems[i]?.id;
         }
         data.inventoryIds = inventoryIds;
     }
