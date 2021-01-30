@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(Script_UsableKeyTarget))]
 public class Script_TreasureChestLocked : Script_TreasureChest
 {
     [SerializeField] private bool _isLocked = true;
@@ -31,9 +32,20 @@ public class Script_TreasureChestLocked : Script_TreasureChest
 
     public override void ActionDefault()
     {
-        if (IsLocked)   return;
+        if (IsLocked)
+        {
+            var myKey = GetComponent<Script_UsableKeyTarget>().MyKey;
+            
+            if (game.TryUseKey(myKey))  
+            {
+                UnlockWithKey();
+                Script_ItemsEventsManager.Unlock(myKey, myKey.id);
+            }
+
+            return;
+        }
         
-        base.ActionDefault(); // calls one level up in inheritance chain
+        base.ActionDefault();
     }
 }
 

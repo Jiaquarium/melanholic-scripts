@@ -162,10 +162,6 @@ public class Script_MenuController : Script_UIState
     {
         return inventoryManager.GetInventoryItems();
     }
-    // public Script_Inventory GetInventory()
-    // {
-    //     return inventoryManager.GetInventory();
-    // }
 
     public Script_Sticker[] GetEquipmentItems()
     {
@@ -210,6 +206,11 @@ public class Script_MenuController : Script_UIState
     public Script_ItemObject InstantiateDropById(string itemId, Vector3 location, int LB)
     {
         return inventoryManager.InstantiateDropById(itemId, location, LB);
+    }
+
+    public bool TryUseKey(Script_UsableKey key)
+    {
+        return inventoryManager.TryUseKey(key);
     }
 
     public void HandleNullViewStates()

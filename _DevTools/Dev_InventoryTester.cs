@@ -10,9 +10,32 @@ public class Dev_InventoryTester : MonoBehaviour
 {
     public string itemId;
 
+    void Start()
+    {
+        if (Const_Dev.GiveItems)
+        {
+            AddStickers();
+            AddKeys();
+        }
+    }
+
     public void AddItemById()
     {
         Script_Game.Game.AddItemById(itemId);
+    }
+
+    public void AddStickers()
+    {
+        AddPsychicDuck();
+        AddAnimalWithin();
+        AddBoarNeedle();
+        AddIceSpike();
+        AddMelancholyPiano();
+    }
+
+    public void AddKeys()
+    {
+        AddSuperSmallKey();
     }
 
     // ------------------------------------------------------------------------

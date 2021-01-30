@@ -250,11 +250,6 @@ public class Script_Player : Script_Character
         playerEffect.ItemPickUp(isShow, item);
     }
 
-    public void GiantBoarNeedleEffect()
-    {
-        playerEffect.GiantBoarNeedle();
-    }
-
     public void ForceSortingLayer(bool isForceSortingOrder, bool isAxisZ)
     {
         if (isForceSortingOrder)
@@ -431,11 +426,6 @@ public class Script_PlayerTester : Editor
         if (GUILayout.Button("isInvisible = false"))
         {
             player.isInvisible = false;
-        }
-
-        if (GUILayout.Button("Giant Boar Needle"))
-        {
-            player.GiantBoarNeedleEffect();
         }
     }
 }

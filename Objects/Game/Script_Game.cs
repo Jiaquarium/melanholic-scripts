@@ -922,6 +922,14 @@ public class Script_Game : MonoBehaviour
         return menuController.GetEquipmentItems();
     }
 
+    /// <summary>
+    /// To be called from the key target
+    /// </summary>
+    public bool TryUseKey(Script_UsableKey key)
+    {
+        return menuController.TryUseKey(key);
+    }
+
     /* =======================================================================
         _CANVASES_CUTSCENES_THEATRICS
     ======================================================================= */

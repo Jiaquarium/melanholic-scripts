@@ -9,7 +9,10 @@ using UnityEngine;
 public class Script_TreasureChest : Script_InteractableObject
 {
     [SerializeField] private bool _isOpen;
+    
+    [Tooltip("The item inside the chest.")]
     [SerializeField] private Script_ItemObject item;
+    
     [SerializeField] private Sprite openSprite;
     [SerializeField] private Sprite closedSprite;
 
@@ -23,8 +26,10 @@ public class Script_TreasureChest : Script_InteractableObject
         }
     }
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        
         Script_ItemsEventsManager.OnItemStash += OnItemStash;
     }
 

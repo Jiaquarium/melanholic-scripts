@@ -247,7 +247,7 @@ public class Script_PlayerAction : MonoBehaviour
         return true;
     }
 
-    bool DetectInteractableObject(string action, Directions dir)
+    private bool DetectInteractableObject(string action, Directions dir)
     {
         Script_InteractableObject[] objs = interactionBoxController.GetInteractableObject(dir);
         if (objs.Length == 0)    return false;

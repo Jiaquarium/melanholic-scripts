@@ -11,6 +11,9 @@ using UnityEditor;
 [RequireComponent(typeof(PlayableDirector))]
 public class Script_GiantBoarNeedleEffect : Script_StickerEffect
 {
+    [SerializeField] private Script_Player player;
+    [SerializeField] private Script_PlayerAction playerActionHandler;
+    [SerializeField] private Script_InteractionBoxController interactionBoxController;
     [SerializeField] private TimelineAsset timeline;
     private PlayableDirector myDirector;
 
@@ -22,7 +25,20 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
     public override void Effect()
     {
         Debug.Log($"{name} Effect()");
-        Play();
+        
+        Script_InteractableObject[] objs = interactionBoxController.GetInteractableObject(player.FacingDirection);
+        if (objs.Length == 0)    return;
+
+        foreach (Script_InteractableObject obj in objs)
+        {
+            if (obj is Script_InteractablePaintingEntrance)
+            {
+                Debug.Log($"Detected Painting Entrance {obj.name}");
+                var paintingEntrance = (Script_InteractablePaintingEntrance)obj;
+                paintingEntrance.InitiatePaintingEntrance();
+                Play();
+            }
+        }
     }
 
     void Play()

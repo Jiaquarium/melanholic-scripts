@@ -15,40 +15,40 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
         if (isDialogueCoolDown)     return;
         if (CheckDisabledDirections())  return;
         
-        if (Script_ActiveStickerManager.Control.IsActiveSticker(BoarNeedle))
+        // If already talking to the Painting, then just continue dialogue.
+        if (
+            Script_ActiveStickerManager.Control.IsActiveSticker(BoarNeedle)
+            && Script_Game.Game.GetPlayer().State == Const_States_Player.Dialogue
+        )
         {
-            if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
-                InitiatePaintingEntrance();
-            else 
-                ContinueDialogue();
+            ContinueDialogue();
         }
         else
         {
             base.ActionDefault();
         }
+    }
 
-        void InitiatePaintingEntrance()
+    public void InitiatePaintingEntrance()
+    {
+        Script_Game.Game.GetPlayer().SetIsStandby();
+        StartCoroutine(WaitToStartEntranceNode());
+
+        IEnumerator WaitToStartEntranceNode()
         {
-            Script_Game.Game.GetPlayer().SetIsStandby();
-            Script_Game.Game.GetPlayer().GiantBoarNeedleEffect();
-            StartCoroutine(WaitToStartEntranceNode());
-
-            IEnumerator WaitToStartEntranceNode()
-            {
-                yield return new WaitForSeconds(BoarNeedleWaitTime);
-                
-                // Script_Game.Game.GetPlayer().SetIsInteract();
-                print("starting dialogue node in painting");
-                /// Player state is set to dialogue by DM but just to be safe
-                Script_Game.Game.GetPlayer().SetIsTalking();
-                Script_DialogueManager.DialogueManager.StartDialogueNode(
-                    paintingDialogueNodes[paintingDialogueIndex],
-                    SFXOn: true,
-                    type: Const_DialogueTypes.Type.PaintingEntrance,
-                    this
-                );
-                HandlePaintingDialogueNodeIndex();
-            }
+            yield return new WaitForSeconds(BoarNeedleWaitTime);
+            
+            // Script_Game.Game.GetPlayer().SetIsInteract();
+            print("starting dialogue node in painting");
+            /// Player state is set to dialogue by DM but just to be safe
+            Script_Game.Game.GetPlayer().SetIsTalking();
+            Script_DialogueManager.DialogueManager.StartDialogueNode(
+                paintingDialogueNodes[paintingDialogueIndex],
+                SFXOn: true,
+                type: Const_DialogueTypes.Type.PaintingEntrance,
+                this
+            );
+            HandlePaintingDialogueNodeIndex();
         }
     }
 

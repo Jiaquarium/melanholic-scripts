@@ -12,6 +12,7 @@ public static class Const_Dev
     /// </summary>
     
     // False for dev prod.
+    public readonly static bool GiveItems       = true;
     public readonly static bool IsDevMode       = false;
     public readonly static bool IsPersisting    = true;
     public readonly static bool IsPGVersion     = false;

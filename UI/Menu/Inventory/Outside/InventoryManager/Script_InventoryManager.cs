@@ -26,6 +26,8 @@ public class Script_InventoryManager : MonoBehaviour
     private Script_UsablesInventoryHandler usablesHandler;
     private Script_ItemChoices itemChoices;
 
+    // ------------------------------------------------------------------
+    // Getters
     public Script_Item[] GetInventoryItems()
     {
         return inventory.Items;
@@ -46,6 +48,44 @@ public class Script_InventoryManager : MonoBehaviour
         return inventory.GetItemInSlot(i);
     }
 
+    private bool GetItemObjectById(string itemId, out Script_ItemObject itemToAdd)
+    {
+        if (!GetComponent<Script_ItemDictionary>().myDictionary.TryGetValue(itemId, out itemToAdd))
+        {
+            Debug.LogError($"Getting item: {itemId} from ItemDictionary failed.");
+            return false;
+        }
+
+        return true;
+    }
+    
+    public bool CheckStickerEquipped(Script_Sticker item)
+    {
+        return equipment.SearchForSticker(item);
+    }
+
+    public bool CheckStickerEquippedById(string Id)
+    {
+        return equipment.SearchForStickerById(Id);
+    }
+
+    private Script_Item SearchForItemById(string Id, out int slot)
+    {
+        for (int i = 0; i < inventory.Items.Length; i++)
+        {
+            if (inventory.Items[i]?.id == Id)
+            {
+                slot = i;
+                return inventory.Items[i];
+            }
+        }
+
+        slot = -1;
+        return null;
+    }
+
+    // ------------------------------------------------------------------
+    // Setters
     public bool AddItemById(string itemId)
     {
         // get the ItemObject from dict by Id
@@ -84,17 +124,6 @@ public class Script_InventoryManager : MonoBehaviour
 
         return InstantiateDrop(itemToAdd, location, levelBehavior);
     }
-
-    private bool GetItemObjectById(string itemId, out Script_ItemObject itemToAdd)
-    {
-        if (!GetComponent<Script_ItemDictionary>().myDictionary.TryGetValue(itemId, out itemToAdd))
-        {
-            Debug.LogError($"Getting item: {itemId} from ItemDictionary failed.");
-            return false;
-        }
-
-        return true;
-    }
     
     public bool AddItem(Script_Item item)
     {
@@ -114,22 +143,16 @@ public class Script_InventoryManager : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------
+    // View
     public void HandleItemDescription(int i)
     {
         Script_Item item = inventory.GetItemInSlot(i);
         inventoryViewController.HandleItemDescription(item);
     }
 
-    public bool CheckStickerEquipped(Script_Sticker item)
-    {
-        return equipment.SearchForSticker(item);
-    }
-
-    public bool CheckStickerEquippedById(string Id)
-    {
-        return equipment.SearchForStickerById(Id);
-    }
-
+    // ------------------------------------------------------------------
+    // Item Choices
     public bool ShowItemChoices(int itemSlotId)
     {
         // check if item exists
@@ -172,11 +195,6 @@ public class Script_InventoryManager : MonoBehaviour
     void HideItemChoices()
     {
         itemChoices.gameObject.SetActive(false);
-    }
-
-    public void EnterInventory()
-    {
-        sBookController.EnterInventoryView();
     }
 
     public void HandleItemChoice(ItemChoices itemChoice, int itemSlotId)
@@ -342,6 +360,29 @@ public class Script_InventoryManager : MonoBehaviour
             CantUseSFX();
             return;
         }
+    }
+
+    public bool TryUseKey(Script_UsableKey key)
+    {
+        // get key by id
+        int slot;
+        Script_Item foundItem = SearchForItemById(key.id, out slot);
+        
+        if (foundItem != null)
+        {
+            inventory.RemoveItemInSlot(slot);
+            return true;
+        }
+
+        return false;
+    }
+
+    // ------------------------------------------------------------------
+    // Item Choices
+
+    public void EnterInventory()
+    {
+        sBookController.EnterInventoryView();
     }
 
     public void ErrorSFX()
