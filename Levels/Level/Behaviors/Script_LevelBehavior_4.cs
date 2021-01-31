@@ -50,8 +50,13 @@ public class Script_LevelBehavior_4 : Script_LevelBehavior
             isInitialize: !isInitialized
         );
 
-        if (didPickUpMelancholyPianoSticker)    melancholyPianoSticker?.gameObject.SetActive(false);
-        else                                    melancholyPianoSticker.gameObject.SetActive(true);
+        if (melancholyPianoSticker != null)
+        {
+            if (didPickUpMelancholyPianoSticker)
+                melancholyPianoSticker.gameObject.SetActive(false);
+            else
+                melancholyPianoSticker.gameObject.SetActive(true);
+        }
 
         isInitialized = true;
     }

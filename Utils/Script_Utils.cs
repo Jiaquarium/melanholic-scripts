@@ -224,7 +224,8 @@ public static class Script_Utils
             Script_Names.Moose,                         // {63}
             Script_Names.Flan,                          // {64}
             Script_Names.ActionSticker,                 // {65}
-            Script_Names.LastElevator                   // {66}
+            Script_Names.LastElevator,                  // {66}
+            Script_Names.StickerSkill                   // {67}
         );
     }
 

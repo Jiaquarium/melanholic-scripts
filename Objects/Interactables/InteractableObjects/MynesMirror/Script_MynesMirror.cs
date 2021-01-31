@@ -22,7 +22,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     
     private Script_DialogueNode MynesConversationNode
     {
-        get => dialogueController.Nodes?.Length > 0
+        get => dialogueController?.Nodes?.Length > 0
                 ? dialogueController.Nodes[0]
                 : _MynesConversationNode;
         set => _MynesConversationNode = value;

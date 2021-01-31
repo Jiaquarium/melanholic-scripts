@@ -141,8 +141,6 @@ public class Script_PlayerAction : MonoBehaviour
                 player.SetIsPickingUp(item);
                 itemShown = item;
                 
-                // TODO: IMPLEMENT ITEM THEATRICS PICKUP
-
                 Script_Game.Game.dialogueManager.StartDialogueNode(
                     itemObject.GetComponent<Script_DialogueNode>()
                 );

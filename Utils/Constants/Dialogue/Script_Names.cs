@@ -27,7 +27,7 @@ public class Script_Names: MonoBehaviour
     
     public const string Melz                            = "<b>Melz</b>";                        // {1}
     public const string MelzTheGreat                    = "<b>Melz the Great</b>";              // {2}
-    public static string Ids                                                                     // {3}
+    public static string Ids                                                                    // {3}
     {
         get => Names?._Ids;
         set => Names._Ids = value;
@@ -173,6 +173,7 @@ public class Script_Names: MonoBehaviour
     public const string Flan                            = "<b>Flan the Guard</b>";              // {64}
     public const string ActionSticker                   = "<b>Action Sticker</b>";              // {65}
     public const string LastElevator                    = "<b>Last Elevator</b>";               // {66}
+    public const string StickerSkill                    = "<b>Sticker Skill</b>";               // {67}
 
 
     // ------------------------------------------------------------------

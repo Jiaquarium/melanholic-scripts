@@ -36,7 +36,8 @@ public class Script_ItemObject : Script_Interactable
     public void PickUp()
     {
         gameObject.SetActive(false);
-        /// Must destroy, so we don't reactivate the item again via the PersistenDrops cycle
+        
+        /// Must destroy, so we don't reactivate the item again via the PersistentDrops cycle
         Destroy(gameObject);
     }
 
