@@ -12,12 +12,12 @@ public static class Const_Dev
     /// </summary>
     
     // False for dev prod.                                          // Settings for Release
-    public readonly static bool GiveItems       = true;             // false
+    public readonly static bool GiveItems       = false;            // false
     public readonly static bool IsDevMode       = false;            // false
     public readonly static bool IsPersisting    = true;             // true
     public readonly static bool IsPGVersion     = false;            // false
     
     // True for release builds. For things we want only in prod
     // but not in dev-prod.
-    public readonly static bool IsProd          = false;            // true
+    public readonly static bool IsProd          = true;             // true
 }

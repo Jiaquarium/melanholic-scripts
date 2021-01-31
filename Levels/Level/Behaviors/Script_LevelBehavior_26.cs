@@ -25,7 +25,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public bool isCurrentPuzzleComplete;
     [SerializeField] private Transform switchParent;
     [SerializeField] private Script_UrselkAttacks urselkAttacks;
-    [SerializeField] private float attackInterval;
+    
+    // Must be >1 because because the spike animation lasts 1 sec (30 frames)
+    [Range(1f, 2f)][SerializeField] private float attackInterval;
+    
     [SerializeField] private float timer;
     [SerializeField] private Script_Switch puzzleSwitch;
     [SerializeField] private PlayableDirector spikeCageDirector;

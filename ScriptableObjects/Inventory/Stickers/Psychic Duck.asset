@@ -16,7 +16,7 @@ MonoBehaviour:
   focusedSprite: {fileID: 21300002, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
   sprite: {fileID: 21300000, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
   description: attach the @@PsychicDuck sticker to your {5} and switch it to your
-    {65} to be able to converse with {19}. stickers' powers are only in effect as
-    your {65}. what a wonderful sidekick.
+    {65} to be able to converse with {19}. {68} are only in effect as your {65}.
+    a @@PsychicDuck makes a wonderful sidekick!
   isDroppable: 0
   _isSpecial: 0

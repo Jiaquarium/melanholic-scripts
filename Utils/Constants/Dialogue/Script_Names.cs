@@ -174,7 +174,7 @@ public class Script_Names: MonoBehaviour
     public const string ActionSticker                   = "<b>Action Sticker</b>";              // {65}
     public const string LastElevator                    = "<b>Last Elevator</b>";               // {66}
     public const string StickerSkill                    = "<b>Sticker Skill</b>";               // {67}
-
+    public const string StickerSkills                   = "<b>Sticker Skills</b>";              // {68}
 
     // ------------------------------------------------------------------
     // Give these getters and setters so we can see Names while dev'ing
