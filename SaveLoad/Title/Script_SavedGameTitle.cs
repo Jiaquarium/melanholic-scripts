@@ -62,7 +62,7 @@ public class Script_SavedGameTitle : MonoBehaviour
         float playTime          = savedGame.playTime;
 
         runText.text            = run.FormatRun();
-        clockTimeText.text      = clockTime.FormatSecondsClock(isClose: clockTime >= Script_Clock.IsCloseTime);
+        clockTimeText.text      = clockTime.FormatSecondsClock(isClose: clockTime >= Script_Clock.WarningTime);
         nameText.text           = name;
         
         /// Empty means we are initializing a run, use default headline

@@ -22,7 +22,6 @@ public class Script_ClockManager : MonoBehaviour
         get { return clock.CurrentTime; }
     }
     
-    
     void Update()
     {
         if (clock.State == Script_Clock.States.Done && !didFireDoneEvent)
@@ -87,12 +86,21 @@ public class Script_ClockManager : MonoBehaviour
         InitialState();
     }
 
-    /// <summary> ====================================================================================================
-    /// ONLY FOR DEV
-    /// </summary> ===================================================================================================
-    public void AlmostTimesUp()
+    // ------------------------------------------------------------------
+    // Dev only
+    public void DangerTime()
     {
-        clock.CurrentTime = Script_Clock.OneMinTilTime;
+        clock.CurrentTime = Script_Clock.DangerTime;
+    }
+
+    public void WarningTime()
+    {
+        clock.CurrentTime = Script_Clock.WarningTime;
+    }
+
+    public void AwareTime()
+    {
+        clock.CurrentTime = Script_Clock.AwareTime;
     }
 }
 
@@ -109,9 +117,19 @@ public class Script_ClockManagerTester : Editor
             t.TimesUp();
         }
 
-        if (GUILayout.Button("AlmostTimesUp()"))
+        if (GUILayout.Button("AwareTime()"))
         {
-            t.AlmostTimesUp();
+            t.AwareTime();
+        }
+
+        if (GUILayout.Button("WarningTime()"))
+        {
+            t.WarningTime();
+        }
+        
+        if (GUILayout.Button("DangerTime()"))
+        {
+            t.DangerTime();
         }
     }
 }

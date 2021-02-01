@@ -6,29 +6,41 @@ using TMPro;
 [RequireComponent(typeof(Script_CanvasGroupController))]
 public class Script_Clock : MonoBehaviour
 {
-    public enum States {
+    public enum States
+    {
         Active,
         Paused,
         Done
     }
+
+    public enum TimeStates
+    {
+        None = 0,
+        Aware = 1,
+        Warning = 2,
+        Danger = 3
+    }
+
     public const float StartTime        = 18660f; // 5:11:00
-    public const float IsCloseTime      = 21660f; // 6:01:00
-    public const float OneMinTilTime    = 22200f; // 6:10:00
+    public const float AwareTime        = 20460f; // 5:41:00 half game time is passed, 30 min (6 min IRL)
+    public const float WarningTime      = 21360f; // 5:56:00 15 min left (3 min IRL)
+    public const float DangerTime       = 22200f; // 6:10:00 5 min left (1 min IRL)
     public const float EndTime          = 22260f; // 6:11:00 nautical dawn Chicago, IL Jan 1 2021
-    public float TimeMultipler          = 4f;
-    [SerializeField] private float _currentTime;
-    [SerializeField] private States _state;
+    public float TimeMultipler          = 5f;
+    [SerializeField] private float currentTime;
+    [SerializeField] private States state;
+    [SerializeField] private TimeStates timeState;
     [SerializeField] private TextMeshProUGUI display;
     private float blinkTimer;
     public float CurrentTime
     {
-        get { return _currentTime; }
-        set { _currentTime = Mathf.Clamp(value, StartTime, EndTime); }
+        get => currentTime;
+        set => currentTime = Mathf.Clamp(value, StartTime, EndTime);
     }
     public States State
     {
-        get { return _state; }
-        set { _state = value; }
+        get => state;
+        set => state = value;
     }
     
     // Update is called once per frame
@@ -40,6 +52,9 @@ public class Script_Clock : MonoBehaviour
             {
                 CurrentTime += Time.deltaTime * TimeMultipler;
                 if (CurrentTime > EndTime)  CurrentTime = EndTime;
+
+                UpdateTimeState();
+
                 break;
             }
             case (States.Paused):
@@ -70,7 +85,7 @@ public class Script_Clock : MonoBehaviour
     
     private void DisplayTime()
     {
-        bool isClose                = CurrentTime >= IsCloseTime;
+        bool isClose                = CurrentTime >= WarningTime;
         bool hideColons;
         float MultiplierHalf        = TimeMultipler / 2;
         float MultiplierFourth      = MultiplierHalf / 2;
@@ -96,6 +111,14 @@ public class Script_Clock : MonoBehaviour
         else            display.fontStyle = FontStyles.Normal;
         
         display.text = displayTime;
+    }
+
+    private void UpdateTimeState()
+    {
+        if      (CurrentTime >= DangerTime)         timeState = TimeStates.Danger;
+        else if (CurrentTime >= WarningTime)        timeState = TimeStates.Warning;
+        else if (CurrentTime >= AwareTime)          timeState = TimeStates.Aware;
+        else                                        timeState = TimeStates.None;
     }
 
     public void InitialState()
