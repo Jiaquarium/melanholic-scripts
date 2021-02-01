@@ -18,10 +18,16 @@ public class Script_ClockManager : MonoBehaviour
     [SerializeField] private FadeSpeeds fadeSpeed;
     private bool didFireDoneEvent;
     
-    public float ClockTime {
-        get { return clock.CurrentTime; }
+    public float ClockTime
+    {
+        get => clock.CurrentTime;
     }
     
+    public Script_Clock.TimeStates ClockTimeState
+    {
+        get => clock.TimeState;
+    }
+
     void Update()
     {
         if (clock.State == Script_Clock.States.Done && !didFireDoneEvent)

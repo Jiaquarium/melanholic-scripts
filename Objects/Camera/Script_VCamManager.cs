@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
+/// <summary>
+/// The entry point to handle VCams through code.
+/// </summary>
+
+[RequireComponent(typeof(Script_CameraShake))]
 public class Script_VCamManager : MonoBehaviour
 {
     // Singleton
@@ -61,6 +67,11 @@ public class Script_VCamManager : MonoBehaviour
     {
         vCam2.SetPriority(1);
         vCam1.SetPriority(0);
+    }
+
+    public void Shake(float duration, float amp, float freq, Action cb = null)
+    {
+        GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
     }
 
     public void GetAllVCamPrioritiesNotEqual(int i)

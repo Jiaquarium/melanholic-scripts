@@ -42,6 +42,11 @@ public class Script_Clock : MonoBehaviour
         get => state;
         set => state = value;
     }
+
+    public TimeStates TimeState
+    {
+        get => timeState;
+    }
     
     // Update is called once per frame
     void Update()
