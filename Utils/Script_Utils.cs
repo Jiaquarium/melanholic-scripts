@@ -226,7 +226,8 @@ public static class Script_Utils
             Script_Names.ActionSticker,                 // {65}
             Script_Names.LastElevator,                  // {66}
             Script_Names.StickerSkill,                  // {67}
-            Script_Names.StickerSkills                  // {68}
+            Script_Names.StickerSkills,                 // {68}
+            Script_Names.Coconut                        // {69}
         );
     }
 

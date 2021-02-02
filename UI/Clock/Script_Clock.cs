@@ -26,7 +26,7 @@ public class Script_Clock : MonoBehaviour
     public const float WarningTime      = 21360f; // 5:56:00 15 min left (3 min IRL)
     public const float DangerTime       = 22200f; // 6:10:00 5 min left (1 min IRL)
     public const float EndTime          = 22260f; // 6:11:00 nautical dawn Chicago, IL Jan 1 2021
-    public float TimeMultipler          = 5f;
+    public static float TimeMultiplier  = 5f;
     [SerializeField] private float currentTime;
     [SerializeField] private States state;
     [SerializeField] private TimeStates timeState;
@@ -55,7 +55,7 @@ public class Script_Clock : MonoBehaviour
         {
             case (States.Active):
             {
-                CurrentTime += Time.deltaTime * TimeMultipler;
+                CurrentTime += Time.deltaTime * TimeMultiplier;
                 if (CurrentTime > EndTime)  CurrentTime = EndTime;
 
                 UpdateTimeState();
@@ -92,7 +92,7 @@ public class Script_Clock : MonoBehaviour
     {
         bool isClose                = CurrentTime >= WarningTime;
         bool hideColons;
-        float MultiplierHalf        = TimeMultipler / 2;
+        float MultiplierHalf        = TimeMultiplier / 2;
         float MultiplierFourth      = MultiplierHalf / 2;
         float MultiplierEigth       = MultiplierFourth / 2;
         
@@ -107,7 +107,7 @@ public class Script_Clock : MonoBehaviour
         {
             // blinking every 2 sec in game time, every .5 sec real time
             hideColons = State == States.Active
-                && (int)Mathf.Floor(CurrentTime) % TimeMultipler >= MultiplierHalf;
+                && (int)Mathf.Floor(CurrentTime) % TimeMultiplier >= MultiplierHalf;
         }
 
         string displayTime = (CurrentTime).FormatSecondsClock(isClose, hideColons);
