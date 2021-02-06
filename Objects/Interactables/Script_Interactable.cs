@@ -32,6 +32,11 @@ public class Script_Interactable : MonoBehaviour
         get => _disableD;
     }
 
+    protected virtual void OnDisable()
+    {
+        DialogueCoolDownReset();
+    }
+    
     /// <summary>
     /// Parent classes reference isDialogueCoolDown in ActionDefault() 
     /// to cool down after a dialogue end
@@ -52,8 +57,7 @@ public class Script_Interactable : MonoBehaviour
                 yield return null;
             }
 
-            timer = 0f;
-            isDialogueCoolDown = false;
+            DialogueCoolDownReset();
         }
     }
 
@@ -98,5 +102,9 @@ public class Script_Interactable : MonoBehaviour
         }
     }
 
-
+    private void DialogueCoolDownReset()
+    {
+        timer = 0f;
+        isDialogueCoolDown = false;
+    }
 }

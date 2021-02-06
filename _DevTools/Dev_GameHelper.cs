@@ -14,17 +14,6 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
 
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
-    void Awake()
-    {
-        if (!Debug.isDebugBuild || !Const_Dev.IsDevMode)
-        {
-            Destroy(this);
-        }
-    }
-
     public void DefaultPlayerSpawnPos()
     {
         playerSpawn = new Vector3Int(
