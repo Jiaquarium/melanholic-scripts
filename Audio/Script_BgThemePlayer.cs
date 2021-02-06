@@ -11,7 +11,7 @@ using System;
 /// Can disable this if we want this just to be a one-off bg music
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
-public class Script_BgThemePlayer : MonoBehaviour
+public class Script_BgThemePlayer : Script_Speaker
 {
     public bool isUntrackedSource = false;
     [SerializeField] private float fadeOutTargetVol;

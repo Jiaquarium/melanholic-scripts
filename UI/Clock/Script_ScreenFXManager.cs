@@ -23,6 +23,7 @@ public class Script_ScreenFXManager : MonoBehaviour
     const float DangerFrequency         = 1f;
     const float DangerInterval          = 5f;
 
+    [SerializeField] private Script_Game game;
     [SerializeField] private Script_ClockManager clockManager;
     
     [SerializeField] private float currentDuration;
@@ -36,6 +37,8 @@ public class Script_ScreenFXManager : MonoBehaviour
     {
         UpdateScreenFX();
         
+        if (game.IsInHotel())   return;
+
         if (clockManager.ClockTimeState == Script_Clock.TimeStates.None)    return;
 
         timer -= Time.deltaTime;

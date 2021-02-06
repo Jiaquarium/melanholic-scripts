@@ -15,6 +15,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public AudioClip[] AudioClips;
 
     [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private Script_BgThemeSpeakersController bgThemeSpeakersController;
 
     private int currentClipIndex = -1;
     private Coroutine currentFadeCoroutine;
@@ -153,6 +154,18 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             StopCoroutine(currentFadeCoroutine);
             currentFadeCoroutine = null;
         }
+    }
+
+    // ------------------------------------------------------------------
+    // BgThemePlayer Controller Helpers
+    public void PauseBgThemeSpeakers()
+    {
+        bgThemeSpeakersController.PauseSpeakers();
+    }
+
+    public void UnPauseBgThemeSpeakers()
+    {
+        bgThemeSpeakersController.UnPauseSpeakers();
     }
 
     public void Setup()

@@ -10,6 +10,7 @@ public class Script_LightFXManager : MonoBehaviour
     const float WarningEndingIntensity      = 5f;
     const float DangerEndingIntensity       = 20f;
     
+    [SerializeField] private Script_Game game;
     [SerializeField] private List<Light> directionalLights;
     [SerializeField] private Script_ClockManager clockManager;
 
@@ -24,6 +25,14 @@ public class Script_LightFXManager : MonoBehaviour
     private float lastFrame;
     private float timer;
 
+    void OnDisable()
+    {
+        foreach (Light l in directionalLights)
+        {
+            if (l != null)  l.gameObject.SetActive(false);
+        }
+    }
+    
     void Start()
     {
         SetDefaultIntensity();    
@@ -32,6 +41,8 @@ public class Script_LightFXManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (game.IsInHotel())   return;
+        
         timer -= Time.deltaTime;
 
         if (timer <= 0f)
@@ -111,6 +122,7 @@ public class Script_LightFXManager : MonoBehaviour
             if (l.type != LightType.Directional)    return;
 
             l.intensity = DefaultIntensity;
+            Debug.Log($"Set Directional Light {l.name} intensity to {l.intensity}");
         }
     }
 }

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-    drop this gameObject into the World
-*/
-public class Script_ProximitySpeaker : MonoBehaviour
+/// <summary>
+/// Should exist in world, not instanstiated.
+/// </summary>
+[RequireComponent(typeof(AudioSource))]
+public class Script_ProximitySpeaker : Script_Speaker
 {
     public AudioSource audioSource;
     public float maxDistance;

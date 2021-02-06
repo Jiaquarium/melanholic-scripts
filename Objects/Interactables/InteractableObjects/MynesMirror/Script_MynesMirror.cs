@@ -44,8 +44,10 @@ public class Script_MynesMirror : Script_InteractableObjectText
         Script_MynesMirrorEventsManager.OnEndTimeline += StartDialogue;
     }
 
-    void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+        
         Script_MynesMirrorEventsManager.OnEndTimeline -= StartDialogue;
     }
 
@@ -56,7 +58,10 @@ public class Script_MynesMirror : Script_InteractableObjectText
 
         // Fade out BG Music
         Script_BackgroundMusicManager.Control.FadeOutMed(
-            () => game.PauseBgMusic(),
+            () => {
+                game.PauseBgMusic();
+                game.PauseBgThemeSpeakers();
+            },
             Const_AudioMixerParams.ExposedBGVolume
         );
 
@@ -102,6 +107,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
         // BGM coroutine may still be running, so ensure to Pause in case it was stopped prematurely
         // and never called its callback to pause BGM
         game.PauseBgMusic();
+        game.PauseBgThemeSpeakers();
         
         Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
         bgThemePlayer.gameObject.SetActive(true);
@@ -134,6 +140,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     public void FadeInBGMusic()
     {
         game.UnPauseBgMusic();
+        game.UnPauseBgThemeSpeakers();
         Script_BackgroundMusicManager.Control.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
     }
     // Next Node Actions END

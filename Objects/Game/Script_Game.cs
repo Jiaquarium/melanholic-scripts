@@ -155,6 +155,11 @@ public class Script_Game : MonoBehaviour
         get => pianoSpawns;
     }
 
+    public Script_LevelBehavior[] HotelLevelBehaviors
+    {
+        get => hotelLevelBehaviors;
+    }
+
     /// <summary>
     /// (DEV): Sets all levels to inactive from Dev'ing
     /// to avoid errors when a level is active on load where their GameObjects's
@@ -574,10 +579,10 @@ public class Script_Game : MonoBehaviour
 
     public bool IsInHotel()
     {
-        if (hotelLevelBehaviors.Length == 0)
+        if (HotelLevelBehaviors.Length == 0)
             Debug.LogError("You need to specify hotel behaviors; otherwise, the clock will always be running.");
         
-        foreach (Script_LevelBehavior lb in hotelLevelBehaviors)
+        foreach (Script_LevelBehavior lb in HotelLevelBehaviors)
         {
             if (levelBehavior == lb)    return true;
         }
@@ -1470,6 +1475,16 @@ public class Script_Game : MonoBehaviour
     {
         if (BGMManager != null)
             BGMManager.UnPause();
+    }
+
+    public void PauseBgThemeSpeakers()
+    {
+        BGMManager.PauseBgThemeSpeakers();
+    }
+
+    public void UnPauseBgThemeSpeakers()
+    {
+        BGMManager.UnPauseBgThemeSpeakers();
     }
 
     public Script_BgThemePlayer PlayNPCBgTheme(Script_BgThemePlayer bgThemePlayerPrefab)
