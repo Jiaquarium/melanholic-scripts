@@ -39,9 +39,12 @@ public class Script_DemonNPC : Script_MovingNPC
     [SerializeField] Script_PsychicNodesController psychicNodesController;
     
     [SerializeField] bool _isIntroPsychicNode;
+    
+    [Tooltip("Shows an intro node on first interaction")]
     [HideInInspector][SerializeField] private Script_DialogueNode _introPsychicNode;
     
-    [Tooltip("Combine the intro node with the first Psychic Node")]
+    [Tooltip("Make the intro node's child the first Psychic Node")]
+    // This is useful if you want to show the Psychic Node no matter what
     [HideInInspector][SerializeField] bool _shouldPrependIntroNode;
     
     private Script_DialogueNode[] defaultNodes;
@@ -112,7 +115,7 @@ public class Script_DemonNPC : Script_MovingNPC
             PsychicNodes = psychicNodesController.Nodes;
         }
 
-        defaultNodes = dialogueNodes;
+        if (defaultNodes == null || defaultNodes.Length == 0)   defaultNodes = dialogueNodes;
         base.OnEnable();
     }
     
@@ -125,7 +128,7 @@ public class Script_DemonNPC : Script_MovingNPC
     private void HandlePsychicDuck()
     {
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        Debug.Log($"isPsychicDuckActive: {isPsychicDuckActive}");
+        Debug.Log($"{name}: HandlePsychicDuck() isPsychicDuckActive: {isPsychicDuckActive}");
 
         if (isPsychicDuckActive)
         {
@@ -159,13 +162,14 @@ public class Script_DemonNPC : Script_MovingNPC
             // if previously talked psychic, then need to switch and reset idx
             if (didTalkPsychic)
             {
+                Debug.Log($"No Psychic Duck; resetting defaultNode");
                 SwitchDialogueNodes(defaultNodes, isReset: true);
                 didTalkPsychic = false;
             }
             else
             {
                 // don't reset idx if staying in defaultNodes
-                Debug.Log($"using defaultNode[{dialogueIndex}]: {defaultNodes[dialogueIndex]}");
+                Debug.Log($"No Psychic Duck; using defaultNode[{dialogueIndex}]: {defaultNodes[dialogueIndex]}");
                 SwitchDialogueNodes(defaultNodes, false);
             }
         }
