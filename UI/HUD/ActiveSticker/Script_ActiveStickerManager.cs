@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 /// <summary>
 /// Manages ActiveSticker, the View is controlled by StickerHolster
@@ -11,6 +12,7 @@ public class Script_ActiveStickerManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_ActiveSticker activeSticker;
     [SerializeField] private FadeSpeeds fadeSpeed;
+    [SerializeField] private PlayableDirector activeStickerDirector;
 
     public Script_Sticker ActiveSticker
     {
@@ -30,6 +32,11 @@ public class Script_ActiveStickerManager : MonoBehaviour
     public bool RemoveSticker()
     {
         return activeSticker.RemoveSticker();
+    }
+
+    public void AnimateActiveStickerSlot()
+    {
+        activeStickerDirector.Play();
     }
 
     public void Setup()

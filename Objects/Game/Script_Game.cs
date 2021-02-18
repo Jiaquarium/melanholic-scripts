@@ -170,23 +170,23 @@ public class Script_Game : MonoBehaviour
     {
         Debug.Log("~~~~~~~~ TASKS RIGHT AFTER GAME SCENE LOAD ~~~~~~~~");
         LevelsInactivate();
+    }
 
-        void LevelsInactivate()
+    public static void LevelsInactivate()
+    {
+        Debug.Log("~~~~~~~~ Disabling all level grids; ensure these are inactive in prod ~~~~~~~~");
+
+        Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
+        foreach (Script_LevelGrid lvl in lvls)
         {
-            Debug.Log("~~~~~~~~ Disabling all level grids; ensure these are inactive in prod ~~~~~~~~");
-
-            Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
-            foreach (Script_LevelGrid lvl in lvls)
+            if (lvl.gameObject.activeSelf)
             {
-                if (lvl.gameObject.activeSelf)
-                {
-                    string s = $"{lvl.name} is active. You need to set this inactive at game load for prod.";
-                    if (Const_Dev.IsDevMode)    Debug.Log(s);
-                    else                        Debug.LogWarning($"<color=red>{s}</color>");
-                }
-                
-                lvl.gameObject.SetActive(false);
+                string s = $"{lvl.name} is active. You need to set this inactive at game load for prod.";
+                if (Const_Dev.IsDevMode)    Debug.Log(s);
+                else                        Debug.LogWarning($"<color=red>{s}</color>");
             }
+            
+            lvl.gameObject.SetActive(false);
         }
     }
     

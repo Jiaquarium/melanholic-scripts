@@ -36,13 +36,19 @@ public class Script_StickerEffectsController : MonoBehaviour
             Debug.Log("No sticker in sticker holster slot");
             NullSFX();
         }
-        else if (activeSticker != null && activeSticker.id == stickerToSwitch.id)
-        {
-            Script_ActiveStickerManager.Control.RemoveSticker();
-        }
         else
         {
-            Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch);
+            if (activeSticker != null && activeSticker.id == stickerToSwitch.id)
+            {
+                Script_ActiveStickerManager.Control.RemoveSticker();
+            }
+            else
+            {
+                Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch);
+            }
+
+            // Switch SFX
+            SwitchSFX();
         }
     }
     
@@ -53,7 +59,11 @@ public class Script_StickerEffectsController : MonoBehaviour
     public void Effect(Directions dir)
     {
         Script_Sticker activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;
-        if (activeSticker == null)  return;
+        if (activeSticker == null)
+        {
+            NullSFX();
+            return;
+        }
         
         switch (activeSticker.id)
         {
@@ -78,12 +88,22 @@ public class Script_StickerEffectsController : MonoBehaviour
                 melancholyPianoEffect.Effect();
                 break;
         }
+
+        // On Successful Active Sticker Use, Show Animation
+        Script_ActiveStickerManager.Control.AnimateActiveStickerSlot();
     }
 
     void NullSFX()
     {
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.empty, Script_SFXManager.SFX.emptyVol
+        );
+    }
+
+    void SwitchSFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.PlayerStashItem, Script_SFXManager.SFX.PlayerStashItemVol
         );
     }
 

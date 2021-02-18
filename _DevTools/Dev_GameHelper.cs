@@ -36,6 +36,11 @@ public class Dev_GameHelper : MonoBehaviour
             exitType: Script_Exits.ExitType.Default
         );
     }
+
+    public void BuildSetup()
+    {
+        Script_Game.LevelsInactivate();
+    }
 }
 
 #if UNITY_EDITOR
@@ -50,9 +55,15 @@ public class Dev_GameHelperTester : Editor
         {
             t.DefaultPlayerSpawnPos();
         }
+        
         if (GUILayout.Button("ExitToLevel()"))
         {
             t.ExitToLevel();
+        }
+
+        if (GUILayout.Button("Build Setup"))
+        {
+            t.BuildSetup();
         }
     }
 }
