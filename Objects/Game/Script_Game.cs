@@ -140,6 +140,8 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
     [SerializeField] private Script_ExitMetadataObject playerSpawn;
     [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
+
+    [SerializeField] private Script_LevelBehavior_33 bayV1Behavior;
     
     public Script_Run Run
     {
@@ -1689,6 +1691,11 @@ public class Script_Game : MonoBehaviour
     public void HandleExitCutSceneLevelBehavior()
     {
         levelBehavior.HandleExitCutScene();
+    }
+
+    public void SetBayV1ToSaveState()
+    {
+        bayV1Behavior.Behavior = Script_LevelBehavior_33.State.Save;
     }
 
     /* =========================================================================

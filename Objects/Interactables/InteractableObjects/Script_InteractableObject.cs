@@ -39,6 +39,11 @@ public class Script_InteractableObject : Script_Interactable
             AutoSetup();
         }
     }
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     
     protected virtual void Start()
     {

@@ -23,6 +23,11 @@ public class Script_InteractableObjectText : Script_InteractableObject
     {
         base.OnEnable();
     }
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     
     protected override void AutoSetup()
     {

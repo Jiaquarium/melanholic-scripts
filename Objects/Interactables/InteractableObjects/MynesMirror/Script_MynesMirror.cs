@@ -18,9 +18,9 @@ public class Script_MynesMirror : Script_InteractableObjectText
     [SerializeField] private Script_DialogueNode _MynesConversationNode;
     [SerializeField] private Script_MynesMirrorNodesController dialogueController;
 
-    [SerializeField] private Script_BgThemePlayer bgThemePlayer;
+    [SerializeField] protected Script_BgThemePlayer bgThemePlayer;
     
-    private Script_DialogueNode MynesConversationNode
+    protected Script_DialogueNode MynesConversationNode
     {
         get => dialogueController?.Nodes?.Length > 0
                 ? dialogueController.Nodes[0]
@@ -49,6 +49,11 @@ public class Script_MynesMirror : Script_InteractableObjectText
         base.OnDisable();
         
         Script_MynesMirrorEventsManager.OnEndTimeline -= StartDialogue;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
     public override void ActionDefault()
@@ -87,7 +92,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// <summary>
     /// Begin Myne's dialogue, the end of Timeline calls MynesMirrorManager to fire this event
     /// </summary>
-    public void StartDialogue()
+    public virtual void StartDialogue()
     {
         Script_DialogueManager.DialogueManager.StartDialogueNode(MynesConversationNode);
     }
@@ -117,14 +122,14 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// Remove cut scene
     /// Called from last Dialogue Node
     /// </summary>
-    public void End()
+    public virtual void End()
     {
         // Fade out BG Theme Player and Fade in Game BGM
         Script_BackgroundMusicManager.Control.FadeOutMed(() => {
-            bgThemePlayer.gameObject.SetActive(false);
-            FadeInBGMusic();
-        },
-        Const_AudioMixerParams.ExposedBGVolume
+                bgThemePlayer.gameObject.SetActive(false);
+                FadeInBGMusic();
+            },
+            Const_AudioMixerParams.ExposedBGVolume
         );
         
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {

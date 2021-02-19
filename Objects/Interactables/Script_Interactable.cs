@@ -36,6 +36,11 @@ public class Script_Interactable : MonoBehaviour
     {
         DialogueCoolDownReset();
     }
+
+    protected virtual void Awake()
+    {
+        
+    }
     
     /// <summary>
     /// Parent classes reference isDialogueCoolDown in ActionDefault() 
