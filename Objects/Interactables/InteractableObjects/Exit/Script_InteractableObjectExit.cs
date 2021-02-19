@@ -11,6 +11,9 @@ public class Script_InteractableObjectExit : Script_InteractableObject
     public override void ActionDefault()
     {
         Debug.Log("Exit Object Interaction!");
+        
+        if (CheckDisabledDirections())  return;
+        
         Exit();
     }
 

@@ -87,6 +87,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_ItemPickUpTheatricsManager itemPickUpTheatricsManager;
     [SerializeField] private Script_Names namesManager;
     [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
+    [SerializeField] private Script_WeatherFXManager weatherFXManager;
     
     [SerializeField] private Script_HitBoxDictionary hitBoxDictionary;
     [SerializeField] private Script_SaveGameControl saveGameControl;
@@ -454,11 +455,11 @@ public class Script_Game : MonoBehaviour
     public void InitiateLevel()
     {
         SetLevelBehavior();
-        
+        weatherFXManager.SnowDayEffect();
         StartBgMusic();
         SetTileMaps();
         grid.SetActive(true);    /// Unity startup lifeCycle events are called here
-        // CreatePlayer();
+        
         SetupPlayerOnLevel();
 
         SetupDialogueManagerOnLevel();

@@ -9,6 +9,7 @@ using UnityEngine.Playables;
 public class Script_LevelBehavior : MonoBehaviour
 {
     public Script_Game game;
+    [SerializeField] private Script_Snow snowEffect;
 
     void Awake()
     {
@@ -57,28 +58,65 @@ public class Script_LevelBehavior : MonoBehaviour
     }
 
     protected virtual void OnDisable() {}
+    
     protected virtual void OnEnable() {}
+    
     public virtual void EatDemon(int Id) {}
+    
     public virtual void SetSwitchState(int Id, bool isOn) {
         Debug.LogError($"You must override SetSwitchState(int Id, bool isOn) when using switches.");
     }
+    
     public virtual void HandleMovingNPCCurrentMovesDone() {}
+    
     public virtual void HandleMovingNPCAllMovesDone() {}
+    
     public virtual void HandleDDRArrowClick(int t) {}
+    
     public virtual void OnDoorLockUnlock(int id) {}
+    
     public virtual void OnCloseInventory() {}
+    
     public virtual void HandleExitCutScene() {}
+    
     public virtual void HandleMovingNPCOnApproachedTarget(int i) {}
+    
     public virtual void HandleDialogueNodeAction(string a) {}
+    
     public virtual void HandleDialogueNodeUpdateAction(string a) {}
+    
     public virtual bool ActivateTrigger(string Id) { return true; }
+    
     public virtual void Cleanup() {}
+    
     public virtual int OnSubmit(string s) { return -1; }
+    
     public virtual void HandlePlayableDirectorStopped(PlayableDirector aDirector) {}
+    
+    /// <summary>
+    /// This will be called on Level Behavior initialization by WeatherManager
+    /// When Level Behavior is set inactive, Script_Snow gameObject itself will
+    /// handle setting inactive again
+    /// </summary>
+    public void SnowFallStart()
+    {
+        if (snowEffect != null)
+        {
+            snowEffect.gameObject.SetActive(true);
+        }
+        else
+        {
+            string warning = $"{name} has no Snow Effect defined";
+            if (Const_Dev.IsProd)       Debug.LogError(warning);
+            else                        Debug.Log(warning);
+        }
+    }
+    
     public virtual void InitialState() { }
     /// <summary>
     /// Called on EVERY level init
     /// </summary>
+    
     public virtual void Setup()
     {
         // game.CreateNPCs();
