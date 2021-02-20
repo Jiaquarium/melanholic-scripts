@@ -227,7 +227,9 @@ public static class Script_Utils
             Script_Names.LastElevator,                  // {66}
             Script_Names.StickerSkill,                  // {67}
             Script_Names.StickerSkills,                 // {68}
-            Script_Names.Coconut                        // {69}
+            Script_Names.Coconut,                       // {69}
+            Script_Names.WeekdayShift,                  // {70}
+            Script_Names.WeekendShift                   // {71}
         );
     }
 

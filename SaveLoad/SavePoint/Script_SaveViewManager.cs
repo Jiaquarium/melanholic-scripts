@@ -16,6 +16,7 @@ public class Script_SaveViewManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     
     [SerializeField] private Script_CanvasGroupController saveAndRestartCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController saveAndStartWeekendCanvasGroup;
     
     [SerializeField] private CanvasGroup saveChoiceCanvas;
     [SerializeField] private CanvasGroup saveEntryCanvas;
@@ -54,6 +55,11 @@ public class Script_SaveViewManager : MonoBehaviour
     public void ShowSaveAndRestarMessage()
     {
         saveAndRestartCanvasGroup.FadeIn();
+    }
+
+    public void ShowSaveAndStartWeekendMessage()
+    {
+        saveAndStartWeekendCanvasGroup.FadeIn();
     }
     
     public void StartSavePromptMode()
@@ -184,5 +190,6 @@ public class Script_SaveViewManager : MonoBehaviour
         entryInput.Setup();
         
         saveAndRestartCanvasGroup.Close();
+        saveAndStartWeekendCanvasGroup.Close();
     }
 }

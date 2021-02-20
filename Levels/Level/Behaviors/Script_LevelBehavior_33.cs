@@ -11,8 +11,9 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
     /* ======================================================================= */
     public enum State
     {
-        Default     = 0,
-        Save        = 1,
+        Default                     = 0,
+        Save                        = 1,
+        SaveAndStartWeekendCycle    = 2,
     }
 
     [SerializeField] private Transform exitParent;
@@ -37,6 +38,10 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         {
             case (State.Save):
                 exitToLobby.Type = Script_Exits.ExitType.SaveAndRestart;
+                elevator.State = Script_InteractableObject.States.Disabled;
+                break;
+            case (State.SaveAndStartWeekendCycle):
+                exitToLobby.Type = Script_Exits.ExitType.SaveAndStartWeekendCycle;
                 elevator.State = Script_InteractableObject.States.Disabled;
                 break;
             default:

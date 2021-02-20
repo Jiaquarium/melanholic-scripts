@@ -176,6 +176,8 @@ public class Script_Names: MonoBehaviour
     public const string StickerSkill                    = "<b>Sticker Skill</b>";               // {67}
     public const string StickerSkills                   = "<b>Sticker Skills</b>";              // {68}
     public const string Coconut                         = "<b>Coconut</b>";                     // {69}
+    public const string WeekdayShift                    = "<b>Weekday Shift</b>";               // {70}
+    public const string WeekendShift                    = "<b>Weekend Shift</b>";               // {71}
 
 
     // ------------------------------------------------------------------

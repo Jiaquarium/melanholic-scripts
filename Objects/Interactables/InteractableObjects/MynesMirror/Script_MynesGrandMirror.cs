@@ -76,10 +76,10 @@ public class Script_MynesGrandMirror : Script_MynesMirror
             Exit();
         });
 
-        // Exit to Bay v1 but ensure it's Bay V1: Save State
+        // Exit to Bay v1 but ensure it's Bay V1 Save and Start Weekend Cycle State
         void Exit()
         {
-            Script_Game.Game.SetBayV1ToSaveState();
+            Script_Game.Game.SetBayV1ToSaveState(Script_LevelBehavior_33.State.SaveAndStartWeekendCycle);
             Script_Game.Game.Exit(
                 exit.data.level,
                 exit.data.playerSpawn,

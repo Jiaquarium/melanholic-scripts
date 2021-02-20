@@ -142,6 +142,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
 
     [SerializeField] private Script_LevelBehavior_33 bayV1Behavior;
+    [SerializeField] private Script_LevelBehavior_48 grandMirrorRoomBehavior;
     
     public Script_Run Run
     {
@@ -1671,6 +1672,9 @@ public class Script_Game : MonoBehaviour
             case (Script_Exits.ExitType.Piano):
                 followUp = Script_Exits.FollowUp.Piano;
                 break;
+            case (Script_Exits.ExitType.SaveAndStartWeekendCycle):
+                followUp = Script_Exits.FollowUp.SaveAndStartWeekendCycle;
+                break;
             default:
                 followUp = Script_Exits.FollowUp.Default;
                 break;
@@ -1693,9 +1697,9 @@ public class Script_Game : MonoBehaviour
         levelBehavior.HandleExitCutScene();
     }
 
-    public void SetBayV1ToSaveState()
+    public void SetBayV1ToSaveState(Script_LevelBehavior_33.State saveState)
     {
-        bayV1Behavior.Behavior = Script_LevelBehavior_33.State.Save;
+        bayV1Behavior.Behavior = saveState;
     }
 
     /* =========================================================================
@@ -1743,6 +1747,22 @@ public class Script_Game : MonoBehaviour
         runsManager.IncrementRun();
         CleanRun();
         
+        SaveWaitRestartAtLobby();
+    }
+
+    public void StartWeekendCycleSaveInitialize()
+    {
+        runsManager.StartWeekendCycle();
+        CleanRun();
+
+        // Set LB48 isDone to update that we've done the Myne Grand Mirror Cut Scene
+        grandMirrorRoomBehavior.IsDone = true;
+
+        SaveWaitRestartAtLobby();
+    }
+
+    private void SaveWaitRestartAtLobby()
+    {
         Model_PlayerState playerData = new Model_PlayerState(
             (int)playerSpawn.data.playerSpawn.x,
             (int)playerSpawn.data.playerSpawn.y,
@@ -1761,9 +1781,6 @@ public class Script_Game : MonoBehaviour
             playerData,
             gameData
         );
-
-        // Show save screen. And restart game after a specified wait time.
-        saveManager.ShowSaveAndRestarMessage();
         
         StartCoroutine(WaitToRestartGame());
 
@@ -1772,6 +1789,16 @@ public class Script_Game : MonoBehaviour
             yield return new WaitForSeconds(saveManager.RestartGameTime);
             RestartGame();
         }
+    }
+
+    public void ShowSaveAndRestartMessageDefault()
+    {
+        saveManager.ShowSaveAndRestarMessage();
+    }
+
+    public void ShowSaveAndStartWeekendMessage()
+    {
+        saveManager.ShowSaveAndStartWeekendMessage();
     }
 
     /// 2. <!-- Restart from Current Initialized Run -->

@@ -18,21 +18,23 @@ public class Script_Exits : MonoBehaviour
 {
     public enum ExitType
     {
-        Default             = 0,
-        SaveAndRestart      = 1,
-        Elevator            = 2,
-        CutScene            = 3,
-        Piano               = 4,
-        StairsUp            = 10,
+        Default                     = 0,
+        SaveAndRestart              = 1,
+        Elevator                    = 2,
+        CutScene                    = 3,
+        Piano                       = 4,
+        SaveAndStartWeekendCycle    = 5,
+        StairsUp                    = 10,
     }
     
     public enum FollowUp
     {
-        Default             = 0,
-        CutSceneNoFade      = 1,
-        CutScene            = 2,
-        SaveAndRestart      = 3,
-        Piano               = 4
+        Default                     = 0,
+        CutSceneNoFade              = 1,
+        CutScene                    = 2,
+        SaveAndRestart              = 3,
+        Piano                       = 4,
+        SaveAndStartWeekendCycle    = 5,
     }
     public CanvasGroup canvas;
 
@@ -102,6 +104,12 @@ public class Script_Exits : MonoBehaviour
             }
             case (FollowUp.Piano):
             {
+                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                break;
+            }
+            case (FollowUp.SaveAndStartWeekendCycle):
+            {
+                Debug.Log("SaveAndStartWeekendCycle Exit Follow Up");
                 isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
                 break;
             }
@@ -181,7 +189,15 @@ public class Script_Exits : MonoBehaviour
                 case (FollowUp.SaveAndRestart):
                 {
                     Debug.Log("------------ SAVE STATE AND RESTART ------------");
+                    game.ShowSaveAndRestartMessageDefault();
                     game.NextRunSaveInitialize();
+                    break;
+                }
+                case (FollowUp.SaveAndStartWeekendCycle):
+                {
+                    Debug.Log("------------ SAVE STATE AND START WEEKEND CYCLE ------------");
+                    game.ShowSaveAndStartWeekendMessage();
+                    game.StartWeekendCycleSaveInitialize();
                     break;
                 }
                 default:

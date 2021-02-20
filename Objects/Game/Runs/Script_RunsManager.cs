@@ -17,7 +17,8 @@ public class Script_RunsManager : MonoBehaviour
         Weekday = 1,
     }
     
-    [SerializeField] private Script_Run.DayId _startDay = Script_Run.DayId.fri;
+    [SerializeField] private Script_Run.DayId _startDay;
+    [SerializeField] private Script_Run.DayId _weekendStartDay;
     
     [Tooltip("Current run index")] [SerializeField] private int _runIdx;
     [SerializeField] private Cycle _runCycle;
@@ -46,7 +47,7 @@ public class Script_RunsManager : MonoBehaviour
     public Cycle RunCycle
     {
         get => _runCycle;
-        set => _runCycle = value;
+        private set => _runCycle = value;
     }
 
     public Cycle NextRunCycle
@@ -58,6 +59,11 @@ public class Script_RunsManager : MonoBehaviour
     private Script_Run.DayId StartDay
     {
         get => _startDay;
+    }
+
+    private Script_Run.DayId WeekendStartDay
+    {
+        get => _weekendStartDay;
     }
     
     void Update()
@@ -123,6 +129,12 @@ public class Script_RunsManager : MonoBehaviour
         return newRunIdx;
     }
 
+    public void StartWeekendCycle()
+    {
+        RunCycle = Cycle.Weekend;
+        RunIdx = GetRunIdxByDayId(WeekendStartDay);
+    }
+
     private void HandleRunsCanvas()
     {
         if (
@@ -140,7 +152,7 @@ public class Script_RunsManager : MonoBehaviour
 
     public void Initialize()
     {
-        RunCycle = Cycle.Weekend;
+        RunCycle = Cycle.Weekday;
         RunIdx = GetRunIdxByDayId(StartDay);
     }
     
