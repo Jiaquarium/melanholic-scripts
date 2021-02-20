@@ -141,6 +141,9 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject playerSpawn;
     [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
 
+    // ------------------------------------------------------------------
+    // Specific Level Behaviors for state
+    [SerializeField] private Script_LevelBehavior_26 eileensMindBehavior;
     [SerializeField] private Script_LevelBehavior_33 bayV1Behavior;
     [SerializeField] private Script_LevelBehavior_48 grandMirrorRoomBehavior;
     
@@ -592,6 +595,11 @@ public class Script_Game : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool IsGrandMirrorSetup()
+    {
+        return eileensMindBehavior.isPuzzleComplete && !grandMirrorRoomBehavior.IsDone;
     }
 
     /* =======================================================================

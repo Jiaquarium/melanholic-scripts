@@ -21,6 +21,7 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     [SerializeField] private Script_StickerObject PsychicDuck;
     [SerializeField] private Script_TimelineController IdsTimelineController;
     [SerializeField] private Transform Ids;
+    [SerializeField] private Transform GrandMirrorPaintingEntrance;
     private bool isInit = true;
 
     public bool GotPsychicDuck
@@ -50,6 +51,21 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         }
     }
 
+    private void HandleGrandMirrorPaintingEntrance()
+    {
+        if (game.IsGrandMirrorSetup())
+        {
+            // switch out elevator for Grand Mirror
+            GrandMirrorPaintingEntrance.gameObject.SetActive(true);
+            exitParent.gameObject.SetActive(false);
+        }
+        else
+        {
+            GrandMirrorPaintingEntrance.gameObject.SetActive(false);
+            exitParent.gameObject.SetActive(true);
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Next Node Action Unity Events START
     public void GivePsychicDuck()
@@ -73,6 +89,7 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     public override void Setup()
     {
         game.SetupInteractableObjectsExit(exitParent, isInit);
+        HandleGrandMirrorPaintingEntrance();
 
         /// Setup Ids intro on Run 0
         if (!GotPsychicDuck && game.Run.dayId == Script_Run.DayId.fri)      Ids.gameObject.SetActive(true);
