@@ -34,8 +34,10 @@ public class Script_Elevator : Script_InteractableObjectExit
         UpdateState();
     }
 
-    void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+        
         Script_PlayerEventsManager.OnEnteredElevator -= OnEnteredElevator;
     }
     

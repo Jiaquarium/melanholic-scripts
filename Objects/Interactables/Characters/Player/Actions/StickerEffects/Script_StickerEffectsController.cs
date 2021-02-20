@@ -13,6 +13,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     [SerializeField] private Script_PlayerAttackEat eatAttack; // TBD make into Effect
     [SerializeField] private Script_IceSpikeEffect iceSpikeEffect;
     [SerializeField] private Script_MelancholyPianoEffect melancholyPianoEffect;
+    [SerializeField] private Script_LastElevatorEffect lastElevatorEffect;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     /// <summary>
@@ -86,6 +87,10 @@ public class Script_StickerEffectsController : MonoBehaviour
             case Const_Items.MelancholyPianoId:
                 Debug.Log("Melancholy Piano Effect Activated");
                 melancholyPianoEffect.Effect();
+                break;
+            case Const_Items.LastElevatorId:
+                Debug.Log("Last Elevator Effect Activated");
+                lastElevatorEffect.Effect();
                 break;
         }
 

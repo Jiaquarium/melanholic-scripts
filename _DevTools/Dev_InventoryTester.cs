@@ -31,6 +31,7 @@ public class Dev_InventoryTester : MonoBehaviour
         AddBoarNeedle();
         AddIceSpike();
         AddMelancholyPiano();
+        AddLastElevator();
     }
 
     public void AddKeys()
@@ -63,6 +64,11 @@ public class Dev_InventoryTester : MonoBehaviour
     public void AddMelancholyPiano()
     {
         Script_Game.Game.AddItemById(Const_Items.MelancholyPianoId);
+    }
+
+    public void AddLastElevator()
+    {
+        Script_Game.Game.AddItemById(Const_Items.LastElevatorId);
     }
 
     // ------------------------------------------------------------------------
@@ -139,6 +145,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Melancholy Piano"))
         {
             inventoryTester.AddMelancholyPiano();
+        }
+
+        if (GUILayout.Button("Add: Last Elevator"))
+        {
+            inventoryTester.AddLastElevator();
         }
 
         GUILayout.Space(8);

@@ -138,8 +138,12 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Transform newGameSpawnDestination;
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
+    
+    // ------------------------------------------------------------------
+    // Spawn points
     [SerializeField] private Script_ExitMetadataObject playerSpawn;
     [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
+    [SerializeField] private Script_ExitMetadataObject lastElevatorExit;
 
     // ------------------------------------------------------------------
     // Specific Level Behaviors for state
@@ -165,6 +169,11 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior[] HotelLevelBehaviors
     {
         get => hotelLevelBehaviors;
+    }
+
+    public Script_ExitMetadataObject LastElevatorExit
+    {
+        get => lastElevatorExit;
     }
 
     /// <summary>

@@ -178,6 +178,7 @@ public class Script_Names: MonoBehaviour
     public const string Coconut                         = "<b>Coconut</b>";                     // {69}
     public const string WeekdayShift                    = "<b>Weekday Shift</b>";               // {70}
     public const string WeekendShift                    = "<b>Weekend Shift</b>";               // {71}
+    public const string ElevatorBay                     = "<b>Elevator Bay</b>";                // {72}
 
 
     // ------------------------------------------------------------------

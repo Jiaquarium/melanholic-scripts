@@ -14,6 +14,7 @@ public class Const_Items : MonoBehaviour
     public const string AnimalWithinId          = "sticker_animal-within";
     public const string IceSpikeId              = "sticker_ice-spike";
     public const string MelancholyPianoId       = "sticker_melancholy-piano";
+    public const string LastElevatorId          = "sticker_last-elevator";
     
     // ------------------------------------------------------------------------
     //  Usables
