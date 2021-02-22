@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,7 +17,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
     public const int QuestionCount = 8;
     [SerializeField] private int[] _scarletCipher = new int[QuestionCount];
     [SerializeField] private bool[] _scarletCipherVisibility = new bool[QuestionCount];
-    [Tooltip("The relevant 20 question conversation nodes")]
+    [Tooltip("The relevant 8 question conversation nodes")]
     [SerializeField] private Script_DialogueNode_MynesConversationChoiceParent[] dialogues = new Script_DialogueNode_MynesConversationChoiceParent[QuestionCount];
     [SerializeField] private bool[] _mynesMirrorsActivationStates = new bool[QuestionCount];
     [SerializeField] private bool[] _mynesMirrorsSolved = new bool[QuestionCount];
@@ -77,6 +78,35 @@ public class Script_ScarletCipherManager : MonoBehaviour
         }
     }
 
+    public bool CheckCCTVCode(string codeInput)
+    {
+        Debug.Log($"Scarlet Cipher Length: {ScarletCipher.Length}");
+        
+        for (int i = 0; i < ScarletCipher.Length; i++)
+        {
+            int codeValue;
+            
+            try
+            {
+                codeValue = Int32.Parse(codeInput[i].ToString());
+            }
+            catch (FormatException e)
+            {
+                Debug.LogError($"You need to pass in only digits so it can be parsed properly: {e}");
+                return false;
+            }
+            
+            Debug.Log($"codeValue {codeValue}; ScarletCipher[{i}] {ScarletCipher[i]}");
+
+            if (codeValue != ScarletCipher[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void InitialState()
     {
         ResetMynesMirrors();
@@ -93,7 +123,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
         {
             if (dialogues[i] == null)
             {
-                newCipher[i] = -1;
+                newCipher[i] = 9;
                 Debug.Log($"You need to reference a dialogue node parent for cipher slot {i}");
                 continue;
             }
@@ -101,7 +131,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
             int choicesCount = dialogues[i].data.children.Length;
             
             /// Choose a random choice for the node Random.Range(inclusive, exclusive)
-            int choice = Random.Range(0, choicesCount);
+            int choice = UnityEngine.Random.Range(0, choicesCount);
             
             newCipher[i] = choice;
         }
@@ -178,7 +208,7 @@ public class Script_ScarletCipherEditor : Editor
             EditorGUILayout.PropertyField(scarletCipherVisibility.GetArrayElementAtIndex(i),        new GUIContent("Visibility"));
             EditorGUILayout.PropertyField(dialogue.GetArrayElementAtIndex(i),                       new GUIContent("Dialogue"));
             EditorGUILayout.PropertyField(mynesMirrorsActivationStates.GetArrayElementAtIndex(i),   new GUIContent("Mirror Activated"));
-            EditorGUILayout.PropertyField(mynesMirrorsSolved.GetArrayElementAtIndex(i),              new GUIContent("Mirror Solved"));
+            EditorGUILayout.PropertyField(mynesMirrorsSolved.GetArrayElementAtIndex(i),             new GUIContent("Mirror Solved"));
         }
 
         EditorGUI.indentLevel--;

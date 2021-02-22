@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_32 : Script_LevelBehavior
 {
@@ -16,6 +20,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_BgThemePlayer dreamBgmPlayer;
     [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
     private bool isInit = true;
+
+    
+    // ------------------------------------------------------------------
+    // Dev Only TBD DELETE
+    public string DEVELOPMENT_CCTVCodeInput;
 
     private void Start()
     {
@@ -40,11 +49,18 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public override int OnSubmit(string CCTVcodeInput) {
         // Check Cipher
-        Debug.Log("Checking CIPHER!!!!!!!!");
+        bool result = CheckCCTVCode(CCTVcodeInput);
+        
+        Debug.Log($"------------ Result: {result} ------------");
 
         // Call Interactable Object
         
         return -1;
+    }
+
+    public bool CheckCCTVCode(string CCTVcodeInput)
+    {
+        return Script_ScarletCipherManager.Control.CheckCCTVCode(CCTVcodeInput);
     }
 
     // ------------------------------------------------------------------
@@ -114,3 +130,21 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         isInit = false;
     }        
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_LevelBehavior_32))]
+public class Script_LevelBehavior_32Tester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_LevelBehavior_32 t = (Script_LevelBehavior_32)target;
+        if (GUILayout.Button("Check CCTV Code"))
+        {
+            bool result = t.CheckCCTVCode(t.DEVELOPMENT_CCTVCodeInput);
+
+            Debug.Log($"------------ Result: {result} ------------");
+        }
+    }
+}
+#endif
