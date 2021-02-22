@@ -4,8 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[RequireComponent(typeof(AudioSource))]
 public class Script_InputManager : MonoBehaviour
 {
+    public static Script_InputManager Control;
+    
     [SerializeField] private Script_DialogueManager dialogueManager;
     [SerializeField] private Script_InputNameHandler nameHandler;
     [SerializeField] private Script_InputAnswerHandler answerHandler;
@@ -18,21 +21,30 @@ public class Script_InputManager : MonoBehaviour
     [SerializeField] private CanvasGroup interactableObjectInputCanvasGroup;
     
     public Script_EntryInput entryInput;
-    public Script_InputAudioSettings settings;
-    public AudioSource audioSource;
-    public float errorVol;
-    public float typingVol;
-    public float deleteVol; // TODO
+    
+    [SerializeField] private Script_SFXManager SFXManager;
 
-
-    private AudioClip typingSFX;
-    private AudioClip errorSFX;
-    private AudioClip deleteSFX;
+    private AudioSource audioSource;
     
     private void OnEnable() {
         // initialize state of entry input
         entryInput.InitializeState(string.Empty);
         // set active
+    }
+
+    // Singleton instantion in Awake because Input Manager is set up on every level.
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();   
+        
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     /// <summary>
@@ -54,15 +66,28 @@ public class Script_InputManager : MonoBehaviour
         activeInputHandler.HandleSubmit(text);
     }
 
+    public void InsertSFX()
+    {
+        audioSource.PlayOneShot(SFXManager.UITypingSFX, SFXManager.UITypingSFXVol);
+    }
+    
+    public void ErrorSFX()
+    {
+        audioSource.PlayOneShot(SFXManager.UIErrorSFX, SFXManager.UIErrorSFXVol);
+    }
+
     private void OnSubmit(int nextChildNodeIdx)
     {
         if (nextChildNodeIdx > -1)
         {
-            audioSource.PlayOneShot(typingSFX, typingVol);
+            InsertSFX();
             dialogueManager.EndInputMode(nextChildNodeIdx);
         }
         else
-            audioSource.PlayOneShot(errorSFX, errorVol);
+        {
+            ErrorSFX();
+        }
+            
     }
 
     /// <summary>
@@ -105,8 +130,5 @@ public class Script_InputManager : MonoBehaviour
         entryInput.Setup();
         inputCanvasGroup.gameObject.SetActive(false);
         interactableObjectInputCanvasGroup.gameObject.SetActive(false);
-        errorSFX = settings.errorSFX;
-        typingSFX = settings.typingSFX;
-        deleteSFX = settings.deleteSFX;
     }
 }

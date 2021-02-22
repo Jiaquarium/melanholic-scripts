@@ -59,6 +59,10 @@ public class Script_SFXManager : MonoBehaviour
     [Range(0f, 1f)] public float emptyVol;
     public AudioClip piano;
     [Range(0f, 1f)] public float pianoVol;
+    public AudioClip UIErrorSFX;
+    [Range(0f, 1f)] public float UIErrorSFXVol;
+    public AudioClip UITypingSFX;
+    [Range(0f, 1f)] public float UITypingSFXVol;
     
     public void Setup()
     {

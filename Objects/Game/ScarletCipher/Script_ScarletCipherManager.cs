@@ -13,7 +13,7 @@ using UnityEditor;
 public class Script_ScarletCipherManager : MonoBehaviour
 {
     public static Script_ScarletCipherManager Control;
-    public const int QuestionCount = 20;
+    public const int QuestionCount = 8;
     [SerializeField] private int[] _scarletCipher = new int[QuestionCount];
     [SerializeField] private bool[] _scarletCipherVisibility = new bool[QuestionCount];
     [Tooltip("The relevant 20 question conversation nodes")]

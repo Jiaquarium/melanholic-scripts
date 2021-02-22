@@ -5,12 +5,12 @@ using TMPro;
 
 public class Script_InputCodeHandler : Script_InputHandler
 {
-    [SerializeField] private Script_TMPInputAnswerValidator TMPInputAnswerValidator;
+    [SerializeField] private Script_TMPInputCodeValidator TMPInputCodeValidator;
 
     public override void SetValidation(TMP_InputField TMPInputField)
     {
-        Debug.Log($"Setting input validation to {TMPInputAnswerValidator}");
-        TMPInputField.inputValidator = TMPInputAnswerValidator;
+        Debug.Log($"Setting input validation to {TMPInputCodeValidator}");
+        TMPInputField.inputValidator = TMPInputCodeValidator;
     }
     
     public override int HandleSubmit(string text)

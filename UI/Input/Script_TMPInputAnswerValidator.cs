@@ -3,27 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[CreateAssetMenu(fileName = "TMPInputAnswerValidator", menuName = "TMPInputAnswerValidator")]
-public class Script_TMPInputAnswerValidator : TMP_InputValidator
+[CreateAssetMenu(fileName = "TMPInputAnswerValidator", menuName = "TextMeshPro/TMPInputValidator/TMPInputAnswerValidator")]
+public class Script_TMPInputAnswerValidator : Script_TMPInputValidator
 {
     public override char Validate(ref string text, ref int pos, char ch)
     {
         int ASCIICode = (int)ch;
         
-        // handle maxChar count
-        if (pos >= Const_InputValidation.Answer.maxCharCount)     return ch;
-
-        // restrict ASCIICodes
         if (
             ASCIICode >= Const_InputValidation.Answer.minASCII
             && ASCIICode <= Const_InputValidation.Answer.maxASCII
+            && pos < Const_InputValidation.Answer.maxCharCount
         )
         {
-            text = text.Insert(pos, ch.ToString());
-            pos++;
-            return ch;
+            return Insert(ref text, ref pos, ch);
         }
         
-        return ch;
+        return Error(ch);
     }
 }
