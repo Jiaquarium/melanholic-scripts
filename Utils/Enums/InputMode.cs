@@ -2,5 +2,6 @@
 {
     None,
     Name,
-    Answer
+    Answer,
+    Code
 }

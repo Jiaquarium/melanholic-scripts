@@ -107,6 +107,11 @@ public class Script_Interactable : MonoBehaviour
         }
     }
 
+    protected virtual bool CheckDisabled()
+    {
+        return CheckDisabledDirections() || isDialogueCoolDown;
+    }
+
     private void DialogueCoolDownReset()
     {
         timer = 0f;

@@ -745,10 +745,8 @@ public class Script_DialogueManager : MonoBehaviour
     {
         isInputMode = true;
 
-        // set input canvas active
-        inputManager.Initialize(inputMode);
-
-        inputManagerCanvas.gameObject.SetActive(true);
+        // Set input canvas active
+        inputManager.Initialize(inputMode, null);
         inputManager.gameObject.SetActive(true);
     }
 

@@ -53,7 +53,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
 
     public override void ActionDefault()
     {
-        if (CheckIsDisabled())  return;
+        if (CheckDisabled())  return;
         
         /// Initiate dialogue node
         if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
@@ -97,7 +97,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
         }
     }
 
-    protected virtual bool CheckIsDisabled()
+    protected override bool CheckDisabled()
     {
         return
         (

@@ -14,6 +14,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode startNode;
     [SerializeField] private Transform interactableObjectsParent;
     [SerializeField] private Script_BgThemePlayer dreamBgmPlayer;
+    [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
     private bool isInit = true;
 
     private void Start()
@@ -35,6 +36,15 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             Script_DialogueManager.DialogueManager.StartDialogueNode(startNode);
             didStartThought = true;
         }
+    }
+
+    public override int OnSubmit(string CCTVcodeInput) {
+        // Check Cipher
+        Debug.Log("Checking CIPHER!!!!!!!!");
+
+        // Call Interactable Object
+        
+        return -1;
     }
 
     // ------------------------------------------------------------------

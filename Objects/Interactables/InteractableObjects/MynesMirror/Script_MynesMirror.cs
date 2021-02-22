@@ -59,7 +59,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     public override void ActionDefault()
     {
         // Although this check is repeated in base, we need to check before we do other actions.
-        if (CheckIsDisabled())  return;
+        if (CheckDisabled())  return;
 
         // Fade out BG Music
         Script_BackgroundMusicManager.Control.FadeOutMed(
@@ -73,10 +73,10 @@ public class Script_MynesMirror : Script_InteractableObjectText
         base.ActionDefault();
     }
 
-    protected override bool CheckIsDisabled()
+    protected override bool CheckDisabled()
     {
         bool isActivated = Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId];
-        return isActivated || base.CheckIsDisabled();
+        return isActivated || base.CheckDisabled();
     }
 
     /// <summary>
