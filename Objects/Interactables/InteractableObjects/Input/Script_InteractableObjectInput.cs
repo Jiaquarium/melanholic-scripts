@@ -20,22 +20,42 @@ public class Script_InteractableObjectInput : Script_InteractableObject
     {
         if (CheckDisabled())  return;
 
-        game.GetPlayer().SetIsTalking();
+        if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
+        {
+            game.GetPlayer().SetIsTalking();
 
-        // Set input canvas active
-        inputManager.Initialize(inputMode, inputField);
-        inputManager.gameObject.SetActive(true);
+            // Set input canvas active
+            inputManager.Initialize(inputMode, inputField, inputManager.CCTVInputCanvasGroup);
+            inputManager.gameObject.SetActive(true);
+        }
     }
 
     // Called from Level Behavior
     public void OnSubmitSuccess()
     {
-
+        Debug.Log($"{name} Reaction to Success");
+        
+        EndInput();
     }
 
     // Called from Level Behavior
     public void OnSubmitFailure()
     {
+        Debug.Log($"{name} Reaction to Failure");
+        
+        EndInput();
+    }
 
+    private void EndInput()
+    {
+        // Wait for the End of the Frame to end input so won't overlap with an interaction input.
+        StartCoroutine(NextFrameEndInput());
+        
+        IEnumerator NextFrameEndInput()
+        {
+            yield return null;
+            inputManager.End();
+            Script_Game.Game.GetPlayer().SetIsInteract();
+        }
     }
 }

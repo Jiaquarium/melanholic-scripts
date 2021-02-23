@@ -82,6 +82,8 @@ public class Script_ScarletCipherManager : MonoBehaviour
     {
         Debug.Log($"Scarlet Cipher Length: {ScarletCipher.Length}");
         
+        if (codeInput.Length < QuestionCount)   return false;
+        
         for (int i = 0; i < ScarletCipher.Length; i++)
         {
             int codeValue;

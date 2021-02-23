@@ -49,12 +49,20 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public override int OnSubmit(string CCTVcodeInput) {
         // Check Cipher
-        bool result = CheckCCTVCode(CCTVcodeInput);
+        bool isSuccessfulSubmit = CheckCCTVCode(CCTVcodeInput);
         
-        Debug.Log($"------------ Result: {result} ------------");
+        Debug.Log($"------------ Result: {isSuccessfulSubmit} ------------");
 
         // Call Interactable Object
-        
+        if (isSuccessfulSubmit)
+        {
+            CCTVAdminComputer.OnSubmitSuccess();
+        }
+        else
+        {
+            CCTVAdminComputer.OnSubmitFailure();
+        }
+
         return -1;
     }
 

@@ -14,17 +14,25 @@ public class Script_InputManager : MonoBehaviour
     [SerializeField] private Script_InputAnswerHandler answerHandler;
     [SerializeField] private Script_InputCodeHandler codeHandler;
     [SerializeField] public TMP_InputField TMPInputField;
-    private Script_InputHandler activeInputHandler;
-    private TMP_InputField activeInputField;
+    
     
     [SerializeField] private CanvasGroup inputCanvasGroup;
-    [SerializeField] private CanvasGroup interactableObjectInputCanvasGroup;
+    [SerializeField] private CanvasGroup _CCTVInputCanvasGroup;
     
     public Script_EntryInput entryInput;
     
     [SerializeField] private Script_SFXManager SFXManager;
 
     private AudioSource audioSource;
+    
+    private Script_InputHandler activeInputHandler;
+    private TMP_InputField activeInputField;
+    private CanvasGroup activeInputCanvasGroup;
+
+    public CanvasGroup CCTVInputCanvasGroup
+    {
+        get => _CCTVInputCanvasGroup;
+    }
     
     private void OnEnable() {
         // initialize state of entry input
@@ -86,19 +94,30 @@ public class Script_InputManager : MonoBehaviour
         else
         {
             ErrorSFX();
-        }
-            
+        }   
+    }
+
+    public void End()
+    {
+        inputCanvasGroup.gameObject.SetActive(false);
+        CCTVInputCanvasGroup.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     /// <summary>
     /// mode will dictate the max char count, custom validation etc
     /// </summary>
     /// <param name="inputMode">the enum of which Mode we want to enter</param>
-    public void Initialize(InputMode inputMode, TMP_InputField? inputField)
+    public void Initialize(
+        InputMode inputMode,
+        TMP_InputField inputField,
+        CanvasGroup canvasGroup
+    )
     {
         Debug.Log($"input mode {inputMode}");
         
         activeInputField = inputField ?? TMPInputField;
+        activeInputCanvasGroup = canvasGroup ?? inputCanvasGroup;
         
         switch (inputMode)
         {
@@ -106,21 +125,21 @@ public class Script_InputManager : MonoBehaviour
             case InputMode.Name:
                 activeInputHandler = nameHandler;
                 activeInputHandler.SetValidation(activeInputField);
-                inputCanvasGroup.gameObject.SetActive(true);
+                activeInputCanvasGroup.gameObject.SetActive(true);
                 break;
             
             // Via Dialogue
             case InputMode.Answer:
                 activeInputHandler = answerHandler;
                 activeInputHandler.SetValidation(activeInputField);
-                inputCanvasGroup.gameObject.SetActive(true);
+                activeInputCanvasGroup.gameObject.SetActive(true);
                 break;
             
             // Via Interactable Object
             case InputMode.Code:
                 activeInputHandler = codeHandler;
                 activeInputHandler.SetValidation(activeInputField);
-                interactableObjectInputCanvasGroup.gameObject.SetActive(true);
+                activeInputCanvasGroup.gameObject.SetActive(true);
                 break;
         }
     }
@@ -129,6 +148,6 @@ public class Script_InputManager : MonoBehaviour
     {
         entryInput.Setup();
         inputCanvasGroup.gameObject.SetActive(false);
-        interactableObjectInputCanvasGroup.gameObject.SetActive(false);
+        CCTVInputCanvasGroup.gameObject.SetActive(false);
     }
 }
