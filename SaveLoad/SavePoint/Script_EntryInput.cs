@@ -18,11 +18,15 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     void Update()
     {
-        HandleKeyInput();
+        HandleNavigateToSubmit();
     }
 
-    void HandleKeyInput()
+    void HandleNavigateToSubmit()
     {
+        // Script_SlowAwakeEventSystem will disable navigation events on prompt start up.
+        // If we're still in this start up period, disable auto submit selection.
+        if (!EventSystem.current.sendNavigationEvents)  return;
+        
         if (
             Input.GetKeyDown(KeyCode.DownArrow) /// NOTE: CPU-ONLY
             || Input.GetButtonDown(Const_KeyCodes.Submit)
