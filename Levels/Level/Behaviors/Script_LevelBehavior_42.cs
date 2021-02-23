@@ -12,5 +12,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     // State Data
     
     // ==================================================================
-        
+    [SerializeField] private Script_WellsPuzzleController wellsPuzzleController;
+
+    public override void Setup()
+    {
+        wellsPuzzleController.InitialState();
+    }
 }

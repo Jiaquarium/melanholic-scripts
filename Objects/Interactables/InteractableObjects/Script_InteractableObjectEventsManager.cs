@@ -17,4 +17,11 @@ public class Script_InteractableObjectEventsManager : MonoBehaviour
     {
         if (OnSwitchOff != null)   OnSwitchOff(switchId);
     }
+
+    public delegate void WellInteraction(Script_Well well);
+    public static event WellInteraction OnWellInteraction;
+    public static void WellInteract(Script_Well well)
+    {
+        if (OnWellInteraction != null)  OnWellInteraction(well);
+    }
 }

@@ -63,6 +63,8 @@ public class Script_SFXManager : MonoBehaviour
     [Range(0f, 1f)] public float UIErrorSFXVol;
     public AudioClip UITypingSFX;
     [Range(0f, 1f)] public float UITypingSFXVol;
+    public AudioClip WellSFX;
+    [Range(0f, 1f)] public float WellSFXVol;
     
     public void Setup()
     {
