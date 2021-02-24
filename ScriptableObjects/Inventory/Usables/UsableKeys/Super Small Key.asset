@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7e861ce87a0747629aec638db90da3b, type: 3}
-  m_Name: SuperSmallKey
+  m_Name: Super Small Key
   m_EditorClassIdentifier: 
   id: usable_super-small-key
   focusedSprite: {fileID: -1393458340566893849, guid: db7ee588e0d764e038da855479f5e03a,
