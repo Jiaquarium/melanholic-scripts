@@ -10,11 +10,6 @@ using System;
 /// </summary>
 public class Script_FullArtManager : MonoBehaviour
 {
-    public static Script_FullArtManager Control;
-    public FullArtState state;
-    /// <summary>
-    /// Track who is controlling the fullArt canvases to prevent stacking calls
-    /// </summary>
     public enum FullArtState
     {
         DialogueManager,
@@ -22,18 +17,32 @@ public class Script_FullArtManager : MonoBehaviour
         Inventory,
         Timeline
     }
+    
     public enum Bgs
     {
         Default = 0,
         Black = 1
     }
+    
+    public static Script_FullArtManager Control;
+    
+    [SerializeField] private int DefaultSortingOrder;
+    [SerializeField] private int ExamineSortingOrder;
+
+    public FullArtState state;
+    /// <summary>
+    /// Track who is controlling the fullArt canvases to prevent stacking calls
+    /// </summary>
+    
     [SerializeField] private Script_FullArtBgCanvasGroup[] bgs;
     public Script_FullArt activeFullArt { get; private set; }
+    
     public CanvasGroup fullArtCanvas;
     public Canvas fullArtParent;
     public CanvasGroup fullArtBgCanvasGroup;
+    
     public Image fullArtImage;
-    private bool shouldSetNativeSize;
+    
     [SerializeField] private float bgAlpha;
     [SerializeField] private Transform[] fullArtParentsToSetActive;
     
@@ -68,6 +77,8 @@ public class Script_FullArtManager : MonoBehaviour
     )
     {   
         state = _state;
+        
+        HandleFullArtSortingOrder();
         
         fullArtCanvas.alpha = 1;
         fullArtCanvas.gameObject.SetActive(true);
@@ -140,6 +151,23 @@ public class Script_FullArtManager : MonoBehaviour
         fullArt.gameObject.SetActive(true);
 
         fullArt.EntranceFromRight(fullArtCanvas);
+    }
+
+    /// <summary>
+    /// Change Sorting Order depending on where the Full Art is being displayed (e.g. if it is
+    /// during an examine within Inventory it needs to show on top of Menu)
+    /// </summary>
+    private void HandleFullArtSortingOrder()
+    {
+        switch (state)
+        {
+            case (FullArtState.Inventory):
+                fullArtParent.sortingOrder = ExamineSortingOrder;
+                break;
+            default: 
+                fullArtParent.sortingOrder = DefaultSortingOrder;
+                break;
+        }
     }
     
     public void Setup()
