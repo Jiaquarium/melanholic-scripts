@@ -20,8 +20,11 @@ public class Script_PlayerGraphics : MonoBehaviour
         get => graphics.material;
         set
         {
-            graphics.material                                   = value;
-            player.GetPlayerGhost().spriteRenderer.material     = value;
+            if (graphics != null)
+            {
+                graphics.material           = value;
+                player.GetPlayerGhost().spriteRenderer.material     = value;
+            }
         }
     }
 

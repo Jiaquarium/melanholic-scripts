@@ -13,6 +13,27 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     // ==================================================================
     [SerializeField] private Script_WellsPuzzleController wellsPuzzleController;
+    [SerializeField] private Script_FrozenWell frozenWell;
+
+    protected override void OnEnable()
+    {
+        Script_PuzzlesEventsManager.OnPuzzleSuccess += OnPuzzleSuccess;
+    }
+
+    protected override void OnDisable()
+    {
+        Script_PuzzlesEventsManager.OnPuzzleSuccess -= OnPuzzleSuccess;
+    }
+
+    private void OnPuzzleSuccess(string puzzleId)
+    {
+        if (puzzleId == wellsPuzzleController.PuzzleId)
+        {
+            Debug.Log("PUZZLE COMPLETED!!! FREEZE WELL!!!");
+
+            frozenWell.Freeze();
+        }
+    }
 
     public override void Setup()
     {

@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Script_PuzzleController : MonoBehaviour
 {
+    [SerializeField] private string puzzleId;
+    
+    public string PuzzleId
+    {
+        get => puzzleId;
+    }
+
     protected virtual void OnEnable()
     {
         Script_PuzzlesEventsManager.OnPuzzleReset += InitialState;

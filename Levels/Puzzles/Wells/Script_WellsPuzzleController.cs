@@ -58,6 +58,9 @@ public class Script_WellsPuzzleController : Script_PuzzleController
         base.CompleteState();
 
         Debug.Log($"PUZZLE COMPLETE!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        Script_PuzzlesEventsManager.PuzzleSuccess(PuzzleId);
+
         isDone = true;
     }
 }
