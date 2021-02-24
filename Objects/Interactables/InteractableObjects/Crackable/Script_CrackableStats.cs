@@ -19,10 +19,15 @@ public class Script_CrackableStats : Script_CharacterStats
         
         Debug.Log($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
         
-        // Show a different spirte depending on how hurt the Interactable is
-        HandleHurtGraphics(currentHp);
-
-        if (currentHp == 0)     Die(Script_GameOverController.DeathTypes.Default);
+        if (currentHp == 0)
+        {
+            Die(Script_GameOverController.DeathTypes.Default);
+        }
+        else
+        {
+            // Show a different spirte depending on how hurt the Interactable is
+            HandleHurtGraphics(currentHp);
+        }
 
         return dmg;
     }
