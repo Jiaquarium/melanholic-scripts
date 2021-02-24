@@ -27,4 +27,5 @@ public class Const_Items : MonoBehaviour
     public const string SpringStoneId           = "collectible_spring-stone";
     public const string SummerStoneId           = "collectible_summer-stone";
     public const string AutumnStoneId           = "collectible_autumn-stone";
+    public const string LastWellMapId           = "collectible_last-well-map";
 }

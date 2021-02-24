@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebdf3c711beea4dc0b3abf8b6d265eca, type: 3}
+  m_Name: Last Well Map
+  m_EditorClassIdentifier: 
+  id: collectible_last-well-map
+  focusedSprite: {fileID: 21300014, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
+  sprite: {fileID: 21300012, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
+  description: rumor is everything starts in Spring.
+  isDroppable: 0
+  _isSpecial: 1
+  fullArtId: fullart_last-well-map
+  fadeInSpeed: 0
+  fadeOutSpeed: 0

@@ -38,5 +38,6 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@AutumnStone",         "<b>Autumn Stone</b>");
         Params.Add("@@SummerStone",         "<b>Summer Stone</b>");
         Params.Add("@@SpringStone",         "<b>Spring Stone</b>");
+        Params.Add("@@LastWellMap",         "<b>Last Well Map</b>");
     }
 }
