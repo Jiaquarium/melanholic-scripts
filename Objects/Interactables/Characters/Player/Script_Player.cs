@@ -19,6 +19,8 @@ public class Script_Player : Script_Character
     private Script_PlayerMovementAnimator playerMovementAnimator;
     public Script_InteractionBoxController interactionBoxController { get; private set; }
 
+    [SerializeField] private Script_PlayerGraphics playerGraphics;
+
 
     private Script_PlayerStats playerStats;
     [SerializeField] private Directions _facingDirection;
@@ -52,6 +54,32 @@ public class Script_Player : Script_Character
     public Animator MyAnimator
     {
         get => playerMovementHandler.MyAnimator;
+    }
+
+    public bool isInvincible
+    {
+        get { return _isInvincible; }
+        set { _isInvincible = value; }
+    }
+
+    public bool isInvisible
+    {
+        get { return _isInvisible; }
+        set {
+            _isInvisible = value;
+            
+            float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+            Script_PlayerGhost pg = GetPlayerGhost();
+
+            if (_isInvisible)   playerEffect.SetVisibility(0, t, graphics, pg, null);
+            else                playerEffect.SetVisibility(1, t, graphics, pg, null);
+        }
+    }
+
+    public Material MyMaterial
+    {
+        get => playerGraphics.PlayerGraphicsMaterial;
+        set => playerGraphics.PlayerGraphicsMaterial = value;
     }
 
     // Update is called once per frame
@@ -179,7 +207,7 @@ public class Script_Player : Script_Character
     }
 
     // ------------------------------------------------------------------
-    // COMBAT
+    // Combat
     public int FullHeal()
     {
         return GetComponent<Script_PlayerStats>().FullHeal();
@@ -189,26 +217,12 @@ public class Script_Player : Script_Character
     {
         return GetComponent<Script_PlayerStats>().Hurt(dmg, hitBox);
     }
+    
     // ------------------------------------------------------------------
-
-    public bool isInvincible
+    // Graphics
+    public void ChangeMaterial(Script_PlayerGraphics.Materials material)
     {
-        get { return _isInvincible; }
-        set { _isInvincible = value; }
-    }
-
-    public bool isInvisible
-    {
-        get { return _isInvisible; }
-        set {
-            _isInvisible = value;
-            
-            float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
-            Script_PlayerGhost pg = GetPlayerGhost();
-
-            if (_isInvisible)   playerEffect.SetVisibility(0, t, graphics, pg, null);
-            else                playerEffect.SetVisibility(1, t, graphics, pg, null);
-        }
+        playerGraphics.ChangeMaterial(material);
     }
 
     public void RemoveReflection()

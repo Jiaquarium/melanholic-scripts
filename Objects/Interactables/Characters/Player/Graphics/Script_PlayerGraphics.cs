@@ -1,0 +1,42 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Script_PlayerGraphics : MonoBehaviour
+{
+    public enum Materials
+    {
+        Unlit       = 0,
+        Lit         = 1,
+    }
+    
+    [SerializeField] private Script_Player player;
+    [SerializeField] private Renderer graphics;
+    [SerializeField] private Material lit;
+    [SerializeField] private Material unlit;
+
+    public Material PlayerGraphicsMaterial
+    {
+        get => graphics.material;
+        set
+        {
+            graphics.material                                   = value;
+            player.GetPlayerGhost().spriteRenderer.material     = value;
+        }
+    }
+
+    public void ChangeMaterial(Materials materialType)
+    {
+        switch (materialType)
+        {
+            case (Materials.Unlit):
+                graphics.material                                   = unlit;
+                player.GetPlayerGhost().spriteRenderer.material     = unlit;
+                break;
+            case (Materials.Lit):
+                graphics.material                                   = lit;
+                player.GetPlayerGhost().spriteRenderer.material     = lit;
+                break;
+        }
+    }
+}
