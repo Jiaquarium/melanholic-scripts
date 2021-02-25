@@ -127,6 +127,22 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
     
+    public void StartDialogueNodeNextFrame(
+        Script_DialogueNode node,
+        bool SFXOn = true,
+        string type = null,
+        Script_Interactable talkingInteractive = null
+    )
+    {
+        StartCoroutine(WaitToStartDialogueNode());
+
+        IEnumerator WaitToStartDialogueNode()
+        {
+            yield return null;
+            StartDialogueNode(node, SFXOn, type, talkingInteractive);
+        }
+    }
+    
     /// <summary>
     /// Currently everything runs through ContinueDialogue to check for Sections.Count
     /// </summary>
