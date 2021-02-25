@@ -203,6 +203,14 @@ public class Script_MenuController : Script_UIState
         return inventoryManager.CheckStickerEquippedById(stickerId);
     }
 
+    /// <summary>
+    /// Note: Excludes equipped items.
+    /// </summary>
+    public Script_Item GetInventoryItem(string itemId, out int slot)
+    {
+        return inventoryManager.SearchInventoryForItemById(itemId, out slot);
+    }
+
     public Script_ItemObject InstantiateDropById(string itemId, Vector3 location, int LB)
     {
         return inventoryManager.InstantiateDropById(itemId, location, LB);

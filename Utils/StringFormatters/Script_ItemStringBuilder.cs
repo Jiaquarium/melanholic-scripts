@@ -24,20 +24,21 @@ public class Script_ItemStringBuilder : MonoBehaviour
     {
         Params = new Dictionary<string, string>();
         
-        Params.Add("@@PsychicDuck",         "<b>Psychic Duck</b>");
-        Params.Add("@@BoarNeedle",          "<b>Boar Needle</b>");
-        Params.Add("@@AnimalWithin",        "<b>Animal Within</b>");
-        Params.Add("@@IceSpike",            "<b>Ice Spike</b>");
-        Params.Add("@@MelancholyPiano",     "<b>Melancholy Piano</b>");
-        Params.Add("@@LastElevator",        "<b>Last Elevator</b>");
+        Params.Add("@@PsychicDuck",             "<b>Psychic Duck</b>");
+        Params.Add("@@BoarNeedle",              "<b>Boar Needle</b>");
+        Params.Add("@@AnimalWithin",            "<b>Animal Within</b>");
+        Params.Add("@@IceSpike",                "<b>Ice Spike</b>");
+        Params.Add("@@MelancholyPiano",         "<b>Melancholy Piano</b>");
+        Params.Add("@@LastElevator",            "<b>Last Elevator</b>");
         
-        Params.Add("@@MasterKey",           "<b>Master Key</b>");
-        Params.Add("@@SuperSmallKey",       "<b>Super Small Key</b>");
+        Params.Add("@@MasterKey",               "<b>Master Key</b>");
+        Params.Add("@@SuperSmallKey",           "<b>Super Small Key</b>");
 
-        Params.Add("@@WinterStone",         "<b>Winter Stone</b>");
-        Params.Add("@@AutumnStone",         "<b>Autumn Stone</b>");
-        Params.Add("@@SummerStone",         "<b>Summer Stone</b>");
-        Params.Add("@@SpringStone",         "<b>Spring Stone</b>");
-        Params.Add("@@LastWellMap",         "<b>Last Well Map</b>");
+        Params.Add("@@WinterStone",             "<b>Winter Stone</b>");
+        Params.Add("@@AutumnStone",             "<b>Autumn Stone</b>");
+        Params.Add("@@SummerStone",             "<b>Summer Stone</b>");
+        Params.Add("@@SpringStone",             "<b>Spring Stone</b>");
+        Params.Add("@@LastWellMap",             "<b>Last Well Map</b>");
+        Params.Add("@@LastSpellRecipeBook",     "<b>Last Spell Recipe Book</b>");
     }
 }

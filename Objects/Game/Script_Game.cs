@@ -956,6 +956,11 @@ public class Script_Game : MonoBehaviour
         return menuController.TryUseKey(key);
     }
 
+    public Script_Item GetInventoryItem(string itemId, out int slot)
+    {
+        return menuController.GetInventoryItem(itemId, out slot);
+    }
+
     /* =======================================================================
         _CANVASES_CUTSCENES_THEATRICS
     ======================================================================= */

@@ -242,7 +242,8 @@ public class Script_Names: MonoBehaviour
     
     // Refs: (1) Peche & Melba's Dialogue in Ballroom
     public static void UpdateMelba() { Melba                                    = "<b>Melba</b>"; }
-    
+
+    // Refs: (1) After completing Moose quest in Wells World
     public static void UpdateMoose() { Moose                                    = "<b>Moose</b>"; }
 
     // ------------------------------------------------------------------

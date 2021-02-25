@@ -9,7 +9,8 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_42 lvlModel = new Model_LevelBehavior_42(
-            _didPickUpLastWellMap           : LB42.didPickUpLastWellMap
+            _didPickUpLastWellMap           : LB42.didPickUpLastWellMap,
+            _isMooseQuestDone               : LB42.isMooseQuestDone
         );
         
         data.levelsData.LB42 = lvlModel;
@@ -18,7 +19,9 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
     public override void Load(Model_RunData data)
     {
         Model_LevelBehavior_42 lvlModel         = data.levelsData.LB42;
+        
         LB42.didPickUpLastWellMap               = lvlModel.didPickUpLastWellMap;
+        LB42.isMooseQuestDone                   = lvlModel.isMooseQuestDone;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);

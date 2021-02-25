@@ -16,4 +16,5 @@ public class Script_Collectible : Script_Item
     public string fullArtId;
     public FadeSpeeds fadeInSpeed;
     public FadeSpeeds fadeOutSpeed;
+    public bool isExamineDisabled;
 }

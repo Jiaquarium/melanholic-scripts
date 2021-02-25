@@ -48,6 +48,9 @@ public class Script_InventoryManager : MonoBehaviour
         return inventory.GetItemInSlot(i);
     }
 
+    /// <summary>
+    /// Gets the Item Object from the Item Dictionary by Id
+    /// </summary>
     private bool GetItemObjectById(string itemId, out Script_ItemObject itemToAdd)
     {
         if (!GetComponent<Script_ItemDictionary>().myDictionary.TryGetValue(itemId, out itemToAdd))
@@ -69,7 +72,7 @@ public class Script_InventoryManager : MonoBehaviour
         return equipment.SearchForStickerById(Id);
     }
 
-    private Script_Item SearchForItemById(string Id, out int slot)
+    public Script_Item SearchInventoryForItemById(string Id, out int slot)
     {
         for (int i = 0; i < inventory.Items.Length; i++)
         {
@@ -339,6 +342,12 @@ public class Script_InventoryManager : MonoBehaviour
         Script_Collectible collectible
     )
     {
+        if (collectible.isExamineDisabled)
+        {
+            ErrorSFX();
+            return;
+        }
+        
         HideItemChoices();
         collectiblesHandler.Examine(collectible);   
     }
@@ -366,7 +375,7 @@ public class Script_InventoryManager : MonoBehaviour
     {
         // get key by id
         int slot;
-        Script_Item foundItem = SearchForItemById(key.id, out slot);
+        Script_Item foundItem = SearchInventoryForItemById(key.id, out slot);
         
         if (foundItem != null)
         {
