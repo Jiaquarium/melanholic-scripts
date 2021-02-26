@@ -31,6 +31,12 @@ public class Script_LanternFollower : MonoBehaviour
     private Vector3 endLocation;
     private Vector3 newEndLocation;
     private float progress;
+
+    public bool IsLightOn
+    {
+        get => isLightOn;
+        private set => isLightOn = value;
+    }
     
     void OnEnable()
     {
@@ -78,7 +84,7 @@ public class Script_LanternFollower : MonoBehaviour
 
     public void SwitchLightState()
     {
-        if (isLightOn)      LightOff();
+        if (IsLightOn)      LightOff();
         else                LightOn();
     }
 
@@ -89,7 +95,7 @@ public class Script_LanternFollower : MonoBehaviour
         var spriteRenderer = (SpriteRenderer)graphics;
         spriteRenderer.sprite = lightOffSprite;
         
-        isLightOn = false;
+        IsLightOn = false;
     }
 
     private void LightOn()
@@ -99,7 +105,7 @@ public class Script_LanternFollower : MonoBehaviour
         var spriteRenderer = (SpriteRenderer)graphics;
         spriteRenderer.sprite = lightOnSprite;
 
-        isLightOn = true;
+        IsLightOn = true;
     }   
 
     public void Activate()

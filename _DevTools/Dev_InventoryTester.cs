@@ -32,6 +32,7 @@ public class Dev_InventoryTester : MonoBehaviour
         AddIceSpike();
         AddMelancholyPiano();
         AddLastElevator();
+        AddLetThereBeLight();
     }
 
     public void AddKeys()
@@ -69,6 +70,11 @@ public class Dev_InventoryTester : MonoBehaviour
     public void AddLastElevator()
     {
         Script_Game.Game.AddItemById(Const_Items.LastElevatorId);
+    }
+
+    public void AddLetThereBeLight()
+    {
+        Script_Game.Game.AddItemById(Const_Items.LetThereBeLightId);
     }
 
     // ------------------------------------------------------------------------
@@ -150,6 +156,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Last Elevator"))
         {
             inventoryTester.AddLastElevator();
+        }
+
+        if (GUILayout.Button("Add: Let There Be Light"))
+        {
+            inventoryTester.AddLetThereBeLight();
         }
 
         GUILayout.Space(8);
