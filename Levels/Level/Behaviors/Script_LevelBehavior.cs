@@ -98,18 +98,19 @@ public class Script_LevelBehavior : MonoBehaviour
     /// When Level Behavior is set inactive, Script_Snow gameObject itself will
     /// handle setting inactive again
     /// </summary>
-    public void SnowFallStart()
+    public void HandleSnowFallStart(bool isSnowDay)
     {
-        if (snowEffect != null)
-        {
-            snowEffect.gameObject.SetActive(true);
-        }
-        else
+        if (snowEffect == null)
         {
             string warning = $"{name} has no Snow Effect defined";
             if (Const_Dev.IsProd)       Debug.LogError(warning);
             else                        Debug.Log(warning);
+
+            return;
         }
+        
+        if (isSnowDay)      snowEffect.gameObject.SetActive(true);
+        else                snowEffect.gameObject.SetActive(false);
     }
     
     public virtual void InitialState() { }

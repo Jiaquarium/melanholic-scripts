@@ -10,9 +10,7 @@ public class Script_WeatherFXManager : MonoBehaviour
 
     public void SnowDayEffect()
     {
-        if (game.Run.dayId == SnowDayId)
-        {
-            game.levelBehavior.SnowFallStart();
-        }
+        bool isSnowDay = game.Run.dayId == SnowDayId;
+        game.levelBehavior.HandleSnowFallStart(isSnowDay);
     }
 }
