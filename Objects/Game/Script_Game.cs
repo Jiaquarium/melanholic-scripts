@@ -118,7 +118,10 @@ public class Script_Game : MonoBehaviour
 
 
     [SerializeField] private Script_Player player;
+    [SerializeField] private Script_LanternFollower lanternFollower;
+
     [SerializeField] private Script_SavePoint savePoint; // max 1 per Level
+
     public List<Script_StaticNPC> NPCs = new List<Script_StaticNPC>();
     public List<Script_MovingNPC> movingNPCs = new List<Script_MovingNPC>();
     public List<Script_CutSceneNPC> cutSceneNPCs = new List<Script_CutSceneNPC>();
@@ -174,6 +177,11 @@ public class Script_Game : MonoBehaviour
     public Script_ExitMetadataObject LastElevatorExit
     {
         get => lastElevatorExit;
+    }
+
+    public Script_LanternFollower LanternFollower
+    {
+        get => lanternFollower;
     }
 
     /// <summary>
@@ -257,6 +265,7 @@ public class Script_Game : MonoBehaviour
         scarletCipherManager.Setup();
         namesManager.Setup();
         exitsHandler.Setup(this);
+        
         SFXManager.Setup();
         BGMManager.Setup();
         hitBoxDictionary.Setup();
@@ -268,6 +277,7 @@ public class Script_Game : MonoBehaviour
         itemPickUpTheatricsManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
+        
         dialogueManager.Initialize();
         thoughtManager.HideThought();
         DDRManager.Setup();
@@ -294,6 +304,8 @@ public class Script_Game : MonoBehaviour
         // player creation must happen before level creation as LB needs reference to player
         CreatePlayer();
         
+        lanternFollower.Setup();
+
         InitiateLevel();
 
         exitsHandler.canvas.alpha = 1.0f;
@@ -706,6 +718,9 @@ public class Script_Game : MonoBehaviour
             playerData.isForceSortingLayer,
             playerData.isForceSortingLayerAxisZ
         );
+
+        Debug.Log("---- ---- PLAYER SETUP ON LEVEL EVENT ---- ----");
+        Script_GameEventsManager.PlayerSetupOnLevel();   
     }
 
     public void DestroyPlayer()

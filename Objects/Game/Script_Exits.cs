@@ -217,13 +217,13 @@ public class Script_Exits : MonoBehaviour
     /// Use when covering the screen with another cut scene before
     /// changing levels
     /// </summary>
-    void ChangeLevelNoFade()
+    private void ChangeLevelNoFade()
     {
         ChangeLevel();
         OnDoneExitingTransition();
     }
 
-    void ChangeLevel()
+    private void ChangeLevel()
     {
         Script_GameEventsManager.LevelBeforeDestroy();
         game.DestroyLevel();

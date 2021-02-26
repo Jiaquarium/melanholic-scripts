@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Script_GameEventsManager : MonoBehaviour
 {
+    public delegate void PlayerSetupOnLevelAction();
+    public static event PlayerSetupOnLevelAction OnPlayerSetupOnLevel;
+    public static void PlayerSetupOnLevel() { if (OnPlayerSetupOnLevel != null) OnPlayerSetupOnLevel(); }
+    
     public delegate void LevelInitCompleteAction();
     public static event LevelInitCompleteAction OnLevelInitComplete;
     public static void LevelInitComplete() { if (OnLevelInitComplete != null) OnLevelInitComplete(); }
