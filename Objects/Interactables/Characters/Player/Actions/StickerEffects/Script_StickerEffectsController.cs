@@ -10,10 +10,12 @@ public class Script_StickerEffectsController : MonoBehaviour
 {
     [SerializeField] private Script_PsychicDuckEffect psychicDuckEffect;
     [SerializeField] private Script_GiantBoarNeedleEffect boarNeedleEffect;
-    [SerializeField] private Script_PlayerAttackEat eatAttack; // TBD make into Effect
+    [SerializeField] private Script_PlayerAttackEat eatAttack; // TBD combine into Effect
+    [SerializeField] private Script_AnimalWithinEffect animalWithinEffect;
     [SerializeField] private Script_IceSpikeEffect iceSpikeEffect;
     [SerializeField] private Script_MelancholyPianoEffect melancholyPianoEffect;
     [SerializeField] private Script_LastElevatorEffect lastElevatorEffect;
+    [SerializeField] private Script_LetThereBeLightEffect letThereBeLightEffect;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     /// <summary>
@@ -41,15 +43,33 @@ public class Script_StickerEffectsController : MonoBehaviour
         {
             if (activeSticker != null && activeSticker.id == stickerToSwitch.id)
             {
-                Script_ActiveStickerManager.Control.RemoveSticker();
+                UnequipActionSticker();
             }
             else
             {
-                Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch);
+                SwitchActionSticker();   
             }
 
-            // Switch SFX
             SwitchSFX();
+        }
+
+        // When pressing a Sticker Holster slot that is currently the Action Sticker.
+        void UnequipActionSticker()
+        {
+            EquipEffect(activeSticker, false);
+                
+            Script_ActiveStickerManager.Control.RemoveSticker();   
+        }
+
+        // When pressing another Sticker Holster slot that is currently not the Action Sticker.
+        void SwitchActionSticker()
+        {
+            // If there is an existing Action Sticker, call its Unequip Effect.
+            if (activeSticker != null)  EquipEffect(activeSticker, false);
+
+            Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch);
+            
+            EquipEffect(stickerToSwitch, true);
         }
     }
     
@@ -69,33 +89,72 @@ public class Script_StickerEffectsController : MonoBehaviour
         switch (activeSticker.id)
         {
             case Const_Items.PsychicDuckId:
-                Debug.Log("Psychic Duck Effect Activated");
+                Debug.Log($"{activeSticker} Effect Activated");
                 psychicDuckEffect.Effect();
                 break;
             case Const_Items.BoarNeedleId:
-                Debug.Log("Boar Needle Effect Activated");
+                Debug.Log($"{activeSticker} Effect Activated");
                 boarNeedleEffect.Effect();
                 break;
             case Const_Items.AnimalWithinId:
-                Debug.Log("Animal Within Effect Activated");
+                Debug.Log($"{activeSticker} Effect Activated");
                 eatAttack.Eat(dir); // TBD Implement as effect
                 break;
             case Const_Items.IceSpikeId:
-                Debug.Log("Ice Spike Effect Activated");
+                Debug.Log($"{activeSticker} Effect Activated");
                 iceSpikeEffect.Effect();
                 break;
             case Const_Items.MelancholyPianoId:
-                Debug.Log("Melancholy Piano Effect Activated");
+                Debug.Log($"{activeSticker} Effect Activated");
                 melancholyPianoEffect.Effect();
                 break;
             case Const_Items.LastElevatorId:
-                Debug.Log("Last Elevator Effect Activated");
+                Debug.Log($"{activeSticker} Effect Activated");
                 lastElevatorEffect.Effect();
+                break;
+            case Const_Items.LetThereBeLightId:
+                Debug.Log($"{activeSticker} Effect Activated");
+                letThereBeLightEffect.Effect();
                 break;
         }
 
         // On Successful Active Sticker Use, Show Animation
         Script_ActiveStickerManager.Control.AnimateActiveStickerSlot();
+    }
+
+    public void EquipEffect(Script_Sticker sticker, bool isEquip)
+    {
+        switch (sticker.id)
+        {
+            case Const_Items.PsychicDuckId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                psychicDuckEffect.EquipEffect(isEquip);
+                break;
+            case Const_Items.BoarNeedleId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                boarNeedleEffect.EquipEffect(isEquip);
+                break;
+            case Const_Items.AnimalWithinId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                animalWithinEffect.EquipEffect(isEquip);
+                break;
+            case Const_Items.IceSpikeId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                iceSpikeEffect.EquipEffect(isEquip);
+                break;
+            case Const_Items.MelancholyPianoId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                melancholyPianoEffect.EquipEffect(isEquip);
+                break;
+            case Const_Items.LastElevatorId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                lastElevatorEffect.EquipEffect(isEquip);
+                break;
+            case Const_Items.LetThereBeLightId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                letThereBeLightEffect.EquipEffect(isEquip);
+                break;
+        }
     }
 
     void NullSFX()
