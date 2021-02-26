@@ -74,6 +74,22 @@ public class Script_InteractableObject : Script_Interactable
         InvokeAction();
     }
 
+    public void SetInteractionActive(bool isActive)
+    {
+        if (isActive)   SetActive();
+        else            SetDisabled();
+    }
+
+    protected virtual void SetActive()
+    {
+        State = States.Active;
+    }
+
+    protected virtual void SetDisabled()
+    {
+        State = States.Disabled;
+    }
+
     protected void InvokeAction()
     {
         if (MyAction.CheckUnityEventAction()) MyAction.Invoke();

@@ -16,7 +16,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     [SerializeField] private bool isCurrentMooseQuestComplete;
     [SerializeField] private Script_WellsPuzzleController wellsPuzzleController;
+    
     [SerializeField] private Script_FrozenWell frozenWell;
+    [SerializeField] private Script_DoorExitFireplace fireplaceExit;
+    
     [SerializeField] private Script_CollectibleObject lastWellMap;
     
     [SerializeField] private Script_Item lastSpellRecipeBookItem;
@@ -27,6 +30,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     [SerializeField] private Script_DemonNPC Moose;
     [SerializeField] private Script_DemonNPC Suzette;
+
+    [SerializeField] private Script_WeatherFXManager weatherFXManager;
 
     protected override void OnEnable()
     {
@@ -61,6 +66,11 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     protected override void HandleAction()
     {
         base.HandleDialogueAction();
+    }
+
+    public void SetFireplaceExitActive(bool isActive)
+    {
+        fireplaceExit.SetInteractionActive(isActive);   
     }
 
     // ----------------------------------------------------------------------
@@ -124,6 +134,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         wellsPuzzleController.InitialState();
 
+        // On Snow Day, the Fireplace Exit is open.
+        if (weatherFXManager.IsSnowDay)     fireplaceExit.SetInteractionActive(true);
+        else                                fireplaceExit.SetInteractionActive(false);
+
         // Only Spawn Last Well Map if Player has not picked it up.
         if (lastWellMap != null)
         {
@@ -145,3 +159,24 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         }
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_LevelBehavior_42))]
+public class Script_LevelBehavior_42Tester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_LevelBehavior_42 t = (Script_LevelBehavior_42)target;
+        if (GUILayout.Button("Activate Fireplace Exit"))
+        {
+            t.SetFireplaceExitActive(true);
+        }
+
+        if (GUILayout.Button("Disable Fireplace Exit"))
+        {
+            t.SetFireplaceExitActive(false);
+        }
+    }
+}
+#endif

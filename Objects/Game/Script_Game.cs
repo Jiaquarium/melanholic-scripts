@@ -268,13 +268,16 @@ public class Script_Game : MonoBehaviour
         
         SFXManager.Setup();
         BGMManager.Setup();
+        
         hitBoxDictionary.Setup();
         hintManager.Setup();
         VCamManager.Setup();
-        runsManager.Setup();
         fullArtManager.Setup();
         PRCSManager.Setup();
         itemPickUpTheatricsManager.Setup();
+        
+        runsManager.Setup();
+        weatherFXManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
         
