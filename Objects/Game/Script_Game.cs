@@ -941,6 +941,11 @@ public class Script_Game : MonoBehaviour
         return menuController.AddEquippedItemInSlotById(equipmentId, i);
     }
 
+    public bool RemoveItemFromInventory(Script_Item item)
+    {
+        return menuController.RemoveItem(item);
+    }
+
     public Script_ItemObject InstantiateDropById(string itemId, Vector3 location, int LB)
     {
         return menuController.InstantiateDropById(itemId, location, LB);

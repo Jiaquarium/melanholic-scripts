@@ -86,6 +86,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         if (hasBook)
         {
             Script_DialogueManager.DialogueManager.StartDialogueNodeNextFrame(OnHasLastSpellRecipeBookNode);
+
+            game.RemoveItemFromInventory(lastSpellRecipeBookItem);
         }
         else
         {

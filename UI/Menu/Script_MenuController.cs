@@ -221,6 +221,11 @@ public class Script_MenuController : Script_UIState
         return inventoryManager.TryUseKey(key);
     }
 
+    public bool RemoveItem(Script_Item item)
+    {
+        return inventoryManager.RemoveItem(item);
+    }
+
     public void HandleNullViewStates()
     {
         EntriesTopBarState();

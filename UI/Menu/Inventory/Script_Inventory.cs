@@ -75,7 +75,25 @@ public class Script_Inventory : MonoBehaviour
         items[i] = null;
         itemImages[i].sprite = null;
         itemImages[i].enabled = false;
+
         return true;
+    }
+
+    public bool RemoveItem(Script_Item itemToRemove)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == itemToRemove)
+            {
+                items[i] = null;
+                itemImages[i].sprite = null;
+                itemImages[i].enabled = false;
+                
+                return true;
+            }
+        }
+
+        return false;   
     }
 
     public void HighlightItem(int i, bool isFocus)

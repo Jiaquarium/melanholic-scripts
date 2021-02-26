@@ -133,6 +133,11 @@ public class Script_InventoryManager : MonoBehaviour
         return inventory.AddItem(item);
     }
 
+    public bool RemoveItem(Script_Item item)
+    {
+        return inventory.RemoveItem(item);
+    }
+
     public void HighlightItem(int i, bool isOn, bool showDescription)
     {
         Debug.Log($"HighlightItem: {i}");
