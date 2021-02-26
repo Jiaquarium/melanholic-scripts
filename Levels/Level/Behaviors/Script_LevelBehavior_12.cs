@@ -26,22 +26,31 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
     
     [SerializeField] private bool isInit = true;
     [SerializeField] private Script_SyncedTriggerPuzzleController puzzleTriggerController;
+    
     [SerializeField] private Transform playerReflectionEro;
+    
     [SerializeField] private Transform pushablesParent;
     [SerializeField] private Transform fullArtParent;
+    
     [SerializeField] private Transform triggers;
     [SerializeField] private Script_TriggerEnterOnce[] cutSceneTriggers;
+    
     [SerializeField] private Transform cutScenePlayerTargetDestination;
+    
     [SerializeField] private Script_DialogueManager dialogueManager;
+    
     [SerializeField] private Script_DialogueNode thinkingNode;
     [SerializeField] private Script_DialogueNode erasTalkingNode;
     [SerializeField] private Script_DialogueNode erasQuestionNode;
     [SerializeField] private Script_DialogueNode erasConfirmNode;
     [SerializeField] private Script_DialogueNode erasFinalNode;
+    
     [SerializeField] private Script_BgThemePlayer erasBgThemePuzzlePlayerPrefab;
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource SFXSource;
+    
     [SerializeField] private Script_VCamera staticZoomOutVCam;
+    
     [SerializeField] private float beforeTalkToErasWaitTime;
     [SerializeField] private float preShakeRoomWaitTime;
     [SerializeField] private float shakeRoomMisfireWaitTime;
@@ -50,16 +59,22 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
     [SerializeField] private float shakeRoomTime;
     [SerializeField] private float afterShakeRoomWaitTime;
     [SerializeField] private float bgMusicFadeInTime;
+    
     [SerializeField] private Script_Fireplace fireplacePlayer;
     [SerializeField] private Script_Fireplace fireplaceMirror;
+    
     [SerializeField] private Transform explosion;
+    
     [SerializeField] TimelineAsset playerApproachMirrorTimeline;
     [SerializeField] TimelineAsset playerRetreatTimeline;
     public List<GameObject> playerObjsToBind = new List<GameObject>();
+    
     [SerializeField] private AudioSource proximityCracklingFire;
     [SerializeField] private AudioSource proximityFire;
     [SerializeField] private PlayableDirector fireplacePlayable;
+    
     [SerializeField] private float zoomBackInTime;
+    
     private PlayableDirector playerPlayableDirector;
     private int playerMovesNeededToReachMirror;
 
@@ -70,7 +85,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         fireplacePlayable.stopped += OnFireplaceExplosionDone;
 
         Debug.Log("LB12: enabled");
-        if (!isDone && isCutSceneDone)
+        if (!isDone)
         {
             Debug.Log("LB12: Changing camera now");
             CutScenesDoneCamera();

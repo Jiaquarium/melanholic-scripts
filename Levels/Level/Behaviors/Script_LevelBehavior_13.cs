@@ -33,10 +33,6 @@ public class Script_LevelBehavior_13 : Script_LevelBehavior
 
     void Start()
     {
-        if (didPickUpAutumnStone)
-        {
-            if (autumnStone != null)    autumnStone.gameObject.SetActive(false);
-        }
-        else                            autumnStone.gameObject.SetActive(true);
+        
     }
 }

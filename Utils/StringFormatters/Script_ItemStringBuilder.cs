@@ -30,6 +30,7 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@IceSpike",                "<b>Ice Spike</b>");
         Params.Add("@@MelancholyPiano",         "<b>Melancholy Piano</b>");
         Params.Add("@@LastElevator",            "<b>Last Elevator</b>");
+        Params.Add("@@LetThereBeLight",         "<b>Let There Be Light</b>");
         
         Params.Add("@@MasterKey",               "<b>Master Key</b>");
         Params.Add("@@SuperSmallKey",           "<b>Super Small Key</b>");
