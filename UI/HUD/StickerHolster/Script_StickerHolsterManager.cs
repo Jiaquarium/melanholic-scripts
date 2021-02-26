@@ -36,6 +36,11 @@ public class Script_StickerHolsterManager : MonoBehaviour
 
     public bool RemoveSticker(int i)
     {
+        if (GetSticker(i) == Script_ActiveStickerManager.Control.ActiveSticker)
+        {
+            Script_ActiveStickerManager.Control.RemoveSticker();
+        }
+        
         return stickerHolster.RemoveStickerInSlot(i);
     }
 
