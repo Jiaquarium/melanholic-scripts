@@ -113,7 +113,6 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
     {
         game.ChangeStateCutScene();
         StartCoroutine(WaitToUnlockSaloon());
-        UnlockSaloon();
 
         IEnumerator WaitToUnlockSaloon()
         {
@@ -129,24 +128,12 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
     {
         game.ChangeStateCutScene();
         StartCoroutine(WaitToUnlockBallroom());
-        UnlockBallroom();
 
         IEnumerator WaitToUnlockBallroom()
         {
             yield return new WaitForSeconds(unlockBallroomWaitTime);
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
         }
-    }
-
-    private void UnlockSaloon()
-    {
-        game.DisableExits(false, 1);
-        isSaloonLocked = false;
-    }
-
-    private void UnlockBallroom()
-    {
-        game.DisableExits(false, 0);
     }
 
     private void OnUrsieDirectorDone(PlayableDirector aDirector)
@@ -211,9 +198,6 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
     public override void Setup()
     {
-        if (isSaloonLocked)     game.DisableExits(true, 1);
-        else                    game.DisableExits(false, 1);
-
         if (questActive)
         {
             StartQuest();
@@ -221,13 +205,10 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         
         if (!questComplete)
         {
-            game.DisableExits(true, 0);
             if (LB24.isPuzzleComplete)  UrsieDialogueEndQuest();
         }
         else
         {
-            game.DisableExits(false, 0);
-            game.DisableExits(false, 1);
             UrsieDialogueEndState();
         }
 
