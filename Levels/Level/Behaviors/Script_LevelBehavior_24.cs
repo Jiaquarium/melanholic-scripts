@@ -10,7 +10,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         STATE DATA
     ======================================================================= */
     [SerializeField] private bool _isPuzzleComplete;
-    public bool isPuzzleComplete {
+    public bool IsPuzzleComplete {
         get { return _isPuzzleComplete; }
         set {_isPuzzleComplete = value; }
     }
@@ -18,24 +18,35 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     public bool didPickUpSpringStone;
 
     /* ======================================================================= */
+    [SerializeField] private bool isCurrentPuzzleComplete;
     [SerializeField] private Script_TrackedPushablesTriggerPuzzleController triggersPuzzleController;
+    
     [SerializeField] private Transform pillarParent;
     [SerializeField] private Script_Tracker[] pillars;
     [SerializeField] private Transform transformingRock;
-    [SerializeField] private Script_ItemObject springStone;
+    [SerializeField] private Script_ScarletCipherPiece scarletCipherPiece;
     [SerializeField] private Script_VCamera staticZoomOutVCam;
+    
     [SerializeField] private float beforeSpawnWaitTime;
     [SerializeField] private float afterSpawnWaitTime;
+    
     [SerializeField] private Transform interactableObjectsTextParent;
     [SerializeField] private Script_InteractableObjectText[] pillarTextObjs;
     [SerializeField] private Script_BgThemePlayer heartBeatBgThemePlayerPrefab;
     [SerializeField] private PlayableDirector director;
     [SerializeField] private Script_LevelBehavior_23 LB23;
     [SerializeField] private SpriteRenderer alchemistCircle;
+    
     [SerializeField] private float alchemistCircleCompleteAlpha;
+
     private Script_BgThemePlayer heartBeatBgThemePlayer;
     private bool isInit = true;
     
+    public bool IsCurrentPuzzleComplete
+    {
+        get => isCurrentPuzzleComplete;
+    }
+
     private void OnValidate()
     {
         pillars     = pillarParent.GetChildren<Script_Tracker>();
@@ -47,10 +58,9 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         /// use this to do onEnter actions, waiting until level is fully init'ed
         Script_GameEventsManager.OnLevelInitComplete += CheckSuccessCase;
         director.stopped += OnPlayableDirectorStopped;
-        Script_ItemsEventsManager.OnItemPickUp += OnItemPickUp;
 
         game.PauseBgMusic();
-        if (!isPuzzleComplete)
+        if (!isCurrentPuzzleComplete)
         {
             heartBeatBgThemePlayer = Instantiate(heartBeatBgThemePlayerPrefab, Vector3.zero, Quaternion.identity);
         }
@@ -66,7 +76,6 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         Script_PuzzlesEventsManager.OnPuzzleSuccess -= OnPuzzleSuccess;
         Script_GameEventsManager.OnLevelInitComplete -= CheckSuccessCase;
         director.stopped -= OnPlayableDirectorStopped;
-        Script_ItemsEventsManager.OnItemPickUp -= OnItemPickUp;
 
         if (heartBeatBgThemePlayer != null)
         {
@@ -106,10 +115,11 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     }
     private void OnPuzzleSuccess(string Id)
     {
-        if (!isPuzzleComplete)
+        if (!isCurrentPuzzleComplete)
         {
             print("PUZZLE SUCCESS SCENE!!!");
-            isPuzzleComplete = true;
+            IsPuzzleComplete        = true;
+            isCurrentPuzzleComplete = true;
             
             // stop heartbeat bg music and stop pulsing animation of pillars
             if (heartBeatBgThemePlayer != null) DestroyBgThemePlayer();
@@ -120,10 +130,10 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             }
             
             game.ChangeStateCutScene();
-            StartCoroutine(SpawnSummerStoneScene());
+            StartCoroutine(TransmutationScene());
         }
 
-        IEnumerator SpawnSummerStoneScene()
+        IEnumerator TransmutationScene()
         {
             // camera to SummerStone via VCam, 2 sec
             Script_VCamManager.VCamMain.SetNewVCam(staticZoomOutVCam);
@@ -167,28 +177,6 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         LB23.CompletedState();
     }
 
-    private void OnItemPickUp(string itemId)
-    {
-        if (itemId == springStone.Item.id)
-        {
-            didPickUpSpringStone = true;
-        }
-    }
-
-    private void SetSpringStoneActive(bool isActive)
-    {
-        if (isActive)
-        {
-            springStone.gameObject.SetActive(true);
-            springStone.SetAlpha(1f);
-        }
-        else
-        {
-            if (springStone != null)
-                springStone.gameObject.SetActive(false);
-        }
-    }
-
     private void AlchemistCircleCompleteState()
     {
         Color newColor = alchemistCircle.color;
@@ -197,18 +185,41 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         alchemistCircle.color = newColor;
     }
 
+    public override void InitialState()
+    {
+        transformingRock.gameObject.SetActive(true);
+        
+        scarletCipherPiece.gameObject.SetActive(false);
+        scarletCipherPiece.SetAlpha(0f);
+    }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals START
+
+    // Do not reveal if the puzzle has previously been completed.
+    public void HandleScarletCipherReveal()
+    {
+        // Only spawn Scarlet Cipher Piece if it hasn't been picked up already.
+        if (!scarletCipherPiece.DidPickUp())
+        {
+            scarletCipherPiece.gameObject.SetActive(true);
+            scarletCipherPiece.SetAlpha(1f);
+        }
+    }
+    
+    // Timeline Signals END
+    // ------------------------------------------------------------------
+
     void Awake()
     {
-        if (isPuzzleComplete)
+        if (isCurrentPuzzleComplete)
         {
             PuzzleFinishedState();
-            SetSpringStoneActive(!didPickUpSpringStone);
             AlchemistCircleCompleteState();
         }
         else
         {
-            transformingRock.gameObject.SetActive(true);
-            springStone.gameObject.SetActive(false);
+            InitialState();
         }
     }
 

@@ -142,5 +142,20 @@ public class Script_InteractableObject : Script_Interactable
         return rendererChild;
     }
 
+    public void SetAlpha(float alpha)
+    {
+        try
+        {
+            var graphics = rendererChild.GetComponent<SpriteRenderer>();
+            Color newColor = graphics.color;
+            newColor.a = alpha;
+            graphics.color = newColor;
+        }
+        catch (System.ArgumentNullException e)
+        {
+            Debug.LogError($"You need to add a Sprites Renderer component to rendererChild {rendererChild}; error: {e}");
+        }
+    }
+
     public virtual void InitializeState() {}
 }

@@ -23,12 +23,16 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     [SerializeField] private Script_Pushable[] pushables;
     [SerializeField] private Script_FullArtParent fullArtParent;
 
+    // ------------------------------------------------------------------
+    // For Dev only.
+    [SerializeField] private Script_Marker[] pushablesDoneLocations;
+
     private bool isInit = true;
     
     protected override void OnEnable()
     {
         // OnPuzzleSuccess is handled in LB24
-        if (!LB24.isPuzzleComplete)
+        if (!LB24.IsCurrentPuzzleComplete)
         {
             Script_PuzzlesEventsManager.OnPuzzleProgress += OnPuzzleProgress;
             Script_PuzzlesEventsManager.OnPuzzleProgress2 += OnPillarsOnCorrectTriggers;
@@ -39,7 +43,7 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     }
 
     protected override void OnDisable() {
-        if (!LB24.isPuzzleComplete)
+        if (!LB24.IsCurrentPuzzleComplete)
         {
             Script_PuzzlesEventsManager.OnPuzzleProgress -= OnPuzzleProgress;
             Script_PuzzlesEventsManager.OnPuzzleProgress2 -= OnPillarsOnCorrectTriggers;
@@ -90,8 +94,8 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     private void ActivateTriggersAndPillars(bool isActive)
     {
         // set triggers and pillars to active
-        triggerParent.gameObject.SetActive(isActive);
-        pillarParent.gameObject.SetActive(isActive);
+        if (triggerParent != null)      triggerParent.gameObject.SetActive(isActive);
+        if (pillarParent != null)       pillarParent.gameObject.SetActive(isActive);
     }
 
     private void SetPillarsVisibility(bool isOn)
@@ -124,7 +128,7 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         /// call LB24's PuzzleFinishedState to set the pillars and in turn the trackables
         /// will set position based on them
         /// player enters on a reload
-        if (LB24.isPuzzleComplete)  LB24.PuzzleFinishedState();
+        if (LB24.IsCurrentPuzzleComplete)  LB24.PuzzleFinishedState();
     }
 
     public override void Setup()
@@ -137,9 +141,9 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     #if UNITY_EDITOR
     public void Test_SetSuccessCase()
     {
-        pushables[0].transform.position = new Vector3(-58, 0, 238);
-        pushables[1].transform.position = new Vector3(-60, 0, 234);
-        pushables[2].transform.position = new Vector3(-54, 0, 233);
+        pushables[0].transform.position = pushablesDoneLocations[0].transform.position;
+        pushables[1].transform.position = pushablesDoneLocations[1].transform.position;
+        pushables[2].transform.position = pushablesDoneLocations[2].transform.position;
     }
     #endif
 }

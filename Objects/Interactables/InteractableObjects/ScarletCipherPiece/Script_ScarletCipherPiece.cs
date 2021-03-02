@@ -6,17 +6,22 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
 {
     [SerializeField] private int _scarletCipherId;
     
-    private int ScarletCipherId
+    public int ScarletCipherId
     {
         get => _scarletCipherId;
-        set => _scarletCipherId = value;
+        private set => _scarletCipherId = value;
+    }
+
+    public bool DidPickUp()
+    {
+        return Script_ScarletCipherManager.Control.ScarletCipherVisibility[ScarletCipherId];
     }
 
     protected override void Start()
     {
         base.Start();
         // Singletons hooked up in Awake() 
-        if (Script_ScarletCipherManager.Control.ScarletCipherVisibility[ScarletCipherId])
+        if (DidPickUp())
         {
             Hide();
         }

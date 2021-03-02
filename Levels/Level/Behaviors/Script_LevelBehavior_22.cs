@@ -21,14 +21,12 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode MApproachedDialogueNode;
     [SerializeField] private float ApproachDialogueWaitTime;
     [SerializeField] private Script_TrackedPushablesTriggerPuzzleController puzzleController;
-    [SerializeField] private Script_MovingNPC Myne;
     [SerializeField] private PlayableDirector MyneIntroDirector;
     [SerializeField] private PlayableDirector MyneApproachDirector;
     [SerializeField] private PlayableDirector MyneExitDirector;
     [SerializeField] private Script_VCamera myneFollowCamera;
     [SerializeField] private Script_BgThemePlayer myneBgThemePlayer;
     [SerializeField] private Script_LevelBehavior_24 LB24;
-    [SerializeField] private Script_InteractableObjectTextParent textParent;
     private bool isInit = true;
 
     protected override void OnEnable()
@@ -88,8 +86,8 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     {
         game.PauseBgMusic();
         game.ChangeStateCutScene();
-        GetComponent<Script_TimelineController>().PlayableDirectorPlay(0);
-        /// Myne is set active via Timeline
+        
+        // GetComponent<Script_TimelineController>().PlayableDirectorPlay(0);
     }
     
     /// <summary>
@@ -144,7 +142,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
 
     private bool ShouldPlayCutScene()
     {
-        return LB24.isPuzzleComplete && LB24.didPickUpSpringStone && !isMyneCutSceneDone;
+        return LB24.IsCurrentPuzzleComplete && LB24.didPickUpSpringStone && !isMyneCutSceneDone;
     }
 
     /// <summary>
@@ -156,14 +154,11 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         puzzleController.Setup();
         /// Set completion state after set up to ensure no race conditions and we're not
         /// resetting trackables to default position in their Setup
-        if (LB24.isPuzzleComplete)  LB24.PuzzleFinishedState();
+        if (LB24.IsCurrentPuzzleComplete)  LB24.PuzzleFinishedState();
     }
     
     public override void Setup()
     {
-        game.SetupMovingNPC(Myne, isInit);
-        game.SetupInteractableObjectsText(textParent.transform, isInit);
-
         isInit = false;
     }
 }

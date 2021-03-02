@@ -114,10 +114,10 @@ public class Script_LevelBehavior : MonoBehaviour
     }
     
     public virtual void InitialState() { }
+    
     /// <summary>
     /// Called on EVERY level init
     /// </summary>
-    
     public virtual void Setup()
     {
         // game.CreateNPCs();

@@ -205,7 +205,7 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         
         if (!questComplete)
         {
-            if (LB24.isPuzzleComplete)  UrsieDialogueEndQuest();
+            if (LB24.IsCurrentPuzzleComplete)  UrsieDialogueEndQuest();
         }
         else
         {
