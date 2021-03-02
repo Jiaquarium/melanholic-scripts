@@ -13,126 +13,55 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     /* =======================================================================
         STATE DATA
     ======================================================================= */
-    public bool isMyneCutSceneDone;
+    public bool isUrsieCutsceneDone;
     /* ======================================================================= */
     
-    [SerializeField] public Script_DialogueManager dm;
-    [SerializeField] private Script_DialogueNode MDialogueNode;
-    [SerializeField] private Script_DialogueNode MApproachedDialogueNode;
-    [SerializeField] private float ApproachDialogueWaitTime;
     [SerializeField] private Script_TrackedPushablesTriggerPuzzleController puzzleController;
-    [SerializeField] private PlayableDirector MyneIntroDirector;
-    [SerializeField] private PlayableDirector MyneApproachDirector;
-    [SerializeField] private PlayableDirector MyneExitDirector;
-    [SerializeField] private Script_VCamera myneFollowCamera;
-    [SerializeField] private Script_BgThemePlayer myneBgThemePlayer;
     [SerializeField] private Script_LevelBehavior_24 LB24;
+
+    [SerializeField] private Script_TileMapExitEntrance ktvRoomExit;
+
+    [SerializeField] private Script_DemonNPC Ursie;
+    [SerializeField] private Script_DialogueNode UrsieAfterUnlockNode;
+    [SerializeField] private Script_DialogueNode[] psychicNodesQuestActive;
+    [SerializeField] private Script_DialogueNode[] psychicNodesTalked;
+
+    [SerializeField] private Script_DemonNPC PecheMelba;
+
+    private bool spokenWithUrsie;
     private bool isInit = true;
 
     protected override void OnEnable()
     {
-        MyneIntroDirector.stopped += OnMyneIntroPlayableDirectorStopped;
-        MyneApproachDirector.stopped += OnApproachedPlayableDirectorStopped;
-        MyneExitDirector.stopped += OnExitPlayableDirectorStopped;
-
-        Script_GameEventsManager.OnLevelInitComplete += PlayCutScene;
-
-        if (ShouldPlayCutScene())
+        if (FinishedQuest())
         {
-            game.PauseBgMusic(); // to avoid unwanted spurt of music at very beginning 
+            PuzzleCompleteState();   
+        }
+
+        bool FinishedQuest()
+        {
+            return LB24.IsCurrentPuzzleComplete && !isUrsieCutsceneDone;
         }
     }
 
-    protected override void OnDisable()
+    private void Awake()
     {
-        MyneIntroDirector.stopped -= OnMyneIntroPlayableDirectorStopped;
-        MyneApproachDirector.stopped -= OnApproachedPlayableDirectorStopped;
-        MyneExitDirector.stopped -= OnExitPlayableDirectorStopped;
-
-        Script_GameEventsManager.OnLevelInitComplete -= PlayCutScene;
-    }
-    
-    private void PlayCutScene()
-    {
-        if (ShouldPlayCutScene())
-        {
-            PuzzleCompleteCutScene();
-        }
-    }
-
-    private void OnMyneIntroPlayableDirectorStopped(PlayableDirector aDirector)
-    {
-        StartMDialogue();
-        myneBgThemePlayer.gameObject.SetActive(true);
-    }
-
-    private void OnApproachedPlayableDirectorStopped(PlayableDirector aDirector)
-    {
-        StartMApproachedDialogue();
-    }
-
-    private void OnExitPlayableDirectorStopped(PlayableDirector aDirector)
-    {
-        game.ChangeStateInteract();
-        game.UnPauseBgMusic();
-        DefaultCamera();
-        isMyneCutSceneDone = true;
-    }
-    
-    /* =========================================================================
-    M CUTSCENE START
-    ========================================================================= */
-    public void PuzzleCompleteCutScene()
-    {
-        game.PauseBgMusic();
-        game.ChangeStateCutScene();
+        ktvRoomExit.IsDisabled = true;
         
-        // GetComponent<Script_TimelineController>().PlayableDirectorPlay(0);
+        // Setup puzzle rooms
+        puzzleController.Setup();
+        
+        /// Set completion state after set up to ensure no race conditions and we're not
+        /// resetting trackables to default position in their Setup
+        if (LB24.IsCurrentPuzzleComplete)   LB24.PuzzleFinishedState();
     }
     
-    /// <summary>
-    /// called from Unity Event (OnNextNodeAction())
-    /// </summary>
-    public void AnimateApproach()
+    // If you complete the quest Ursie and MelbaPeche will have left, leaving a note. 
+    public void PuzzleCompleteState()
     {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlay(1);
+        Ursie.gameObject.SetActive(false);
+        PecheMelba.gameObject.SetActive(false);
     }
-    /// <summary>
-    /// called from Unity Event (OnNextNodeAction())
-    /// </summary>
-    public void CutMusic()
-    {
-        myneBgThemePlayer.GetComponent<AudioSource>().volume = 0f;
-        myneBgThemePlayer.gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// dialogue to start when exiting from KTV room2 with the puzzle completed
-    /// </summary>
-    public void StartMDialogue()
-    {
-        game.ChangeStateCutScene();
-        dm.StartDialogueNode(MDialogueNode);
-    }
-
-    public void StartMApproachedDialogue()
-    {
-        print("starting appraoched dialogue");
-        game.ChangeStateCutScene();
-        dm.StartDialogueNode(MApproachedDialogueNode);
-    }
-
-    public void EndMyneCutScene()
-    {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlay(2);
-        /// Myne is set inactive via Timeline
-    }
-
-    private void DefaultCamera()
-    {
-        Script_VCamManager.VCamMain.SwitchToMainVCam(myneFollowCamera);
-    }
-    /* ========================================================================= */
 
     protected override void HandleAction()
     {
@@ -140,22 +69,45 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         base.HandleDialogueAction();
     }
 
-    private bool ShouldPlayCutScene()
+    // ------------------------------------------------------------------
+    // Next Node Actions START
+
+    public void OnDeclinedUrsieQuest()
     {
-        return LB24.IsCurrentPuzzleComplete && LB24.didPickUpSpringStone && !isMyneCutSceneDone;
+        if (spokenWithUrsie)    return;
+        
+        Debug.Log("OnDeclinedUrsieQuest() switching out Ursie's dialogue nodes now**********");
+        Ursie.SwitchPsychicNodes(psychicNodesTalked);
+
+        spokenWithUrsie = true;
+    }
+    
+    public void UnlockKTVRoom()
+    {
+        Debug.Log("!!! PLAY UNLOCK KTV ROOM TIMELINE !!!");
+        
+        ktvRoomExit.IsDisabled = false;
+        
+        game.ChangeStateCutScene();
+        // Play Timeline to unnlock KTV Room2
+
+        // TBD: TO DELETE
+        StartCoroutine(WaitForUrsieDialogue());
+
+        IEnumerator WaitForUrsieDialogue()
+        {
+            yield return new WaitForSeconds(2);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(UrsieAfterUnlockNode);
+        }
     }
 
-    /// <summary>
-    /// use this for pure initializations since Awake() only happens once per game cycle
-    /// </summary>
-    private void Awake()
+    public void OnUnlockCutSceneDone()
     {
-        // setup puzzle rooms
-        puzzleController.Setup();
-        /// Set completion state after set up to ensure no race conditions and we're not
-        /// resetting trackables to default position in their Setup
-        if (LB24.IsCurrentPuzzleComplete)  LB24.PuzzleFinishedState();
+        game.ChangeStateInteract();
+        Ursie.SwitchPsychicNodes(psychicNodesQuestActive);
     }
+    
+    // ------------------------------------------------------------------
     
     public override void Setup()
     {
@@ -171,29 +123,9 @@ public class Script_LevelBehavior_22Tester : Editor
         DrawDefaultInspector();
 
         Script_LevelBehavior_22 lb = (Script_LevelBehavior_22)target;
-        if (GUILayout.Button("PuzzleCompleteCutScene()"))
+        if (GUILayout.Button("PuzzleCompleteState()"))
         {
-            lb.PuzzleCompleteCutScene();
-        }
-
-        if (GUILayout.Button("StartMDialogue()"))
-        {
-            lb.StartMDialogue();
-        }
-
-        if (GUILayout.Button("AnimateApproach()"))
-        {
-            lb.AnimateApproach();
-        }
-
-        if (GUILayout.Button("StartMApproachedDialogue()"))
-        {
-            lb.StartMApproachedDialogue();
-        }
-
-        if (GUILayout.Button("EndMyneCutScene()"))
-        {
-            lb.EndMyneCutScene();
+            lb.PuzzleCompleteState();
         }
     }
 }

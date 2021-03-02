@@ -9,7 +9,7 @@ public class Script_SaveLoadLevelBehavior_22 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_22 lvlModel = new Model_LevelBehavior_22(
-            LB22.isMyneCutSceneDone
+            LB22.isUrsieCutsceneDone
         );
         
         data.levelsData.LB22 = lvlModel;
@@ -30,7 +30,7 @@ public class Script_SaveLoadLevelBehavior_22 : Script_SaveLoadLevelBehavior
         }
 
         Model_LevelBehavior_22 lvlModel = data.levelsData.LB22;
-        LB22.isMyneCutSceneDone         = lvlModel.isMyneCutSceneDone;
+        LB22.isUrsieCutsceneDone        = lvlModel.isUrsieCutsceneDone;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
