@@ -400,6 +400,12 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     {
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(3, 4);
     }
+
+    public void UpdateUrsie()
+    {
+        Script_Names.UpdateUrsie();
+    }
+
     /// NextNodeAction(s) End
     /// =============================================================================
 

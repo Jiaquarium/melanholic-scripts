@@ -10,11 +10,14 @@ public class Script_Interactable : MonoBehaviour
     private static float dialogueCoolDownTime = 0.6f;
     [SerializeField] protected bool isDialogueCoolDown = false;
     private float timer;
+    
     [SerializeField] private bool _disableL;
     [SerializeField] private bool _disableR;
     [SerializeField] private bool _disableU;
     [SerializeField] private bool _disableD;
     [SerializeField] private Script_DisablerController disablerController;
+
+    [SerializeField] private Script_InteractableBox[] extraInteractableBoxes;
 
     protected bool DisableL {
         get => _disableL;
@@ -104,6 +107,15 @@ public class Script_Interactable : MonoBehaviour
                 || directionToPlayer == Directions.Right && DisableR
                 || directionToPlayer == Directions.Down && DisableD
             );
+        }
+    }
+
+    // Useful if we need to change the size of interactable area (e.g. after a dialogue).
+    public void RemoveExtraInteractableBoxes()
+    {
+        foreach (var box in extraInteractableBoxes)
+        {
+            box.gameObject.SetActive(false);
         }
     }
 

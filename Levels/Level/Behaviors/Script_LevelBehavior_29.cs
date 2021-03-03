@@ -213,6 +213,5 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         }
 
         game.SetupMovingNPC(Ursie, isInit);
-        doorCage.Setup();
     }
 }

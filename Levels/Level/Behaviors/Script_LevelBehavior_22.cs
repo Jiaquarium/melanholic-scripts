@@ -29,6 +29,10 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode[] psychicNodesQuestActive;
     [SerializeField] private Script_DialogueNode[] psychicNodesTalked;
 
+    [SerializeField] private Script_DoorLock KTVRoomDoorCage;
+
+    [SerializeField] private float OnUnlockDoneWaitTimeForDialogue;
+
     private bool spokenWithUrsie;
     private bool isInit = true;
 
@@ -63,29 +67,27 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         spokenWithUrsie = true;
     }
     
-    public void UnlockKTVRoom()
+    public void StartUnlockKTVRoomCutScene()
     {
-        Debug.Log("!!! PLAY UNLOCK KTV ROOM TIMELINE !!!");
-        
-        ktvRoomExit.IsDisabled = false;
-        
         game.ChangeStateCutScene();
+
+        // Remove Ursie's Bar interaction boxes so they aren't blocking the KTV Door.
+        Ursie.RemoveExtraInteractableBoxes();
+        
         // Play Timeline to unnlock KTV Room2
-
-        // TBD: TO DELETE
-        StartCoroutine(WaitForUrsieDialogue());
-
-        IEnumerator WaitForUrsieDialogue()
-        {
-            yield return new WaitForSeconds(2);
-            Script_DialogueManager.DialogueManager.StartDialogueNode(UrsieAfterUnlockNode);
-        }
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
 
     public void OnUnlockCutSceneDone()
     {
         game.ChangeStateInteract();
         Ursie.SwitchPsychicNodes(psychicNodesQuestActive);
+    }
+
+    // Preaction when talking with Peche & Melba
+    public void UpdateUrsieName()
+    {
+        Script_Names.UpdateUrsie();
     }
 
     // ------------------------------------------------------------------
@@ -96,6 +98,28 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         Script_Names.UpdateMelba();
         Script_Names.UpdatePeche();
         Script_Names.UpdateUrsie();
+    }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
+    public void UnlockKTVRoom()
+    {
+        KTVRoomDoorCage.Unlock();
+        ktvRoomExit.IsDisabled = false;
+    }
+
+    public void OnUnlockKTVRoomDone()
+    {
+        Ursie.FaceDirection(Directions.Right);
+        Ursie.DefaultFacingDirection = Directions.Right;
+        StartCoroutine(WaitForUrsieDialogue());
+
+        IEnumerator WaitForUrsieDialogue()
+        {
+            yield return new WaitForSeconds(OnUnlockDoneWaitTimeForDialogue);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(UrsieAfterUnlockNode);
+        }
     }
 
     // ------------------------------------------------------------------
@@ -145,6 +169,11 @@ public class Script_LevelBehavior_22Tester : Editor
         if (GUILayout.Button("PuzzleCompleteState()"))
         {
             lb.PuzzleCompleteState();
+        }
+
+        if (GUILayout.Button("Unlock KTV Door"))
+        {
+            lb.UnlockKTVRoom();
         }
     }
 }

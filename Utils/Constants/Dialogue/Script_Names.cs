@@ -223,6 +223,8 @@ public class Script_Names: MonoBehaviour
     public static void UpdateTedwich() { Tedwich                                = "<b>Tedwich</b>"; }
     
     // Refs: (1) Updated in Saloon Hallway L29
+    // (2) Ballroom
+    // (3) Urselks Saloon
     public static void UpdateUrsie() { Ursie                                    = "<b>Ursie</b>"; }
     
     // Refs: (1) Kaffe & Latte's Dialogue in Ballroom
