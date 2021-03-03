@@ -22,27 +22,15 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     [SerializeField] private Script_TileMapExitEntrance ktvRoomExit;
 
     [SerializeField] private Script_DemonNPC Ursie;
+    [SerializeField] private Script_DemonNPC PecheMelba;
+    [SerializeField] private Script_InteractableFullArt thankYouNote;
+
     [SerializeField] private Script_DialogueNode UrsieAfterUnlockNode;
     [SerializeField] private Script_DialogueNode[] psychicNodesQuestActive;
     [SerializeField] private Script_DialogueNode[] psychicNodesTalked;
 
-    [SerializeField] private Script_DemonNPC PecheMelba;
-
     private bool spokenWithUrsie;
     private bool isInit = true;
-
-    protected override void OnEnable()
-    {
-        if (FinishedQuest())
-        {
-            PuzzleCompleteState();   
-        }
-
-        bool FinishedQuest()
-        {
-            return LB24.IsCurrentPuzzleComplete && !isUrsieCutsceneDone;
-        }
-    }
 
     private void Awake()
     {
@@ -55,13 +43,6 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         /// resetting trackables to default position in their Setup
         if (LB24.IsCurrentPuzzleComplete)   LB24.PuzzleFinishedState();
     }
-    
-    // If you complete the quest Ursie and MelbaPeche will have left, leaving a note. 
-    public void PuzzleCompleteState()
-    {
-        Ursie.gameObject.SetActive(false);
-        PecheMelba.gameObject.SetActive(false);
-    }
 
     protected override void HandleAction()
     {
@@ -70,7 +51,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     }
 
     // ------------------------------------------------------------------
-    // Next Node Actions START
+    // Next Node Actions
 
     public void OnDeclinedUrsieQuest()
     {
@@ -106,11 +87,49 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         game.ChangeStateInteract();
         Ursie.SwitchPsychicNodes(psychicNodesQuestActive);
     }
-    
+
     // ------------------------------------------------------------------
+    // Full Art Actions
+
+    public void UpdateNamesInLetter()
+    {
+        Script_Names.UpdateMelba();
+        Script_Names.UpdatePeche();
+        Script_Names.UpdateUrsie();
+    }
+
+    // ------------------------------------------------------------------
+
+    // If you complete the quest Ursie and MelbaPeche will have left, leaving a note.
+    public void PuzzleCompleteState()
+    {
+        Ursie.gameObject.SetActive(false);
+        PecheMelba.gameObject.SetActive(false);
+
+        thankYouNote.gameObject.SetActive(true);
+    }
+    
+    public override void InitialState()
+    {
+        base.InitialState();
+
+        Ursie.gameObject.SetActive(true);
+        PecheMelba.gameObject.SetActive(true);
+
+        thankYouNote.gameObject.SetActive(false);
+    }
+
     
     public override void Setup()
     {
+        if (FinishedQuest())    PuzzleCompleteState();   
+        else                    InitialState();
+
+        bool FinishedQuest()
+        {
+            return LB24.IsCurrentPuzzleComplete && !isUrsieCutsceneDone;
+        }
+        
         isInit = false;
     }
 }
