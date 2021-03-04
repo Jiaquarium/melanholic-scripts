@@ -190,6 +190,13 @@ public class Script_Player : Script_Character
         Debug.Log($"Player state set to {state}!");
     }
 
+    public void SetIsPuppeteer()
+    {
+        SetState(Const_States_Player.Puppeteer);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
+    }
+
     private bool IsNotMovingState()
     {
         return State == Const_States_Player.Attack
@@ -197,6 +204,7 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.Viewing
                 || State == Const_States_Player.PickingUp
                 || State == Const_States_Player.Standby
+                || State == Const_States_Player.Puppeteer
                 || State == Const_States_Player.Inventory;
     }
 
