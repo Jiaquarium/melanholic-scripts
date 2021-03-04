@@ -180,7 +180,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     public override void Setup()
     {
-        playerMovementAnimator = game.GetPlayerMovementAnimator();
+        playerMovementAnimator = game.GetPlayer().MyAnimator.GetComponent<Script_PlayerMovementAnimator>();
         playerGhost = game.GetPlayerGhost();
         fadingPlayer = playerMovementAnimator.GetComponent<SpriteRenderer>();
         playerGhostToFade = playerGhost.spriteRenderer;

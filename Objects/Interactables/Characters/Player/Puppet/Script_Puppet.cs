@@ -13,6 +13,11 @@ public class Script_Puppet : Script_PlayerCopy
     [SerializeField] protected PuppetStates puppetState;
     [SerializeField] protected bool isReversed;
 
+    // The new animator controller to swap when the puppet is active.
+    [SerializeField] private RuntimeAnimatorController activatedAnimatorController;
+    
+    private RuntimeAnimatorController inactiveAnimatorController;
+
     void OnEnable()
     {
         Script_PlayerEventsManager.OnPuppeteerActivate      += OnPuppeteerActivate;
@@ -30,6 +35,12 @@ public class Script_Puppet : Script_PlayerCopy
         base.Awake();
 
         puppetState = PuppetStates.Inactive;
+    }
+
+    void Start()
+    {
+        Debug.Log($"My animator: {MyAnimator}");
+        inactiveAnimatorController = MyAnimator.runtimeAnimatorController as RuntimeAnimatorController;
     }
     
     protected override void Update()
@@ -56,7 +67,7 @@ public class Script_Puppet : Script_PlayerCopy
         }
     }
 
-    private void OnPuppeteerActivate()
+    protected virtual void OnPuppeteerActivate()
     {
         // Wait to set active on next frame, so we don't take in the input for the current frame
         // (e.g. the input for switching to Puppeteer mode) and call PlayerStickerEffect() on same frame.
@@ -67,11 +78,14 @@ public class Script_Puppet : Script_PlayerCopy
             yield return null;
             
             puppetState = PuppetStates.Active;
+            
+            if (activatedAnimatorController != null)    MyAnimator.runtimeAnimatorController = activatedAnimatorController;
         }
     }
 
-    private void OnPuppeteerDeactivate()
+    protected virtual void OnPuppeteerDeactivate()
     {
         puppetState = PuppetStates.Inactive;
+        MyAnimator.runtimeAnimatorController = inactiveAnimatorController;
     }
 }

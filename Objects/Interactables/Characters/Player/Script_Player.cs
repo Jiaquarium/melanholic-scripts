@@ -16,7 +16,6 @@ public class Script_Player : Script_Character
     private Script_PlayerThoughtManager playerThoughtManager;
     protected Script_PlayerMovement playerMovementHandler;
     private Script_PlayerEffect playerEffect;
-    private Script_PlayerMovementAnimator playerMovementAnimator;
     public Script_InteractionBoxController interactionBoxController { get; private set; }
 
     [SerializeField] private Script_PlayerGraphics playerGraphics;
@@ -313,11 +312,6 @@ public class Script_Player : Script_Character
         return playerMovementHandler.PlayerGhost;
     }
 
-    public Script_PlayerMovementAnimator GetPlayerMovementAnimator()
-    {
-        return playerMovementAnimator;
-    }
-
     public void SwitchLight(bool isOn)
     {
         playerMovementHandler.SwitchLight(isOn);
@@ -421,9 +415,7 @@ public class Script_Player : Script_Character
         playerActionHandler = GetComponent<Script_PlayerAction>();
         playerThoughtManager = GetComponent<Script_PlayerThoughtManager>();
         playerEffect = GetComponent<Script_PlayerEffect>();
-        playerMovementAnimator = Script_Utils.FindChildWithTag(
-            this.gameObject, Const_Tags.PlayerAnimator)
-            .GetComponent<Script_PlayerMovementAnimator>();
+        
         interactionBoxController = GetComponent<Script_InteractionBoxController>();
         playerStats = GetComponent<Script_PlayerStats>();
 
