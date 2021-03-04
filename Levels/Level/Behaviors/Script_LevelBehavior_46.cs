@@ -27,13 +27,11 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             (int)puppetMasterSpawn.transform.position.z,
             puppetMasterSpawn.Direction
         );
-
         puppetMaster.Setup(
             puppetMaster.FacingDirection,
             puppetMasterStartState,
             false
         );
-
         puppetMaster.InitializeOnLevel(
             puppetMasterStartState,
             false,

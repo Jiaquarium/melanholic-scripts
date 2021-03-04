@@ -8,7 +8,7 @@ using UnityEngine;
 public class Script_PlayerCopy : Script_Player
 {
     protected override void Update()
-    {   
+    {
         // ------------------------------------------------------------------
         // Visuals
         if (isPlayerGhostMatchSortingLayer)
