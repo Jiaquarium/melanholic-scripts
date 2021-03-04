@@ -33,6 +33,7 @@ public class Dev_InventoryTester : MonoBehaviour
         AddMelancholyPiano();
         AddLastElevator();
         AddLetThereBeLight();
+        AddPuppeteer();
     }
 
     public void AddKeys()
@@ -75,6 +76,11 @@ public class Dev_InventoryTester : MonoBehaviour
     public void AddLetThereBeLight()
     {
         Script_Game.Game.AddItemById(Const_Items.LetThereBeLightId);
+    }
+
+    public void AddPuppeteer()
+    {
+        Script_Game.Game.AddItemById(Const_Items.PuppeteerId);
     }
 
     // ------------------------------------------------------------------------
@@ -161,6 +167,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Let There Be Light"))
         {
             inventoryTester.AddLetThereBeLight();
+        }
+
+        if (GUILayout.Button("Add: Puppeteer"))
+        {
+            inventoryTester.AddPuppeteer();
         }
 
         GUILayout.Space(8);

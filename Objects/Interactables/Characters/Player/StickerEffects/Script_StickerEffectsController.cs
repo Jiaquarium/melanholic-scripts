@@ -16,6 +16,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     [SerializeField] private Script_MelancholyPianoEffect melancholyPianoEffect;
     [SerializeField] private Script_LastElevatorEffect lastElevatorEffect;
     [SerializeField] private Script_LetThereBeLightEffect letThereBeLightEffect;
+    [SerializeField] private Script_PuppeteerEffect puppeteerEffect;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     /// <summary>
@@ -116,6 +117,10 @@ public class Script_StickerEffectsController : MonoBehaviour
                 Debug.Log($"{activeSticker} Effect Activated");
                 letThereBeLightEffect.Effect();
                 break;
+            case Const_Items.PuppeteerId:
+                Debug.Log($"{activeSticker} Effect Activated");
+                puppeteerEffect.Effect();
+                break;
         }
 
         // On Successful Active Sticker Use, Show Animation
@@ -153,6 +158,10 @@ public class Script_StickerEffectsController : MonoBehaviour
             case Const_Items.LetThereBeLightId:
                 Debug.Log($"{sticker} isEquip {isEquip} Effect");
                 letThereBeLightEffect.EquipEffect(isEquip);
+                break;
+            case Const_Items.PuppeteerId:
+                Debug.Log($"{sticker} isEquip {isEquip} Effect");
+                puppeteerEffect.EquipEffect(isEquip);
                 break;
         }
     }

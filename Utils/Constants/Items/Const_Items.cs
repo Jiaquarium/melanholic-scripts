@@ -16,6 +16,7 @@ public class Const_Items : MonoBehaviour
     public const string MelancholyPianoId       = "sticker_melancholy-piano";
     public const string LastElevatorId          = "sticker_last-elevator";
     public const string LetThereBeLightId       = "sticker_let-there-be-light";
+    public const string PuppeteerId             = "sticker_puppeteer";
     
     // ------------------------------------------------------------------------
     //  Usables

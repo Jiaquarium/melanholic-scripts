@@ -12,31 +12,32 @@ public class Script_Player : Script_Character
 {
     public Renderer graphics;
     public Action onAttackDone; 
-    private Script_PlayerAction playerActionHandler;
+    protected Script_PlayerAction playerActionHandler;
     private Script_PlayerThoughtManager playerThoughtManager;
-    private Script_PlayerMovement playerMovementHandler;
+    protected Script_PlayerMovement playerMovementHandler;
     private Script_PlayerEffect playerEffect;
     private Script_PlayerMovementAnimator playerMovementAnimator;
     public Script_InteractionBoxController interactionBoxController { get; private set; }
 
     [SerializeField] private Script_PlayerGraphics playerGraphics;
 
-
     private Script_PlayerStats playerStats;
     [SerializeField] private Directions _facingDirection;
     public Vector3 location;
 
-
     [SerializeField] private FadeSpeeds fadeSpeed;
+    
     [Space]
     [SerializeField] private string state;
     [SerializeField] private string lastState;
+    
     [SerializeField] private bool _isInvincible;
     [SerializeField] private bool _isInvisible;
-    // storing soundFX here and not in manager because only 1 player exists
-    private Script_Game game;
+    
+    protected Script_Game game;
+    
     private Script_PlayerReflection reflection;
-    private bool isPlayerGhostMatchSortingLayer = false;
+    protected bool isPlayerGhostMatchSortingLayer = false;
     private const string PlayerGlitch = "Base Layer.Player_Glitch";
     private Dictionary<Directions, Vector3> directionsToVector;
        
@@ -83,7 +84,7 @@ public class Script_Player : Script_Character
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {   
         // ------------------------------------------------------------------
         // Visuals
@@ -195,9 +196,11 @@ public class Script_Player : Script_Character
         SetState(Const_States_Player.Puppeteer);
         StopMovingAnimations();
         Debug.Log($"Player state set to {state}!");
+
+        // Send Puppeteer Event
     }
 
-    private bool IsNotMovingState()
+    protected bool IsNotMovingState()
     {
         return State == Const_States_Player.Attack
                 || State == Const_States_Player.Dialogue
@@ -208,7 +211,7 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.Inventory;
     }
 
-    private void StopMovingAnimations()
+    protected void StopMovingAnimations()
     {
         MyAnimator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
         playerMovementHandler.PlayerGhost.StopMoveAnimation();    
