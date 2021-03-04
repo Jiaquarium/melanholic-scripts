@@ -88,21 +88,12 @@ public class Script_Player : Script_Character
     {   
         // ------------------------------------------------------------------
         // Visuals
-        if (isPlayerGhostMatchSortingLayer)
-        {
-            playerMovementHandler.PlayerGhostSortOrder(
-                Script_Utils.FindComponentInChildWithTag<SpriteRenderer>(
-                    this.gameObject, Const_Tags.PlayerAnimator
-                ).sortingOrder
-            );
-        }
-        playerMovementHandler.TrackPlayerGhost();
+        HandleGhostGraphics();
         // ------------------------------------------------------------------
 
         if (game.state == Const_States_Game.Interact)
         {
             playerActionHandler.HandleActionInput(FacingDirection, location);
-            
             if (IsNotMovingState())
             {
                 StopMovingAnimations();
@@ -126,6 +117,21 @@ public class Script_Player : Script_Character
                 StopMovingAnimations();
             }
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Graphics
+    protected void HandleGhostGraphics()
+    {
+        if (isPlayerGhostMatchSortingLayer)
+        {
+            playerMovementHandler.PlayerGhostSortOrder(
+                Script_Utils.FindComponentInChildWithTag<SpriteRenderer>(
+                    this.gameObject, Const_Tags.PlayerAnimator
+                ).sortingOrder
+            );
+        }
+        playerMovementHandler.TrackPlayerGhost();
     }
 
     // ------------------------------------------------------------------

@@ -16,8 +16,10 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     // Needed to initialize "Player" copy.
     [SerializeField] private Script_LevelGrid levelGrid;
     
-    [SerializeField] private Script_Player puppetMaster;
+    [SerializeField] private Script_PuppetMaster puppetMaster;
+    [SerializeField] private Script_Puppet puppet;
     [SerializeField] private Script_Marker puppetMasterSpawn;
+    [SerializeField] private Script_Marker puppetSpawn;
 
     public override void Setup()
     {
@@ -27,15 +29,17 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             (int)puppetMasterSpawn.transform.position.z,
             puppetMasterSpawn.Direction
         );
-        puppetMaster.Setup(
-            puppetMaster.FacingDirection,
-            puppetMasterStartState,
-            false
+        Model_PlayerState puppetStartState = new Model_PlayerState(
+            (int)puppetSpawn.transform.position.x,
+            (int)puppetSpawn.transform.position.y,
+            (int)puppetSpawn.transform.position.z,
+            puppetSpawn.Direction
         );
-        puppetMaster.InitializeOnLevel(
-            puppetMasterStartState,
-            false,
-            levelGrid.transform
-        );
+
+        puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState, false);
+        puppetMaster.InitializeOnLevel(puppetMasterStartState, false, levelGrid.transform);
+
+        puppet.Setup(puppetStartState.faceDirection, puppetStartState, false);
+        puppet.InitializeOnLevel(puppetStartState, false, levelGrid.transform);
     }
 }

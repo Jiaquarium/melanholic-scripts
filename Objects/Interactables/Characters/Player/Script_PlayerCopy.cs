@@ -11,15 +11,7 @@ public class Script_PlayerCopy : Script_Player
     {
         // ------------------------------------------------------------------
         // Visuals
-        if (isPlayerGhostMatchSortingLayer)
-        {
-            playerMovementHandler.PlayerGhostSortOrder(
-                Script_Utils.FindComponentInChildWithTag<SpriteRenderer>(
-                    this.gameObject, Const_Tags.PlayerAnimator
-                ).sortingOrder
-            );
-        }
-        playerMovementHandler.TrackPlayerGhost();
+        HandleGhostGraphics();
         // ------------------------------------------------------------------
 
         if (game.state == Const_States_Game.Interact)

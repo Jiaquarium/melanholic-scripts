@@ -74,7 +74,7 @@ public class Script_PlayerMovement : MonoBehaviour
         if (playerGhost != null)    Destroy(playerGhost.gameObject);
     }
     
-    public void HandleMoveInput()
+    public void HandleMoveInput(bool isReversed = false)
     {
         HandleWalkSpeed();
         
@@ -85,25 +85,53 @@ public class Script_PlayerMovement : MonoBehaviour
         Vector2 dirVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if (dirVector == Vector2.zero)  return;
         
-        // determine if vector is up, down, left or right direction headed
-        if (
-            Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y)
-            && dirVector.x > 0
-        )    
+        if (isReversed)     HandleMoveReversed();
+        else                HandleMoveDefault();
+
+        void HandleMoveDefault()
         {
-            Move(Directions.Right);
+            if (
+                Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y)
+                && dirVector.x > 0
+            )    
+            {
+                Move(Directions.Right);
+            }
+            else if (Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y) && dirVector.x < 0)
+            {
+                Move(Directions.Left);
+            }
+            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y > 0)
+            {
+                Move(Directions.Up);
+            }
+            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y < 0)
+            {
+                Move(Directions.Down);
+            }
         }
-        else if (Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y) && dirVector.x < 0)
+
+        void HandleMoveReversed()
         {
-            Move(Directions.Left);
-        }
-        else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y > 0)
-        {
-            Move(Directions.Up);
-        }
-        else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y < 0)
-        {
-            Move(Directions.Down);
+            if (
+                Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y)
+                && dirVector.x > 0
+            )    
+            {
+                Move(Directions.Left);
+            }
+            else if (Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y) && dirVector.x < 0)
+            {
+                Move(Directions.Right);
+            }
+            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y > 0)
+            {
+                Move(Directions.Down);
+            }
+            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y < 0)
+            {
+                Move(Directions.Up);
+            }
         }
     }
 
