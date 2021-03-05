@@ -13,18 +13,34 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_MeetupPuzzleController : Script_PuzzleController
 {
-    private enum PuzzleStates
+    private enum PuzzleOuterStates
     {
-        Default         = 0,
-        CourtyardOpen   = 1,
+        Closed          = 0,
+        Open            = 1,
     }
-    [SerializeField] private PuzzleStates state;
+
+    private enum PuzzleCourtyardStates
+    {
+        Closed          = 0,
+        Open            = 1,
+    }
+
+
+    [SerializeField] private PuzzleOuterStates outerState;
+    [SerializeField] private PuzzleCourtyardStates courtyardState;
     public List<Script_Player> playersOnTrigger;
     
     [SerializeField] private List<Script_Player> targetPlayersOnTrigger;
     [SerializeField] private bool isDone;
 
     [SerializeField] private Script_Game game;
+    
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        InitialState();
+    }
     
     void Update()
     {
@@ -41,22 +57,42 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         isDone = true;
     }
 
-    public void WeightTriggerOn()
+    // ------------------------------------------------------------------
+    // Trigger Unity Events
+    public void SwitchDown()
     {
         game.ChangeStateCutScene();
         
-        state = PuzzleStates.CourtyardOpen;
+        outerState = PuzzleOuterStates.Open;
 
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
 
-    public void WeightTriggerOff()
+    public void SwitchUp()
     {
         game.ChangeStateCutScene();
         
-        state = PuzzleStates.Default;
+        outerState = PuzzleOuterStates.Closed;
 
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+    }
+
+    public void Switch2Down()
+    {
+        game.ChangeStateCutScene();
+
+        courtyardState = PuzzleCourtyardStates.Open;
+
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+    }
+
+    public void Switch2Up()
+    {
+        game.ChangeStateCutScene();
+
+        courtyardState = PuzzleCourtyardStates.Closed;
+
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
     }
 
     // ------------------------------------------------------------------
@@ -81,7 +117,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     public override void InitialState()
     {
-        WeightTriggerOff();
+        SwitchUp();
+        Switch2Up();
     }
 }
 
@@ -93,14 +130,24 @@ public class Script_MeetupPuzzleControllerTester : Editor
         DrawDefaultInspector();
 
         Script_MeetupPuzzleController t = (Script_MeetupPuzzleController)target;
-        if (GUILayout.Button("WeightTriggerOn"))
+        if (GUILayout.Button("SwitchDown"))
         {
-            t.WeightTriggerOn();
+            t.SwitchDown();
         }
 
-        if (GUILayout.Button("WeightTriggerOff"))
+        if (GUILayout.Button("SwitchUp"))
         {
-            t.WeightTriggerOff();
+            t.SwitchUp();
+        }
+
+        if (GUILayout.Button("Switch2Down"))
+        {
+            t.Switch2Down();
+        }
+
+        if (GUILayout.Button("Switch2Up"))
+        {
+            t.Switch2Up();
         }
     }
 }
