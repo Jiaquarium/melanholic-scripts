@@ -345,12 +345,6 @@ public class Script_Player : Script_Character
         playerMovementHandler.UpdateLocation(location);
     }
 
-    public void Teleport(Vector3 newLocation)
-    {
-        transform.position = newLocation;
-        UpdateLocation();
-    }
-
     public void DropSFX()
     {
         playerEffect.DropSFX();
@@ -362,7 +356,13 @@ public class Script_Player : Script_Character
     }
 
     // ------------------------------------------------------------------
-    // Timeline
+    // Public Movement / Timeline
+    public void Teleport(Vector3 newLocation)
+    {
+        transform.position = newLocation;
+        UpdateLocation();
+    }
+    
     public void TimelineMoveUp()
     {
         playerMovementHandler.TimelineMoveUp();
@@ -371,6 +371,14 @@ public class Script_Player : Script_Character
     public void EnterElevator()
     {
         playerMovementHandler.EnterElevator();
+    }
+
+    /// <summary>
+    /// Use to control Player movement from an outside source instead of Input.
+    /// </summary>
+    public override void ForcePush(Directions dir)
+    {
+        playerMovementHandler.Move(dir);
     }
     // ------------------------------------------------------------------
 
@@ -449,6 +457,11 @@ public class Script_PlayerTester : Editor
         if (GUILayout.Button("isInvisible = false"))
         {
             player.isInvisible = false;
+        }
+
+        if (GUILayout.Button("ForcePush(Down)"))
+        {
+            player.ForcePush(Directions.Down);
         }
     }
 }

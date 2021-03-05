@@ -167,7 +167,7 @@ public class Script_PlayerMovement : MonoBehaviour
         playerGhost.SetMoveAnimation();
     }
 
-    void Move(Directions dir)
+    public void Move(Directions dir)
     {
         /// on button presses reset timer to allow for instant direction changes
         if (

@@ -4,16 +4,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 
-public class Script_TriggerReliableStay : MonoBehaviour
+/// <summary>
+/// Tag Detection Reliable Stay Trigger
+/// </summary>
+public class Script_TriggerReliableStay : Script_Trigger
 {
-    private enum DetectTags
+    protected enum DetectTags
     {
-        None        = 0,
-        Puppet      = 1,
-        Player      = 2,
+        None            = 0,
+        Everything      = 1,
+        Puppet          = 2,
+        Player          = 3,
     }
-    
-    [SerializeField] private List<DetectTags> detectTags;
+
+    [SerializeField] protected List<DetectTags> detectTags;
 
     [SerializeField] private UnityEvent onTriggerEnterAction;
     [SerializeField] private UnityEvent onTriggerExitAction;
@@ -23,11 +27,13 @@ public class Script_TriggerReliableStay : MonoBehaviour
         Script_ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
         
         // Results in DetectTags.None if none is found.
-        var result = detectTags.FirstOrDefault(tag => HandleDetectionTag(tag) == other.tag);
+        bool isDetectEverything = detectTags.FindIndex(tag => tag == DetectTags.Everything) != -1;
+        DetectTags result = detectTags.FirstOrDefault(tag => HandleDetectionTag(tag, other.tag));
 
-        if (!result.Equals(default(DetectTags)))
+        if (isDetectEverything || !result.Equals(default(DetectTags)))
         {   
             if (onTriggerEnterAction.CheckUnityEventAction()) onTriggerEnterAction.Invoke();
+            OnEnter(other);
         }
     }
 
@@ -36,27 +42,47 @@ public class Script_TriggerReliableStay : MonoBehaviour
         Script_ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
         
         // Results in DetectTags.None if none is found.
-        var result = detectTags.FirstOrDefault(tag => HandleDetectionTag(tag) == other.tag);
+        bool isDetectEverything = detectTags.FindIndex(tag => tag == DetectTags.Everything) != -1;
+        DetectTags result = detectTags.FirstOrDefault(tag => HandleDetectionTag(tag, other.tag));
         
-        if (!result.Equals(default(DetectTags)))
+        if (isDetectEverything || !result.Equals(default(DetectTags)))
         {   
             if (onTriggerExitAction.CheckUnityEventAction()) onTriggerExitAction.Invoke();
+            OnExit(other);
         }
     }
 
-    private string HandleDetectionTag(DetectTags tag)
+    protected virtual void OnEnter(Collider other)
     {
+
+    }
+
+    protected virtual void OnExit(Collider other)
+    {
+        
+    }
+
+    protected bool HandleDetectionTag(DetectTags tag, string otherTag)
+    {
+        string tagToCompare;
+        
         switch (tag)
         {
             case (DetectTags.Puppet):
-                return Const_Tags.Puppet;
+                tagToCompare = Const_Tags.Puppet;
+                break;
             case (DetectTags.Player):
-                return Const_Tags.Player;
+                tagToCompare = Const_Tags.Player;
+                break;
             case (DetectTags.None):
-                return null;
+                return false;
+            case (DetectTags.Everything):
+                return true;
             default:
                 Debug.LogError($"{name} You are missing handling tag {tag}");
-                return Const_Tags.Player;
+                return false;
         }
+
+        return otherTag == tagToCompare;
     }
 }

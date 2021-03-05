@@ -62,6 +62,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public void SwitchDown()
     {
         game.ChangeStateCutScene();
+        // Send event to clear doorways in case a Player/Puppet is blocking a door.
+        Script_PuzzlesEventsManager.ClearDoorways();
         
         outerState = PuzzleOuterStates.Open;
 
@@ -71,6 +73,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public void SwitchUp()
     {
         game.ChangeStateCutScene();
+        Script_PuzzlesEventsManager.ClearDoorways();
         
         outerState = PuzzleOuterStates.Closed;
 
@@ -80,6 +83,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public void Switch2Down()
     {
         game.ChangeStateCutScene();
+        Script_PuzzlesEventsManager.ClearDoorways();
 
         courtyardState = PuzzleCourtyardStates.Open;
 
@@ -89,6 +93,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public void Switch2Up()
     {
         game.ChangeStateCutScene();
+        Script_PuzzlesEventsManager.ClearDoorways();
 
         courtyardState = PuzzleCourtyardStates.Closed;
 

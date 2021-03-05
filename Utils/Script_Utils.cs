@@ -89,6 +89,11 @@ public static class Script_Utils
         };
     }
 
+    public static Vector3 DirectionToVector(this Directions dir)
+    {
+        return GetDirectionToVectorDict()[dir];
+    }
+
     public static Vector3 MovesToVector(Model_MoveSet moveSet)
     {
         Dictionary<Directions, Vector3> directions = GetDirectionToVectorDict();

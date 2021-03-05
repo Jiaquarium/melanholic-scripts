@@ -44,6 +44,11 @@ public class Script_Interactable : MonoBehaviour
     {
         
     }
+
+    public virtual void ForcePush(Directions dir)
+    {
+        this.transform.position += dir.DirectionToVector();
+    }
     
     /// <summary>
     /// Parent classes reference isDialogueCoolDown in ActionDefault() 
