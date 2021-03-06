@@ -26,6 +26,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     }
 
 
+    [SerializeField] private float WaitToPuzzleTransformTime;
+    
     [SerializeField] private PuzzleOuterStates outerState;
     [SerializeField] private PuzzleCourtyardStates courtyardState;
     public List<Script_Player> playersOnTrigger;
@@ -59,45 +61,47 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     // ------------------------------------------------------------------
     // Trigger Unity Events
-    public void SwitchDown()
+    public void FloorSwitchDown()
     {
         game.ChangeStateCutScene();
         // Send event to clear doorways in case a Player/Puppet is blocking a door.
         Script_PuzzlesEventsManager.ClearDoorways();
-        
         outerState = PuzzleOuterStates.Open;
 
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+        StartCoroutine(WaitToPuzzleTransformTimeline(0));
     }
 
-    public void SwitchUp()
+    public void FloorSwitchUp()
     {
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
-        
         outerState = PuzzleOuterStates.Closed;
 
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+        StartCoroutine(WaitToPuzzleTransformTimeline(1));
     }
 
-    public void Switch2Down()
+    public void FloorSwitch2Down()
     {
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
-
         courtyardState = PuzzleCourtyardStates.Open;
 
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+        StartCoroutine(WaitToPuzzleTransformTimeline(2));
     }
 
-    public void Switch2Up()
+    public void FloorSwitch2Up()
     {
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
-
         courtyardState = PuzzleCourtyardStates.Closed;
 
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
+        StartCoroutine(WaitToPuzzleTransformTimeline(3));
+    }
+
+    private IEnumerator WaitToPuzzleTransformTimeline(int timelineIdx)
+    {
+        yield return new WaitForSeconds(WaitToPuzzleTransformTime);
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, timelineIdx);
     }
 
     // ------------------------------------------------------------------
@@ -122,8 +126,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     public override void InitialState()
     {
-        SwitchUp();
-        Switch2Up();
+        FloorSwitchUp();
+        FloorSwitch2Up();
     }
 }
 
@@ -135,24 +139,29 @@ public class Script_MeetupPuzzleControllerTester : Editor
         DrawDefaultInspector();
 
         Script_MeetupPuzzleController t = (Script_MeetupPuzzleController)target;
-        if (GUILayout.Button("SwitchDown"))
+        if (GUILayout.Button("FloorSwitchDown"))
         {
-            t.SwitchDown();
+            t.FloorSwitchDown();
         }
 
-        if (GUILayout.Button("SwitchUp"))
+        if (GUILayout.Button("FloorSwitchUp"))
         {
-            t.SwitchUp();
+            t.FloorSwitchUp();
         }
 
-        if (GUILayout.Button("Switch2Down"))
+        if (GUILayout.Button("FloorSwitch2Down"))
         {
-            t.Switch2Down();
+            t.FloorSwitch2Down();
         }
 
-        if (GUILayout.Button("Switch2Up"))
+        if (GUILayout.Button("FloorSwitch2Up"))
         {
-            t.Switch2Up();
+            t.FloorSwitch2Up();
+        }
+
+        if (GUILayout.Button("Initial State"))
+        {
+            t.InitialState();
         }
     }
 }

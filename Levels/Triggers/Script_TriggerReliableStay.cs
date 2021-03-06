@@ -4,9 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Tag Detection Reliable Stay Trigger
 /// </summary>
+[RequireComponent(typeof(AudioSource))]
 public class Script_TriggerReliableStay : Script_Trigger
 {
     protected enum DetectTags
@@ -17,10 +22,29 @@ public class Script_TriggerReliableStay : Script_Trigger
         Player          = 3,
     }
 
+    [SerializeField] private bool isPressed;
+
     [SerializeField] protected List<DetectTags> detectTags;
 
     [SerializeField] private UnityEvent onTriggerEnterAction;
     [SerializeField] private UnityEvent onTriggerExitAction;
+
+    public bool IsPressed
+    {
+        get => isPressed;
+        private set
+        {
+            isPressed = value;
+
+            if (isPressed)      HandleDownState();
+            else                HandleUpState();
+        }
+    }
+
+    void Start()
+    {
+        InitialState();
+    }
     
     void OnTriggerEnter(Collider other)
     {
@@ -34,6 +58,8 @@ public class Script_TriggerReliableStay : Script_Trigger
         {   
             if (onTriggerEnterAction.CheckUnityEventAction()) onTriggerEnterAction.Invoke();
             OnEnter(other);
+
+            IsPressed = true;
         }
     }
 
@@ -49,17 +75,9 @@ public class Script_TriggerReliableStay : Script_Trigger
         {   
             if (onTriggerExitAction.CheckUnityEventAction()) onTriggerExitAction.Invoke();
             OnExit(other);
+
+            IsPressed = false;
         }
-    }
-
-    protected virtual void OnEnter(Collider other)
-    {
-
-    }
-
-    protected virtual void OnExit(Collider other)
-    {
-        
     }
 
     protected bool HandleDetectionTag(DetectTags tag, string otherTag)
@@ -85,4 +103,38 @@ public class Script_TriggerReliableStay : Script_Trigger
 
         return otherTag == tagToCompare;
     }
+
+    protected virtual void OnEnter(Collider other) {}
+
+    protected virtual void OnExit(Collider other) {}
+
+    protected virtual void HandleUpState() {}
+
+    protected virtual void HandleDownState() {}
+
+    public virtual void InitialState()
+    {
+        IsPressed = false;
+    }
+
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_TriggerReliableStay))]
+    public class Script_TriggerReliableStayTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_TriggerReliableStay t = (Script_TriggerReliableStay)target;
+            if (GUILayout.Button("IsPressed = true"))
+            {
+                t.IsPressed = true;
+            }
+
+            if (GUILayout.Button("IsPressed = false"))
+            {
+                t.IsPressed = false;
+            }
+        }
+    }
+    #endif
 }

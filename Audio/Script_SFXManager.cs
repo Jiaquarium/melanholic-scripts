@@ -65,6 +65,10 @@ public class Script_SFXManager : MonoBehaviour
     [Range(0f, 1f)] public float UITypingSFXVol;
     public AudioClip WellSFX;
     [Range(0f, 1f)] public float WellSFXVol;
+    public AudioClip FloorSwitchDown;
+    [Range(0f, 1f)] public float FloorSwitchDownVol;
+    public AudioClip FloorSwitchUp;
+    [Range(0f, 1f)] public float FloorSwitchUpVol;
     
     public void Setup()
     {
