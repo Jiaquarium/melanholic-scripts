@@ -46,7 +46,7 @@ public class Script_TimelineController : MonoBehaviour
     /// used when we have multiple timelines we want to manage
     /// e.g. KTVApproach, KTV Exit
     /// </summary>
-    public void PlayableDirectorPlayFromTimelines(int playableDirectorIdx, int timelineIdx)
+    public PlayableDirector PlayableDirectorPlayFromTimelines(int playableDirectorIdx, int timelineIdx)
     {
         TimelineAsset selectedAsset;
 
@@ -55,6 +55,8 @@ public class Script_TimelineController : MonoBehaviour
 
         print("playing asset: " + selectedAsset);
         playableDirectors[playableDirectorIdx].Play(selectedAsset);
+
+        return playableDirectors[playableDirectorIdx];
     }
 
     public void BindTimelineTracks(

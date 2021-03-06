@@ -32,13 +32,20 @@ public class Script_TriggerReliableStay : Script_Trigger
     public bool IsPressed
     {
         get => isPressed;
-        private set
-        {
-            isPressed = value;
+    }
 
-            if (isPressed)      HandleDownState();
-            else                HandleUpState();
+    public bool SetIsPressed(bool _isPressed, bool isInitialState = false)
+    {
+        if (isPressed != _isPressed)
+        {
+            isPressed = _isPressed;
+
+            var SFXOn = !isInitialState;
+            if (isPressed)      HandleDownState(SFXOn);
+            else                HandleUpState(SFXOn);
         }
+
+        return isPressed;
     }
 
     void Start()
@@ -59,7 +66,7 @@ public class Script_TriggerReliableStay : Script_Trigger
             if (onTriggerEnterAction.CheckUnityEventAction()) onTriggerEnterAction.Invoke();
             OnEnter(other);
 
-            IsPressed = true;
+            SetIsPressed(true);
         }
     }
 
@@ -76,7 +83,7 @@ public class Script_TriggerReliableStay : Script_Trigger
             if (onTriggerExitAction.CheckUnityEventAction()) onTriggerExitAction.Invoke();
             OnExit(other);
 
-            IsPressed = false;
+            SetIsPressed(false);
         }
     }
 
@@ -108,13 +115,13 @@ public class Script_TriggerReliableStay : Script_Trigger
 
     protected virtual void OnExit(Collider other) {}
 
-    protected virtual void HandleUpState() {}
+    protected virtual void HandleUpState(bool SFXOn) {}
 
-    protected virtual void HandleDownState() {}
+    protected virtual void HandleDownState(bool SFXOn) {}
 
     public virtual void InitialState()
     {
-        IsPressed = false;
+        SetIsPressed(false, isInitialState: true);
     }
 
     #if UNITY_EDITOR
@@ -127,12 +134,12 @@ public class Script_TriggerReliableStay : Script_Trigger
             Script_TriggerReliableStay t = (Script_TriggerReliableStay)target;
             if (GUILayout.Button("IsPressed = true"))
             {
-                t.IsPressed = true;
+                t.SetIsPressed(true);
             }
 
             if (GUILayout.Button("IsPressed = false"))
             {
-                t.IsPressed = false;
+                t.SetIsPressed(false);
             }
         }
     }

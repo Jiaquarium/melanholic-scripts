@@ -71,6 +71,12 @@ public class Script_InteractionBoxController : MonoBehaviour
         return activeBox.GetUsableTarget();
     }
 
+    public List<Transform> GetUniqueBlocking(Directions dir, string tag)
+    {
+        HandleActiveInteractionBox(dir);
+        return activeBox.GetUniqueBlocking(tag);
+    }
+
     /// <returns>ordered N, E, S, W</returns>
     public Script_InteractionBox[] GetInteractionBoxes()
     {

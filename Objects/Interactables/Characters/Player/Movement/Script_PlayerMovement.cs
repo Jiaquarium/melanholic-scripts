@@ -291,7 +291,7 @@ public class Script_PlayerMovement : MonoBehaviour
     /// </summary>
     public void UpdateLocation(Vector3 updatedPlayerLoc)
     {
-        playerGhost.UpdateLocation(updatedPlayerLoc);
+        playerGhost?.UpdateLocation(updatedPlayerLoc);
     }
 
     void FinishMoveAnimation()

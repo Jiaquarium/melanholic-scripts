@@ -8,23 +8,23 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
     [SerializeField] private Transform switchDownGraphics;
     [SerializeField] private Light pointLight;
 
-    protected override void HandleUpState()
+    protected override void HandleUpState(bool SFXOn)
     {
-        base.HandleUpState();
+        Debug.Log($"{name} HandleUpState()");
+        
+        base.HandleUpState(SFXOn);
 
-        Script_SFXManager SFX = Script_SFXManager.SFX;
-        GetComponent<AudioSource>().PlayOneShot(SFX.FloorSwitchUp, SFX.FloorSwitchUpVol);   
+        GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.FloorSwitchUp, Script_SFXManager.SFX.FloorSwitchUpVol);   
         
         if (switchUpGraphics != null)       switchUpGraphics.gameObject.SetActive(true);
         if (switchDownGraphics != null)     switchDownGraphics.gameObject.SetActive(false);
     }
     
-    protected override void HandleDownState()
+    protected override void HandleDownState(bool SFXOn)
     {
-        base.HandleDownState();
+        base.HandleDownState(SFXOn);
 
-        Script_SFXManager SFX = Script_SFXManager.SFX;
-        GetComponent<AudioSource>().PlayOneShot(SFX.FloorSwitchDown, SFX.FloorSwitchDownVol);   
+        GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.FloorSwitchDown, Script_SFXManager.SFX.FloorSwitchDownVol);   
         
         if (switchUpGraphics != null)       switchUpGraphics.gameObject.SetActive(false);
         if (switchDownGraphics != null)     switchDownGraphics.gameObject.SetActive(true);

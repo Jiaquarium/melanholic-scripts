@@ -12,9 +12,10 @@ public class Script_Player : Script_Character
 {
     public Renderer graphics;
     public Action onAttackDone; 
+    [SerializeField] protected Script_PlayerMovement playerMovementHandler;
+    
     protected Script_PlayerAction playerActionHandler;
     private Script_PlayerThoughtManager playerThoughtManager;
-    protected Script_PlayerMovement playerMovementHandler;
     private Script_PlayerEffect playerEffect;
     public Script_InteractionBoxController interactionBoxController { get; private set; }
 

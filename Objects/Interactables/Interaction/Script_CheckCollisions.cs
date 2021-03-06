@@ -7,10 +7,10 @@ using UnityEngine.Tilemaps;
 public class Script_CheckCollisions : MonoBehaviour
 {
     [SerializeField] protected Script_InteractionBoxController interactionBoxController;
+    [SerializeField] protected List<Const_Tags.Tags> UniqueBlockingTags;
 
     /// <summary>
-    /// 
-    /// check if allowed to move to desired grid tile
+    /// Check if allowed to move to desired grid tile
     /// </summary>
     /// <param name="desiredDirection"></param>
     /// <returns>true if collision (not allowed to move to that space)</returns>
@@ -33,6 +33,7 @@ public class Script_CheckCollisions : MonoBehaviour
         if (CheckNotOffTilemap(desiredX, desiredZ, tileWorldLocation))      return true;
         if (CheckInteractableBlocking(dir))                                 return true;
         if (CheckPushableBlocking(dir))                                     return true;
+        if (CheckUniqueBlocking(dir))                                       return true;
 
         return false;
     }
@@ -51,7 +52,28 @@ public class Script_CheckCollisions : MonoBehaviour
         return interactables.Count > 0;
     }
 
-    /// Meant to be overriden; Pushables care between difference of interactables and pushables
-    /// when they are in IgnoreInteractables mode
+    // Meant to be overriden; Pushables care between difference of interactables and pushables
+    // when they are in IgnoreInteractables mode
     protected virtual bool CheckPushableBlocking(Directions dir) { return false; }
+
+    /// <summary>
+    /// Use to specify if a certain Character should be blocked by particular obstacles, perhaps invisibile to others.
+    /// </summary>
+    protected virtual bool CheckUniqueBlocking(Directions dir)
+    {
+        foreach (var uniqueBlockingTag in UniqueBlockingTags)
+        {
+            string tag = Const_Tags.TagsMap[uniqueBlockingTag];
+            
+            List<Transform> uniqueBlocking = interactionBoxController.GetUniqueBlocking(dir, tag);
+            
+            if (uniqueBlocking.Count > 0)
+            {
+                Debug.Log($"{name} Detected unique blocking with tag {tag}");
+                return true;    
+            }
+        }
+
+        return false;
+    }
 }

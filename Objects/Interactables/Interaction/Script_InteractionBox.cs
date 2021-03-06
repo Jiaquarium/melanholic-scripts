@@ -34,7 +34,7 @@ public class Script_InteractionBox : MonoBehaviour
     /// <summary>
     /// Searches recursively up the hierarchy for a parent with Script_Interactable Component
     /// </summary>
-    public List<Script_Interactable> GetInteractablesBlocking(bool ignoreText = true)
+    public List<Script_Interactable> GetInteractablesBlocking()
     {
         List<Script_Interactable> interactables = new List<Script_Interactable>();
         
@@ -46,7 +46,7 @@ public class Script_InteractionBox : MonoBehaviour
             
             if (interactable != null)
             {
-                 if (ignoreText && interactable is Script_InteractableObjectText)
+                 if (interactable is Script_InteractableObjectText)
                  {
                     if (!((Script_InteractableObjectText)interactable).isBlocking)
                         continue;
@@ -77,10 +77,33 @@ public class Script_InteractionBox : MonoBehaviour
 
         return pushables;
     }
+
+    public virtual List<Transform> GetUniqueBlocking(string tag)
+    {
+        List<Transform> uniqueBlocking = new List<Transform>();
+        
+        ExposeBox();
+
+        foreach (Collider col in colliders)
+        {
+            if (col.transform.GetParentRecursive<Transform>().tag == tag)
+            {
+                uniqueBlocking.Add(col.transform.GetParentRecursive<Transform>());
+            }
+        }
+
+        return uniqueBlocking;
+    }
+
     public virtual Script_SavePoint GetSavePoint() { return null; }
+    
     public virtual Script_StaticNPC GetNPC() { return null; }
+    
     public virtual Script_InteractableObject GetInteractableObject() { return null; }
+    
     public virtual Script_InteractableObject[] GetInteractableObjects() { return null; }
+    
     public virtual Script_ItemObject GetItem() { return null; }
+    
     public virtual Script_UsableTarget GetUsableTarget() { return null; }
 }

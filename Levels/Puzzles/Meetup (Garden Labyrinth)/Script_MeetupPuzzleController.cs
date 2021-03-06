@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,6 +37,12 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     [SerializeField] private List<Script_Player> targetPlayersOnTrigger;
     [SerializeField] private bool isDone;
 
+
+    [SerializeField] private Script_Puppet Latte;
+    [SerializeField] private Script_Puppet Kaffe;
+    [SerializeField] private Script_Marker LatteSpawn;
+    [SerializeField] private Script_Marker KaffeSpawn;
+    
     [SerializeField] private Script_Game game;
     
     protected override void OnEnable()
@@ -71,15 +79,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         StartCoroutine(WaitToPuzzleTransformTimeline(0));
     }
 
-    public void FloorSwitchUp()
-    {
-        game.ChangeStateCutScene();
-        Script_PuzzlesEventsManager.ClearDoorways();
-        outerState = PuzzleOuterStates.Closed;
-
-        StartCoroutine(WaitToPuzzleTransformTimeline(1));
-    }
-
     public void FloorSwitch2Down()
     {
         game.ChangeStateCutScene();
@@ -88,26 +87,51 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
         StartCoroutine(WaitToPuzzleTransformTimeline(2));
     }
+    
+    public void FloorSwitchUp(bool isInitialize = false)
+    {
+        game.ChangeStateCutScene();
+        Script_PuzzlesEventsManager.ClearDoorways();
+        outerState = PuzzleOuterStates.Closed;
 
-    public void FloorSwitch2Up()
+        StartCoroutine(WaitToPuzzleTransformTimeline(1, isInitialize));
+    }
+
+    public void FloorSwitch2Up(bool isInitialize = false)
     {
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
         courtyardState = PuzzleCourtyardStates.Closed;
 
-        StartCoroutine(WaitToPuzzleTransformTimeline(3));
+        StartCoroutine(WaitToPuzzleTransformTimeline(3, isInitialize));
     }
 
-    private IEnumerator WaitToPuzzleTransformTimeline(int timelineIdx)
+    private IEnumerator WaitToPuzzleTransformTimeline(int timelineIdx, bool isInitialize = false)
     {
         yield return new WaitForSeconds(WaitToPuzzleTransformTime);
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, timelineIdx);
+        
+        var timelineController = GetComponent<Script_TimelineController>();
+
+        var director = timelineController.PlayableDirectorPlayFromTimelines(0, timelineIdx);
+
+        if (isInitialize)
+        {
+            var playableAsset = (PlayableAsset)timelineController.timelines[timelineIdx];
+            director.time = playableAsset.duration;
+            director.Evaluate();
+            director.Stop();
+
+            // Timeline ending signal is not called
+            OnPuzzleTransformDone();
+        }
     }
 
     // ------------------------------------------------------------------
     // Timeline Signals
     public void OnPuzzleTransformDone()
     {
+        Debug.Log("ON PUZZLE TRANSFORM DONE CALLED ON TIMELINE END!!!!!!!");
+
         game.ChangeStateInteract();
     }
     // ------------------------------------------------------------------
@@ -126,8 +150,11 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     public override void InitialState()
     {
-        FloorSwitchUp();
-        FloorSwitch2Up();
+        FloorSwitchUp(true);
+        FloorSwitch2Up(true);
+
+        Kaffe.Teleport(KaffeSpawn.transform.position);
+        Latte.Teleport(LatteSpawn.transform.position);
     }
 }
 
