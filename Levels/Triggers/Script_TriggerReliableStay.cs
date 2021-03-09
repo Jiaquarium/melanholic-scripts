@@ -14,17 +14,9 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_TriggerReliableStay : Script_Trigger
 {
-    protected enum DetectTags
-    {
-        None            = 0,
-        Everything      = 1,
-        Puppet          = 2,
-        Player          = 3,
-    }
-
     [SerializeField] private bool isPressed;
 
-    [SerializeField] protected List<DetectTags> detectTags;
+    [SerializeField] protected List<Const_Tags.Tags> detectTags;
 
     [SerializeField] private UnityEvent onTriggerEnterAction;
     [SerializeField] private UnityEvent onTriggerExitAction;
@@ -57,11 +49,7 @@ public class Script_TriggerReliableStay : Script_Trigger
     {
         Script_ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
         
-        // Results in DetectTags.None if none is found.
-        bool isDetectEverything = detectTags.FindIndex(tag => tag == DetectTags.Everything) != -1;
-        DetectTags result = detectTags.FirstOrDefault(tag => HandleDetectionTag(tag, other.tag));
-
-        if (isDetectEverything || !result.Equals(default(DetectTags)))
+        if (detectTags.CheckInTags(other.tag))
         {   
             if (onTriggerEnterAction.CheckUnityEventAction()) onTriggerEnterAction.Invoke();
             OnEnter(other);
@@ -74,41 +62,13 @@ public class Script_TriggerReliableStay : Script_Trigger
     {
         Script_ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
         
-        // Results in DetectTags.None if none is found.
-        bool isDetectEverything = detectTags.FindIndex(tag => tag == DetectTags.Everything) != -1;
-        DetectTags result = detectTags.FirstOrDefault(tag => HandleDetectionTag(tag, other.tag));
-        
-        if (isDetectEverything || !result.Equals(default(DetectTags)))
+        if (detectTags.CheckInTags(other.tag))
         {   
             if (onTriggerExitAction.CheckUnityEventAction()) onTriggerExitAction.Invoke();
             OnExit(other);
 
             SetIsPressed(false);
         }
-    }
-
-    protected bool HandleDetectionTag(DetectTags tag, string otherTag)
-    {
-        string tagToCompare;
-        
-        switch (tag)
-        {
-            case (DetectTags.Puppet):
-                tagToCompare = Const_Tags.Puppet;
-                break;
-            case (DetectTags.Player):
-                tagToCompare = Const_Tags.Player;
-                break;
-            case (DetectTags.None):
-                return false;
-            case (DetectTags.Everything):
-                return true;
-            default:
-                Debug.LogError($"{name} You are missing handling tag {tag}");
-                return false;
-        }
-
-        return otherTag == tagToCompare;
     }
 
     protected virtual void OnEnter(Collider other) {}

@@ -8,8 +8,6 @@ using UnityEngine;
 /// </summary>
 public class Script_PuppetMaster : Script_Puppet
 {
-    [SerializeField] private Script_VCamera puppeteerVCam;
-    
     protected override void Update()
     {
         // ------------------------------------------------------------------
@@ -39,14 +37,10 @@ public class Script_PuppetMaster : Script_Puppet
     protected override void OnPuppeteerActivate()
     {
         base.OnPuppeteerActivate();
-
-        Script_VCamManager.VCamMain.SetNewVCam(puppeteerVCam);
     }
 
     protected override void OnPuppeteerDeactivate()
     {
         base.OnPuppeteerDeactivate();
-
-        Script_VCamManager.VCamMain.SwitchToMainVCam(puppeteerVCam);
     }
 }

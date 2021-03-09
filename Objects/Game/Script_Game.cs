@@ -1613,30 +1613,30 @@ public class Script_Game : MonoBehaviour
         _VCAMERA_
     ========================================================================= */
     // disable and then enable the Vcam after the Follow Target teleports will snap this
-    public CinemachineVirtualCamera SnapToPlayer(Vector3 prevPlayerPos)
+    public CinemachineVirtualCamera SnapActiveCam(Vector3 prevPos, Transform t = null)
     {
         CinemachineVirtualCamera activeVCam = cinemachineBrain
             .ActiveVirtualCamera.VirtualCameraGameObject
             .GetComponent<CinemachineVirtualCamera>();
         
-        Debug.Log($"Snap activeVCam to player: {activeVCam}");
-        Script_Player p = GetPlayer();
+        Debug.Log($"Snap activeVCam to {t} or player: {activeVCam}");
+        var target = t ?? GetPlayer().transform;
+        
         // https://forum.unity.com/threads/cameras-no-longer-snapping-after-being-disabled-enabled.729242/#post-6276506
-        activeVCam.OnTargetObjectWarped(p.transform, p.transform.position - prevPlayerPos);
+        activeVCam.OnTargetObjectWarped(target.transform, target.transform.position - prevPos);
+        
         // https://forum.unity.com/threads/proper-way-to-reset-follow-camera.747101/
         activeVCam.PreviousStateIsValid = false;
 
         return activeVCam;
+    }
 
-        /// Snapping via disabling / enabling VCam, doesn't seem to work
-        // activeVCam.enabled = false;
-        // StartCoroutine(ReenableActiveVCam());
-        // https://forum.unity.com/threads/how-to-snap-a-virtual-camera-to-a-target.481142/
-        // IEnumerator ReenableActiveVCam()
-        // {
-        //     yield return new WaitForEndOfFrame();
-        //     activeVCam.enabled = true;
-        // }
+    public CinemachineVirtualCamera SnapCam(Vector3 prevPos, Transform t, CinemachineVirtualCamera vCam)
+    {
+        vCam.OnTargetObjectWarped(t.transform, t.transform.position - prevPos);
+        vCam.PreviousStateIsValid = false;
+
+        return vCam;
     }
 
     public void ForceCutBlend()

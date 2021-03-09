@@ -27,7 +27,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         Open            = 1,
     }
 
-
     [SerializeField] private float WaitToPuzzleTransformTime;
     
     [SerializeField] private PuzzleOuterStates outerState;
@@ -42,15 +41,34 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     [SerializeField] private Script_Puppet Kaffe;
     [SerializeField] private Script_Marker LatteSpawn;
     [SerializeField] private Script_Marker KaffeSpawn;
+
+    [SerializeField] private Script_VCamera puppeteerVCam;
     
     [SerializeField] private Script_Game game;
+    
+    public bool IsDone
+    {
+        get => isDone;
+    }
     
     protected override void OnEnable()
     {
         base.OnEnable();
 
         InitialState();
+
+        Script_PlayerEventsManager.OnPuppeteerActivate      += OnPuppeteerActivate;
+        Script_PlayerEventsManager.OnPuppeteerDeactivate    += OnPuppeteerDeactivate;
     }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        Script_PlayerEventsManager.OnPuppeteerActivate      -= OnPuppeteerActivate;
+        Script_PlayerEventsManager.OnPuppeteerDeactivate    -= OnPuppeteerDeactivate;
+    }
+
     
     void Update()
     {
@@ -63,14 +81,28 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         if (isDone)     return;
 
         Debug.Log("PUZZLE IS DONE!!!!!!!!! BOTH TARGETS ON PLATFORM");
+        Script_PuzzlesEventsManager.PuzzleSuccess(PuzzleId);
         
         isDone = true;
+    }
+
+    private void OnPuppeteerActivate()
+    {
+        if (!isDone)    Script_VCamManager.VCamMain.SetNewVCam(puppeteerVCam);
+    }
+
+    private void OnPuppeteerDeactivate()
+    {
+        if (!isDone)    Script_VCamManager.VCamMain.SwitchToMainVCam(puppeteerVCam);
     }
 
     // ------------------------------------------------------------------
     // Trigger Unity Events
     public void FloorSwitchDown()
     {
+        // If puzzle is done, the Labyrinth should be gone.
+        if (IsDone)     return;
+
         game.ChangeStateCutScene();
         // Send event to clear doorways in case a Player/Puppet is blocking a door.
         Script_PuzzlesEventsManager.ClearDoorways();
@@ -81,6 +113,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     public void FloorSwitch2Down()
     {
+        if (IsDone)     return;
+        
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
         courtyardState = PuzzleCourtyardStates.Open;
@@ -90,6 +124,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     
     public void FloorSwitchUp(bool isInitialize = false)
     {
+        if (IsDone)     return;
+        
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
         outerState = PuzzleOuterStates.Closed;
@@ -99,6 +135,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     public void FloorSwitch2Up(bool isInitialize = false)
     {
+        if (IsDone)     return;
+        
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
         courtyardState = PuzzleCourtyardStates.Closed;
@@ -152,9 +190,12 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     {
         FloorSwitchUp(true);
         FloorSwitch2Up(true);
-
-        Kaffe.Teleport(KaffeSpawn.transform.position);
-        Latte.Teleport(LatteSpawn.transform.position);
+        
+        if (!isDone)
+        {
+            Kaffe.Teleport(KaffeSpawn.transform.position);
+            Latte.Teleport(LatteSpawn.transform.position);
+        }
     }
 }
 

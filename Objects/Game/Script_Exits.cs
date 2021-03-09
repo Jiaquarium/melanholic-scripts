@@ -237,7 +237,7 @@ public class Script_Exits : MonoBehaviour
         game.InitiateLevel();
         
         /// Cut to player spawn to avoid slow camera tracking
-        game.SnapToPlayer(playerPrevPosition);
+        game.SnapActiveCam(playerPrevPosition);
     }
     
     // FOR CHANGING OUT LEVELS: END

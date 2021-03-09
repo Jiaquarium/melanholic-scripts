@@ -26,12 +26,7 @@ public class Script_MoveBlockingTriggerReliableStay : Script_TriggerReliableStay
     {
         foreach (Script_Interactable interactable in blockingInteractables)
         {
-            bool isDetectEverything = detectTags.FindIndex(tag => tag == DetectTags.Everything) != -1;
-            // Results in DetectTags.None if none is found.
-            DetectTags result = detectTags.FirstOrDefault(tag => HandleDetectionTag(tag, interactable.tag));
-
-            if (isDetectEverything || !result.Equals(default(DetectTags)))
-                interactable.ForcePush(pushDirection);
+            if (detectTags.CheckInTags(interactable.tag))   interactable.ForcePush(pushDirection);
         }
     }
     

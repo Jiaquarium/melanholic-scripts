@@ -16,7 +16,8 @@ public static class Const_Tags
         UsableTarget                    = 7,
         DialogueChoice                  = 8,
         Puppet                          = 9,
-        UniqueBlockingPuppetTop         = 10,
+        UniqueBlockingPuppet            = 10,
+        Everything                      = 99,
     }
 
     public static Dictionary<Tags, string> TagsMap = new Dictionary<Tags, string>
@@ -31,7 +32,7 @@ public static class Const_Tags
         { Tags.UsableTarget,                    UsableTarget },
         { Tags.DialogueChoice,                  DialogueChoice },
         { Tags.Puppet,                          Puppet },
-        { Tags.UniqueBlockingPuppetTop,         UniqueBlockingPuppetTop },
+        { Tags.UniqueBlockingPuppet,            UniqueBlockingPuppet },
     };
     
     public const string PlayerAnimator = "tag_player-animator";
@@ -44,6 +45,6 @@ public static class Const_Tags
     public const string UsableTarget = "tag_interactable_usable-target";
     public const string DialogueChoice = "tag_dialogue-choice-text";
     public const string Puppet = "tag_puppet";
-    public const string UniqueBlockingPuppetTop = "tag_unique-blocking_puppet-top";
+    public const string UniqueBlockingPuppet = "tag_unique-blocking_puppet";
 
 }

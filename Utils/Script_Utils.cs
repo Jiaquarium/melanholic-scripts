@@ -633,4 +633,18 @@ public static class Script_Utils
         var output = JsonUtility.ToJson(obj, true);
         Debug.Log(output);
     }
+
+    public static bool CheckInTags(this List<Const_Tags.Tags> tags, string tag)
+    {
+        if (tag == null)            return false;
+
+        // Check if Everything is included
+        bool isDetectEverything = tags.FindIndex(tag => tag == Const_Tags.Tags.Everything) != -1;
+        if (isDetectEverything)     return true;
+        
+        Const_Tags.Tags result = tags.FirstOrDefault(_tag => Const_Tags.TagsMap[_tag] == tag);
+
+        if (result.Equals(default(Const_Tags.Tags)))    return false;
+        else                                            return true;
+    }
 }

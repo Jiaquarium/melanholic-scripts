@@ -9,6 +9,16 @@ using UnityEditor;
 
 public class Script_VCamera : MonoBehaviour
 {
+    public Transform Follow
+    {
+        get => GetComponent<CinemachineVirtualCamera>().Follow;
+    }
+
+    public CinemachineVirtualCamera CinemachineVirtualCamera
+    {
+        get => GetComponent<CinemachineVirtualCamera>();
+    }
+    
     public void FollowTarget(Transform target)
     {
         GetComponent<CinemachineVirtualCamera>().Follow = target;
