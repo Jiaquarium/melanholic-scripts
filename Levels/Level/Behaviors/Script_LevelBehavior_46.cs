@@ -10,7 +10,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 {
     // ==================================================================
     // State Data
-    
+    public bool isPuzzleComplete;
+
     // ==================================================================
 
     [SerializeField] private float successTransitionFadeInTime;
@@ -199,7 +200,10 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
             // Fade out black screen.
             StartCoroutine(game.TransitionFadeOut(successTransitionFadeInTime, () => {
+                // TBD Give Scarlet Cipher Piece?
+                
                 game.ChangeStateInteract();
+                isPuzzleComplete = true;
             }));
         }
     }
