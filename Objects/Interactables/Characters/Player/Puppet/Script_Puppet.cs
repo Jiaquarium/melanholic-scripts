@@ -67,6 +67,19 @@ public class Script_Puppet : Script_PlayerCopy
         }
     }
 
+    public void SetAnimatorControllerActive(bool isActive)
+    {
+        if (isActive)
+        {
+            if (activatedAnimatorController != null)
+                MyAnimator.runtimeAnimatorController = activatedAnimatorController;
+        }
+        else
+        {
+            MyAnimator.runtimeAnimatorController = inactiveAnimatorController;
+        }
+    }
+
     protected virtual void OnPuppeteerActivate()
     {
         // Wait to set active on next frame, so we don't take in the input for the current frame
@@ -79,13 +92,13 @@ public class Script_Puppet : Script_PlayerCopy
             
             puppetState = PuppetStates.Active;
             
-            if (activatedAnimatorController != null)    MyAnimator.runtimeAnimatorController = activatedAnimatorController;
+            SetAnimatorControllerActive(true);
         }
     }
 
     protected virtual void OnPuppeteerDeactivate()
     {
         puppetState = PuppetStates.Inactive;
-        MyAnimator.runtimeAnimatorController = inactiveAnimatorController;
+        SetAnimatorControllerActive(false);
     }
 }

@@ -96,7 +96,10 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         {
             // Move all characters to cut scene position
             puppetMaster.Teleport(puppetMasterPuzzleSuccessSpawn.transform.position);
+            puppetMaster.SetAnimatorControllerActive(false);
+            
             puppet.Teleport(puppetPuzzleSuccessSpawn.transform.position);
+            puppet.SetAnimatorControllerActive(false);
             
             var player = game.GetPlayer();
             player.Teleport(playerPuzzleSuccessSpawn.transform.position);
