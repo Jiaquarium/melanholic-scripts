@@ -133,7 +133,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             SnapCloseUpVCams();
             KaffeCloseUp();
 
-            Script_Names.UpdateLatte();
+            UpdateLatte();
             Script_DialogueManager.DialogueManager.StartDialogueNode(successCutSceneNode);
         }
     }
@@ -227,6 +227,11 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     public void UpdateKaffe()
     {
         Script_Names.UpdateKaffe();
+    }
+
+    public void UpdateLatte()
+    {
+        Script_Names.UpdateLatte();
     }
 
     // ------------------------------------------------------------------
