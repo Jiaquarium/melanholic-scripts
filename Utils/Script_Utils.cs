@@ -236,7 +236,8 @@ public static class Script_Utils
             Script_Names.WeekdayShift,                  // {70}
             Script_Names.WeekendShift,                  // {71}
             Script_Names.ElevatorBay,                   // {72}
-            Script_Names.ControllableSpecters           // {73}
+            Script_Names.ControllableSpecters,          // {73}
+            Script_Names.Unknown                        // {74}
         );
     }
 
