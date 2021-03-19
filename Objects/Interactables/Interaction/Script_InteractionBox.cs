@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// Exposed box to detect interactable box (hurtBox)
@@ -34,7 +35,7 @@ public class Script_InteractionBox : MonoBehaviour
     /// <summary>
     /// Searches recursively up the hierarchy for a parent with Script_Interactable Component
     /// </summary>
-    public List<Script_Interactable> GetInteractablesBlocking()
+    public List<Script_Interactable> GetInteractablesBlocking(List<Const_Tags.Tags> ignoreTags = null)
     {
         List<Script_Interactable> interactables = new List<Script_Interactable>();
         
@@ -42,6 +43,9 @@ public class Script_InteractionBox : MonoBehaviour
 
         foreach (Collider col in colliders)
         {
+            // Skip all tags specified in ignoreTags.
+            if ((ignoreTags != null && !ignoreTags.Any()) && ignoreTags.CheckInTags(col.tag))    continue;
+            
             Script_Interactable interactable = col.transform.GetParentRecursive<Script_Interactable>();
             
             if (interactable != null)

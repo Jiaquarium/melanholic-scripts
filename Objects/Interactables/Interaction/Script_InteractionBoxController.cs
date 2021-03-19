@@ -9,6 +9,8 @@ public class Script_InteractionBoxController : MonoBehaviour
     [SerializeField] private Script_InteractionBox InteractionBoxS;
     [SerializeField] private Script_InteractionBox InteractionBoxW;
     public Script_InteractionBox activeBox;
+    
+    [SerializeField] List<Const_Tags.Tags> ignoreTags;
 
     public void HandleActiveInteractionBox(Directions dir)
     {
@@ -47,10 +49,11 @@ public class Script_InteractionBoxController : MonoBehaviour
         return activeBox.GetInteractableObjects();
     }
 
+    /// <param name="ignoreTags">Specify tags to ignore. (e.g. NPCs should ignore player interaction boxes.)</param>
     public List<Script_Interactable> GetInteractablesBlocking(Directions dir)
     {
         HandleActiveInteractionBox(dir);
-        return activeBox.GetInteractablesBlocking();
+        return activeBox.GetInteractablesBlocking(ignoreTags);
     }
 
     public List<Script_Pushable> GetPushables(Directions dir)
