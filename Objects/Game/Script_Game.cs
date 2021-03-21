@@ -112,6 +112,7 @@ public class Script_Game : MonoBehaviour
     public GameObject grid;
 
     private Tilemap tileMap;
+    private Script_WorldTile[] worldTiles;
     private Tilemap[] exitsTileMaps;
     private Tilemap entrancesTileMap;
     [SerializeField] private Tilemap pushableTileMap;
@@ -154,6 +155,8 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_LevelBehavior_33 bayV1Behavior;
     [SerializeField] private Script_LevelBehavior_48 grandMirrorRoomBehavior;
     
+    // ------------------------------------------------------------------
+    // Run Properties
     public Script_Run Run
     {
         get => runsManager.Run;
@@ -164,6 +167,35 @@ public class Script_Game : MonoBehaviour
         get => runsManager.RunIdx;
     }
 
+    // ------------------------------------------------------------------
+    // Tilemapa Properties
+    public Tilemap TileMap
+    {
+        get => tileMap;
+    }
+
+    public Script_WorldTile[] WorldTiles
+    {
+        get => worldTiles;
+    }
+
+    public Tilemap EntranceTileMap
+    {
+        get => entrancesTileMap;
+    }
+
+    public Tilemap[] ExitTileMaps
+    {
+        get => exitsTileMaps;
+    }
+
+    public Tilemap PushableTileMap
+    {
+        get => pushableTileMap;
+    }
+
+    // ------------------------------------------------------------------
+    // Level Properties
     public List<Script_ExitMetadataObject> PianoSpawns
     {
         get => pianoSpawns;
@@ -647,37 +679,18 @@ public class Script_Game : MonoBehaviour
     /// </summary>
     void SetTileMaps()
     {
-        grid = Levels.levelsData[level].grid;
-        gridOffset = grid.transform.position;
-        tileMap = Levels.levelsData[level].tileMap;
-        exitsTileMaps = Levels.levelsData[level].exitsTileMaps;
-        entrancesTileMap = Levels.levelsData[level].entrancesTileMap;
-        pushableTileMap = Levels.levelsData[level].pushableTileMap;
+        grid                = Levels.levelsData[level].grid;
+        gridOffset          = grid.transform.position;
+        tileMap             = Levels.levelsData[level].tileMap;
+        worldTiles          = Levels.levelsData[level].worldTiles; 
+        exitsTileMaps       = Levels.levelsData[level].exitsTileMaps;
+        entrancesTileMap    = Levels.levelsData[level].entrancesTileMap;
+        pushableTileMap     = Levels.levelsData[level].pushableTileMap;
     }
 
     public void SetNewTileMapGround(Tilemap _tileMap)
     {   
         tileMap = _tileMap;   
-    }
-
-    public Tilemap GetTileMap()
-    {
-        return tileMap;
-    }
-
-    public Tilemap GetEntrancesTileMap()
-    {
-        return entrancesTileMap;
-    }
-
-    public Tilemap[] GetExitsTileMaps()
-    {
-        return exitsTileMaps;
-    }
-
-    public Tilemap GetPushablesTileMap()
-    {
-        return pushableTileMap;
     }
 
     /* =======================================================================

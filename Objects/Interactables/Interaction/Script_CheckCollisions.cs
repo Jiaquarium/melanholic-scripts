@@ -40,7 +40,7 @@ public class Script_CheckCollisions : MonoBehaviour
 
     protected virtual bool CheckNotOffTilemap(int desiredX, int desiredZ, Vector3Int tileWorldLocation)
     {
-        Tilemap tileMap         = Script_Game.Game.GetTileMap();
+        Tilemap tileMap         = Script_Game.Game.TileMap;
 
         if (!tileMap.HasTile(tileWorldLocation))        return true;
         else                                            return false;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Script_LightFXManager : MonoBehaviour
 {
-    const float DefaultIntensity            = 0.05f;
+    const float DefaultIntensity            = 0.1f;
     const float DefaultEndingIntensity      = 0.2f;
     const float AwareEndingIntensity        = 1f;
     const float WarningEndingIntensity      = 5f;

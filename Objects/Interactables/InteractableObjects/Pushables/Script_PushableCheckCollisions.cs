@@ -22,9 +22,9 @@ public class Script_PushableCheckCollisions : Script_CheckCollisions
         Vector3Int tileWorldLocation
     )
     {
-        Tilemap tileMap = Script_Game.Game.GetTileMap();
+        Tilemap tileMap = Script_Game.Game.TileMap;
         Tilemap pushablesTileMap = myPushableTilemap == null ?
-            Script_Game.Game.GetPushablesTileMap()
+            Script_Game.Game.PushableTileMap
             : myPushableTilemap;
         
         /// <summary>

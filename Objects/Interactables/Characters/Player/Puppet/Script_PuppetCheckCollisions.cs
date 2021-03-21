@@ -15,7 +15,7 @@ public class Script_PuppetCheckCollisions : Script_PlayerCheckCollisions
         Vector3Int tileWorldLocation
     )
     {
-        Tilemap tileMap = Script_Game.Game.GetTileMap();
+        Tilemap tileMap = Script_Game.Game.TileMap;
         Vector3Int tileLocation = tileMap.WorldToCell(tileWorldLocation);
 
         // tiles map from (xyz) to (xz)

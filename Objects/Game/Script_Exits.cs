@@ -137,19 +137,19 @@ public class Script_Exits : MonoBehaviour
 
     public void DisableExits(bool isDisabled, int i)
     {
-        game.GetExitsTileMaps()[i]
+        game.ExitTileMaps[i]
             .GetComponent<Script_TileMapExitEntrance>()
             .IsDisabled = isDisabled;
     }
 
     public void DisableAllExitsEntrances(bool isDisabled)
     {
-        foreach (Tilemap tm in game.GetExitsTileMaps())
+        foreach (Tilemap tm in game.ExitTileMaps)
         {
             tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled = isDisabled;
         }
 
-        game.GetEntrancesTileMap().GetComponent<Script_TileMapExitEntrance>().IsDisabled = isDisabled;
+        game.EntranceTileMap.GetComponent<Script_TileMapExitEntrance>().IsDisabled = isDisabled;
     }
 
     public void StartFadeIn()

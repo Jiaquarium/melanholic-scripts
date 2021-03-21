@@ -19,48 +19,75 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
         Vector3Int tileWorldLocation
     )
     {
-        Tilemap tileMap = Script_Game.Game.GetTileMap();
-        Tilemap entrancesTileMap = Script_Game.Game.GetEntrancesTileMap();
-        Tilemap[] exitsTileMaps = Script_Game.Game.GetExitsTileMaps();
+        Tilemap tileMap                         = Script_Game.Game.TileMap;
+        Script_WorldTile[] worldTileMaps        = Script_Game.Game.WorldTiles;
+        Tilemap entrancesTileMap                = Script_Game.Game.EntranceTileMap;
+        Tilemap[] exitsTileMaps                 = Script_Game.Game.ExitTileMaps;
 
-        // https://docs.unity3d.com/ScriptReference/Tilemaps.Tilemap.GetCellCenterWorld.html   
-        /// <summary>
-        /// Getting grid location based on tileMap assumes entrances and exits
-        /// are relatively in the same world space
-        /// </summary>
-        Vector3Int tileLocation = tileMap.WorldToCell(tileWorldLocation);
-
-        // tiles map from (xyz) to (xz)
-        if (!tileMap.HasTile(tileLocation))
+        // Option to use multiple Infinite World Tiles.
+        if (worldTileMaps != null && worldTileMaps.Length != 0)
         {
-            // tile may not be in current tilemap but could still be in an entrance tilemap
-            if (
-                entrancesTileMap != null
-                && entrancesTileMap.HasTile(tileLocation)
-                && !entrancesTileMap.GetComponent<Script_TileMapExitEntrance>().IsDisabled
-                && entrancesTileMap.gameObject.activeSelf
-            )
+            foreach (var worldTile in worldTileMaps)
             {
-                return false;
-            }
-            
-            foreach(Tilemap tm in exitsTileMaps)
-            {
-                // tile may not be in current tilemap but could still be in an exit tilemap
-                if (
-                    tm != null
-                    && tm.HasTile(tileLocation)
-                    && !tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled
-                    && tm.gameObject.activeSelf
-                )
+                // https://docs.unity3d.com/ScriptReference/Tilemaps.Tilemap.GetCellCenterWorld.html   
+                // Getting grid location based on tileMap assumes entrances and exits
+                // are relatively in the same world space.
+                Vector3Int tileLoc = worldTile.TileMap.WorldToCell(tileWorldLocation);
+                
+                Debug.Log($"Tile World Location {tileWorldLocation}");
+                Debug.Log($"Tilemap location {tileLoc}");
+                
+                if (!IsOutOfBounds(worldTile.TileMap, tileLoc))
                 {
-                    return false;
+                    Debug.Log($"TileWorldLocation {tileWorldLocation} is in world tilemap {worldTile.TileMap}");
+                    
+                    return false; 
                 }
             }
+
+            Debug.Log($"TileWorldLocation {tileWorldLocation} is NOT in world tilemaps");
 
             return true;
         }
 
-        return false;
+        // Default just using single Tilemap.
+        Vector3Int tileLocation = tileMap.WorldToCell(tileWorldLocation);
+        return IsOutOfBounds(tileMap, tileLocation);
+
+        bool IsOutOfBounds(Tilemap tileMap, Vector3Int tileLocation)
+        {
+            // tiles map from (xyz) to (xz)
+            if (!tileMap.HasTile(tileLocation))
+            {
+                // tile may not be in current tilemap but could still be in an entrance tilemap
+                if (
+                    entrancesTileMap != null
+                    && entrancesTileMap.HasTile(tileLocation)
+                    && !entrancesTileMap.GetComponent<Script_TileMapExitEntrance>().IsDisabled
+                    && entrancesTileMap.gameObject.activeSelf
+                )
+                {
+                    return false;
+                }
+                
+                foreach(Tilemap tm in exitsTileMaps)
+                {
+                    // tile may not be in current tilemap but could still be in an exit tilemap
+                    if (
+                        tm != null
+                        && tm.HasTile(tileLocation)
+                        && !tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled
+                        && tm.gameObject.activeSelf
+                    )
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -31,6 +31,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     [SerializeField] private float defaultRepeatDelay;
     [SerializeField] private float runRepeatDelay;
+    [SerializeField] private float devRunRepeatDelay;
     [SerializeField] private float defaultGhostSpeed;
     [SerializeField] private float runGhostSpeed;
     
@@ -146,7 +147,9 @@ public class Script_PlayerMovement : MonoBehaviour
             (isSpeedwalkStickerActive || isDev)
         )
         {
-            repeatDelay = runRepeatDelay;
+            if (isDev)  repeatDelay = devRunRepeatDelay;
+            else        repeatDelay = runRepeatDelay;
+
             playerGhost.Speed = runGhostSpeed;
         }
         else
@@ -304,8 +307,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void HandleExitTile()
     {
-        Tilemap entrancesTileMap = game.GetEntrancesTileMap();
-        Tilemap[] exitsTileMaps = game.GetExitsTileMaps();
+        Tilemap entrancesTileMap = game.EntranceTileMap;
+        Tilemap[] exitsTileMaps = game.ExitTileMaps;
         
         Vector3Int tileLocation = new Vector3Int(
             (int)Mathf.Round(player.location.x - grid.position.x), // *adjust for grid offset*
