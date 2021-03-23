@@ -6,21 +6,41 @@ using UnityEngine.Tilemaps;
 public class Script_WorldTile : MonoBehaviour
 {
     [SerializeField] private Tilemap tileMap;
+    [SerializeField] private Script_WorldTilesController worldTilesController;
+    
+    private Vector3 initialPosition;
     
     public Tilemap TileMap
     {
         get => tileMap;
     }
     
-    public Vector3Int Offset
+    void Awake()
     {
-        get
-        {
-            int x = (int)transform.position.x;
-            int y = (int)transform.position.z;
-            int z = (int)transform.position.y;
+        if (worldTilesController == null)   Debug.LogError($"{name} needs a reference to a WorldTilesController.");
 
-            return new Vector3Int(x, y, z);
-        }
+        initialPosition = transform.position;
+    }
+
+    public void SetAsNewOrigin()
+    {
+        worldTilesController.SetNewOriginWorldTile(this);
+    }
+
+    public void Move(Vector2 coord)
+    {
+        float x = Mathf.Round(transform.position.x + (coord.x * worldTilesController.XLength));
+        float y = Mathf.Round(transform.position.y);
+        float z = Mathf.Round(transform.position.z + (coord.y * worldTilesController.ZLength));
+        
+        transform.position = new Vector3(x, y, z);
+    }
+
+    public void InitialState()
+    {
+        // Means this is the first initial Setup
+        if (initialPosition == null)    return;
+
+        transform.position = initialPosition;
     }
 }

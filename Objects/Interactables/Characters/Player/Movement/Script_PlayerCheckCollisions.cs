@@ -34,18 +34,12 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
                 // are relatively in the same world space.
                 Vector3Int tileLoc = worldTile.TileMap.WorldToCell(tileWorldLocation);
                 
-                Debug.Log($"Tile World Location {tileWorldLocation}");
-                Debug.Log($"Tilemap location {tileLoc}");
-                
                 if (!IsOutOfBounds(worldTile.TileMap, tileLoc))
                 {
-                    Debug.Log($"TileWorldLocation {tileWorldLocation} is in world tilemap {worldTile.TileMap}");
-                    
-                    return false; 
+                    worldTile.SetAsNewOrigin();
+                    return false;
                 }
             }
-
-            Debug.Log($"TileWorldLocation {tileWorldLocation} is NOT in world tilemaps");
 
             return true;
         }

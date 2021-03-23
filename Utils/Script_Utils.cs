@@ -491,10 +491,10 @@ public static class Script_Utils
         return children;
     }  
 
-    public static void PrintArray<T>(System.Collections.Generic.IEnumerable<T> list, string label = "array: ")
+    public static void PrintArray<T>(this System.Collections.Generic.IEnumerable<T> list, string label = "array: ")
     {
         if (Debug.isDebugBuild)
-            Debug.Log($"{label}: {String.Join("", new List<T>(list).ConvertAll(i => i.ToString()).ToArray())}");
+            Debug.Log($"{label}: {String.Join("", new List<T>(list).ConvertAll(i => i?.ToString() ?? "null").ToArray())}");
     }
 
     public static T[] AddItemToArray<T>(this T[] arr, T item) where T:Component

@@ -12,5 +12,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     // State Data
     
     // ==================================================================
-        
+    
+    public override void Setup()
+    {
+        base.Setup();
+    }
 }
