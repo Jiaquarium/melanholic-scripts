@@ -624,6 +624,11 @@ public class Script_Game : MonoBehaviour
         Script_SceneManager.ToTitleScene();
     }
 
+    public void EndingCutScene(Script_TransitionManager.Endings ending)
+    {
+        transitionManager.StartEndingSequence(ending);
+    }
+
     /// <summary> =======================================================================
     /// Signal
     /// </summary> ======================================================================

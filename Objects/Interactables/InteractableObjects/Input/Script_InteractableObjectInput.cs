@@ -36,6 +36,8 @@ public class Script_InteractableObjectInput : Script_InteractableObject
         Debug.Log($"{name} Reaction to Success");
         
         EndInput();
+
+        Script_Game.Game.EndingCutScene(Script_TransitionManager.Endings.Good);
     }
 
     // Called from Level Behavior
