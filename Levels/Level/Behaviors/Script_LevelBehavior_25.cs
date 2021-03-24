@@ -19,11 +19,12 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     public bool spokenWithEllenia;
 
     /* ======================================================================= */
-    [SerializeField] private Script_DemonNPC Ellenia;
     
     // To track if the puzzle is completed, to be reset on new Day
-    [SerializeField] private bool isCurrentPuzzleComplete;
-
+    public bool isCurrentPuzzleComplete;
+    
+    [SerializeField] private Script_DemonNPC Ellenia;
+    
     [SerializeField] private Script_DialogueNode[] NoIntroElleniaNodes;
     [SerializeField] private Script_VCamera followElleniaVCam;
     [SerializeField] private PlayableDirector ElleniaDirector;

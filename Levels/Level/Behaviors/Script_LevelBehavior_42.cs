@@ -14,7 +14,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public bool isMooseQuestDone;
     // ==================================================================
     
-    [SerializeField] private bool isCurrentMooseQuestComplete;
+    public bool isCurrentMooseQuestComplete;
+
     [SerializeField] private Script_WellsPuzzleController wellsPuzzleController;
     
     [SerializeField] private Script_FrozenWell frozenWell;

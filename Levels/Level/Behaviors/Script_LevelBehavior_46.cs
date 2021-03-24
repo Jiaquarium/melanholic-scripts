@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// Garden Labyrinth
+/// </summary>
 public class Script_LevelBehavior_46 : Script_LevelBehavior
 {
     // ==================================================================
@@ -14,6 +17,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     // ==================================================================
 
+    public bool isCurrentPuzzleComplete;
+    
     [SerializeField] private float successTransitionFadeInTime;
     [SerializeField] private float successBlackScreenTime;
     [SerializeField] private float successAfterFadeWaitTime;
@@ -206,7 +211,9 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
                 // TBD Give Scarlet Cipher Piece?
                 
                 game.ChangeStateInteract();
-                isPuzzleComplete = true;
+                
+                isPuzzleComplete        = true;
+                isCurrentPuzzleComplete = true;
             }));
         }
     }

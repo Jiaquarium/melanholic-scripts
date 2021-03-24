@@ -19,6 +19,9 @@ public class Script_Game : MonoBehaviour
     ======================================================================= */
     public int level;
     public float totalPlayTime;
+    
+    // Private to avoid ending staying non-None in Editor after Dev'ing.
+    private Script_TransitionManager.Endings activeEnding;
     /* ======================================================================= */
 
     /* -----------------------------------------------------------------------
@@ -151,9 +154,22 @@ public class Script_Game : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Specific Level Behaviors for state
-    [SerializeField] private Script_LevelBehavior_26 eileensMindBehavior;
-    [SerializeField] private Script_LevelBehavior_33 bayV1Behavior;
-    [SerializeField] private Script_LevelBehavior_48 grandMirrorRoomBehavior;
+    public Script_LevelBehavior_10 IdsRoomBehavior;
+    public Script_LevelBehavior_24 KTVRoom2Behavior;
+    public Script_LevelBehavior_25 ElleniasRoomBehavior;
+    public Script_LevelBehavior_26 EileensMindBehavior;
+    public Script_LevelBehavior_33 bayV1Behavior;
+    public Script_LevelBehavior_42 WellsWorldBehavior;
+    public Script_LevelBehavior_46 GardenLabyrinthBehavior;
+    public Script_LevelBehavior_48 grandMirrorRoomBehavior;
+    
+    // ------------------------------------------------------------------
+    // State Properties
+    public Script_TransitionManager.Endings ActiveEnding
+    {
+        get => activeEnding;
+        set => activeEnding = value;
+    }
     
     // ------------------------------------------------------------------
     // Run Properties
@@ -168,7 +184,7 @@ public class Script_Game : MonoBehaviour
     }
 
     // ------------------------------------------------------------------
-    // Tilemapa Properties
+    // Tilemap Properties
     public Tilemap TileMap
     {
         get => tileMap;
@@ -660,7 +676,7 @@ public class Script_Game : MonoBehaviour
 
     public bool IsGrandMirrorSetup()
     {
-        return eileensMindBehavior.isPuzzleComplete && !grandMirrorRoomBehavior.IsDone;
+        return EileensMindBehavior.isPuzzleComplete && !grandMirrorRoomBehavior.IsDone;
     }
 
     /* =======================================================================
@@ -1821,6 +1837,12 @@ public class Script_Game : MonoBehaviour
 
     private void SaveWaitRestartAtLobby()
     {
+        // Set ActiveEnding in state so on Load we can play an ending.
+        if (IsAllQuestsDoneToday())
+        {
+            activeEnding = Script_TransitionManager.Endings.True;
+        }
+        
         Model_PlayerState playerData = new Model_PlayerState(
             (int)playerSpawn.data.playerSpawn.x,
             (int)playerSpawn.data.playerSpawn.y,
@@ -1831,7 +1853,8 @@ public class Script_Game : MonoBehaviour
         Model_GameData gameData = new Model_GameData(
             runsManager.RunIdx,
             32, // Hotel Lobby
-            totalPlayTime
+            totalPlayTime,
+            activeEnding
         );
         
         saveGameControl.Save(
@@ -1847,6 +1870,16 @@ public class Script_Game : MonoBehaviour
             yield return new WaitForSeconds(saveManager.RestartGameTime);
             RestartGame();
         }
+    }
+
+    private bool IsAllQuestsDoneToday()
+    {
+        return IdsRoomBehavior.isCurrentPuzzleComplete
+            && KTVRoom2Behavior.IsCurrentPuzzleComplete
+            && ElleniasRoomBehavior.isCurrentPuzzleComplete
+            && EileensMindBehavior.isCurrentPuzzleComplete
+            && WellsWorldBehavior.isCurrentMooseQuestComplete
+            && GardenLabyrinthBehavior.isCurrentPuzzleComplete;
     }
 
     public void ShowSaveAndRestartMessageDefault()

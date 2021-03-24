@@ -11,15 +11,18 @@ public class Script_SaveLoadGame : MonoBehaviour
         data.gameData = new Model_GameData(
             gameDataOverride?.runIdx        ?? game.RunIdx,
             gameDataOverride?.level         ?? game.level,
-            gameDataOverride?.totalPlayTime ?? game.totalPlayTime
+            gameDataOverride?.totalPlayTime ?? game.totalPlayTime,
+            gameDataOverride?.activeEnding  ?? game.ActiveEnding
         );
     }
 
     public void LoadGameData(Model_SaveData data)
     {
         game.LoadRun(data.gameData.runIdx);
-        game.level = data.gameData.level;
-        game.totalPlayTime = data.gameData.totalPlayTime;
+        
+        game.level          = data.gameData.level;
+        game.totalPlayTime  = data.gameData.totalPlayTime;
+        game.ActiveEnding   = data.gameData.activeEnding;
     }
 
     public void UpdatePlayTime(Model_SaveData data)
@@ -27,7 +30,8 @@ public class Script_SaveLoadGame : MonoBehaviour
         data.gameData = new Model_GameData(
             data.gameData.runIdx,
             data.gameData.level,
-            game.totalPlayTime
+            game.totalPlayTime,
+            game.ActiveEnding
         );
     }
 }

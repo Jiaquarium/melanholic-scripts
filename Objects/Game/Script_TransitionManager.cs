@@ -16,10 +16,11 @@ public class Script_TransitionManager : MonoBehaviour
 {
     public enum Endings
     {
-        Bad,
-        Good,
-        True,
-        Dream,
+        None    = 0,
+        Bad     = 1,
+        Good    = 2,
+        True    = 3,
+        Dream   = 4,
     }
     
     public Script_CanvasGroupFadeInOut fader;
@@ -34,7 +35,6 @@ public class Script_TransitionManager : MonoBehaviour
     public Script_CanvasGroupController restartPrompt;
 
     private Script_GameOverController.DeathTypes deathType;
-    private Endings activeEnding;
     
     public IEnumerator FadeIn(float t, Action action)
     {
@@ -97,12 +97,12 @@ public class Script_TransitionManager : MonoBehaviour
     /// <summary>
     /// Fade Screen to Black and store which Ending to play, signal to play Ending Cut Scene.
     /// </summary>
-    public void StartEndingSequence(Endings ending)
+    public void StartEndingSequence(Endings endingOverride = Endings.None)
     {
+        if (endingOverride != Endings.None)     game.ActiveEnding = endingOverride;
+
         game.ChangeStateCutScene();
         Script_BackgroundMusicManager.Control.FadeOutSlow();
-
-        activeEnding = ending;
 
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);        
     }
@@ -120,12 +120,13 @@ public class Script_TransitionManager : MonoBehaviour
     // After screen has faded to Black play the proper timeline.
     public void PlayEndingCutScene()
     {
-        switch (activeEnding)
+        switch (game.ActiveEnding)
         {
             case (Endings.Good):
-                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
                 break;
             case (Endings.True):
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 5);
                 break;
             case (Endings.Dream):
                 break;
@@ -135,7 +136,7 @@ public class Script_TransitionManager : MonoBehaviour
     // After played proper ending cut scene.
     public void RollCredits()
     {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
     }
 
     // ------------------------------------------------------------------
@@ -220,6 +221,11 @@ public class Script_TransitionManagerTester : Editor
         if (GUILayout.Button("Good Ending"))
         {
             t.StartEndingSequence(Script_TransitionManager.Endings.Good);
+        }
+
+        if (GUILayout.Button("True Ending"))
+        {
+            t.StartEndingSequence(Script_TransitionManager.Endings.True);
         }
     }
 }

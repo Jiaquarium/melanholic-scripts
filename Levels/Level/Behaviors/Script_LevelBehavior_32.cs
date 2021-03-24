@@ -30,7 +30,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         Debug.Log($"{name} didStartThought: {didStartThought}");
         
-        if (!didStartThought)
+        if (!didStartThought && !Const_Dev.IsDevMode)
         {
             Debug.Log($"**** {name} starting openeing cut scene ****");
             game.UnderDialogueBlackScreen();            
@@ -39,7 +39,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public override void OnLevelInitComplete()
     {
-        if (!didStartThought)
+        if (!didStartThought && !Const_Dev.IsDevMode)
         {
             game.ChangeStateCutScene();
             Script_DialogueManager.DialogueManager.StartDialogueNode(startNode);
@@ -133,6 +133,19 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         else
         {
             dreamBgmPlayer.gameObject.SetActive(false);
+        }
+
+        // Active Ending will be set when leaving from Last Elevator in Game.SaveWaitRestartAtLobby()
+        switch (game.ActiveEnding)
+        {
+            case (Script_TransitionManager.Endings.True):
+                Debug.Log("------ TRUE ENDING, remove door ------");
+
+                game.EndingCutScene(Script_TransitionManager.Endings.True);
+
+                break;
+            default:
+                break;
         }
 
         isInit = false;

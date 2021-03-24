@@ -52,7 +52,7 @@ public class Script_MovingNPC : Script_StaticNPC
     // Update is called once per frame
     protected virtual void Update()
     {   
-        if (game.state == "cut-scene_npc-moving" && localState == "move")
+        if (Script_Game.Game.state == "cut-scene_npc-moving" && localState == "move")
         {
             ActuallyMove();
         }

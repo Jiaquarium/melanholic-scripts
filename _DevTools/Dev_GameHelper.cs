@@ -41,6 +41,21 @@ public class Dev_GameHelper : MonoBehaviour
     {
         Script_Game.LevelsInactivate();
     }
+
+    public void SetAllQuestsDoneToday()
+    {
+        Script_Game.Game.IdsRoomBehavior.isCurrentPuzzleComplete            = true;
+        Script_Game.Game.KTVRoom2Behavior.IsCurrentPuzzleComplete           = true;
+        Script_Game.Game.ElleniasRoomBehavior.isCurrentPuzzleComplete       = true;
+        Script_Game.Game.EileensMindBehavior.isCurrentPuzzleComplete        = true;
+        Script_Game.Game.WellsWorldBehavior.isCurrentMooseQuestComplete     = true;
+        Script_Game.Game.GardenLabyrinthBehavior.isCurrentPuzzleComplete    = true;
+    }
+
+    public void SolveAllMynesMirrors()
+    {
+        
+    }
 }
 
 #if UNITY_EDITOR
@@ -64,6 +79,11 @@ public class Dev_GameHelperTester : Editor
         if (GUILayout.Button("Build Setup"))
         {
             t.BuildSetup();
+        }
+
+        if (GUILayout.Button("All Quests Done Today"))
+        {
+            t.SetAllQuestsDoneToday();
         }
     }
 }

@@ -16,15 +16,16 @@ using System;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_10 : Script_LevelBehavior
 {
+    public const string NRoomTriggerId = "room_N";
+    public const string ERoomTriggerId = "room_E";
+    
     // =======================================================================
     //  STATE DATA
     public bool gotBoarNeedle;
     // =======================================================================
     
-    public const string NRoomTriggerId = "room_N";
-    public const string ERoomTriggerId = "room_E";
+    public bool isCurrentPuzzleComplete;
     
-    public bool isDone;
     [SerializeField] private Script_Trigger[] triggers;
     [SerializeField] private int activeTriggerIndex;
     [SerializeField] private int timelinesDoneCount;
@@ -199,7 +200,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Ids.gameObject.SetActive(false);
         game.ChangeStateInteract();
 
-        isDone = true;
+        isCurrentPuzzleComplete = true;
     }
     // Timeline Signals END
     // ------------------------------------------------------------------------------------
@@ -294,7 +295,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         Script_VCamManager.VCamMain.SetNewVCam(VCamLB10FollowIds);
         
-        // if (activeTriggerIndex == triggerLocations.Length - 1) isDone = true;
+        // if (activeTriggerIndex == triggerLocations.Length - 1) isCurrentPuzzleComplete = true;
         activeTriggerIndex++;
         return true;
     }

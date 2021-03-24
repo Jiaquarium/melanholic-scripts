@@ -18,7 +18,9 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     public bool didPickUpSpringStone;
 
     /* ======================================================================= */
+    
     [SerializeField] private bool isCurrentPuzzleComplete;
+
     [SerializeField] private Script_TrackedPushablesTriggerPuzzleController triggersPuzzleController;
     
     [SerializeField] private Transform pillarParent;
@@ -45,6 +47,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     public bool IsCurrentPuzzleComplete
     {
         get => isCurrentPuzzleComplete;
+        set => isCurrentPuzzleComplete = value;
     }
 
     private void OnValidate()
