@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Script_WorldTilesController : MonoBehaviour
 {
-    [SerializeField] private Vector2Int Center;
+    [SerializeField] private Vector2Int Center = new Vector2Int(1, 1);
     [SerializeField] private int xLength;
     [SerializeField] private int zLength;
     [SerializeField] private Script_WorldTile defaultOriginWorldTile;

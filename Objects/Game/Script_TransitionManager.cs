@@ -14,16 +14,27 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_TransitionManager : MonoBehaviour
 {
+    public enum Endings
+    {
+        Bad,
+        Good,
+        True,
+        Dream,
+    }
+    
     public Script_CanvasGroupFadeInOut fader;
+    
     [SerializeField] private Script_CanvasGroupController underDialogueController;
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_TimeManager timeManager;
+    
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
     public float underDialogueFadeTime = 1.5f;
     public Script_CanvasGroupController restartPrompt;
 
     private Script_GameOverController.DeathTypes deathType;
+    private Endings activeEnding;
     
     public IEnumerator FadeIn(float t, Action action)
     {
@@ -81,19 +92,53 @@ public class Script_TransitionManager : MonoBehaviour
         /// Slow down time and fade screen to black
         Time.timeScale = timeManager.dieTimeScale;
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
-
-        /// TBD Showing the Sieving Timeline Sequence
     }
 
-    /// Signal Reactions START ========================================================================
+    /// <summary>
+    /// Fade Screen to Black and store which Ending to play, signal to play Ending Cut Scene.
+    /// </summary>
+    public void StartEndingSequence(Endings ending)
+    {
+        game.ChangeStateCutScene();
+        Script_BackgroundMusicManager.Control.FadeOutSlow();
+
+        activeEnding = ending;
+
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);        
+    }
+
+    // ------------------------------------------------------------------
+    // Signal Reactions START
     public void OnTimesUpPlayableDone()
     {
         Time.timeScale = 1.0f;
 
-        /// Prompt User
+        // Prompt Player
         FadeInRestartPrompt();
     }
-    /// Signal Reactions END ==========================================================================
+
+    // After screen has faded to Black play the proper timeline.
+    public void PlayEndingCutScene()
+    {
+        switch (activeEnding)
+        {
+            case (Endings.Good):
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
+                break;
+            case (Endings.True):
+                break;
+            case (Endings.Dream):
+                break;
+        }
+    }
+
+    // After played proper ending cut scene.
+    public void RollCredits()
+    {
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
+    }
+
+    // ------------------------------------------------------------------
 
     public void FadeInRestartPrompt()
     {
@@ -170,6 +215,11 @@ public class Script_TransitionManagerTester : Editor
         if (GUILayout.Button("FadeOutRestartPrompt()"))
         {
             t.FadeOutRestartPrompt();
+        }
+
+        if (GUILayout.Button("Good Ending"))
+        {
+            t.StartEndingSequence(Script_TransitionManager.Endings.Good);
         }
     }
 }

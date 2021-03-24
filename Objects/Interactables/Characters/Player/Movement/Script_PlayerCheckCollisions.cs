@@ -41,6 +41,7 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
                 }
             }
 
+            Debug.Log($"tileWorldLocation: {tileWorldLocation} NOT in World Tile Maps");
             return true;
         }
 
