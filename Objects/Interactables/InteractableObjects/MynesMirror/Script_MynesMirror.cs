@@ -19,6 +19,13 @@ public class Script_MynesMirror : Script_InteractableObjectText
     [SerializeField] private Script_MynesMirrorNodesController dialogueController;
 
     [SerializeField] protected Script_BgThemePlayer bgThemePlayer;
+
+    [SerializeField] protected SpriteRenderer mirrorGraphics;
+
+    [SerializeField] private Sprite defaultMirrorSprite;
+    [SerializeField] private Sprite brokenMirrorSprite;
+
+    private bool isSolved;
     
     protected Script_DialogueNode MynesConversationNode
     {
@@ -42,6 +49,8 @@ public class Script_MynesMirror : Script_InteractableObjectText
         base.OnEnable();
         
         Script_MynesMirrorEventsManager.OnEndTimeline += StartDialogue;
+
+        HandleIsSolvedGraphics(isSolved);
     }
 
     protected override void OnDisable()
@@ -84,7 +93,17 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public bool CheckCipher(int choiceIdx)
     {
-        return (Script_ScarletCipherManager.Control.HandleCipherSlot(MynesMirrorId, choiceIdx));
+        bool isSolved = Script_ScarletCipherManager.Control.HandleCipherSlot(MynesMirrorId, choiceIdx);
+
+        HandleIsSolvedGraphics(isSolved);
+        
+        return isSolved;
+    }
+
+    private void HandleIsSolvedGraphics(bool isSolved)
+    {
+        if (isSolved)   mirrorGraphics.sprite = brokenMirrorSprite;
+        else            mirrorGraphics.sprite = defaultMirrorSprite;
     }
 
     // ------------------------------------------------------------------
