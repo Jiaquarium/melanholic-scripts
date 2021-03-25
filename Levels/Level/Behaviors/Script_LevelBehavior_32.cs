@@ -19,6 +19,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform interactableObjectsParent;
     [SerializeField] private Script_BgThemePlayer dreamBgmPlayer;
     [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
+
+    [SerializeField] private Script_InteractableObject hotelFrontDoor;
+    [SerializeField] private Script_InteractableObject CCTVCamera;
+    [SerializeField] private Script_Interactable invisibleBarrier;
+
     private bool isInit = true;
 
     
@@ -57,6 +62,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         if (isSuccessfulSubmit)
         {
             CCTVAdminComputer.OnSubmitSuccess();
+
+            game.ActiveEnding = Script_TransitionManager.Endings.Good;
+            HandleEndingExitState(true);
         }
         else
         {
@@ -86,11 +94,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             game.ChangeStateInteract();
         });
     }
-    // Next Node Action END
-    // ------------------------------------------------------------------
 
     // ------------------------------------------------------------------
-    // InteractableObject UnityEvents START
+    // InteractableObject UnityEvents
     public void OnTryToExitFrontDoor()
     {
         Debug.Log("Move camera to hotel camera cut scene!!!");
@@ -98,8 +104,36 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         game.ChangeStateCutScene();
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
-    // InteractableObject UnityEvents END
-    // ------------------------------------------------------------------
+
+    public void EndingCutScene()
+    {
+        switch (game.ActiveEnding)
+        {
+            case (Script_TransitionManager.Endings.Good):
+                Debug.Log("@@@@@@@@@ GOOD ENDING, remove door @@@@@@@@@");
+
+                game.EndingCutScene(Script_TransitionManager.Endings.Good);
+
+                break;
+            
+            case (Script_TransitionManager.Endings.True):
+                Debug.Log("@@@@@@@@@ TRUE ENDING, remove door @@@@@@@@@");
+
+                game.EndingCutScene(Script_TransitionManager.Endings.True);
+
+                break;
+
+            case (Script_TransitionManager.Endings.Dream):
+                Debug.Log("@@@@@@@@@ DREAM ENDING, remove door @@@@@@@@@");
+
+                game.EndingCutScene(Script_TransitionManager.Endings.Dream);
+
+                break;
+
+            default:
+                break;
+        }
+    }
     
     // ------------------------------------------------------------------
     // Timeline Signals START
@@ -112,13 +146,21 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         game.ChangeStateInteract();
     }
-    // Timeline Signals END
     // ------------------------------------------------------------------
 
     protected override void HandleAction()
     {
         // for cutScene dialogue
         base.HandleDialogueAction();
+    }
+
+    private void HandleEndingExitState(bool isOpen)
+    {
+        hotelFrontDoor.gameObject.SetActive(!isOpen);
+        CCTVCamera.gameObject.SetActive(!isOpen);
+        
+        // Remove barrier to allow player to step on Ending Cut Scene Trigger.
+        invisibleBarrier.gameObject.SetActive(!isOpen);
     }
 
     public override void Setup()
@@ -140,17 +182,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         switch (game.ActiveEnding)
         {
             case (Script_TransitionManager.Endings.True):
-                Debug.Log("------ TRUE ENDING, remove door ------");
-
-                game.EndingCutScene(Script_TransitionManager.Endings.True);
-
+                Debug.Log("------ SETTING UP TRUE ENDING, remove door ------");
+                HandleEndingExitState(true);
                 break;
 
             case (Script_TransitionManager.Endings.Dream):
-                Debug.Log("------ DREAM ENDING, remove door ------");
-
-                game.EndingCutScene(Script_TransitionManager.Endings.Dream);
-
+                Debug.Log("------ SETTING UP DREAM ENDING, remove door ------");
+                HandleEndingExitState(true);
                 break;
 
             default:

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 /// <summary>
@@ -14,7 +15,8 @@ public class Script_InteractableObjectInput : Script_InteractableObject
     [SerializeField] private InputMode inputMode;
     [SerializeField] private TMP_InputField inputField;
     
-    // Subscribe to Input Submit event
+    [SerializeField] private UnityEvent successAction;
+    [SerializeField] private UnityEvent failureAction;
     
     public override void ActionDefault()
     {
@@ -37,7 +39,8 @@ public class Script_InteractableObjectInput : Script_InteractableObject
         
         EndInput();
 
-        Script_Game.Game.EndingCutScene(Script_TransitionManager.Endings.Good);
+        bool isUnityAction = successAction.CheckUnityEventAction();
+        if (isUnityAction)      successAction.Invoke();
     }
 
     // Called from Level Behavior
@@ -46,6 +49,9 @@ public class Script_InteractableObjectInput : Script_InteractableObject
         Debug.Log($"{name} Reaction to Failure");
         
         EndInput();
+
+        bool isUnityAction = failureAction.CheckUnityEventAction();
+        if (isUnityAction)      failureAction.Invoke();
     }
 
     private void EndInput()
