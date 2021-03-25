@@ -135,7 +135,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             dreamBgmPlayer.gameObject.SetActive(false);
         }
 
-        // Active Ending will be set when leaving from Last Elevator in Game.SaveWaitRestartAtLobby()
+        // Active Ending will be set when leaving from Last Elevator in Game.SaveWaitRestartAtLobby().
+        // Good Ending is handled via interaction with the CCTV Interactable.
         switch (game.ActiveEnding)
         {
             case (Script_TransitionManager.Endings.True):
@@ -144,6 +145,14 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 game.EndingCutScene(Script_TransitionManager.Endings.True);
 
                 break;
+
+            case (Script_TransitionManager.Endings.Dream):
+                Debug.Log("------ DREAM ENDING, remove door ------");
+
+                game.EndingCutScene(Script_TransitionManager.Endings.Dream);
+
+                break;
+
             default:
                 break;
         }

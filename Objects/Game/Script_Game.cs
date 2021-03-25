@@ -21,7 +21,7 @@ public class Script_Game : MonoBehaviour
     public float totalPlayTime;
     
     // Private to avoid ending staying non-None in Editor after Dev'ing.
-    private Script_TransitionManager.Endings activeEnding;
+    [SerializeField] private Script_TransitionManager.Endings activeEnding;
     /* ======================================================================= */
 
     /* -----------------------------------------------------------------------
@@ -1818,6 +1818,8 @@ public class Script_Game : MonoBehaviour
     /// <param name="playerStateOverride"></param>
     public void NextRunSaveInitialize()
     {
+        SetActiveEnding();
+        
         runsManager.IncrementRun();
         CleanRun();
         
@@ -1826,6 +1828,8 @@ public class Script_Game : MonoBehaviour
 
     public void StartWeekendCycleSaveInitialize()
     {
+        SetActiveEnding();
+        
         runsManager.StartWeekendCycle();
         CleanRun();
 
@@ -1835,14 +1839,24 @@ public class Script_Game : MonoBehaviour
         SaveWaitRestartAtLobby();
     }
 
-    private void SaveWaitRestartAtLobby()
+    private void SetActiveEnding()
     {
         // Set ActiveEnding in state so on Load we can play an ending.
-        if (IsAllQuestsDoneToday())
+        // More important/harder endings override lesser ones.
+        if (scarletCipherManager.CheckAllMirrorsSolved())
+        {
+            activeEnding = Script_TransitionManager.Endings.Dream;
+        }
+        else if (IsAllQuestsDoneToday())
         {
             activeEnding = Script_TransitionManager.Endings.True;
         }
         
+        Debug.Log($"@@@@@@@@@@@@@@@ ACTIVE ENDING CHANGED TO {activeEnding} @@@@@@@@@@@@@@@");
+    }
+
+    private void SaveWaitRestartAtLobby()
+    {
         Model_PlayerState playerData = new Model_PlayerState(
             (int)playerSpawn.data.playerSpawn.x,
             (int)playerSpawn.data.playerSpawn.y,

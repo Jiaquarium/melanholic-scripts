@@ -54,7 +54,7 @@ public class Dev_GameHelper : MonoBehaviour
 
     public void SolveAllMynesMirrors()
     {
-        
+        Script_ScarletCipherManager.Control.Dev_ForceSolveAllMirrors();
     }
 }
 
@@ -76,14 +76,21 @@ public class Dev_GameHelperTester : Editor
             t.ExitToLevel();
         }
 
-        if (GUILayout.Button("Build Setup"))
-        {
-            t.BuildSetup();
-        }
-
         if (GUILayout.Button("All Quests Done Today"))
         {
             t.SetAllQuestsDoneToday();
+        }
+
+        if (GUILayout.Button("Solve All Mirrors"))
+        {
+            t.SolveAllMynesMirrors();
+        }
+
+        GUILayout.Space(12);
+
+        if (GUILayout.Button("Build Setup"))
+        {
+            t.BuildSetup();
         }
     }
 }

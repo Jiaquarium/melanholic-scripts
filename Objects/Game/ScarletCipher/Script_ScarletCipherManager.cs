@@ -66,6 +66,14 @@ public class Script_ScarletCipherManager : MonoBehaviour
         return isSolved;
     }
 
+    public void Dev_ForceSolveAllMirrors()
+    {
+        for (int i = 0; i < MynesMirrorsSolved.Length; i++)
+        {
+            MynesMirrorsSolved[i] = true;
+        }
+    }
+
     /// <summary>
     /// Call when starting a new run
     /// </summary>
@@ -104,6 +112,16 @@ public class Script_ScarletCipherManager : MonoBehaviour
             {
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    public bool CheckAllMirrorsSolved()
+    {
+        for (int i = 0; i < MynesMirrorsSolved.Length; i++)
+        {
+            if (!MynesMirrorsSolved[i])     return false;
         }
 
         return true;
@@ -193,6 +211,12 @@ public class Script_ScarletCipherEditor : Editor
             ItemSlotGUI(i);
         }
 
+        Script_ScarletCipherManager t = (Script_ScarletCipherManager)target;
+        if (GUILayout.Button("Check Mirrors Solved"))
+        {
+            Debug.Log($"All mirrors solved: {t.CheckAllMirrorsSolved()}");
+        }
+        
         // ensure changes in our serialized object go back into the game object
         serializedObject.ApplyModifiedProperties();
     }
