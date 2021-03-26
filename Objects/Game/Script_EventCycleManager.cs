@@ -41,6 +41,11 @@ public class Script_EventCycleManager : MonoBehaviour
         );
     }
 
+    public bool IsIdsDead()
+    {
+        return game.IsRunDay(Script_Run.DayId.sat) && !didTalkToIds;
+    }
+
     public void InitialState()
     {
         didTalkToIds = false;

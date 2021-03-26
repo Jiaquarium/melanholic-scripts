@@ -81,6 +81,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_ItemObject boarNeedle;
     [SerializeField] private Script_TreasureChest treasureChest;
 
+    [SerializeField] private Script_InteractableFullArt IdsLeaveMeBeNote;
+    [SerializeField] private Script_InteractableFullArt DeadIds;
+
     private bool DDR = false;
     private bool isIdsDancing = false;
     private float timer;
@@ -573,7 +576,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             {
                 if (Script_EventCycleManager.Control.IsIdsSick())
                 {
-                    HandleIdsNotHome();
+                    if (Script_EventCycleManager.Control.IsIdsDead())   HandleIdsDead();
+                    else                                                HandleIdsNotHome();
                 }
                 else
                 {
@@ -583,6 +587,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
             void HandleIdsHome()
             {
+                // Ids note only appears when he's not home on Weekend Day 2.
+                IdsLeaveMeBeNote.gameObject.SetActive(false);
+
+                // Ids only dies if not talked to by Weekend Day 3.
+                DeadIds.gameObject.SetActive(false);
+                
                 Ids.gameObject.SetActive(true);
                 foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
             }
@@ -591,6 +601,26 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             {
                 Script_BackgroundMusicManager.Control.Stop();
                 
+                // Ids leaves note when he's not home on Weekend Day 2.
+                IdsLeaveMeBeNote.gameObject.SetActive(true);
+
+                // Ids only dies if not talked to by Weekend Day 3.
+                DeadIds.gameObject.SetActive(false);
+
+                Ids.gameObject.SetActive(false);
+                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+            }
+
+            void HandleIdsDead()
+            {
+                Script_BackgroundMusicManager.Control.Stop();
+                
+                // Ids note only appears when he's not home on Weekend Day 2.
+                IdsLeaveMeBeNote.gameObject.SetActive(false);
+
+                // Ids dies since not talked to by Weekend Day 3.
+                DeadIds.gameObject.SetActive(true);
+
                 Ids.gameObject.SetActive(false);
                 foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
             }
