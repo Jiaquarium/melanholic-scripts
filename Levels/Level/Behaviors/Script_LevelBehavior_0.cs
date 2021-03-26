@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Playables;
 
+/// <summary>
+/// Play Ids intro run timeline either after cut scene is done or upon initiation on Mon & Wed.
+/// </summary>
+
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_0 : Script_LevelBehavior
 {
@@ -31,8 +35,11 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     [SerializeField] private float afterBadSpecterFadeInWaitTime;
     // set equal to VCam0 cut time to VCam Main so player doesn't see Ero vanish
     [SerializeField] private float eroExitWaitTime;
+    
     [SerializeField] private Script_Hint hint; 
+    
     [SerializeField] private Script_PRCS wellJustOpened; 
+    [SerializeField] private Script_DemonNPC Ids; 
 
     private bool isInit = true;
 
@@ -66,6 +73,10 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
             game.ChangeStateCutScene();
             /// Start Timeline fading in the well light
             wellJustOpened.PlayMyTimeline();
+        }
+        else
+        {
+            HandlePlayIdsTimeline();   
         }
     }
     
@@ -160,7 +171,14 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         Script_PRCSManager.Control.HidePRCS(wellJustOpened, FadeSpeeds.Slow, () => {
             game.ChangeStateInteract();
             didStartThought = true;
+
+            HandlePlayIdsTimeline();
         });
+    }
+
+    public void OnIdsTimelineDone()
+    {
+        game.ChangeStateInteract();
     }
     /// Signal Reactions END ========================================================================
 
@@ -169,6 +187,16 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         // for cutScene dialogue
         base.HandleDialogueAction();
+    }
+
+    // On Mon or Wed, Ids should lead you into the Mansion.
+    private void HandlePlayIdsTimeline()
+    {
+        if (Script_EventCycleManager.Control.IsIdsWoodsIntroDay())
+        {
+            game.ChangeStateCutScene();
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
+        }
     }
 
     private void HandlePlayerSolidColor()
@@ -191,9 +219,10 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         };
         fader.Setup(fadingPlayer, toFade);
 
-        /// <summary> 
-        /// Specter Setup START
-        /// </summary> 
+        if (Script_EventCycleManager.Control.IsIdsWoodsIntroDay())      Ids.gameObject.SetActive(true);
+        else                                                            Ids.gameObject.SetActive(false);
+        
+        // Specter Setup START
         if (isInit)
         {
             demonSpawns = new bool[demonsParent.childCount];

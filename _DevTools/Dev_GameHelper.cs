@@ -13,6 +13,7 @@ public class Dev_GameHelper : MonoBehaviour
     public Directions facingDirection;
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
+    [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
 
     public void DefaultPlayerSpawnPos()
     {
@@ -27,14 +28,12 @@ public class Dev_GameHelper : MonoBehaviour
 
     public void ExitToLevel()
     {
-        Script_Game.Game.Exit(
-            playerTeleportPos.data.level,
-            playerTeleportPos.data.playerSpawn,
-            playerTeleportPos.data.facingDirection,
-            isExit: true,
-            isSilent: false,
-            exitType: Script_Exits.ExitType.Default
-        );
+        Teleport(playerTeleportPos);
+    }
+
+    public void ExitToIdsRoom()
+    {
+        Teleport(IdsRoomEntrance);
     }
 
     public void BuildSetup()
@@ -56,6 +55,18 @@ public class Dev_GameHelper : MonoBehaviour
     {
         Script_ScarletCipherManager.Control.Dev_ForceSolveAllMirrors();
     }
+
+    private void Teleport(Script_ExitMetadata exit)
+    {
+        Script_Game.Game.Exit(
+            exit.data.level,
+            exit.data.playerSpawn,
+            exit.data.facingDirection,
+            isExit: true,
+            isSilent: false,
+            exitType: Script_Exits.ExitType.Default
+        );   
+    }
 }
 
 #if UNITY_EDITOR
@@ -71,10 +82,17 @@ public class Dev_GameHelperTester : Editor
             t.DefaultPlayerSpawnPos();
         }
         
-        if (GUILayout.Button("ExitToLevel()"))
+        if (GUILayout.Button("Go To:"))
         {
             t.ExitToLevel();
         }
+
+        if (GUILayout.Button("Go To: Ids Room"))
+        {
+            t.ExitToIdsRoom();
+        }
+
+        GUILayout.Space(12);
 
         if (GUILayout.Button("All Quests Done Today"))
         {

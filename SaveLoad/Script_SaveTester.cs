@@ -20,16 +20,6 @@ public class Script_SaveTester : Editor
             control.Save(Script_SaveGameControl.Saves.Initialize);
         }
         
-        if (GUILayout.Button("Save Run (Tedmunch Save)"))
-        {
-            control.Save(Script_SaveGameControl.Saves.SavePoint);
-        }
-
-        if (GUILayout.Button("Save Restart From Initialized (Erase Run Data)"))
-        {
-            control.Save(Script_SaveGameControl.Saves.RestartInitialized);
-        }
-
         if (GUILayout.Button("Delete Game Data"))
         {
             Script_SaveGameControl.Delete();

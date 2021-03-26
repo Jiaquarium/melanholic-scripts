@@ -277,6 +277,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public bool NRoomTriggerReaction()
     {
+        Script_EventCycleManager.Control.DidTalkToIds = true;
+
         triggers[0].gameObject.SetActive(false);
         
         if (lb9.speaker != null)
@@ -562,15 +564,35 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         void HandleIdsInRoom()
         {
-            if (!game.IsRunDay(Script_Run.DayId.sun))
+            if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
             {
-                Ids.gameObject.SetActive(false);
-                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+                if (!game.IsRunDay(Script_Run.DayId.wed))   HandleIdsNotHome();
+                else                                        HandleIdsHome();
             }
             else
             {
+                if (Script_EventCycleManager.Control.IsIdsSick())
+                {
+                    HandleIdsNotHome();
+                }
+                else
+                {
+                    HandleIdsHome();
+                }
+            }
+
+            void HandleIdsHome()
+            {
                 Ids.gameObject.SetActive(true);
                 foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
+            }
+
+            void HandleIdsNotHome()
+            {
+                Script_BackgroundMusicManager.Control.Stop();
+                
+                Ids.gameObject.SetActive(false);
+                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
             }
         }
         

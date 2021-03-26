@@ -85,15 +85,19 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_SFXManager SFXManager;
     
     [SerializeField] private Script_VCamManager VCamManager;
+    
     [SerializeField] private Script_HUDManager HUDManager;
     [SerializeField] private Script_RunsManager runsManager;
+    
     [SerializeField] private Script_ItemPickUpTheatricsManager itemPickUpTheatricsManager;
     [SerializeField] private Script_Names namesManager;
     [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
     
     [SerializeField] private Script_HitBoxDictionary hitBoxDictionary;
+    
     [SerializeField] private Script_SaveGameControl saveGameControl;
+    [SerializeField] private Script_EventCycleManager eventCycleManager;
 
     // ------------------------------------------------------------------
     // Canvases
@@ -159,6 +163,7 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_25 ElleniasRoomBehavior;
     public Script_LevelBehavior_26 EileensMindBehavior;
     public Script_LevelBehavior_33 bayV1Behavior;
+    public Script_LevelBehavior_34 bayV2Behavior;
     public Script_LevelBehavior_42 WellsWorldBehavior;
     public Script_LevelBehavior_46 GardenLabyrinthBehavior;
     public Script_LevelBehavior_48 grandMirrorRoomBehavior;
@@ -181,6 +186,11 @@ public class Script_Game : MonoBehaviour
     public int RunIdx
     {
         get => runsManager.RunIdx;
+    }
+
+    public Script_RunsManager.Cycle RunCycle
+    {
+        get => runsManager.RunCycle;
     }
 
     // ------------------------------------------------------------------
@@ -326,6 +336,7 @@ public class Script_Game : MonoBehaviour
         
         runsManager.Setup();
         weatherFXManager.Setup();
+        eventCycleManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
         

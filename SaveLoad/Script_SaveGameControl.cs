@@ -39,6 +39,7 @@ public class Script_SaveGameControl : MonoBehaviour
     public Script_SaveLoadLevels levelsHandler;
     public Script_SaveLoadNames namesHandler;
     [SerializeField] Script_SaveLoadScarletCipher scarletCipherHandler;
+    [SerializeField] Script_SaveLoadEventCycle eventCycleHandler;
 
     public static void SetPath()
     {
@@ -92,7 +93,6 @@ public class Script_SaveGameControl : MonoBehaviour
                     OverridePlayerData(saveData, playerStateOverride);
                     HandleSaveRun(saveData);
                     WriteSaveDataFile(bf, saveFilePath, saveData);
-                    // WriteSaveDataFile(bf, saveInitializeFilePath, saveData);
                     break;
                 
                 /// Replace current game saved data and with the SaveDataInitialize
@@ -124,6 +124,7 @@ public class Script_SaveGameControl : MonoBehaviour
             dropsHandler.SaveDrops(data);
             namesHandler.SaveNames(data);
             scarletCipherHandler.SaveScarletCipher(data);
+            eventCycleHandler.SaveEventCycle(data);
         }
 
         void WriteSaveDataFile(BinaryFormatter bf, string filePath, Model_SaveData data)
@@ -205,6 +206,7 @@ public class Script_SaveGameControl : MonoBehaviour
                 levelsHandler.LoadLevels(data);
                 namesHandler.LoadNames(data);
                 scarletCipherHandler.LoadScarletCipher(data);
+                eventCycleHandler.LoadEventCycle(data);
 
                 if (Debug.isDebugBuild) Debug.Log("Successful load at: " + saveFilePath);
                 return true;

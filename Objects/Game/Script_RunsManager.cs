@@ -31,7 +31,9 @@ public class Script_RunsManager : MonoBehaviour
 
     [SerializeField] private FadeSpeeds fadeSpeed;
     [SerializeField] private Script_CanvasGroupController runsCanvasGroup;
+    
     [SerializeField] private Script_Game game;
+    [SerializeField] private Script_EventCycleManager eventCycleManager;
 
     public int RunIdx
     {
@@ -113,7 +115,14 @@ public class Script_RunsManager : MonoBehaviour
             if (cycle[i] == all[runIdx])    cycleIdx = i;
         
         cycleIdx++;
-        if (cycleIdx >= cycle.Length)   cycleIdx = 0;
+        
+        if (cycleIdx >= cycle.Length)
+        {
+            ClearEventCycle();
+            
+            cycleIdx = 0;
+        }
+
         Script_Run newRun = cycle[cycleIdx];
 
         // translate back to all idx
@@ -135,6 +144,11 @@ public class Script_RunsManager : MonoBehaviour
         RunIdx = GetRunIdxByDayId(WeekendStartDay);
     }
 
+    private void ClearEventCycle()
+    {
+        eventCycleManager.InitialState();
+    }
+
     private void HandleRunsCanvas()
     {
         if (
@@ -152,7 +166,7 @@ public class Script_RunsManager : MonoBehaviour
 
     public void Initialize()
     {
-        RunCycle = Cycle.Weekday;
+        // RunCycle = Cycle.Weekday;
         RunIdx = GetRunIdxByDayId(StartDay);
     }
     

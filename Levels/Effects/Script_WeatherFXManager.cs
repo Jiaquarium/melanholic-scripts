@@ -30,6 +30,5 @@ public class Script_WeatherFXManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
     }
 }

@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Only play Ids music if home.
+/// 
+/// Weekday:
+///     - only there on Last Day.
+/// 
+/// Weekend:
+///     - if didn't talk to Ids on First Day, won't be there on second day.
+/// </summary>
 public class Script_LevelBehavior_9 : Script_LevelBehavior
 {
     public Script_ProximitySpeaker speaker; // to be set by code
@@ -35,23 +44,48 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     public override void Setup()
     {
         game.SetupInteractableObjectsText(signTextParent, !isInitialized);
-        /// Only play music on Sunday when Ids is there
         HandleSpeakerRegen();
         
-        /// Disable exit and show Ids note if not Sunday
-        if (game.Run.dayId == Script_Run.DayId.sun)
+        if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
+        {
+            // Disable exit and show Ids note if not Wed (last day) on Weekday Cycle.
+            if (game.Run.dayId == Script_Run.DayId.sun)     HandleIdsHome();
+            else                                            HandleIdsNotHomeLocked();
+        }
+        else
+        {
+            // If is second day (Fri) and did not talk, then Ids is not home but is unlocked.
+            if (Script_EventCycleManager.Control.IsIdsSick())
+            {
+                HandleIdsNotHomeNotLocked();
+            }
+            else
+            {
+                HandleIdsHome();
+            }
+        }
+
+        isInitialized = true;
+
+        void HandleIdsHome()
         {
             exitToIdsRoom.IsDisabled = false;
             IdsNote.gameObject.SetActive(false);
             speaker.gameObject.SetActive(true);
         }
-        else
+
+        void HandleIdsNotHomeLocked()
         {
             exitToIdsRoom.IsDisabled = true;
             IdsNote.gameObject.SetActive(true);
             speaker.gameObject.SetActive(false);
         }
 
-        isInitialized = true;
+        void HandleIdsNotHomeNotLocked()
+        {
+            exitToIdsRoom.IsDisabled = false;
+            IdsNote.gameObject.SetActive(false);
+            speaker.gameObject.SetActive(false);
+        }
     }
 }
