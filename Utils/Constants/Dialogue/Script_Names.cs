@@ -181,6 +181,8 @@ public class Script_Names: MonoBehaviour
     public const string ElevatorBay                     = "<b>Elevator Bay</b>";                // {72}
     public const string ControllableSpecters            = "<b>Controllable Specters</b>";       // {73}
     public const string Unknown                         = "<b>???</b>";                         // {74}
+    public const string XXXWorld                        = "<b>XXX World</b>";                   // {75}
+    public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
 
 
     // ------------------------------------------------------------------
