@@ -68,12 +68,16 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode onElleniasPRCSDoneNode;
     [SerializeField] private Script_VCamera followElleniaHurtVCam;
     [SerializeField] private float onStartElleniaHurtCutSceneWaitTime;
+    [SerializeField] private float cutSceneFadeInTime;
+    [SerializeField] private float elleniaHurtCutSceneWaitToFadeInTime;
+    [SerializeField] private Script_Marker playerTeleportPos;
     
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
     
     private bool isElleniaComfortableCurrentRun;
-    private bool isElleniaHurtCutScene;
+    private bool isElleniaHurtCutSceneActivated;
+    private bool isCheckingPsychicDuckElleniaHurtCutScene;
 
     private bool isInitialization = true;
     private bool shouldChangeGameStateToInteract;
@@ -82,19 +86,25 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     {
         ElleniaDirector.stopped                         += OnElleniaPlayableDone;    
         Script_PRCSEventsManager.OnPRCSDone             += OnElleniasHandPRCSDone;
-        Script_GameEventsManager.OnLevelInitComplete    += OnEntranceElleniaHurt;
+        Script_GameEventsManager.OnLevelInitComplete    += HandleStartCheckingElleniaHurtCutScene;
     }
 
     protected override void OnDisable()
     {
         ElleniaDirector.stopped                         -= OnElleniaPlayableDone;    
         Script_PRCSEventsManager.OnPRCSDone             -= OnElleniasHandPRCSDone;
-        Script_GameEventsManager.OnLevelInitComplete    -= OnEntranceElleniaHurt;
+        Script_GameEventsManager.OnLevelInitComplete    -= HandleStartCheckingElleniaHurtCutScene;
     }
 
     protected override void Update()
     {
         base.HandleDialogueAction();
+        
+        if (isCheckingPsychicDuckElleniaHurtCutScene)
+        {
+            HandleElleniaHurtCutScene();
+        }
+
         devPasswordDisplay = Script_Names.ElleniaPassword; // FOR TESTING PURPOSES ONLY
     }
 
@@ -214,8 +224,28 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         }
     }
 
-    private void OnEntranceElleniaHurt()
+    private void HandleStartCheckingElleniaHurtCutScene()
     {
+        if (Script_EventCycleManager.Control.IsElleniaHurt())
+        {
+            isCheckingPsychicDuckElleniaHurtCutScene = true;
+        }
+        else
+        {
+            isCheckingPsychicDuckElleniaHurtCutScene = false;
+        }
+    }
+    
+    private void HandleElleniaHurtCutScene()
+    {
+        // Ensure Psychic Duck is the active sticker and we haven't already played this cut scene.
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+        if (!isPsychicDuckActive)                       return;
+        if (isElleniaHurtCutSceneActivated)             return;
+        
+        isElleniaHurtCutSceneActivated                  = true;
+        isCheckingPsychicDuckElleniaHurtCutScene        = false;
+
         game.ChangeStateCutScene();
         
         Script_BackgroundMusicManager bgm   = Script_BackgroundMusicManager.Control;
@@ -228,12 +258,31 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
         StartCoroutine(WaitForElleniaHurtCutScene());
 
+        
+
         IEnumerator WaitForElleniaHurtCutScene()
         {
             yield return new WaitForSeconds(onStartElleniaHurtCutSceneWaitTime);
 
-            SwitchVCamElleniaHurt();
-            Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceElleniaHurtNode);
+            StartCoroutine(game.TransitionFadeIn(cutSceneFadeInTime, () => {
+                // Teleport player.
+                game.GetPlayer().Teleport(playerTeleportPos.transform.position);
+                game.GetPlayer().FaceDirection(Directions.Left);
+
+                // Face camera to Ellenia (Hurt).
+                SwitchVCamElleniaHurt();
+                
+                StartCoroutine(WaitForElleniaDialogue());
+            }));
+        }
+
+        IEnumerator WaitForElleniaDialogue()
+        {
+            yield return new WaitForSeconds(elleniaHurtCutSceneWaitToFadeInTime);
+
+            StartCoroutine(game.TransitionFadeOut(cutSceneFadeInTime, () => {
+                Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceElleniaHurtNode, SFXOn: false);
+            }));
         }
     }
 
@@ -497,8 +546,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             easle.gameObject.SetActive(false);
             easleYellAtPlayerIOText.gameObject.SetActive(false);
             easleFullArt.gameObject.SetActive(false);
-
-            isElleniaHurtCutScene = true;
         }
         else
         {
