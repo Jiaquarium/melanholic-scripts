@@ -16,26 +16,35 @@ using System;
 /// Can hook up a PRCSLastNode to do isNodesDone
 /// 
 /// NOTE: ONLY REFERENCE 1 Director HERE; USE ANOTHER GAMEOBJECT/COMPONENT FOR ADDT'L
+/// 
+/// This uses events and not signals because we need to wait to detect things outside the Timeline
+/// (e.g. Return or End of Node)
 /// </summary>
 public class Script_PRCSPlayer : MonoBehaviour
 {
     public enum DoneStates
     {
         TimelineAndNodes = 0,
-        TimelineOnly = 1
+        TimelineOnly = 1,
+        TimelineAndReturn = 2
     }
     [SerializeField] private DoneStates DoneCondition;
     [SerializeField] private bool isDone;
     [SerializeField] private Script_PRCS PRCS;
     [SerializeField] private PlayableDirector director;
     [SerializeField] private TimelineAsset myTimeline;
+    
     [SerializeField] private bool isTimelineDone;
     [Tooltip("To detect end of all dialogue nodes used during PRCS.")]
     [SerializeField] private bool isNodesDone;
+    [SerializeField] private bool isReturnPressedDone;
+    
     [SerializeField] private FadeSpeeds fadeInSpeed;
     [SerializeField] private FadeSpeeds fadeOutSpeed;
     [Tooltip("isContinuation, will not fade in the PRCS")]
     [SerializeField] private bool isContinuation;
+
+    private bool isDetectingReturn;
     
     void OnEnable()
     {
@@ -47,6 +56,18 @@ public class Script_PRCSPlayer : MonoBehaviour
         director.stopped -= PRCSDone;
     }
 
+    void Update()
+    {
+        if (isDetectingReturn)
+        {
+            if (Input.GetButtonDown(Const_KeyCodes.Action1))
+            {
+                isReturnPressedDone         = true;
+                isDetectingReturn           = false;
+            }
+        }
+    }
+
     void LateUpdate()
     {
         if (isDone)     return;
@@ -54,10 +75,13 @@ public class Script_PRCSPlayer : MonoBehaviour
         switch (DoneCondition)
         {
             case (DoneStates.TimelineAndNodes):
-                if (isTimelineDone && isNodesDone)  FireDoneEvent();
+                if (isTimelineDone && isNodesDone)          FireDoneEvent();
                 break;
             case (DoneStates.TimelineOnly):
-                if (isTimelineDone)                 FireDoneEvent();
+                if (isTimelineDone)                         FireDoneEvent();
+                break;
+            case (DoneStates.TimelineAndReturn):
+                if (isTimelineDone && isReturnPressedDone)  FireDoneEvent();
                 break;
             default:
                 break;
@@ -75,9 +99,10 @@ public class Script_PRCSPlayer : MonoBehaviour
     {
         Debug.Log("Play(): Starting PRCS Scene!!!");
 
-        isDone = false;
-        isNodesDone = false;
-        isTimelineDone = false;
+        isDone              = false;
+        isNodesDone         = false;
+        isTimelineDone      = false;
+        isReturnPressedDone = false;
 
         if (!isContinuation)
         {
@@ -88,9 +113,29 @@ public class Script_PRCSPlayer : MonoBehaviour
         director.Play(myTimeline);
     }
 
+    public void PlayCustom(Script_PRCSManager.CustomTypes type)
+    {
+        isDone              = false;
+        isNodesDone         = false;
+        isTimelineDone      = false;
+        isReturnPressedDone = false;
+        
+        if (!isContinuation)
+        {
+            Script_PRCSManager.Control.OpenPRCSCustom(type);
+        }
+    }
+
     public void Stop(Action cb = null)
     {
         Script_PRCSManager.Control.HidePRCS(PRCS, fadeOutSpeed, cb);
+    }
+
+    public void CloseCustom(Script_PRCSManager.CustomTypes type, Action cb)
+    {
+        Script_PRCSManager.Control.ClosePRCSCustom(type, () => {
+            if (cb != null)     cb();
+        });
     }
 
     /// <summary>
@@ -105,7 +150,10 @@ public class Script_PRCSPlayer : MonoBehaviour
     {
         if (aDirector.playableAsset == myTimeline)
         {
-            isTimelineDone = true;
+            isTimelineDone      = true;
+
+            if (DoneCondition == DoneStates.TimelineAndReturn)
+                isDetectingReturn   = true;
         }        
     }
 }

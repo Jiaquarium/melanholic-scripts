@@ -5,15 +5,21 @@ using System;
 
 /// <summary>
 ///  Pre-Rendered Cut Scenes Manager (Singleton)
+/// 
+/// Custom PRCS fade in is NOT automatic, and defined in the Timeline instead.
+/// Allows for more freedom if it needs to be adjusted later.
 /// </summary>
 public class Script_PRCSManager : MonoBehaviour
 {
     public static Script_PRCSManager Control;
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
+    
     [SerializeField] private Transform customCanvasesParent;
     [SerializeField] private Canvas[] customCanvases;
+    
     [SerializeField] private Script_PRCS MynesMirrorPRCS;
+    [SerializeField] private Script_PRCS ElleniasHandPRCS;
 
 
     
@@ -24,7 +30,8 @@ public class Script_PRCSManager : MonoBehaviour
     {
         None,
         MynesMirror,
-        MynesMirrorMidConvo
+        MynesMirrorMidConvo,
+        ElleniasHand
     }
 
     void OnValidate()
@@ -106,6 +113,15 @@ public class Script_PRCSManager : MonoBehaviour
                 MynesMirrorPRCS.Open();
                 MynesMirrorPRCS.PlayTimeline(1);
                 break;
+            
+            case CustomTypes.ElleniasHand:
+                PRCSCanvasGroup.alpha = 1f;
+                PRCSCanvasGroup.gameObject.SetActive(true);
+                
+                ElleniasHandPRCS.Setup();
+                ElleniasHandPRCS.Open();
+                ElleniasHandPRCS.PlayTimeline(0);
+                break;
 
             default:
                 break;
@@ -119,6 +135,11 @@ public class Script_PRCSManager : MonoBehaviour
             case CustomTypes.MynesMirror:
                 HidePRCS(MynesMirrorPRCS, FadeSpeeds.Slow, cb);
                 break;
+            
+            case CustomTypes.ElleniasHand:
+                HidePRCS(ElleniasHandPRCS, FadeSpeeds.Slow, cb);
+                break;
+
             default:
                 break;
         }
