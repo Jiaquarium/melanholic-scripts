@@ -72,7 +72,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         {
             if (TMPInputField != null)
             {
-                TMPInputField.caretBlinkRate    = 0f;
+                // TMPInputField.caretBlinkRate    = 0f;
                 Color newCaretColor             = caretColor;
                 newCaretColor.a                 = 0f;
                 TMPInputField.caretColor        = newCaretColor;

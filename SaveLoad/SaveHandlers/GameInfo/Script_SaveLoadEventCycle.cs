@@ -9,7 +9,8 @@ public class Script_SaveLoadEventCycle : MonoBehaviour
     public void SaveEventCycle(Model_SaveData data)
     {
         Model_EventCycleData eventCycle = new Model_EventCycleData(
-            _didTalkToIds:      eventCycleManager.DidTalkToIds
+            _didTalkToIds:                  eventCycleManager.DidTalkToIds,
+            _didTalkToElleniaCountdown:     eventCycleManager.DidTalkToEllenia
         );
 
         data.eventCycleData = eventCycle;
@@ -24,10 +25,12 @@ public class Script_SaveLoadEventCycle : MonoBehaviour
         }
 
         Model_EventCycleData eventCycle = new Model_EventCycleData(
-            _didTalkToIds:      data.eventCycleData.didTalkToIds
+            _didTalkToIds:                  data.eventCycleData.didTalkToIds,
+            _didTalkToElleniaCountdown:     data.eventCycleData.didTalkToElleniaCountdown
         );
 
-        eventCycleManager.DidTalkToIds = eventCycle.didTalkToIds;
+        eventCycleManager.DidTalkToIds      = eventCycle.didTalkToIds;
+        eventCycleManager.DidTalkToEllenia  = eventCycle.didTalkToElleniaCountdown;
         
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(eventCycle);

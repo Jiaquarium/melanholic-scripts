@@ -115,6 +115,7 @@ public class Script_RunsManager : MonoBehaviour
             if (cycle[i] == all[runIdx])    cycleIdx = i;
         
         cycleIdx++;
+        eventCycleManager.EndOfDayJobs();
         
         if (cycleIdx >= cycle.Length)
         {
@@ -174,6 +175,8 @@ public class Script_RunsManager : MonoBehaviour
     {
         RunCycle = cycle;
         RunIdx = idx;
+
+        ClearEventCycle();
     }
 
     public void Load(

@@ -16,6 +16,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         STATE DATA
     ======================================================================= */
     public bool isPuzzleComplete;
+    
+    // Tracks if need to do the Ellenia intro.
     public bool spokenWithEllenia;
 
     /* ======================================================================= */
@@ -24,14 +26,22 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     public bool isCurrentPuzzleComplete;
     
     [SerializeField] private Script_DemonNPC Ellenia;
-    
-    [SerializeField] private Script_DialogueNode[] NoIntroElleniaNodes;
+    [SerializeField] private Script_DemonNPC ElleniaHurt;
+    [SerializeField] private Script_DialogueNode[] weekendDidntTalkElleniaPsychicNodes;
+    [SerializeField] private Script_DialogueNode[] weekendTalkedElleniaPsychicNodes;
+    [SerializeField] private Script_DialogueNode[] weekendTalkedElleniaTalkedStatePsychicNodes;
+
     [SerializeField] private Script_VCamera followElleniaVCam;
     [SerializeField] private PlayableDirector ElleniaDirector;
     
     [SerializeField] private Script_DialogueNode[] cutSceneNodes;
     [SerializeField] private Script_DialogueNode onCorrectDoneNode;
     [SerializeField] private Script_DialogueNode onCorrectDonePastQuestDoneNode;
+    
+    [SerializeField] private Script_DialogueNode onCorrectWeekendNode;
+    [SerializeField] private float toRealizePlayerHasStickerWaitTime;
+    [SerializeField] private Script_DialogueNode realizePlayerHasStickerNode;
+    
     [SerializeField] private Script_DialogueNode introContinuationNode;
     [SerializeField] private Script_DialogueNode beforeExitNode;
     
@@ -46,24 +56,33 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode onItemDescriptionDoneNode;
     [SerializeField] private Transform textParent;
     [SerializeField] private Transform fullArtParent;
+    
+    [SerializeField] private Script_Interactable easle;
     [SerializeField] private Script_InteractableFullArt easleFullArt;
     [SerializeField] private Script_InteractableObjectText easleYellAtPlayerIOText;
+    
     [SerializeField] private Script_InteractableFullArt dirtyMagazine;
+
+    [SerializeField] private Script_PRCSPlayer ElleniasHandPRCSPlayer;
     
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
     
+    private bool IsElleniaComfortableCurrentRun;
+
     private bool isInitialization = true;
     private bool shouldChangeGameStateToInteract;
 
     protected override void OnEnable()
     {
-        ElleniaDirector.stopped += OnElleniaPlayableDone;    
+        ElleniaDirector.stopped                 += OnElleniaPlayableDone;    
+        Script_PRCSEventsManager.OnPRCSDone     += OnElleniasHandPRCSDone;
     }
 
     protected override void OnDisable()
     {
-        ElleniaDirector.stopped -= OnElleniaPlayableDone;    
+        ElleniaDirector.stopped                 -= OnElleniaPlayableDone;    
+        Script_PRCSEventsManager.OnPRCSDone     -= OnElleniasHandPRCSDone;
     }
 
     protected override void Update()
@@ -139,8 +158,17 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                 ? onCorrectDonePastQuestDoneNode
                 : onCorrectDoneNode;
             
-            // start dialogue & fade out music
-            Script_DialogueManager.DialogueManager.StartDialogueNode(onSubmitCorrectNode, false);
+            // Start dialogue & fade out music.
+            // If it's Weekend, use already done nodes.
+            if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
+            {
+                Script_DialogueManager.DialogueManager.StartDialogueNode(onCorrectWeekendNode, false);
+            }
+            else
+            {
+                Script_DialogueManager.DialogueManager.StartDialogueNode(onSubmitCorrectNode, false);
+            }
+            
             StartCoroutine(
                 Script_AudioMixerFader.Fade(
                     audioMixer,
@@ -161,10 +189,12 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                 )
             );
         }
+        // Ellenia walked to the Exit and will brag to Player to look at her painting.
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[6])
         {
             Script_DialogueManager.DialogueManager.StartDialogueNode(beforeExitNode, SFXOn: true);    
         }
+        // Ellenia actually exits.
         else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[7])
         {
             OnElleniaExitsDone();
@@ -176,6 +206,19 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[4], false);
         }
     }
+
+    private void OnElleniasHandPRCSDone(Script_PRCSPlayer prcs)
+    {
+        if (prcs == ElleniasHandPRCSPlayer)
+        {
+            // Remove ElleniasHandPRCS
+            ElleniasHandPRCSPlayer.CloseCustom(Script_PRCSManager.CustomTypes.ElleniasHand, () => {
+                // Start Node
+                Debug.LogError("START NEXT NODE");
+            });
+        }
+    }
+
     /// <summary>
     /// NextNodeAction() START =====================================================================
     /// </summary>
@@ -296,7 +339,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             Ellenia.FaceDirection(Directions.Left);
         }
         
-        if (!spokenWithEllenia)     ElleniaIntroDoneDialogueNodes();
+        ElleniaIntroDoneDialogueNodes();
         spokenWithEllenia = true;
     }
 
@@ -305,6 +348,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         // jump animation; when finished, triggers correct dialogue
         game.ChangeStateCutScene();
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 5);
+        
         isPuzzleComplete = true;
         isCurrentPuzzleComplete = true;
     }
@@ -314,6 +358,20 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         game.HandleItemReceive(AnimalWithinSticker);
     }
 
+    public void GiverStickerPlayerHas()
+    {
+        game.ChangeStateCutScene();
+        StartCoroutine(WaitToContinueDialogue());
+        
+        // Wait for Ellenia to "realize" Player already has sticker.
+        IEnumerator WaitToContinueDialogue()
+        {
+            yield return new WaitForSeconds(toRealizePlayerHasStickerWaitTime);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(realizePlayerHasStickerNode, false);    
+        }
+    }
+
     public void OnAnimalWitinDescriptionDone()
     {
         Script_DialogueManager.DialogueManager.StartDialogueNode(onItemDescriptionDoneNode, false);
@@ -321,7 +379,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     public void CorrectDone()
     {
-        if (!spokenWithEllenia)     ElleniaIntroDoneDialogueNodes();
+        ElleniaIntroDoneDialogueNodes();
+
         spokenWithEllenia = true;
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
         // fade music back in
@@ -332,15 +391,29 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 7);
     }
 
-    /// Called from BeforeNodeAction
+    // BeforeNodeAction
     public void BeforeYellAtPlayer()
     {
         Ellenia.FacePlayer();
     }
+
     public void OnYellAtPlayerDone()
     {
         Ellenia.FaceDefaultDirection();
     }
+    
+    public void OnElleniaDidTalk()
+    {
+        Debug.Log($"{name} OnElleniaDidTalk()");
+        Script_EventCycleManager.Control.SetElleniaDidTalkCountdownMax();
+    }
+
+    public void PlayElleniasHandPRCS()
+    {
+        game.ChangeStateCutScene();
+        ElleniasHandPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
+    }
+
     /// <summary>
     /// NextNodeAction() END =====================================================================
     /// </summary>
@@ -371,20 +444,35 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         // and to skip the giving Animal Within dialogue.
         game.SetupMovingNPC(Ellenia, isInitialization);
         
-        if (spokenWithEllenia)  Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
-        if (isPuzzleComplete)   Ellenia.MyPastQuestState = Script_DemonNPC.PastQuestState.Done;
-        
-        if (isCurrentPuzzleComplete)
+        if (Script_EventCycleManager.Control.IsElleniaHurt())
         {
+            ElleniaHurt.gameObject.SetActive(true);
             Ellenia.gameObject.SetActive(false);
+
+            easle.gameObject.SetActive(false);
             easleYellAtPlayerIOText.gameObject.SetActive(false);
-            easleFullArt.gameObject.SetActive(true);
+            easleFullArt.gameObject.SetActive(false);
         }
         else
         {
+            ElleniaHurt.gameObject.SetActive(false);
             Ellenia.gameObject.SetActive(true);
-            easleYellAtPlayerIOText.gameObject.SetActive(true);
-            easleFullArt.gameObject.SetActive(false);
+            
+            HandleElleniaDialogueState();
+            if (isPuzzleComplete)   Ellenia.MyPastQuestState = Script_DemonNPC.PastQuestState.Done;
+
+            if (isCurrentPuzzleComplete)
+            {
+                Ellenia.gameObject.SetActive(false);
+                easleYellAtPlayerIOText.gameObject.SetActive(false);
+                easleFullArt.gameObject.SetActive(true);
+            }
+            else
+            {
+                Ellenia.gameObject.SetActive(true);
+                easleYellAtPlayerIOText.gameObject.SetActive(true);
+                easleFullArt.gameObject.SetActive(false);
+            }
         }
         
         game.SetupInteractableObjectsText(textParent, isInitialization);
@@ -394,6 +482,36 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         if (Const_Dev.IsPGVersion)  dirtyMagazine.gameObject.SetActive(false);
 
         isInitialization = false;
+
+        void HandleElleniaDialogueState()
+        {
+            // On Weekend Cycle, must talk with Ellenia before she'll allow you to comment on her painting.
+            // No Intro here at all because already done in Weekday cycle, so need Dialogue States.
+            if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
+            {
+                if (Script_EventCycleManager.Control.IsElleniaComfortable() || IsElleniaComfortableCurrentRun)
+                {
+                    Ellenia.SwitchPsychicNodes(weekendTalkedElleniaPsychicNodes);
+                    IsElleniaComfortableCurrentRun = true;
+                }
+                else
+                {
+                    Ellenia.SwitchPsychicNodes(weekendDidntTalkElleniaPsychicNodes);
+                }
+
+                Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.None;
+
+                // Give new Talked Nodes for Weekend Cycle
+                // Ellenia will always go through weekendTalkedElleniaPsychicNodes unlike Weekday cycle,
+                // where it is necessary to skip the intro Nodes to save time.
+                Ellenia.SwitchTalkedPsychicNodes(weekendTalkedElleniaTalkedStatePsychicNodes);
+            }
+            // On Weekday: Skip Ellenia's intro if already done.
+            else if (spokenWithEllenia)
+            {
+                Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;       
+            }
+        }
     }
 
     public void GetDirection()

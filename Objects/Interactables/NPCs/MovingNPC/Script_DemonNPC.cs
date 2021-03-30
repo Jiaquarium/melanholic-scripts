@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -38,33 +39,43 @@ public class Script_DemonNPC : Script_MovingNPC
     
     [SerializeField] Script_PsychicNodesController psychicNodesController;
     
-    [SerializeField] bool _isIntroPsychicNode;
+    [SerializeField] private UnityEvent onInitialPsychicTalkAction;
     
+    // ------------------------------------------------------------------
+    // Intro Psychic Node
+    [SerializeField] bool _isIntroPsychicNode;
     [Tooltip("Shows an intro node on first interaction")]
     [HideInInspector][SerializeField] private Script_DialogueNode _introPsychicNode;
-    
     [Tooltip("Make the intro node's child the first Psychic Node")]
     // This is useful if you want to show the Psychic Node no matter what
     [HideInInspector][SerializeField] bool _shouldPrependIntroNode;
     
     private Script_DialogueNode[] defaultNodes;
-    private bool didTalkPsychic;
+    
+    // Tracks just talked Psychic.
+    private bool didLastTalkPsychic;
     private bool didTalkPrependedIntroNode;
+
+    // ------------------------------------------------------------------
+    // Refreshed Local State
+    
+    // Tracks if has ever talked Psychic, not just last.
+    private bool hasTalkedPsychicLocal;
 
     public DialogueState MyDialogueState
     {
         get => _dialogueState;
         set
         {
-            _dialogueState = value;
-
             switch (value)
             {
                 // Switch psychic nodes with done state ones
                 case (DialogueState.Talked):
-                    OnPsychicDialogueTalked();
+                    if (value != _dialogueState)    OnPsychicDialogueTalked();
                     break;
             }
+
+            _dialogueState = value;
         }
     }
     
@@ -118,6 +129,13 @@ public class Script_DemonNPC : Script_MovingNPC
         if (defaultNodes == null || defaultNodes.Length == 0)   defaultNodes = dialogueNodes;
         base.OnEnable();
     }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        hasTalkedPsychicLocal = false;
+    }
     
     public override void TriggerDialogue()
     {
@@ -132,18 +150,47 @@ public class Script_DemonNPC : Script_MovingNPC
 
         if (isPsychicDuckActive)
         {
+            // Switch to specified Psychic nodes if not already done.
+            HandleInitialPsychicInteraction();
+            
+            if (!hasTalkedPsychicLocal)    OnInitialPsychicTalk();
+            
+            IsIntroPsychicNodes             = false;
+            didLastTalkPsychic              = true;
+            hasTalkedPsychicLocal           = true;
+        }
+        else
+        {
+            // if previously talked psychic, then need to switch and reset idx
+            if (didLastTalkPsychic)
+            {
+                Debug.Log($"No Psychic Duck; resetting defaultNode");
+                SwitchDialogueNodes(defaultNodes, isReset: true);
+                didLastTalkPsychic = false;
+            }
+            else
+            {
+                // don't reset idx if staying in defaultNodes
+                Debug.Log($"No Psychic Duck; using defaultNode[{dialogueIndex}]: {defaultNodes[dialogueIndex]}");
+                SwitchDialogueNodes(defaultNodes, false);
+            }
+        }
+
+        void HandleInitialPsychicInteraction()
+        {   
             // If is an Intro, we replace the current Dialogue Nodes with the Intro Node
             if (IsIntroPsychicNodes && IntroPsychicNode != null)
             {
                 HandleIntroPsychicNode();
-                IsIntroPsychicNodes = false;
+                
                 // Set flag so on next interaction we know we need to skip the first Psychic Node
                 didTalkPrependedIntroNode = ShouldPrependIntroNode;
                 return;
             }
             
-            // If previously talked default or intro Psychic node, then need to switch and reset idx.
-            if (!didTalkPsychic)
+            // On intro node or first Psychic interaction OR just talked default
+            // then need to switch and reset idx.
+            if (!didLastTalkPsychic)
             {
                 SwitchDialogueNodes(PsychicNodes, isReset: true);
 
@@ -153,32 +200,26 @@ public class Script_DemonNPC : Script_MovingNPC
                     HandleIncrementDialogueNodeIndex();
                     didTalkPrependedIntroNode = false;
                 }
-            }
-            
-            didTalkPsychic = true;
+            }   
         }
-        else
+
+        void OnInitialPsychicTalk()
         {
-            // if previously talked psychic, then need to switch and reset idx
-            if (didTalkPsychic)
-            {
-                Debug.Log($"No Psychic Duck; resetting defaultNode");
-                SwitchDialogueNodes(defaultNodes, isReset: true);
-                didTalkPsychic = false;
-            }
-            else
-            {
-                // don't reset idx if staying in defaultNodes
-                Debug.Log($"No Psychic Duck; using defaultNode[{dialogueIndex}]: {defaultNodes[dialogueIndex]}");
-                SwitchDialogueNodes(defaultNodes, false);
-            }
+            if (onInitialPsychicTalkAction.CheckUnityEventAction())
+                onInitialPsychicTalkAction.Invoke();
         }
     }
 
     public void SwitchPsychicNodes(Script_DialogueNode[] nodes)
     {
         PsychicNodes = nodes;
-        didTalkPsychic = false;
+        didLastTalkPsychic = false;
+    }
+
+    public void SwitchTalkedPsychicNodes(Script_DialogueNode[] nodes)
+    {
+        talkedPsychicNodes = nodes;
+        didLastTalkPsychic = false;
     }
 
     /// <summary>
@@ -199,7 +240,7 @@ public class Script_DemonNPC : Script_MovingNPC
     
     private void InitialDialogueState()
     {
-        didTalkPsychic = false;
+        didLastTalkPsychic = false;
     }
 
     private void OnPsychicDialogueTalked()

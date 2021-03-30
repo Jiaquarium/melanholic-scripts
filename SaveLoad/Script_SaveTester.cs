@@ -19,7 +19,7 @@ public class Script_SaveTester : Editor
         {
             control.Save(Script_SaveGameControl.Saves.Initialize);
         }
-        
+
         if (GUILayout.Button("Delete Game Data"))
         {
             Script_SaveGameControl.Delete();

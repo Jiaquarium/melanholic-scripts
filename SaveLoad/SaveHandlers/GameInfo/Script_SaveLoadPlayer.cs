@@ -27,5 +27,8 @@ public class Script_SaveLoadPlayer : MonoBehaviour
             data.playerData.faceDirection
         );
         game.SetPlayerState(p);
+
+        Debug.Log($"-------- LOADED {name} --------");
+        Script_Utils.DebugToConsole(p);
     }
 }
