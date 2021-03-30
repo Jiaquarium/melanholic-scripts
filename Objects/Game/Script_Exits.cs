@@ -24,6 +24,7 @@ public class Script_Exits : MonoBehaviour
         CutScene                    = 3,
         Piano                       = 4,
         SaveAndStartWeekendCycle    = 5,
+        SaveAndRestartOnLevel       = 6,
         StairsUp                    = 10,
     }
     
@@ -35,6 +36,7 @@ public class Script_Exits : MonoBehaviour
         SaveAndRestart              = 3,
         Piano                       = 4,
         SaveAndStartWeekendCycle    = 5,
+        SaveAndRestartOnLevel       = 6,
     }
     public CanvasGroup canvas;
 
@@ -110,6 +112,12 @@ public class Script_Exits : MonoBehaviour
             case (FollowUp.SaveAndStartWeekendCycle):
             {
                 Debug.Log("SaveAndStartWeekendCycle Exit Follow Up");
+                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                break;
+            }
+            case (FollowUp.SaveAndRestartOnLevel):
+            {
+                Debug.Log("SaveAndRestartOnLevel Exit Follow Up");
                 isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
                 break;
             }
@@ -198,6 +206,13 @@ public class Script_Exits : MonoBehaviour
                     Debug.Log("------------ SAVE STATE AND START WEEKEND CYCLE ------------");
                     game.ShowSaveAndStartWeekendMessage();
                     game.StartWeekendCycleSaveInitialize();
+                    break;
+                }
+                case (FollowUp.SaveAndRestartOnLevel):
+                {
+                    Debug.Log("------------ SAVE STATE AND RESTART ON LEVEL ------------");
+                    game.ShowSaveAndRestartMessageDefault();
+                    game.NextRunSaveInitialize(isLobbySpawn: false);
                     break;
                 }
                 default:

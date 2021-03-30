@@ -10,9 +10,11 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController elevatorCanvasGroupController;
     [SerializeField] private bool isExitSFXSilent = true;
     [SerializeField] private Script_Exits.ExitType exitType = Script_Exits.ExitType.Elevator;
-    [SerializeField] private Script_ExitMetadataObject currentExit;
     [SerializeField] private Script_ElevatorBehavior currentExitBehavior;
     [SerializeField] private Script_Elevator currentElevator;
+
+    [SerializeField] private Model_Exit currentExitData;
+
     
     /// <summary>
     /// UI Closes Elevator Doors
@@ -23,10 +25,14 @@ public class Script_ElevatorManager : MonoBehaviour
     public void CloseDoorsCutScene(
         Script_ExitMetadataObject exit,
         Script_ElevatorBehavior exitBehavior,
-        Script_Elevator.Types type
+        Script_Elevator.Types type,
+        Model_Exit exitOverrideData = null,
+        Script_Exits.ExitType? exitTypeOverride = null
     )
     {
-        currentExit = exit;
+        currentExitData = exitOverrideData ?? exit.data;
+        if (exitTypeOverride != null)   exitType = (Script_Exits.ExitType)exitTypeOverride;
+
         currentExitBehavior = exitBehavior;
         elevatorCanvasGroupController.Open();
         
@@ -50,17 +56,20 @@ public class Script_ElevatorManager : MonoBehaviour
     {
         ExitBehavior();
         
+        Debug.Log("@@@@@@@@@ {name} CURRENT EXIT DATA @@@@@@@@@");
+        Script_Utils.DebugToConsole(currentExitData);
+        
         /// Set up the new level in the background
         Script_Game.Game.Exit(
-            currentExit.data.level,
-            currentExit.data.playerSpawn,
-            currentExit.data.facingDirection,
+            currentExitData.level,
+            currentExitData.playerSpawn,
+            currentExitData.facingDirection,
             true,
             isExitSFXSilent,
             exitType
         );
 
-        currentExit = null;
+        currentExitData = null;
         SetInitialElevatorState();
 
         void ExitBehavior()
@@ -88,7 +97,7 @@ public class Script_ElevatorManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"You are not exposing a public {elevatorName} property on current Level Behavior");
+                Debug.Log($"You are not exposing a public {elevatorName} property on current Level Behavior");
             }
         }
     }
@@ -103,7 +112,15 @@ public class Script_ElevatorManager : MonoBehaviour
         /// Animate doors closed
         Debug.Log("Done opening UI elevator doors; animate World elevator doors closing");
         
-        currentElevator.SetClosing();
+        // If there exists a World Elevator start animating it
+        if (currentElevator != null)
+        {
+            currentElevator.SetClosing();
+        }
+        else
+        {
+            Script_Game.Game.ChangeStateInteract();
+        }
     }
 
     /// Signal Reactions END ========================================================================

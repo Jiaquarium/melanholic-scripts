@@ -1760,6 +1760,9 @@ public class Script_Game : MonoBehaviour
             case (Script_Exits.ExitType.SaveAndStartWeekendCycle):
                 followUp = Script_Exits.FollowUp.SaveAndStartWeekendCycle;
                 break;
+            case (Script_Exits.ExitType.SaveAndRestartOnLevel):
+                followUp = Script_Exits.FollowUp.SaveAndRestartOnLevel;
+                break;
             default:
                 followUp = Script_Exits.FollowUp.Default;
                 break;
@@ -1798,10 +1801,12 @@ public class Script_Game : MonoBehaviour
     public void ElevatorCloseDoorsCutScene(
         Script_ExitMetadataObject exit,
         Script_ElevatorBehavior exitBehavior,
-        Script_Elevator.Types type
+        Script_Elevator.Types type,
+        Model_Exit exitOverrideData = null,
+        Script_Exits.ExitType? exitTypeOverride = null
     )
     {
-        elevatorManager.CloseDoorsCutScene(exit, exitBehavior, type);
+        elevatorManager.CloseDoorsCutScene(exit, exitBehavior, type, exitOverrideData, exitTypeOverride);
     }
 
     /* =========================================================================
@@ -1827,17 +1832,17 @@ public class Script_Game : MonoBehaviour
     /// Called when exiting the Elevator Bay after exiting via a Last Elevator
     /// </summary>
     /// <param name="playerStateOverride"></param>
-    public void NextRunSaveInitialize()
+    public void NextRunSaveInitialize(bool isLobbySpawn = true)
     {
         SetActiveEnding();
         
         runsManager.IncrementRun();
         CleanRun();
         
-        SaveWaitRestartAtLobby();
+        SaveWaitRestart(isLobbySpawn);
     }
 
-    public void StartWeekendCycleSaveInitialize()
+    public void StartWeekendCycleSaveInitialize(bool isLobbySpawn = true)
     {
         SetActiveEnding();
         
@@ -1847,7 +1852,7 @@ public class Script_Game : MonoBehaviour
         // Set LB48 isDone to update that we've done the Myne Grand Mirror Cut Scene
         grandMirrorRoomBehavior.IsDone = true;
 
-        SaveWaitRestartAtLobby();
+        SaveWaitRestart(isLobbySpawn);
     }
 
     private void SetActiveEnding()
@@ -1866,9 +1871,9 @@ public class Script_Game : MonoBehaviour
         Debug.Log($"@@@@@@@@@@@@@@@ ACTIVE ENDING CHANGED TO {activeEnding} @@@@@@@@@@@@@@@");
     }
 
-    private void SaveWaitRestartAtLobby()
+    private void SaveWaitRestart(bool isLobbySpawn = true)
     {
-        Model_PlayerState playerData = new Model_PlayerState(
+        Model_PlayerState lobbySpawnPlayer = new Model_PlayerState(
             (int)playerSpawn.data.playerSpawn.x,
             (int)playerSpawn.data.playerSpawn.y,
             (int)playerSpawn.data.playerSpawn.z,
@@ -1884,8 +1889,8 @@ public class Script_Game : MonoBehaviour
         
         saveGameControl.Save(
             Script_SaveGameControl.Saves.Initialize,
-            playerData,
-            gameData
+            isLobbySpawn ? lobbySpawnPlayer : null,
+            isLobbySpawn ? gameData : null 
         );
         
         StartCoroutine(WaitToRestartGame());
