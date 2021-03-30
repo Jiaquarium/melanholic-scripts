@@ -17,13 +17,19 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     
     public bool isInit = true;
     public bool isDone = false;
+    
     public Transform pianoTextParent;
     public Transform paintingTextParent;
-    public Script_MovingNPC Ero;
+    
+    public Script_DemonNPC Ero;
+
+    public Script_DialogueNode[] IdsSickEroNodes;
     public Script_DialogueNode EroNode;
+    
     public Script_DialogueManager dialogueManager;
     public Script_VCamera VCamLB1;
-    [SerializeField] private PlayableDirector ErasDirector;
+    
+    [SerializeField] private PlayableDirector ErosDirector;
 
     private bool didIdsMusicCutScene;
     
@@ -31,13 +37,13 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     public Script_BgThemePlayer EroBgThemePlayerPrefab;
     
     protected override void OnEnable() {
-        ErasDirector.stopped += OnErasExitDone;
-        Script_GameEventsManager.OnLevelInitComplete += OnLevelInit;
+        ErosDirector.stopped                            += OnEroExitDone;
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInit;
     }
 
     protected override void OnDisable() {
-        ErasDirector.stopped -= OnErasExitDone;
-        Script_GameEventsManager.OnLevelInitComplete -= OnLevelInit;
+        ErosDirector.stopped                            -= OnEroExitDone;
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInit;
     }
     
     public override bool ActivateTrigger(string Id){
@@ -112,7 +118,7 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         didIdsMusicCutScene = true;
     }
 
-    private void OnErasExitDone(PlayableDirector aDirector)
+    private void OnEroExitDone(PlayableDirector aDirector)
     {
         game.ChangeStateInteract();
         Script_VCamManager.VCamMain.SwitchToMainVCam(VCamLB1);
@@ -132,6 +138,19 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     {
         game.SetupInteractableObjectsText(pianoTextParent, isInit);
         game.SetupInteractableObjectsText(paintingTextParent, isInit);
+        
+        // Weekend Cycle Conditions
+        if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
+        {
+            if (Script_EventCycleManager.Control.IsIdsDead())
+            {
+                Ero.gameObject.SetActive(false);
+            }
+            else if (Script_EventCycleManager.Control.IsIdsSick())
+            {
+                Ero.SwitchPsychicNodes(IdsSickEroNodes);
+            }    
+        }
         
         if (isInit && (!Debug.isDebugBuild || !Const_Dev.IsDevMode))
         {

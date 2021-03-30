@@ -29,41 +29,59 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     public Script_Pushable rock;
     [SerializeField] Script_SeasonsTree[] ManTrees;
     [SerializeField] Script_SeasonsTree[] WomanTrees;
+    
     [SerializeField] private Script_VCamera vCamMid;
     [SerializeField] private Script_VCamera vCamEntrance;
+    
     [SerializeField] private float waitToChangeCameraTime; // 1s
     [SerializeField] private float waitToChangeSeasonTime; // 1.5s camera + .5s pause
     [SerializeField] private float seasonChangeWaitTime; //  1.25s slow season fade + .75s pause
     [SerializeField] private float revertCameraWaitTime; //  1.5s
     [SerializeField] private float successPostChangeSeasonWaitTime;
+    
     [SerializeField] private GameObject SuccessExplosion;
+    
     [SerializeField] private Script_SeasonStonesPuzzleController puzzleController;
+    
     [SerializeField] private PlayableDirector SuccessDirector;
+    
     [SerializeField] private Script_UsableObject masterKey;
     [SerializeField] private Script_UsableTarget masterLock;
     [SerializeField] private Script_TileMapExitEntrance lastExit;
+    
     [SerializeField] private Transform transmutationCircle;
+    
     [SerializeField] private Script_SavePoint savePoint;
+    
     [SerializeField] private Script_MovingNPC Kaffe;
     [SerializeField] private Script_MovingNPC Latte;
     [SerializeField] private Script_MovingNPC Melz;
     [SerializeField] private Script_MovingNPC Ids;
+    
     [SerializeField] private PlayableDirector IntroDirector;
     [SerializeField] private PlayableDirector IntroExitDirector;
     [SerializeField] private PlayableDirector AftermathDirector;
+    
     [SerializeField] private Script_DialogueNode MelzNode;
     [SerializeField] private Script_DialogueNode PlayerReactionNode;
     [SerializeField] private Script_DialogueNode onUrselksEmbraceNode;
     [SerializeField] private Script_DialogueNode IdsNode;
     [SerializeField] private Script_DialogueNode KaffeLatteNode;
+    
     [SerializeField] private Script_PRCSPlayer climaxPlayer;
     [SerializeField] private Script_PRCS embracePRCS;
+    
     [SerializeField] private Transform playerMoveDestination;
+    
     [SerializeField] private float EmbraceDialogueWaitTime;
     [SerializeField] private float IdsDialogueWaitTime;
     [SerializeField] private float KaffeLatteDialogueWaitTime;
+    
     [SerializeField] private Script_BgThemePlayer bellsBgPlayer;
+    
     [SerializeField] private float shakeDuration;
+
+    [SerializeField] private Script_DemonNPC Ero;
 
     /// =======================================================================
     /// Melz Intro START
@@ -515,6 +533,23 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         masterLock.gameObject.SetActive(false);
         lastExit.IsDisabled = false;
         
+        // Cycle Conditions
+        if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
+        {
+            if (Script_EventCycleManager.Control.IsIdsDead())
+            {
+                Ero.gameObject.SetActive(true);
+            }
+            else
+            {
+                Ero.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            Ero.gameObject.SetActive(false);
+        }
+
         if (isPuzzleComplete)
         {
             // Afterglow music
