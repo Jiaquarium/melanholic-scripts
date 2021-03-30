@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Not included in the Scarlet Cipher mirrors.
+/// 
+/// After Grand Mirror activation is done; switch graphic to broken.
+/// </summary>
 public class Script_MynesGrandMirror : Script_MynesMirror
 {
     private enum Section
@@ -15,13 +20,7 @@ public class Script_MynesGrandMirror : Script_MynesMirror
     [SerializeField] private Script_ExitMetadataObject exit;
 
     private Section currentSection;
-    
-    protected override void Awake()
-    {
-        base.Awake();
-        
-        Initialize();
-    }
+    private bool isActivated;
     
     protected override void OnEnable()
     {
@@ -35,6 +34,13 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         base.OnDisable();
         
         Script_ItemsEventsManager.OnItemStash -= OnItemPickUpTheatricsDone;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        Initialize();
     }
     
     public void GiveSticker()
@@ -60,7 +66,6 @@ public class Script_MynesGrandMirror : Script_MynesMirror
     /// <summary>
     /// Remove cut scene
     /// Called from last Dialogue Node
-    /// Exit to Bay v1
     /// </summary>
     public override void End()
     {
@@ -71,23 +76,32 @@ public class Script_MynesGrandMirror : Script_MynesMirror
             },
             Const_AudioMixerParams.ExposedBGVolume
         );
+
+        // Change mirror to broken state.
+        mirrorGraphics.sprite = brokenMirrorSprite;
         
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
-            Exit();
+            isActivated = true;
+            game.ChangeStateInteract();
+            SetWeekendCycleState();
         });
 
-        // Exit to Bay v1 but ensure it's Bay V1 Save and Start Weekend Cycle State
-        void Exit()
+        void SetWeekendCycleState()
         {
             Script_Game.Game.SetBayV1ToSaveState(Script_LevelBehavior_33.State.SaveAndStartWeekendCycle);
-            Script_Game.Game.Exit(
-                exit.data.level,
-                exit.data.playerSpawn,
-                exit.data.facingDirection,
-                true
-            );
         }
     }
+
+    protected override bool CheckDisabled()
+    {
+        return
+        (
+            isActivated || CheckDisabledDirections()
+        );
+    }
+    
+    // Grand Mirror doesn't need this mechanic. Will always be an unbroken mirror.
+    protected override void HandleIsSolvedGraphics(bool isSolved) { }
 
     private void OnItemPickUpTheatricsDone(string itemId)
     {
@@ -95,6 +109,7 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         {
             currentSection = Section.ItemGive;
             Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirrorMidConvo);
+            
             // This will then trigger the Script_MynesMirrorEventsManager.OnEndTimeline event which will
             // call StartDialogue
         }

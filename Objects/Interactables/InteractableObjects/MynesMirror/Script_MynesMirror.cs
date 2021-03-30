@@ -23,7 +23,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     [SerializeField] protected SpriteRenderer mirrorGraphics;
 
     [SerializeField] private Sprite defaultMirrorSprite;
-    [SerializeField] private Sprite brokenMirrorSprite;
+    [SerializeField] protected Sprite brokenMirrorSprite;
 
     private bool isSolved;
     
@@ -100,7 +100,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
         return isSolved;
     }
 
-    private void HandleIsSolvedGraphics(bool isSolved)
+    protected virtual void HandleIsSolvedGraphics(bool isSolved)
     {
         if (isSolved)   mirrorGraphics.sprite = brokenMirrorSprite;
         else            mirrorGraphics.sprite = defaultMirrorSprite;

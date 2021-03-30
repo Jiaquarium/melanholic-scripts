@@ -690,6 +690,11 @@ public class Script_Game : MonoBehaviour
         return EileensMindBehavior.isPuzzleComplete && !grandMirrorRoomBehavior.IsDone;
     }
 
+    public bool IsLastElevatorSaveAndStartWeekendCycle()
+    {
+        return levelBehavior == grandMirrorRoomBehavior;
+    }
+
     /* =======================================================================
         _LEVEL MANAGEMENT_
     ======================================================================= */
