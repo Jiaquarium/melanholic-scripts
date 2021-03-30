@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Script_WeatherFXManager : MonoBehaviour
 {
-    public static Script_Run.DayId SnowDayId = Script_Run.DayId.thu;
-    
     public static Script_WeatherFXManager Control;
     
+    [SerializeField] private Script_Run.DayId SnowDayId;
+
     [SerializeField] private Script_Game game;
 
     public bool IsSnowDay

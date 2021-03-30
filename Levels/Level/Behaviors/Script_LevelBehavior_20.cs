@@ -53,10 +53,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     
     [SerializeField] private Script_SavePoint savePoint;
     
-    [SerializeField] private Script_MovingNPC Kaffe;
-    [SerializeField] private Script_MovingNPC Latte;
-    [SerializeField] private Script_MovingNPC Melz;
-    [SerializeField] private Script_MovingNPC Ids;
     
     [SerializeField] private PlayableDirector IntroDirector;
     [SerializeField] private PlayableDirector IntroExitDirector;
@@ -81,7 +77,19 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     
     [SerializeField] private float shakeDuration;
 
+    // -------------------------------------------------------------------------------------
+    // NPCs
     [SerializeField] private Script_DemonNPC Ero;
+    
+    [SerializeField] private Script_DemonNPC Kaffe;
+    [SerializeField] private Script_DemonNPC Latte;
+    [SerializeField] private Script_DemonNPC PecheMelba;
+    [SerializeField] private Script_DemonNPC Suzette;
+    [SerializeField] private Script_DemonNPC Moose;
+    [SerializeField] private Script_DemonNPC Ursie;
+
+    [SerializeField] private Script_DemonNPC Melz;
+    [SerializeField] private Script_DemonNPC Ids;
 
     /// =======================================================================
     /// Melz Intro START
@@ -514,6 +522,16 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         game.SwitchBgMusic(13);
     }
 
+    private void SetDynamicSpectersActive(bool isActive)
+    {
+        Kaffe.gameObject.SetActive(isActive);
+        Latte.gameObject.SetActive(isActive);
+        PecheMelba.gameObject.SetActive(isActive);
+        Suzette.gameObject.SetActive(isActive);
+        Moose.gameObject.SetActive(isActive);
+        Ursie.gameObject.SetActive(isActive);
+    }
+
     public override void Setup()
     {
         game.SetupSavePoint(savePoint, isInit);
@@ -536,18 +554,17 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         // Cycle Conditions
         if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
         {
-            if (Script_EventCycleManager.Control.IsIdsDead())
-            {
-                Ero.gameObject.SetActive(true);
-            }
-            else
-            {
-                Ero.gameObject.SetActive(false);
-            }
+            // Handle Ero Event Cycle
+            if (Script_EventCycleManager.Control.IsIdsDead())   Ero.gameObject.SetActive(true);
+            else                                                Ero.gameObject.SetActive(false);
+
+            // Remove all NPCs except for King, they've gone to their respective rooms.
+            SetDynamicSpectersActive(false);
         }
         else
         {
             Ero.gameObject.SetActive(false);
+            SetDynamicSpectersActive(true);
         }
 
         if (isPuzzleComplete)
