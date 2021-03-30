@@ -64,25 +64,32 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private Script_InteractableFullArt dirtyMagazine;
 
     [SerializeField] private Script_PRCSPlayer ElleniasHandPRCSPlayer;
+    [SerializeField] private Script_DialogueNode onEntranceElleniaHurtNode;
+    [SerializeField] private Script_DialogueNode onElleniasPRCSDoneNode;
+    [SerializeField] private Script_VCamera followElleniaHurtVCam;
+    [SerializeField] private float onStartElleniaHurtCutSceneWaitTime;
     
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
     
-    private bool IsElleniaComfortableCurrentRun;
+    private bool isElleniaComfortableCurrentRun;
+    private bool isElleniaHurtCutScene;
 
     private bool isInitialization = true;
     private bool shouldChangeGameStateToInteract;
 
     protected override void OnEnable()
     {
-        ElleniaDirector.stopped                 += OnElleniaPlayableDone;    
-        Script_PRCSEventsManager.OnPRCSDone     += OnElleniasHandPRCSDone;
+        ElleniaDirector.stopped                         += OnElleniaPlayableDone;    
+        Script_PRCSEventsManager.OnPRCSDone             += OnElleniasHandPRCSDone;
+        Script_GameEventsManager.OnLevelInitComplete    += OnEntranceElleniaHurt;
     }
 
     protected override void OnDisable()
     {
-        ElleniaDirector.stopped                 -= OnElleniaPlayableDone;    
-        Script_PRCSEventsManager.OnPRCSDone     -= OnElleniasHandPRCSDone;
+        ElleniaDirector.stopped                         -= OnElleniaPlayableDone;    
+        Script_PRCSEventsManager.OnPRCSDone             -= OnElleniasHandPRCSDone;
+        Script_GameEventsManager.OnLevelInitComplete    -= OnEntranceElleniaHurt;
     }
 
     protected override void Update()
@@ -207,14 +214,36 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         }
     }
 
+    private void OnEntranceElleniaHurt()
+    {
+        game.ChangeStateCutScene();
+        
+        Script_BackgroundMusicManager bgm   = Script_BackgroundMusicManager.Control;
+        string bgmParam                     = Const_AudioMixerParams.ExposedBGVolume;
+
+        bgm.FadeOutFast(() => {
+            bgm.Stop();
+            bgm.SetVolume(1f, bgmParam);
+        }, bgmParam);
+
+        StartCoroutine(WaitForElleniaHurtCutScene());
+
+        IEnumerator WaitForElleniaHurtCutScene()
+        {
+            yield return new WaitForSeconds(onStartElleniaHurtCutSceneWaitTime);
+
+            SwitchVCamElleniaHurt();
+            Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceElleniaHurtNode);
+        }
+    }
+
     private void OnElleniasHandPRCSDone(Script_PRCSPlayer prcs)
     {
         if (prcs == ElleniasHandPRCSPlayer)
         {
             // Remove ElleniasHandPRCS
             ElleniasHandPRCSPlayer.CloseCustom(Script_PRCSManager.CustomTypes.ElleniasHand, () => {
-                // Start Node
-                Debug.LogError("START NEXT NODE");
+                Script_DialogueManager.DialogueManager.StartDialogueNode(onElleniasPRCSDoneNode);
             });
         }
     }
@@ -414,6 +443,22 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         ElleniasHandPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
     }
 
+    public void SwitchVCamElleniaHurt()
+    {
+        Script_VCamManager.VCamMain.SetNewVCam(followElleniaHurtVCam);
+    }
+
+    public void SwitchVCamPlayer()
+    {
+        Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaHurtVCam);        
+    }
+
+    public void OnEndElleniaHurtCutScene()
+    {
+        SwitchVCamPlayer();
+        game.ChangeStateInteract();
+    }
+
     /// <summary>
     /// NextNodeAction() END =====================================================================
     /// </summary>
@@ -452,6 +497,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             easle.gameObject.SetActive(false);
             easleYellAtPlayerIOText.gameObject.SetActive(false);
             easleFullArt.gameObject.SetActive(false);
+
+            isElleniaHurtCutScene = true;
         }
         else
         {
@@ -489,10 +536,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             // No Intro here at all because already done in Weekday cycle, so need Dialogue States.
             if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
             {
-                if (Script_EventCycleManager.Control.IsElleniaComfortable() || IsElleniaComfortableCurrentRun)
+                if (Script_EventCycleManager.Control.IsElleniaComfortable() || isElleniaComfortableCurrentRun)
                 {
                     Ellenia.SwitchPsychicNodes(weekendTalkedElleniaPsychicNodes);
-                    IsElleniaComfortableCurrentRun = true;
+                    isElleniaComfortableCurrentRun = true;
                 }
                 else
                 {

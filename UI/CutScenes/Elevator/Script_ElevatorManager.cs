@@ -8,8 +8,10 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private string elevatorName;  
     [SerializeField] private Script_TimelineController elevatorTimelineController;
     [SerializeField] private Script_CanvasGroupController elevatorCanvasGroupController;
+
     [SerializeField] private bool isExitSFXSilent = true;
     [SerializeField] private Script_Exits.ExitType exitType = Script_Exits.ExitType.Elevator;
+
     [SerializeField] private Script_ElevatorBehavior currentExitBehavior;
     [SerializeField] private Script_Elevator currentElevator;
 

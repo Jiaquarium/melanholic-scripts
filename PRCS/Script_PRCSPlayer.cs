@@ -29,21 +29,20 @@ public class Script_PRCSPlayer : MonoBehaviour
         TimelineAndReturn = 2
     }
     [SerializeField] private DoneStates DoneCondition;
-    [SerializeField] private bool isDone;
     [SerializeField] private Script_PRCS PRCS;
     [SerializeField] private PlayableDirector director;
     [SerializeField] private TimelineAsset myTimeline;
-    
-    [SerializeField] private bool isTimelineDone;
-    [Tooltip("To detect end of all dialogue nodes used during PRCS.")]
-    [SerializeField] private bool isNodesDone;
-    [SerializeField] private bool isReturnPressedDone;
     
     [SerializeField] private FadeSpeeds fadeInSpeed;
     [SerializeField] private FadeSpeeds fadeOutSpeed;
     [Tooltip("isContinuation, will not fade in the PRCS")]
     [SerializeField] private bool isContinuation;
 
+    private bool isDone;
+    private bool isTimelineDone;
+    // To detect end of all dialogue nodes used during PRCS.
+    private bool isNodesDone;
+    private bool isReturnPressedDone;
     private bool isDetectingReturn;
     
     void OnEnable()
