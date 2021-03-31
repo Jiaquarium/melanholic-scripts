@@ -36,8 +36,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     {
         base.Update();
 
-        if (lanternFollower.IsLightOn)  directionalLight.gameObject.SetActive(true);
-        else                            directionalLight.gameObject.SetActive(false);
+        HandleLanternReactions(lanternFollower.IsLightOn);
     }
 
     private void OnItemPickUp(string itemId)
@@ -45,6 +44,17 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
         if (itemId == lastSpellRecipeBook.Item.id)
         {
             didPickUpLastSpellRecipeBook = true;
+        }
+    }
+
+    private void HandleLanternReactions(bool isLightOn)
+    {
+        directionalLight.gameObject.SetActive(isLightOn);
+
+        if (lastSpellRecipeBook != null)
+        {
+            if (!didPickUpLastSpellRecipeBook)
+                lastSpellRecipeBook.gameObject.SetActive(isLightOn);
         }
     }
 
