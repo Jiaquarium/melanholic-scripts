@@ -6,7 +6,8 @@ using System;
 /// <summary>
 ///  Pre-Rendered Cut Scenes Manager (Singleton)
 /// 
-/// Custom PRCS fade in is NOT automatic, and defined in the Timeline instead.
+/// Custom PRCS's fade in is NOT automatic, and defined in the Timeline instead.
+/// Can adjust Sort Order per canvas too.
 /// Allows for more freedom if it needs to be adjusted later.
 /// </summary>
 public class Script_PRCSManager : MonoBehaviour
@@ -20,7 +21,7 @@ public class Script_PRCSManager : MonoBehaviour
     
     [SerializeField] private Script_PRCS MynesMirrorPRCS;
     [SerializeField] private Script_PRCS ElleniasHandPRCS;
-
+    [SerializeField] private Script_PRCS toWeekendPRCS;
 
     
     /// <summary>
@@ -31,7 +32,8 @@ public class Script_PRCSManager : MonoBehaviour
         None,
         MynesMirror,
         MynesMirrorMidConvo,
-        ElleniasHand
+        ElleniasHand,
+        ToWeekend
     }
 
     void OnValidate()
@@ -122,6 +124,15 @@ public class Script_PRCSManager : MonoBehaviour
                 ElleniasHandPRCS.Open();
                 ElleniasHandPRCS.PlayTimeline(0);
                 break;
+            
+            case CustomTypes.ToWeekend:
+                PRCSCanvasGroup.alpha = 1f;
+                PRCSCanvasGroup.gameObject.SetActive(true);
+                
+                toWeekendPRCS.Setup();
+                toWeekendPRCS.Open();
+                toWeekendPRCS.PlayTimeline(0);
+                break;
 
             default:
                 break;
@@ -139,7 +150,11 @@ public class Script_PRCSManager : MonoBehaviour
             case CustomTypes.ElleniasHand:
                 HidePRCS(ElleniasHandPRCS, FadeSpeeds.Slow, cb);
                 break;
-
+            
+            case CustomTypes.ToWeekend:
+                HidePRCS(toWeekendPRCS, FadeSpeeds.None, cb);
+                break;
+                
             default:
                 break;
         }

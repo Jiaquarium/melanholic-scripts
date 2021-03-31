@@ -9,6 +9,8 @@ using UnityEditor;
 #endif
 
 /// <summary>
+/// Exit Manager
+/// 
 /// Manages exiting and entering levels
 /// 
 /// Pass in FollowUp.CutScene to Exit if you want to exit into a black screen
@@ -39,6 +41,7 @@ public class Script_Exits : MonoBehaviour
         SaveAndRestartOnLevel       = 6,
     }
     public CanvasGroup canvas;
+    [SerializeField] private Script_ExitToWeekendCutScene exitToWeekendCutScene;
 
     private AudioSource audioSource;
     private Script_Game game;
@@ -204,8 +207,9 @@ public class Script_Exits : MonoBehaviour
                 case (FollowUp.SaveAndStartWeekendCycle):
                 {
                     Debug.Log("------------ SAVE STATE AND START WEEKEND CYCLE ------------");
-                    game.ShowSaveAndStartWeekendMessage();
-                    game.StartWeekendCycleSaveInitialize();
+                    
+                    exitToWeekendCutScene.Play();
+                    
                     break;
                 }
                 case (FollowUp.SaveAndRestartOnLevel):
@@ -309,20 +313,32 @@ public class Script_Exits : MonoBehaviour
         game = _game;
         audioSource = GetComponent<AudioSource>();
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_Exits))]
-public class Script_ExitsTester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_Exits))]
+    public class Script_ExitsTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_Exits lb = (Script_Exits)target;
-        if (GUILayout.Button("StartFadeIn()"))
-        {
-            lb.StartFadeIn();
+            Script_Exits lb = (Script_Exits)target;
+            if (GUILayout.Button("StartFadeIn()"))
+            {
+                lb.StartFadeIn();
+            }
+
+            if (GUILayout.Button("To Weekend"))
+            {
+                lb.Exit(
+                    Script_Game.Game.level,
+                    Script_Game.Game.GetPlayerLocation(),
+                    Script_Game.Game.GetPlayer().FacingDirection,
+                    false,
+                    false,
+                    FollowUp.SaveAndStartWeekendCycle
+                );
+            }
         }
     }
+    #endif
 }
-#endif

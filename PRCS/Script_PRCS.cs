@@ -6,7 +6,8 @@ using UnityEngine.Timeline;
 
 /// <summary>
 /// Standardized Pre Rendered Cut Scenes
-/// Allows for interaction with dialogue nodes
+/// 
+/// Use these in conjunction with Timeline to allow for Done conditions.
 /// </summary>
 public class Script_PRCS : Script_FullArt
 {
