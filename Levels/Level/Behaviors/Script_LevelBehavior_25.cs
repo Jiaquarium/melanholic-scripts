@@ -71,6 +71,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private float cutSceneFadeInTime;
     [SerializeField] private float elleniaHurtCutSceneWaitToFadeInTime;
     [SerializeField] private Script_Marker playerTeleportPos;
+
+    // ------------------------------------------------------------------
+    // Painting Entrances
+    [SerializeField] private Script_InteractablePaintingEntrance paintingEntranceMid;
     
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
@@ -540,6 +544,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         
         if (Script_EventCycleManager.Control.IsElleniaHurt())
         {
+            paintingEntranceMid.State = Script_InteractableObject.States.Disabled;
+            
             ElleniaHurt.gameObject.SetActive(true);
             Ellenia.gameObject.SetActive(false);
 
@@ -549,6 +555,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         }
         else
         {
+            paintingEntranceMid.State = Script_InteractableObject.States.Active;
+            
             ElleniaHurt.gameObject.SetActive(false);
             Ellenia.gameObject.SetActive(true);
             
