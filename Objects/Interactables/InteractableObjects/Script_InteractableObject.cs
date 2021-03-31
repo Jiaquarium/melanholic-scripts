@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Script_InteractableObject : Script_Interactable
 {
-    [SerializeField] private States _state;
+    [SerializeField] protected States _state;
 
     public int Id;
     public string nameId;
@@ -21,7 +21,7 @@ public class Script_InteractableObject : Script_Interactable
         Disabled = 1
     }
 
-    public States State
+    public virtual States State
     {
         get => _state;
         set => _state = value;

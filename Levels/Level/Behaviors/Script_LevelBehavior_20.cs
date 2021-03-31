@@ -91,6 +91,12 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Melz;
     [SerializeField] private Script_DemonNPC Ids;
 
+    // -------------------------------------------------------------------------------------
+    // Painting Entrances to the "Worlds"
+    [SerializeField] private Script_InteractablePaintingEntrance WellsWorldPaintingEntrance;
+    [SerializeField] private Script_InteractablePaintingEntrance CelestialGardensWorldPaintingEntrance;
+    [SerializeField] private Script_InteractablePaintingEntrance XXXWorldPaintingEntrance;
+
     /// =======================================================================
     /// Melz Intro START
     /// =======================================================================
@@ -532,6 +538,18 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Ursie.gameObject.SetActive(isActive);
     }
 
+    private void SetPaintingEntrancesActive(bool isActive)
+    {
+        Script_InteractableObject.States paintingState;
+        
+        if (isActive)   paintingState               = Script_InteractableObject.States.Active;
+        else            paintingState               = Script_InteractableObject.States.Disabled;
+        
+        WellsWorldPaintingEntrance.State            = paintingState;
+        CelestialGardensWorldPaintingEntrance.State = paintingState;
+        XXXWorldPaintingEntrance.State              = paintingState;
+    }
+
     public override void Setup()
     {
         game.SetupSavePoint(savePoint, isInit);
@@ -560,11 +578,15 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
             // Remove all NPCs except for King, they've gone to their respective rooms.
             SetDynamicSpectersActive(false);
+            
+            // Open Painting Entrances.
+            SetPaintingEntrancesActive(true);
         }
         else
         {
             Ero.gameObject.SetActive(false);
             SetDynamicSpectersActive(true);
+            SetPaintingEntrancesActive(false);
         }
 
         if (isPuzzleComplete)

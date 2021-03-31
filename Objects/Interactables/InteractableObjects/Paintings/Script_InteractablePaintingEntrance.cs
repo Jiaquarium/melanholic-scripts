@@ -8,11 +8,37 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
     static readonly private float BoarNeedleWaitTime = 0.5f; 
     [SerializeField] private Script_ExitMetadataObject exit;
     public Script_DialogueNode[] paintingDialogueNodes;
+    
+    [SerializeField] private SpriteRenderer paintingGraphics;
+    [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Sprite disabledSprite;
+
     private int paintingDialogueIndex;
+    
+    public override States State
+    {
+        get => _state;
+        set
+        {
+            _state = value;
+
+            HandlePaintingSprite(_state);
+        }
+    }
+    
+    // Painting Entrance even when Disabled will allow text interaction.
+    public override void HandleAction(string action)
+    {
+        Debug.Log($"{name} HandleAction action: {action}");
+        if (action == Const_KeyCodes.Action1)
+        {
+            ActionDefault();
+        }
+    }
     
     public override void ActionDefault()
     {
-        if (isDialogueCoolDown)     return;
+        if (isDialogueCoolDown)         return;
         if (CheckDisabledDirections())  return;
         
         // If already talking to the Painting, then just continue dialogue.
@@ -37,18 +63,26 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
         IEnumerator WaitToStartEntranceNode()
         {
             yield return new WaitForSeconds(BoarNeedleWaitTime);
-            
-            // Script_Game.Game.GetPlayer().SetIsInteract();
-            print("starting dialogue node in painting");
-            /// Player state is set to dialogue by DM but just to be safe
-            Script_Game.Game.GetPlayer().SetIsTalking();
-            Script_DialogueManager.DialogueManager.StartDialogueNode(
-                paintingDialogueNodes[paintingDialogueIndex],
-                SFXOn: true,
-                type: Const_DialogueTypes.Type.PaintingEntrance,
-                this
-            );
-            HandlePaintingDialogueNodeIndex();
+
+            if (State == States.Disabled)
+            {
+                Debug.Log($"{name} State: {State}");
+                Script_Game.Game.GetPlayer().SetIsInteract();
+            }
+            else
+            {
+                // Script_Game.Game.GetPlayer().SetIsInteract();
+                Debug.Log("starting dialogue node in painting");
+                /// Player state is set to dialogue by DM but just to be safe
+                Script_Game.Game.GetPlayer().SetIsTalking();
+                Script_DialogueManager.DialogueManager.StartDialogueNode(
+                    paintingDialogueNodes[paintingDialogueIndex],
+                    SFXOn: true,
+                    type: Const_DialogueTypes.Type.PaintingEntrance,
+                    this
+                );
+                HandlePaintingDialogueNodeIndex();
+            }
         }
     }
 
@@ -62,7 +96,7 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
         );   
     }
 
-    void HandlePaintingDialogueNodeIndex()
+    private void HandlePaintingDialogueNodeIndex()
     {
         if (paintingDialogueIndex == paintingDialogueNodes.Length - 1)
         {
@@ -71,6 +105,22 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
         else
         {
             paintingDialogueIndex++;
+        }
+    }
+
+    private void HandlePaintingSprite(States state)
+    {
+        switch (state)
+        {
+            case (States.Active):
+                if (paintingGraphics != null)
+                    paintingGraphics.sprite = activeSprite ?? paintingGraphics.sprite;
+                break;
+            
+            case (States.Disabled):
+                if (disabledSprite != null && paintingGraphics != null)
+                    paintingGraphics.sprite = disabledSprite;
+                break;
         }
     }
 }
