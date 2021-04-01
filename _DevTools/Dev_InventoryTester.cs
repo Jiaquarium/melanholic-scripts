@@ -117,6 +117,16 @@ public class Dev_InventoryTester : MonoBehaviour
     {
         Script_Game.Game.AddItemById(Const_Items.AutumnStoneId);
     }
+
+    public void AddLastWellMap()
+    {
+        Script_Game.Game.AddItemById(Const_Items.LastWellMapId);
+    }
+    
+    public void AddLastSpellRecipeBook()
+    {
+        Script_Game.Game.AddItemById(Const_Items.LastSpellRecipeBookId);
+    }
 }
 
 #if UNITY_EDITOR
@@ -206,6 +216,16 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Autumn Stone"))
         {
             inventoryTester.AddAutumnStone();
+        }
+
+        if (GUILayout.Button("Add: Last Well Map"))
+        {
+            inventoryTester.AddLastWellMap();
+        }
+
+        if (GUILayout.Button("Add: Last Spell Recipe Book"))
+        {
+            inventoryTester.AddLastSpellRecipeBook();
         }
     }
 }
