@@ -253,6 +253,11 @@ public class Script_Game : MonoBehaviour
         set => puppetMaster = value;
     }
 
+    public bool IsUrselkSistersQuestsDone
+    {
+        get => ElleniasRoomBehavior.isCurrentPuzzleComplete && EileensMindBehavior.isCurrentPuzzleComplete;
+    }
+
     /// <summary>
     /// (DEV): Sets all levels to inactive from Dev'ing
     /// to avoid errors when a level is active on load where their GameObjects's

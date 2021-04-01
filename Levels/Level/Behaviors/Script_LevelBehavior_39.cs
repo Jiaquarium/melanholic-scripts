@@ -35,19 +35,31 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     {
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
         
-        /// If already spoken with guard by either interacting with or activating trigger
-        /// then don't activate trigger anymore and let Vx pass automatically 
-        /// except on Sunday, where it's always blocking
+        Vector3 playerPos       = game.GetPlayer().transform.position;
+        float xDistanceFromFlan = Flan.transform.position.x - playerPos.x;
+        bool isExiting          = xDistanceFromFlan < 0;
+
+        // If already spoken with guard by either interacting with or activating trigger
+        // then don't activate trigger anymore and let Vx pass automatically 
+        // except on Sunday, where it's always blocking
         if (isPsychicDuckActive && didGuardConfirm && game.Run.dayId != Script_Run.DayId.sun)
+            return;
+
+        // If player x position > Flan's, then is entering Trigger from right side (exiting rooms)
+        if (isExiting)
         {
+            Debug.Log($"Player x distance from Flan: {xDistanceFromFlan}, isExiting: {isExiting}");
+            OnEndGuardDialogueUnblock();
             return;
         }
         
         Debug.Log("Triggering Flan convo");
         game.ChangeStateCutScene();
+        
+        Flan.FaceDirection(Flan.transform.position.GetDirectionToTarget(playerPos));
         Flan.TriggerDialogue();
 
-        /// NOTE Flan's last dialogue node needs to call EndGuardDialogue()
+        // NOTE Flan's last dialogue node needs to call EndGuardDialogue()
     }
 
     public void OnEndGuardDialogueBlock()
@@ -72,12 +84,16 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
 
         didGuardConfirm = true;
     }
-
-    // Unity Events END
     // ----------------------------------------------------------------------
 
     public override void Setup()
     {
+        if (game.IsUrselkSistersQuestsDone)
+        {
+            Flan.gameObject.SetActive(false);
+            barrier.gameObject.SetActive(false);
+            trigger.gameObject.SetActive(false);
+        }
     }        
 }
 
