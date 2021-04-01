@@ -31,8 +31,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode OnMissingLastSpellRecipeBookNode;
     [SerializeField] private Script_DialogueNode OnMooseGiveItemDoneNode;
 
-    [SerializeField] private Script_DemonNPC Moose;
-    [SerializeField] private Script_DemonNPC Suzette;
+    [SerializeField] private Script_DemonNPC[] Mooses;
+    [SerializeField] private Script_DemonNPC[] Suzettes;
 
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
     [SerializeField] private Script_Snow[] heavySnows;
@@ -134,13 +134,13 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void MooseExit()
     {
-        Moose.gameObject.SetActive(false);
+        SetMoosesActive(false);
         game.ChangeStateInteract();
     }
 
     public void SuzetteExit()
     {
-        Suzette.gameObject.SetActive(false);
+        SetSuzettesActive(false);
         game.ChangeStateInteract();
     }
 
@@ -177,6 +177,18 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         }
     }
 
+    private void SetMoosesActive(bool isActive)
+    {
+        foreach (var Moose in Mooses)
+            Moose.gameObject.SetActive(isActive);
+    }
+
+    private void SetSuzettesActive(bool isActive)
+    {
+        foreach (var Suzette in Suzettes)
+            Suzette.gameObject.SetActive(isActive);
+    }
+
     public override void Setup()
     {
         wellsPuzzleController.InitialState();
@@ -191,13 +203,13 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
         if (isCurrentMooseQuestComplete)
         {
-            Moose.gameObject.SetActive(false);
-            Suzette.gameObject.SetActive(false);
+            SetMoosesActive(false);
+            SetSuzettesActive(false);
         }
         else
         {
-            Moose.gameObject.SetActive(true);
-            Suzette.gameObject.SetActive(true);
+            SetMoosesActive(true);
+            SetSuzettesActive(true);
         }
     }
 }
