@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(Script_TimelineController))]
+[RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_42 : Script_LevelBehavior
 {
     // ==================================================================
@@ -18,7 +20,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     [SerializeField] private Script_WellsPuzzleController wellsPuzzleController;
     
-    [SerializeField] private Script_FrozenWell frozenWell;
+    [SerializeField] private Script_FrozenWell[] frozenWells;
     [SerializeField] private Script_DoorExitFireplace fireplaceExit;
     
     [SerializeField] private Script_CollectibleObject lastWellMap;
@@ -33,6 +35,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Suzette;
 
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
+    [SerializeField] private Script_Snow[] heavySnows;
 
     protected override void OnEnable()
     {
@@ -58,9 +61,12 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         if (puzzleId == wellsPuzzleController.PuzzleId)
         {
-            Debug.Log("PUZZLE COMPLETED!!! FREEZE WELL!!!");
+            game.ChangeStateCutScene();
 
-            frozenWell.Freeze();
+            // Play Freeze Timeline
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+
+            StartHeavySnow();
         }
     }
 
@@ -72,6 +78,18 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public void SetFireplaceExitActive(bool isActive)
     {
         fireplaceExit.SetInteractionActive(isActive);   
+    }
+
+    public void StartHeavySnow()
+    {
+        foreach (var heavySnow in heavySnows)
+            heavySnow.gameObject.SetActive(true);
+    }
+
+    public void StopHeavySnow()
+    {
+        foreach (var heavySnow in heavySnows)
+            heavySnow.gameObject.SetActive(false);
     }
 
     // ----------------------------------------------------------------------
@@ -130,7 +148,24 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
     
-    // Next Node Action END
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+    public void FreezeWells()
+    {
+        // Play SFX Once here and disable for the Wells so all don't play at once.
+        foreach (Script_FrozenWell frozenWell in frozenWells)
+            frozenWell.Freeze(isSFXOn: false);
+
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.Freeze, Script_SFXManager.SFX.FreezeVol
+        );
+    }
+
+    public void EndFreezeCutScene()
+    {
+        game.ChangeStateInteract();
+    }
+
     // ----------------------------------------------------------------------
 
     public override void Setup()
@@ -179,6 +214,16 @@ public class Script_LevelBehavior_42Tester : Editor
         if (GUILayout.Button("Disable Fireplace Exit"))
         {
             t.SetFireplaceExitActive(false);
+        }
+
+        if (GUILayout.Button("Start Heavy Snow"))
+        {
+            t.StartHeavySnow();
+        }
+
+        if (GUILayout.Button("Stop Heavy Snow"))
+        {
+            t.StopHeavySnow();
         }
     }
 }

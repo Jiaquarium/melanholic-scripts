@@ -7,6 +7,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Script_CrackableStats))]
+[RequireComponent(typeof(AudioSource))]
 public class Script_FrozenWell : Script_Well
 {
     [SerializeField] private Script_CrackableStats crackableIceStats;
@@ -21,13 +22,20 @@ public class Script_FrozenWell : Script_Well
     }
     
     // Freeze the Well and enable it to be shattered by Ice Spike attack.
-    public void Freeze()
+    public void Freeze(bool isSFXOn = true)
     {
         // Animate freezing effect.
         iceBlock.gameObject.SetActive(true);
-        
+
         crackableIceStats.enabled = true;
         hurtBox.gameObject.SetActive(true);
+
+        if (isSFXOn)
+        {
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.Freeze, Script_SFXManager.SFX.FreezeVol
+            );
+        }
     }
 
     // Turn into a normal well.
