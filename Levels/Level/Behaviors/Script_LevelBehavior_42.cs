@@ -23,7 +23,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_FrozenWell[] frozenWells;
     [SerializeField] private Script_DoorExitFireplace fireplaceExit;
     
-    [SerializeField] private Script_CollectibleObject lastWellMap;
+    [SerializeField] private Script_CollectibleObject[] lastWellMaps;
     
     [SerializeField] private Script_Item lastSpellRecipeBookItem;
     
@@ -51,9 +51,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     private void OnItemPickUp(string itemId)
     {
-        if (itemId == lastWellMap.Item.id)
+        if (itemId == lastWellMaps[0].Item.id)
         {
             didPickUpLastWellMap = true;
+            SetMapsActive(false);
         }
     }
 
@@ -165,8 +166,16 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         game.ChangeStateInteract();
     }
-
     // ----------------------------------------------------------------------
+
+    private void SetMapsActive(bool isActive)
+    {
+        for (int i = 0; i < lastWellMaps.Length; i++)
+        {
+            if (lastWellMaps[i] != null)
+                lastWellMaps[i].gameObject.SetActive(isActive);
+        }
+    }
 
     public override void Setup()
     {
@@ -177,13 +186,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         else                                fireplaceExit.SetInteractionActive(false);
 
         // Only Spawn Last Well Map if Player has not picked it up.
-        if (lastWellMap != null)
-        {
-            if (didPickUpLastWellMap)
-                lastWellMap.gameObject.SetActive(false);
-            else
-                lastWellMap.gameObject.SetActive(true);
-        }
+        if (didPickUpLastWellMap)           SetMapsActive(false);
+        else                                SetMapsActive(true);
 
         if (isCurrentMooseQuestComplete)
         {

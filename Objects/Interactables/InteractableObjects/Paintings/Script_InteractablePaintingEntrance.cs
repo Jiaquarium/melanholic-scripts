@@ -113,12 +113,12 @@ public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
         switch (state)
         {
             case (States.Active):
-                if (paintingGraphics != null)
-                    paintingGraphics.sprite = activeSprite ?? paintingGraphics.sprite;
+                if (paintingGraphics != null && activeSprite != null)
+                    paintingGraphics.sprite = activeSprite;
                 break;
             
             case (States.Disabled):
-                if (disabledSprite != null && paintingGraphics != null)
+                if (paintingGraphics != null && disabledSprite != null)
                     paintingGraphics.sprite = disabledSprite;
                 break;
         }
