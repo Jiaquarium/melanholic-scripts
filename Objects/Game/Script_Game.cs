@@ -61,6 +61,18 @@ public class Script_Game : MonoBehaviour
     public Script_Exits exitsHandler;
     
     // ------------------------------------------------------------------
+    // Specific Level Behaviors for state
+    public Script_LevelBehavior_10 IdsRoomBehavior;
+    public Script_LevelBehavior_24 KTVRoom2Behavior;
+    public Script_LevelBehavior_25 ElleniasRoomBehavior;
+    public Script_LevelBehavior_26 EileensMindBehavior;
+    public Script_LevelBehavior_33 bayV1Behavior;
+    public Script_LevelBehavior_34 bayV2Behavior;
+    public Script_LevelBehavior_42 WellsWorldBehavior;
+    public Script_LevelBehavior_46 GardenLabyrinthBehavior;
+    public Script_LevelBehavior_48 grandMirrorRoomBehavior;
+    
+    // ------------------------------------------------------------------
     // Managers
     public Script_DialogueManager dialogueManager;
     [SerializeField] private Script_SaveViewManager saveManager;
@@ -114,7 +126,6 @@ public class Script_Game : MonoBehaviour
     public Transform bgThemeSpeakersContainer;
     public Transform tmpTargetsContainer;
 
-
     public Script_Entry[] entries = new Script_Entry[0];
     public GameObject grid;
 
@@ -124,12 +135,8 @@ public class Script_Game : MonoBehaviour
     private Tilemap entrancesTileMap;
     [SerializeField] private Tilemap pushableTileMap;
 
-
-    [SerializeField] private Script_Player player;
-    [SerializeField] private Script_LanternFollower lanternFollower;
-
-    [SerializeField] private Script_SavePoint savePoint; // max 1 per Level
-
+    // ------------------------------------------------------------------
+    // Levels
     public List<Script_StaticNPC> NPCs = new List<Script_StaticNPC>();
     public List<Script_MovingNPC> movingNPCs = new List<Script_MovingNPC>();
     public List<Script_CutSceneNPC> cutSceneNPCs = new List<Script_CutSceneNPC>();
@@ -138,13 +145,23 @@ public class Script_Game : MonoBehaviour
     public List<Script_Pushable> pushables = new List<Script_Pushable>();
     public List<Script_Demon> demons = new List<Script_Demon>();
     public List<Script_AudioOneShotSource> audioOneShotSources = new List<Script_AudioOneShotSource>();
+    
     public Script_BgThemePlayer npcBgThemePlayer;
+    
     public Script_LevelBehavior levelBehavior { get; private set; }
     public Script_LevelBehavior lastLevelBehavior { get; private set; }
+    
     public string lastState;
-    private bool isLoadedGame = false;
     public CinemachineBrain cinemachineBrain;
     public Vector3 gridOffset;
+    
+    private bool isLoadedGame = false;
+    
+    [SerializeField] private Script_Player player;
+    [SerializeField] private Script_LanternFollower lanternFollower;
+    private Script_PuppetMaster puppetMaster;
+
+    [SerializeField] private Script_SavePoint savePoint; // max 1 per Level
 
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Transform newGameSpawnDestination;
@@ -155,18 +172,6 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject playerSpawn;
     [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
     [SerializeField] private Script_ExitMetadataObject lastElevatorExit;
-
-    // ------------------------------------------------------------------
-    // Specific Level Behaviors for state
-    public Script_LevelBehavior_10 IdsRoomBehavior;
-    public Script_LevelBehavior_24 KTVRoom2Behavior;
-    public Script_LevelBehavior_25 ElleniasRoomBehavior;
-    public Script_LevelBehavior_26 EileensMindBehavior;
-    public Script_LevelBehavior_33 bayV1Behavior;
-    public Script_LevelBehavior_34 bayV2Behavior;
-    public Script_LevelBehavior_42 WellsWorldBehavior;
-    public Script_LevelBehavior_46 GardenLabyrinthBehavior;
-    public Script_LevelBehavior_48 grandMirrorRoomBehavior;
     
     // ------------------------------------------------------------------
     // State Properties
@@ -240,6 +245,12 @@ public class Script_Game : MonoBehaviour
     public Script_LanternFollower LanternFollower
     {
         get => lanternFollower;
+    }
+
+    public Script_PuppetMaster PuppetMaster
+    {
+        get => puppetMaster;
+        set => puppetMaster = value;
     }
 
     /// <summary>

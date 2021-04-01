@@ -94,6 +94,7 @@ public class Script_Player : Script_Character
         if (game.state == Const_States_Game.Interact)
         {
             playerActionHandler.HandleActionInput(FacingDirection, location);
+            
             if (IsNotMovingState())
             {
                 StopMovingAnimations();
@@ -202,8 +203,13 @@ public class Script_Player : Script_Character
         SetState(Const_States_Player.Puppeteer);
         StopMovingAnimations();
         Debug.Log($"Player state set to {state}!");
+    }
 
-        // Send Puppeteer Event
+    public void SetIsPuppeteerNull()
+    {
+        SetState(Const_States_Player.PuppeteerNull);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
     }
 
     protected bool IsNotMovingState()
@@ -214,7 +220,8 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.PickingUp
                 || State == Const_States_Player.Standby
                 || State == Const_States_Player.Puppeteer
-                || State == Const_States_Player.Inventory;
+                || State == Const_States_Player.Inventory
+                || State == Const_States_Player.PuppeteerNull;
     }
 
     protected void StopMovingAnimations()

@@ -13,21 +13,29 @@ public class Script_PuppeteerEffect : Script_StickerEffect
     {
         if (isActive)
         {
+            Script_PlayerEventsManager.PuppeteerDeactivate();
+            
             player.SetState(playerLastState);
             playerLastState = string.Empty;
-            
-            Script_PlayerEventsManager.PuppeteerDeactivate();
 
             isActive = false;
         }
         else
         {
-            playerLastState = player.State;
-            player.SetIsPuppeteer();
-
             Script_PlayerEventsManager.PuppeteerActivate();
 
+            playerLastState = player.State;
+            if (Script_Game.Game.PuppetMaster == null)  StartCoroutine(WaitNextFrameSwitchState());
+            else                                        player.SetIsPuppeteer();
+
             isActive = true;
+        }
+
+        IEnumerator WaitNextFrameSwitchState()
+        {
+            yield return null;
+            
+            player.SetIsPuppeteerNull();
         }
     }
 

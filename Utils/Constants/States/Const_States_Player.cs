@@ -10,6 +10,7 @@
     // Player is completely disabled; good when we don't want to do full on game cut scene
     public const string Standby         = "standby";
     public const string Puppeteer       = "puppeteer";
+    public const string PuppeteerNull   = "puppeteer-null";
 
     // ------------------------------------------------------------------
     // Game state: Inventory

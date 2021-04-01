@@ -46,6 +46,9 @@ public class Script_PlayerAction : MonoBehaviour
             case Const_States_Player.PickingUp:
                 HandlePickingUp();
                 break;
+            case Const_States_Player.PuppeteerNull:
+                HandleExitPuppeteerNull(facingDirection);
+                break;
         }
     }
 
@@ -311,6 +314,14 @@ public class Script_PlayerAction : MonoBehaviour
             Script_SFXManager.SFX.PlayerStashItem,
             Script_SFXManager.SFX.PlayerStashItemVol
         );
+    }
+
+    private void HandleExitPuppeteerNull(Directions facingDirection)
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        {
+            stickerEffectsController.Effect(facingDirection);
+        }
     }
 
     public void Setup(Script_Game _game)
