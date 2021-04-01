@@ -9,7 +9,7 @@ public class Script_SaveLoadLevelBehavior_13 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_13 lvlModel = new Model_LevelBehavior_13(
-            LB13.didPickUpAutumnStone
+            LB13.didPickUpLightSticker
         );
         
         data.levelsData.LB13 = lvlModel;
@@ -29,8 +29,8 @@ public class Script_SaveLoadLevelBehavior_13 : Script_SaveLoadLevelBehavior
             return;
         }
 
-        Model_LevelBehavior_13 lvlModel = data.levelsData.LB13;
-        LB13.didPickUpAutumnStone       = lvlModel.didPickUpAutumnStone;
+        Model_LevelBehavior_13 lvlModel     = data.levelsData.LB13;
+        LB13.didPickUpLightSticker          = lvlModel.didPickUpLightSticker;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);

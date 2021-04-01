@@ -7,11 +7,11 @@ public class Script_LevelBehavior_13 : Script_LevelBehavior
     /* =======================================================================
         STATE DATA
     ======================================================================= */
-    public bool didPickUpAutumnStone;
+    public bool didPickUpLightSticker;
     
     /* ======================================================================= */
 
-    [SerializeField] private Script_CollectibleObject autumnStone;
+    [SerializeField] private Script_StickerObject lightSticker;
 
     protected override void OnEnable()
     {
@@ -25,14 +25,18 @@ public class Script_LevelBehavior_13 : Script_LevelBehavior
     
     private void OnItemPickUp(string itemId)
     {
-        if (itemId == autumnStone.Item.id)
+        if (itemId == lightSticker.Item.id)
         {
-            didPickUpAutumnStone = true;
+            didPickUpLightSticker = true;
         }
     }
 
-    void Start()
+    public override void Setup()
     {
-        
+        if (lightSticker != null)
+        {
+            if (didPickUpLightSticker)      lightSticker.gameObject.SetActive(false);
+            else                            lightSticker.gameObject.SetActive(true);
+        }
     }
 }
