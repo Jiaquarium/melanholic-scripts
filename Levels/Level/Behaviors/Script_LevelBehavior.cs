@@ -103,7 +103,7 @@ public class Script_LevelBehavior : MonoBehaviour
         if (snowEffect == null)
         {
             string warning = $"{name} has no Snow Effect defined";
-            if (Const_Dev.IsProd)       Debug.LogError(warning);
+            if (Const_Dev.IsProd)       Debug.LogWarning(warning);
             else                        Debug.Log(warning);
 
             return;

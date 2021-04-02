@@ -92,8 +92,10 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         HandleGrandMirrorPaintingEntrance();
 
         /// Setup Ids intro on Run 0
-        if (!GotPsychicDuck && game.Run.dayId == Script_Run.DayId.fri)      Ids.gameObject.SetActive(true);
-        else                                                                Ids.gameObject.SetActive(false);
+        if (!GotPsychicDuck && Script_EventCycleManager.Control.IsIdsGivePsychicDuckDay())
+            Ids.gameObject.SetActive(true);
+        else
+            Ids.gameObject.SetActive(false);
         
         isInit = false;
     }

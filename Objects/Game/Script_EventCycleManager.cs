@@ -68,6 +68,14 @@ public class Script_EventCycleManager : MonoBehaviour
             && game.lastLevelBehavior == game.bayV2Behavior
         );
     }
+
+    public bool IsIdsGivePsychicDuckDay()
+    {
+        return (
+            runsManager.RunCycle == Script_RunsManager.Cycle.Weekday
+            && game.IsRunDay(Script_Run.DayId.mon)
+        );
+    }
     
     // ------------------------------------------------------------------
     // Weekend Cycle Event Conditions
