@@ -150,6 +150,18 @@ public class Script_RunsManager : MonoBehaviour
         eventCycleManager.InitialState();
     }
 
+    public Cycle GetCycleByRunIds(int i)
+    {
+        Script_Run run = all[i];
+
+        foreach (Script_Run weekdayRun in weekdayCycle)
+        {
+            if (weekdayRun == run)  return Cycle.Weekday;
+        }
+
+        return Cycle.Weekend;
+    }
+
     private void HandleRunsCanvas()
     {
         if (
@@ -183,8 +195,9 @@ public class Script_RunsManager : MonoBehaviour
         int idx
     )
     {
-        /// TBD: MAKE DYNAMIC
-        InitialState(idx, Cycle.Weekend);
+        Cycle cycle = GetCycleByRunIds(idx);
+        
+        InitialState(idx, cycle);
     }
 
     public void Setup()
@@ -223,6 +236,17 @@ public class Script_RunsManagerTester : Editor
         if (GUILayout.Button("IncrementRun()"))
         {
             t.IncrementRun();
+        }
+
+        if (GUILayout.Button("Print Cycle By Run Idx"))
+        {
+            Debug.Log($"mon {t.GetCycleByRunIds(0)}");
+            Debug.Log($"tue {t.GetCycleByRunIds(1)}");
+            Debug.Log($"wed {t.GetCycleByRunIds(2)}");
+            Debug.Log($"thu {t.GetCycleByRunIds(3)}");
+            Debug.Log($"fri {t.GetCycleByRunIds(4)}");
+            Debug.Log($"sat {t.GetCycleByRunIds(5)}");
+            Debug.Log($"sun {t.GetCycleByRunIds(6)}");
         }
     }
 }

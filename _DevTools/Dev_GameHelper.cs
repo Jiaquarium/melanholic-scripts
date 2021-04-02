@@ -14,6 +14,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
     [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
+    [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
 
     public void DefaultPlayerSpawnPos()
     {
@@ -32,6 +33,11 @@ public class Dev_GameHelper : MonoBehaviour
     }
 
     public void ExitToIdsRoom()
+    {
+        Teleport(IdsRoomEntrance);
+    }
+
+    public void ExitToLastElevator()
     {
         Teleport(IdsRoomEntrance);
     }
@@ -90,6 +96,11 @@ public class Dev_GameHelperTester : Editor
         if (GUILayout.Button("Go To: Ids Room"))
         {
             t.ExitToIdsRoom();
+        }
+
+        if (GUILayout.Button("Go To: Last Elevator"))
+        {
+            t.ExitToLastElevator();
         }
 
         GUILayout.Space(12);
