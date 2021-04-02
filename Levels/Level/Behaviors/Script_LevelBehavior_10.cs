@@ -280,7 +280,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public bool NRoomTriggerReaction()
     {
-        Script_EventCycleManager.Control.DidTalkToIds = true;
+        Script_EventCycleManager.Control.DidTalkToIdsToday = true;
 
         triggers[0].gameObject.SetActive(false);
         
@@ -574,15 +574,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             }
             else
             {
-                if (Script_EventCycleManager.Control.IsIdsSick())
-                {
-                    if (Script_EventCycleManager.Control.IsIdsDead())   HandleIdsDead();
-                    else                                                HandleIdsNotHome();
-                }
+                if (Script_EventCycleManager.Control.IsIdsDead())
+                    HandleIdsDead();
+                else if (Script_EventCycleManager.Control.IsIdsInSanctuary())
+                    HandleIdsNotHome();
                 else
-                {
                     HandleIdsHome();
-                }
             }
 
             void HandleIdsHome()

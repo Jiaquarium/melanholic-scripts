@@ -146,7 +146,7 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
             {
                 Ero.gameObject.SetActive(false);
             }
-            else if (Script_EventCycleManager.Control.IsIdsSick())
+            else if (Script_EventCycleManager.Control.IsIdsInSanctuary())
             {
                 Ero.SwitchPsychicNodes(IdsSickEroNodes);
             }    

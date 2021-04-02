@@ -4,6 +4,10 @@ using UnityEngine;
 
 /// <summary>
 /// Cleared when the days cycle is over.
+/// 
+/// NOTE: Should NOT use plain DidTalk___ for anything besides Save Load.
+/// Use the "Weekend Cycle Event Conditions" below for Getting and
+/// DidTalk___Today and available Setters for Setting.
 /// </summary>
 public class Script_EventCycleManager : MonoBehaviour
 {
@@ -20,20 +24,42 @@ public class Script_EventCycleManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_RunsManager runsManager;
 
+    private bool didTalkToIdsToday = false;
+
     public bool DidTalkToIds
     {
         get => didTalkToIds;
         set => didTalkToIds = value;
     }
-
+    
     public int DidTalkToEllenia
     {
         get => didTalkToElleniaCountdown;
         set => didTalkToElleniaCountdown = value;
     }
 
+    /// <summary>
+    /// To notify at the end of day to track didTalkToIds = true.
+    /// Only do at day end in case didTalk state changes midday.
+    /// </summary>
+    public bool DidTalkToIdsToday
+    {
+        get => didTalkToIdsToday;
+        set => didTalkToIdsToday = value;
+    }
+
     // ------------------------------------------------------------------
-    // Weekday Cycle Events
+    // Setters
+    /// <summary>
+    /// Counts the current day as well, so for 1 day after first Talked to still be Talkabale, set to 2.
+    /// </summary>
+    public void SetElleniaDidTalkCountdownMax()
+    {
+        didTalkToElleniaCountdown = ElleniaCountdownMax;
+    }
+
+    // ------------------------------------------------------------------
+    // Weekday Cycle Events Conditions
     public bool IsIdsWoodsIntroDay()
     {
         return (
@@ -44,23 +70,15 @@ public class Script_EventCycleManager : MonoBehaviour
     }
     
     // ------------------------------------------------------------------
-    // Weekend Cycle Events
-    public bool IsIdsSick()
+    // Weekend Cycle Event Conditions
+    public bool IsIdsInSanctuary()
     {
-        return (
-            (game.IsRunDay(Script_Run.DayId.fri) || game.IsRunDay(Script_Run.DayId.sat))
-            && !didTalkToIds
-        );
+        return game.IsRunDay(Script_Run.DayId.fri) && !didTalkToIds;
     }
 
     public bool IsIdsDead()
     {
         return game.IsRunDay(Script_Run.DayId.sat) && !didTalkToIds;
-    }
-
-    public void SetElleniaDidTalkCountdownMax()
-    {
-        didTalkToElleniaCountdown = ElleniaCountdownMax;
     }
     
     // Check if not the same day we talked with Ellenia and is still active count down
@@ -80,6 +98,14 @@ public class Script_EventCycleManager : MonoBehaviour
     public void EndOfDayJobs()
     {
         didTalkToElleniaCountdown =  Mathf.Max(0, didTalkToElleniaCountdown - 1);
+        HandleTalkedToIds();
+
+        void HandleTalkedToIds()
+        {
+            if (didTalkToIdsToday)  didTalkToIds = true;
+
+            didTalkToIdsToday = false;
+        }
     }
     
     public void InitialState()

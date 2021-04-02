@@ -14,6 +14,7 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
     // ==================================================================
     
     [SerializeField] private Script_StickerObject puppeteerSticker;
+    [SerializeField] private Script_DemonNPC Ids;
 
     protected override void OnEnable()
     {
@@ -33,12 +34,32 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
         }
     }
 
+    // ------------------------------------------------------------------
+    // Next Node Actions
+    public void TrackTalkedToIdsEndOfDay()
+    {
+        Script_EventCycleManager.Control.DidTalkToIdsToday = true;   
+    }
+
     public override void Setup()
     {
         if (puppeteerSticker != null)
         {
             if (didPickUpPuppeteerSticker)  puppeteerSticker.gameObject.SetActive(false);
             else                            puppeteerSticker.gameObject.SetActive(true);
+        }
+
+        // Returning to the same room after talking to Ids, he will be gone.
+        if (Script_EventCycleManager.Control.DidTalkToIdsToday)
+        {
+            Ids.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (Script_EventCycleManager.Control.IsIdsInSanctuary())
+                Ids.gameObject.SetActive(true);
+            else
+                Ids.gameObject.SetActive(false);
         }
     }
 }

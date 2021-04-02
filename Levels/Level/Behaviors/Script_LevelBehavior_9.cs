@@ -55,7 +55,10 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
         else
         {
             // If is second day (Fri) and did not talk, then Ids is not home but is unlocked.
-            if (Script_EventCycleManager.Control.IsIdsSick())
+            if (
+                Script_EventCycleManager.Control.IsIdsInSanctuary()
+                || Script_EventCycleManager.Control.IsIdsDead()
+            )
             {
                 HandleIdsNotHomeNotLocked();
             }

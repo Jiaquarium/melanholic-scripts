@@ -39,6 +39,7 @@ public class Script_DemonNPC : Script_MovingNPC
     
     [SerializeField] Script_PsychicNodesController psychicNodesController;
     
+    [Tooltip("Initial Action on first Psychic interaction. Reset On Disable, so will fire multiple times.")]
     [SerializeField] private UnityEvent onInitialPsychicTalkAction;
     
     // ------------------------------------------------------------------

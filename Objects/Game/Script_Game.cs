@@ -1850,7 +1850,8 @@ public class Script_Game : MonoBehaviour
     
     /// 1. <!-- Move to Next Run -->
     /// <summary>
-    /// Called when exiting the Elevator Bay after exiting via a Last Elevator
+    /// Exiting the Elevator Bay after exiting via a Last Elevator
+    /// (TBD: Upgraded Elevator Sticker)
     /// </summary>
     /// <param name="playerStateOverride"></param>
     public void NextRunSaveInitialize(bool isLobbySpawn = true)
