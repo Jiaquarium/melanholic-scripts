@@ -15,7 +15,7 @@ public class Script_SaveTester : Editor
         DrawDefaultInspector();
 
         Script_SaveGameControl control = (Script_SaveGameControl)target;
-        if (GUILayout.Button("Save Initialize (Last Elevator)"))
+        if (GUILayout.Button("Save"))
         {
             control.Save(Script_SaveGameControl.Saves.Initialize);
         }

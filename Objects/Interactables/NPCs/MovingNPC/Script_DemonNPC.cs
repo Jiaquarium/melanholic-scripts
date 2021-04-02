@@ -55,6 +55,7 @@ public class Script_DemonNPC : Script_MovingNPC
     
     // Tracks just talked Psychic.
     private bool didLastTalkPsychic;
+    private bool didTalkPsychicIntro;
     private bool didTalkPrependedIntroNode;
 
     // ------------------------------------------------------------------
@@ -152,9 +153,22 @@ public class Script_DemonNPC : Script_MovingNPC
         if (isPsychicDuckActive)
         {
             // Switch to specified Psychic nodes if not already done.
-            HandleInitialPsychicInteraction();
+            if (IsIntroPsychicNodes && IntroPsychicNode != null)
+            {
+                UseTemporaryIntroPsychicNode();
+                
+                // Set flag to skip the first prepended Psychic Node on next interaction.
+                didTalkPrependedIntroNode = ShouldPrependIntroNode;
+                didTalkPsychicIntro = true;
+            }
+            else if (didTalkPsychicIntro || !didLastTalkPsychic)
+            {
+                SwitchNewPsychicNodes();
+
+                didTalkPsychicIntro = false;
+            }
             
-            if (!hasTalkedPsychicLocal)    OnInitialPsychicTalk();
+            if (!hasTalkedPsychicLocal)    OnInitialPsychicTalkAction();
             
             IsIntroPsychicNodes             = false;
             didLastTalkPsychic              = true;
@@ -177,34 +191,21 @@ public class Script_DemonNPC : Script_MovingNPC
             }
         }
 
-        void HandleInitialPsychicInteraction()
-        {   
-            // If is an Intro, we replace the current Dialogue Nodes with the Intro Node
-            if (IsIntroPsychicNodes && IntroPsychicNode != null)
-            {
-                HandleIntroPsychicNode();
-                
-                // Set flag so on next interaction we know we need to skip the first Psychic Node
-                didTalkPrependedIntroNode = ShouldPrependIntroNode;
-                return;
-            }
-            
-            // On intro node or first Psychic interaction OR just talked default
-            // then need to switch and reset idx.
-            if (!didLastTalkPsychic)
-            {
-                SwitchDialogueNodes(PsychicNodes, isReset: true);
+        // After intro node, first Psychic interaction OR just talked default
+        // then need to switch out Dialogue Nodes with Psychic and reset idx.
+        void SwitchNewPsychicNodes()
+        {
+            SwitchDialogueNodes(PsychicNodes, isReset: true);
 
-                // Skip the first Psychic node if we prepended it already to the Intro Node.
-                if (didTalkPrependedIntroNode)
-                {
-                    HandleIncrementDialogueNodeIndex();
-                    didTalkPrependedIntroNode = false;
-                }
-            }   
+            // Skip the first Psychic node if we prepended it already to the Intro Node.
+            if (didTalkPrependedIntroNode)
+            {
+                HandleIncrementDialogueNodeIndex();
+                didTalkPrependedIntroNode = false;
+            }
         }
 
-        void OnInitialPsychicTalk()
+        void OnInitialPsychicTalkAction()
         {
             if (onInitialPsychicTalkAction.CheckUnityEventAction())
                 onInitialPsychicTalkAction.Invoke();
@@ -226,7 +227,7 @@ public class Script_DemonNPC : Script_MovingNPC
     /// <summary>
     /// Use to introduce NPC name
     /// </summary>
-    private void HandleIntroPsychicNode()
+    private void UseTemporaryIntroPsychicNode()
     {
         Script_DialogueNode[] introNodeChild = { PsychicNodes[0] };
         

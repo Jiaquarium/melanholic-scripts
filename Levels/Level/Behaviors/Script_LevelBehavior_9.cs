@@ -49,8 +49,8 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
         {
             // Disable exit and show Ids note if not Wed (last day) on Weekday Cycle.
-            if (game.Run.dayId == Script_Run.DayId.sun)     HandleIdsHome();
-            else                                            HandleIdsNotHomeLocked();
+            if (Script_EventCycleManager.Control.IsIdsHome())   HandleIdsHome();
+            else                                                HandleIdsNotHomeLocked();
         }
         else
         {

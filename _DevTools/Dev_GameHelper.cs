@@ -14,6 +14,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
     [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
+    [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
 
     public void DefaultPlayerSpawnPos()
@@ -39,7 +40,12 @@ public class Dev_GameHelper : MonoBehaviour
 
     public void ExitToLastElevator()
     {
-        Teleport(IdsRoomEntrance);
+        Teleport(LastElevatorEntrance);
+    }
+
+    public void ExitToBallroomFromHMSHall()
+    {
+        Teleport(BallroomEntranceFromHMSHall);
     }
 
     public void BuildSetup()
@@ -101,6 +107,11 @@ public class Dev_GameHelperTester : Editor
         if (GUILayout.Button("Go To: Last Elevator"))
         {
             t.ExitToLastElevator();
+        }
+
+        if (GUILayout.Button("Go To: Ballroom (HMS Hall Entrance)"))
+        {
+            t.ExitToBallroomFromHMSHall();
         }
 
         GUILayout.Space(12);
