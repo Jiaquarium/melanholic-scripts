@@ -40,6 +40,7 @@ public class Script_Exits : MonoBehaviour
         SaveAndStartWeekendCycle    = 5,
         SaveAndRestartOnLevel       = 6,
     }
+    
     public CanvasGroup canvas;
     [SerializeField] private Script_ExitToWeekendCutScene exitToWeekendCutScene;
 

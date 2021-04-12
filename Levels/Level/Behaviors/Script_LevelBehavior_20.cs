@@ -383,25 +383,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
     }
     
-    // ----------------------------------------------------------------------
-    // Unity Events START
-    // Switch_Cycles
-    public void SetNextCycleWeekday()
-    {
-        game.SetNextCycle(Script_RunsManager.Cycle.Weekday);
-
-        // TBD Remove After Demo
-        game.DieEffects(Script_GameOverController.DeathTypes.DemoOver);   
-    }
-
-    public void SetNextCycleWeekend()
-    {
-        game.SetNextCycle(Script_RunsManager.Cycle.Weekend);
-    }
-
-    // Unity Events END
-    // ----------------------------------------------------------------------
-
     /// <summary> ==============================================================================
     /// NextNodeAction(s) Start 
     /// </summary> =============================================================================
@@ -651,14 +632,6 @@ public class Script_LevelBehavior_20Tester : Editor
         if (GUILayout.Button("PlaceRock()"))
         {
             lb.rock.transform.position = lb.rockDestination.transform.position;
-        }
-        if (GUILayout.Button("SetNextCycleWeekend()"))
-        {
-            lb.SetNextCycleWeekend();
-        }
-        if (GUILayout.Button("SetNextCycleWeekday()"))
-        {
-            lb.SetNextCycleWeekday();
         }
     }
 }

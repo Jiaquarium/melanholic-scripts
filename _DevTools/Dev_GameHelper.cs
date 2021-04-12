@@ -11,11 +11,15 @@ public class Dev_GameHelper : MonoBehaviour
     public Vector3Int playerSpawn;
     public int level;
     public Directions facingDirection;
+    
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
     [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
+    [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
+
+    [SerializeField] private Dev_InventoryTester inventoryTester;
 
     public void DefaultPlayerSpawnPos()
     {
@@ -48,6 +52,11 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(BallroomEntranceFromHMSHall);
     }
 
+    public void ExitToWellsWorld()
+    {
+        Teleport(WellsWorldEntrance);
+    }
+
     public void BuildSetup()
     {
         Script_Game.LevelsInactivate();
@@ -66,6 +75,17 @@ public class Dev_GameHelper : MonoBehaviour
     public void SolveAllMynesMirrors()
     {
         Script_ScarletCipherManager.Control.Dev_ForceSolveAllMirrors();
+    }
+
+    // Set current save state to the Weekend Cycle.
+    public void WeekendCycle()
+    {
+        inventoryTester.WeekendCycle();
+
+        // TBD Set day to Friday.
+        Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
+        
+        // TBD Set quest completion states
     }
 
     private void Teleport(Script_ExitMetadata exit)
@@ -114,6 +134,11 @@ public class Dev_GameHelperTester : Editor
             t.ExitToBallroomFromHMSHall();
         }
 
+        if (GUILayout.Button("Go To: Wells World"))
+        {
+            t.ExitToWellsWorld();
+        }
+
         GUILayout.Space(12);
 
         if (GUILayout.Button("All Quests Done Today"))
@@ -124,6 +149,13 @@ public class Dev_GameHelperTester : Editor
         if (GUILayout.Button("Solve All Mirrors"))
         {
             t.SolveAllMynesMirrors();
+        }
+
+        GUILayout.Space(12);
+
+        if (GUILayout.Button("Weekend Start"))
+        {
+            t.WeekendCycle();
         }
 
         GUILayout.Space(12);

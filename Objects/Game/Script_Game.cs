@@ -631,17 +631,6 @@ public class Script_Game : MonoBehaviour
         return runsManager.Run.dayId == dayId;
     }
 
-    /// <returns>current Cycle</returns>
-    public Script_RunsManager.Cycle SetNextCycle(Script_RunsManager.Cycle cycle)
-    {
-        Debug.Log(
-            $"Set <color=green>NextRunCycle:</color>{cycle}. <color=blue>Current RunCycle:</color>{runsManager.RunCycle}"
-        );
-
-        runsManager.NextRunCycle = cycle;
-        return runsManager.RunCycle;
-    }
-
     /* =======================================================================
         _ENDING SEQENCES_DEATH_TIMESUP_TRANSITIONS
     ======================================================================= */
@@ -1854,11 +1843,15 @@ public class Script_Game : MonoBehaviour
     /// (TBD: Upgraded Elevator Sticker)
     /// </summary>
     /// <param name="playerStateOverride"></param>
-    public void NextRunSaveInitialize(bool isLobbySpawn = true)
+    public void NextRunSaveInitialize(bool isLobbySpawn = true, Script_Run.DayId dayId = Script_Run.DayId.none)
     {
         SetActiveEnding();
         
-        runsManager.IncrementRun();
+        if (dayId == Script_Run.DayId.none)
+            runsManager.IncrementRun();
+        else
+            runsManager.SetRun(dayId);
+        
         CleanRun();
         
         SaveWaitRestart(isLobbySpawn);

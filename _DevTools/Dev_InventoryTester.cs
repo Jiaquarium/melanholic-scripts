@@ -41,6 +41,16 @@ public class Dev_InventoryTester : MonoBehaviour
         AddSuperSmallKey();
     }
 
+    public void WeekendCycle()
+    {
+        AddPsychicDuck();
+        AddAnimalWithin();
+        AddBoarNeedle();
+        AddIceSpike();
+        AddMelancholyPiano();
+        AddLastElevator();
+    }
+
     // ------------------------------------------------------------------------
     //  Stickers
     public void AddPsychicDuck()

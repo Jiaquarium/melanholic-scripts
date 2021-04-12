@@ -52,12 +52,6 @@ public class Script_RunsManager : MonoBehaviour
         private set => _runCycle = value;
     }
 
-    public Cycle NextRunCycle
-    {
-        get => _nextRunCycle;
-        set => _nextRunCycle = value;
-    }
-
     private Script_Run.DayId StartDay
     {
         get => _startDay;
@@ -103,6 +97,12 @@ public class Script_RunsManager : MonoBehaviour
         }
 
         return RunIdx;
+    }
+
+    public void SetRun(Script_Run.DayId dayId)
+    {
+        RunIdx = GetRunIdxByDayId(dayId);
+        RunCycle = GetCycleByRunIds(RunIdx);
     }
 
     private int IncrementRunIdxInCycle(int runIdx, Script_Run[] cycle)
