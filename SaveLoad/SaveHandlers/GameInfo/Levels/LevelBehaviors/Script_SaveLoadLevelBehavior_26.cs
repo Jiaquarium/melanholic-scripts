@@ -9,7 +9,6 @@ public class Script_SaveLoadLevelBehavior_26 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_26 lvlModel = new Model_LevelBehavior_26(
-            _switchesState                  : LB26.switchesState,
             _isPuzzleComplete               : LB26.isPuzzleComplete,
             _didActivateDramaticThoughts    : LB26.didActivateDramaticThoughts,
             _gotIceSpikeSticker             : LB26.gotIceSpikeSticker
@@ -33,7 +32,6 @@ public class Script_SaveLoadLevelBehavior_26 : Script_SaveLoadLevelBehavior
         }
 
         Model_LevelBehavior_26 lvlModel     = data.levelsData.LB26;
-        LB26.switchesState                  = lvlModel.switchesState;
         LB26.isPuzzleComplete               = lvlModel.isPuzzleComplete;
         LB26.didActivateDramaticThoughts    = lvlModel.didActivateDramaticThoughts;
         LB26.gotIceSpikeSticker             = lvlModel.gotIceSpikeSticker;

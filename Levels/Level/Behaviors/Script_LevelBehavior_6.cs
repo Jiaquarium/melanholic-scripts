@@ -8,10 +8,10 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
     /* =======================================================================
         STATE DATA
     ======================================================================= */
-    public bool[] switchesStates;
-    public bool isPuzzleCompleted;
     /* ======================================================================= */
 
+    public bool[] switchesStates;
+    public bool isPuzzleCompleted;
     public AudioClip puzzleCompleteSFX;
     public AudioSource audioSource;
     public GameObject mirrorReflection;

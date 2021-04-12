@@ -16,12 +16,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     /* =======================================================================
         STATE DATA
     ======================================================================= */
-    public bool[] switchesState;
     public bool isPuzzleComplete;
     public bool didActivateDramaticThoughts;
     public bool gotIceSpikeSticker;
     /* ======================================================================= */
     
+    public bool[] switchesState;
     public bool isCurrentPuzzleComplete;
     [SerializeField] private Transform switchParent;
     [SerializeField] private Script_UrselkAttacks urselkAttacks;

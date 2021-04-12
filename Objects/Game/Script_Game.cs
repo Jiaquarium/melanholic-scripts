@@ -1919,6 +1919,13 @@ public class Script_Game : MonoBehaviour
 
     private bool IsAllQuestsDoneToday()
     {
+        Debug.Log($"Ids Done: {IdsRoomBehavior.isCurrentPuzzleComplete}");
+        Debug.Log($"Ursie Done: {KTVRoom2Behavior.IsCurrentPuzzleComplete}");
+        Debug.Log($"Ellenia Done: {ElleniasRoomBehavior.isCurrentPuzzleComplete}");
+        Debug.Log($"Eileen Done: {EileensMindBehavior.isCurrentPuzzleComplete}");
+        Debug.Log($"Moose Done: {WellsWorldBehavior.isCurrentMooseQuestComplete}");
+        Debug.Log($"Kaffe Latte Done: {GardenLabyrinthBehavior.isCurrentPuzzleComplete}");
+        
         return IdsRoomBehavior.isCurrentPuzzleComplete
             && KTVRoom2Behavior.IsCurrentPuzzleComplete
             && ElleniasRoomBehavior.isCurrentPuzzleComplete

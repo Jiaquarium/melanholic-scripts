@@ -21,6 +21,19 @@ public class Dev_GameHelper : MonoBehaviour
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
 
+    // ----------------------------------------------------------------------
+    // Weekday Cycle State
+    [SerializeField] private Script_LevelBehavior_0 woodsBehavior;
+    [SerializeField] private Script_LevelBehavior_4 hallwayWithSecretBehavior;
+    [SerializeField] private Script_LevelBehavior_10 IdsRoomBehavior;
+    [SerializeField] private Script_LevelBehavior_21 EileensRoomBehavior;
+    [SerializeField] private Script_LevelBehavior_25 ElleniasRoomBehavior;
+    [SerializeField] private Script_LevelBehavior_27 LastElevatorBehavior;
+    [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;
+    [SerializeField] private Script_LevelBehavior_48 MynesGrandMirrorRoomBehavior;
+
+    private bool didSetWeekend;
+
     public void DefaultPlayerSpawnPos()
     {
         playerSpawn = new Vector3Int(
@@ -80,12 +93,34 @@ public class Dev_GameHelper : MonoBehaviour
     // Set current save state to the Weekend Cycle.
     public void WeekendCycle()
     {
-        inventoryTester.WeekendCycle();
-
-        // TBD Set day to Friday.
-        Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
+        if (didSetWeekend)  return;
+        didSetWeekend = true;
         
-        // TBD Set quest completion states
+        // Set Items for Weekend Cycle.
+        inventoryTester.WeekendCycle();
+        
+        // Set State at this point in game.
+        woodsBehavior.didStartThought                               = true;
+        
+        hallwayWithSecretBehavior.didPickUpMelancholyPianoSticker   = true;
+
+        IdsRoomBehavior.gotBoarNeedle                               = true;
+
+        EileensRoomBehavior.spokenWithEileen                        = true;
+
+        ElleniasRoomBehavior.isPuzzleComplete                       = true;
+        ElleniasRoomBehavior.spokenWithEllenia                      = true;
+
+        EileensMindBehavior.isPuzzleComplete                        = true;
+        EileensMindBehavior.didActivateDramaticThoughts             = true;
+        EileensMindBehavior.gotIceSpikeSticker                      = true;
+
+        LastElevatorBehavior.GotPsychicDuck                         = true;
+
+        MynesGrandMirrorRoomBehavior.IsDone                         = true;
+
+        // Set Run and Cycle data to Weekend Thursday.
+        Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
     }
 
     private void Teleport(Script_ExitMetadata exit)
