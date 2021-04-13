@@ -214,7 +214,7 @@ public class Script_RunsManagerTester : Editor
         DrawDefaultInspector();
 
         Script_RunsManager t = (Script_RunsManager)target;
-        if (GUILayout.Button("Last Elevator Increment DEV"))
+        if (GUILayout.Button("Exit via Last Elevator Increment"))
         {
             Script_Game game = Script_Game.Game;
             

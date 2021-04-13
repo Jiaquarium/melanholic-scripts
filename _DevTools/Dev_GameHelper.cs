@@ -123,6 +123,11 @@ public class Dev_GameHelper : MonoBehaviour
         Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
     }
 
+    public void SaveCurrent()
+    {
+        Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.Initialize); 
+    }
+
     private void Teleport(Script_ExitMetadata exit)
     {
         Script_Game.Game.Exit(
@@ -187,6 +192,11 @@ public class Dev_GameHelperTester : Editor
         }
 
         GUILayout.Space(12);
+
+        if (GUILayout.Button("Save Current"))
+        {
+            t.SaveCurrent();
+        }
 
         if (GUILayout.Button("Weekend Start"))
         {
