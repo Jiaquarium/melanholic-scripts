@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Script_InteractablePaintingEntrance : Script_InteractableObjectText
+public class Script_InteractablePaintingEntrance : Script_QuestPainting
 {
     static readonly private string BoarNeedle = Const_Items.BoarNeedleId; 
     static readonly private float BoarNeedleWaitTime = 0.5f; 

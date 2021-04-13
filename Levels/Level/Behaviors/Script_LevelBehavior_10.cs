@@ -201,10 +201,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void OnIdsExitsIdsRoom()
     {
         Ids.gameObject.SetActive(false);
-        game.ChangeStateInteract();
-
-        isCurrentPuzzleComplete = true;
     }
+
+    public void OnQuestDone()
+    {
+        isCurrentPuzzleComplete = true;
+        game.ChangeStateInteract();
+    }
+
     // Timeline Signals END
     // ------------------------------------------------------------------------------------
 

@@ -9,6 +9,8 @@ using UnityEngine;
 public class Script_SFXManager : MonoBehaviour
 {
     public static Script_SFXManager SFX;
+
+    public AudioSource SFXSource;
     
     public AudioClip PlayerStashItem;
     [Range(0f, 1f)] public float PlayerStashItemVol;
@@ -102,9 +104,18 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip Secret;
     [Range(0f, 1f)] public float SecretVol;
+    public AudioClip MainQuestDone;
+    [Range(0f, 1f)] public float MainQuestDoneVol;
 
     public AudioClip Freeze;
     [Range(0f, 1f)] public float FreezeVol;
+    
+    public void PlayMainQuestDone()
+    {
+        SFXSource.PlayOneShot(
+            Script_SFXManager.SFX.MainQuestDone, Script_SFXManager.SFX.MainQuestDoneVol
+        );   
+    }
     
     public void Setup()
     {
