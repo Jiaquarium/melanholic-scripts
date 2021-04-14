@@ -301,9 +301,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         }
     }
 
-    /// <summary>
-    /// NextNodeAction() START =====================================================================
-    /// </summary>
+    /// NextNodeAction START =====================================================================
     
     /// Node: "i'm part of the..."
     public void PlayOminousMusic()
@@ -512,13 +510,30 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
 
-    /// <summary>
-    /// NextNodeAction() END =====================================================================
-    /// </summary>
-    
     private void OnElleniaExitsDone()
     {
         Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaVCam);
+        
+        // Play Painting Done Cut Scene.
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 8);
+    }
+
+    /// NextNodeAction END ==================================================
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+
+    public void HidePlayer()
+    {
+        game.GetPlayer().SetInvisible(true, 0f);
+    }
+
+    public void UnhidePlayer()
+    {
+        game.GetPlayer().SetInvisible(false, 0f);
+    }
+    
+    public void OnElleniaPaintingTimelineDone()
+    {
         game.UnPauseBgMusic();
         easleYellAtPlayerIOText.gameObject.SetActive(false);
         StartCoroutine(
@@ -534,7 +549,9 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             )
         );   
     }
-    /* =========================================================================================== */
+
+    // ----------------------------------------------------------------------
+    
     
     public override void Setup()
     {
@@ -633,13 +650,25 @@ public class Script_LevelBehavior_25Tester : Editor
         DrawDefaultInspector();
 
         Script_LevelBehavior_25 lb = (Script_LevelBehavior_25)target;
-        if (GUILayout.Button("SetNewElleniaPassword()"))
+        
+        if (GUILayout.Button("Set New Ellenia Password"))
         {
             lb.devLB21.SetNewElleniaPassword();
         }
-        if (GUILayout.Button("ElleniaIntroDoneDialogueNodes()"))
+        if (GUILayout.Button("Ellenia Intro Done DialogueNodes"))
         {
             lb.ElleniaIntroDoneDialogueNodes();
+        }
+
+        GUILayout.Space(12);
+
+        if (GUILayout.Button("Hide Player"))
+        {
+            lb.HidePlayer();
+        }
+        if (GUILayout.Button("Unhide Player"))
+        {
+            lb.UnhidePlayer();
         }
     }
 }

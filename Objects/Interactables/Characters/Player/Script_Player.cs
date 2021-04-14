@@ -65,16 +65,7 @@ public class Script_Player : Script_Character
 
     public bool isInvisible
     {
-        get { return _isInvisible; }
-        set {
-            _isInvisible = value;
-            
-            float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
-            Script_PlayerGhost pg = GetPlayerGhost();
-
-            if (_isInvisible)   playerEffect.SetVisibility(0, t, graphics, pg, null);
-            else                playerEffect.SetVisibility(1, t, graphics, pg, null);
-        }
+        get => _isInvisible;
     }
 
     public Material MyMaterial
@@ -120,20 +111,7 @@ public class Script_Player : Script_Character
         }
     }
 
-    // ------------------------------------------------------------------
-    // Graphics
-    protected void HandleGhostGraphics()
-    {
-        if (isPlayerGhostMatchSortingLayer)
-        {
-            playerMovementHandler.PlayerGhostSortOrder(
-                Script_Utils.FindComponentInChildWithTag<SpriteRenderer>(
-                    this.gameObject, Const_Tags.PlayerAnimator
-                ).sortingOrder
-            );
-        }
-        playerMovementHandler.TrackPlayerGhost();
-    }
+    
 
     // ------------------------------------------------------------------
     // State
@@ -244,6 +222,19 @@ public class Script_Player : Script_Character
     
     // ------------------------------------------------------------------
     // Graphics
+    protected void HandleGhostGraphics()
+    {
+        if (isPlayerGhostMatchSortingLayer)
+        {
+            playerMovementHandler.PlayerGhostSortOrder(
+                Script_Utils.FindComponentInChildWithTag<SpriteRenderer>(
+                    this.gameObject, Const_Tags.PlayerAnimator
+                ).sortingOrder
+            );
+        }
+        playerMovementHandler.TrackPlayerGhost();
+    }
+
     public void ChangeMaterial(Script_PlayerGraphics.Materials material)
     {
         playerGraphics.ChangeMaterial(material);
@@ -320,6 +311,21 @@ public class Script_Player : Script_Character
         return playerMovementHandler.PlayerGhost;
     }
 
+    // Call with fadeTime = 0f for instant.
+    public void SetInvisible(bool isHide, float fadeTime = -1f)
+    {
+        _isInvisible = isHide;
+        
+        float t = fadeTime < 0 ? Script_GraphicsManager.GetFadeTime(fadeSpeed) : fadeTime;
+        Script_PlayerGhost pg = GetPlayerGhost();
+
+        if (_isInvisible)   playerEffect.SetVisibility(0, fadeTime, graphics, pg, null);
+        else                playerEffect.SetVisibility(1, fadeTime, graphics, pg, null);
+    }
+
+    // ------------------------------------------------------------------
+    // Interactions
+
     public void SwitchLight(bool isOn)
     {
         playerMovementHandler.SwitchLight(isOn);
@@ -344,6 +350,9 @@ public class Script_Player : Script_Character
         playerActionHandler.HandleEndItemDescriptionDialogue(playerActionHandler.itemShown);
     }
 
+    // ------------------------------------------------------------------
+    // Public Utils
+    
     /// <summary>
     /// used when player is controlled by Timeline
     /// </summary>
@@ -363,8 +372,6 @@ public class Script_Player : Script_Character
         playerEffect.ScarletCipherPickUpSFX();   
     }
 
-    // ------------------------------------------------------------------
-    // Public Movement / Timeline
     public void Teleport(Vector3 newLocation)
     {
         transform.position = newLocation;
@@ -459,12 +466,12 @@ public class Script_PlayerTester : Editor
         Script_Player player = (Script_Player)target;
         if (GUILayout.Button("isInvisible = true"))
         {
-            player.isInvisible = true;
+            player.SetInvisible(true);
         }
 
         if (GUILayout.Button("isInvisible = false"))
         {
-            player.isInvisible = false;
+            player.SetInvisible(false);
         }
 
         if (GUILayout.Button("ForcePush(Down)"))

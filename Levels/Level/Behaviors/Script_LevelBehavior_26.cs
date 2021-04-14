@@ -31,16 +31,23 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     [SerializeField] private float timer;
     [SerializeField] private Script_Switch puzzleSwitch;
+    
     [SerializeField] private PlayableDirector spikeCageDirector;
     [SerializeField] private PlayableDirector dramaticThoughtsDirector;
     [SerializeField] Script_TriggerEnterOnce dramaticThoughtsCutSceneTrigger;
+    
     [SerializeField] Script_StickerObject iceSpike;
     [SerializeField] Transform spikeCage;
+    
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private FadeSpeeds musicFadeOutSpeed;
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
+    
     [SerializeField] private Transform textParent;
+    
     [SerializeField] private Script_LightsController lightsToVictoryController;
+
+    [SerializeField] private float beforePaintingDoneCutSceneWaitTime;
 
     private Script_LBSwitchHandler switchHandler;
     private bool isPauseSpikes;
@@ -48,28 +55,68 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        Script_InteractableObjectEventsManager.OnSwitchOff += OnSwitchOff;
-        spikeCageDirector.stopped += OnSpikeCageDownDone;
-        dramaticThoughtsDirector.stopped += OnDramaticThoughtsDone;
-        Script_ItemsEventsManager.OnItemPickUp += OnItemPickUp;
+        Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
+        dramaticThoughtsDirector.stopped                    += OnDramaticThoughtsDone;
+        Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
     }
 
     protected override void OnDisable()
     {
-        Script_InteractableObjectEventsManager.OnSwitchOff -= OnSwitchOff;
-        spikeCageDirector.stopped -= OnSpikeCageDownDone;
-        dramaticThoughtsDirector.stopped -= OnDramaticThoughtsDone;
-        Script_ItemsEventsManager.OnItemPickUp -= OnItemPickUp;
+        Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
+        dramaticThoughtsDirector.stopped                    -= OnDramaticThoughtsDone;
+        Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
 
         bgThemePlayer.gameObject.SetActive(false);
 
         DefaultBgMusicLevels();
     }
 
+    private void Awake()
+    {
+        switchHandler = GetComponent<Script_LBSwitchHandler>();
+        switchHandler.Setup(game);
+
+        if (didActivateDramaticThoughts)
+        {
+            dramaticThoughtsCutSceneTrigger.gameObject.SetActive(false);
+        }
+        else
+        {
+            dramaticThoughtsCutSceneTrigger.gameObject.SetActive(true);
+        }
+
+        if (isCurrentPuzzleComplete)    spikeCage.gameObject.SetActive(false);
+        else                            spikeCage.gameObject.SetActive(true);
+
+        if (gotIceSpikeSticker)         iceSpike.gameObject.SetActive(false);
+        else                            iceSpike.gameObject.SetActive(true);
+    }
+
     protected override void Update()
     {
         AttackTimer();
         HandleDramaticThoughtsCutScene();
+    }
+
+    public void PuzzleSuccess()
+    {
+        game.ChangeStateCutScene();
+        StartCoroutine(WaitSpikeCageDown());
+
+        IEnumerator WaitSpikeCageDown()
+        {
+            yield return new WaitForSeconds(attackInterval);
+            
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+            
+            isPuzzleComplete = true;
+            isCurrentPuzzleComplete = true;
+
+            yield return new WaitForSeconds(beforePaintingDoneCutSceneWaitTime);
+
+            // Painting Done Cut Scene Timeline
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(2, 2);
+        }
     }
 
     private void OnItemPickUp(string itemId)
@@ -174,23 +221,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     {
         if (switchId == puzzleSwitch.nameId)
         {
-            game.ChangeStateCutScene();
-            StartCoroutine(WaitSpikeCageDown());
+            PuzzleSuccess();
         }
-
-        IEnumerator WaitSpikeCageDown()
-        {
-            yield return new WaitForSeconds(attackInterval);
-            
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
-            isPuzzleComplete = true;
-            isCurrentPuzzleComplete = true;
-        }
-    }
-
-    private void OnSpikeCageDownDone(PlayableDirector aDirector)
-    {
-        game.ChangeStateInteract();
     }
 
     public override void SetSwitchState(int Id, bool isOn)
@@ -208,26 +240,15 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         );   
     }
 
-    private void Awake()
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+
+    public void OnEileensMindPaintingTimelineDone()
     {
-        switchHandler = GetComponent<Script_LBSwitchHandler>();
-        switchHandler.Setup(game);
-
-        if (didActivateDramaticThoughts)
-        {
-            dramaticThoughtsCutSceneTrigger.gameObject.SetActive(false);
-        }
-        else
-        {
-            dramaticThoughtsCutSceneTrigger.gameObject.SetActive(true);
-        }
-
-        if (isCurrentPuzzleComplete)    spikeCage.gameObject.SetActive(false);
-        else                            spikeCage.gameObject.SetActive(true);
-
-        if (gotIceSpikeSticker)         iceSpike.gameObject.SetActive(false);
-        else                            iceSpike.gameObject.SetActive(true);
+        game.ChangeStateInteract();
     }
+
+    // ----------------------------------------------------------------------
     
     public override void Setup()
     {
@@ -264,10 +285,10 @@ public class Script_LevelBehavior_26Tester : Editor
     public override void OnInspectorGUI() {
         DrawDefaultInspector();
 
-        Script_LevelBehavior_26 lb = (Script_LevelBehavior_26)target;
-        if (GUILayout.Button("SetNewElleniaPassword()"))
+        Script_LevelBehavior_26 t = (Script_LevelBehavior_26)target;
+        if (GUILayout.Button("Puzzle Success"))
         {
-
+            t.PuzzleSuccess();
         }
     }
 }

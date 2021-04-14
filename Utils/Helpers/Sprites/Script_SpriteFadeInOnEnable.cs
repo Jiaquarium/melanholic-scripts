@@ -59,6 +59,6 @@ public class Script_SpriteFadeInOnEnable : MonoBehaviour
 
     private void FadePlayer()
     {
-        Script_Game.Game.GetPlayer().isInvisible = !isFadeIn;
+        Script_Game.Game.GetPlayer().SetInvisible(!isFadeIn);
     }
 }
