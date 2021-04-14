@@ -16,6 +16,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     /* ======================================================================= */
     
     [SerializeField] private Script_DialogueNode startNode;
+    [SerializeField] private Script_DialogueNode[] frontDoorNodes;
+
     [SerializeField] private Transform interactableObjectsParent;
     [SerializeField] private Script_BgThemePlayer dreamBgmPlayer;
     [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
@@ -25,6 +27,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_Interactable invisibleBarrier;
 
     private bool isInit = true;
+    private int frontDoorDialogueIndex;
 
     
     // ------------------------------------------------------------------
@@ -47,6 +50,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         if (!didStartThought && !Const_Dev.IsDevMode)
         {
             game.ChangeStateCutScene();
+            
             Script_DialogueManager.DialogueManager.StartDialogueNode(startNode);
             didStartThought = true;
         }
@@ -95,6 +99,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         });
     }
 
+    public void PanToCCTVCamera()
+    {
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);        
+    }
+
     // ------------------------------------------------------------------
     // InteractableObject UnityEvents
     public void OnTryToExitFrontDoor()
@@ -102,7 +111,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         Debug.Log("Move camera to hotel camera cut scene!!!");
 
         game.ChangeStateCutScene();
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+        
+        Script_DialogueManager.DialogueManager.StartDialogueNodeNextFrame(
+            frontDoorNodes[frontDoorDialogueIndex],
+            SFXOn: false
+        );
+
+        IncrementFrontDoorDialogueIndex();
     }
 
     public void EndingCutScene()
@@ -163,8 +178,23 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         invisibleBarrier.gameObject.SetActive(!isOpen);
     }
 
+    private void IncrementFrontDoorDialogueIndex()
+    {
+        frontDoorDialogueIndex++;
+
+        if (frontDoorDialogueIndex >= frontDoorNodes.Length)
+            frontDoorDialogueIndex = 0;
+    }
+
+    public override void InitialState()
+    {
+        frontDoorDialogueIndex = 0;
+    }
+
     public override void Setup()
     {
+        InitialState();
+        
         game.SetupInteractableObjectsText(interactableObjectsParent, isInit);
 
         if (!didStartThought)

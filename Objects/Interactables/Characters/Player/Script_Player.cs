@@ -369,7 +369,10 @@ public class Script_Player : Script_Character
 
     public void ScarletCipherPickUpSFX()
     {
-        playerEffect.ScarletCipherPickUpSFX();   
+        SetIsStandby();
+        playerEffect.ScarletCipherPickUpSFX(() => {
+            SetIsInteract();
+        }); 
     }
 
     public void Teleport(Vector3 newLocation)

@@ -51,6 +51,9 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip ItemPickUpError;
     [Range(0f, 1f)] public float ItemPickUpErrorVol;
+
+    public AudioClip ScarletCipherPiecePickup;
+    [Range(0f, 1f)] public float ScarletCipherPiecePickupVol;
     
     public AudioClip exitSFX;
     [Range(0f, 1f)] public float exitSFXVol;
@@ -145,6 +148,24 @@ public class Script_SFXManager : MonoBehaviour
             yield return new WaitForSeconds(SFXduration);
             cb();
         }
+    }
+
+    public void PlayScarletCipherPickupSFX(Action cb = null)
+    {
+        float SFXduration = 1.5f;
+        
+        SFXSource.PlayOneShot(
+            Script_SFXManager.SFX.ScarletCipherPiecePickup,
+            Script_SFXManager.SFX.ScarletCipherPiecePickupVol
+        );
+
+        if (cb != null) StartCoroutine(OnSFXDone());
+        
+        IEnumerator OnSFXDone()
+        {
+            yield return new WaitForSeconds(SFXduration);
+            cb();
+        }   
     }
     
     public void Setup()

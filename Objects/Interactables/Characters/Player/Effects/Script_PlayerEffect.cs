@@ -62,9 +62,9 @@ public class Script_PlayerEffect : MonoBehaviour
         dropSFXsource.PlayOneShot(Script_SFXManager.SFX.playerDropFinishSFX, Script_SFXManager.SFX.playerDropFinishSFXVol);
     }
 
-    public void ScarletCipherPickUpSFX()
+    public void ScarletCipherPickUpSFX(Action cb = null)
     {
-        defaultSFXsource.PlayOneShot(Script_SFXManager.SFX.PlayerStashItem, Script_SFXManager.SFX.PlayerStashItemVol);
+        Script_SFXManager.SFX.PlayScarletCipherPickupSFX(cb);
     }
 
     public void GiantBoarNeedle()
