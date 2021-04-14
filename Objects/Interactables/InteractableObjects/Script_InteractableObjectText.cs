@@ -45,9 +45,11 @@ public class Script_InteractableObjectText : Script_InteractableObject
     }
 
     public override void SwitchDialogueNodes(
-        Script_DialogueNode[] _dialogueNodes
+        Script_DialogueNode[] _dialogueNodes,
+        bool isReset = true
     )
     {
+        if (isReset)   dialogueIndex = 0;
         dialogueNodes = _dialogueNodes;
     }
 

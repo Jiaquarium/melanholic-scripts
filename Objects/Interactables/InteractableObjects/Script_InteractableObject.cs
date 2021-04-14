@@ -130,7 +130,7 @@ public class Script_InteractableObject : Script_Interactable
         Model_Dialogue d
     ){}
 
-    public virtual void SwitchDialogueNodes(Script_DialogueNode[] nodes){}
+    public virtual void SwitchDialogueNodes(Script_DialogueNode[] nodes, bool isReset = true){}
 
     public virtual void EnableSortingOrder(bool isAxisZ, int offset)
     {

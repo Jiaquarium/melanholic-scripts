@@ -11,6 +11,9 @@ public class Script_QuestPainting : Script_InteractableObjectText
     [SerializeField] private Sprite donePainting;
     [SerializeField] private SpriteRenderer questPaintingGraphics;
 
+    [SerializeField] private Script_DialogueNode[] donePaintingNodes;
+    [SerializeField] private Script_DialogueNode[] defaultNodes;
+
     protected bool isDonePainting;
     private Sprite defaultPainting;
     
@@ -26,12 +29,17 @@ public class Script_QuestPainting : Script_InteractableObjectText
     {
         questPaintingGraphics.sprite    = donePainting;
         isDonePainting                  = true;
+
+        defaultNodes = dialogueNodes;
+        SwitchDialogueNodes(donePaintingNodes);
     }
 
     public void DefaultPainting()
     {
         questPaintingGraphics.sprite    = defaultPainting;
         isDonePainting                  = false;
+
+        SwitchDialogueNodes(defaultNodes);
     }
     // ----------------------------------------------------------------------
 }
