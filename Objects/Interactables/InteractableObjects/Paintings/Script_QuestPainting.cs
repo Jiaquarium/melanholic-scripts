@@ -11,6 +11,7 @@ public class Script_QuestPainting : Script_InteractableObjectText
     [SerializeField] private Sprite donePainting;
     [SerializeField] private SpriteRenderer questPaintingGraphics;
 
+    protected bool isDonePainting;
     private Sprite defaultPainting;
     
     protected override void Awake() {
@@ -23,12 +24,14 @@ public class Script_QuestPainting : Script_InteractableObjectText
     // Timeline Signals
     public void DonePainting()
     {
-        questPaintingGraphics.sprite = donePainting;
+        questPaintingGraphics.sprite    = donePainting;
+        isDonePainting                  = true;
     }
 
     public void DefaultPainting()
     {
-        questPaintingGraphics.sprite = defaultPainting;
+        questPaintingGraphics.sprite    = defaultPainting;
+        isDonePainting                  = false;
     }
     // ----------------------------------------------------------------------
 }

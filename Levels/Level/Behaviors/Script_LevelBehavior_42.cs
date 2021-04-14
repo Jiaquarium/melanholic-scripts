@@ -132,16 +132,11 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_Names.UpdateMoose();
     }
 
-    public void MooseExit()
+    // Moose and Suzette exit. Cut scnee of paintings being done.
+    public void MooseQuestDone()
     {
-        SetMoosesActive(false);
-        game.ChangeStateInteract();
-    }
-
-    public void SuzetteExit()
-    {
-        SetSuzettesActive(false);
-        game.ChangeStateInteract();
+        // Play Timeline for finishing Moose's quest
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
     }
 
     public void OnMooseCheckItemDialogueDone()
@@ -163,6 +158,17 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     }
 
     public void EndFreezeCutScene()
+    {
+        game.ChangeStateInteract();
+    }
+
+    public void MooseExit()
+    {
+        SetMoosesActive(false);
+        SetSuzettesActive(false);
+    }
+
+    public void OnWellsWorldPaintingQuestDone()
     {
         game.ChangeStateInteract();
     }
@@ -240,6 +246,11 @@ public class Script_LevelBehavior_42Tester : Editor
         if (GUILayout.Button("Stop Heavy Snow"))
         {
             t.StopHeavySnow();
+        }
+
+        if (GUILayout.Button("Moose Quest Done"))
+        {
+            t.MooseQuestDone();
         }
     }
 }

@@ -110,6 +110,8 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
 
     private void HandlePaintingSprite(States state)
     {
+        if (isDonePainting) return;
+        
         switch (state)
         {
             case (States.Active):
