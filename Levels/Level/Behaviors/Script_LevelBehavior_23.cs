@@ -79,15 +79,17 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         print("puzzle progress 2!!! all triggers have pillars on top now!");
         
         game.ChangeStateCutScene();
+        
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.PillarPuzzleProgress2,
             Script_SFXManager.SFX.PillarPuzzleProgress2Vol
         );
+
         Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
             shakeDurationLong,
             Const_Camera.Shake.AmplitudeMed,
             Const_Camera.Shake.FrequencyMed, 
-            () => game.ChangeStateInteract()
+            () => Script_SFXManager.SFX.PlayQuestProgress(() => game.ChangeStateInteract())
         );
     }
 

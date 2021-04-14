@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_24 : Script_LevelBehavior
 {
@@ -40,6 +44,8 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     [SerializeField] private SpriteRenderer alchemistCircle;
     
     [SerializeField] private float alchemistCircleCompleteAlpha;
+
+    [SerializeField] private Script_LevelBehavior_44 XXXWorldBehavior;
 
     private Script_BgThemePlayer heartBeatBgThemePlayer;
     private bool isInit = true;
@@ -116,7 +122,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         // to ensure none were moved since player came from KTV Room 1
         triggersPuzzleController.CheckSuccessCase();
     }
-    private void OnPuzzleSuccess(string Id)
+    public void OnPuzzleSuccess(string Id)
     {
         if (!isCurrentPuzzleComplete)
         {
@@ -151,7 +157,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
 
     private void OnPlayableDirectorStopped(PlayableDirector aDirector)
     {
-        if (director == aDirector)
+        if (aDirector == director)
         {
             print("DONE WITH ANIMATION");
             // then zoom back to default
@@ -166,6 +172,8 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             Script_VCamManager.VCamMain.SwitchToMainVCam(staticZoomOutVCam);
             yield return new WaitForSeconds(Script_VCamManager.defaultBlendTime);
 
+            XXXWorldBehavior.PaintingsDone();            
+            
             game.ChangeStateInteract();
         }
     }
@@ -206,7 +214,6 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         if (!scarletCipherPiece.DidPickUp())
         {
             scarletCipherPiece.gameObject.SetActive(true);
-            scarletCipherPiece.SetAlpha(1f);
         }
     }
     
@@ -234,3 +241,19 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         isInit = false;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_LevelBehavior_24))]
+public class Script_LevelBehavior_24Tester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_LevelBehavior_24 t = (Script_LevelBehavior_24)target;
+        if (GUILayout.Button("Puzzle Success"))
+        {
+            t.OnPuzzleSuccess(null);
+        }
+    }
+}
+#endif

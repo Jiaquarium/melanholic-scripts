@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// World SFX here
@@ -110,11 +111,40 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip Freeze;
     [Range(0f, 1f)] public float FreezeVol;
     
-    public void PlayMainQuestDone()
+    public void PlayQuestProgress(Action cb = null)
     {
+        float SFXduration = 1.5f;
+        
         SFXSource.PlayOneShot(
-            Script_SFXManager.SFX.MainQuestDone, Script_SFXManager.SFX.MainQuestDoneVol
-        );   
+            Script_SFXManager.SFX.Secret,
+            Script_SFXManager.SFX.SecretVol
+        );
+
+        if (cb != null) StartCoroutine(OnSFXDone());
+        
+        IEnumerator OnSFXDone()
+        {
+            yield return new WaitForSeconds(SFXduration);
+            cb();
+        }
+    }
+    
+    public void PlayMainQuestDone(Action cb = null)
+    {
+        float SFXduration = 5.0f;
+        
+        SFXSource.PlayOneShot(
+            Script_SFXManager.SFX.MainQuestDone,
+            Script_SFXManager.SFX.MainQuestDoneVol
+        );
+
+        if (cb != null) StartCoroutine(OnSFXDone());
+        
+        IEnumerator OnSFXDone()
+        {
+            yield return new WaitForSeconds(SFXduration);
+            cb();
+        }
     }
     
     public void Setup()
