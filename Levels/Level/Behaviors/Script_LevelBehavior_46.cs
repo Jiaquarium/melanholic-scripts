@@ -189,20 +189,21 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         puppeteerVCam = null;
     }
 
-    public void OnSuccessCutSceneDone()
+    // Follows OnSuccessCutSceneDone's Timeline.
+    public void OnCelestialGardensPaintingTimelineDone()
     {
-        StartCoroutine(game.TransitionFadeIn(successTransitionFadeInTime, () => {
-            StartCoroutine(WaitToSetupDoneState());
-        }));
+        // Set Kaffe & Latte inactive.
+        puppetMaster.gameObject.SetActive(false);
+        puppet.gameObject.SetActive(false);
+        
+        // Fader canvas will be active already from previous Timeline.
+        StartCoroutine(WaitToSetupDoneState());
 
         IEnumerator WaitToSetupDoneState()
         {
             // Switch to Main VCam.
             preSuccessVCam = Script_VCamManager.ActiveVCamera;
             Script_VCamManager.VCamMain.SwitchToMainVCam(preSuccessVCam);
-
-            puppetMaster.gameObject.SetActive(false);
-            puppet.gameObject.SetActive(false);
             
             yield return new WaitForSeconds(successBlackScreenTime);
 
@@ -220,6 +221,13 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     
     // ------------------------------------------------------------------
     // Next Node Actions
+    
+    // Last Success Dialogue Node.
+    public void OnSuccessCutSceneDone()
+    {
+        // Play Painting Done Timeline.
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+    }
 
     public void KaffeCloseUp()
     {
