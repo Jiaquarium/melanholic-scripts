@@ -477,9 +477,20 @@ public class Script_PlayerTester : Editor
             player.SetInvisible(false);
         }
 
-        if (GUILayout.Button("ForcePush(Down)"))
+        if (GUILayout.Button("Force Push Down"))
         {
             player.ForcePush(Directions.Down);
+        }
+
+        if (GUILayout.Button("Teleport Up 1"))
+        {
+            Vector3 newPos = new Vector3(
+                player.transform.position.x,
+                player.transform.position.y + 1,
+                player.transform.position.z
+            );
+            
+            player.Teleport(newPos);
         }
     }
 }

@@ -130,6 +130,8 @@ public class Script_Game : MonoBehaviour
     public GameObject grid;
 
     private Tilemap tileMap;
+    private Tilemap[] extraTileMaps;
+    private Script_StairsTilemap[] stairsTileMaps;
     private Script_WorldTile[] worldTiles;
     private Tilemap[] exitsTileMaps;
     private Tilemap entrancesTileMap;
@@ -203,6 +205,16 @@ public class Script_Game : MonoBehaviour
     public Tilemap TileMap
     {
         get => tileMap;
+    }
+
+    public Tilemap[] ExtraTileMaps
+    {
+        get => extraTileMaps;
+    }
+
+    public Script_StairsTilemap[] StairsTileMaps
+    {
+        get => stairsTileMaps;
     }
 
     public Script_WorldTile[] WorldTiles
@@ -724,7 +736,9 @@ public class Script_Game : MonoBehaviour
         grid                = Levels.levelsData[level].grid;
         gridOffset          = grid.transform.position;
         tileMap             = Levels.levelsData[level].tileMap;
-        worldTiles          = Levels.levelsData[level].worldTiles; 
+        extraTileMaps       = Levels.levelsData[level].extraTileMaps;
+        stairsTileMaps      = Levels.levelsData[level].stairsTileMaps;
+        worldTiles          = Levels.levelsData[level].worldTiles;
         exitsTileMaps       = Levels.levelsData[level].exitsTileMaps;
         entrancesTileMap    = Levels.levelsData[level].entrancesTileMap;
         pushableTileMap     = Levels.levelsData[level].pushableTileMap;

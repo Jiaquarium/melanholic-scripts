@@ -13,19 +13,16 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
     /// <param name="desiredZ">int of z player is trying to move to</param>
     /// <param name="tileLocation">world location</param>
     /// <returns>true if not on tilemap</returns>
-    protected override bool CheckNotOffTilemap(
-        int desiredX,
-        int desiredZ,
-        Vector3Int tileWorldLocation
-    )
+    protected override bool CheckNotOffTilemap(Vector3Int tileWorldLocation)
     {
         Tilemap tileMap                         = Script_Game.Game.TileMap;
+        Tilemap[] extraTileMaps                 = Script_Game.Game.ExtraTileMaps;
         Script_WorldTile[] worldTileMaps        = Script_Game.Game.WorldTiles;
         Tilemap entrancesTileMap                = Script_Game.Game.EntranceTileMap;
         Tilemap[] exitsTileMaps                 = Script_Game.Game.ExitTileMaps;
 
         // Option to use multiple Infinite World Tiles.
-        if (worldTileMaps != null && worldTileMaps.Length != 0)
+        if (worldTileMaps != null && worldTileMaps.Length > 0)
         {
             foreach (var worldTile in worldTileMaps)
             {
@@ -45,7 +42,17 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
             return true;
         }
 
-        // Default just using single Tilemap.
+        // Check additional default Ground Tilemaps if any.
+        if (extraTileMaps != null && extraTileMaps.Length > 0)
+        {
+            foreach (var extraTileMap in extraTileMaps)
+            {
+                Vector3Int tileLoc = extraTileMap.WorldToCell(tileWorldLocation);
+                if (!IsOutOfBounds(extraTileMap, tileLoc))  return false;
+            }
+        }
+
+        // Check the default Ground Tilemap.
         Vector3Int tileLocation = tileMap.WorldToCell(tileWorldLocation);
         return IsOutOfBounds(tileMap, tileLocation);
 

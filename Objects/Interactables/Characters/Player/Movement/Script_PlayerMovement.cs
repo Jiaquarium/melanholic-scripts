@@ -186,14 +186,25 @@ public class Script_PlayerMovement : MonoBehaviour
         // Repeat moves throttled by timer.
         if (dir == lastMove && timer != 0f)         return;
 
-        Vector3 desiredDirection = directionToVector[dir];
+        Vector3 desiredMove = directionToVector[dir];
         
         AnimatorSetDirection(dir);
         playerGhost.AnimatorSetDirection(dir);
         PushPushables(dir);
 
         // If there is a collision, the PlayerGhost will remain invisible.
-        if (CheckCollisions(dir))                   return;
+        if (CheckCollisions(dir))
+        {
+            // Handle stairs.
+            Vector3? newDesiredMoveWithElevation = GetComponent<Script_PlayerHandleStairs>()
+                .CheckStairsTilemaps(player.location, dir, desiredMove);
+            bool isStairs = newDesiredMoveWithElevation != null;
+            
+            if (isStairs)
+                desiredMove = (Vector3)newDesiredMoveWithElevation;
+            else
+                return;
+        }
 
         // DDR mode, only changing directions to look like dancing.
         if (game.state == Const_States_Game.DDR)    return;
@@ -203,8 +214,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
         // Move player to desired loc, and start PlayerGhost's animation after-the-fact.
         playerGhost.startLocation = player.location;
-        player.location += desiredDirection;
-        playerGhost.location += desiredDirection;
+        player.location += desiredMove;
+        playerGhost.location += desiredMove;
         
         // Move player pointer immediately.
         transform.position = player.location;
@@ -257,7 +268,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     bool CheckCollisions(Directions dir)
     {   
-        // if reflection is interactive check if it can move; if not, disallow player from moving as well
+        // If reflection is interactive check if it can move; if not, disallow player from moving as well.
         if (playerReflection is Script_PlayerReflectionInteractive)
         {
             if (!playerReflection.GetComponent<Script_PlayerReflectionInteractive>().CanMove())

@@ -9,11 +9,7 @@ using UnityEngine.Tilemaps;
 /// </summary>
 public class Script_PuppetCheckCollisions : Script_PlayerCheckCollisions
 {
-    protected override bool CheckNotOffTilemap(
-        int desiredX,
-        int desiredZ,
-        Vector3Int tileWorldLocation
-    )
+    protected override bool CheckNotOffTilemap(Vector3Int tileWorldLocation)
     {
         Tilemap tileMap = Script_Game.Game.TileMap;
         Vector3Int tileLocation = tileMap.WorldToCell(tileWorldLocation);

@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class Script_ReflectionCheckCollisions : Script_CheckCollisions
 {
-    protected override bool CheckNotOffTilemap(int desiredX, int desiredZ, Vector3Int tileLocation)
+    protected override bool CheckNotOffTilemap(Vector3Int tileLocation)
     {
         return false;
     }

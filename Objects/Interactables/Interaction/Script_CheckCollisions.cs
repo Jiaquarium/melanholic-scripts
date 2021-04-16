@@ -21,16 +21,11 @@ public class Script_CheckCollisions : MonoBehaviour
         int desiredX = (int)Mathf.Round((currentLocation + desiredDirection).x);
         int desiredY = (int)Mathf.Round((currentLocation + desiredDirection).y);
         int desiredZ = (int)Mathf.Round((currentLocation + desiredDirection).z);
-
-        // allow grid offsets to affect
-        int adjustedDesiredX = desiredX; // - (int)Script_Game.Game.grid.transform.position.x;
-        int adjustedDesiredY = desiredY;
-        int adjustedDesiredZ = desiredZ; // - (int)Script_Game.Game.grid.transform.position.z;
         
         // Vector3Int tileWorldLocation = new Vector3Int(adjustedDesiredX, adjustedDesiredZ, 0);
-        Vector3Int tileWorldLocation = new Vector3Int(adjustedDesiredX, adjustedDesiredY, adjustedDesiredZ);
+        Vector3Int tileWorldLocation = new Vector3Int(desiredX, desiredY, desiredZ);
         
-        if (CheckNotOffTilemap(desiredX, desiredZ, tileWorldLocation))      return true;
+        if (CheckNotOffTilemap(tileWorldLocation))      return true;
         if (CheckInteractableBlocking(dir))                                 return true;
         if (CheckPushableBlocking(dir))                                     return true;
         if (CheckUniqueBlocking(dir))                                       return true;
@@ -38,7 +33,7 @@ public class Script_CheckCollisions : MonoBehaviour
         return false;
     }
 
-    protected virtual bool CheckNotOffTilemap(int desiredX, int desiredZ, Vector3Int tileWorldLocation)
+    protected virtual bool CheckNotOffTilemap(Vector3Int tileWorldLocation)
     {
         Tilemap tileMap         = Script_Game.Game.TileMap;
 

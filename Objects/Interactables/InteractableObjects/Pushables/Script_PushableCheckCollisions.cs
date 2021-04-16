@@ -16,11 +16,7 @@ public class Script_PushableCheckCollisions : Script_CheckCollisions
     /// </summary>
     [SerializeField] private bool shouldIgnoreInteractables;
     
-    protected override bool CheckNotOffTilemap(
-        int desiredX,
-        int desiredZ,
-        Vector3Int tileWorldLocation
-    )
+    protected override bool CheckNotOffTilemap(Vector3Int tileWorldLocation)
     {
         Tilemap tileMap = Script_Game.Game.TileMap;
         Tilemap pushablesTileMap = myPushableTilemap == null ?
