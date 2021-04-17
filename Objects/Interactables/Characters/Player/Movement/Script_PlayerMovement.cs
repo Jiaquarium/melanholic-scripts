@@ -28,7 +28,6 @@ public class Script_PlayerMovement : MonoBehaviour
     public Script_PlayerGhost PlayerGhostPrefab;
     public Script_PlayerReflection PlayerReflectionPrefab;
 
-
     [SerializeField] private float defaultRepeatDelay;
     [SerializeField] private float runRepeatDelay;
     [SerializeField] private float devRunRepeatDelay;
@@ -40,6 +39,8 @@ public class Script_PlayerMovement : MonoBehaviour
     
     [SerializeField] private TimelineAsset moveUpTimeline;
     [SerializeField] private TimelineAsset enterElevatorTimeline;
+
+    [SerializeField] private Script_PlayerHandleStairs stairsHandler;
     
     private float repeatDelay;
     private Script_Game game;
@@ -192,19 +193,16 @@ public class Script_PlayerMovement : MonoBehaviour
         playerGhost.AnimatorSetDirection(dir);
         PushPushables(dir);
 
+        // Handle stairs.
+        Vector3? newDesiredMoveWithElevation = stairsHandler.CheckStairsTilemaps(
+            player.location, dir, desiredMove
+        );
+        bool isStairs = newDesiredMoveWithElevation != null;
+        
+        if (isStairs)   desiredMove = (Vector3)newDesiredMoveWithElevation;
+        
         // If there is a collision, the PlayerGhost will remain invisible.
-        if (CheckCollisions(dir))
-        {
-            // Handle stairs.
-            Vector3? newDesiredMoveWithElevation = GetComponent<Script_PlayerHandleStairs>()
-                .CheckStairsTilemaps(player.location, dir, desiredMove);
-            bool isStairs = newDesiredMoveWithElevation != null;
-            
-            if (isStairs)
-                desiredMove = (Vector3)newDesiredMoveWithElevation;
-            else
-                return;
-        }
+        if (CheckCollisions(dir) && !isStairs)      return;
 
         // DDR mode, only changing directions to look like dancing.
         if (game.state == Const_States_Game.DDR)    return;
