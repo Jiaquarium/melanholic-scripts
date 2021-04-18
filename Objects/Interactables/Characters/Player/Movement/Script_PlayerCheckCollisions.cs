@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class Script_PlayerCheckCollisions : Script_CheckCollisions
 {
+    [SerializeField] private Script_PlayerHandleStairs stairsHandler;
+    
     /// <summary>
     /// in addition to checking if on tilemap, player needs to verify
     /// entrance and exits. allow player to go onto exits and entrance tiles
@@ -91,5 +93,17 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
 
             return false;
         }
+    }
+
+    protected override bool ModifyElevation(Vector3 loc, Directions dir, ref Vector3 desiredMove)
+    {
+        Vector3? newDesiredMoveWithElevation = stairsHandler.CheckStairsTilemaps(
+            loc, dir, (Vector3)desiredMove
+        );
+        bool isStairs = newDesiredMoveWithElevation != null;
+        
+        if (isStairs)   desiredMove = (Vector3)newDesiredMoveWithElevation;
+
+        return isStairs;
     }
 }

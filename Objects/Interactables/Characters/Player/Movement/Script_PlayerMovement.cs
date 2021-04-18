@@ -40,8 +40,6 @@ public class Script_PlayerMovement : MonoBehaviour
     [SerializeField] private TimelineAsset moveUpTimeline;
     [SerializeField] private TimelineAsset enterElevatorTimeline;
 
-    [SerializeField] private Script_PlayerHandleStairs stairsHandler;
-    
     private float repeatDelay;
     private Script_Game game;
     private Script_Player player;
@@ -192,17 +190,10 @@ public class Script_PlayerMovement : MonoBehaviour
         AnimatorSetDirection(dir);
         playerGhost.AnimatorSetDirection(dir);
         PushPushables(dir);
-
-        // Handle stairs.
-        Vector3? newDesiredMoveWithElevation = stairsHandler.CheckStairsTilemaps(
-            player.location, dir, desiredMove
-        );
-        bool isStairs = newDesiredMoveWithElevation != null;
-        
-        if (isStairs)   desiredMove = (Vector3)newDesiredMoveWithElevation;
         
         // If there is a collision, the PlayerGhost will remain invisible.
-        if (CheckCollisions(dir) && !isStairs)      return;
+        // Modify for elevation change (e.g. Stairs)
+        if (CheckCollisions(dir, ref desiredMove))   return;
 
         // DDR mode, only changing directions to look like dancing.
         if (game.state == Const_States_Game.DDR)    return;
@@ -264,7 +255,7 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    bool CheckCollisions(Directions dir)
+    bool CheckCollisions(Directions dir, ref Vector3 desiredMove)
     {   
         // If reflection is interactive check if it can move; if not, disallow player from moving as well.
         if (playerReflection is Script_PlayerReflectionInteractive)
@@ -274,7 +265,7 @@ public class Script_PlayerMovement : MonoBehaviour
         }
         
         return GetComponent<Script_PlayerCheckCollisions>().CheckCollisions(
-            player.location, dir
+            player.location, dir, ref desiredMove
         );
     }
 

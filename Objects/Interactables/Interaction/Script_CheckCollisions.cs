@@ -14,7 +14,7 @@ public class Script_CheckCollisions : MonoBehaviour
     /// </summary>
     /// <param name="desiredDirection"></param>
     /// <returns>true if collision (not allowed to move to that space)</returns>
-    public bool CheckCollisions(Vector3 currentLocation, Directions dir)
+    public bool CheckCollisions(Vector3 currentLocation, Directions dir, ref Vector3 desiredMove)
     {
         Vector3 desiredDirection = Script_Utils.GetDirectionToVectorDict()[dir];
 
@@ -25,7 +25,11 @@ public class Script_CheckCollisions : MonoBehaviour
         // Vector3Int tileWorldLocation = new Vector3Int(adjustedDesiredX, adjustedDesiredZ, 0);
         Vector3Int tileWorldLocation = new Vector3Int(desiredX, desiredY, desiredZ);
         
-        if (CheckNotOffTilemap(tileWorldLocation))      return true;
+        bool isStairs = ModifyElevation(currentLocation, dir, ref desiredMove);
+        if (isStairs)                                                       return false;
+
+        if (CheckNotOffTilemap(tileWorldLocation))                          return true;
+
         if (CheckInteractableBlocking(dir))                                 return true;
         if (CheckPushableBlocking(dir))                                     return true;
         if (CheckUniqueBlocking(dir))                                       return true;
@@ -39,6 +43,11 @@ public class Script_CheckCollisions : MonoBehaviour
 
         if (!tileMap.HasTile(tileWorldLocation))        return true;
         else                                            return false;
+    }
+
+    protected virtual bool ModifyElevation(Vector3 currentLoc, Directions directions, ref Vector3 desiredMove)
+    {
+        return false;
     }
 
     protected virtual bool CheckInteractableBlocking(Directions dir)

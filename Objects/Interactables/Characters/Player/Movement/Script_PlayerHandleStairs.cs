@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class Script_PlayerHandleStairs : MonoBehaviour
 {
+    [SerializeField] private int stairsThreshold;
+    
     public Vector3? CheckStairsTilemaps(
         Vector3 loc,
         Directions dir,
@@ -31,12 +33,15 @@ public class Script_PlayerHandleStairs : MonoBehaviour
                 if (tileMap.HasTile(tileLoc))
                 {
                     float elevationChange = stairsY - loc.y;
-                    
-                    return new Vector3(
-                        desiredMove.x,
-                        desiredMove.y + elevationChange,
-                        desiredMove.z
-                    );
+
+                    if (Mathf.Abs(elevationChange) <= stairsThreshold)
+                    {
+                        return new Vector3(
+                            desiredMove.x,
+                            desiredMove.y + elevationChange,
+                            desiredMove.z
+                        );
+                    }
                 }
             }
         }

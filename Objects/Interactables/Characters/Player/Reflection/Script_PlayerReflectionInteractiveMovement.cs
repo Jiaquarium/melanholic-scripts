@@ -13,6 +13,8 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
     [SerializeField] private Script_InteractionBox[] interactionBoxes;
     [SerializeField] private Script_InteractionBox[] playerIBoxes;
     [SerializeField] private Vector3 iBoxOffset;
+
+    private Dictionary<Directions, Vector3> directionToVector;
     
     private void Update()
     {
@@ -45,11 +47,12 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
 
     public bool CanMove()
     {
-        Directions myFacingDir = ToOppositeDirectionZ(player.FacingDirection);
+        Directions myFacingDir  = ToOppositeDirectionZ(player.FacingDirection);
+        Vector3 desiredMove     = directionToVector[myFacingDir];
         HandleActiveInteractionBox(myFacingDir);
 
         if (
-            GetComponent<Script_CheckCollisions>().CheckCollisions(transform.position, myFacingDir)
+            GetComponent<Script_CheckCollisions>().CheckCollisions(transform.position, myFacingDir, ref desiredMove)
         )
         {
             return false;
@@ -65,6 +68,7 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
 
     private void Awake()
     {
-        interactionBoxes = interactionBoxController.GetInteractionBoxes();
+        interactionBoxes    = interactionBoxController.GetInteractionBoxes();
+        directionToVector   = Script_Utils.GetDirectionToVectorDict();
     }
 }

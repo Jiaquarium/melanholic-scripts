@@ -14,11 +14,14 @@ public class Script_Pushable : Script_InteractableObject
     [SerializeField] private Vector3 startLocation;
     [SerializeField] private Vector3 endLocation;
     [SerializeField] private bool _isDisabled;
+    
     private bool isHiddenAfterMove;
     
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         spawnLocation = transform.position;
     }
 
@@ -42,7 +45,7 @@ public class Script_Pushable : Script_InteractableObject
         // if no collisions then able to push, return true
         GetComponent<Script_InteractionBoxController>().HandleActiveInteractionBox(dir);
         bool isCollision = GetComponent<Script_CheckCollisions>().CheckCollisions(
-            transform.position, dir
+            transform.position, dir, ref desiredDir
         );
         if (isCollision)
         {
