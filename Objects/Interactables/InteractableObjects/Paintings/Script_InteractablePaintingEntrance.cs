@@ -6,12 +6,15 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
 {
     static readonly private string BoarNeedle = Const_Items.BoarNeedleId; 
     static readonly private float BoarNeedleWaitTime = 0.5f; 
+    
     [SerializeField] private Script_ExitMetadataObject exit;
     public Script_DialogueNode[] paintingDialogueNodes;
     
     [SerializeField] private SpriteRenderer paintingGraphics;
     [SerializeField] private Sprite activeSprite;
     [SerializeField] private Sprite disabledSprite;
+
+    [SerializeField] private bool isAllowDisabledDialogue;
 
     private int paintingDialogueIndex;
     
@@ -26,11 +29,13 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         }
     }
     
-    // Painting Entrance even when Disabled will allow text interaction.
+    // Painting Entrance have option to allow text interaction.
     public override void HandleAction(string action)
     {
         Debug.Log($"{name} HandleAction action: {action}");
-        if (action == Const_KeyCodes.Action1)
+        bool isDisabled = !isAllowDisabledDialogue && State == States.Disabled;
+
+        if (action == Const_KeyCodes.Action1 && !isDisabled)
         {
             ActionDefault();
         }
@@ -38,8 +43,13 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
     
     public override void ActionDefault()
     {
-        if (isDialogueCoolDown)         return;
-        if (CheckDisabledDirections())  return;
+        if (
+            isDialogueCoolDown
+            || CheckDisabledDirections()
+        )
+        {
+            return;
+        }
         
         // If already talking to the Painting, then just continue dialogue.
         if (

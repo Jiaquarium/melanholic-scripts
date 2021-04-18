@@ -96,6 +96,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_InteractablePaintingEntrance WellsWorldPaintingEntrance;
     [SerializeField] private Script_InteractablePaintingEntrance CelestialGardensWorldPaintingEntrance;
     [SerializeField] private Script_InteractablePaintingEntrance XXXWorldPaintingEntrance;
+    [SerializeField] private Script_InteractableObjectText blankCanvasesText;
 
     /// =======================================================================
     /// Melz Intro START
@@ -523,8 +524,16 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     {
         Script_InteractableObject.States paintingState;
         
-        if (isActive)   paintingState               = Script_InteractableObject.States.Active;
-        else            paintingState               = Script_InteractableObject.States.Disabled;
+        if (isActive)
+        {
+            paintingState = Script_InteractableObject.States.Active;
+            blankCanvasesText.gameObject.SetActive(false);
+        }
+        else
+        {
+            paintingState = Script_InteractableObject.States.Disabled;
+            blankCanvasesText.gameObject.SetActive(true);
+        }
         
         WellsWorldPaintingEntrance.State            = paintingState;
         CelestialGardensWorldPaintingEntrance.State = paintingState;
