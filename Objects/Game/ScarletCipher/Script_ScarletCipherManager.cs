@@ -141,19 +141,20 @@ public class Script_ScarletCipherManager : MonoBehaviour
 
         for (int i = 0; i < QuestionCount; i++)
         {
-            if (dialogues[i] == null)
-            {
-                newCipher[i] = 9;
-                Debug.Log($"You need to reference a dialogue node parent for cipher slot {i}");
-                continue;
-            }
+            newCipher[i] = 9;
+            
+            // if (dialogues[i] == null)
+            // {
+            //     newCipher[i] = 9;
+            //     continue;
+            // }
 
-            int choicesCount = dialogues[i].data.children.Length;
+            // int choicesCount = dialogues[i].data.children.Length;
             
-            /// Choose a random choice for the node Random.Range(inclusive, exclusive)
-            int choice = UnityEngine.Random.Range(0, choicesCount);
+            // /// Choose a random choice for the node Random.Range(inclusive, exclusive)
+            // int choice = UnityEngine.Random.Range(0, choicesCount);
             
-            newCipher[i] = choice;
+            // newCipher[i] = choice;
         }
 
         ScarletCipher                   = newCipher;

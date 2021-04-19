@@ -101,7 +101,7 @@ public class Script_MynesGrandMirror : Script_MynesMirror
     }
     
     // Grand Mirror doesn't need this mechanic. Will always be an unbroken mirror.
-    protected override void HandleIsSolvedGraphics(bool isSolved) { }
+    protected override void HandleIsActivatedGraphics(bool isActivated) {}
 
     private void OnItemPickUpTheatricsDone(string itemId)
     {

@@ -50,7 +50,8 @@ public class Script_MynesMirror : Script_InteractableObjectText
         
         Script_MynesMirrorEventsManager.OnEndTimeline += StartDialogue;
 
-        HandleIsSolvedGraphics(isSolved);
+        bool isActivated = Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId];
+        HandleIsActivatedGraphics(isActivated);
     }
 
     protected override void OnDisable()
@@ -93,17 +94,17 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public bool CheckCipher(int choiceIdx)
     {
-        bool isSolved = Script_ScarletCipherManager.Control.HandleCipherSlot(MynesMirrorId, choiceIdx);
-
-        HandleIsSolvedGraphics(isSolved);
+        // bool isSolved = Script_ScarletCipherManager.Control.HandleCipherSlot(MynesMirrorId, choiceIdx);
         
-        return isSolved;
+        HandleIsActivatedGraphics(true);
+        
+        return false;
     }
 
-    protected virtual void HandleIsSolvedGraphics(bool isSolved)
+    protected virtual void HandleIsActivatedGraphics(bool isActivated)
     {
-        if (isSolved)   mirrorGraphics.sprite = brokenMirrorSprite;
-        else            mirrorGraphics.sprite = defaultMirrorSprite;
+        if (isActivated)    mirrorGraphics.sprite = brokenMirrorSprite;
+        else                mirrorGraphics.sprite = defaultMirrorSprite;
     }
 
     // ------------------------------------------------------------------

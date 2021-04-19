@@ -1884,18 +1884,21 @@ public class Script_Game : MonoBehaviour
         SaveWaitRestart(isLobbySpawn);
     }
 
+    /// <summary>
+    /// Setting the Active Ending will trigger the final cut scene.
+    /// </summary>
     private void SetActiveEnding()
     {
         // Set ActiveEnding in state so on Load we can play an ending.
         // More important/harder endings override lesser ones.
-        if (scarletCipherManager.CheckAllMirrorsSolved())
-        {
-            activeEnding = Script_TransitionManager.Endings.Dream;
-        }
-        else if (IsAllQuestsDoneToday())
+        if (IsAllQuestsDoneToday())
         {
             activeEnding = Script_TransitionManager.Endings.True;
         }
+        // else if (scarletCipherManager.CheckAllMirrorsSolved())
+        // {
+        //     activeEnding = Script_TransitionManager.Endings.Dream;
+        // }
         
         Debug.Log($"@@@@@@@@@@@@@@@ ACTIVE ENDING CHANGED TO {activeEnding} @@@@@@@@@@@@@@@");
     }
