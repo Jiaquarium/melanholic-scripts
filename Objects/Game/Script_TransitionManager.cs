@@ -14,6 +14,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_TransitionManager : MonoBehaviour
 {
+    public static Script_TransitionManager Control;
+    
     public enum Endings
     {
         None    = 0,
@@ -24,6 +26,7 @@ public class Script_TransitionManager : MonoBehaviour
     }
     
     public Script_CanvasGroupFadeInOut fader;
+    [SerializeField] private Script_CanvasGroupController timelineFader;
     
     [SerializeField] private Script_CanvasGroupController underDialogueController;
     [SerializeField] private Script_Game game;
@@ -59,6 +62,16 @@ public class Script_TransitionManager : MonoBehaviour
     public void UnderDialogueFadeOut(float t, Action action)
     {
         underDialogueController.FadeOut(t, action);
+    }
+
+    public void TimelineBlackScreen()
+    {
+        timelineFader.Open();
+    }
+
+    public void TimelineFadeIn(float t, Action action)
+    {
+        timelineFader.FadeIn(t, action);
     }
 
     public void DieEffects(Script_GameOverController.DeathTypes _deathType)
@@ -185,6 +198,15 @@ public class Script_TransitionManager : MonoBehaviour
 
     public void Setup()
     {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
+        
         fader.gameObject.SetActive(true);
         restartPrompt.Close();
     }

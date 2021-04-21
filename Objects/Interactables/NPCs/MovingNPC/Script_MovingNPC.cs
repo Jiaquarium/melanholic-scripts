@@ -42,6 +42,7 @@ public class Script_MovingNPC : Script_StaticNPC
 
     private Animator animator;
     
+    public PlayableDirector MyDirector { get => myDirector; }
     
     private Script_InteractionBoxController interactionBoxController { get; set; }
 

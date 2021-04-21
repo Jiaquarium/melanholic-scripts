@@ -19,6 +19,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     /* =======================================================================
         STATE DATA
     ======================================================================= */
+    public bool isKingIntroCutSceneDone;
     public Seasons season;
     public bool isPuzzleComplete;
     public bool entranceCutSceneDone;
@@ -77,6 +78,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     
     [SerializeField] private float shakeDuration;
 
+    [SerializeField] private float timelineFaderFadeInTime;
+    [SerializeField] private Script_Marker KingIntroPlayerSpawn;
+    [SerializeField] private int KingEclaireTimelineMidpoint;
+
     // -------------------------------------------------------------------------------------
     // NPCs
     [SerializeField] private Script_DemonNPC Ero;
@@ -87,6 +92,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Suzette;
     [SerializeField] private Script_DemonNPC Moose;
     [SerializeField] private Script_DemonNPC Ursie;
+    [SerializeField] private Script_DemonNPC KingEclaire;
 
     [SerializeField] private Script_DemonNPC Melz;
     [SerializeField] private Script_DemonNPC Ids;
@@ -105,6 +111,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     /// Melz Intro END
     /// =======================================================================
 
+    private Script_TimelineController timelineController;
     private bool isInitialCutScene;
     private bool isInit = true;
     
@@ -132,6 +139,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     private void Awake()
     {
+        timelineController = GetComponent<Script_TimelineController>();
+        
         foreach(Script_SeasonsTree tree in ManTrees)    tree.Setup(season);
         foreach(Script_SeasonsTree tree in WomanTrees)  tree.Setup(season);   
         foreach(Script_DestroyTriggerCollectibles trig in destroyTriggerCollectibles)
@@ -154,7 +163,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             Melz.gameObject.SetActive(false);
             
             game.ChangeStateCutScene();
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
+            timelineController.PlayableDirectorPlayFromTimelines(1, 1);
             /// Set VCam through code as when Timeline ends we need control to remain
             /// on VCam focusing on Melz and the Lovers 
             Script_VCamManager.VCamMain.SetNewVCam(vCamEntrance);
@@ -166,6 +175,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        
         Script_PuzzlesEventsManager.OnPuzzleSuccess     += OnPuzzleSuccess;
         Script_PuzzlesEventsManager.OnPuzzleProgress    += OnPuzzleProgress;
         Script_ItemsEventsManager.OnItemPickUp          += OnItemPickUp;
@@ -184,6 +195,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     protected override void OnDisable()
     {
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        
         Script_PuzzlesEventsManager.OnPuzzleSuccess     -= OnPuzzleSuccess;
         Script_PuzzlesEventsManager.OnPuzzleProgress    -= OnPuzzleProgress;
         Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
@@ -214,6 +227,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     public override void OnLevelInitComplete()
     {
         OnMelzIntroCutScene();
+    }
+
+    public void OnLevelInitCompleteEvent()
+    {
+        
     }
 
     protected override void HandleAction()
@@ -288,7 +306,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             isPuzzleComplete = true;
             game.ChangeStateCutScene();
             print("AlchemistCircleAnim(): game changed to cutScene");
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+            timelineController.PlayableDirectorPlayFromTimelines(0, 0);
         }
     }
 
@@ -311,7 +329,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     public void OnSuccessPlayableDone(PlayableDirector aDirector)
     {
-        if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[0])
+        if (aDirector.playableAsset == timelineController.timelines[0])
         {
             print("Success timeline done (stones exploding, Urselk sprites floating, show Embrace PRCS)!");
             
@@ -333,7 +351,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     public void OnAftermathPlayableDone(PlayableDirector aDirector)
     {
-        if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[3])
+        if (aDirector.playableAsset == timelineController.timelines[3])
         {
             StartCoroutine(WaitForKaffeLatteDialogue());
             
@@ -344,7 +362,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeLatteNode);
             }
         }
-        else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[4])
+        else if (aDirector.playableAsset == timelineController.timelines[4])
         {
             Debug.Log("FINISHED MASTER LOCK ANIMATION!!!!!!!!!!!!");
             game.ChangeStateInteract();
@@ -384,44 +402,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
     }
     
-    /// <summary> ==============================================================================
-    /// NextNodeAction(s) Start 
-    /// </summary> =============================================================================
-    public void MelzExit()
-    {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(2, 2);
-        Script_VCamManager.VCamMain.SwitchToMainVCam(vCamEntrance);
-    }
-    
-    public void OnPlayerReactionNodeDone()
-    {
-        game.ChangeStateInteract();
-    }
-    
-    public void PRCSClimax()
-    {
-        Debug.Log("Play climax PRCS!!!");
-        
-        climaxPlayer.Play();
-    }
-
-    public void IdsExit()
-    {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(3, 3);
-    }
-
-    public void KaffeLatteSendKeyDown()
-    {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(3, 4);
-    }
-
-    public void UpdateUrsie()
-    {
-        Script_Names.UpdateUrsie();
-    }
-
-    /// NextNodeAction(s) End
-    /// =============================================================================
 
     public void ChangeSeason(string seasonStoneId, Action cb = null)
     {   
@@ -490,6 +470,90 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             }
         }
     }
+
+    /// <summary> ==============================================================================
+    /// NextNodeAction(s) Start 
+    /// </summary> =============================================================================
+    public void MelzExit()
+    {
+        timelineController.PlayableDirectorPlayFromTimelines(2, 2);
+        Script_VCamManager.VCamMain.SwitchToMainVCam(vCamEntrance);
+    }
+    
+    public void OnPlayerReactionNodeDone()
+    {
+        game.ChangeStateInteract();
+    }
+    
+    public void PRCSClimax()
+    {
+        Debug.Log("Play climax PRCS!!!");
+        
+        climaxPlayer.Play();
+    }
+
+    public void IdsExit()
+    {
+        timelineController.PlayableDirectorPlayFromTimelines(3, 3);
+    }
+
+    public void KaffeLatteSendKeyDown()
+    {
+        timelineController.PlayableDirectorPlayFromTimelines(3, 4);
+    }
+
+    public void UpdateKingEclaire()
+    {
+        Script_Names.UpdateKingEclaire();
+    }
+
+    public void UpdateUrsie()
+    {
+        Script_Names.UpdateUrsie();
+    }
+
+    /// NextNodeAction(s) End
+    /// =============================================================================
+    // ----------------------------------------------------------------------
+    // King's Intro Unity Events, Next Node Actions and Timline Signals
+    
+    public void KingsIntroTimeline()
+    {
+        // Pause King's walking Timeline.
+
+        // Check for Psychic Duck
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+        if (isPsychicDuckActive && !isKingIntroCutSceneDone)
+        {
+            game.ChangeStateCutScene();
+            
+            Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {
+                Script_Player p = game.GetPlayer();
+                
+                p.Teleport(KingIntroPlayerSpawn.Position);
+                p.FaceDirection(Directions.Up);
+
+                // Set King's Position to center of Stage
+                KingEclaire.State = Script_MovingNPC.States.Dialogue;
+                KingEclaire.MyDirector.Pause();
+                KingEclaire.MyDirector.time = KingEclaireTimelineMidpoint;
+                KingEclaire.FacePlayer();
+
+                // King's Explanation of Sealing
+                timelineController.PlayableDirectorPlayFromTimelines(4, 5);
+            });
+
+            isKingIntroCutSceneDone = true;
+        }
+    }
+    
+    // After intro Timeline, King should be facing player and begin dialogue.
+    public void KingsIntroDialogue0()
+    {
+
+    }
+
+    // ----------------------------------------------------------------------
 
     private void OnMelzIntroCutScene()
     {

@@ -29,7 +29,7 @@ public class Script_StaticNPC : Script_Interactable
     public States State
     {
         get { return _state; }
-        protected set { _state = value; }
+        set { _state = value; }
     }
 
     public bool IsMute
