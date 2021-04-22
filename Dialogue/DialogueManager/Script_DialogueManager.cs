@@ -16,6 +16,14 @@ using UnityEngine.Events;
 /// </summary>
 public class Script_DialogueManager : MonoBehaviour
 {
+    public enum States
+    {
+        Active              = 0,
+        Disabled            = 1,
+    }
+
+    [SerializeField] private States state;
+    
     public static Script_DialogueManager DialogueManager;
     public static float DialogueContinuationFlickerInterval = 0.75f;
     public Script_Interactable activeInteractable; // for cut scenes this will be null
@@ -96,7 +104,6 @@ public class Script_DialogueManager : MonoBehaviour
     public bool noContinuationIcon;
     public bool isKeepingDialogueUp;
 
-    
     private TextMeshProUGUI nameText;
     private TextMeshProUGUI dialogueText;
     private Script_ChoiceManager choiceManager;
@@ -112,6 +119,12 @@ public class Script_DialogueManager : MonoBehaviour
     /// Flag to disable inputs while full art is fading in or out
     public bool isInputDisabled;
 
+    private States State
+    {
+        get => state;
+        set => state = value;
+    }
+
     void Update()
     {
         // called after finishes rendering dialogue sections and lines 
@@ -125,6 +138,17 @@ public class Script_DialogueManager : MonoBehaviour
         {
             game.HandleDialogueNodeUpdateAction(currentNode.data.updateAction);
         }
+    }
+    
+    public bool IsActive()
+    {
+        return State == States.Active;
+    }
+
+    public void SetActive(bool isActive)
+    {
+        if (isActive)   State = States.Active;
+        else            State = States.Disabled;
     }
     
     public void StartDialogueNodeNextFrame(
@@ -199,7 +223,12 @@ public class Script_DialogueManager : MonoBehaviour
     public bool? ContinueDialogue()
     {
         // prevent from stacking continuations
-        if (isRenderingDialogueSection || isInputMode || isInputDisabled)
+        if (
+            isRenderingDialogueSection
+            || isInputMode
+            || isInputDisabled
+            || !IsActive()
+        )
         {   
             print(
                 $"could not continue dialogue " +
@@ -216,6 +245,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
 
         DisplayNextDialoguePortion();
+
         return true;
     }
 
@@ -430,6 +460,8 @@ public class Script_DialogueManager : MonoBehaviour
         
         if (dialogueSection.noContinuationIcon)     noContinuationIcon = true;
         else                                        noContinuationIcon = false;
+
+        if (dialogueSection.waitForTimeline)        SetActive(false);
 
         foreach(string _line in dialogueSection.lines)
         {

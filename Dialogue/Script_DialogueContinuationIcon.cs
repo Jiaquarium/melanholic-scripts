@@ -32,6 +32,7 @@ public class Script_DialogueContinuationIcon : MonoBehaviour
             && !dm.isInputMode
             && !dm.noContinuationIcon
             && !isDisabled
+            && dm.IsActive()
         )
         {
             if (isLastDialogueSection)  SetImageLastNode();
