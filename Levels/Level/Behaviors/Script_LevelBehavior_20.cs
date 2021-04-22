@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -80,7 +81,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     [SerializeField] private float timelineFaderFadeInTime;
     [SerializeField] private Script_Marker KingIntroPlayerSpawn;
-    [SerializeField] private int KingEclaireTimelineMidpoint;
+    [SerializeField] private int KingEclaireTimelineMidpointFrame;
 
     // -------------------------------------------------------------------------------------
     // NPCs
@@ -526,6 +527,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         if (isPsychicDuckActive && !isKingIntroCutSceneDone)
         {
             game.ChangeStateCutScene();
+
+            Script_BackgroundMusicManager.Control.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
             
             Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {
                 Script_Player p = game.GetPlayer();
@@ -533,24 +536,37 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 p.Teleport(KingIntroPlayerSpawn.Position);
                 p.FaceDirection(Directions.Up);
 
-                // Set King's Position to center of Stage
-                KingEclaire.State = Script_MovingNPC.States.Dialogue;
-                KingEclaire.MyDirector.Pause();
-                KingEclaire.MyDirector.time = KingEclaireTimelineMidpoint;
-                KingEclaire.FacePlayer();
+                MoveKingEclaireToMidpoint();
 
                 // King's Explanation of Sealing
                 timelineController.PlayableDirectorPlayFromTimelines(4, 5);
             });
-
-            isKingIntroCutSceneDone = true;
         }
     }
-    
-    // After intro Timeline, King should be facing player and begin dialogue.
-    public void KingsIntroDialogue0()
-    {
 
+    // Set King's Position to center of Stage frame
+    // Frame to Time conversion: https://forum.unity.com/threads/jump-to-frame.500709/    
+    public void MoveKingEclaireToMidpoint()
+    {
+        KingEclaire.MyDirector.Pause();
+        
+        KingEclaire.MyDirector.time = KingEclaireTimelineMidpointFrame /
+            ((TimelineAsset)KingEclaire.MyDirector.playableAsset).editorSettings.fps;
+        KingEclaire.MyDirector.Evaluate();
+
+        KingEclaire.FacePlayer();
+
+        KingEclaire.State = Script_MovingNPC.States.Dialogue;
+    }
+    
+    public void EndKingEclaireIntro()
+    {
+        isKingIntroCutSceneDone = true;
+        
+        Script_BackgroundMusicManager.Control.FadeInMed(() => {
+            game.ChangeStateInteract();
+            game.CanvasesInitialState();
+        }, Const_AudioMixerParams.ExposedBGVolume);
     }
 
     // ----------------------------------------------------------------------
@@ -705,6 +721,16 @@ public class Script_LevelBehavior_20Tester : Editor
         if (GUILayout.Button("PlaceRock()"))
         {
             lb.rock.transform.position = lb.rockDestination.transform.position;
+        }
+
+        if (GUILayout.Button("Move King Eclaire to Midpoint"))
+        {
+            lb.MoveKingEclaireToMidpoint();
+        }
+        
+        if (GUILayout.Button("King Intro Timeline"))
+        {
+            lb.KingsIntroTimeline();
         }
     }
 }
