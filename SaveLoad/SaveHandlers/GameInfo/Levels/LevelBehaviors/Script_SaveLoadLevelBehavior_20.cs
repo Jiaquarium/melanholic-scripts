@@ -9,6 +9,7 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_20 lvlModel = new Model_LevelBehavior_20(
+            LB20.isKingIntroCutSceneDone,
             LB20.season,
             LB20.entranceCutSceneDone,
             LB20.isPuzzleComplete,
@@ -34,11 +35,12 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
         }
 
         Model_LevelBehavior_20 lvlModel = data.levelsData.LB20;
-        LB20.season                 = lvlModel.season;
-        LB20.entranceCutSceneDone   = lvlModel.entranceCutSceneDone;
-        LB20.isPuzzleComplete       = lvlModel.isPuzzleComplete;
-        LB20.didPickUpMasterKey     = lvlModel.didPickUpMasterKey;
-        LB20.didUnlockMasterLock    = lvlModel.didUnlockMasterLock;
+        LB20.isKingIntroCutSceneDone    = lvlModel.isKingIntroCutSceneDone;
+        LB20.season                     = lvlModel.season;
+        LB20.entranceCutSceneDone       = lvlModel.entranceCutSceneDone;
+        LB20.isPuzzleComplete           = lvlModel.isPuzzleComplete;
+        LB20.didPickUpMasterKey         = lvlModel.didPickUpMasterKey;
+        LB20.didUnlockMasterLock        = lvlModel.didUnlockMasterLock;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
