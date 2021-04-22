@@ -1051,6 +1051,12 @@ public class Script_Game : MonoBehaviour
     /* =======================================================================
         _CANVASES_CUTSCENES_THEATRICS
     ======================================================================= */
+    public void CanvasesInitialState()
+    {
+        transitionManager.InitialState();
+        PRCSManager.Initialize();
+    }
+    
     public void ShowHint(string s)
     {
         hintManager.ShowTextHint(s);

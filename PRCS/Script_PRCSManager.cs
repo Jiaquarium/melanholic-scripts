@@ -15,6 +15,8 @@ public class Script_PRCSManager : MonoBehaviour
     public static Script_PRCSManager Control;
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
+
+    [SerializeField] private Script_CanvasGroupController TimelinePRCSCanvasGroup;
     
     [SerializeField] private Transform customCanvasesParent;
     [SerializeField] private Canvas[] customCanvases;
@@ -175,6 +177,8 @@ public class Script_PRCSManager : MonoBehaviour
         {
             prcs.gameObject.SetActive(false);
         }
+
+        TimelinePRCSCanvasGroup.InitialState();
     }
 
     public void Setup()

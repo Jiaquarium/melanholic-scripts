@@ -196,6 +196,12 @@ public class Script_TransitionManager : MonoBehaviour
     }
     /// ------------------------------------------------------------
 
+    public void InitialState()
+    {
+        fader.GetComponent<Script_CanvasGroupController>().InitialState();
+        timelineFader.InitialState();
+    }
+    
     public void Setup()
     {
         if (Control == null)
