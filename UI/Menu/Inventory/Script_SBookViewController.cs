@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Script_SBookViewInputManager))]
+[RequireComponent(typeof(Script_InventoryViewInputManager))]
 /// <summary>
-/// Tracks the last slot
+/// Tracks the last slot for Stickers
 /// To do so, only have this controller active when selecting across slots
 /// </summary>
 public class Script_SBookViewController : Script_SlotsViewController
 {
-    /// <summary>
-    /// the main view controller
-    /// </summary>
-    public Script_SBookOverviewController sBookController;
+    // the main view controller
+    public Script_InventoryController sBookController;
     [Space]
-    protected Script_SBookViewInputManager sBookInputManager;
+    protected Script_InventoryViewInputManager sBookInputManager;
 
     protected override void HandleExitInput() {
         sBookInputManager.HandleExitInput();
@@ -25,7 +23,7 @@ public class Script_SBookViewController : Script_SlotsViewController
     {
         UpdateSlots();
 
-        sBookInputManager = GetComponent<Script_SBookViewInputManager>();
+        sBookInputManager = GetComponent<Script_InventoryViewInputManager>();
         sBookInputManager.Setup(sBookController);
     }
 }

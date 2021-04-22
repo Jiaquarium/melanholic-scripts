@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This will reactivate the main event system 
 /// </summary>
-public class Script_ItemChoicesInputManager : Script_SBookViewInputManager
+public class Script_ItemChoicesInputManager : Script_InventoryViewInputManager
 {
     [SerializeField] private Script_InventoryManager inventoryManager;
     

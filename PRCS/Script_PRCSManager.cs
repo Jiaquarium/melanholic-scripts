@@ -179,6 +179,7 @@ public class Script_PRCSManager : MonoBehaviour
         }
 
         TimelinePRCSCanvasGroup.InitialState();
+        TimelinePRCSCanvasGroup.gameObject.SetActive(true);
     }
 
     public void Setup()

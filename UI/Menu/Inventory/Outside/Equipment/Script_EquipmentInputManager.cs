@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Script_EquipmentInputManager : Script_SBookViewInputManager
+public class Script_EquipmentInputManager : Script_InventoryViewInputManager
 {
     protected override void ExitView()
     {
         Debug.Log("ExitView caught from equipment input manager");
         
-        sBookController.ExitEquipmentView();
+        var controller = inventoryController as Script_SBookOverviewController;
+        controller?.ExitEquipmentView();
+
         base.ExitView();
     }
 }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Script_SBookViewInputManager : Script_ExitViewInputManager
+public class Script_InventoryViewInputManager : Script_ExitViewInputManager
 {
     [SerializeField] protected Script_EventSystemLastSelected eventSystemLastSelected;
-    protected Script_SBookOverviewController sBookController;
+    protected Script_InventoryController inventoryController;
 
     protected virtual void OnEnable()
     {
@@ -35,9 +35,9 @@ public class Script_SBookViewInputManager : Script_ExitViewInputManager
     }
 
     public void Setup(
-        Script_SBookOverviewController _SBookController
+        Script_InventoryController _inventoryController
     )
     {
-        sBookController = _SBookController;
+        inventoryController = _inventoryController;
     }
 }

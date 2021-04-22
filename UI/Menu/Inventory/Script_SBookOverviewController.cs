@@ -12,7 +12,7 @@ using UnityEngine.UI;
 /// elements
 /// Their EventSystem handles setting which active first
 /// </summary>
-public class Script_SBookOverviewController : Script_CanvasGroupController
+public class Script_SBookOverviewController : Script_InventoryController
 {
     public GameObject SBookOutsideCanvas;
     public GameObject outsideSBookSelectOnDownFromTopBar;
@@ -22,12 +22,14 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
     public Script_MenuController inventoryController;
     [SerializeField] private Script_ItemChoices itemChoices;
     [SerializeField] private Script_EventSystemLastSelected myEventSystem;
+    
     [Space]
+    // The last button selected, either the SBook Cover Button or Stickers Holder Button.
     [SerializeField] private GameObject lastSelectedBeforeExit;
 
     
     private void Update() {
-        if (inventoryController.inventoryState != Const_States_InventoryOverview.Overview)   return;
+        if (inventoryController.InventoryState != Script_MenuController.InventoryStates.Overview)   return;
         
         SetOutsideLastSelected();
     }
@@ -49,7 +51,7 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
         EventSystem.current.SetSelectedGameObject(lastSelectedBeforeExit);
     }
 
-    public void EnterInventoryView()
+    public override void EnterInventoryView()
     {
         print("EnterInventoryView() rehydrating inventoryViewController and activating myEventSystem MAIN");
         myEventSystem.gameObject.SetActive(true);
@@ -59,11 +61,12 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
         inventoryController.ChangeStateToInventoryView();
     }
 
-    public void ExitInventoryView()
+    public override void ExitInventoryView()
     {
         inventoryViewController.gameObject.SetActive(false);
         inventoryController.ChangeStateToOverview();
         print("setting lastSelectedBeforeExit: " + lastSelectedBeforeExit);
+        
         EventSystem.current.SetSelectedGameObject(lastSelectedBeforeExit);
     }
 
@@ -78,7 +81,7 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
     }
 
     /// <summary>
-    /// handle input from CollectibleInventoryHandler
+    /// Handle input from CollectibleInventoryHandler
     /// </summary>
     public void EnterFullArt()
     {
@@ -86,6 +89,7 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
         EventSystem.current.sendNavigationEvents = false;
         inventoryViewController.gameObject.SetActive(false);
     }
+
     public void ExitFullArt()
     {
         EventSystem.current.sendNavigationEvents = true;
@@ -107,14 +111,11 @@ public class Script_SBookOverviewController : Script_CanvasGroupController
             )
             {
                 lastSelectedBeforeExit = b;
-                // was only needed w/o openCloseButton, which now contains this switching nav logic 
-                // outsideSBookSelectOnDownFromTopBar = b;
-                // SetOverviewNavigationOutsideSBook();
             }
         }
     }
 
-    void InitializeState()
+    private void InitializeState()
     {
         SBookOutsideCanvas.SetActive(true);
         inventoryViewController.gameObject.SetActive(false);

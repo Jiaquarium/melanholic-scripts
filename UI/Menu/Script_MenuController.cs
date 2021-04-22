@@ -11,20 +11,33 @@ using UnityEngine.UI;
 /// </summary>
 public class Script_MenuController : Script_UIState
 {
+    public enum TopBarStates
+    {
+        stickers        = 0,
+        items           = 1,
+        notes           = 2,
+        entries         = 3,
+        thoughts        = 4,
+        memories        = 5
+    }
+
+    public enum InventoryStates
+    {
+        None        = 0,
+        Overview    = 1,
+        Inventory   = 2,
+        Equipment   = 3,
+        Items       = 4,
+        Entries     = 5
+    }
     
     public TopBarStates topBarState;
-    public enum TopBarStates{
-        inventory,
-        notes,
-        entries,
-        thoughts,
-        memories
-    }
-    public string inventoryState;
+    public InventoryStates inventoryState;
     public bool isSBookDisabled;
     public GameObject SBookOverviewButton;
     public GameObject initialStateSelected;
     public Script_SBookOverviewController SBookController;
+    [SerializeField] private Script_ItemsController itemsController;
     [SerializeField] private Script_NotesController notesController;
     [SerializeField] private Script_EntriesController entriesController;
     public Script_CanvasGroupController_Thoughts thoughtsController;
@@ -42,6 +55,12 @@ public class Script_MenuController : Script_UIState
     [SerializeField] private Button memoriesTopBarButton;
     private Selectable memoriesTopBarSelectOnDownButton;
 
+    public InventoryStates InventoryState
+    {
+        get => inventoryState;
+        set => inventoryState = value;
+    }
+
     void OnEnable()
     {
         ChangeTopBarState(topBarState);
@@ -49,11 +68,11 @@ public class Script_MenuController : Script_UIState
     
     void Update()
     {        
-        if (string.IsNullOrEmpty(inventoryState))
+        if (InventoryState == InventoryStates.None)
         {
             InitializeState();
         }
-        else if (inventoryState == Const_States_InventoryOverview.Overview)
+        else if (InventoryState == InventoryStates.Overview)
         {
             inputManager.HandleExitInput();
         }
@@ -63,33 +82,39 @@ public class Script_MenuController : Script_UIState
 
     public void ChangeStateToOverview()
     {
-        inventoryState = Const_States_InventoryOverview.Overview;
+        InventoryState = InventoryStates.Overview;
     }
 
     public void ChangeStateToInventoryView()
     {
-        Debug.Log($"MenuController inventoryState before stickers view: {inventoryState}");
-        inventoryState = Const_States_InventoryOverview.InventoryView;
+        Debug.Log($"MenuController inventoryState before stickers view: {InventoryState}");
+        InventoryState = InventoryStates.Inventory;
     }
 
     public void ChangeStateToEquipmentView()
     {
-        inventoryState = Const_States_InventoryOverview.EquipmentView;
+        InventoryState = InventoryStates.Equipment;
+    }
+
+    public void ChangeStateToItemsView()
+    {
+        InventoryState = InventoryStates.Items;
     }
 
     public void ChangeStateToEntriesView()
     {
-        inventoryState = Const_States_InventoryOverview.EntriesView;
+        InventoryState = InventoryStates.Entries;
     }
 
     public void ChangeTopBarState(TopBarStates state)
     {
         switch(state)
         {
-            case TopBarStates.inventory:
-                topBarState = TopBarStates.inventory;
+            case TopBarStates.stickers:
+                topBarState = TopBarStates.stickers;
 
                 SBookController.Open();
+                itemsController.Close();
                 thoughtsController.Close();
                 entriesController.Close();
                 memoriesController.Close();
@@ -97,10 +122,23 @@ public class Script_MenuController : Script_UIState
 
                 break;
 
+            case TopBarStates.items:
+                topBarState = TopBarStates.items;
+
+                SBookController.Close();
+                itemsController.Open();
+                thoughtsController.Close();
+                entriesController.Close();
+                memoriesController.Close();
+                notesController.Close();
+
+                break;
+            
             case TopBarStates.notes:
                 topBarState = TopBarStates.notes;
 
                 SBookController.Close();
+                itemsController.Close();
                 notesController.Open();
                 thoughtsController.Close();
                 entriesController.Close();
@@ -112,6 +150,7 @@ public class Script_MenuController : Script_UIState
                 topBarState = TopBarStates.entries;
 
                 SBookController.Close();
+                itemsController.Close();
                 notesController.Close();
                 entriesController.Open();
                 thoughtsController.Close();
@@ -123,6 +162,7 @@ public class Script_MenuController : Script_UIState
                 topBarState = TopBarStates.thoughts;
 
                 SBookController.Close();
+                itemsController.Close();
                 notesController.Close();
                 entriesController.Close();
                 thoughtsController.Open();
@@ -134,6 +174,7 @@ public class Script_MenuController : Script_UIState
                 topBarState = TopBarStates.memories;
 
                 SBookController.Close();
+                itemsController.Close();
                 notesController.Close();
                 entriesController.Close();
                 thoughtsController.Close();
@@ -276,7 +317,7 @@ public class Script_MenuController : Script_UIState
             EventSystem.current.SetSelectedGameObject(initialStateSelected);
         }
 
-        inventoryState = Const_States_InventoryOverview.Overview;
+        InventoryState = InventoryStates.Overview;
     }
 
     public void Setup()
@@ -288,6 +329,7 @@ public class Script_MenuController : Script_UIState
         inputManager.Setup();
         thoughtsController.Setup();
         SBookController.Setup();
+        itemsController.Setup();
         entriesController.Setup();
         memoriesController.Setup();
         inventoryManager.Setup();
