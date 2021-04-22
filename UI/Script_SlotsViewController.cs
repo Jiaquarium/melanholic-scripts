@@ -31,6 +31,8 @@ public class Script_SlotsViewController : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (HandleNavigatedOut())   return;
+        
         ShowActiveSlot();
         HandleExitInput();
     }
@@ -90,6 +92,24 @@ public class Script_SlotsViewController : MonoBehaviour
             if (slots[i].GetComponent<Script_Slot>() != null)
                 slots[i].GetComponent<Script_Slot>().Id = i;
         }
+    }
+
+    /// <summary>
+    /// Normally, the slots will be enclosed, but in the case you allow to navigate out,
+    /// this will treat it as an exit input.
+    /// </summary>
+    protected bool HandleNavigatedOut()
+    {
+        GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+        
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].gameObject == currentSelected)
+                return false;
+        }
+        
+        inputManager.HandleExitInput();
+        return true;
     }
 
     public virtual void Setup()

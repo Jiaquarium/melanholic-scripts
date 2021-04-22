@@ -21,7 +21,7 @@ public class Script_SBookViewController : Script_SlotsViewController
     
     public override void Setup()
     {
-        UpdateSlots();
+        base.Setup();
 
         sBookInputManager = GetComponent<Script_InventoryViewInputManager>();
         sBookInputManager.Setup(sBookController);
