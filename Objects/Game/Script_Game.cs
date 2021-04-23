@@ -980,9 +980,14 @@ public class Script_Game : MonoBehaviour
         entries = new Script_Entry[0];
     }
 
-    public void HighlightItem(int id, bool isOn, bool showDesc)
+    public void HighlightItem(
+        int id,
+        bool isOn,
+        bool showDesc,
+        Script_InventoryManager.Types type
+    )
     {
-        menuController.HighlightItem(id, isOn, showDesc);
+        menuController.HighlightItem(id, isOn, showDesc, type);
     }
 
     public bool AddItem(Script_Item item)

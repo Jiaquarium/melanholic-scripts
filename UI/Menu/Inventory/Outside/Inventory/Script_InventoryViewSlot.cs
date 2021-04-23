@@ -5,7 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Script_ItemSlotButtonHighlighter))]
 public class Script_InventoryViewSlot : Script_Slot
 {
+    [SerializeField] private Script_InventoryManager.Types type;
     [SerializeField] Script_InventoryManager inventoryManager;
+
+    public Script_InventoryManager.Types Type
+    {
+        get => type;
+    }
     
     /// <summary>
     /// called from Inventory Slot OnClick
@@ -13,7 +19,7 @@ public class Script_InventoryViewSlot : Script_Slot
     public void OnEnter()
     {
         // keep button highlighted ONLY if going to show choices
-        if (inventoryManager.ShowItemChoices(Id))
+        if (inventoryManager.ShowItemChoices(Id, type))
         {
             Script_ItemSlotButtonHighlighter h = GetComponent<Script_ItemSlotButtonHighlighter>();
             h.isEnterPressed = true;

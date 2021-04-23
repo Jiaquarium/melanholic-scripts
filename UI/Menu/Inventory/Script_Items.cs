@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,13 +11,13 @@ using UnityEditor;
 /// Handles inventory State data
 /// Should only be used by Script_InventoryManager and its Handlers
 /// 
-/// Script_Items is the same as this.
+/// Script_Inventory is the same as this.
 /// </summary>
-public class Script_Inventory : MonoBehaviour
+public class Script_Items : MonoBehaviour
 {
     [SerializeField] private Image[] itemImages = new Image[numItemSlots]; 
     [SerializeField] private Script_Item[] items = new Script_Item[numItemSlots];
-    public const int numItemSlots = 9;
+    public const int numItemSlots = 15;
 
     public Script_Item[] Items
     {
@@ -61,12 +61,12 @@ public class Script_Inventory : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Script_Inventory))]
-public class Script_InventoryEditor : Editor
+[CustomEditor(typeof(Script_Items))]
+public class Script_ItemsEditor : Editor
 {
     private SerializedProperty itemsProperty;
     private SerializedProperty itemImagesProperty;
-    private static bool[] showItemSlots = new bool[Script_Inventory.numItemSlots];
+    private static bool[] showItemSlots = new bool[Script_Items.numItemSlots];
 
     private const string InventoryPropItemImagesName = "itemImages";
     private const string InventoryPropItemName = "items";
@@ -82,7 +82,7 @@ public class Script_InventoryEditor : Editor
         // ensure our serialized object is up-to-date with the Inventory
         serializedObject.Update();
         
-        for (int i = 0; i < Script_Inventory.numItemSlots; i++)
+        for (int i = 0; i < Script_Items.numItemSlots; i++)
         {
             ItemSlotGUI(i);
         }

@@ -209,9 +209,14 @@ public class Script_MenuController : Script_UIState
         return inventoryManager.GetEquipmentItems();
     }
 
-    public void HighlightItem(int id, bool isOn, bool showDesc)
+    public void HighlightItem(
+        int id,
+        bool isOn,
+        bool showDesc,
+        Script_InventoryManager.Types type
+    )
     {
-        inventoryManager.HighlightItem(id, isOn, showDesc);
+        inventoryManager.HighlightItem(id, isOn, showDesc, type);
     }
 
     public bool AddItem(Script_Item item)

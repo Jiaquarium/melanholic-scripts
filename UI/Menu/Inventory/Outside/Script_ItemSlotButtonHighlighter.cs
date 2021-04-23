@@ -4,18 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-// [RequireComponent(typeof(Script_InventoryViewSlot))]
+[RequireComponent(typeof(Script_InventoryViewSlot))]
 public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelectHandler, IDeselectHandler
 {
     public bool isEnterPressed;
     
+    private Script_InventoryManager.Types type;
+    
+    void Awake()
+    {
+        type = GetComponent<Script_InventoryViewSlot>().Type;
+    }
+    
     /// Allow to keep item slot highlighted when moving to itemChoices
     public void ForceHighlightItemChoices()
     {
-        HighlightAndShowDescription(true, false);
+        HighlightAndShowDescription(true, false, type);
     }
     
-    private void HighlightAndShowDescription(bool isOn, bool withItemDescription)
+    private void HighlightAndShowDescription(
+        bool isOn,
+        bool withItemDescription,
+        Script_InventoryManager.Types type
+    )
     {
         Debug.Log($"HighlightSlot{isOn}");
         
@@ -23,7 +34,7 @@ public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelec
         {
             img.enabled = isOn;
             int myId = GetComponent<Script_InventoryViewSlot>().Id;
-            Script_Game.Game.HighlightItem(myId, isOn, withItemDescription);
+            Script_Game.Game.HighlightItem(myId, isOn, withItemDescription, type);
         }
         
         isHighlighted = isOn;
@@ -38,7 +49,7 @@ public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelec
     {
         Debug.Log("Slot OnSelect()");
         // after itemChoices, active will return after "Enter" sequence
-        HighlightAndShowDescription(true, true);
+        HighlightAndShowDescription(true, true, type);
         isEnterPressed = false;
     }
     public override void OnDeselect(BaseEventData e)
@@ -46,7 +57,7 @@ public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelec
         if (!isEnterPressed)
         {
             Debug.Log("Slot Deselect()");
-            HighlightAndShowDescription(false, false);
+            HighlightAndShowDescription(false, false, type);
         }
     }
 }

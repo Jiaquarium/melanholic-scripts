@@ -10,16 +10,36 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Script_InventoryManager : MonoBehaviour
 {
+    public enum Types
+    {
+        Stickers,
+        Items
+    }
+    
+    [SerializeField] private Script_MenuController menuController;
+    
     [SerializeField] private Script_SBookOverviewController sBookController;
+    [SerializeField] private Script_ItemsController itemsController;
+    
     [SerializeField] private Script_InventoryViewController inventoryViewController;
+    [SerializeField] private Script_InventoryViewController itemsViewController;
+    
     [SerializeField] private Script_ItemChoices stickerChoices;
     [SerializeField] private Script_ItemChoices collectibleChoices;
     [SerializeField] private Script_ItemChoices usableChoices;
     [SerializeField] private Script_ItemChoice initialItemChoice;
+    
+    // Stickers
     [SerializeField] private Script_Inventory inventory;
+    // Items
+    [SerializeField] private Script_Items items;
+    
     [SerializeField] private Script_Equipment equipment;
     [SerializeField] private Script_InventoryAudioSettings settings;
-    [SerializeField] private Script_ItemChoicesInputManager itemChoicesInputManager;
+    
+    [SerializeField] private Script_ItemChoicesInputManager stickersChoicesInputManager;
+    [SerializeField] private Script_ItemChoicesInputManager itemsChoicesInputManager;
+    
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
     private Script_StickersInventoryHandler stickersHandler;
     private Script_CollectiblesInventoryHandler collectiblesHandler;
@@ -91,7 +111,7 @@ public class Script_InventoryManager : MonoBehaviour
     // Setters
     public bool AddItemById(string itemId)
     {
-        // get the ItemObject from dict by Id
+        // Get the ItemObject from dict by Id
         Script_ItemObject itemToAdd;
         GetItemObjectById(itemId, out itemToAdd);
 
@@ -103,7 +123,10 @@ public class Script_InventoryManager : MonoBehaviour
         Script_ItemObject itemToAdd;
         GetItemObjectById(itemId, out itemToAdd);
 
-        return inventory.AddItemInSlot(itemToAdd.Item, i);
+        if (itemToAdd.Item is Script_Sticker)
+            return inventory.AddItemInSlot(itemToAdd.Item, i);
+        else
+            return items.AddItemInSlot(itemToAdd.Item, i);
     }
 
     public bool AddEquippedItemInSlotById(string equipmentId, int i)
@@ -130,74 +153,141 @@ public class Script_InventoryManager : MonoBehaviour
     
     public bool AddItem(Script_Item item)
     {
-        return inventory.AddItem(item);
+        if (item is Script_Sticker)
+            return inventory.AddItem(item);
+        else
+            return items.AddItem(item);
     }
 
     public bool RemoveItem(Script_Item item)
     {
-        return inventory.RemoveItem(item);
+        if (item is Script_Sticker)
+            return inventory.RemoveItem(item);
+        else
+            return items.RemoveItem(item);
     }
 
-    public void HighlightItem(int i, bool isOn, bool showDescription)
+    public void HighlightItem(
+        int i,
+        bool isOn,
+        bool showDescription,
+        Types type
+    )
     {
         Debug.Log($"HighlightItem: {i}");
-        inventory.HighlightItem(i, isOn);
+        
+        switch(type)
+        {
+            case Types.Stickers:
+                inventory.HighlightItem(i, isOn);
+                break;
+            case Types.Items:
+                items.HighlightItem(i, isOn);
+                break;
+        }
 
         // call to replace itemDescription text
         if (isOn && showDescription)
         {
             Debug.Log($"Show item description text: {i}");
-            HandleItemDescription(i);
+            HandleItemDescription(i, type);
         }
     }
 
     // ------------------------------------------------------------------
     // View
-    public void HandleItemDescription(int i)
+    private void HandleItemDescription(int i, Types type)
     {
-        Script_Item item = inventory.GetItemInSlot(i);
-        inventoryViewController.HandleItemDescription(item);
+        switch(type)
+        {
+            case Types.Stickers:
+                Script_Item _item = inventory.GetItemInSlot(i);
+                inventoryViewController.HandleItemDescription(_item);
+                break;
+            case Types.Items:
+                Script_Item item = items.GetItemInSlot(i);
+                itemsViewController.HandleItemDescription(item);
+                break;
+        }
     }
 
     // ------------------------------------------------------------------
     // Item Choices
-    public bool ShowItemChoices(int itemSlotId)
+    public bool ShowItemChoices(int itemSlotId, Types type)
     {
-        // check if item exists
-        if (inventory.GetItemInSlot(itemSlotId))
+        switch (type)
         {
-            // SBook Controller will handle EventSystem, setting active
-            Script_Item item = inventory.GetItemInSlot(itemSlotId);
-            switch(item)
-            {
-                case Script_Sticker sticker:
-                    itemChoices = stickerChoices;
-                    break;
-                case Script_Collectible collectible:
-                    itemChoices = collectibleChoices;
-                    break;
-                case Script_Usable collectible:
-                    itemChoices = usableChoices;
-                    break;
-                default:
-                    Debug.Log("Error. Did not match a type for this item.");
-                    break;
-            }
-
-            itemChoices.itemSlotId = itemSlotId;
-            itemChoices.SetDropChoice(item.isDroppable);
-
-            sBookController.EnterItemChoices(itemChoices);
-            Debug.Log("SETTING INPUT MANAGER TO ACTIVE");
-            itemChoicesInputManager.gameObject.SetActive(true);
-
-            return true;
+            case Types.Stickers:
+                if (GetItemInStickers(itemSlotId))  return true;
+                break;
+            case Types.Items:
+                if (GetItemInItems(itemSlotId))     return true;
+                break;
         }
 
-        print("no item in slot");
-        // TODO: SFX
+        Debug.Log("no item in slot");
         ErrorSFX();
         return false;
+        
+        bool GetItemInStickers(int itemSlotId)
+        {
+            if (inventory.GetItemInSlot(itemSlotId))
+            {
+                // SBook Controller will handle EventSystem, setting active
+                Script_Item item = inventory.GetItemInSlot(itemSlotId);
+                switch(item)
+                {
+                    case Script_Sticker sticker:
+                        itemChoices = stickerChoices;
+                        break;
+                    default:
+                        Debug.Log("Error. Did not match a type for this item.");
+                        break;
+                }
+
+                itemChoices.itemSlotId = itemSlotId;
+                itemChoices.SetDropChoice(item.isDroppable);
+                sBookController.EnterItemChoices(itemChoices);
+                stickersChoicesInputManager.gameObject.SetActive(true);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        bool GetItemInItems(int itemSlotId)
+        {
+            if (items.GetItemInSlot(itemSlotId))
+            {
+                // SBook Controller will handle EventSystem, setting active
+                Script_Item item = items.GetItemInSlot(itemSlotId);
+                
+                Debug.Log($"ITEM IS TYPE: {item.GetType()}");
+                
+                switch(item)
+                {
+                    case Script_Collectible collectible:
+                        itemChoices = collectibleChoices;
+                        break;
+                    case Script_Usable collectible:
+                        itemChoices = usableChoices;
+                        break;
+                    default:
+                        Debug.Log("Error. Did not match a type for this item.");
+                        break;
+                }
+
+                itemChoices.itemSlotId = itemSlotId;
+                itemChoices.SetDropChoice(item.isDroppable);
+                itemsController.EnterItemChoices(itemChoices);
+                itemsChoicesInputManager.gameObject.SetActive(true);
+
+                return true;   
+            }
+            
+            return false;
+        }
     }
 
     void HideItemChoices()
@@ -219,15 +309,15 @@ public class Script_InventoryManager : MonoBehaviour
                 break;
             case ItemChoices.Examine:
                 Examine(
-                    (Script_Collectible)inventory.GetItemInSlot(itemSlotId)
+                    (Script_Collectible)items.GetItemInSlot(itemSlotId)
                 );
                 break;
             case ItemChoices.Drop:
-                Drop(inventory.GetItemInSlot(itemSlotId), itemSlotId);
+                Drop(items.GetItemInSlot(itemSlotId), itemSlotId);
                 break;
             case ItemChoices.Use:
                 Use(
-                    (Script_Usable)inventory.GetItemInSlot(itemSlotId), itemSlotId
+                    (Script_Usable)items.GetItemInSlot(itemSlotId), itemSlotId
                 );
                 /// DON'T EnterInventory() here in case we need to exit on successful use
                 /// CutScene will exit for us
@@ -394,9 +484,21 @@ public class Script_InventoryManager : MonoBehaviour
     // ------------------------------------------------------------------
     // Item Choices
 
+    // Check Topbar State to decide which Inventory to reenter.
     public void EnterInventory()
     {
-        sBookController.EnterInventoryView();
+        switch (menuController.topBarState)
+        {
+            case (Script_MenuController.TopBarStates.stickers):
+                sBookController.EnterInventoryView();
+                break;
+            case (Script_MenuController.TopBarStates.items):
+                itemsController.EnterInventoryView();
+                break;
+            default:
+                Debug.LogWarning($"{name}: You are trying to reenter inventory while in non-inventory view.");
+                break;
+        }
     }
 
     public void ErrorSFX()
@@ -425,6 +527,7 @@ public class Script_InventoryManager : MonoBehaviour
         stickerChoices.gameObject.SetActive(false);
         collectibleChoices.gameObject.SetActive(false);
         usableChoices.gameObject.SetActive(false);
-        itemChoicesInputManager.gameObject.SetActive(false);
+        stickersChoicesInputManager.gameObject.SetActive(false);
+        itemsChoicesInputManager.gameObject.SetActive(false);
     }
 }

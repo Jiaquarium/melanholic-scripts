@@ -81,24 +81,6 @@ public class Script_SBookOverviewController : Script_InventoryController
     }
 
     /// <summary>
-    /// Handle input from CollectibleInventoryHandler
-    /// </summary>
-    public void EnterFullArt()
-    {
-        myEventSystem.gameObject.SetActive(true);
-        EventSystem.current.sendNavigationEvents = false;
-        inventoryViewController.gameObject.SetActive(false);
-    }
-
-    public void ExitFullArt()
-    {
-        EventSystem.current.sendNavigationEvents = true;
-        inventoryViewController.gameObject.SetActive(true);
-
-        EnterInventoryView();
-    }
-
-    /// <summary>
     /// saves the slot we were on -- this object needs to be set inactive to keep the reference
     /// </summary>
     void SetOutsideLastSelected()

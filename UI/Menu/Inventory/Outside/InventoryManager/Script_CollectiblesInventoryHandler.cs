@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Script_CollectiblesInventoryHandler : MonoBehaviour
 {
     [SerializeField] private Script_UIState mainController;
-    [SerializeField] private Script_SBookOverviewController SBookOverviewController;
+    [SerializeField] private Script_ItemsController ItemsController;
     [SerializeField] private Script_FullArtDictionary fullArtDictionary;
     private Script_InventoryAudioSettings settings;
     private bool isFullArtMode;
@@ -43,7 +43,7 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
                     collectible = null;
 
                     // reactivate EventSystemMain and get back to inventory slots
-                    SBookOverviewController.ExitFullArt();
+                    ItemsController.ExitFullArt();
                 });
             }
             else
@@ -65,12 +65,12 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
             // the key isn't in the dictionary.
             print("value of fullArt" + fullArt);
             Debug.LogError($"Key:{collectible.fullArtId} is not in dictionary");
-            SBookOverviewController.ExitFullArt();
+            ItemsController.ExitFullArt();
             return;
         }
         
         isInputDisabled = true;
-        SBookOverviewController.EnterFullArt();
+        ItemsController.EnterFullArt();
         Script_Game.Game.fullArtManager.ShowFullArt(
             fullArt,
             collectible.fadeInSpeed,  // Use collectible fadeIn speed so fullArt can be extensible
