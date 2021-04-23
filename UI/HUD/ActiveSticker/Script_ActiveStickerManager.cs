@@ -9,6 +9,9 @@ using UnityEngine.Playables;
 public class Script_ActiveStickerManager : MonoBehaviour
 {
     public static Script_ActiveStickerManager Control;
+    
+    [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
+    
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_ActiveSticker activeSticker;
     [SerializeField] private FadeSpeeds fadeSpeed;
@@ -24,13 +27,17 @@ public class Script_ActiveStickerManager : MonoBehaviour
         return ActiveSticker?.id == id;
     }
     
-    public bool AddSticker(Script_Sticker stickerToAdd)
+    public bool AddSticker(Script_Sticker stickerToAdd, int i)
     {
+        stickerHolsterManager.HighlightSlot(i, true);
+
         return activeSticker.AddSticker(stickerToAdd);
     }
 
-    public bool RemoveSticker()
+    public bool RemoveSticker(int i)
     {
+        stickerHolsterManager.HighlightSlot(i, false);
+        
         return activeSticker.RemoveSticker();
     }
 

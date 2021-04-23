@@ -28,6 +28,7 @@ public class Script_ActiveSticker : MonoBehaviour
         stickers[0] = stickerToAdd;
         stickerImages[0].sprite = stickerToAdd.sprite;
         stickerImages[0].enabled = true;
+        
         return true;
     }
 
@@ -36,6 +37,7 @@ public class Script_ActiveSticker : MonoBehaviour
         stickers[0] = null;
         stickerImages[0].sprite = null;
         stickerImages[0].enabled = false;
+
         return true;
     }
 }

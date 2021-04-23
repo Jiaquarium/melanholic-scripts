@@ -38,7 +38,7 @@ public class Script_StickerHolsterManager : MonoBehaviour
     {
         if (GetSticker(i) == Script_ActiveStickerManager.Control.ActiveSticker)
         {
-            Script_ActiveStickerManager.Control.RemoveSticker();
+            Script_ActiveStickerManager.Control.RemoveSticker(i);
         }
         
         return stickerHolster.RemoveStickerInSlot(i);
@@ -47,6 +47,11 @@ public class Script_StickerHolsterManager : MonoBehaviour
     public Script_Sticker GetSticker(int i)
     {
         return stickerHolster.GetStickerInSlot(i);
+    }
+
+    public void HighlightSlot(int i, bool isHighlight)
+    {
+        stickerHolster.HighlightStickerInSlot(i, isHighlight);
     }
     
     public void Setup()

@@ -59,6 +59,21 @@ public class Script_StickerHolster : MonoBehaviour
         stickerImages[i].enabled = false;
         return true;        
     }
+
+    // Only 1 Sticker can be highlighted at a time.
+    public void HighlightStickerInSlot(int slotIdx, bool isHighlight)
+    {
+        for (int i = 0; i < stickers.Length; i++)
+        {
+            if (stickers[i] != null)
+            {
+                if (i == slotIdx && isHighlight)
+                    stickerImages[slotIdx].sprite = stickers[i].focusedSprite;
+                else
+                    stickerImages[i].sprite = stickers[i].sprite;
+            }
+        }
+    }
 }
 
 #if UNITY_EDITOR

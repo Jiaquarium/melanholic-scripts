@@ -59,7 +59,7 @@ public class Script_StickerEffectsController : MonoBehaviour
         {
             EquipEffect(activeSticker, false);
                 
-            Script_ActiveStickerManager.Control.RemoveSticker();   
+            Script_ActiveStickerManager.Control.RemoveSticker(i);
         }
 
         // When pressing another Sticker Holster slot that is currently not the Action Sticker.
@@ -68,7 +68,7 @@ public class Script_StickerEffectsController : MonoBehaviour
             // If there is an existing Action Sticker, call its Unequip Effect.
             if (activeSticker != null)  EquipEffect(activeSticker, false);
 
-            Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch);
+            Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch, i);
             
             EquipEffect(stickerToSwitch, true);
         }
