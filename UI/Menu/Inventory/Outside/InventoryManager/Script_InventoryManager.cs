@@ -48,9 +48,14 @@ public class Script_InventoryManager : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Getters
-    public Script_Item[] GetInventoryItems()
+    public Script_Item[] GetStickers()
     {
         return inventory.Items;
+    }
+
+    public Script_Item[] GetItems()
+    {
+        return items.Items;
     }
 
     public Script_Sticker[] GetEquipmentItems()

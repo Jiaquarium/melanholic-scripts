@@ -199,9 +199,14 @@ public class Script_MenuController : Script_UIState
         SBookOverviewButton.SetActive(isActive);
     }
 
-    public Script_Item[] GetInventoryItems()
+    public Script_Item[] GetStickers()
     {
-        return inventoryManager.GetInventoryItems();
+        return inventoryManager.GetStickers();
+    }
+
+    public Script_Item[] GetItems()
+    {
+        return inventoryManager.GetItems();
     }
 
     public Script_Sticker[] GetEquipmentItems()

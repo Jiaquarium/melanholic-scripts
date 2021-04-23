@@ -1030,9 +1030,14 @@ public class Script_Game : MonoBehaviour
         return menuController.CheckStickerEquippedById(stickerId);
     }
 
-    public Script_Item[] GetInventoryItems()
+    public Script_Item[] GetStickers()
     {
-        return menuController.GetInventoryItems();
+        return menuController.GetStickers();
+    }
+
+    public Script_Item[] GetItems()
+    {
+        return menuController.GetItems();
     }
 
     public Script_Sticker[] GetEquipmentItems()
