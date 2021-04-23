@@ -11,7 +11,7 @@ public class Script_Equipment : MonoBehaviour
 {
     [SerializeField] private Image[] stickerImages = new Image[numItemSlots]; 
     [SerializeField] private Script_Sticker[] stickers = new Script_Sticker[numItemSlots];
-    public const int numItemSlots = 9;
+    public const int numItemSlots = 4;
     public Script_Inventory inventory;
 
     public Script_Sticker[] Items
@@ -22,6 +22,16 @@ public class Script_Equipment : MonoBehaviour
     public Script_Sticker GetStickerInSlot(int Id)
     {
         return stickers[Id];
+    }
+
+    public bool HasSpace()
+    {
+        foreach (Script_Sticker sticker in stickers)
+        {
+            if (sticker == null)    return true;
+        }
+        
+        return false;
     }
     
     /// <returns>false, if stickers are full</returns>

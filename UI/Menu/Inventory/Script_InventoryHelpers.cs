@@ -14,6 +14,7 @@ public static class Script_InventoryHelpers
     {
         foreach (Script_Item item in items)
             if (item == null)   return true;
+        
         return false;
     }
 

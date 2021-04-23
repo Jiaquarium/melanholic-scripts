@@ -16,7 +16,7 @@ public class Script_StickersInventoryHandler : MonoBehaviour
     {
         /// Try to equip, checking if we can equip it & if equipment is full
         int equipmentSlotId;
-        if (equipment.AddSticker(sticker, out equipmentSlotId))
+        if (equipment.HasSpace() && equipment.AddSticker(sticker, out equipmentSlotId))
         {
             /// On successful equip, remove sticker from Inventory
             /// and also update Sticker Holster (done in Equipment)
