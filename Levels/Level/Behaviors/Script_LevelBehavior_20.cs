@@ -17,6 +17,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_20 : Script_LevelBehavior
 {
+    public const string MapName = "The Ballroom";
+    
     /* =======================================================================
         STATE DATA
     ======================================================================= */
@@ -114,6 +116,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     private Script_TimelineController timelineController;
     private bool isInitialCutScene;
+
+    private bool didMapNotification;
+
     private bool isInit = true;
     
     /// DEV ONLY
@@ -147,31 +152,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         foreach(Script_DestroyTriggerCollectibles trig in destroyTriggerCollectibles)
                                                         trig.gameObject.SetActive(false);
         foreach(GameObject buff in buffs)               buff.SetActive(false);
-
-        /// Melz Intro Run
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            if (!entranceCutSceneDone)
-            {
-                EntranceCutScene();
-            }
-        }        
-
-        void EntranceCutScene()
-        {
-            Kaffe.gameObject.SetActive(false);
-            Latte.gameObject.SetActive(false);
-            Melz.gameObject.SetActive(false);
-            
-            game.ChangeStateCutScene();
-            timelineController.PlayableDirectorPlayFromTimelines(1, 1);
-            /// Set VCam through code as when Timeline ends we need control to remain
-            /// on VCam focusing on Melz and the Lovers 
-            Script_VCamManager.VCamMain.SetNewVCam(vCamEntrance);
-            
-            entranceCutSceneDone = true;
-            isInitialCutScene = true; // Set this to change to cut scene
-        }
     }
     
     protected override void OnEnable()
@@ -225,14 +205,13 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         base.Update();
     }
 
-    public override void OnLevelInitComplete()
-    {
-        OnMelzIntroCutScene();
-    }
-
     public void OnLevelInitCompleteEvent()
     {
-        
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
     }
 
     protected override void HandleAction()
@@ -570,20 +549,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     }
 
     // ----------------------------------------------------------------------
-
-    private void OnMelzIntroCutScene()
-    {
-        /// Melz Intro Run
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            /// Set in Awake() to signal we're doing Melz intro cut scene
-            if (isInitialCutScene)
-            {
-                game.ChangeStateCutScene();
-                isInitialCutScene = false;
-            }
-        }
-    }
 
     private void AfterglowBgMusic()
     {

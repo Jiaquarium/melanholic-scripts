@@ -441,6 +441,11 @@ public static class Script_Utils
         return $"{run.ToString()}";
     }
 
+    public static string AddBrackets(this string text, bool withSpace = true)
+    {
+        return withSpace ? $"『 {text} 』" : $"『{text}』";
+    }
+
     /// <summary>
     /// Sets an up and down UI elements list explicit navigation
     /// Ensure each element in the array has a Button component

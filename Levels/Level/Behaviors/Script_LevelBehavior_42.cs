@@ -10,6 +10,8 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_42 : Script_LevelBehavior
 {
+    public const string MapName = "Wells World";
+    
     // ==================================================================
     // State Data
     public bool didPickUpLastWellMap;
@@ -37,18 +39,33 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
     [SerializeField] private Script_Snow[] heavySnows;
 
+    private bool didMapNotification;
+
     protected override void OnEnable()
     {
-        Script_PuzzlesEventsManager.OnPuzzleSuccess += OnPuzzleSuccess;
-        Script_ItemsEventsManager.OnItemPickUp      += OnItemPickUp;
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        
+        Script_PuzzlesEventsManager.OnPuzzleSuccess     += OnPuzzleSuccess;
+        Script_ItemsEventsManager.OnItemPickUp          += OnItemPickUp;
     }
 
     protected override void OnDisable()
     {
-        Script_PuzzlesEventsManager.OnPuzzleSuccess -= OnPuzzleSuccess;
-        Script_ItemsEventsManager.OnItemPickUp      -= OnItemPickUp;
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        
+        Script_PuzzlesEventsManager.OnPuzzleSuccess     -= OnPuzzleSuccess;
+        Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
     }
 
+    private void OnLevelInitCompleteEvent()
+    {
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
+    }
+    
     private void OnItemPickUp(string itemId)
     {
         if (itemId == lastWellMaps[0].Item.id)

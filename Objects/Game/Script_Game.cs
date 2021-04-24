@@ -55,9 +55,8 @@ public class Script_Game : MonoBehaviour
     
     public Script_PlayerThoughtHandler playerThoughtHandler;
     public Script_PlayerThoughtsInventoryManager playerThoughtsInventoryManager;
-    [SerializeField] private Script_TransitionManager transitionManager;
+    
     public PlayableDirector dieTimelineDirector;
-    public Script_CutSceneManager cutSceneManager;
     public Script_Exits exitsHandler;
     
     // ------------------------------------------------------------------
@@ -78,10 +77,12 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_SaveViewManager saveManager;
     [SerializeField] private Script_MenuController menuController;
     [SerializeField] private Script_InventoryAudioSettings canvasesAudioSource;
+    [SerializeField] private Script_TransitionManager transitionManager;
     public Script_EntryManager entryManager;
     public Script_ThoughtManager thoughtManager;
     public Script_HintManager hintManager;
     public Script_FullArtManager fullArtManager;
+    public Script_CutSceneManager cutSceneManager;
     [SerializeField] private Script_PRCSManager PRCSManager;
     
     [SerializeField] private Script_ElevatorManager elevatorManager;
@@ -110,6 +111,8 @@ public class Script_Game : MonoBehaviour
     
     [SerializeField] private Script_SaveGameControl saveGameControl;
     [SerializeField] private Script_EventCycleManager eventCycleManager;
+
+    [SerializeField] private Script_MapNotificationsManager mapNotificationsManager;
 
     // ------------------------------------------------------------------
     // Canvases
@@ -365,6 +368,7 @@ public class Script_Game : MonoBehaviour
         runsManager.Setup();
         weatherFXManager.Setup();
         eventCycleManager.Setup();
+        mapNotificationsManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
         

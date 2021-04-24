@@ -8,6 +8,8 @@ using UnityEditor;
 
 public class Script_LevelBehavior_44 : Script_LevelBehavior
 {
+    public const string MapName = "XXX World";
+    
     // ==================================================================
     // State Data
     
@@ -15,6 +17,27 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
 
     [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;   
 
+    private bool didMapNotification;
+
+    protected override void OnEnable()
+    {
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+    }
+
+    protected override void OnDisable()
+    {
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+    }
+
+    private void OnLevelInitCompleteEvent()
+    {
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
+    }
+    
     public void PaintingsDone()
     {
         foreach (var painting in paintingEntrances)
