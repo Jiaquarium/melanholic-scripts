@@ -16,6 +16,8 @@ using System;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_10 : Script_LevelBehavior
 {
+    public const string MapName = "The Sanctuary";
+    
     public const string NRoomTriggerId = "room_N";
     public const string ERoomTriggerId = "room_E";
     
@@ -95,9 +97,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     private bool downMoveDone;
     private bool upMoveDone;
     private bool rightMoveDone;
+    
+    private bool didMapNotification;
 
     protected override void OnEnable()
     {
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        
         IdsDirector.stopped                     += OnIdsMovesDone;    
         nameplateDirector.stopped               += OnNameplateDone;
         Script_DDREventsManager.OnDDRDone       += OnDDRDone;
@@ -106,6 +112,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     protected override void OnDisable()
     {
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        
         IdsDirector.stopped                     -= OnIdsMovesDone;
         nameplateDirector.stopped               -= OnNameplateDone;
         Script_DDREventsManager.OnDDRDone       -= OnDDRDone;
@@ -122,6 +130,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         HandleAction();
         HandleIdsDanceScene();
+    }
+
+    private void OnLevelInitCompleteEvent()
+    {
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
     }
 
     protected override void HandleAction()

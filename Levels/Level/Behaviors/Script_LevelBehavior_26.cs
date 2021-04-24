@@ -13,6 +13,8 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_26 : Script_LevelBehavior
 {
+    public const string MapName = "Inside a Painting";
+    
     /* =======================================================================
         STATE DATA
     ======================================================================= */
@@ -51,10 +53,15 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     private Script_LBSwitchHandler switchHandler;
     private bool isPauseSpikes;
+    
+    private bool didMapNotification;
+    
     private bool isInitialize = true;
     
     protected override void OnEnable()
     {
+        Script_GameEventsManager.OnLevelInitComplete        += OnLevelInitCompleteEvent;
+
         Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
         dramaticThoughtsDirector.stopped                    += OnDramaticThoughtsDone;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
@@ -62,6 +69,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     protected override void OnDisable()
     {
+        Script_GameEventsManager.OnLevelInitComplete        -= OnLevelInitCompleteEvent;
+        
         Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
         dramaticThoughtsDirector.stopped                    -= OnDramaticThoughtsDone;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
@@ -116,6 +125,15 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
             // Painting Done Cut Scene Timeline
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(2, 2);
+        }
+    }
+
+    private void OnLevelInitCompleteEvent()
+    {
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
         }
     }
 
