@@ -34,7 +34,7 @@ public class Script_TransitionManager : MonoBehaviour
     
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
-    public float underDialogueFadeTime = 1.5f;
+    public const float UnderDialogueFadeTime = 1.5f;
     public Script_CanvasGroupController restartPrompt;
 
     private Script_GameOverController.DeathTypes deathType;
@@ -49,9 +49,10 @@ public class Script_TransitionManager : MonoBehaviour
         return fader.FadeOutCo(t, action);
     }
 
-    public void UnderDialogueBlackScreen()
+    public void UnderDialogueBlackScreen(bool isOpen = true)
     {
-        underDialogueController.Open();
+        if (isOpen) underDialogueController.Open();
+        else        underDialogueController.Close();
     }
 
     public void UnderDialogueFadeIn(float t, Action action)

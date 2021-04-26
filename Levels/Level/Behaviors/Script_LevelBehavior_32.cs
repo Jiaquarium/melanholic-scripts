@@ -9,6 +9,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_32 : Script_LevelBehavior
 {
+    private static string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
+    
     /* =======================================================================
         STATE DATA
     ======================================================================= */
@@ -19,7 +21,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode[] frontDoorNodes;
 
     [SerializeField] private Transform interactableObjectsParent;
-    [SerializeField] private Script_BgThemePlayer dreamBgmPlayer;
     [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
 
     [SerializeField] private Script_InteractableObject hotelFrontDoor;
@@ -34,20 +35,39 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // Dev Only TBD DELETE
     public string DEVELOPMENT_CCTVCodeInput;
 
-    private void Start()
-    {
-        Debug.Log($"{name} didStartThought: {didStartThought}");
-        
-        if (!didStartThought && !Const_Dev.IsDevMode)
-        {
-            Debug.Log($"**** {name} starting openeing cut scene ****");
-            game.UnderDialogueBlackScreen();            
-        }
-    }
-
     public override void OnLevelInitComplete()
     {
+        // On New Game, the starting sequence will follow the Day Notification.
         if (!didStartThought && !Const_Dev.IsDevMode)
+        {
+            Script_DayNotificationManager.Control.PlayDayNotification(
+                StartNewGameSequence,
+                _isInteractAfter: false
+            );
+        }
+        else
+        {
+            Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                {
+                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.FadeInSlow(() => {
+                        game.ChangeStateInteract();
+                    }, BGMParam);
+                },
+                _isInteractAfter: false
+            );
+
+            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+
+            IEnumerator CloseUnderDialogueBlackScreenNextFrame()
+            {
+                yield return null;
+
+                Script_TransitionManager.Control.UnderDialogueBlackScreen(false);
+            }
+        }
+
+        void StartNewGameSequence()
         {
             game.ChangeStateCutScene();
             
@@ -87,14 +107,12 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // Next Node Action START
     public void OnEndStartDialogue()
     {
-        dreamBgmPlayer.gameObject.SetActive(false);
-        game.UnPauseBgMusic();
+        Script_BackgroundMusicManager.Control.UnPause();
+        Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
         
         /// Fade out black canvas
-        game.UnderDialogueTransitionFadeOut(game.GetUnderDialogueFadeTime(), () => {
-            /// Initial Save
-            // game.SaveDefault();
-            
+        Script_TransitionManager.Control.UnderDialogueFadeOut(
+            Script_TransitionManager.UnderDialogueFadeTime, () => {
             game.ChangeStateInteract();
         });
     }
@@ -193,19 +211,16 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public override void Setup()
     {
+        // Cover screen with Black to prevent flash of Lobby on reloads.
+        Script_TransitionManager.Control.UnderDialogueBlackScreen(true);            
+        
+        // Must Pause BGM until after Day Notification.
+        Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
+        Script_BackgroundMusicManager.Control.Pause();
+        
         InitialState();
         
         game.SetupInteractableObjectsText(interactableObjectsParent, isInit);
-
-        if (!didStartThought)
-        {
-            game.PauseBgMusic();
-            dreamBgmPlayer.gameObject.SetActive(true);
-        }
-        else
-        {
-            dreamBgmPlayer.gameObject.SetActive(false);
-        }
 
         // Active Ending will be set when leaving from Last Elevator in Game.SaveWaitRestartAtLobby().
         // Good Ending is handled via interaction with the CCTV Interactable.

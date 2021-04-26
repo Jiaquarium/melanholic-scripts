@@ -113,6 +113,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_EventCycleManager eventCycleManager;
 
     [SerializeField] private Script_MapNotificationsManager mapNotificationsManager;
+    [SerializeField] private Script_DayNotificationManager dayNotificationManager;
 
     // ------------------------------------------------------------------
     // Canvases
@@ -369,6 +370,7 @@ public class Script_Game : MonoBehaviour
         weatherFXManager.Setup();
         eventCycleManager.Setup();
         mapNotificationsManager.Setup();
+        dayNotificationManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
         
@@ -1095,26 +1097,6 @@ public class Script_Game : MonoBehaviour
     public IEnumerator TransitionFadeOut(float t, Action action)
     {
         return transitionManager.FadeOut(t, action);
-    }
-
-    public void UnderDialogueBlackScreen()
-    {
-        transitionManager.UnderDialogueBlackScreen();
-    }
-
-    public void UnderDialogueTransitionFadeIn(float t, Action action)
-    {
-        transitionManager.UnderDialogueFadeIn(t, action);   
-    }
-    
-    public void UnderDialogueTransitionFadeOut(float t, Action action)
-    {
-        transitionManager.UnderDialogueFadeOut(t, action);   
-    }
-
-    public float GetUnderDialogueFadeTime()
-    {
-        return transitionManager.underDialogueFadeTime;
     }
 
     public void ManagePlayerViews(string type)

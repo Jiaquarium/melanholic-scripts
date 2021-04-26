@@ -13,10 +13,16 @@ public class Script_MapNotification : MonoBehaviour
     [SerializeField] private TextMeshProUGUI TMPtext;
 
     private Script_CanvasGroupController controller;
+
+    public string Text
+    {
+        get => TMPtext.text;
+        set => TMPtext.text = value;
+    }
     
     public void Open(string text)
     {
-        TMPtext.text = text.AddBrackets(withSpace: true);
+        Text = text.AddBrackets(withSpace: true);
         
         controller.FadeIn(fadeInTime);
     }
