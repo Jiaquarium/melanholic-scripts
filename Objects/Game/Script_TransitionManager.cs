@@ -9,7 +9,8 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// Handles ending sequences, fading in and out, etc.
+/// Handles important cut scenes (e.g. ending sequences, all puzzles done)
+/// and fading in and out, etc.
 /// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_TransitionManager : MonoBehaviour
@@ -37,6 +38,7 @@ public class Script_TransitionManager : MonoBehaviour
     public const float UnderDialogueFadeTime = 1.5f;
     public Script_CanvasGroupController restartPrompt;
 
+    private Action onAllPuzzlesDoneCutsceneDone;
     private Script_GameOverController.DeathTypes deathType;
     
     public IEnumerator FadeIn(float t, Action action)
@@ -121,14 +123,80 @@ public class Script_TransitionManager : MonoBehaviour
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);        
     }
 
+    /// <summary>
+    /// Checks whether or not to play the final cut scene
+    /// </summary>
+    public bool OnCurrentQuestDone(Action cb = null)
+    {
+        if (game.IsAllQuestsDoneToday())
+        {
+            // Final Cut Scene
+            game.ChangeStateCutScene();
+
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
+
+            if (cb != null) onAllPuzzlesDoneCutsceneDone = cb;
+
+            return true;
+        }
+
+        if (cb != null) cb();
+        return false;
+    }
+
     // ------------------------------------------------------------------
-    // Signal Reactions START
+    // Timeline Signals
     public void OnTimesUpPlayableDone()
     {
         Time.timeScale = 1.0f;
 
         // Prompt Player
         FadeInRestartPrompt();
+    }
+
+    // Also called at end of AllPuzzlesDoneNotification Timeline before fade back in.
+    public void HideLevelGrid(bool isActive = false)
+    {
+        // Set Current Inactive so will not disrupt Cut Scene.
+        Script_LevelGrid currentGrid = game.levelBehavior.transform.GetParentRecursive<Script_LevelGrid>();
+        if (currentGrid != null)
+            currentGrid.gameObject.SetActive(isActive);
+        else
+            Debug.LogError($"Need to fix hierarchy so Script_LevelGrid is a parent above {game.levelBehavior}");
+    }
+
+    // Call at the beginning of activating Levels to Unhide Player
+    public void HandlePlayerInEileensRoom()
+    {
+        if (game.IsInEileensRoom)
+            game.UnhidePlayer();
+    }
+
+    public void HandlePlayerInIdsRoom()
+    {
+        if (game.IsInIdsRoom)
+            game.UnhidePlayer();
+    }
+
+    public void HandlePlayerInElleniasRoom()
+    {
+        if (game.IsInElleniasRoom)
+            game.UnhidePlayer();
+    }
+
+    public void HandlePlayerInBallroom()
+    {
+        if (game.IsInBallroom)
+            game.UnhidePlayer();
+    }
+
+    public void OnAllPuzzlesDoneNotificationDone()
+    {
+        if (onAllPuzzlesDoneCutsceneDone != null)
+        {
+            onAllPuzzlesDoneCutsceneDone();
+            onAllPuzzlesDoneCutsceneDone = null;
+        }
     }
 
     // After screen has faded to Black play the proper timeline.

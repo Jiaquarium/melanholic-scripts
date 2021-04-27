@@ -104,20 +104,20 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
         
-        IdsDirector.stopped                     += OnIdsMovesDone;    
-        nameplateDirector.stopped               += OnNameplateDone;
-        Script_DDREventsManager.OnDDRDone       += OnDDRDone;
-        Script_ItemsEventsManager.OnItemStash   += OnItemStash;
+        IdsDirector.stopped                             += OnIdsMovesDone;    
+        nameplateDirector.stopped                       += OnNameplateDone;
+        Script_DDREventsManager.OnDDRDone               += OnDDRDone;
+        Script_ItemsEventsManager.OnItemStash           += OnItemStash;
     }
 
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
         
-        IdsDirector.stopped                     -= OnIdsMovesDone;
-        nameplateDirector.stopped               -= OnNameplateDone;
-        Script_DDREventsManager.OnDDRDone       -= OnDDRDone;
-        Script_ItemsEventsManager.OnItemStash   -= OnItemStash;
+        IdsDirector.stopped                             -= OnIdsMovesDone;
+        nameplateDirector.stopped                       -= OnNameplateDone;
+        Script_DDREventsManager.OnDDRDone               -= OnDDRDone;
+        Script_ItemsEventsManager.OnItemStash           -= OnItemStash;
         
         Script_AudioMixerVolume.SetVolume(
             audioMixer,
@@ -558,112 +558,131 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
     }
 
-    public override void Setup()
+    void HandleIdsInRoom()
     {
-        Ids.SetMoveSpeedWalk();
+        if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
+        {
+            if (!game.IsRunDay(Script_Run.DayId.wed))   HandleIdsNotHome();
+            else                                        HandleIdsHome();
+        }
+        else
+        {
+            if (Script_EventCycleManager.Control.IsIdsDead())
+                HandleIdsDead();
+            else if (Script_EventCycleManager.Control.IsIdsInSanctuary())
+                HandleIdsNotHome();
+            else
+                HandleIdsHome();
+        }
+
+        void HandleIdsHome()
+        {
+            // Ids note only appears when he's not home on Weekend Day 2.
+            IdsLeaveMeBeNote.gameObject.SetActive(false);
+
+            // Ids only dies if not talked to by Weekend Day 3.
+            DeadIds.gameObject.SetActive(false);
+            
+            Ids.gameObject.SetActive(true);
+            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
+        }
+
+        void HandleIdsNotHome()
+        {
+            Script_BackgroundMusicManager.Control.Stop();
+            
+            // Ids leaves note when he's not home on Weekend Day 2.
+            IdsLeaveMeBeNote.gameObject.SetActive(true);
+
+            // Ids only dies if not talked to by Weekend Day 3.
+            DeadIds.gameObject.SetActive(false);
+
+            Ids.gameObject.SetActive(false);
+            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+        }
+
+        void HandleIdsDead()
+        {
+            Script_BackgroundMusicManager.Control.Stop();
+            
+            // Ids note only appears when he's not home on Weekend Day 2.
+            IdsLeaveMeBeNote.gameObject.SetActive(false);
+
+            // Ids dies since not talked to by Weekend Day 3.
+            DeadIds.gameObject.SetActive(true);
+
+            Ids.gameObject.SetActive(false);
+            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+        }
+    }
+    
+    // Only if the timeline is finished do we increment Timeline count. Based on where
+    // we are on Timeline count, spawn Ids accordingly
+    void HandleIdsSpawn()
+    {
+        if (timelinesDoneCount > IdsSpawns.Length)
+        {
+            Ids.gameObject.SetActive(false);
+        }
+        else if (timelinesDoneCount == 0)
+        {
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+        }
+        else
+        {
+            Ids.transform.position = IdsSpawns[timelinesDoneCount - 1].Position;
+            Ids.DefaultFacingDirection = IdsSpawns[timelinesDoneCount - 1].Direction;
+            Ids.FaceDefaultDirection();
+        }
+
+        Ids.UpdateLocation();
+    }
+
+    private void BaseSetup()
+    {
         if (!isInitialized)
         {
             crystalChandelier.SetActive(false);
             playerSpotLight.Setup(0f);
             IdsSpotLight.Setup(0f);
         }
+        
         foreach (Transform t in IOTexts )   game.SetupInteractableObjectsText(t, !isInitialized);
         game.SetupMovingNPC(Ids, !isInitialized);
         
         if (!isDeskSwitchedIn)      ChaseLoungeSwitchIn();
         else                        DeskSwitchIn();
-        
-        if (lb9.speaker == null)    game.SwitchBgMusic(4);
 
-        // meaning Ids DDR quest is completed and the Locked Treasure Chest was opened
+        // Ids DDR quest is completed and the Locked Treasure Chest was opened.
         if (gotBoarNeedle)
         {
             treasureChest.IsOpen = true;
         }
 
+        isInitialized = true;
+    }
+
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+
+    public void TimelineSetup()
+    {
+        BaseSetup();
+        
+        DeadIds.gameObject.SetActive(false);
+        Ids.gameObject.SetActive(false);
+    }
+
+    // ----------------------------------------------------------------------
+
+    public override void Setup()
+    {
+        Ids.SetMoveSpeedWalk();
+        
+        if (lb9.speaker == null)    game.SwitchBgMusic(4);
+
+        BaseSetup();
         HandleIdsInRoom();
         HandleIdsSpawn();
-
-        isInitialized = true;
-
-        void HandleIdsInRoom()
-        {
-            if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
-            {
-                if (!game.IsRunDay(Script_Run.DayId.wed))   HandleIdsNotHome();
-                else                                        HandleIdsHome();
-            }
-            else
-            {
-                if (Script_EventCycleManager.Control.IsIdsDead())
-                    HandleIdsDead();
-                else if (Script_EventCycleManager.Control.IsIdsInSanctuary())
-                    HandleIdsNotHome();
-                else
-                    HandleIdsHome();
-            }
-
-            void HandleIdsHome()
-            {
-                // Ids note only appears when he's not home on Weekend Day 2.
-                IdsLeaveMeBeNote.gameObject.SetActive(false);
-
-                // Ids only dies if not talked to by Weekend Day 3.
-                DeadIds.gameObject.SetActive(false);
-                
-                Ids.gameObject.SetActive(true);
-                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
-            }
-
-            void HandleIdsNotHome()
-            {
-                Script_BackgroundMusicManager.Control.Stop();
-                
-                // Ids leaves note when he's not home on Weekend Day 2.
-                IdsLeaveMeBeNote.gameObject.SetActive(true);
-
-                // Ids only dies if not talked to by Weekend Day 3.
-                DeadIds.gameObject.SetActive(false);
-
-                Ids.gameObject.SetActive(false);
-                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
-            }
-
-            void HandleIdsDead()
-            {
-                Script_BackgroundMusicManager.Control.Stop();
-                
-                // Ids note only appears when he's not home on Weekend Day 2.
-                IdsLeaveMeBeNote.gameObject.SetActive(false);
-
-                // Ids dies since not talked to by Weekend Day 3.
-                DeadIds.gameObject.SetActive(true);
-
-                Ids.gameObject.SetActive(false);
-                foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
-            }
-        }
-        
-        // Only if the timeline is finished do we increment Timeline count. Based on where
-        // we are on Timeline count, spawn Ids accordingly
-        void HandleIdsSpawn()
-        {
-            if (timelinesDoneCount > IdsSpawns.Length)
-            {
-                Ids.gameObject.SetActive(false);
-            }
-            else if (timelinesDoneCount == 0)
-            {
-                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
-            }
-            else
-            {
-                Ids.transform.position = IdsSpawns[timelinesDoneCount - 1].Position;
-                Ids.DefaultFacingDirection = IdsSpawns[timelinesDoneCount - 1].Direction;
-                Ids.FaceDefaultDirection();
-            }
-
-            Ids.UpdateLocation();
-        }
     }
 }

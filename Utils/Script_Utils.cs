@@ -68,6 +68,9 @@ public static class Script_Utils
         return null;
     }
 
+    /// <summary>
+    /// GetComponentInParent will only return active objects. This will return all.
+    /// </summary>
     public static T GetParentRecursive<T>(this Transform t) where T:Component
     {
         while (t.parent != null)

@@ -62,6 +62,8 @@ public class Script_Game : MonoBehaviour
     // ------------------------------------------------------------------
     // Specific Level Behaviors for state
     public Script_LevelBehavior_10 IdsRoomBehavior;
+    public Script_LevelBehavior_20 BallroomBehavior;
+    public Script_LevelBehavior_21 EileensRoomBehavior;
     public Script_LevelBehavior_24 KTVRoom2Behavior;
     public Script_LevelBehavior_25 ElleniasRoomBehavior;
     public Script_LevelBehavior_26 EileensMindBehavior;
@@ -272,6 +274,26 @@ public class Script_Game : MonoBehaviour
     public bool IsUrselkSistersQuestsDone
     {
         get => ElleniasRoomBehavior.isCurrentPuzzleComplete && EileensMindBehavior.isCurrentPuzzleComplete;
+    }
+
+    public bool IsInEileensRoom
+    {
+        get => levelBehavior == EileensRoomBehavior;
+    }
+
+    public bool IsInIdsRoom
+    {
+        get => levelBehavior == IdsRoomBehavior;
+    }
+
+    public bool IsInElleniasRoom
+    {
+        get => levelBehavior == ElleniasRoomBehavior;
+    }
+
+    public bool IsInBallroom
+    {
+        get => levelBehavior == BallroomBehavior;
     }
 
     /// <summary>
@@ -928,6 +950,16 @@ public class Script_Game : MonoBehaviour
     public int PlayerHurt(int dmg, Script_HitBox hitBox)
     {
         return GetPlayer().Hurt(dmg, hitBox);
+    }
+
+    public void HidePlayer()
+    {
+        GetPlayer().SetInvisible(true, 0f);
+    }
+
+    public void UnhidePlayer()
+    {
+        GetPlayer().SetInvisible(false, 0f);
     }
 
     /* =======================================================================
@@ -1936,7 +1968,7 @@ public class Script_Game : MonoBehaviour
         }
     }
 
-    private bool IsAllQuestsDoneToday()
+    public bool IsAllQuestsDoneToday()
     {
         Debug.Log($"Ids Done: {IdsRoomBehavior.isCurrentPuzzleComplete}");
         Debug.Log($"Ursie Done: {KTVRoom2Behavior.IsCurrentPuzzleComplete}");

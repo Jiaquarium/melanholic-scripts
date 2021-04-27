@@ -135,10 +135,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public void GiveSticker()
     {
         Debug.Log("-------- MOOSE GIVES PLAYER AESTHETIC STICKER --------");
-        isMooseQuestDone                = true;
-        
-        // Also track nonpersistent to dictate spawns on the same day.
-        isCurrentMooseQuestComplete     = true;
 
         Script_DialogueManager.DialogueManager.StartDialogueNode(OnMooseGiveItemDoneNode);
     }
@@ -149,9 +145,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_Names.UpdateMoose();
     }
 
-    // Moose and Suzette exit. Cut scnee of paintings being done.
+    // Moose and Suzette exit. Cut scene of paintings being done.
     public void MooseQuestDone()
     {
+        game.ChangeStateCutScene();
+        
+        isMooseQuestDone                = true;
+        isCurrentMooseQuestComplete     = true;
+        
         // Play Timeline for finishing Moose's quest
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
     }
@@ -187,7 +188,11 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void OnWellsWorldPaintingQuestDone()
     {
-        game.ChangeStateInteract();
+        Script_TransitionManager.Control.OnCurrentQuestDone(() => {
+            // game.ChangeStateInteract();
+        });
+
+        Debug.Log("CHECK FOR FINAL QUEST NOTIFICATION");
     }
     // ----------------------------------------------------------------------
 
@@ -264,6 +269,8 @@ public class Script_LevelBehavior_42Tester : Editor
         {
             t.StopHeavySnow();
         }
+
+        GUILayout.Space(12);
 
         if (GUILayout.Button("Moose Quest Done"))
         {

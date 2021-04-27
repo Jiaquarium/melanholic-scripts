@@ -32,6 +32,15 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;
     [SerializeField] private Script_LevelBehavior_48 MynesGrandMirrorRoomBehavior;
 
+    // ----------------------------------------------------------------------
+    // Quests Done Dynamic Settings
+    [SerializeField] private bool ElleniaPuzzleDone;
+    [SerializeField] private bool IdsPuzzleDone;
+    [SerializeField] private bool EileenPuzzleDone;
+    [SerializeField] private bool WellsWorldPuzzleDone;
+    [SerializeField] private bool CelestialGardensPuzzleDone;
+    [SerializeField] private bool XXXWorldPuzzleDone;
+
     private bool didSetWeekend;
 
     public void DefaultPlayerSpawnPos()
@@ -77,12 +86,22 @@ public class Dev_GameHelper : MonoBehaviour
 
     public void SetAllQuestsDoneToday()
     {
-        Script_Game.Game.IdsRoomBehavior.isCurrentPuzzleComplete            = true;
-        Script_Game.Game.KTVRoom2Behavior.IsCurrentPuzzleComplete           = true;
         Script_Game.Game.ElleniasRoomBehavior.isCurrentPuzzleComplete       = true;
+        Script_Game.Game.IdsRoomBehavior.isCurrentPuzzleComplete            = true;
         Script_Game.Game.EileensMindBehavior.isCurrentPuzzleComplete        = true;
         Script_Game.Game.WellsWorldBehavior.isCurrentMooseQuestComplete     = true;
         Script_Game.Game.GardenLabyrinthBehavior.isCurrentPuzzleComplete    = true;
+        Script_Game.Game.KTVRoom2Behavior.IsCurrentPuzzleComplete           = true;
+    }
+
+    public void SetQuestsDoneDynamic()
+    {
+        Script_Game.Game.ElleniasRoomBehavior.isCurrentPuzzleComplete       = ElleniaPuzzleDone;
+        Script_Game.Game.IdsRoomBehavior.isCurrentPuzzleComplete            = IdsPuzzleDone;
+        Script_Game.Game.EileensMindBehavior.isCurrentPuzzleComplete        = EileenPuzzleDone;
+        Script_Game.Game.WellsWorldBehavior.isCurrentMooseQuestComplete     = WellsWorldPuzzleDone;
+        Script_Game.Game.GardenLabyrinthBehavior.isCurrentPuzzleComplete    = CelestialGardensPuzzleDone;
+        Script_Game.Game.KTVRoom2Behavior.IsCurrentPuzzleComplete           = XXXWorldPuzzleDone;
     }
 
     public void SolveAllMynesMirrors()
@@ -186,9 +205,9 @@ public class Dev_GameHelperTester : Editor
             t.SetAllQuestsDoneToday();
         }
 
-        if (GUILayout.Button("Solve All Mirrors"))
+        if (GUILayout.Button("Quests Done Dynamic Today"))
         {
-            t.SolveAllMynesMirrors();
+            t.SetQuestsDoneDynamic();
         }
 
         GUILayout.Space(12);

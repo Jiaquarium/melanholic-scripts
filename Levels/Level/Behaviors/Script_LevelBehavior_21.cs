@@ -77,7 +77,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     }
     
     // ----------------------------------------------------------------------
-    // Next Node Action START
+    // Next Node Action
     public void UpdateSistersNames()
     {
         Script_Names.UpdateEileen();
@@ -100,11 +100,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
     }
     
-    // Next Node Action END
     // ----------------------------------------------------------------------
-    
-    // ----------------------------------------------------------------------
-    // Auto Choice Action START
+    // Auto Choice Action
     public void OnDidTalkToEllenia(OnNextNodeChoiceArgs modifiableEventArgs)
     {
         Debug.Log("Spoken with Ellenia: " + LB25.spokenWithEllenia);
@@ -112,7 +109,6 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         if (LB25.spokenWithEllenia)     modifiableEventArgs.choice = 1;
         else                            modifiableEventArgs.choice = 0;
     }
-    // Auto Choice Action END
     // ----------------------------------------------------------------------
 
     public void SetNewElleniaPassword()
@@ -195,27 +191,14 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             Debug.Log("Entrance attack is over");
         }
     }
-    
-    public override void Setup()
-    {
-        game.SetupInteractableObjectsText(textParent.transform, isInitialize);
-        
-        // Handle saving BGM played state.
-        game.PauseBgMusic();
-        AudioSource audio = EileenThemePlayer.GetComponent<AudioSource>();
-        audio.volume = 1f;
-        audio.gameObject.SetActive(true);
-        if (!audio.isPlaying) audio.UnPause();
-            
-        // Handle coming from Eileen Mind painting
-        Debug.Log($"LB21: Last LB is {game.lastLevelBehavior}");
-        if (game.lastLevelBehavior == LB26)
-        {
-            Debug.Log("Player coming from LB26_EileensMind");
-            PlayerEntranceFromEileenMind();
-        }
 
+    private void BaseSetup()
+    {
+        
         EileenElleniaHurt.gameObject.SetActive(false);
+        // Interactable FullArt on bookshelf.
+        drawingFullArt.gameObject.SetActive(true);
+        game.SetupInteractableFullArt(fullArtParent, isInitialize);
         
         // Handle Eileen leaving the room after you "fix" her mind
         if (LB26.isCurrentPuzzleComplete)
@@ -238,10 +221,6 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
                 HandleEileenWeekend(Script_EventCycleManager.Control.IsElleniaHurt());
             }
         }
-
-        // Setup interactable fullart either way bc of drawing fullart is always active on bookshelf.
-        drawingFullArt.gameObject.SetActive(true);
-        game.SetupInteractableFullArt(fullArtParent, isInitialize);
         
         isInitialize = false;
 
@@ -257,6 +236,36 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
             noteFullArt.gameObject.SetActive(isPuzzleDone);
         }
+    }
+
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+
+    public void TimelineSetup()
+    {
+        BaseSetup();    
+    }
+
+    // ----------------------------------------------------------------------
+
+    public override void Setup()
+    {
+        // Handle saving BGM played state.
+        game.PauseBgMusic();
+        AudioSource audio = EileenThemePlayer.GetComponent<AudioSource>();
+        audio.volume = 1f;
+        audio.gameObject.SetActive(true);
+        if (!audio.isPlaying) audio.UnPause();
+        
+        // Handle coming from Eileen Mind painting
+        Debug.Log($"LB21: Last LB is {game.lastLevelBehavior}");
+        if (game.lastLevelBehavior == LB26)
+        {
+            Debug.Log("Player coming from LB26_EileensMind");
+            PlayerEntranceFromEileenMind();
+        }
+
+        BaseSetup();
     }
 }
 
