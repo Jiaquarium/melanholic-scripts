@@ -189,10 +189,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public void OnWellsWorldPaintingQuestDone()
     {
         Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-            // game.ChangeStateInteract();
+            game.ChangeStateInteract();
         });
-
-        Debug.Log("CHECK FOR FINAL QUEST NOTIFICATION");
     }
     // ----------------------------------------------------------------------
 

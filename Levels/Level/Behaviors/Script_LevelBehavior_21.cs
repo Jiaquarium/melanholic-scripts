@@ -42,7 +42,10 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
     private bool isOnEntranceAttackFrozen;
     private PlayableDirector playerPlayableDirector;
+    
     private bool isInitialize = true;
+    
+    private bool isTimelineControlled = false;
 
 
     protected override void OnEnable()
@@ -53,7 +56,6 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         playerPlayableDirector = game.GetPlayer().GetComponent<PlayableDirector>();
         playerPlayableDirector.stopped                  += OnDropTimelineDone;
         
-        Debug.Log("LB21 OnEnable()");
         if (spokenWithEileen)   OnFinishedTalking();
     }
 
@@ -70,10 +72,14 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             AudioSource audio = EileenThemePlayer?.GetComponent<AudioSource>();
             audio.volume = 0f;
             audio.Pause();
-            // audio.gameObject.SetActive(false);
         }
 
-        game.UnPauseBgMusic();
+        if (!isTimelineControlled)
+        {
+            game.UnPauseBgMusic();
+        }
+
+        isTimelineControlled = false;
     }
     
     // ----------------------------------------------------------------------
@@ -243,7 +249,9 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
     public void TimelineSetup()
     {
-        BaseSetup();    
+        BaseSetup();
+        
+        isTimelineControlled = true;
     }
 
     // ----------------------------------------------------------------------

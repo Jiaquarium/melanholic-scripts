@@ -14,6 +14,7 @@ using UnityEditor;
 public class Script_LevelBehavior_26 : Script_LevelBehavior
 {
     public const string MapName = "Inside a Painting";
+    private const string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
     
     /* =======================================================================
         STATE DATA
@@ -57,6 +58,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     private bool didMapNotification;
     
     private bool isInitialize = true;
+    private bool isTimelineControlled = false;
     
     protected override void OnEnable()
     {
@@ -77,7 +79,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         bgThemePlayer.gameObject.SetActive(false);
 
-        DefaultBgMusicLevels();
+        if (!isTimelineControlled)
+        {
+            DefaultBgMusicLevels();
+        }
     }
 
     private void Awake()
@@ -111,6 +116,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     {
         game.ChangeStateCutScene();
         StartCoroutine(WaitSpikeCageDown());
+        FadeOutDramaticMusic();
 
         IEnumerator WaitSpikeCageDown()
         {
@@ -183,24 +189,27 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         return false;
 
-        void FadeOutDramaticMusic()
-        {
-            StartCoroutine(
-                Script_AudioMixerFader.Fade(
-                    audioMixer,
-                    Const_AudioMixerParams.ExposedBGVolume,
-                    Script_AudioEffectsManager.GetFadeTime(musicFadeOutSpeed),
-                    0f,
-                    () => bgThemePlayer.gameObject.SetActive(false)
-                )
-            );
-        }
+    }
+    
+    private void FadeOutDramaticMusic()
+    {
+        StartCoroutine(
+            Script_AudioMixerFader.Fade(
+                audioMixer,
+                BGMParam,
+                Script_AudioEffectsManager.GetFadeTime(musicFadeOutSpeed),
+                0f,
+                () => {
+                    bgThemePlayer.gameObject.SetActive(false);
+                }
+            )
+        );
+    }
 
-        void FadeOutDramaticLights()
-        {
-            Debug.Log("Fading out lights to victory!!!");
-            lightsToVictoryController.ShouldUpdate = true;
-        }
+    private void FadeOutDramaticLights()
+    {
+        Debug.Log("Fading out lights to victory!!!");
+        lightsToVictoryController.ShouldUpdate = true;
     }
 
     private void HandleDramaticThoughtsCutScene()
@@ -213,7 +222,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             StartCoroutine(
                 Script_AudioMixerFader.Fade(
                     audioMixer,
-                    Const_AudioMixerParams.ExposedBGVolume,
+                    BGMParam,
                     Script_AudioEffectsManager.GetFadeTime(musicFadeOutSpeed),
                     0f,
                     () => game.StopBgMusic()
@@ -229,7 +238,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         game.ChangeStateInteract();
         bgThemePlayer.gameObject.SetActive(true);
         Script_AudioMixerVolume.SetVolume(
-            audioMixer, Const_AudioMixerParams.ExposedBGVolume, 1f
+            audioMixer, BGMParam, 1f
         );
         isPauseSpikes = false;
         timer = 0.001f; // make Attack instantly after
@@ -253,7 +262,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     {
         Script_AudioMixerVolume.SetVolume(
             audioMixer,
-            Const_AudioMixerParams.ExposedBGVolume,
+            BGMParam,
             1f
         );   
     }
@@ -263,7 +272,11 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     public void OnEileensMindPaintingTimelineDone()
     {
-        game.ChangeStateInteract();
+        isTimelineControlled = true;
+        Script_TransitionManager.Control.OnCurrentQuestDone(() => {
+            game.ChangeStateInteract();
+            isTimelineControlled = false;
+        });
     }
 
     // ----------------------------------------------------------------------

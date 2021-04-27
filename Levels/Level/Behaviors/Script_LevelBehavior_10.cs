@@ -5,6 +5,10 @@ using UnityEngine.Audio;
 using UnityEngine.Playables;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Respawns are handled with IdsSpawns which will auto reset Ids positions
 /// timelines to play are tracked with timelinesDoneCount
@@ -99,6 +103,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     private bool rightMoveDone;
     
     private bool didMapNotification;
+    private bool isTimelineControlled = false;
 
     protected override void OnEnable()
     {
@@ -119,11 +124,16 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_DDREventsManager.OnDDRDone               -= OnDDRDone;
         Script_ItemsEventsManager.OnItemStash           -= OnItemStash;
         
-        Script_AudioMixerVolume.SetVolume(
-            audioMixer,
-            Const_AudioMixerParams.ExposedBGVolume,
-            1f
-        );
+        if (!isTimelineControlled)
+        {
+            Script_AudioMixerVolume.SetVolume(
+                audioMixer,
+                Const_AudioMixerParams.ExposedBGVolume,
+                1f
+            );
+        }
+
+        isTimelineControlled = false;
     }
     
     protected override void Update()
@@ -210,8 +220,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         game.ChangeStateCutScene();
         SwitchLightsOutAnimation(WaitToDDR);
     }
-    // Next Node Action END
-    // ------------------------------------------------------------------------------------
     
     // ------------------------------------------------------------------------------------
     // Timeline Signals START
@@ -223,12 +231,17 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void OnQuestDone()
     {
         isCurrentPuzzleComplete = true;
-        game.ChangeStateInteract();
+        
+        isTimelineControlled = true;
+        Script_TransitionManager.Control.OnCurrentQuestDone(() => {
+            game.ChangeStateInteract();
+            isTimelineControlled = false;
+        }, Script_TransitionManager.FinalNotifications.Ids);
     }
 
-    // Timeline Signals END
     // ------------------------------------------------------------------------------------
 
+    // Happens after Pass DDR and after Ids gives Super Small Key.
     private void OnItemStash(string stashItemId)
     {
         if (stashItemId == smallKey.Item.id)            IdsExits();
@@ -260,7 +273,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             game.ChangeStateInteract();
         }
         
-        /// timeliens[2] exit is handled by Timeline Signal
+        /// Timelines[2] exit is handled by Timeline Signal
 
         Ids.UpdateLocation();
         timelinesDoneCount++;
@@ -671,6 +684,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         DeadIds.gameObject.SetActive(false);
         Ids.gameObject.SetActive(false);
+
+        isTimelineControlled = true;
     }
 
     // ----------------------------------------------------------------------
@@ -686,3 +701,19 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         HandleIdsSpawn();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_LevelBehavior_10))]
+public class Script_LevelBehavior_10Tester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_LevelBehavior_10 t = (Script_LevelBehavior_10)target;
+        if (GUILayout.Button("Ids DDR Success Quest Done"))
+        {
+            t.IdsGivesSmallKey();
+        }
+    }
+}
+#endif

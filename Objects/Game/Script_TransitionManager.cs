@@ -17,13 +17,19 @@ public class Script_TransitionManager : MonoBehaviour
 {
     public static Script_TransitionManager Control;
     
+    public enum FinalNotifications
+    {
+        Default         = 0,
+        Ids             = 1,
+        Ellenia         = 2
+    }
     public enum Endings
     {
-        None    = 0,
-        Bad     = 1,
-        Good    = 2,
-        True    = 3,
-        Dream   = 4,
+        None            = 0,
+        Bad             = 1,
+        Good            = 2,
+        True            = 3,
+        Dream           = 4,
     }
     
     public Script_CanvasGroupFadeInOut fader;
@@ -40,6 +46,7 @@ public class Script_TransitionManager : MonoBehaviour
 
     private Action onAllPuzzlesDoneCutsceneDone;
     private Script_GameOverController.DeathTypes deathType;
+    private bool didPlayAllPuzzlesDoneCutScene = false;
     
     public IEnumerator FadeIn(float t, Action action)
     {
@@ -126,16 +133,33 @@ public class Script_TransitionManager : MonoBehaviour
     /// <summary>
     /// Checks whether or not to play the final cut scene
     /// </summary>
-    public bool OnCurrentQuestDone(Action cb = null)
+    public bool OnCurrentQuestDone(Action cb = null, FinalNotifications type = FinalNotifications.Default)
     {
-        if (game.IsAllQuestsDoneToday())
+        Debug.Log($"{name} Check for All Puzzles Done Cut Scene");
+        
+        if (game.IsAllQuestsDoneToday() && !didPlayAllPuzzlesDoneCutScene)
         {
             // Final Cut Scene
             game.ChangeStateCutScene();
 
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
+            switch (type)
+            {
+                case (FinalNotifications.Ids):
+                    // Ids timeline uses a custom timeline that considers the Player in the current room,
+                    // since Control track results in deactivating the current room too early.
+                    GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 7);
+                    break;
+                case (FinalNotifications.Ellenia):
+                    // Same with Ellenia's room (Painting corresponding with Ei)
+                    GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 8);
+                    break;
+                default:
+                    GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
+                    break;
+            }
 
             if (cb != null) onAllPuzzlesDoneCutsceneDone = cb;
+            didPlayAllPuzzlesDoneCutScene = true;
 
             return true;
         }

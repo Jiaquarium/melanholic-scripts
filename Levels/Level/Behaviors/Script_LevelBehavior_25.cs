@@ -12,6 +12,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_25 : Script_LevelBehavior
 {
+    private const string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
+    
     /* =======================================================================
         STATE DATA
     ======================================================================= */
@@ -193,7 +195,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             StartCoroutine(
                 Script_AudioMixerFader.Fade(
                     audioMixer,
-                    Const_AudioMixerParams.ExposedBGVolume,
+                    BGMParam,
                     bgMusicEndIntroFadeOutTime,
                     0f,
                     () => {
@@ -252,17 +254,14 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
         game.ChangeStateCutScene();
         
-        Script_BackgroundMusicManager bgm   = Script_BackgroundMusicManager.Control;
-        string bgmParam                     = Const_AudioMixerParams.ExposedBGVolume;
+        Script_BackgroundMusicManager bgm = Script_BackgroundMusicManager.Control;
 
         bgm.FadeOutFast(() => {
             bgm.Stop();
-            bgm.SetVolume(1f, bgmParam);
-        }, bgmParam);
+            bgm.SetVolume(1f, BGMParam);
+        }, BGMParam);
 
         StartCoroutine(WaitForElleniaHurtCutScene());
-
-        
 
         IEnumerator WaitForElleniaHurtCutScene()
         {
@@ -536,22 +535,18 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     {
         game.UnPauseBgMusic();
         easleYellAtPlayerIOText.gameObject.SetActive(false);
-        StartCoroutine(
-            Script_AudioMixerFader.Fade(
-                audioMixer,
-                Const_AudioMixerParams.ExposedBGVolume,
-                bgMusicEndIntroFadeOutTime,
-                1f,
-                () => {
-                    easleFullArt.gameObject.SetActive(true);
-                    game.ChangeStateInteract();
-                }
-            )
-        );   
+
+        Script_TransitionManager.Control.OnCurrentQuestDone(() =>
+        {
+            Script_BackgroundMusicManager.Control.FadeInXSlow(() =>
+            {
+                game.ChangeStateInteract();
+                easleFullArt.gameObject.SetActive(true);
+            }, BGMParam);
+        }, Script_TransitionManager.FinalNotifications.Ellenia);
     }
 
     // ----------------------------------------------------------------------
-    
     
     public override void Setup()
     {
@@ -655,9 +650,17 @@ public class Script_LevelBehavior_25Tester : Editor
         {
             lb.devLB21.SetNewElleniaPassword();
         }
+        
         if (GUILayout.Button("Ellenia Intro Done DialogueNodes"))
         {
             lb.ElleniaIntroDoneDialogueNodes();
+        }
+
+        GUILayout.Space(12);
+
+        if (GUILayout.Button("Ellenia On Correct"))
+        {
+            lb.ElleniaOnCorrect();
         }
 
         GUILayout.Space(12);
@@ -666,6 +669,7 @@ public class Script_LevelBehavior_25Tester : Editor
         {
             lb.HidePlayer();
         }
+        
         if (GUILayout.Button("Unhide Player"))
         {
             lb.UnhidePlayer();

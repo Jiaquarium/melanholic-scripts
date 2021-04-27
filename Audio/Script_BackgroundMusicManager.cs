@@ -147,6 +147,16 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         FadeIn(cb, Script_AudioEffectsManager.fadeSlowTime, outputMixer);
     }
 
+    public void FadeOutXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        FadeOut(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
+    }
+
+    public void FadeInXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        FadeIn(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
+    }
+
     private void EndCurrentCoroutine()
     {
         if (currentFadeCoroutine != null)

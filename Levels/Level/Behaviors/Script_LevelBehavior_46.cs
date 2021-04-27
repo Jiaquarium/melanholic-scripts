@@ -189,6 +189,9 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         puppeteerVCam = null;
     }
 
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
     // Follows OnSuccessCutSceneDone's Timeline.
     public void OnCelestialGardensPaintingTimelineDone()
     {
@@ -211,10 +214,12 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             StartCoroutine(game.TransitionFadeOut(successTransitionFadeInTime, () => {
                 // TBD Give Scarlet Cipher Piece?
                 
-                game.ChangeStateInteract();
-                
                 isPuzzleComplete        = true;
                 isCurrentPuzzleComplete = true;
+
+                Script_TransitionManager.Control.OnCurrentQuestDone(() => {
+                    game.ChangeStateInteract();
+                });                
             }));
         }
     }

@@ -39,7 +39,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     [SerializeField] private Transform interactableObjectsTextParent;
     [SerializeField] private Script_InteractableObjectText[] pillarTextObjs;
     [SerializeField] private Script_BgThemePlayer heartBeatBgThemePlayerPrefab;
-    [SerializeField] private PlayableDirector director;
+    
     [SerializeField] private Script_LevelBehavior_23 LB23;
     [SerializeField] private SpriteRenderer alchemistCircle;
     
@@ -49,6 +49,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
 
     private Script_BgThemePlayer heartBeatBgThemePlayer;
     private bool isInit = true;
+    private bool isTimelineControlled = false;
     
     public bool IsCurrentPuzzleComplete
     {
@@ -63,37 +64,40 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        Script_PuzzlesEventsManager.OnPuzzleSuccess += OnPuzzleSuccess;
-        /// use this to do onEnter actions, waiting until level is fully init'ed
-        Script_GameEventsManager.OnLevelInitComplete += CheckSuccessCase;
-        director.stopped += OnPlayableDirectorStopped;
+        Script_PuzzlesEventsManager.OnPuzzleSuccess     += OnPuzzleSuccess;
+        Script_GameEventsManager.OnLevelInitComplete    += CheckSuccessCase;
 
-        game.PauseBgMusic();
-        if (!isCurrentPuzzleComplete)
-        {
-            heartBeatBgThemePlayer = Instantiate(heartBeatBgThemePlayerPrefab, Vector3.zero, Quaternion.identity);
-        }
-        
         // enable pillars renderers
         SetPillarsVisibility(true);
         // set triggers and pillars to active
         ActivateTriggersAndPillars(true);
+        
+        if (!isTimelineControlled)
+        {
+            game.PauseBgMusic();
+            if (!isCurrentPuzzleComplete)
+            {
+                heartBeatBgThemePlayer = Instantiate(heartBeatBgThemePlayerPrefab, Vector3.zero, Quaternion.identity);
+            }
+        }
     }
 
     protected override void OnDisable()
     {
-        Script_PuzzlesEventsManager.OnPuzzleSuccess -= OnPuzzleSuccess;
-        Script_GameEventsManager.OnLevelInitComplete -= CheckSuccessCase;
-        director.stopped -= OnPlayableDirectorStopped;
-
-        if (heartBeatBgThemePlayer != null)
-        {
-            DestroyBgThemePlayer();
-        }
-        game.UnPauseBgMusic();
+        Script_PuzzlesEventsManager.OnPuzzleSuccess     -= OnPuzzleSuccess;
+        Script_GameEventsManager.OnLevelInitComplete    -= CheckSuccessCase;
 
         ActivateTriggersAndPillars(false);
         SetPillarsVisibility(false);   
+        
+        if (!isTimelineControlled)
+        {
+            if (heartBeatBgThemePlayer != null)
+            {
+                DestroyBgThemePlayer();
+            }
+            game.UnPauseBgMusic();
+        }
     }
 
     private void DestroyBgThemePlayer()
@@ -155,29 +159,6 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         }
     }
 
-    private void OnPlayableDirectorStopped(PlayableDirector aDirector)
-    {
-        if (aDirector == director)
-        {
-            print("DONE WITH ANIMATION");
-            // then zoom back to default
-            StartCoroutine(EndingAnimations());
-        }
-
-        IEnumerator EndingAnimations()
-        {
-            PuzzleFinishedState();
-            yield return new WaitForSeconds(afterSpawnWaitTime);
-            
-            Script_VCamManager.VCamMain.SwitchToMainVCam(staticZoomOutVCam);
-            yield return new WaitForSeconds(Script_VCamManager.defaultBlendTime);
-
-            XXXWorldBehavior.PaintingsDone();            
-            
-            game.ChangeStateInteract();
-        }
-    }
-
     public void PuzzleFinishedState()
     {
         transformingRock.gameObject.SetActive(false);
@@ -214,6 +195,28 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         if (!scarletCipherPiece.DidPickUp())
         {
             scarletCipherPiece.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnSuccessTimelineDone()
+    {
+        StartCoroutine(EndingAnimations());
+
+        IEnumerator EndingAnimations()
+        {
+            PuzzleFinishedState();
+            yield return new WaitForSeconds(afterSpawnWaitTime);
+            
+            Script_VCamManager.VCamMain.SwitchToMainVCam(staticZoomOutVCam);
+            yield return new WaitForSeconds(Script_VCamManager.defaultBlendTime);
+
+            XXXWorldBehavior.PaintingsDone();            
+            
+            isTimelineControlled = true;
+            Script_TransitionManager.Control.OnCurrentQuestDone(() => {
+                game.ChangeStateInteract();
+                isTimelineControlled = false;
+            });
         }
     }
     
