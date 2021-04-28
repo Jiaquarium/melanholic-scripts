@@ -26,10 +26,15 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_InteractableObject CCTVCamera;
     [SerializeField] private Script_Interactable invisibleBarrier;
 
+    // ------------------------------------------------------------------
+    // Dynamic Environment
     [SerializeField] private Transform MonBooks;
     [SerializeField] private Transform TueBooks;
     [SerializeField] private Transform WedBooks;
     [SerializeField] private Transform WeekendBooks;
+
+    [SerializeField] private Transform WeekdayWalls;
+    [SerializeField] private Transform WeekendWalls;
 
     private bool isInit = true;
     private int frontDoorDialogueIndex;
@@ -210,11 +215,15 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     private void HandleDayEnvironment()
     {
+        bool isWeekend = game.RunCycle == Script_RunsManager.Cycle.Weekend;
+        
         MonBooks.gameObject.SetActive(game.IsRunDay(Script_Run.DayId.mon));
         TueBooks.gameObject.SetActive(game.IsRunDay(Script_Run.DayId.tue));
         WedBooks.gameObject.SetActive(game.IsRunDay(Script_Run.DayId.wed));
+        WeekendBooks.gameObject.SetActive(isWeekend);
 
-        WeekendBooks.gameObject.SetActive(game.RunCycle == Script_RunsManager.Cycle.Weekend);        
+        WeekdayWalls.gameObject.SetActive(!isWeekend);
+        WeekendWalls.gameObject.SetActive(isWeekend);
     }
 
     public override void InitialState()
