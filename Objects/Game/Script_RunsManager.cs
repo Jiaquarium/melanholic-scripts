@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -31,6 +32,10 @@ public class Script_RunsManager : MonoBehaviour
 
     [SerializeField] private FadeSpeeds fadeSpeed;
     [SerializeField] private Script_CanvasGroupController runsCanvasGroup;
+
+    [Space]
+
+    [SerializeField] private Script_DaysTextContainer[] daysText = new Script_DaysTextContainer[3];
     
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_EventCycleManager eventCycleManager;
@@ -38,7 +43,13 @@ public class Script_RunsManager : MonoBehaviour
     public int RunIdx
     {
         get => _runIdx;      
-        private set => _runIdx = value;
+        private set
+        {
+            // Update UI
+            HandleDaysCanvas();
+            
+            _runIdx = value;
+        }
     }
     
     public Script_Run Run
@@ -52,6 +63,11 @@ public class Script_RunsManager : MonoBehaviour
         private set => _runCycle = value;
     }
 
+    public Script_Run[] Days
+    {
+        get => RunCycle == Cycle.Weekday ? weekdayCycle : weekendCycle;
+    }
+
     private Script_Run.DayId StartDay
     {
         get => _startDay;
@@ -60,6 +76,11 @@ public class Script_RunsManager : MonoBehaviour
     private Script_Run.DayId WeekendStartDay
     {
         get => _weekendStartDay;
+    }
+    
+    void OnValidate()
+    {
+        HandleDaysCanvas();
     }
     
     void Update()
@@ -162,6 +183,9 @@ public class Script_RunsManager : MonoBehaviour
         return Cycle.Weekend;
     }
 
+    // ------------------------------------------------------------------
+    // UI
+
     private void HandleRunsCanvas()
     {
         if (
@@ -176,6 +200,23 @@ public class Script_RunsManager : MonoBehaviour
             runsCanvasGroup.GetComponent<Script_CanvasGroupController>().FadeOut(fadeSpeed.ToFadeTime(), null);
         }
     }
+
+    private void HandleDaysCanvas()
+    {
+        for (int i = 0; i < daysText.Length; i++)
+        {
+            if (i >= daysText.Length || i >= Days.Length)
+                return;
+
+            Script_DaysTextContainer dtContainer = daysText[i];
+            
+            dtContainer.Text = Days[i].displayName;
+            dtContainer.IsCurrentDay = Days[i] == Run;
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Init
 
     public void Initialize()
     {

@@ -18,4 +18,5 @@ public class Script_Run : ScriptableObject
     }
     public DayId dayId;
     public string dayName;
+    public string displayName;
 }

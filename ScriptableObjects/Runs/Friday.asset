@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayId: 4
   dayName: Friday
+  displayName: FR

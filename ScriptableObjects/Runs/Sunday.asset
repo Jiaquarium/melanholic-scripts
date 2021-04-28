@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayId: 6
   dayName: Sunday
+  displayName: SU

@@ -4,7 +4,8 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Formats TMP strings
+/// Formats TMP strings.
+/// Auto-updates.
 /// 
 /// Set useDynamicDisplay to see formatting as dev'ing
 /// </summary>
@@ -12,15 +13,12 @@ using TMPro;
 public class Script_StringFormatTMP : MonoBehaviour
 {
     [SerializeField] private bool useDynamicDisplay;
-    
-    // For now, we'll make every dynamic display auto update
-    [Tooltip("True: will update so when Names change will show")]
-    [HideInInspector][SerializeField] private bool alwaysUpdate;
     [TextArea(3,10)] [SerializeField] private string dynamicText;
     
-    public bool AlwaysUpdate
+    public string DynamicText
     {
-        get => alwaysUpdate;
+        get => dynamicText;
+        set => dynamicText = value;
     }
 
     void Start()
