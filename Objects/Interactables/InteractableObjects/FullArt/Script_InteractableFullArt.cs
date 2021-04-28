@@ -14,6 +14,8 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private FadeSpeeds musicFadeSpeed;
     
+    // Note: For prompt to work properly, MUST include an empty dialogue node in dialogueNodes,
+    // so we can properly reset isPromptDialogueDone at the end of dialogue.
     [SerializeField] private Script_DialogueNode promptDialogueNode;
     [SerializeField] private UnityEvent _preFullArtAction;
     
@@ -46,7 +48,9 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     private void OnMyDialogueEnd()
     {
         // check if currentNode we finished on is one of ours and we're in fullArtMode
-        if (dialogueManager?.currentNode != null && CheckInMyNodes(dialogueManager.currentNode))
+        if (
+            dialogueManager?.currentNode != null && CheckInMyNodes(dialogueManager.currentNode)
+        )
         {
             if (isFullArtMode)
             {
@@ -54,7 +58,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
                 RemoveFullArt();
             }
 
-            isPromptDialogueDone = false;            
+            isPromptDialogueDone = false;
         }
     }
     
@@ -110,6 +114,9 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         }
     }
 
+    // ------------------------------------------------------------------
+    // Next Node Actions
+    
     /// <summary>
     /// Called from "yes" choice in choices prompt if there was a promptDialogueNode
     /// </summary>
@@ -118,6 +125,8 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         isPromptDialogueDone = true;
         HandleFullArtInteraction();
     }
+
+    // ------------------------------------------------------------------
 
     private void HandlePromptDialogue()
     {

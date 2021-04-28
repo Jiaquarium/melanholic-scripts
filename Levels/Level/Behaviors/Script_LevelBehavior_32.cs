@@ -20,12 +20,16 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode startNode;
     [SerializeField] private Script_DialogueNode[] frontDoorNodes;
 
-    [SerializeField] private Transform interactableObjectsParent;
     [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
 
     [SerializeField] private Script_InteractableObject hotelFrontDoor;
     [SerializeField] private Script_InteractableObject CCTVCamera;
     [SerializeField] private Script_Interactable invisibleBarrier;
+
+    [SerializeField] private Transform MonBooks;
+    [SerializeField] private Transform TueBooks;
+    [SerializeField] private Transform WedBooks;
+    [SerializeField] private Transform WeekendBooks;
 
     private bool isInit = true;
     private int frontDoorDialogueIndex;
@@ -204,6 +208,15 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             frontDoorDialogueIndex = 0;
     }
 
+    private void HandleDayEnvironment()
+    {
+        MonBooks.gameObject.SetActive(game.IsRunDay(Script_Run.DayId.mon));
+        TueBooks.gameObject.SetActive(game.IsRunDay(Script_Run.DayId.tue));
+        WedBooks.gameObject.SetActive(game.IsRunDay(Script_Run.DayId.wed));
+
+        WeekendBooks.gameObject.SetActive(game.RunCycle == Script_RunsManager.Cycle.Weekend);        
+    }
+
     public override void InitialState()
     {
         frontDoorDialogueIndex = 0;
@@ -211,6 +224,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public override void Setup()
     {
+        HandleDayEnvironment();
+        
         // Cover screen with Black to prevent flash of Lobby on reloads.
         Script_TransitionManager.Control.UnderDialogueBlackScreen(true);            
         
@@ -220,8 +235,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         
         InitialState();
         
-        game.SetupInteractableObjectsText(interactableObjectsParent, isInit);
-
         // Active Ending will be set when leaving from Last Elevator in Game.SaveWaitRestartAtLobby().
         // Good Ending is handled via interaction with the CCTV Interactable.
         switch (game.ActiveEnding)

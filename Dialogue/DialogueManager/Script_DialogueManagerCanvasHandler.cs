@@ -18,7 +18,7 @@ public class Script_DialogueManagerCanvasHandler : MonoBehaviour
     /// </summary>
     public void DisableCanvases()
     {
-        foreach (Canvas canvas in dialogueCanvases) canvas.gameObject.SetActive(false);
+        foreach (Canvas canvas in dialogueCanvases) canvas?.gameObject.SetActive(false);
     }
     public void DisableInactiveCanvases()
     {
