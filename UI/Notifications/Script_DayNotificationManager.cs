@@ -20,7 +20,7 @@ public class Script_DayNotificationManager : MonoBehaviour
     private Action onTimelineDoneAction;
     private bool isInteractAfter = true;
     private Script_TimelineController timelineController;
-    
+
     public void PlayDayNotification(
         Action cb = null,
         bool _isInteractAfter = true

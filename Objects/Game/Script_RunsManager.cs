@@ -27,11 +27,6 @@ public class Script_RunsManager : MonoBehaviour
     [SerializeField] private Script_Run[] weekdayCycle;
     [SerializeField] private Script_Run[] weekendCycle;
     [SerializeField] private Script_Run[] all;
-    
-    [Space]
-
-    [SerializeField] private FadeSpeeds fadeSpeed;
-    [SerializeField] private Script_CanvasGroupController runsCanvasGroup;
 
     [Space]
 
@@ -85,7 +80,7 @@ public class Script_RunsManager : MonoBehaviour
     
     void Update()
     {
-        HandleRunsCanvas();
+
     }
 
     public Script_Run GetRunByIdx(int i)
@@ -185,21 +180,6 @@ public class Script_RunsManager : MonoBehaviour
 
     // ------------------------------------------------------------------
     // UI
-
-    private void HandleRunsCanvas()
-    {
-        if (
-            game.state == Const_States_Game.Interact
-            && game.GetPlayer().State == Const_States_Player.Interact
-        )
-        {
-            runsCanvasGroup.GetComponent<Script_CanvasGroupController>().FadeIn(fadeSpeed.ToFadeTime(), null);
-        }
-        else
-        {
-            runsCanvasGroup.GetComponent<Script_CanvasGroupController>().FadeOut(fadeSpeed.ToFadeTime(), null);
-        }
-    }
 
     private void HandleDaysCanvas()
     {

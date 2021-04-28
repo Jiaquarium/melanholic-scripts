@@ -25,18 +25,27 @@ public class Script_Clock : MonoBehaviour
     public const float AwareTime        = 20460f; // 5:41:00 half game time is passed, 30 min (6 min IRL)
     public const float WarningTime      = 21360f; // 5:56:00 15 min left (3 min IRL)
     public const float DangerTime       = 22200f; // 6:10:00 5 min left (1 min IRL)
-    public const float EndTime          = 22260f; // 6:11:00 nautical dawn Chicago, IL Jan 1 2021
+    public const float EndTime          = 22260f; // 6:11:00 Nautical Dawn Chicago, IL Jan 1 2021
     public static float TimeMultiplier  = 5f;
+    public static float TotalTime       = EndTime - StartTime;
+    
     [SerializeField] private float currentTime;
+    
     [SerializeField] private States state;
     [SerializeField] private TimeStates timeState;
+    
     [SerializeField] private TextMeshProUGUI display;
+
+    [SerializeField] private Script_ClockManager clockManager;
+    
     private float blinkTimer;
+    
     public float CurrentTime
     {
         get => currentTime;
         set => currentTime = Mathf.Clamp(value, StartTime, EndTime);
     }
+    
     public States State
     {
         get => state;
@@ -58,6 +67,7 @@ public class Script_Clock : MonoBehaviour
                 CurrentTime += Time.deltaTime * TimeMultiplier;
                 if (CurrentTime > EndTime)  CurrentTime = EndTime;
 
+                HandleTimebar(CurrentTime);
                 UpdateTimeState();
 
                 break;
@@ -124,6 +134,15 @@ public class Script_Clock : MonoBehaviour
         else if (CurrentTime >= WarningTime)        timeState = TimeStates.Warning;
         else if (CurrentTime >= AwareTime)          timeState = TimeStates.Aware;
         else                                        timeState = TimeStates.None;
+    }
+
+    private void HandleTimebar(float time)
+    {
+        float timeElapsed = time - StartTime;
+
+        float donePercent = timeElapsed / TotalTime;
+
+        clockManager.HandleTimebar(donePercent);
     }
 
     public void InitialState()

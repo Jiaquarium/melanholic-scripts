@@ -14,8 +14,10 @@ public class Script_ClockManager : MonoBehaviour
     public static Script_ClockManager Control;
     
     [SerializeField] private Script_Clock clock;
+    [SerializeField] private Script_Timebar timebar;
+    
     [SerializeField] private Script_Game game;
-    [SerializeField] private FadeSpeeds fadeSpeed;
+    
     private bool didFireDoneEvent;
     
     public float ClockTime
@@ -35,19 +37,8 @@ public class Script_ClockManager : MonoBehaviour
             TimesUp();
         }
         
-        if (
-            game.state == Const_States_Game.Interact
-            && game.GetPlayer().State == Const_States_Player.Interact
-        )
-        {
-            clock.GetComponent<Script_CanvasGroupController>().FadeIn(fadeSpeed.ToFadeTime(), null);
-            if (game.IsInHotel())   clock.State = Script_Clock.States.Paused;
-            else                    clock.State = Script_Clock.States.Active;
-        }
-        else
-        {
-            clock.GetComponent<Script_CanvasGroupController>().FadeOut(fadeSpeed.ToFadeTime(), null);
-        }
+        if (game.IsInHotel())   clock.State = Script_Clock.States.Paused;
+        else                    clock.State = Script_Clock.States.Active;
     }
 
     public void TimesUp()
@@ -59,6 +50,11 @@ public class Script_ClockManager : MonoBehaviour
         /// Fire Done Event
         Script_ClockEventsManager.TimesUp();
         didFireDoneEvent = true;
+    }
+
+    public void HandleTimebar(float donePercent)
+    {
+        timebar.TimeElapsed = donePercent;
     }
 
     public void InitialState()

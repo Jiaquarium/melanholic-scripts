@@ -36,8 +36,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform WeekdayWalls;
     [SerializeField] private Transform WeekendWalls;
 
-    private bool isInit = true;
     private int frontDoorDialogueIndex;
+    private bool isInit = true;
+    private bool isFirstLoad = true;
 
     
     // ------------------------------------------------------------------
@@ -56,17 +57,24 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         }
         else
         {
-            Script_DayNotificationManager.Control.PlayDayNotification(() =>
-                {
-                    Script_BackgroundMusicManager.Control.UnPause();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(() => {
-                        game.ChangeStateInteract();
-                    }, BGMParam);
-                },
-                _isInteractAfter: false
-            );
+            // On First Load of subsequent days, play the Day Notification only once.
+            if (isFirstLoad)
+            {
+                Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                    {
+                        Script_BackgroundMusicManager.Control.UnPause();
+                        Script_BackgroundMusicManager.Control.FadeInSlow(() => {
+                            game.ChangeStateInteract();
+                        }, BGMParam);
+                    },
+                    _isInteractAfter: false
+                );
 
-            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+                StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+            }
+            
+            // If not first load, we do not need to play the Day Notification and
+            // will not have take down the UnderDialogue Canvas bc did not set it up.
 
             IEnumerator CloseUnderDialogueBlackScreenNextFrame()
             {
@@ -75,6 +83,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 Script_TransitionManager.Control.UnderDialogueBlackScreen(false);
             }
         }
+
+        isFirstLoad = false;
 
         void StartNewGameSequence()
         {
@@ -236,11 +246,14 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         HandleDayEnvironment();
         
         // Cover screen with Black to prevent flash of Lobby on reloads.
-        Script_TransitionManager.Control.UnderDialogueBlackScreen(true);            
-        
-        // Must Pause BGM until after Day Notification.
-        Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
-        Script_BackgroundMusicManager.Control.Pause();
+        if (isFirstLoad)
+        {
+            Script_TransitionManager.Control.UnderDialogueBlackScreen(true);            
+
+            // Must Pause BGM until after Day Notification.
+            Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
+            Script_BackgroundMusicManager.Control.Pause();
+        }
         
         InitialState();
         
