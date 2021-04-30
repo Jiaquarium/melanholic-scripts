@@ -55,7 +55,7 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         switch (currentSection)
         {
             case (Section.Intro):
-                Script_DialogueManager.DialogueManager.StartDialogueNode(MynesConversationNode);
+                Script_DialogueManager.DialogueManager.StartDialogueNode(HintNode);
                 break;
             case (Section.ItemGive):
                 Script_DialogueManager.DialogueManager.StartDialogueNode(onStickerGiveDoneNode);

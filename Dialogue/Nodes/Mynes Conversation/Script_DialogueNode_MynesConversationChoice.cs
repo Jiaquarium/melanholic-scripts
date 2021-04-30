@@ -28,7 +28,7 @@ public class Script_DialogueNode_MynesConversationChoice : Script_DialogueNode
     
     public void CheckCipher()
     {
-        myMirror.CheckCipher(choiceIdx);
+        
     } 
 
     /// NextNodeAction END ========================================================================

@@ -37,6 +37,15 @@ public class Script_MynesMirrorManager : MonoBehaviour
     }
 
     // ----------------------------------------------------------------------
+    // Next Node Actions
+
+    /// <summary>
+    /// Must call this from Interaction Node.
+    /// </summary>
+    public void EndInteractionDialogue()
+    {
+        Script_MynesMirrorEventsManager.EndInteractionNode();
+    }
 
     public void Setup()
     {

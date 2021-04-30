@@ -9,4 +9,11 @@ public class Script_MynesMirrorEventsManager : MonoBehaviour
     public static void EndTimeline() {
         if (OnEndTimeline != null) OnEndTimeline();
     }
+
+    public delegate void InteractionNodeDone();
+    public static event InteractionNodeDone OnInteractionNodeDone;
+    public static void EndInteractionNode()
+    {
+        if (OnInteractionNodeDone != null) OnInteractionNodeDone();
+    }
 }

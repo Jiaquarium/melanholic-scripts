@@ -40,10 +40,10 @@ public class Script_RunsManager : MonoBehaviour
         get => _runIdx;      
         private set
         {
+            _runIdx = value;
+
             // Update UI
             HandleDaysCanvas();
-            
-            _runIdx = value;
         }
     }
     
@@ -73,16 +73,6 @@ public class Script_RunsManager : MonoBehaviour
         get => _weekendStartDay;
     }
     
-    void OnValidate()
-    {
-        HandleDaysCanvas();
-    }
-    
-    void Update()
-    {
-
-    }
-
     public Script_Run GetRunByIdx(int i)
     {
         return all[i];
@@ -181,7 +171,7 @@ public class Script_RunsManager : MonoBehaviour
     // ------------------------------------------------------------------
     // UI
 
-    private void HandleDaysCanvas()
+    public void HandleDaysCanvas()
     {
         for (int i = 0; i < daysText.Length; i++)
         {
@@ -268,6 +258,13 @@ public class Script_RunsManagerTester : Editor
             Debug.Log($"fri {t.GetCycleByRunIds(4)}");
             Debug.Log($"sat {t.GetCycleByRunIds(5)}");
             Debug.Log($"sun {t.GetCycleByRunIds(6)}");
+        }
+
+        GUILayout.Space(12);
+
+        if (GUILayout.Button("Handle Days Container Highlight"))
+        {
+            t.HandleDaysCanvas();
         }
     }
 }

@@ -17,7 +17,7 @@ public class Script_DaysTextContainer : MonoBehaviour
         set
         {
             activeImage.gameObject.SetActive(value);
-            
+
             isCurrentDay = value;
         }
     }
