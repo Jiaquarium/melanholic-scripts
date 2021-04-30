@@ -9,6 +9,7 @@ public class Script_DayNotification : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI dayText;
     [SerializeField] private TextMeshProUGUI daySubtext;
+    [SerializeField] private TextMeshProUGUI cycleCountSubtext;
 
     private Script_CanvasGroupController controller;
 
@@ -22,6 +23,12 @@ public class Script_DayNotification : MonoBehaviour
     {
         get => daySubtext.text;
         set => daySubtext.text = value;
+    }
+
+    public string CycleCountSubtext
+    {
+        get => cycleCountSubtext.text;
+        set => cycleCountSubtext.text = value;
     }
 
     public void Setup()

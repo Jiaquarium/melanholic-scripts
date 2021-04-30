@@ -22,6 +22,8 @@ public class Script_RunsManager : MonoBehaviour
     [SerializeField] private Script_Run.DayId _weekendStartDay;
     
     [Tooltip("Current run index")] [SerializeField] private int _runIdx;
+    [SerializeField] private int cycleCount;
+    
     [SerializeField] private Cycle _runCycle;
     [SerializeField] private Cycle _nextRunCycle;
     [SerializeField] private Script_Run[] weekdayCycle;
@@ -61,6 +63,11 @@ public class Script_RunsManager : MonoBehaviour
     public Script_Run[] Days
     {
         get => RunCycle == Cycle.Weekday ? weekdayCycle : weekendCycle;
+    }
+
+    public int CycleCount
+    {
+        get => cycleCount;
     }
 
     private Script_Run.DayId StartDay
@@ -128,6 +135,7 @@ public class Script_RunsManager : MonoBehaviour
             ClearEventCycle();
             
             cycleIdx = 0;
+            cycleCount++;
         }
 
         Script_Run newRun = cycle[cycleIdx];
@@ -149,6 +157,8 @@ public class Script_RunsManager : MonoBehaviour
     {
         RunCycle = Cycle.Weekend;
         RunIdx = GetRunIdxByDayId(WeekendStartDay);
+
+        cycleCount = 0;
     }
 
     private void ClearEventCycle()
@@ -203,10 +213,12 @@ public class Script_RunsManager : MonoBehaviour
     }
 
     public void Load(
-        int idx
+        int idx,
+        int _cycleCount
     )
     {
         Cycle cycle = GetCycleByRunIds(idx);
+        cycleCount = _cycleCount;
         
         InitialState(idx, cycle);
     }

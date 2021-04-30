@@ -143,7 +143,7 @@ public static class Script_Utils
     /// <summary>
     /// Params for item names defined in Script_ItemStringBuilder
     /// </summary>
-    public static string FormatString(string unformattedString)
+    public static string FormatString(this string unformattedString)
     {
         string itemFormattedStr = ReplaceParams(
             unformattedString,
@@ -442,6 +442,11 @@ public static class Script_Utils
     public static string FormatRun(this string run)
     {
         return $"{run.ToString()}";
+    }
+
+    public static string FormatCycleCount(this int count)
+    {
+        return $"no.{count + 1}";
     }
 
     public static string AddBrackets(this string text, bool withSpace = true)

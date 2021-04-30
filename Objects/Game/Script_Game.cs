@@ -206,6 +206,11 @@ public class Script_Game : MonoBehaviour
         get => runsManager.RunCycle;
     }
 
+    public int CycleCount
+    {
+        get => runsManager.CycleCount;
+    }
+
     // ------------------------------------------------------------------
     // Tilemap Properties
     public Tilemap TileMap
@@ -661,9 +666,9 @@ public class Script_Game : MonoBehaviour
         persistentDropsContainer.DeactivatePersistentDrops();
     }
 
-    public void LoadRun(int runIdx)
+    public void LoadRun(int runIdx, int cycleCount)
     {
-        runsManager.Load(runIdx);
+        runsManager.Load(runIdx, cycleCount);
     }
 
     public bool IsRunDay(Script_Run.DayId dayId)
@@ -1948,6 +1953,7 @@ public class Script_Game : MonoBehaviour
 
         Model_GameData gameData = new Model_GameData(
             runsManager.RunIdx,
+            CycleCount,
             32, // Hotel Lobby
             totalPlayTime,
             activeEnding

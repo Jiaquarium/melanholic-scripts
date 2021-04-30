@@ -26,8 +26,8 @@ public class Script_DayNotificationManager : MonoBehaviour
         bool _isInteractAfter = true
     )
     {
-        string todayName = runsManager.Run.dayName;
-        dayNotification.DayText = todayName;
+        dayNotification.DayText = runsManager.Run.dayName;
+        dayNotification.CycleCountSubtext = runsManager.CycleCount.FormatCycleCount();
         
         game.ChangeStateCutScene();
         

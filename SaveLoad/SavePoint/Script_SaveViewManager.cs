@@ -11,6 +11,8 @@ public class Script_SaveViewManager : MonoBehaviour
 {
     public static Script_SaveViewManager Control;
     
+    // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
+    // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
     [SerializeField] private float restartGameTime;
     
     [SerializeField] private Script_Game game;
