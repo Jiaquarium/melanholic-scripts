@@ -54,8 +54,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Script_BgThemePlayer IdsCandyDanceShortThemePlayerPrefab;
     public Script_BgThemePlayer PlayerCandyDanceThemePlayerPrefab;
     
-    public Script_DialogueNode introNode;
-    [SerializeField] private Script_DialogueNode afterIntroRevealNode;
+    [SerializeField] private Script_DialogueNode introNodeTalkedWithMyne;
+    [SerializeField] private Script_DialogueNode introNodeNotTalkedWithMyne;
+
+    [SerializeField] private Script_DialogueNode afterIntroRevealNodeTalkedWithMyne;
+    [SerializeField] private Script_DialogueNode afterIntroRevealNodeNotTalkedWithMyne;
+
     public Script_DialogueNode danceIntroNode;
     public Script_DialogueNode playerDanceIntroNode;
     public Script_DialogueNode badDanceOutroNode;
@@ -104,6 +108,18 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     private bool didMapNotification;
     private bool isTimelineControlled = false;
+
+    private Script_DialogueNode IntroNode
+    {
+        get => Script_MynesMirrorManager.Control.DidInteract ?
+            introNodeTalkedWithMyne : introNodeNotTalkedWithMyne;
+    }
+
+    private Script_DialogueNode AfterIntroRevealNode
+    {
+        get => Script_MynesMirrorManager.Control.DidInteract ?
+            afterIntroRevealNodeTalkedWithMyne : afterIntroRevealNodeNotTalkedWithMyne;
+    }
 
     protected override void OnEnable()
     {
@@ -256,7 +272,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     private void OnNameplateDone(PlayableDirector aDirector)
     {
         namePlatePRCSPlayer.Stop();
-        dm.StartDialogueNode(afterIntroRevealNode, SFXOn: false);
+        dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false);
     }
 
     private void OnIdsMovesDone(PlayableDirector aDirector)
@@ -330,7 +346,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         game.PlayNPCBgTheme(IdsBgThemePlayerPrefab);
         game.ChangeStateCutScene();
         game.PlayerFaceDirection(Directions.Up);
-        dm.StartDialogueNode(introNode);
+        dm.StartDialogueNode(IntroNode);
         
         Script_VCamManager.VCamMain.SetNewVCam(VCamLB10FollowIds);
         

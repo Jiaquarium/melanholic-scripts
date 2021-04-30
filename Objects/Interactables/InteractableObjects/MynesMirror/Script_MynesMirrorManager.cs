@@ -24,6 +24,11 @@ public class Script_MynesMirrorManager : MonoBehaviour
     {
         get => interactionNodes[interactionCount];
     }
+
+    public bool DidInteract
+    {
+        get => interactionCount > 0;
+    }
     
     // ----------------------------------------------------------------------
     // Timeline Signals
