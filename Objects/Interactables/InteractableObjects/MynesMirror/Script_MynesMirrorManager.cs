@@ -9,6 +9,24 @@ using UnityEngine;
 public class Script_MynesMirrorManager : MonoBehaviour
 {
     public static Script_MynesMirrorManager Control;
+
+    [SerializeField] private int interactionCount;
+
+    [SerializeField] private Script_DialogueNode[] interactionNodes;
+    
+    public int InteractionCount
+    {
+        get => interactionCount;
+        set => interactionCount = value;
+    }
+
+    public Script_DialogueNode ActiveNode
+    {
+        get => interactionNodes[interactionCount];
+    }
+    
+    // ----------------------------------------------------------------------
+    // Timeline Signals
     
     /// <summary>
     /// Call this from Mynes Mirror End of Timeline so Mynes Mirrors can react to it
@@ -17,6 +35,8 @@ public class Script_MynesMirrorManager : MonoBehaviour
     {
         Script_MynesMirrorEventsManager.EndTimeline();
     }
+
+    // ----------------------------------------------------------------------
 
     public void Setup()
     {
