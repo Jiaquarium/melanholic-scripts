@@ -109,4 +109,23 @@ public static class Script_InventoryHelpers
         if (isFocus)    itemImages[i].sprite = items[i].focusedSprite;
         else            itemImages[i].sprite = items[i].sprite;   
     }
+
+    public static Script_Item SearchForItemById(
+        string Id,
+        out int slot,
+        Script_Item[] items
+    )
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i]?.id == Id)
+            {
+                slot = i;
+                return items[i];
+            }
+        }
+
+        slot = -1;
+        return null;
+    }
 }

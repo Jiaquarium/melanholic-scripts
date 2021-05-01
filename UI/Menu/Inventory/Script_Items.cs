@@ -58,6 +58,11 @@ public class Script_Items : MonoBehaviour
     {
         Script_InventoryHelpers.HighlightItem(i, isFocus, items, itemImages);
     }
+
+    public Script_Item SearchForItemById(string Id, out int slot)
+    {
+        return Script_InventoryHelpers.SearchForItemById(Id, out slot, items);
+    }
 }
 
 #if UNITY_EDITOR

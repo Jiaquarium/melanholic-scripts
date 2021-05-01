@@ -97,19 +97,14 @@ public class Script_InventoryManager : MonoBehaviour
         return equipment.SearchForStickerById(Id);
     }
 
-    public Script_Item SearchInventoryForItemById(string Id, out int slot)
+    public Script_Item SearchStickersForItemById(string Id, out int slot)
     {
-        for (int i = 0; i < inventory.Items.Length; i++)
-        {
-            if (inventory.Items[i]?.id == Id)
-            {
-                slot = i;
-                return inventory.Items[i];
-            }
-        }
+        return inventory.SearchForItemById(Id, out slot);
+    }
 
-        slot = -1;
-        return null;
+    public Script_Item SearchItemsForItemById(string Id, out int slot)
+    {
+        return items.SearchForItemById(Id, out slot);
     }
 
     // ------------------------------------------------------------------
@@ -159,9 +154,15 @@ public class Script_InventoryManager : MonoBehaviour
     public bool AddItem(Script_Item item)
     {
         if (item is Script_Sticker)
+        {
+            Debug.Log($"{name} Trying to add item {item} to stickers inventory");
             return inventory.AddItem(item);
+        }
         else
+        {
+            Debug.Log($"{name} Trying to add item {item} to items inventory");
             return items.AddItem(item);
+        }
     }
 
     public bool RemoveItem(Script_Item item)
@@ -461,7 +462,9 @@ public class Script_InventoryManager : MonoBehaviour
         {
             usablesHandler.UseSFX(usable);
             
-            inventory.RemoveItemInSlot(itemSlotId);
+            // Usables will only be stored in Items and not Stickers Inventory.
+            items.RemoveItemInSlot(itemSlotId);
+            
             /// Closing inventory will be handled by the UsableTarget
         }
         else
@@ -471,15 +474,15 @@ public class Script_InventoryManager : MonoBehaviour
         }
     }
 
+    // Search in Items which hold Usables.
     public bool TryUseKey(Script_UsableKey key)
     {
-        // get key by id
         int slot;
-        Script_Item foundItem = SearchInventoryForItemById(key.id, out slot);
+        Script_Item foundItem = SearchItemsForItemById(key.id, out slot);
         
         if (foundItem != null)
         {
-            inventory.RemoveItemInSlot(slot);
+            items.RemoveItemInSlot(slot);
             return true;
         }
 

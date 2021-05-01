@@ -13,7 +13,9 @@ using UnityEngine.Experimental.Rendering.Universal;
 /// </summary>
 public class Script_Game : MonoBehaviour
 {
-    
+    public static Script_Game Game;
+    private const int SpawnLevelNo = 32;
+
     /* =======================================================================
         STATE DATA
     ======================================================================= */
@@ -37,9 +39,6 @@ public class Script_Game : MonoBehaviour
     public Script_PlayerThoughtsInventoryButton[] thoughtSlots;
     [SerializeField] private Script_ThoughtSlotHolder thoughtSlotHolder;
     public Vector3 levelZeroCameraPosition;
-    
-
-    public static Script_Game Game;
     
     public Script_DDRManager DDRManager;
     public Script_DDRHandler DDRHandler;
@@ -1096,9 +1095,9 @@ public class Script_Game : MonoBehaviour
         return menuController.TryUseKey(key);
     }
 
-    public Script_Item GetInventoryItem(string itemId, out int slot)
+    public Script_Item GetItemsInventoryItem(string itemId, out int slot)
     {
-        return menuController.GetInventoryItem(itemId, out slot);
+        return menuController.GetItemsInventoryItem(itemId, out slot);
     }
 
     /* =======================================================================
@@ -1953,8 +1952,8 @@ public class Script_Game : MonoBehaviour
 
         Model_GameData gameData = new Model_GameData(
             runsManager.RunIdx,
+            SpawnLevelNo,
             CycleCount,
-            32, // Hotel Lobby
             totalPlayTime,
             activeEnding
         );

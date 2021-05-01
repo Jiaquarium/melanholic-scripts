@@ -33,8 +33,10 @@ public class Script_TreasureChest : Script_InteractableObject
         Script_ItemsEventsManager.OnItemStash += OnItemStash;
     }
 
-    void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         Script_ItemsEventsManager.OnItemStash -= OnItemStash;
     }
 
@@ -48,7 +50,11 @@ public class Script_TreasureChest : Script_InteractableObject
     {
         Debug.Log($"{name}: Action default called in TreasureChest");
         
-        if (CheckDisabledDirections())  return;
+        if (CheckDisabledDirections())
+        {
+            Debug.Log($"{name}: Action default from Disabled Direction");
+            return;
+        }
         
         if (!IsOpen)
         {

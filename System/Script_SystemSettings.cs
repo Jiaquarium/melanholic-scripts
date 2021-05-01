@@ -20,11 +20,8 @@ public class Script_SystemSettings : MonoBehaviour
     
     public static void DisableMouse()
     {
-        // if (!Debug.isDebugBuild)
-        // {
-            // Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        // }
+        // Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void OnGUI() {

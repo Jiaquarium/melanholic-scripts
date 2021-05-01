@@ -257,9 +257,9 @@ public class Script_MenuController : Script_UIState
     /// <summary>
     /// Note: Excludes equipped items.
     /// </summary>
-    public Script_Item GetInventoryItem(string itemId, out int slot)
+    public Script_Item GetItemsInventoryItem(string itemId, out int slot)
     {
-        return inventoryManager.SearchInventoryForItemById(itemId, out slot);
+        return inventoryManager.SearchItemsForItemById(itemId, out slot);
     }
 
     public Script_ItemObject InstantiateDropById(string itemId, Vector3 location, int LB)

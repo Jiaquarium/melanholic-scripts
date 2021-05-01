@@ -118,7 +118,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         game.ChangeStateCutScene();
         
         int slot = -1;
-        bool hasBook = game.GetInventoryItem(lastSpellRecipeBookItem.id, out slot) != null;
+        bool hasBook = game.GetItemsInventoryItem(lastSpellRecipeBookItem.id, out slot) != null;
 
         if (hasBook)
         {
