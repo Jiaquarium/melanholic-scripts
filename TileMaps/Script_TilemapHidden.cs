@@ -15,5 +15,9 @@ public class Script_TilemapHidden : MonoBehaviour
         Color newColor = tilemap.color;
         newColor.a = 0f; 
         tilemap.color = newColor;
+
+        TilemapRenderer renderer = GetComponent<TilemapRenderer>();
+        if (renderer != null)
+            renderer.enabled = false;
     }
 }

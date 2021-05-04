@@ -21,6 +21,8 @@ public class Dev_GameHelper : MonoBehaviour
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
 
+    [SerializeField] private Script_RunsManager runsManager;
+
     // ----------------------------------------------------------------------
     // Weekday Cycle State
     [SerializeField] private Script_LevelBehavior_0 woodsBehavior;
@@ -81,6 +83,13 @@ public class Dev_GameHelper : MonoBehaviour
 
     public void BuildSetup()
     {
+        runsManager.StartWeekdayCycle();
+        Script_Game.LevelsInactivate();
+    }
+
+    public void BuildDevExploreSetup()
+    {
+        runsManager.StartWeekendCycle();
         Script_Game.LevelsInactivate();
     }
 
@@ -158,76 +167,81 @@ public class Dev_GameHelper : MonoBehaviour
             exitType: Script_Exits.ExitType.Default
         );   
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Dev_GameHelper))]
-public class Dev_GameHelperTester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Dev_GameHelper))]
+    public class Dev_GameHelperTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Dev_GameHelper t = (Dev_GameHelper)target;
-        if (GUILayout.Button("DefaultPlayerSpawnPos()"))
-        {
-            t.DefaultPlayerSpawnPos();
-        }
-        
-        if (GUILayout.Button("Go To:"))
-        {
-            t.ExitToLevel();
-        }
+            Dev_GameHelper t = (Dev_GameHelper)target;
+            if (GUILayout.Button("DefaultPlayerSpawnPos()"))
+            {
+                t.DefaultPlayerSpawnPos();
+            }
+            
+            if (GUILayout.Button("Go To:"))
+            {
+                t.ExitToLevel();
+            }
 
-        if (GUILayout.Button("Go To: Ids Room"))
-        {
-            t.ExitToIdsRoom();
-        }
+            if (GUILayout.Button("Go To: Ids Room"))
+            {
+                t.ExitToIdsRoom();
+            }
 
-        if (GUILayout.Button("Go To: Last Elevator"))
-        {
-            t.ExitToLastElevator();
-        }
+            if (GUILayout.Button("Go To: Last Elevator"))
+            {
+                t.ExitToLastElevator();
+            }
 
-        if (GUILayout.Button("Go To: Ballroom (HMS Hall Entrance)"))
-        {
-            t.ExitToBallroomFromHMSHall();
-        }
+            if (GUILayout.Button("Go To: Ballroom (HMS Hall Entrance)"))
+            {
+                t.ExitToBallroomFromHMSHall();
+            }
 
-        if (GUILayout.Button("Go To: Wells World"))
-        {
-            t.ExitToWellsWorld();
-        }
+            if (GUILayout.Button("Go To: Wells World"))
+            {
+                t.ExitToWellsWorld();
+            }
 
-        GUILayout.Space(12);
+            GUILayout.Space(12);
 
-        if (GUILayout.Button("All Quests Done Today"))
-        {
-            t.SetAllQuestsDoneToday();
-        }
+            if (GUILayout.Button("All Quests Done Today"))
+            {
+                t.SetAllQuestsDoneToday();
+            }
 
-        if (GUILayout.Button("Quests Done Dynamic Today"))
-        {
-            t.SetQuestsDoneDynamic();
-        }
+            if (GUILayout.Button("Quests Done Dynamic Today"))
+            {
+                t.SetQuestsDoneDynamic();
+            }
 
-        GUILayout.Space(12);
+            GUILayout.Space(12);
 
-        if (GUILayout.Button("Save Current"))
-        {
-            t.SaveCurrent();
-        }
+            if (GUILayout.Button("Save Current"))
+            {
+                t.SaveCurrent();
+            }
 
-        if (GUILayout.Button("Weekend Start"))
-        {
-            t.WeekendCycle();
-        }
+            if (GUILayout.Button("Weekend Start"))
+            {
+                t.WeekendCycle();
+            }
 
-        GUILayout.Space(12);
+            GUILayout.Space(12);
 
-        if (GUILayout.Button("Build Setup"))
-        {
-            t.BuildSetup();
+            if (GUILayout.Button("Build Setup"))
+            {
+                t.BuildSetup();
+            }
+
+            if (GUILayout.Button("Build Dev Explore Setup"))
+            {
+                t.BuildDevExploreSetup();
+            }
         }
     }
+    #endif
 }
-#endif

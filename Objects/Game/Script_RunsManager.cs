@@ -161,6 +161,14 @@ public class Script_RunsManager : MonoBehaviour
         cycleCount = 0;
     }
 
+    public void StartWeekdayCycle()
+    {
+        RunCycle = Cycle.Weekday;
+        RunIdx = 0;
+
+        cycleCount = 0;
+    }
+
     private void ClearEventCycle()
     {
         eventCycleManager.InitialState();
@@ -277,6 +285,18 @@ public class Script_RunsManagerTester : Editor
         if (GUILayout.Button("Handle Days Container Highlight"))
         {
             t.HandleDaysCanvas();
+        }
+
+        GUILayout.Space(12);
+
+        if (GUILayout.Button("Weekday Start Setup"))
+        {
+            t.StartWeekdayCycle();
+        }
+        
+        if (GUILayout.Button("Weekend Start Setup"))
+        {
+            t.StartWeekendCycle();
         }
     }
 }
