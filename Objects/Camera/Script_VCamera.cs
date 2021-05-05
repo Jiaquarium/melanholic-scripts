@@ -9,6 +9,8 @@ using UnityEditor;
 
 public class Script_VCamera : MonoBehaviour
 {
+    [SerializeField] private bool isFollowPlayer;
+    
     public Transform Follow
     {
         get => GetComponent<CinemachineVirtualCamera>().Follow;
@@ -32,5 +34,14 @@ public class Script_VCamera : MonoBehaviour
     public void SetOrthoSize(float size)
     {
         GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize = size;
+    }
+    
+    void Awake()
+    {
+        if (isFollowPlayer)
+        {
+            Debug.Log($"{name} Set to follow Player");
+            FollowTarget(Script_Game.Game?.GetPlayer().FocalPoint);
+        }
     }
 }

@@ -16,11 +16,15 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+        
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
     }
 
     protected override void OnDisable()
     {
+        base.OnDisable();
+        
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
     }
 

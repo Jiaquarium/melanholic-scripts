@@ -13,12 +13,12 @@ using UnityEditor;
 /// </summary>
 
 [RequireComponent(typeof(Script_CameraShake))]
+[RequireComponent(typeof(Script_VCamera))]
 public class Script_VCamManager : MonoBehaviour
 {
     // Singleton
     public static Script_VCamManager VCamMain;
     public static readonly float defaultBlendTime = 2f;
-
 
     public static Script_VCamera ActiveVCamera
     {
@@ -27,6 +27,11 @@ public class Script_VCamManager : MonoBehaviour
                 .ActiveVirtualCamera as CinemachineVirtualCamera;
             return CVCam.GetComponent<Script_VCamera>();
         }
+    }
+
+    public Script_VCamera VCamera
+    {
+        get => GetComponent<Script_VCamera>();
     }
 
     public static void SetActiveCameraOrthoSize(float size)
@@ -43,21 +48,38 @@ public class Script_VCamManager : MonoBehaviour
     }
     
     /// <summary>
-    /// switching to a vCam but then returning back to main
+    /// Switching to a vCam but then returning back to main
     /// </summary>
     public void SetNewVCam(Script_VCamera VCam)
     {
         VCam.SetPriority(1);
-        GetComponent<Script_VCamera>().SetPriority(0);
+        ActiveVCamera.SetPriority(0);
     }
 
     /// <summary>
-    /// switching back to main VCam
+    /// Switching back to main VCam. The level VCam will serve as the Main VCam if one is defined.
     /// </summary>
     public void SwitchToMainVCam(Script_VCamera otherVCam)
     {
-        GetComponent<Script_VCamera>()?.SetPriority(1);
+        // Always treat the Level VCam as the Main when it is defined.
+        Script_VCamera mainVCam;
+        if (Script_Game.Game.levelBehavior.LevelVCam != null)
+        {
+            mainVCam = Script_Game.Game.levelBehavior.LevelVCam;
+        }
+        else
+        {
+            mainVCam = VCamera;
+        }
+
+        mainVCam?.SetPriority(1);
         otherVCam.SetPriority(0);
+    }
+
+    public void DisableLevelVCam(Script_VCamera levelVCam)
+    {
+        VCamera?.SetPriority(1);
+        levelVCam.SetPriority(0);
     }
 
     /// <summary>

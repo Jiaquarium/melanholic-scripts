@@ -10,6 +10,12 @@ public class Script_LevelBehavior : MonoBehaviour
 {
     public Script_Game game;
     [SerializeField] private Script_Snow snowEffect;
+    [SerializeField] private Script_VCamera levelVCam;
+
+    public Script_VCamera LevelVCam
+    {
+        get => levelVCam;
+    }
 
     void Awake()
     {
@@ -57,9 +63,28 @@ public class Script_LevelBehavior : MonoBehaviour
         }
     }
 
-    protected virtual void OnDisable() {}
+    protected virtual void OnDisable()
+    {
+        if (levelVCam != null)
+        {
+            Script_VCamManager.VCamMain.DisableLevelVCam(levelVCam);
+            
+            game.SnapCam(
+                levelVCam.transform.position,
+                Script_VCamManager.VCamMain.transform,
+                Script_VCamManager.VCamMain.VCamera.CinemachineVirtualCamera
+            );
+        }
+    }
     
-    protected virtual void OnEnable() {}
+    protected virtual void OnEnable()
+    {
+        if (levelVCam != null)
+        {
+            Script_VCamManager.VCamMain.SetNewVCam(levelVCam);
+            game.ForceCutBlend();
+        }
+    }
     
     public virtual void EatDemon(int Id) {}
     

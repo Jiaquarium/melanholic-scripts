@@ -1738,6 +1738,13 @@ public class Script_Game : MonoBehaviour
         return activeVCam;
     }
 
+    /// <summary>
+    /// Will snap the camera instead of blending. Useful if want to cut the Blend on the fly
+    /// and not have to define in Brain.
+    /// </summary>
+    /// <param name="prevPos">Previous VCam position</param>
+    /// <param name="t">New VCam Transform</param>
+    /// <param name="vCam"New VCam></param>
     public CinemachineVirtualCamera SnapCam(Vector3 prevPos, Transform t, CinemachineVirtualCamera vCam)
     {
         vCam.OnTargetObjectWarped(t.transform, t.transform.position - prevPos);
@@ -1746,6 +1753,7 @@ public class Script_Game : MonoBehaviour
         return vCam;
     }
 
+    // Forces a cut on the current Active Cam.
     public void ForceCutBlend()
     {
         CinemachineVirtualCamera activeVCam = cinemachineBrain

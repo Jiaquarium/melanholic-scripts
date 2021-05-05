@@ -34,6 +34,8 @@ public class Script_Player : Script_Character
     [SerializeField] private bool _isInvincible;
     [SerializeField] private bool _isInvisible;
     
+    [SerializeField] private Transform focalPoint;
+
     protected Script_Game game;
     
     private Script_PlayerReflection reflection;
@@ -72,6 +74,11 @@ public class Script_Player : Script_Character
     {
         get => playerGraphics.PlayerGraphicsMaterial;
         set => playerGraphics.PlayerGraphicsMaterial = value;
+    }
+
+    public Transform FocalPoint
+    {
+        get => focalPoint;
     }
 
     // Update is called once per frame
