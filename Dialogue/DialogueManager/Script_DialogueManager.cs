@@ -26,6 +26,8 @@ public class Script_DialogueManager : MonoBehaviour
     
     public static Script_DialogueManager DialogueManager;
     public static float DialogueContinuationFlickerInterval = 0.75f;
+    private static char PauseTextCommand = '|';
+    
     public Script_Interactable activeInteractable; // for cut scenes this will be null
     public CanvasGroup inputManagerCanvas;
     public Script_Game game;
@@ -94,7 +96,7 @@ public class Script_DialogueManager : MonoBehaviour
     public Queue<Model_DialogueSection> dialogueSections;
     public Queue<string> lines;
     public float pauseLength;
-    public float charPauseLength;
+    [SerializeField] private float charPauseLength;
     public float charPauseFast;
     public float charPauseDefault;
     public float typingVolumeScale;
@@ -410,7 +412,7 @@ public class Script_DialogueManager : MonoBehaviour
 
     void EnqueueDialogueSections(Model_Dialogue dialogue)
     {
-        foreach(Model_DialogueSection _dialogueSection in dialogue.sections)
+        foreach (Model_DialogueSection _dialogueSection in dialogue.sections)
         {
             dialogueSections.Enqueue(_dialogueSection);
         }
@@ -454,7 +456,7 @@ public class Script_DialogueManager : MonoBehaviour
     {   
         playerName = Script_Names.Player;
         
-        StartRenderingDialoguePortion();
+        isRenderingDialogueSection = true;
 
         dialogueSection = dialogueSections.Dequeue();
         
@@ -498,159 +500,79 @@ public class Script_DialogueManager : MonoBehaviour
 
         formattedLine = Script_Utils.FormatString(unformattedLine);
 
-        coroutine = TypeLine(formattedLine);
-        
+        // coroutine = TypeLine(formattedLine);
+        coroutine = TeleTypeReveal(formattedLine);
         StartCoroutine(coroutine);
     }
 
-    /// <summary>
-    /// start: tag converter algo, takes tagged text
-    /// e.g. <i><b><size=18>hello world</i></b></size=18> into
-    /// <i><b><size=18>h</i></b></size=18><i><b><size=18>e</i></b></size=18> etc etc...
-    /// NOTE: doesn't work for nested tags!!! need to separate it like <i>something</i><i><b>{12}</b></i>
-    /// </summary>
-    IEnumerator TypeLine(string sentence)
+    IEnumerator TeleTypeReveal(string sentence)
     {
-        bool isTracking = false;
-        bool isWrapNextLetter = false;
-        bool isFindingClosingTags = false;
-        bool isSkipLetter = false;
+        // Hide Text Commands.
+        string formattedSentence = sentence.Replace(
+            PauseTextCommand.ToString(),
+            $"<size=0>{PauseTextCommand.ToString()}</size>"
+        );
         
-        string wrappedChar = "";
-        string wrap = "";
+        // First initialize the canvas with text and hide all text.
+        activeCanvasText.text = formattedSentence;
+        activeCanvasText.maxVisibleCharacters = 0;
+        TMP_CharacterInfo[] charInfos = activeCanvasText.textInfo.characterInfo;
+        float charPauseTime;
         
-        int tagsCount = 0;
+        // Must wait a frame so TMP can update for new hidden text.
+        yield return null;
 
-        activeCanvasText.text = "";
-        
-        foreach(char letter in formattedLine.ToCharArray())
+        // Get # of visible characters in Text object.
+        int totalVisibleCharacters = activeCanvasText.textInfo.characterCount;
+        int counter = 0;
+
+        while (true)
         {
-            // play TypeSFX on pauses
-            if (letter.Equals('|'))
+            int visibleCount = counter % (totalVisibleCharacters + 1);
+            
+            // Reveal current character.
+            activeCanvasText.maxVisibleCharacters = visibleCount;
+            HandleTypingSFX();
+
+            // Exit once the last character has been revealed.
+            if (visibleCount >= totalVisibleCharacters)
+                break;
+
+            // Get the next visible character and handle Text Commands.
+            TMP_CharacterInfo charInfo = activeCanvasText.textInfo.characterInfo[visibleCount];
+            char nextVisibleChar = charInfo.character;
+            if (nextVisibleChar == PauseTextCommand)
             {
+                charPauseTime = pauseLength;
                 shouldPlayTypeSFX = true;
-                yield return new WaitForSeconds(pauseLength);
-            }
-
-            else if (isFindingClosingTags)
-            {
-                if (letter.Equals('>'))
-                {
-                    tagsCount--;
-                    // reset state, we know we've covered all the tags we've added
-                    if (tagsCount == 0)
-                    {
-                        // sets to starting state
-                        wrappedChar = "";
-                        wrap = ""; 
-
-                        isFindingClosingTags = false;
-                        isTracking = false;
-                        isSkipLetter = false;
-                    }
-                }
             }
             else
             {
-                if (isWrapNextLetter)
-                {
-                    // if we find < and no wrapped Char yet, we know it's another tag
-                    if (letter.Equals('<'))
-                    {
-                        if (wrappedChar == "")
-                        {
-                            wrap += letter;
-                            isSkipLetter = true;
-                            isWrapNextLetter = false;
-                        }
-                        // else, done wrapping characters since wrappedChar
-                        // is loaded; we know we're now looking for closing tags
-                        else
-                        {
-                            isFindingClosingTags = true;
-                            isSkipLetter = true;
-                            isWrapNextLetter = false;
-                        }
-                    }
-                    else
-                    {
-                        // will give you all the tags
-                        // ex: <size=18><b><i>[char]</i></b></size>
-                        wrappedChar = WrapCharWithTags(wrap, letter);
-                        isSkipLetter = false;
-                    }
-                }
-                else if (letter.Equals('<'))
-                {
-                    isSkipLetter = true;
-                    wrap += letter;
-                    isTracking = true;
-                }
-                else if (isTracking)
-                {
-                    isSkipLetter = true;
-                    wrap += letter;
-
-                    if (letter.Equals('>'))
-                    {
-                        isWrapNextLetter = true;
-                        tagsCount++;
-                    }
-                }
-
-                /*
-                    end
-                */
-
-                if (!isSkipLetter)
-                {
-                    // only play typeSFX every other char
-                    if (shouldPlayTypeSFX == true && !isSilentTyping)
-                    {
-                        audioSource.PlayOneShot(typeSFX, typingVolumeScale);
-                        shouldPlayTypeSFX = false;
-                    } else
-                    {
-                        shouldPlayTypeSFX = true;
-                    }
-
-                    activeCanvasText.text += wrappedChar == "" ? letter.ToString() : wrappedChar;
-
-                    yield return new WaitForSeconds(charPauseLength);
-                }
+                charPauseTime = charPauseLength;
             }
-        }
+
+            counter++;
+            yield return new WaitForSeconds(charPauseTime);
+        }        
 
         lineCount++;
         DisplayNextLine();
+
+        void HandleTypingSFX()
+        {
+            // only play typeSFX every other char
+            if (shouldPlayTypeSFX == true && !isSilentTyping)
+            {
+                audioSource.PlayOneShot(typeSFX, typingVolumeScale);
+                shouldPlayTypeSFX = false;
+            }
+            else
+            {
+                shouldPlayTypeSFX = true;
+            }
+        }
     }
 
-    string WrapCharWithTags(string wrap, char c)
-    {
-        // wrap will be <size><i><b>
-            // need to check if next char is <, if not we know it's a char
-            // if is continue adding to wrap
-        // only handles <size...>, <i> & <b>
-		
-        string size20Rx =           "<size=20>";
-        string size16Rx =           "<size=16>";
-        string boldRx =             "<b>";
-        string italicRx =           "<i>";
-        string wrappedChar =        c.ToString();
-		
-		if (Regex.IsMatch(wrap, size20Rx))  wrappedChar = "<size=20>" + wrappedChar + "</size>";
-        if (Regex.IsMatch(wrap, size16Rx))  wrappedChar = "<size=16>" + wrappedChar + "</size>";
-        if (Regex.IsMatch(wrap, boldRx))    wrappedChar = "<b>" + wrappedChar + "</b>";
-        if (Regex.IsMatch(wrap, italicRx))  wrappedChar = "<i>" + wrappedChar + "</i>";
-        
-        return wrappedChar;
-    }
-
-    void StartRenderingDialoguePortion()
-    {
-        isRenderingDialogueSection = true;
-    }
-    
     void FinishRenderingDialogueSection()
     {
         isRenderingDialogueSection = false;
@@ -952,15 +874,18 @@ public class Script_DialogueManager : MonoBehaviour
 
             for (int i = 0; i < dialogueSection.lines.Length; i++)
             {
-                // interpolate playerName
+                // Interpolate dynamic strings.
                 string unformattedLine = dialogueSection.lines[i];
                 string _formattedLine = Script_Utils.FormatString(unformattedLine);
                 
-                // remove pause indicators
+                // Remove pause indicators
                 _formattedLine = _formattedLine.Replace("|", string.Empty);
                 
                 activeCanvasText = activeCanvasTexts[i];
                 activeCanvasText.text = _formattedLine;
+                
+                // Reset TMP visibility.
+                activeCanvasText.maxVisibleCharacters = activeCanvasText.textInfo.characterCount + 1;
             }
 
             lines.Clear();
