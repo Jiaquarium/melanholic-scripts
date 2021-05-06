@@ -78,7 +78,11 @@ public class Script_VCamManager : MonoBehaviour
 
     public void DisableLevelVCam(Script_VCamera levelVCam)
     {
-        VCamera?.SetPriority(1);
+        // Avoid erroring OnDisable.
+        if (this == null || this?.VCamera == null)
+            return;
+        
+        VCamera.SetPriority(1);
         levelVCam.SetPriority(0);
     }
 

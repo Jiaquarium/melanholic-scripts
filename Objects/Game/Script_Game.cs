@@ -300,6 +300,13 @@ public class Script_Game : MonoBehaviour
         get => levelBehavior == BallroomBehavior;
     }
 
+    // ------------------------------------------------------------------
+    // Camera Properties
+    public PixelPerfectCamera PixelPerfectCamera
+    {
+        get => GetComponent<PixelPerfectCamera>();
+    }
+
     /// <summary>
     /// (DEV): Sets all levels to inactive from Dev'ing
     /// to avoid errors when a level is active on load where their GameObjects's
