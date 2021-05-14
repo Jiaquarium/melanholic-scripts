@@ -8,12 +8,14 @@ public class Script_PlayerGraphics : MonoBehaviour
     {
         Unlit       = 0,
         Lit         = 1,
+        SimpleUnlit = 2
     }
     
     [SerializeField] private Script_Player player;
     [SerializeField] private Renderer graphics;
     [SerializeField] private Material lit;
     [SerializeField] private Material unlit;
+    [SerializeField] private Material simpleUnlit;
 
     public Material PlayerGraphicsMaterial
     {
@@ -39,6 +41,10 @@ public class Script_PlayerGraphics : MonoBehaviour
             case (Materials.Lit):
                 graphics.material                                   = lit;
                 player.GetPlayerGhost().spriteRenderer.material     = lit;
+                break;
+            case (Materials.SimpleUnlit):
+                graphics.material                                   = simpleUnlit;
+                player.GetPlayerGhost().spriteRenderer.material     = simpleUnlit;
                 break;
         }
     }

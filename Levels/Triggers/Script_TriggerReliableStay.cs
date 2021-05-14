@@ -40,8 +40,10 @@ public class Script_TriggerReliableStay : Script_Trigger
         return isPressed;
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+        
         InitialState();
     }
     

@@ -7,6 +7,13 @@ public class Script_Trigger : MonoBehaviour
     public string Id;
     protected bool isInitializing = true;
     protected bool isColliding;
+
+    [SerializeField] bool reuseCollisionCallbacks = true;
+    
+    protected virtual void Start()
+    {
+        Physics.reuseCollisionCallbacks = reuseCollisionCallbacks;
+    }
     
     void Update()
     {

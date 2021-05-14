@@ -500,7 +500,6 @@ public class Script_DialogueManager : MonoBehaviour
 
         formattedLine = Script_Utils.FormatString(unformattedLine);
 
-        // coroutine = TypeLine(formattedLine);
         coroutine = TeleTypeReveal(formattedLine);
         StartCoroutine(coroutine);
     }
