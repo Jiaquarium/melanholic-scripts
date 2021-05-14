@@ -33,7 +33,7 @@ public class Script_DisablerController : MonoBehaviour
 
         foreach (Collider col in box.Colliders)
         {
-            if (col.tag == Const_Tags.Player)
+            if (col != null && col.tag == Const_Tags.Player)
             {
                 return true;
             }

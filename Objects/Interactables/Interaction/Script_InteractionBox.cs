@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 /// <summary>
-/// Exposed box to detect interactable box (hurtBox)
+/// Exposed box to detect interactable box
 /// handles all interactions on this layer and ONLY this layer (e.g. talking, pushing)
-/// NOTE: DOES NOT FOLLOW THE PHYSICS MATRIX
+/// Note: Does NOT follow physics matrix
 /// </summary>
 public class Script_InteractionBox : MonoBehaviour
 {
@@ -15,6 +16,14 @@ public class Script_InteractionBox : MonoBehaviour
     [SerializeField] private Vector3 boxSize; // half extants
     [SerializeField] protected LayerMask layerMask;
     [SerializeField] private Color color;
+    
+    [SerializeField] private int max = 10;
+
+    protected virtual void Start()
+    {
+        colliders = new Collider[max];
+    }
+    
     protected virtual void Update()
     {
         if (isExposed)  ExposeBox();
@@ -22,7 +31,8 @@ public class Script_InteractionBox : MonoBehaviour
     
     protected void ExposeBox()
     {
-        colliders = Physics.OverlapBox(transform.position, boxSize, transform.rotation, layerMask);
+        Array.Clear(colliders, 0, colliders.Length);
+        int size = Physics.OverlapBoxNonAlloc(transform.position, boxSize, colliders, transform.rotation, layerMask);
     }
 
     private void OnDrawGizmos() {
@@ -43,6 +53,8 @@ public class Script_InteractionBox : MonoBehaviour
 
         foreach (Collider col in colliders)
         {
+            if (col == null)    continue;
+            
             // Skip all tags specified in ignoreTags.
             if ((ignoreTags != null && !ignoreTags.Any()) && ignoreTags.CheckInTags(col.tag))    continue;
             
@@ -73,7 +85,7 @@ public class Script_InteractionBox : MonoBehaviour
 
         foreach (Collider col in colliders)
         {
-            if (col.transform.GetParentRecursive<Script_Pushable>() != null)
+            if (col != null && col.transform.GetParentRecursive<Script_Pushable>() != null)
             {
                 pushables.Add(col.transform.GetParentRecursive<Script_Pushable>());
             }
@@ -90,7 +102,7 @@ public class Script_InteractionBox : MonoBehaviour
 
         foreach (Collider col in colliders)
         {
-            if (col.transform.GetParentRecursive<Transform>().tag == tag)
+            if (col != null && col.transform.GetParentRecursive<Transform>().tag == tag)
             {
                 uniqueBlocking.Add(col.transform.GetParentRecursive<Transform>());
             }

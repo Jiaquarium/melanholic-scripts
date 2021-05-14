@@ -12,7 +12,7 @@ public class Script_PlayerInteractionBox : Script_InteractionBox
         ExposeBox();
         foreach (Collider col in colliders)
         {
-            if (col.tag == Const_Tags.NPC)
+            if (col != null && col.tag == Const_Tags.NPC)
                 return col.transform.parent.GetComponent<Script_StaticNPC>();
         }
 
@@ -26,7 +26,7 @@ public class Script_PlayerInteractionBox : Script_InteractionBox
         Script_InteractableObject[] objs = new Script_InteractableObject[colliders.Length];
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].tag == Const_Tags.InteractableObject)
+            if (colliders[i] != null && colliders[i].tag == Const_Tags.InteractableObject)
             {
                 objs[i] = colliders[i].transform.parent.GetComponent<Script_InteractableObject>();
             }
@@ -40,7 +40,7 @@ public class Script_PlayerInteractionBox : Script_InteractionBox
         ExposeBox();
         foreach (Collider col in colliders)
         {
-            if (col.tag == Const_Tags.SavePoint)
+            if (col != null && col.tag == Const_Tags.SavePoint)
                 return col.transform.parent.GetComponent<Script_SavePoint>();
         }
 
@@ -52,7 +52,7 @@ public class Script_PlayerInteractionBox : Script_InteractionBox
         ExposeBox();
         foreach (Collider col in colliders)
         {
-            if (col.tag == Const_Tags.ItemObject)
+            if (col != null && col.tag == Const_Tags.ItemObject)
                 return col.transform.parent.GetComponent<Script_ItemObject>();
         }
 
@@ -64,7 +64,7 @@ public class Script_PlayerInteractionBox : Script_InteractionBox
         ExposeBox();
         foreach (Collider col in colliders)
         {
-            if (col.tag == Const_Tags.UsableTarget)
+            if (col != null && col.tag == Const_Tags.UsableTarget)
                 return col.transform.parent.GetComponent<Script_UsableTarget>();
         }
 

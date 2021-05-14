@@ -1,6 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+/// <summary>
+/// Exposed box to detect HurtBoxes
+/// Note: Does NOT follow physics matrix
+/// </summary>
 
 public interface IHitBoxResponder
 {
@@ -18,7 +24,15 @@ public class Script_HitBox : MonoBehaviour
     [SerializeField] private Color collisionOpenColor;
     [SerializeField] private Color collidingColor;
     [SerializeField] private ColliderState state;
+
+    [SerializeField] private int max = 10;
+
     private IHitBoxResponder responder = null;
+    
+    void Start()
+    {
+        colliders = new Collider[max];
+    }
     
     void Update()
     {
@@ -29,18 +43,26 @@ public class Script_HitBox : MonoBehaviour
     
     void ExposeBox()
     {
-        colliders = Physics.OverlapBox(transform.position, boxSize, transform.rotation, layerMask);
+        Array.Clear(colliders, 0, colliders.Length);
+        int size = Physics.OverlapBoxNonAlloc(transform.position, boxSize, colliders, transform.rotation, layerMask);
     }
 
     void CheckColliding()
     {
+        bool isCollision = false;
+
         for (int i = 0; i < colliders.Length; i++)
         {
             Collider aCollider = colliders[i];
-            responder?.CollisionedWith(aCollider, this);
+
+            if (aCollider != null)
+            {
+                responder?.CollisionedWith(aCollider, this);
+                isCollision = true;
+            }
         }
 
-        state = colliders.Length > 0 ? state = ColliderState.Colliding : state = ColliderState.Open;
+        state = isCollision ? state = ColliderState.Colliding : state = ColliderState.Open;
     }
 
     public void SetResponder(IHitBoxResponder _responder)
