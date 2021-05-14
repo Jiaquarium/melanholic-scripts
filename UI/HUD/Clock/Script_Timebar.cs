@@ -28,12 +28,12 @@ public class Script_TimebarTester : Editor
         Script_Timebar t = (Script_Timebar)target;
         if (GUILayout.Button("+ 0.1f"))
         {
-            t.TimeElapsed += 0.1f;
+            t.TimeElapsed += 1f;
         }
 
         if (GUILayout.Button("- 0.1f"))
         {
-            t.TimeElapsed -= 0.1f;
+            t.TimeElapsed -= 1f;
         }
     }
 }

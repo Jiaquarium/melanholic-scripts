@@ -67,7 +67,6 @@ public class Script_Clock : MonoBehaviour
                 CurrentTime += Time.deltaTime * TimeMultiplier;
                 if (CurrentTime > EndTime)  CurrentTime = EndTime;
 
-                HandleTimebar(CurrentTime);
                 UpdateTimeState();
 
                 break;
@@ -134,15 +133,6 @@ public class Script_Clock : MonoBehaviour
         else if (CurrentTime >= WarningTime)        timeState = TimeStates.Warning;
         else if (CurrentTime >= AwareTime)          timeState = TimeStates.Aware;
         else                                        timeState = TimeStates.None;
-    }
-
-    private void HandleTimebar(float time)
-    {
-        float timeElapsed = time - StartTime;
-
-        float donePercent = timeElapsed / TotalTime;
-
-        clockManager.HandleTimebar(donePercent);
     }
 
     public void InitialState()

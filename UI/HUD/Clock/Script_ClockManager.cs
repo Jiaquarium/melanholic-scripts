@@ -12,6 +12,7 @@ using UnityEditor;
 public class Script_ClockManager : MonoBehaviour
 {
     public static Script_ClockManager Control;
+    public static int TimebarIncrements = 60;
     
     [SerializeField] private Script_Clock clock;
     [SerializeField] private Script_Timebar timebar;
@@ -39,6 +40,8 @@ public class Script_ClockManager : MonoBehaviour
         
         if (game.IsInHotel())   clock.State = Script_Clock.States.Paused;
         else                    clock.State = Script_Clock.States.Active;
+
+        HandleTimebar();
     }
 
     public void TimesUp()
@@ -52,9 +55,13 @@ public class Script_ClockManager : MonoBehaviour
         didFireDoneEvent = true;
     }
 
-    public void HandleTimebar(float donePercent)
+    public void HandleTimebar()
     {
-        timebar.TimeElapsed = donePercent;
+        float timeElapsed = clock.CurrentTime - Script_Clock.StartTime;
+        float donePercent = timeElapsed / Script_Clock.TotalTime;
+        int doneValue = (int)Mathf.Floor(donePercent * TimebarIncrements);
+        
+        timebar.TimeElapsed = doneValue;
     }
 
     public void InitialState()
@@ -69,6 +76,7 @@ public class Script_ClockManager : MonoBehaviour
     public void FastForwardTime(int sec)
     {
         clock.FastForwardTime(sec);
+        HandleTimebar();
     }
 
     /// <summary>

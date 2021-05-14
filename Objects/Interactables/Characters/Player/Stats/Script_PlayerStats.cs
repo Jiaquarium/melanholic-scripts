@@ -23,8 +23,6 @@ public class Script_PlayerStats : Script_CharacterStats
         sec -= stats.defense.GetVal();
         sec = Mathf.Clamp(sec, 0, int.MaxValue);
         
-        /// TODO: Change implementation of HandleTakeDamage to reduce time instead of hearts
-        /// Currently, remove the thoughts mechanic
         HandleTakeDamage(sec);
 
         Debug.Log($"Player {name} took damage {sec}. currentHp: {currentHp}. death type: {hitBox.deathType}");
