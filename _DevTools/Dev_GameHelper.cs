@@ -232,7 +232,7 @@ public class Dev_GameHelper : MonoBehaviour
 
             GUILayout.Space(12);
 
-            if (GUILayout.Button("Build Setup"))
+            if (GUILayout.Button("Build Setup", GUILayout.Height(32)))
             {
                 t.BuildSetup();
             }

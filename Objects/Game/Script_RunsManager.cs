@@ -73,6 +73,7 @@ public class Script_RunsManager : MonoBehaviour
     private Script_Run.DayId StartDay
     {
         get => _startDay;
+        set => _startDay = value;
     }
 
     private Script_Run.DayId WeekendStartDay
@@ -157,6 +158,8 @@ public class Script_RunsManager : MonoBehaviour
     {
         RunCycle = Cycle.Weekend;
         RunIdx = GetRunIdxByDayId(WeekendStartDay);
+        
+        StartDay = WeekendStartDay;
 
         cycleCount = 0;
     }
@@ -165,6 +168,8 @@ public class Script_RunsManager : MonoBehaviour
     {
         RunCycle = Cycle.Weekday;
         RunIdx = 0;
+
+        StartDay = GetRunByIdx(RunIdx).dayId;
 
         cycleCount = 0;
     }
