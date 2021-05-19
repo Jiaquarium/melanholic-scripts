@@ -31,13 +31,20 @@ public class Script_PlayerGhost : MonoBehaviour
     [SerializeField] private Light l;
     [SerializeField] private Script_Player player;
 
+    [SerializeField] private Script_PlayerGhostGraphics playerGhostGraphics;
+
+    private bool isMoving;
+
+    public Script_PlayerGhostGraphics PlayerGhostGraphics
+    {
+        get => playerGhostGraphics;
+    }
+
     private Script_Player Player
     {
         get => player;
         set => player = value;
     }
-
-    private bool isMoving;
 
     void Update()
     {

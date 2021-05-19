@@ -24,7 +24,7 @@ public class Script_PlayerGraphics : MonoBehaviour
         {
             if (graphics != null)
             {
-                graphics.material           = value;
+                graphics.material                                   = value;
                 player.GetPlayerGhost().spriteRenderer.material     = value;
             }
         }
@@ -47,5 +47,22 @@ public class Script_PlayerGraphics : MonoBehaviour
                 player.GetPlayerGhost().spriteRenderer.material     = simpleUnlit;
                 break;
         }
+    }
+
+    public bool IsMaterialTransparent()
+    {
+        // All materials where we are treating the Player material as a mesh
+        // and so transparency will not affect it.
+        bool noAlpha = PlayerGraphicsMaterial is Material lit
+            || PlayerGraphicsMaterial is Material unlit
+            || PlayerGraphicsMaterial is Material simpleUnlit;
+        
+        return !noAlpha;
+    }
+
+    public void SetHidden(bool isHidden)
+    {
+        Debug.Log($"Disabling graphics {name}");
+        graphics.enabled = !isHidden;
     }
 }

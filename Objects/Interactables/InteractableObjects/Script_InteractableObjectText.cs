@@ -55,7 +55,11 @@ public class Script_InteractableObjectText : Script_InteractableObject
 
     public override void ActionDefault()
     {
-        if (CheckDisabled())  return;
+        if (CheckDisabled())
+        {
+            Debug.Log($"{name} is disabled");
+            return;
+        }
         
         /// Initiate dialogue node
         if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)

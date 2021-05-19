@@ -28,9 +28,6 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     public Script_Exits exitsHandler;
     public Script_BgThemePlayer EroBgThemePlayerPrefab;
     public Transform lightSwitchesParent;
-    public Transform painting1Parent;
-    public Transform painting2Parent;
-    public Transform painting3Parent;
 
     private Script_LBSwitchHandler switchHandler;
     [SerializeField] private Model_MoveSet[] truncatedMoveSet = new Model_MoveSet[0];
@@ -209,9 +206,6 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
             switchesStates,
             isInitialize: !isInitialized
         );
-        game.SetupInteractableObjectsText(painting1Parent, !isInitialized);
-        game.SetupInteractableObjectsText(painting2Parent, !isInitialized);
-        game.SetupInteractableObjectsText(painting3Parent, !isInitialized);
         
         if (game.Run.dayId == Script_Run.DayId.none)
         {

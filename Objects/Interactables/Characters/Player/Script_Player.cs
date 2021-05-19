@@ -319,15 +319,23 @@ public class Script_Player : Script_Character
     }
 
     // Call with fadeTime = 0f for instant.
+    // For materials where alpha is not affected, this will instantly disable player Graphics. 
     public void SetInvisible(bool isHide, float fadeTime = -1f)
     {
         _isInvisible = isHide;
         
-        float t = fadeTime < 0 ? Script_GraphicsManager.GetFadeTime(fadeSpeed) : fadeTime;
         Script_PlayerGhost pg = GetPlayerGhost();
-
-        if (_isInvisible)   playerEffect.SetVisibility(0, fadeTime, graphics, pg, null);
-        else                playerEffect.SetVisibility(1, fadeTime, graphics, pg, null);
+        
+        if (playerGraphics.IsMaterialTransparent())
+        {
+            float t = fadeTime < 0 ? Script_GraphicsManager.GetFadeTime(fadeSpeed) : fadeTime;
+            playerEffect.SetVisibility(alpha: _isInvisible ? 0 : 1, fadeTime, graphics, pg, null);
+        }
+        else
+        {
+            playerGraphics.SetHidden(_isInvisible);
+            pg.PlayerGhostGraphics.SetHidden(_isInvisible);
+        }
     }
 
     // ------------------------------------------------------------------

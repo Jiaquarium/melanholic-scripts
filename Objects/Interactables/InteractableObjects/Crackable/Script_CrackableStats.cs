@@ -40,6 +40,8 @@ public class Script_CrackableStats : Script_CharacterStats
 
     private void HandleHurtGraphics(int hp)
     {
+        if (graphics == null)   return;
+        
         if      (hp <= lowHealthThreshold)      graphics.sprite = lowHealthImage;
         else                                    graphics.sprite = defaultImage;
     }

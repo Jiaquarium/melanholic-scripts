@@ -279,6 +279,17 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         });
     }
 
+    public void HidePlayer()
+    {
+        Debug.Log($"Hiding player {game.GetPlayer()}");
+        game.GetPlayer().SetInvisible(true, 0f);
+    }
+
+    public void UnhidePlayer()
+    {
+        game.GetPlayer().SetInvisible(false, 0f);
+    }
+
     // ----------------------------------------------------------------------
     
     public override void Setup()
@@ -320,6 +331,16 @@ public class Script_LevelBehavior_26Tester : Editor
         if (GUILayout.Button("Puzzle Success"))
         {
             t.PuzzleSuccess();
+        }
+
+        if (GUILayout.Button("Hide Player"))
+        {
+            t.HidePlayer();
+        }
+
+        if (GUILayout.Button("Unhide Player"))
+        {
+            t.UnhidePlayer();
         }
     }
 }

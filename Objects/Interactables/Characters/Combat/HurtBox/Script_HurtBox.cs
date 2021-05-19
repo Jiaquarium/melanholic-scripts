@@ -23,6 +23,9 @@ public class Script_HurtBox : MonoBehaviour
 
 
     private void OnDrawGizmos() {
+        // if using a mesh collider, no need to draw the gizmo.
+        if (myCollider == null)     return;
+
         // same as hitbox, but taking the size, rotation and scale from the collider
         CheckGizmoColor();
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
