@@ -10,8 +10,8 @@ using UnityEngine.Timeline;
 /// For movement, uses PlayerGhost to simulate movement. We actually move Player as the pointer
 /// immediately and have the visual representation PlayerGhost follow.
 /// 
-/// We do so by turning off the Player Sprite when moving positions and turning on PlayerGhost Sprite.
-/// If we're not moving in world space, then we don't do this since we don't need the PlayerGhost lag visuals.
+/// If we're not moving in world space (e.g. Timeline)
+/// then we don't do this since we don't need the PlayerGhost lag visuals.
 /// </summary>
 [RequireComponent(typeof(PlayableDirector))]
 [RequireComponent(typeof(Script_PlayerCheckCollisions))]
@@ -22,6 +22,8 @@ public class Script_PlayerMovement : MonoBehaviour
     public const string MoveZAnimatorParam          = "MoveZ";
     public const string LastMoveXAnimatorParam      = "LastMoveX";
     public const string LastMoveZAnimatorParam      = "LastMoveZ";
+    private const string Horizontal                  = "Horizontal";
+    private const string Vertical                    = "Vertical";
     
     [SerializeField] private Animator animator;
     
@@ -49,8 +51,6 @@ public class Script_PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Transform grid;
 
-    public float progress;
-    
     public Directions lastMove;
     public float timer;
 
@@ -68,6 +68,11 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         get => player.interactionBoxController;
     }
+
+    public float Progress
+    {
+        get => (repeatDelay - timer) / repeatDelay;
+    }
     
     void OnDestroy()
     {
@@ -80,9 +85,10 @@ public class Script_PlayerMovement : MonoBehaviour
         
         timer = Mathf.Max(0f, timer - Time.deltaTime);
 
-        SetMoveAnimation();
+        HandleAnimations();
+        HandleGhostTransform();
 
-        Vector2 dirVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector2 dirVector = new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
         if (dirVector == Vector2.zero)  return;
         
         if (isReversed)     HandleMoveReversed();
@@ -135,6 +141,12 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
+    // Handle the animation of ghost following this pointer.
+    public void HandleGhostTransform()
+    {
+        playerGhost.Move(Progress);
+    }
+
     private void HandleWalkSpeed()
     {
         /// TBD Check active sticker for speedwalk 
@@ -148,22 +160,19 @@ public class Script_PlayerMovement : MonoBehaviour
         {
             if (isDev)  repeatDelay = devRunRepeatDelay;
             else        repeatDelay = runRepeatDelay;
-
-            playerGhost.Speed = runGhostSpeed;
         }
         else
         {
             repeatDelay = defaultRepeatDelay;
-            playerGhost.Speed = defaultGhostSpeed;
         }
     }
 
-    void SetMoveAnimation()
+    // Handle Moving State in Animator.
+    private void HandleAnimations()
     {
-        // move animation when direction button down 
         animator.SetBool(
             PlayerMovingAnimatorParam,
-            Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f
+            Input.GetAxis(Vertical) != 0f || Input.GetAxis(Horizontal) != 0f
         );
 
         playerGhost.SetMoveAnimation();
@@ -171,7 +180,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void Move(Directions dir)
     {
-        /// on button presses reset timer to allow for instant direction changes
+        // On Button Press reset timer to allow for instant direction changes.
         if (
             Input.GetButtonDown(Const_KeyCodes.Up)
             || Input.GetButtonDown(Const_KeyCodes.Right)
@@ -182,42 +191,34 @@ public class Script_PlayerMovement : MonoBehaviour
             timer = 0;
         }
 
-        // Repeat moves throttled by timer.
-        if (dir == lastMove && timer != 0f)         return;
+        // Throttle repeat moves by timer.
+        if (dir == lastMove && timer != 0f)
+        {
+            return;
+        }
 
         Vector3 desiredMove = directionToVector[dir];
         
         AnimatorSetDirection(dir);
-        playerGhost.AnimatorSetDirection(dir);
         PushPushables(dir);
         
-        // If there is a collision, the PlayerGhost will remain invisible.
-        // Modify for elevation change (e.g. Stairs)
         if (CheckCollisions(dir, ref desiredMove))   return;
 
         // DDR mode, only changing directions to look like dancing.
         if (game.state == Const_States_Game.DDR)    return;
         
-        progress = 0f;
         timer = repeatDelay;
 
-        // Move player to desired loc, and start PlayerGhost's animation after-the-fact.
+        // Move player to desired location.
         playerGhost.startLocation = player.location;
         player.location += desiredMove;
         playerGhost.location += desiredMove;
         
-        // Move player pointer immediately.
+        // Move player pointer.
         transform.position = player.location;
-        HandleMoveAnimation(dir);
-
-        lastMove = dir;
-    }
-
-    void HandleMoveAnimation(Directions dir)
-    {
+        
         isMoving = true;
-        playerGhost.Move(dir);
-        spriteRenderer.enabled = false;
+        lastMove = dir;
     }
 
     public void AnimatorSetDirection(Directions dir)
@@ -253,6 +254,8 @@ public class Script_PlayerMovement : MonoBehaviour
             animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     1f);
             animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     0f);
         }
+
+        playerGhost.AnimatorSetDirection(dir);
     }
 
     bool CheckCollisions(Directions dir, ref Vector3 desiredMove)
@@ -281,28 +284,25 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void TrackPlayerGhost()
     {
-        progress = playerGhost.progress;
-        
-        if (progress >= 1f && isMoving)
+        if (Progress >= 1f && isMoving)
         {
-            FinishMoveAnimation();
+            // Sprite must be visible before playerGhost invisible to avoid flicker.
+            // Only make visible if the player is no longer moving.
+            Vector2 dirVector = new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
+            if (dirVector == Vector2.zero)
+            {
+                playerGhost.SetIsNotMoving();
+                isMoving = false;
+            }
         }
     }
 
     /// <summary>
-    /// used when player is controlled by Timeline to update all locations
+    /// Used when player is controlled by Timeline to update all locations
     /// </summary>
     public void UpdateLocation(Vector3 updatedPlayerLoc)
     {
         playerGhost?.UpdateLocation(updatedPlayerLoc);
-    }
-
-    void FinishMoveAnimation()
-    {
-        // must be visible before playerghost invisible to avoid flicker
-        spriteRenderer.enabled = true;
-        playerGhost.SetIsNotMoving();
-        isMoving = false;
     }
 
     public void HandleExitTile()
@@ -370,7 +370,7 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    void HandleStairsExitAnimation()
+    private void HandleStairsExitAnimation()
     {
         spriteRenderer.GetComponent<Script_SortingOrder>().enabled = false;
         spriteRenderer.sortingOrder = exitUpStairsOrderLayer;
@@ -386,7 +386,6 @@ public class Script_PlayerMovement : MonoBehaviour
         );
 
         pg.SwitchLight(isLightOn);
-
 
         return pg;
     }
@@ -471,6 +470,7 @@ public class Script_PlayerMovement : MonoBehaviour
         player = GetComponent<Script_Player>();
         
         spriteRenderer = (SpriteRenderer)player.graphics;
+        spriteRenderer.enabled = false;
 
         // setup ghost for smooth movement (allows cancellation of mid-animation)
         playerGhost = CreatePlayerGhost(isLightOn);
@@ -480,6 +480,5 @@ public class Script_PlayerMovement : MonoBehaviour
         directionToVector = Script_Utils.GetDirectionToVectorDict();
 
         timer = repeatDelay;
-        progress = 1f;
     }
 }

@@ -15,14 +15,6 @@ public class Script_PlayerGhost : MonoBehaviour
     
     [SerializeField] private Animator animator;
     
-    [SerializeField] private float _speed;
-
-    public float Speed
-    {
-        get => _speed;
-        set => _speed = value;
-    }
-
     public Vector3 startLocation;
     public Vector3 location;
     public float progress;
@@ -48,44 +40,25 @@ public class Script_PlayerGhost : MonoBehaviour
 
     void Update()
     {
-        if (isMoving)   ActuallyMove();
-
         CopyPlayerColor();
     }
 
-    public void Move(Directions dir)
+    public void Move(float progress)
     {
-        SetIsMoving();
-        progress = 0f;
-    }
+        if (startLocation == null || location == null || !progress.HasValue())  return;
 
-    public void SetIsNotMoving()
-    {
-        isMoving = false;
-        spriteRenderer.enabled = false;
-
-        StopMoveAnimation();
-    }
-
-    void SetIsMoving()
-    {
-        isMoving = true;
-        spriteRenderer.enabled = true;
-    }
-
-    void ActuallyMove()
-    {
-        progress += _speed * Time.deltaTime;
         transform.position = Vector3.Lerp(
             startLocation,
             location,
             progressCurve.Evaluate(progress)
         );
+    }
 
-        if (progress >= 1f)
-        {
-            progress = 1f;
-        }
+    public void SetIsNotMoving()
+    {
+        isMoving = false;
+
+        StopMoveAnimation();
     }
 
     public void AnimatorSetDirection(Directions dir)
@@ -159,6 +132,6 @@ public class Script_PlayerGhost : MonoBehaviour
         progress = 1f;
         transform.position = player.transform.position;
         UpdateLocation(player.transform.position);
-        spriteRenderer.enabled = false;
+        spriteRenderer.enabled = true;
     }
 }

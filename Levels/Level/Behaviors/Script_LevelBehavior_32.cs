@@ -37,7 +37,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform WeekendWalls;
 
     private int frontDoorDialogueIndex;
-    private bool isInit = true;
     private bool isFirstLoad = true;
 
     
@@ -274,8 +273,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             default:
                 break;
         }
-
-        isInit = false;
     }        
 }
 

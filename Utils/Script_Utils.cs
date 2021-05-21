@@ -663,4 +663,10 @@ public static class Script_Utils
         if (result.Equals(default(Const_Tags.Tags)))    return false;
         else                                            return true;
     }
+
+    // Checks that value is not NaN or infinity.
+    public static bool HasValue(this float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value);
+    }
 }
