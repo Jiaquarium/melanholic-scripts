@@ -330,16 +330,16 @@ public class Script_Player : Script_Character
         
         Script_PlayerGhost pg = GetPlayerGhost();
         
-        if (playerGraphics.IsMaterialTransparent())
-        {
-            float t = fadeTime < 0 ? Script_GraphicsManager.GetFadeTime(fadeSpeed) : fadeTime;
-            playerEffect.SetVisibility(alpha: _isInvisible ? 0 : 1, fadeTime, graphics, pg, null);
-        }
-        else
-        {
-            playerGraphics.SetHidden(_isInvisible);
-            pg.PlayerGhostGraphics.SetHidden(_isInvisible);
-        }
+        // playerGraphics.SetHidden(_isInvisible);
+        pg.PlayerGhostGraphics.SetHidden(_isInvisible);
+    }
+
+    public void HandleEatGraphics(bool isEating)
+    {
+        Script_PlayerGhost pg = GetPlayerGhost();
+
+        playerGraphics.SetHidden(!isEating);
+        pg.PlayerGhostGraphics.SetHidden(isEating);
     }
 
     // ------------------------------------------------------------------

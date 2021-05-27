@@ -50,6 +50,7 @@ public class Script_PlayerAttackEat : Script_Attack
         yield return new WaitForSeconds(eatingTime);
 
         animator.SetBool("IsEating", false);
+        player.HandleEatGraphics(false);
         player.SetLastState();
         
         base.EndAttack();
@@ -59,6 +60,7 @@ public class Script_PlayerAttackEat : Script_Attack
     {
         // this conditional transition in animator causes mouth open
         animator.SetBool("IsEating", true);
+        player.HandleEatGraphics(true);
     }
 
     public override void CollisionedWith(Collider collider, Script_HitBox hitBox)
