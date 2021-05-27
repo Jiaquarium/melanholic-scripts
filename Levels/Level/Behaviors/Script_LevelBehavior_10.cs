@@ -591,8 +591,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
         {
-            if (!game.IsRunDay(Script_Run.DayId.wed))   HandleIdsNotHome();
-            else                                        HandleIdsHome();
+            if (Script_EventCycleManager.Control.IsIdsHome())
+                HandleIdsHome();
+            else
+                HandleIdsNotHome();
         }
         else
         {
@@ -613,6 +615,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             DeadIds.gameObject.SetActive(false);
             
             Ids.gameObject.SetActive(true);
+            treasureChest.gameObject.SetActive(true);
             foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
         }
 
