@@ -97,7 +97,7 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
 
     protected override bool ModifyElevation(Vector3 loc, Directions dir, ref Vector3 desiredMove)
     {
-        Vector3? newDesiredMoveWithElevation = stairsHandler.CheckStairsTilemaps(
+        Vector3? newDesiredMoveWithElevation = stairsHandler?.CheckStairsTilemaps(
             loc, dir, (Vector3)desiredMove
         );
         bool isStairs = newDesiredMoveWithElevation != null;
