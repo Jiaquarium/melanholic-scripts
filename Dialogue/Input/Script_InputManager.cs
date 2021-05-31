@@ -14,10 +14,12 @@ public class Script_InputManager : MonoBehaviour
     [SerializeField] private Script_InputAnswerHandler answerHandler;
     [SerializeField] private Script_InputCodeHandler codeHandler;
     [SerializeField] public TMP_InputField TMPInputField;
+    [SerializeField] public TMP_InputField TMPNameInputField;
     
     
     [SerializeField] private CanvasGroup inputCanvasGroup;
     [SerializeField] private CanvasGroup _CCTVInputCanvasGroup;
+    [SerializeField] private CanvasGroup nameInputCanvasGroup;
     
     public Script_EntryInput entryInput;
     
@@ -100,6 +102,7 @@ public class Script_InputManager : MonoBehaviour
     public void End()
     {
         inputCanvasGroup.gameObject.SetActive(false);
+        nameInputCanvasGroup.gameObject.SetActive(false);
         CCTVInputCanvasGroup.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
@@ -116,13 +119,13 @@ public class Script_InputManager : MonoBehaviour
     {
         Debug.Log($"input mode {inputMode}");
         
-        activeInputField = inputField ?? TMPInputField;
-        activeInputCanvasGroup = canvasGroup ?? inputCanvasGroup;
-        
         switch (inputMode)
         {
             // Via Dialogue
             case InputMode.Name:
+                activeInputField = TMPNameInputField;
+                activeInputCanvasGroup = nameInputCanvasGroup;
+                
                 activeInputHandler = nameHandler;
                 activeInputHandler.SetValidation(activeInputField);
                 activeInputCanvasGroup.gameObject.SetActive(true);
@@ -130,6 +133,9 @@ public class Script_InputManager : MonoBehaviour
             
             // Via Dialogue
             case InputMode.Answer:
+                activeInputField = inputField ?? TMPInputField;
+                activeInputCanvasGroup = canvasGroup ?? inputCanvasGroup;
+                
                 activeInputHandler = answerHandler;
                 activeInputHandler.SetValidation(activeInputField);
                 activeInputCanvasGroup.gameObject.SetActive(true);
@@ -137,6 +143,9 @@ public class Script_InputManager : MonoBehaviour
             
             // Via Interactable Object
             case InputMode.Code:
+                activeInputField = inputField ?? TMPInputField;
+                activeInputCanvasGroup = canvasGroup ?? inputCanvasGroup;
+                
                 activeInputHandler = codeHandler;
                 activeInputHandler.SetValidation(activeInputField);
                 activeInputCanvasGroup.gameObject.SetActive(true);
@@ -148,6 +157,7 @@ public class Script_InputManager : MonoBehaviour
     {
         entryInput.Setup();
         inputCanvasGroup.gameObject.SetActive(false);
+        nameInputCanvasGroup.gameObject.SetActive(false);
         CCTVInputCanvasGroup.gameObject.SetActive(false);
     }
 }

@@ -24,6 +24,15 @@ public static class Script_Dialogue
                     "According to my calculations,| today {77} should be at {49}.",
                 }
             }
+        },
+        {
+            "hotel-lobby_narrator_contract_0002", new Model_Languages
+            {
+                speaker = "???",
+                EN = new string[]{
+                    "If you accept, sign your name next to the X.",
+                }
+            }
         }
     };
 }

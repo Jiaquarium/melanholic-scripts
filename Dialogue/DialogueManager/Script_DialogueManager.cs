@@ -29,7 +29,6 @@ public class Script_DialogueManager : MonoBehaviour
     private static char PauseTextCommand = '|';
     
     public Script_Interactable activeInteractable; // for cut scenes this will be null
-    public CanvasGroup inputManagerCanvas;
     public Script_Game game;
     public CanvasGroup canvas;
     public AudioSource audioSource;
@@ -723,9 +722,8 @@ public class Script_DialogueManager : MonoBehaviour
     {
         isInputMode = false;
 
-        // set input canvas active
-        inputManagerCanvas.gameObject.SetActive(false);
         inputManager.gameObject.SetActive(false);
+        inputManager.End();
         
         print("childIdx: " + childIdx);
 
