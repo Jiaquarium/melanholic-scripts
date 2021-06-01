@@ -62,9 +62,6 @@ public class Script_MeshFadeController : MonoBehaviour
         }, t, maxAlpha));
     }
 
-    /// <summary>
-    /// NOTE: will close canvas group afterwards
-    /// </summary>
     public virtual void FadeOut(float t = DefaultFadeTime, Action a = null)
     {
         if (fader == null)  return;

@@ -10,6 +10,11 @@ public class Script_DialogueNode : MonoBehaviour
 
     void OnValidate()
     {
+        HandlePopulateById();
+    }
+
+    private void HandlePopulateById()
+    {
         if (!String.IsNullOrEmpty(Id))
         {
             Model_Languages languages = Script_Dialogue.Dialogue[Id];

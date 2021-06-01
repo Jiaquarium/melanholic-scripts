@@ -19,7 +19,7 @@ public static class Script_Dialogue
         // ================================================================================
         // Hotel
         {
-            "hotel-lobby_player_nautical-dawn_0001", new Model_Languages
+            "hotel-lobby_player_nautical-dawn", new Model_Languages
             {
                 speaker = "{0}",
                 EN = new string[]{
@@ -28,7 +28,7 @@ public static class Script_Dialogue
             }
         },
         {
-            "hotel-lobby_narrator_contract_0002", new Model_Languages
+            "hotel-lobby_narrator_contract", new Model_Languages
             {
                 speaker = "???",
                 EN = new string[]{
@@ -37,7 +37,7 @@ public static class Script_Dialogue
             }
         },
         {
-            "hotel-bay-v2_player_portrait-comment_0001", new Model_Languages
+            "hotel-bay-v2_player_portrait-comment", new Model_Languages
             {
                 speaker = "{0}",
                 EN = new string[]{
@@ -46,11 +46,23 @@ public static class Script_Dialogue
             }
         },
         {
-            "hotel-bay-v2_player_portrait-comment_0002", new Model_Languages
+            "hotel-bay-v2_player_portrait-comment_1", new Model_Languages
             {
                 speaker = "{0}",
                 EN = new string[]{
                     "It looks like he's half-smiling, half-crying.",
+                }
+            }
+        },
+        {
+            "parlor_myne_mirror_tues", new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "...",
+                    "You have come to visit us on a very special day. Yes, @@Run is a special day, indeed it is.",
+                    "Why can {19} never get along?| Look, the sisters down the {78} may need your assistance.",
+                    "Siblings know more about each other than they think... You’ll see what I mean I’m sure of it.",
                 }
             }
         }

@@ -184,6 +184,7 @@ public class Script_Names: MonoBehaviour
     public const string XXXWorld                        = "<b>XXX World</b>";                   // {75}
     public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
     public const string NauticalDawn                    = "<b>Nautical Dawn</b>";               // {77}
+    public const string UrselksHall                     = "<b>Urselks Hall</b>";                // {78}
 
 
     // ------------------------------------------------------------------

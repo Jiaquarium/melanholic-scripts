@@ -88,7 +88,7 @@ public class Script_MeshFadeInOut : MonoBehaviour
     }
 
     /// <summary>
-    /// NOT COROUTINE
+    /// Note: Not a coroutine.
     /// </summary>
     /// <param name="isTransparent"></param>
     public void SetVisibility(bool isVisible, float maxAlpha = 1f, float minAlpha = 0f)

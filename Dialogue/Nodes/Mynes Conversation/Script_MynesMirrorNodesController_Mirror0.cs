@@ -20,28 +20,26 @@ public class Script_MynesMirrorNodesController_Mirror0 : Script_MynesMirrorNodes
             switch (currentRun.dayId)
             {
                 case (Script_Run.DayId.mon):
-                    return _monNodes.Nodes;
+                    // Give hints only when quests are incomplete.
+                    return LastElevatorBehavior.GotPsychicDuck ? null : _monNodes.Nodes;
 
                 case (Script_Run.DayId.tue):
-                    return _tueNodes.Nodes;
+                    return ElleniasRoomBehavior.isPuzzleComplete ? null : _tueNodes.Nodes;
 
                 case (Script_Run.DayId.wed):
-                    return _wedNodes.Nodes;
+                    return IdsRoomBehavior.gotBoarNeedle ? null : _wedNodes.Nodes;
 
                 case (Script_Run.DayId.thu):
                     return _thuNodes.Nodes;
 
                 case (Script_Run.DayId.fri):
-                    // check if Player got Psychic Duck from Ids at Last Elevator
-                    return LastElevatorBehavior.GotPsychicDuck ? null : _friNodes.Nodes;
+                    return _friNodes.Nodes;
 
                 case (Script_Run.DayId.sat):
-                    // check if Ellenia password is done
-                    return ElleniasRoomBehavior.isPuzzleComplete ? null : _satNodes.Nodes;
+                    return _satNodes.Nodes;
 
                 case (Script_Run.DayId.sun):
-                    // check if Ids dance is done
-                    return IdsRoomBehavior.gotBoarNeedle ? null : _sunNodes.Nodes;
+                    return _sunNodes.Nodes;
                 
                 default:
                     return _monNodes.Nodes;

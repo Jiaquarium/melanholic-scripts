@@ -10,8 +10,8 @@ using UnityEngine.Events;
 ///
 /// 2. StartDialogue() from Timeline End Signal
 ///     Dialogue:
-///     a) interaction node?
-///     b) hint node? (only if hint is needed / quest is done)
+///     a) interaction node? (Manager gives this node based on # of interactions with Mirror)
+///     b) hint node? (only if hint is needed / quest is not done)
 ///     c) default node
 /// 
 /// 3. End() from Dialogue End NextNodeAction

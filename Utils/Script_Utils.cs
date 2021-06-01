@@ -243,7 +243,8 @@ public static class Script_Utils
             Script_Names.Unknown,                       // {74}
             Script_Names.XXXWorld,                      // {75}
             Script_Names.OtherSide,                     // {76}
-            Script_Names.NauticalDawn                   // {77}
+            Script_Names.NauticalDawn,                  // {77}
+            Script_Names.UrselksHall                    // {78}
         );
     }
 
