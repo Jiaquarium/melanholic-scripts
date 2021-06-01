@@ -30,7 +30,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     public bool didUnlockMasterLock;
     /* ======================================================================= */
     
-    public Script_Pushable rock;
     [SerializeField] Script_SeasonsTree[] ManTrees;
     [SerializeField] Script_SeasonsTree[] WomanTrees;
     
@@ -41,46 +40,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private float waitToChangeSeasonTime; // 1.5s camera + .5s pause
     [SerializeField] private float seasonChangeWaitTime; //  1.25s slow season fade + .75s pause
     [SerializeField] private float revertCameraWaitTime; //  1.5s
-    [SerializeField] private float successPostChangeSeasonWaitTime;
     
-    [SerializeField] private GameObject SuccessExplosion;
-    
-    [SerializeField] private Script_SeasonStonesPuzzleController puzzleController;
-    
-    [SerializeField] private PlayableDirector SuccessDirector;
-    
-    [SerializeField] private Script_UsableObject masterKey;
-    [SerializeField] private Script_UsableTarget masterLock;
-    [SerializeField] private Script_TileMapExitEntrance lastExit;
-    
-    [SerializeField] private Transform transmutationCircle;
-    
-    [SerializeField] private Script_SavePoint savePoint;
-    
-    
-    [SerializeField] private PlayableDirector IntroDirector;
-    [SerializeField] private PlayableDirector IntroExitDirector;
-    [SerializeField] private PlayableDirector AftermathDirector;
-    
-    [SerializeField] private Script_DialogueNode MelzNode;
-    [SerializeField] private Script_DialogueNode PlayerReactionNode;
-    [SerializeField] private Script_DialogueNode onUrselksEmbraceNode;
-    [SerializeField] private Script_DialogueNode IdsNode;
-    [SerializeField] private Script_DialogueNode KaffeLatteNode;
-    
-    [SerializeField] private Script_PRCSPlayer climaxPlayer;
-    [SerializeField] private Script_PRCS embracePRCS;
-    
-    [SerializeField] private Transform playerMoveDestination;
-    
-    [SerializeField] private float EmbraceDialogueWaitTime;
-    [SerializeField] private float IdsDialogueWaitTime;
-    [SerializeField] private float KaffeLatteDialogueWaitTime;
-    
-    [SerializeField] private Script_BgThemePlayer bellsBgPlayer;
-    
-    [SerializeField] private float shakeDuration;
-
     [SerializeField] private float timelineFaderFadeInTime;
     [SerializeField] private Script_Marker KingIntroPlayerSpawn;
     [SerializeField] private int KingEclaireTimelineMidpointFrame;
@@ -97,7 +57,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Ursie;
     [SerializeField] private Script_DemonNPC KingEclaire;
 
-    [SerializeField] private Script_DemonNPC Melz;
     [SerializeField] private Script_DemonNPC Ids;
 
     // -------------------------------------------------------------------------------------
@@ -107,26 +66,13 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_InteractablePaintingEntrance XXXWorldPaintingEntrance;
     [SerializeField] private Script_InteractableObjectText blankCanvasesText;
 
-    /// =======================================================================
-    /// Melz Intro START
-    /// =======================================================================
-    public Transform MelzIntroMelzParent;
-    /// Melz Intro END
-    /// =======================================================================
-
     private Script_TimelineController timelineController;
-    private bool isInitialCutScene;
 
     private bool didMapNotification;
 
-    private bool isInit = true;
-    
-    /// DEV ONLY
-    public Transform rockDestination;
-    
-    public List<Script_DestroyTriggerCollectibles> destroyTriggerCollectibles;
-    public List<GameObject> buffs;
     private float fadeTime;
+    
+    private bool isInit = true;
 
 
     private Dictionary<string, Seasons> SeasonStonesEnums = new Dictionary<string, Seasons>{
@@ -146,52 +92,16 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     private void Awake()
     {
         timelineController = GetComponent<Script_TimelineController>();
-        
-        foreach(Script_SeasonsTree tree in ManTrees)    tree.Setup(season);
-        foreach(Script_SeasonsTree tree in WomanTrees)  tree.Setup(season);   
-        foreach(Script_DestroyTriggerCollectibles trig in destroyTriggerCollectibles)
-                                                        trig.gameObject.SetActive(false);
-        foreach(GameObject buff in buffs)               buff.SetActive(false);
     }
     
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
-        
-        Script_PuzzlesEventsManager.OnPuzzleSuccess     += OnPuzzleSuccess;
-        Script_PuzzlesEventsManager.OnPuzzleProgress    += OnPuzzleProgress;
-        Script_ItemsEventsManager.OnItemPickUp          += OnItemPickUp;
-        Script_ItemsEventsManager.OnUnlock              += OnUnlockMasterLock;
-        Script_PRCSEventsManager.OnPRCSDone             += PRCSClimaxDoneReaction;
-        SuccessDirector.stopped                         += OnSuccessPlayableDone;
-        AftermathDirector.stopped                       += OnAftermathPlayableDone; 
-        
-        /// Melz Intro Run
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            IntroDirector.stopped                           += OnIntroPlayableDone;
-            IntroExitDirector.stopped                       += OnIntroExitPlayableDone;
-        }
     }
 
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
-        
-        Script_PuzzlesEventsManager.OnPuzzleSuccess     -= OnPuzzleSuccess;
-        Script_PuzzlesEventsManager.OnPuzzleProgress    -= OnPuzzleProgress;
-        Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
-        Script_ItemsEventsManager.OnUnlock              -= OnUnlockMasterLock;
-        Script_PRCSEventsManager.OnPRCSDone             -= PRCSClimaxDoneReaction;
-        SuccessDirector.stopped                         -= OnSuccessPlayableDone;
-        AftermathDirector.stopped                       -= OnAftermathPlayableDone; 
-        
-        /// Melz Intro Run
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            IntroDirector.stopped                           -= OnIntroPlayableDone;
-            IntroExitDirector.stopped                       -= OnIntroExitPlayableDone;
-        }
     }
 
     protected override void Update()
@@ -219,15 +129,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         base.HandleDialogueAction();
     }
 
-    private void OnUnlockMasterLock(Script_Usable key, string targetId)
-    {
-        if (targetId == masterLock.Id)
-        {
-            Debug.Log($"OnUnlock Event caught with key, targetId: {key}, {targetId}");
-            didUnlockMasterLock = true;
-        }
-    }
-
     private void OnItemPickUp(string itemId)
     {
         if (itemId == masterKey.Item.id)
@@ -235,153 +136,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             didPickUpMasterKey = true;
         }
     }
-    
-    private void OnPuzzleProgress()
-    {
-        game.ChangeStateCutScene();
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.SeasonsPuzzleProgress,
-            Script_SFXManager.SFX.SeasonsPuzzleProgressVol
-        );
-        Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
-            shakeDuration,
-            Const_Camera.Shake.AmplitudeMed,
-            Const_Camera.Shake.FrequencyMed,
-            () => game.ChangeStateInteract()
-        );           
-    }
-
-    private void OnPuzzleSuccess(string Id)
-    {
-        if (!isPuzzleComplete)
-        {
-            game.PauseBgMusic();
-            
-            Debug.Log("trigger Id was: " + Id);
-
-            // if pushing the rock did not result in success case
-            // then it's from a season stone drop, so play ChangeSeason anim
-            if (Id != puzzleController.rockTrigger.Id)
-            {
-                Debug.Log("Season stone puzzle completion was from STONE DROP.");
-                ChangeSeason(Id, () => StartCoroutine(WaitAlchemistCircle()));
-                return;
-            }
-
-            Debug.Log("Season stone puzzle completion was from ROCK MOVE.");
-            AlchemistCircleAnim();
-        }
-
-        // need to wait in the case of changing season to avoid camera cutting
-        // since timeline is starting before changeSeason anim is finishing
-        IEnumerator WaitAlchemistCircle()
-        {
-            game.ChangeStateCutScene();
-            yield return new WaitForSeconds(successPostChangeSeasonWaitTime);
-            AlchemistCircleAnim();
-        }
-
-        void AlchemistCircleAnim()
-        {
-            isPuzzleComplete = true;
-            game.ChangeStateCutScene();
-            print("AlchemistCircleAnim(): game changed to cutScene");
-            timelineController.PlayableDirectorPlayFromTimelines(0, 0);
-        }
-    }
-
-    /// After Spotlight entrance timeline finishes, start Melz dialogue nodes, refusing to S-bind the two
-    public void OnIntroPlayableDone(PlayableDirector aDirector)
-    {
-        print("OnIntroPlayableDone(): Entrance scene done");
-        Script_DialogueManager.DialogueManager.StartDialogueNode(MelzNode, SFXOn: false);
-    }
-
-    public void OnIntroExitPlayableDone(PlayableDirector aDirector)
-    {
-        print("OnIntroPlayableDone(): Entrance scene done");
-        Script_DialogueManager.DialogueManager.StartDialogueNode(
-            PlayerReactionNode,
-            SFXOn: false,
-            Const_DialogueTypes.Type.Read
-        );
-    }
-
-    public void OnSuccessPlayableDone(PlayableDirector aDirector)
-    {
-        if (aDirector.playableAsset == timelineController.timelines[0])
-        {
-            print("Success timeline done (stones exploding, Urselk sprites floating, show Embrace PRCS)!");
-            
-            // Start Dialogue Node with action to go to PRCS
-            game.ChangeStateCutScene(); // For Timeline dev'ing since playing timeline will remain in interact mode
-            StartCoroutine(WaitForEmbraceDialogue());
-
-            // Remove Urselk Lovers while in PRCS view
-            Kaffe.gameObject.SetActive(false);
-            Latte.gameObject.SetActive(false);
-        }
-
-        IEnumerator WaitForEmbraceDialogue()
-        {
-            yield return new WaitForSeconds(EmbraceDialogueWaitTime);
-            Script_DialogueManager.DialogueManager.StartDialogueNode(onUrselksEmbraceNode, SFXOn: false);
-        }
-    }
-
-    public void OnAftermathPlayableDone(PlayableDirector aDirector)
-    {
-        if (aDirector.playableAsset == timelineController.timelines[3])
-        {
-            StartCoroutine(WaitForKaffeLatteDialogue());
-            
-            IEnumerator WaitForKaffeLatteDialogue()
-            {
-                yield return new WaitForSeconds(KaffeLatteDialogueWaitTime);
-
-                Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeLatteNode);
-            }
-        }
-        else if (aDirector.playableAsset == timelineController.timelines[4])
-        {
-            Debug.Log("FINISHED MASTER LOCK ANIMATION!!!!!!!!!!!!");
-            game.ChangeStateInteract();
-        }
-    }
-
-    public void PRCSClimaxDoneReaction(Script_PRCSPlayer PRCSPlayer)
-    {
-        if (PRCSPlayer == climaxPlayer)
-        {
-            Debug.Log("CLIMAX SCENE DONE, stopping player now... MOVE ONTO Ids Dialogue");
-            // need to remove Embrace PRCS that is still on screen
-            embracePRCS.gameObject.SetActive(false);
-            
-            // Move player to designated position to be next to Ids
-            Script_Game.Game.GetPlayer().Teleport(playerMoveDestination.position);
-            Script_Game.Game.GetPlayer().FaceDirection(Directions.Up);
-            Ids.gameObject.SetActive(true);
-            
-            // Remove Climax PRCS
-            climaxPlayer.Stop(IdsDialogue);
-
-            // Fade Out Bells Audio
-            bellsBgPlayer.FadeOutStop(() => AfterglowBgMusic());
-
-            void IdsDialogue()
-            {
-                StartCoroutine(WaitForIdsDialogue());
-                
-                IEnumerator WaitForIdsDialogue()
-                {
-                    yield return new WaitForSeconds(IdsDialogueWaitTime);
-
-                    Script_DialogueManager.DialogueManager.StartDialogueNode(IdsNode);
-                }
-            }
-        }
-    }
-    
 
     public void ChangeSeason(string seasonStoneId, Action cb = null)
     {   
@@ -454,34 +208,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     /// <summary> ==============================================================================
     /// NextNodeAction(s) Start 
     /// </summary> =============================================================================
-    public void MelzExit()
-    {
-        timelineController.PlayableDirectorPlayFromTimelines(2, 2);
-        Script_VCamManager.VCamMain.SwitchToMainVCam(vCamEntrance);
-    }
-    
-    public void OnPlayerReactionNodeDone()
-    {
-        game.ChangeStateInteract();
-    }
-    
-    public void PRCSClimax()
-    {
-        Debug.Log("Play climax PRCS!!!");
-        
-        climaxPlayer.Play();
-    }
-
-    public void IdsExit()
-    {
-        timelineController.PlayableDirectorPlayFromTimelines(3, 3);
-    }
-
-    public void KaffeLatteSendKeyDown()
-    {
-        timelineController.PlayableDirectorPlayFromTimelines(3, 4);
-    }
-
     public void UpdateKingEclaire()
     {
         Script_Names.UpdateKingEclaire();
@@ -550,11 +276,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     // ----------------------------------------------------------------------
 
-    private void AfterglowBgMusic()
-    {
-        game.SwitchBgMusic(13);
-    }
-
     private void SetDynamicSpectersActive(bool isActive)
     {
         Kaffe.gameObject.SetActive(isActive);
@@ -587,21 +308,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     public override void Setup()
     {
-        game.SetupSavePoint(savePoint, isInit);
         game.SetupMovingNPC(Kaffe, isInit);
         game.SetupMovingNPC(Latte, isInit);
         game.SetupMovingNPC(Ids, isInit);
         Ids.gameObject.SetActive(false);
-
-        SuccessExplosion.SetActive(false);
-
-        /// No Master Lock on default runs
-        // if (didUnlockMasterLock)
-        // {
-        //     masterLock.gameObject.SetActive(false);
-        //     lastExit.IsDisabled = false;
-        // }
-        masterLock.gameObject.SetActive(false);
         lastExit.IsDisabled = false;
         
         // Cycle Conditions
@@ -624,53 +334,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             SetPaintingEntrancesActive(false);
         }
 
-        if (isPuzzleComplete)
-        {
-            // Afterglow music
-            AfterglowBgMusic();
-            
-            // Remove Urselk Lovers
-            Kaffe.gameObject.SetActive(false);
-            Latte.gameObject.SetActive(false);
-
-            // Show Magic Circle
-            transmutationCircle.gameObject.SetActive(true);
-            
-            // Remove Season Trees
-            foreach (var t in ManTrees) t.gameObject.SetActive(false);
-        }
-        else
-        {
-            transmutationCircle.gameObject.SetActive(false);
-        }
-        
-        if (isPuzzleComplete && !didPickUpMasterKey)
-        {
-            masterKey.gameObject.SetActive(true);
-            rock.SetActive(false);
-        }
-        else if (isPuzzleComplete && didPickUpMasterKey)
-        {
-            rock.SetActive(false);
-            masterKey.gameObject.SetActive(false);
-        }
-        else
-        {
-            rock.SetActive(true);
-            masterKey.gameObject.SetActive(false);
-        }
-
-        /// Melz Intro Run
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            game.SetupMovingNPC(Melz, isInit);
-            MelzIntroMelzParent.gameObject.SetActive(true);   
-        }
-        else
-        {
-            MelzIntroMelzParent.gameObject.SetActive(false);   
-        }
-
         isInit = false;
     }
 }
@@ -683,11 +346,6 @@ public class Script_LevelBehavior_20Tester : Editor
         DrawDefaultInspector();
 
         Script_LevelBehavior_20 lb = (Script_LevelBehavior_20)target;
-        if (GUILayout.Button("PlaceRock()"))
-        {
-            lb.rock.transform.position = lb.rockDestination.transform.position;
-        }
-
         if (GUILayout.Button("Move King Eclaire to Midpoint"))
         {
             lb.MoveKingEclaireToMidpoint();
