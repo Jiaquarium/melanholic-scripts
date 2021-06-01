@@ -91,7 +91,7 @@ public class Script_MeshFadeInOut : MonoBehaviour
     /// NOT COROUTINE
     /// </summary>
     /// <param name="isTransparent"></param>
-    public void SetVisibility(bool isVisible)
+    public void SetVisibility(bool isVisible, float maxAlpha = 1f, float minAlpha = 0f)
     {
         MeshRenderer sr;
         
@@ -105,7 +105,7 @@ public class Script_MeshFadeInOut : MonoBehaviour
         }
 
         Color tmpColor = sr.material.color;
-        tmpColor.a = isVisible ? 1f : 0f;
+        tmpColor.a = isVisible ? maxAlpha : minAlpha;
         
         sr.material.color = tmpColor;
         foreach (MeshRenderer childSprite in childrenMeshes)

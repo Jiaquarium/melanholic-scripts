@@ -12,6 +12,8 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
     public bool MynesMirrorIsActivated;
     /* ======================================================================= */
     
+    [SerializeField] private Script_MeshFadeController meshFadeController;
+    [SerializeField] private float meshFadeTime = .25f;
     private bool didMapNotification;
 
     protected override void OnEnable()
@@ -27,6 +29,20 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
     }
+
+    // ------------------------------------------------------------------
+    // Unity Events (Triggers)
+    public void FadeInBookshelvesSouth()
+    {
+        meshFadeController.FadeIn(meshFadeTime);
+    }
+
+    public void FadeOutBookshelvesSouth()
+    {
+        meshFadeController.FadeOut(meshFadeTime);
+    }
+
+    // ------------------------------------------------------------------
 
     private void OnLevelInitCompleteEvent()
     {
