@@ -7,6 +7,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Script_TimelineController))]
+[RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_32 : Script_LevelBehavior
 {
     private static string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
@@ -111,6 +112,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         else
         {
             CCTVAdminComputer.OnSubmitFailure();
+            WrongPasswordSFX();            
         }
 
         return -1;
@@ -233,6 +235,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
         WeekdayWalls.gameObject.SetActive(!isWeekend);
         WeekendWalls.gameObject.SetActive(isWeekend);
+    }
+
+    private void WrongPasswordSFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.UIWrongSFX, Script_SFXManager.SFX.UIWrongSFXVol);
     }
 
     public override void InitialState()

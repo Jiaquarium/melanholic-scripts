@@ -25,5 +25,6 @@
     {
         public const int minASCII = 48; // digit 0
         public const int maxASCII = 57; // digit 9
+        public const int maxCharCount = 8;
     }
 }

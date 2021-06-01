@@ -15,6 +15,7 @@ public class Script_TMPInputEntryValidator : Script_TMPInputValidator
             ASCIICode >= Const_InputValidation.Entry.minASCII
             && ASCIICode <= Const_InputValidation.Entry.maxASCII
             && pos < Const_InputValidation.Entry.maxCharCount
+            && text.Length < Const_InputValidation.Entry.maxCharCount
         )
         {
             return Insert(ref text, ref pos, ch);

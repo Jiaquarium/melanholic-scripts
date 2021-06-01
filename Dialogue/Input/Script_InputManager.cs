@@ -80,6 +80,11 @@ public class Script_InputManager : MonoBehaviour
     {
         audioSource.PlayOneShot(SFXManager.UITypingSFX, SFXManager.UITypingSFXVol);
     }
+
+    public void InsertCodeSFX()
+    {
+        audioSource.PlayOneShot(SFXManager.UICodeTypingSFX, SFXManager.UICodeTypingSFXVol);
+    }
     
     public void ErrorSFX()
     {

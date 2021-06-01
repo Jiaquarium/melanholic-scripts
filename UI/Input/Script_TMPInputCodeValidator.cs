@@ -13,10 +13,15 @@ public class Script_TMPInputCodeValidator : Script_TMPInputValidator
         if (
             ASCIICode >= Const_InputValidation.Code.minASCII
             && ASCIICode <= Const_InputValidation.Code.maxASCII
-            && pos < Script_ScarletCipherManager.QuestionCount
+            && pos < Const_InputValidation.Code.maxCharCount
         )
         {
-            return Insert(ref text, ref pos, ch);
+            string copy = text;
+            text = copy.Substring(0, pos) + ch + copy.Substring(pos + 1);
+            
+            Script_InputManager.Control.InsertCodeSFX();
+            
+            return ch;
         }
         
         return Error(ch);

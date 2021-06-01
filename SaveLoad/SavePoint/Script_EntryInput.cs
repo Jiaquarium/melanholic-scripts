@@ -7,18 +7,56 @@ using TMPro;
 /// <summary>
 /// For entry inputs handled by inputManager, use SetValidation to fill in vaidator
 /// Because separate canvas for savePoint, manually assign that
+/// 
+/// Note: Ensure the Game Object is set inactive at game start or initial input field focus will not work.
 /// </summary>
 public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public GameObject submitButton;
+    
+    [SerializeField] private bool caretPositionZeroAlways;
+    [SerializeField] private bool disableDelete;
+    [SerializeField] private bool isCustomCaretColor;
+    [SerializeField] private Color customCaretColor;
+    [SerializeField] private bool isCustomCaretWidth;
+    [SerializeField] private int customCaretWidth;
+    // If we're treating the caret as a highlighter, then disable it going past the last character.
+    // Also disables blinking.
+    [SerializeField] private bool isHighlighterCaret;
+
     private TMP_InputField TMPInputField;
     private TextMeshProUGUI TMPGUI;
     private float caretBlinkRate;
     private Color caretColor;
 
+    public void Awake()
+    {
+        TMPGUI = GetComponent<TextMeshProUGUI>();
+        TMPInputField = GetComponent<TMP_InputField>();
+        SetCaretAttributes();
+    }
+    
+    void OnEnable()
+    {
+        SetCaretAttributes();
+    }
+    
+    void OnGUI()
+    {
+        if (
+            disableDelete
+            && (Event.current.keyCode == KeyCode.Backspace || Event.current.keyCode == KeyCode.Delete)
+            && (Event.current.type == EventType.KeyUp || Event.current.type == EventType.KeyDown)
+        )
+        {
+            Event.current.Use();
+        }
+    }
+    
     void Update()
     {
         HandleNavigateToSubmit();
+        PreventCaretOverflow();
     }
 
     void HandleNavigateToSubmit()
@@ -42,7 +80,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     public void OnSelect(BaseEventData e)
     {
         // set cursor to end when we initialize with existing entry (this already happens on deselect)
-        TMPInputField.caretPosition = TMPInputField.text.Length;
+        TMPInputField.caretPosition = caretPositionZeroAlways ? 0 : TMPInputField.text.Length;
         Debug.Log($"Setting caret position to: {TMPInputField?.caretPosition}");
         Debug.Log($"Caret blinkrate is: {TMPInputField?.caretBlinkRate}");
         SetCaretVisible(true);
@@ -80,18 +118,26 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         }
     }
 
+    private void SetCaretAttributes()
+    {
+        caretBlinkRate = isHighlighterCaret ? 0 : TMPInputField.caretBlinkRate;
+        caretColor = isCustomCaretColor ? customCaretColor : TMPInputField.caretColor;
+        TMPInputField.caretWidth = isCustomCaretWidth ? customCaretWidth : TMPInputField.caretWidth;
+    }
+
+    private void PreventCaretOverflow()
+    {
+        if (isHighlighterCaret && TMPInputField.caretPosition >= TMPInputField.text.Length)
+        {
+            TMPInputField.caretPosition = TMPInputField.text.Length - 1;
+            TMPInputField.ForceLabelUpdate();
+        }
+    }
+
     public void InitializeState(string text)
     {
         TMPInputField = GetComponent<TMP_InputField>();
         TMPInputField.text = text;
-    }
-
-    public void Awake()
-    {
-        TMPGUI = GetComponent<TextMeshProUGUI>();
-        TMPInputField = GetComponent<TMP_InputField>();
-        caretBlinkRate = TMPInputField.caretBlinkRate;
-        caretColor = TMPInputField.caretColor;
     }
 
     public void Setup()
