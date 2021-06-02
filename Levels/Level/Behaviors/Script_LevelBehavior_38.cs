@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_38 : Script_LevelBehavior
 {
     /* =======================================================================
@@ -14,15 +15,24 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
 
     /* ======================================================================= */
     [SerializeField] private bool isTriggerActivated;
+    [SerializeField] private Script_DemonNPC Ids;
+
+    private bool didIdsRun;
        
     protected override void OnEnable() {
+        base.OnEnable();
+        
         // Disable Pixel Perfect for now, because it's causing really bad shaking with the Screen Space
         // bg Canvas not set to World Space. We want it to be screen space so it gives a different effect.
         game.PixelPerfectEnable(false);
+        
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
     }
 
     protected override void OnDisable() {
+        base.OnDisable();
         game.PixelPerfectEnable(true);
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
     }    
     
     public void OnTriggerWallTransition()
@@ -35,9 +45,42 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     {
         isTriggerActivated = false;
     }
+
+    // ------------------------------------------------------------------
+    // Timeline Signal Reactions
+    public void OnIdsRunAwayTimelineDone()
+    {
+        game.ChangeStateInteract();
+        didIdsRun = true;
+    }
+
+    // ------------------------------------------------------------------
+    
+    private void OnLevelInitCompleteEvent()
+    {
+        HandlePlayIdsTimeline();
+    }
+    
+    private void HandlePlayIdsTimeline()
+    {
+        if (ShouldPlayIdsIntro())
+        {
+            game.ChangeStateCutScene();
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+        }
+    }
+
+    private bool ShouldPlayIdsIntro()
+    {
+        return !didIdsRun && Script_EventCycleManager.Control.IsLastElevatorTutorialRun();
+    }
     
     public override void Setup()
     {
+        if (ShouldPlayIdsIntro())
+            Ids.gameObject.SetActive(true);
+        else
+            Ids.gameObject.SetActive(false);        
     }        
 }
 

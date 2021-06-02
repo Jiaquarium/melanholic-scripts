@@ -69,11 +69,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     private Script_TimelineController timelineController;
 
     private bool didMapNotification;
+    private bool didIdsRun;
 
     private float fadeTime;
     
     private bool isInit = true;
-
 
     private Dictionary<string, Seasons> SeasonStonesEnums = new Dictionary<string, Seasons>{
         {"collectible_winter-stone",    Seasons.Winter},
@@ -119,8 +119,24 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
+                HandlePlayIdsRunAwayTimeline();
+            });
             didMapNotification = true;
+        }
+        else
+        {
+            HandlePlayIdsRunAwayTimeline();
+        }
+
+        // After Map Notification, Ids should lead the way on Tutorial Run.
+        void HandlePlayIdsRunAwayTimeline()
+        {
+            if (ShouldPlayIdsIntro())
+            {
+                game.ChangeStateCutScene();
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
+            }
         }
     }
 
@@ -129,14 +145,153 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         base.HandleDialogueAction();
     }
 
-    private void OnItemPickUp(string itemId)
+    /// <summary> ==============================================================================
+    /// NextNodeAction(s) Start 
+    /// </summary> =============================================================================
+    public void UpdateKingEclaire()
     {
-        if (itemId == masterKey.Item.id)
+        Script_Names.UpdateKingEclaire();
+    }
+
+    public void UpdateUrsie()
+    {
+        Script_Names.UpdateUrsie();
+    }
+
+    // ----------------------------------------------------------------------
+    // King's Intro Unity Events, Next Node Actions and Timline Signals
+    
+    public void KingsIntroTimeline()
+    {
+        // Pause King's walking Timeline.
+
+        // Check for Psychic Duck
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+        if (isPsychicDuckActive && !isKingIntroCutSceneDone)
         {
-            didPickUpMasterKey = true;
+            game.ChangeStateCutScene();
+
+            Script_BackgroundMusicManager.Control.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
+            
+            Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {
+                Script_Player p = game.GetPlayer();
+                
+                p.Teleport(KingIntroPlayerSpawn.Position);
+                p.FaceDirection(Directions.Up);
+
+                MoveKingEclaireToMidpoint();
+
+                // King's Explanation of Sealing
+                timelineController.PlayableDirectorPlayFromTimelines(0, 0);
+            });
         }
     }
 
+    // Set King's Position to center of Stage frame
+    // Frame to Time conversion: https://forum.unity.com/threads/jump-to-frame.500709/    
+    public void MoveKingEclaireToMidpoint()
+    {
+        KingEclaire.MyDirector.Pause();
+        
+        KingEclaire.MyDirector.time = KingEclaireTimelineMidpointFrame /
+            ((TimelineAsset)KingEclaire.MyDirector.playableAsset).editorSettings.fps;
+        KingEclaire.MyDirector.Evaluate();
+
+        KingEclaire.FacePlayer();
+
+        KingEclaire.State = Script_MovingNPC.States.Dialogue;
+    }
+    
+    public void EndKingEclaireIntro()
+    {
+        isKingIntroCutSceneDone = true;
+        
+        Script_BackgroundMusicManager.Control.FadeInMed(() => {
+            game.ChangeStateInteract();
+            game.CanvasesInitialState();
+        }, Const_AudioMixerParams.ExposedBGVolume);
+    }
+
+    // Ids intro run away cut scene on initial tutorial run.
+    public void OnIdsRunAwayTimelineDone()
+    {
+        game.ChangeStateInteract();
+        didIdsRun = true;
+    }
+
+    // ----------------------------------------------------------------------
+
+    private void SetDynamicSpectersActive(bool isActive)
+    {
+        Kaffe.gameObject.SetActive(isActive);
+        Latte.gameObject.SetActive(isActive);
+        PecheMelba.gameObject.SetActive(isActive);
+        Suzette.gameObject.SetActive(isActive);
+        Moose.gameObject.SetActive(isActive);
+        Ursie.gameObject.SetActive(isActive);
+    }
+
+    private void SetPaintingEntrancesActive(bool isActive)
+    {
+        Script_InteractableObject.States paintingState;
+        
+        if (isActive)
+        {
+            paintingState = Script_InteractableObject.States.Active;
+            blankCanvasesText.gameObject.SetActive(false);
+        }
+        else
+        {
+            paintingState = Script_InteractableObject.States.Disabled;
+            blankCanvasesText.gameObject.SetActive(true);
+        }
+        
+        WellsWorldPaintingEntrance.State            = paintingState;
+        CelestialGardensWorldPaintingEntrance.State = paintingState;
+        XXXWorldPaintingEntrance.State              = paintingState;
+    }
+
+    private bool ShouldPlayIdsIntro()
+    {
+        return !didIdsRun && Script_EventCycleManager.Control.IsLastElevatorTutorialRun();
+    }
+
+    public override void Setup()
+    {
+        // ----------------------------------------------------------------------
+        // Cycle Conditions
+        
+        // Ids runs away on tutorial run.
+        if (ShouldPlayIdsIntro())
+            Ids.gameObject.SetActive(true);
+        else
+            Ids.gameObject.SetActive(false);
+        
+        // Ero reports of missing Ids.
+        if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
+        {
+            // Handle Ero Event Cycle
+            if (Script_EventCycleManager.Control.IsIdsDead())   Ero.gameObject.SetActive(true);
+            else                                                Ero.gameObject.SetActive(false);
+
+            // Remove all NPCs except for King, they've gone to their respective rooms.
+            SetDynamicSpectersActive(false);
+            
+            // Open Painting Entrances.
+            SetPaintingEntrancesActive(true);
+        }
+        else
+        {
+            Ero.gameObject.SetActive(false);
+            SetDynamicSpectersActive(true);
+            SetPaintingEntrancesActive(false);
+        }
+
+        isInit = false;
+    }
+
+    // -------------------------------------------------------------------------------------
+    // Deprecated Old Seasons Utils
     public void ChangeSeason(string seasonStoneId, Action cb = null)
     {   
         if (isPuzzleComplete)   return;
@@ -203,138 +358,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 );
             }
         }
-    }
-
-    /// <summary> ==============================================================================
-    /// NextNodeAction(s) Start 
-    /// </summary> =============================================================================
-    public void UpdateKingEclaire()
-    {
-        Script_Names.UpdateKingEclaire();
-    }
-
-    public void UpdateUrsie()
-    {
-        Script_Names.UpdateUrsie();
-    }
-
-    /// NextNodeAction(s) End
-    /// =============================================================================
-    // ----------------------------------------------------------------------
-    // King's Intro Unity Events, Next Node Actions and Timline Signals
-    
-    public void KingsIntroTimeline()
-    {
-        // Pause King's walking Timeline.
-
-        // Check for Psychic Duck
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        if (isPsychicDuckActive && !isKingIntroCutSceneDone)
-        {
-            game.ChangeStateCutScene();
-
-            Script_BackgroundMusicManager.Control.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
-            
-            Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {
-                Script_Player p = game.GetPlayer();
-                
-                p.Teleport(KingIntroPlayerSpawn.Position);
-                p.FaceDirection(Directions.Up);
-
-                MoveKingEclaireToMidpoint();
-
-                // King's Explanation of Sealing
-                timelineController.PlayableDirectorPlayFromTimelines(4, 5);
-            });
-        }
-    }
-
-    // Set King's Position to center of Stage frame
-    // Frame to Time conversion: https://forum.unity.com/threads/jump-to-frame.500709/    
-    public void MoveKingEclaireToMidpoint()
-    {
-        KingEclaire.MyDirector.Pause();
-        
-        KingEclaire.MyDirector.time = KingEclaireTimelineMidpointFrame /
-            ((TimelineAsset)KingEclaire.MyDirector.playableAsset).editorSettings.fps;
-        KingEclaire.MyDirector.Evaluate();
-
-        KingEclaire.FacePlayer();
-
-        KingEclaire.State = Script_MovingNPC.States.Dialogue;
-    }
-    
-    public void EndKingEclaireIntro()
-    {
-        isKingIntroCutSceneDone = true;
-        
-        Script_BackgroundMusicManager.Control.FadeInMed(() => {
-            game.ChangeStateInteract();
-            game.CanvasesInitialState();
-        }, Const_AudioMixerParams.ExposedBGVolume);
-    }
-
-    // ----------------------------------------------------------------------
-
-    private void SetDynamicSpectersActive(bool isActive)
-    {
-        Kaffe.gameObject.SetActive(isActive);
-        Latte.gameObject.SetActive(isActive);
-        PecheMelba.gameObject.SetActive(isActive);
-        Suzette.gameObject.SetActive(isActive);
-        Moose.gameObject.SetActive(isActive);
-        Ursie.gameObject.SetActive(isActive);
-    }
-
-    private void SetPaintingEntrancesActive(bool isActive)
-    {
-        Script_InteractableObject.States paintingState;
-        
-        if (isActive)
-        {
-            paintingState = Script_InteractableObject.States.Active;
-            blankCanvasesText.gameObject.SetActive(false);
-        }
-        else
-        {
-            paintingState = Script_InteractableObject.States.Disabled;
-            blankCanvasesText.gameObject.SetActive(true);
-        }
-        
-        WellsWorldPaintingEntrance.State            = paintingState;
-        CelestialGardensWorldPaintingEntrance.State = paintingState;
-        XXXWorldPaintingEntrance.State              = paintingState;
-    }
-
-    public override void Setup()
-    {
-        game.SetupMovingNPC(Kaffe, isInit);
-        game.SetupMovingNPC(Latte, isInit);
-        game.SetupMovingNPC(Ids, isInit);
-        Ids.gameObject.SetActive(false);
-        lastExit.IsDisabled = false;
-        
-        // Cycle Conditions
-        if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
-        {
-            // Handle Ero Event Cycle
-            if (Script_EventCycleManager.Control.IsIdsDead())   Ero.gameObject.SetActive(true);
-            else                                                Ero.gameObject.SetActive(false);
-
-            // Remove all NPCs except for King, they've gone to their respective rooms.
-            SetDynamicSpectersActive(false);
-            
-            // Open Painting Entrances.
-            SetPaintingEntrancesActive(true);
-        }
-        else
-        {
-            Ero.gameObject.SetActive(false);
-            SetDynamicSpectersActive(true);
-            SetPaintingEntrancesActive(false);
-        }
-
-        isInit = false;
     }
 }
 

@@ -18,29 +18,16 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     public bool isDone;
     // =======================================================================
 
-    [SerializeField] private AudioMixer audioMixer;
-    public Script_ProximityFader fader;
-    [SerializeField] private SpriteRenderer fadingPlayer;
-    [SerializeField] private SpriteRenderer playerGhostToFade;
     private Script_PlayerMovementAnimator playerMovementAnimator;
     private Script_PlayerGhost playerGhost;
-    [SerializeField] private Script_DialogueNode eroPanicNode;
-    [SerializeField] private Transform demonsParent;
-    [SerializeField] private string triggerId;
     [SerializeField] private string hintTriggerId;
-    [SerializeField] private Script_MovingNPC Ero;
-    [SerializeField] private FadeSpeeds fadeOutBgmSpeed;
-    [SerializeField] private PlayableDirector woodsIntroDirector;
-    [SerializeField] private Script_VCamera eroVCam;
-    [SerializeField] private float afterBadSpecterFadeInWaitTime;
-    // set equal to VCam0 cut time to VCam Main so player doesn't see Ero vanish
-    [SerializeField] private float eroExitWaitTime;
     
     [SerializeField] private Script_Hint hint; 
     
     [SerializeField] private Script_PRCS wellJustOpened; 
     [SerializeField] private Script_DemonNPC Ids; 
 
+    private bool didIdsRun;
     private bool isInit = true;
 
     private void Start()
@@ -56,14 +43,10 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        woodsIntroDirector.stopped                      += OnBadSpectersIntroDone;
     }
 
     protected override void OnDisable()
     {
-        woodsIntroDirector.stopped                      -= OnBadSpectersIntroDone;
-
-        HandlePlayerSolidColor();
     }
 
     public override void OnLevelInitComplete()
@@ -81,38 +64,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     }
     
     public override bool ActivateTrigger(string Id){
-        if (Id == triggerId && !isDone)
-        {
-            game.ChangeStateCutScene();
-            
-            // fade out BG music and switch to CONFLICT music
-            float fadeTime = Script_AudioEffectsManager.GetFadeTime(fadeOutBgmSpeed);
-            StartCoroutine(
-                Script_AudioMixerFader.Fade(
-                    audioMixer,
-                    Const_AudioMixerParams.ExposedBGVolume,
-                    fadeTime,
-                    0f,
-                    () => {
-                        game.PauseBgMusic();
-                        
-                        // TODO: Switch to CONFLICT MUSIC
-                        game.SwitchBgMusic(14);
-
-                        Script_AudioMixerVolume.SetVolume(
-                            audioMixer,
-                            Const_AudioMixerParams.ExposedBGVolume,
-                            1f
-                        );
-
-                        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
-                    }
-                )
-            );
-            
-            return true;
-        }
-        else if (Id == hintTriggerId && !isDone)
+        if (Id == hintTriggerId && !isDone)
         {
             hint.Show();
             return true;
@@ -121,22 +73,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         return false;
     }
 
-    private void OnBadSpectersIntroDone(PlayableDirector aDirector)
-    {
-        Ero.gameObject.SetActive(true);
-        StartCoroutine(WaitToCutToEro());
-
-        IEnumerator WaitToCutToEro()
-        {
-            yield return new WaitForSeconds(afterBadSpecterFadeInWaitTime);
-            
-            // switch VCam to Ero
-            Script_VCamManager.VCamMain.SetNewVCam(eroVCam);
-
-            Script_DialogueManager.DialogueManager.StartDialogueNode(eroPanicNode);
-        }
-    }
-    
     /// <summary>
     /// NextNodeAction START ===============================================================
     /// </summary>
@@ -144,22 +80,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         
     }
-    public void OnEndEroPanic()
-    {
-        // switch VCam back to player
-        Script_VCamManager.VCamMain.SwitchToMainVCam(eroVCam);
-
-        StartCoroutine(WaitForEroExit());
-
-        IEnumerator WaitForEroExit()
-        {
-            yield return new WaitForSeconds(eroExitWaitTime);
-            Ero.gameObject.SetActive(false);
-
-            game.ChangeStateInteract();
-            isDone = true;
-        }
-    }
+    
     /// <summary>
     /// NextNodeAction END ===============================================================
     /// </summary>
@@ -179,6 +100,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     public void OnIdsTimelineDone()
     {
         game.ChangeStateInteract();
+        didIdsRun = true;
     }
     /// Signal Reactions END ========================================================================
 
@@ -189,58 +111,34 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         base.HandleDialogueAction();
     }
 
-    // On Mon or Wed, Ids should lead you into the Mansion.
+    // On Mon (Tutorial Run) or Wed, Ids should lead you into the Mansion.
     private void HandlePlayIdsTimeline()
     {
-        if (Script_EventCycleManager.Control.IsIdsWoodsIntroDay())
+        if (ShouldPlayIdsIntro())
         {
             game.ChangeStateCutScene();
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
         }
     }
 
-    private void HandlePlayerSolidColor()
+    private bool ShouldPlayIdsIntro()
     {
-        Color solidColor = fadingPlayer.color;
-        solidColor.a = 1.0f;
-        fadingPlayer.color = solidColor; 
+        return !didIdsRun && (
+            Script_EventCycleManager.Control.IsIdsRoomIntroDay()
+            || Script_EventCycleManager.Control.IsLastElevatorTutorialRun()
+        );
     }
 
     public override void Setup()
     {
         playerMovementAnimator = game.GetPlayer().MyAnimator.GetComponent<Script_PlayerMovementAnimator>();
         playerGhost = game.GetPlayerGhost();
-        fadingPlayer = playerMovementAnimator.GetComponent<SpriteRenderer>();
-        playerGhostToFade = playerGhost.spriteRenderer;
 
-        SpriteRenderer[] toFade = new SpriteRenderer[]{
-            fadingPlayer,
-            playerGhostToFade
-        };
-        fader.Setup(fadingPlayer, toFade);
-
-        if (Script_EventCycleManager.Control.IsIdsWoodsIntroDay())      Ids.gameObject.SetActive(true);
-        else                                                            Ids.gameObject.SetActive(false);
+        if (ShouldPlayIdsIntro())
+            Ids.gameObject.SetActive(true);
+        else
+            Ids.gameObject.SetActive(false);
         
-        // Specter Setup START
-        if (isInit)
-        {
-            demonSpawns = new bool[demonsParent.childCount];
-            for (int i = 0; i < demonSpawns.Length; i++)
-                demonSpawns[i] = true;
-        }
-        game.SetupDemons(demonsParent, demonSpawns);
-        /// Specter Setup END
-
-        game.SetupMovingNPC(Ero, isInit);
-        Ero.gameObject.SetActive(false);
-
-        if (isDone)
-        {
-            demonsParent.gameObject.SetActive(false);
-            game.SwitchBgMusic(14);
-        }
-
         isInit = false;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_35 : Script_LevelBehavior
 {
     public const string MapName = "The Parlor";
@@ -14,7 +15,11 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
     
     [SerializeField] private Script_MeshFadeController meshFadeController;
     [SerializeField] private float meshFadeTime = .25f;
+
+    [SerializeField] private Script_DemonNPC Ids;
+
     private bool didMapNotification;
+    private bool didIdsRun;
 
     protected override void OnEnable()
     {
@@ -41,6 +46,13 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
     {
         meshFadeController.FadeOut(meshFadeTime);
     }
+    // ------------------------------------------------------------------
+    // Timeline Signal Reactions
+    public void OnIdsRunAwayTimelineDone()
+    {
+        game.ChangeStateInteract();
+        didIdsRun = true;
+    }
 
     // ------------------------------------------------------------------
 
@@ -48,8 +60,14 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
+                HandlePlayIdsTimeline();
+            });
             didMapNotification = true;
+        }
+        else
+        {
+            HandlePlayIdsTimeline();
         }
     }
     
@@ -59,8 +77,33 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         base.HandleDialogueAction();
     }
 
+    // After Map Notification, Ids should lead the way on Tutorial Run.
+    private void HandlePlayIdsTimeline()
+    {
+        if (ShouldPlayIdsIntro())
+        {
+            game.ChangeStateCutScene();
+            
+            if (Script_EventCycleManager.Control.IsLastElevatorTutorialRun())
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+            else if (Script_EventCycleManager.Control.IsIdsRoomIntroDay())
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+        }
+    }
+    
+    private bool ShouldPlayIdsIntro()
+    {
+        return !didIdsRun && (
+            Script_EventCycleManager.Control.IsLastElevatorTutorialRun()
+            || Script_EventCycleManager.Control.IsIdsRoomIntroDay()
+        );
+    }
+
     public override void Setup()
     {
-        
+        if (ShouldPlayIdsIntro())
+            Ids.gameObject.SetActive(true);
+        else
+            Ids.gameObject.SetActive(false);        
     }        
 }

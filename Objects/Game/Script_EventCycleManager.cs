@@ -21,6 +21,7 @@ public class Script_EventCycleManager : MonoBehaviour
     private const int ElleniaCountdownMax = 2;
     // ------------------------------------------------------------------
 
+    [SerializeField] private Script_LevelBehavior_27 LastElevator;
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_RunsManager runsManager;
 
@@ -60,12 +61,20 @@ public class Script_EventCycleManager : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Weekday Cycle Events Conditions
-    public bool IsIdsWoodsIntroDay()
+    public bool IsLastElevatorTutorialRun()
     {
         return (
             runsManager.RunCycle == Script_RunsManager.Cycle.Weekday
-            && (game.IsRunDay(Script_Run.DayId.mon) || game.IsRunDay(Script_Run.DayId.wed))
-            && game.lastLevelBehavior == game.bayV2Behavior
+            && game.IsRunDay(Script_Run.DayId.mon)
+            && !LastElevator.GotPsychicDuck
+        );
+    }
+    
+    public bool IsIdsRoomIntroDay()
+    {
+        return (
+            runsManager.RunCycle == Script_RunsManager.Cycle.Weekday
+            && game.IsRunDay(Script_Run.DayId.wed)
         );
     }
 
