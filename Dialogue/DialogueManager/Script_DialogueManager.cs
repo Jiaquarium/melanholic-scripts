@@ -13,6 +13,10 @@ using UnityEngine.Events;
 /// CurrentNode switches on NextDialogueNode(); is left in state on EndDialogue()
 /// Unity Event handlers on Nodes fire at end of Node
 /// End Dialogue Event also available
+/// 
+/// Notes on Dialogue Nodes:
+/// -   Default Psychic Nodes, refrain from putting any events / actions following
+///     or player's "can't understand" feedback will not fire. 
 /// </summary>
 public class Script_DialogueManager : MonoBehaviour
 {
@@ -119,6 +123,14 @@ public class Script_DialogueManager : MonoBehaviour
     private bool isSilentTyping = false;
     /// Flag to disable inputs while full art is fading in or out
     public bool isInputDisabled;
+
+    // ------------------------------------------------------------------
+    // Player Feedback to First Psychic Node Interaction
+    [SerializeField] private Script_DialogueNode cantUnderstandReactionNode;
+    private bool shouldCantUnderstandReaction;
+    private bool didCantUnderstandReactionDone;
+    [SerializeField] private float beforeCantUnderstandReactionWaitTime;
+    // ------------------------------------------------------------------
 
     private States State
     {
@@ -808,24 +820,57 @@ public class Script_DialogueManager : MonoBehaviour
             if (!HandleKeepDialogueUpOnAction())
                 HideDialogue();
 
-            /// in picking up state, player state will be handled by player Action
-            /// upon finishing the item description dialogue
+            /// In picking up state, player state will be handled by player Action
+            /// upon finishing the item description dialogue. Otherwise, set the player state
+            /// back to Interact.
             if (currentNode.data.type != Const_DialogueTypes.Type.Item)
             {
                 Script_Game.Game.GetPlayer().SetIsInteract();
             }
 
-            // end dialogue event
             HandleDialogueNodeAction();
             Script_DialogueEventsManager.DialogueEndEvent();
             activeInteractable?.StartDialogueCoolDown();
             activeInteractable = null;
+
+            // Handle the first interaction with DemonNPC without Psychic Duck.
+            if (shouldCantUnderstandReaction)
+            {
+                StartCoroutine(WaitToTryCantUnderstandDialogue(currentNode));
+                shouldCantUnderstandReaction = false;
+            }
+        }
+
+        // If another cut scene or dialogue is planned after, skip this interaction.
+        IEnumerator WaitToTryCantUnderstandDialogue(Script_DialogueNode prevNode)
+        {
+            // Manually prevent HUD from fading back in.
+            Script_HUDManager.Control.IsPaused = true;
+            yield return null;
+
+            if (
+                // Ensure we didn't enter a new cut scene.
+                Script_Game.Game.state == Const_States_Game.Interact
+                && Script_Game.Game.GetPlayer().State == Const_States_Player.Interact
+                // Ensure a new dialogue didn't already start.
+                && currentNode == prevNode
+            )
+            {
+                Script_Game.Game.GetPlayer().SetIsTalking();
+                
+                yield return new WaitForSeconds(beforeCantUnderstandReactionWaitTime);
+
+                StartDialogueNode(cantUnderstandReactionNode, SFXOn: false);
+                didCantUnderstandReactionDone = true;
+            }
+            
+            Script_HUDManager.Control.IsPaused = false;
         }
     }
 
 
     // actions will be activated after "space" is pressed to move to next dialogue
-    void HandleDialogueNodeAction()
+    private void HandleDialogueNodeAction()
     {
         if (currentNode.data.OnNextNodeAction.CheckUnityEventAction())
         {
@@ -839,7 +884,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
 
-    bool HandleKeepDialogueUpOnAction()
+    private bool HandleKeepDialogueUpOnAction()
     {
         // on option to keep dialogue up (for command prompts e.g. tutorials)
         if (
@@ -1026,7 +1071,7 @@ public class Script_DialogueManager : MonoBehaviour
         SetupName(dialogue.name);
     }
 
-    void SetupName(string name)
+    private void SetupName(string name)
     {
         Debug.Log("Attempting to set up name now");
 
@@ -1040,7 +1085,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
 
-    void SetDialogueCanvasToCanvasChoice1Row(string loc)
+    private void SetDialogueCanvasToCanvasChoice1Row(string loc)
     {
         if  (loc == Const_DialogueTypes.Location.Top)
         {
@@ -1062,7 +1107,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
 
-    void SetDialogueCanvasToReadChoice()
+    private void SetDialogueCanvasToReadChoice()
     {
         activeCanvas = ReadChoiceCanvasBottom.transform;
         ReadChoiceCanvasBottom.gameObject.SetActive(true);
@@ -1070,7 +1115,13 @@ public class Script_DialogueManager : MonoBehaviour
         activeCanvasTexts = ReadChoiceDialogueTexts;
     }
 
-    void InitialState()
+    public void HandleFirstPsychicInteractionNoDuck()
+    {
+        if (!didCantUnderstandReactionDone)
+            shouldCantUnderstandReaction = true;
+    }
+
+    private void InitialState()
     {
         HideDialogue();
         ClearAllCanvasTexts();

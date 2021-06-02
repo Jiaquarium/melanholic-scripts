@@ -16,7 +16,7 @@ public static class Script_Dialogue
     
     public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<string, Model_Languages>
     {
-        // ================================================================================
+        // ------------------------------------------------------------------
         // Hotel
         {
             "hotel-lobby_player_nautical-dawn", new Model_Languages
@@ -54,6 +54,8 @@ public static class Script_Dialogue
                 }
             }
         },
+        // ------------------------------------------------------------------
+        // Parlor (Dining)
         {
             "parlor_myne_mirror_tues", new Model_Languages
             {
@@ -65,6 +67,17 @@ public static class Script_Dialogue
                     "Siblings know more about each other than they think... You’ll see what I mean I’m sure of it.",
                 }
             }
-        }
+        },
+        // ------------------------------------------------------------------
+        // Player
+        {
+            "any_player_first-psychic", new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "Strange, I can't understand what they're saying.",
+                }
+            }
+        },
     };
 }

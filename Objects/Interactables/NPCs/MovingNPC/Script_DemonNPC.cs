@@ -176,6 +176,8 @@ public class Script_DemonNPC : Script_MovingNPC
         }
         else
         {
+            Script_DialogueManager.DialogueManager.HandleFirstPsychicInteractionNoDuck();
+            
             // if previously talked psychic, then need to switch and reset idx
             if (didLastTalkPsychic)
             {
