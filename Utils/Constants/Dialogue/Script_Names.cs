@@ -171,7 +171,7 @@ public class Script_Names: MonoBehaviour
     }
     
     public const string Flan                            = "<b>Flan the Guard</b>";              // {64}
-    public const string ActionSticker                   = "<b>Action Sticker</b>";              // {65}
+    public const string ActionSticker                   = "<b>Active Sticker</b>";              // {65}
     public const string LastElevator                    = "<b>Last Elevator</b>";               // {66}
     public const string StickerSkill                    = "<b>Sticker Skill</b>";               // {67}
     public const string StickerSkills                   = "<b>Sticker Skills</b>";              // {68}
@@ -185,6 +185,8 @@ public class Script_Names: MonoBehaviour
     public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
     public const string NauticalDawn                    = "<b>Nautical Dawn</b>";               // {77}
     public const string UrselksHall                     = "<b>Urselks Hall</b>";                // {78}
+    public const string ActiveStickerCommand            = "<b>ACTIVE STICKER COMMAND</b>";      // {79}
+    public const string SwitchActiveSticker             = "<b>SWITCH ACTIVE STICKER</b>";       // {80}
 
 
     // ------------------------------------------------------------------

@@ -16,6 +16,6 @@ MonoBehaviour:
   focusedSprite: {fileID: -3860515135949180240, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: -4863336276314997047, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: lets you eat away edible obstacles. chomp chomp!
+  description: use its {79} to let you eat away edible obstacles. chomp chomp!
   isDroppable: 0
-  isPersistentDrop: 0
+  _isSpecial: 0
