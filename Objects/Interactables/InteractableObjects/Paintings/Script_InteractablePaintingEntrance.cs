@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Script_InteractablePaintingEntrance : Script_QuestPainting
 {
     static readonly private string BoarNeedle = Const_Items.BoarNeedleId; 
@@ -136,3 +140,34 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         }
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_InteractablePaintingEntrance))]
+public class Script_InteractablePaintingEntranceTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_InteractablePaintingEntrance t = (Script_InteractablePaintingEntrance)target;
+        if (GUILayout.Button("Done Painting"))
+        {
+            t.DonePainting();
+        }
+
+        if (GUILayout.Button("Default Painting"))
+        {
+            t.DefaultPainting();
+        }
+
+        if (GUILayout.Button("Set State Disabled"))
+        {
+            t.State = Script_InteractablePaintingEntrance.States.Disabled;
+        }
+
+        if (GUILayout.Button("Set State Active"))
+        {
+            t.State = Script_InteractablePaintingEntrance.States.Active;
+        }
+    }
+}
+#endif
