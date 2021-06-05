@@ -5,6 +5,14 @@ public class Model_Languages
 {
     public string speaker { get; set;}
     public string[] EN { get; set;}
+    public Metadata[] metadata;
+    
+    public class Metadata
+    {
+        public bool? isUnskippable;
+        public bool? noContinuationIcon;
+        public bool? waitForTimeline;
+    }
 }
 
 /// <summary>
@@ -19,7 +27,8 @@ public static class Script_Dialogue
         // ------------------------------------------------------------------
         // Hotel
         {
-            "hotel-lobby_player_nautical-dawn", new Model_Languages
+            "hotel-lobby_player_nautical-dawn",
+            new Model_Languages
             {
                 speaker = "{0}",
                 EN = new string[]{
@@ -28,7 +37,8 @@ public static class Script_Dialogue
             }
         },
         {
-            "hotel-lobby_narrator_contract", new Model_Languages
+            "hotel-lobby_narrator_contract",
+            new Model_Languages
             {
                 speaker = "???",
                 EN = new string[]{
@@ -37,7 +47,138 @@ public static class Script_Dialogue
             }
         },
         {
-            "hotel-bay-v2_player_portrait-comment", new Model_Languages
+            "hotel-lobby_player_new-game-thought",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "So this is it, huh?",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true }
+                }
+            }
+        },
+
+        // Front Door
+        {
+            "hotel-lobby_player_front-door",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "I really would like to leave, but no I can’t.",
+                }
+            }
+        },
+        {
+            "hotel-lobby_player_front-door1",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "I’m being watched.",
+                }
+            }
+        },
+        {
+            "hotel-lobby_player_front-door2",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "I hate this feeling.",
+                }
+            }
+        },
+        
+        // Coffee Maker
+        {
+            "hotel-lobby_player_coffee-maker",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "The day shift guy always forgets to rebrew the coffee when he gets off, so I always do it.",
+                }
+            }
+        },
+
+        // Family Portrait
+        {
+            "hotel-lobby_player_family-portrait",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "It’s an old photo with Dad and my little sis.",
+                    "She’s working some job in finance now – honestly I don’t even really know what she does though."
+                }
+            }
+        },
+
+        // Coffee Table
+        {
+            "hotel-lobby_player_monday-recipes",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "A recipe book for French pastries. Bon appetit!",
+                    "I’ve read this a million times by now, sigh."
+                }
+            }
+        },
+        {
+            "hotel-lobby_player_monday-poems",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "<b>Tangled Hair</b>, a book of poetry.",
+                    "I like poems and all, but if I had a choice, I’d rather be a novelist."
+                }
+            }
+        },
+        {
+            "hotel-lobby_player_monday-textbook",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "It’s a textbook, <b>The Art of Fractal Geometry</b>.",
+                    "Absolutely no clue why we have this here... anyways, it’s interesting too."
+                }
+            }
+        },
+        
+        {
+            "hotel-lobby_player_tuesday-books",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "Someone must’ve been leafing through these...",
+                }
+            }
+        },
+
+        {
+            "hotel-lobby_player_wednesday-book",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "Hm I don’t ever remember us having a book like this.",
+                    "Wait a second, there’s something inside."
+                }
+            }
+        },
+
+        {
+            "hotel-bay-v2_player_portrait-comment",
+            new Model_Languages
             {
                 speaker = "{0}",
                 EN = new string[]{
@@ -46,7 +187,8 @@ public static class Script_Dialogue
             }
         },
         {
-            "hotel-bay-v2_player_portrait-comment_1", new Model_Languages
+            "hotel-bay-v2_player_portrait-comment_1",
+            new Model_Languages
             {
                 speaker = "{0}",
                 EN = new string[]{
@@ -54,10 +196,13 @@ public static class Script_Dialogue
                 }
             }
         },
+
+
         // ------------------------------------------------------------------
         // Parlor (Dining)
         {
-            "parlor_myne_mirror_tues", new Model_Languages
+            "parlor_myne_mirror_tues",
+            new Model_Languages
             {
                 speaker = "{10}",
                 EN = new string[]{
@@ -71,7 +216,8 @@ public static class Script_Dialogue
         // ------------------------------------------------------------------
         // Player
         {
-            "any_player_first-psychic", new Model_Languages
+            "any_player_first-psychic",
+            new Model_Languages
             {
                 speaker = "{0}",
                 EN = new string[]{
