@@ -167,11 +167,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
     }
 
-    protected override void HandleAction()
-    {   
-        base.HandleDialogueAction();
-    }
-
     // ------------------------------------------------------------------------------------
     // Next Node Action Start
     public void NameplateTimeline()

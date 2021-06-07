@@ -48,12 +48,6 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         if (LB24.IsCurrentPuzzleComplete)   LB24.PuzzleFinishedState();
     }
 
-    protected override void HandleAction()
-    {
-        // for cutScene dialogue
-        base.HandleDialogueAction();
-    }
-
     // ------------------------------------------------------------------
     // Next Node Actions
 

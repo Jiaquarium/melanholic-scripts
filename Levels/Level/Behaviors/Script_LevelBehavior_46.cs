@@ -75,12 +75,6 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         Script_PuzzlesEventsManager.OnPuzzleSuccess -= HandlePuzzleSuccess;
     }
     
-    protected override void HandleAction()
-    {
-        // for cutScene dialogue
-        base.HandleDialogueAction();
-    }
-
     private void HandlePuzzleSuccess(string puzzleId)
     {
         if (puzzleId == meetupPuzzleController.PuzzleId)

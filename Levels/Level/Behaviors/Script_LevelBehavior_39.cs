@@ -42,12 +42,6 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         }
     }
 
-    // Need for Guard OnTrigger Cut Scene
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     // ----------------------------------------------------------------------
     // Unity Events START
     

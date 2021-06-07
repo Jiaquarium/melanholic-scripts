@@ -415,11 +415,6 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         InitializeFire(false);
     }
 
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     private void Awake() {
         explosion.gameObject.SetActive(false);
     }

@@ -104,13 +104,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     }
     /// Signal Reactions END ========================================================================
 
-
-    protected override void HandleAction()
-    {
-        // for cutScene dialogue
-        base.HandleDialogueAction();
-    }
-
     // On Mon (Tutorial Run) or Wed, Ids should lead you into the Mansion.
     private void HandlePlayIdsTimeline()
     {

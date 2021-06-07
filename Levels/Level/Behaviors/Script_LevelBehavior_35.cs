@@ -71,12 +71,6 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         }
     }
     
-    /// Need for Myne's Mirror
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     // After Map Notification, Ids should lead the way on Tutorial Run.
     private void HandlePlayIdsTimeline()
     {

@@ -140,11 +140,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
     }
 
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     /// <summary> ==============================================================================
     /// NextNodeAction(s) Start 
     /// </summary> =============================================================================

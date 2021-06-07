@@ -857,6 +857,7 @@ public class Script_DialogueManager : MonoBehaviour
             )
             {
                 Script_Game.Game.GetPlayer().SetIsTalking();
+                game.ChangeStateCutScene();
                 
                 yield return new WaitForSeconds(beforeCantUnderstandReactionWaitTime);
 
@@ -868,6 +869,21 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------
+    // Next Node Action (Can't Understand Dialogue Node)
+    public void OnCantUnderstandDialogueDone()
+    {
+        StartCoroutine(WaitNextFrameGameInteract());
+        
+        // Must wait for next frame or Player will interact again.
+        IEnumerator WaitNextFrameGameInteract()
+        {
+            yield return null;
+            
+            game.ChangeStateInteract();
+        }
+    }
+    // ------------------------------------------------------------------
 
     // actions will be activated after "space" is pressed to move to next dialogue
     private void HandleDialogueNodeAction()

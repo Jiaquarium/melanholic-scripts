@@ -21,11 +21,6 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         set => isDone = value;
     }
 
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-    
     void Awake()
     {
         snowEffectAlways.gameObject.SetActive(true);

@@ -104,8 +104,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     protected override void Update()
     {
-        base.HandleDialogueAction();
-        
         if (isCheckingPsychicDuckElleniaHurtCutScene)
         {
             HandleElleniaHurtCutScene();

@@ -45,23 +45,6 @@ public class Script_LevelBehavior : MonoBehaviour
     }
 
     protected virtual void HandleAction() {}
-    
-    /// <summary>
-    /// this is for moving forward in dialogue during cut scenes
-    /// best place is here because this could be separate of player logic
-    /// (e.g. narration scenes, etc.)
-    /// </summary>
-    protected virtual void HandleDialogueAction()
-    {
-        if (
-            Input.GetButtonDown(Const_KeyCodes.Action1)
-            && game.state == Const_States_Game.CutScene
-        )
-        {
-            Debug.Log("Script_LevelBehavior: HandleDialogueAction()");
-            game.HandleContinuingDialogueActions(Const_KeyCodes.Action1);
-        }
-    }
 
     protected virtual void OnDisable()
     {

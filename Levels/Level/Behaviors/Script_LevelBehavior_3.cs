@@ -108,11 +108,6 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
         demonSpawns[Id] = false;
     }
 
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     /// <summary> =============================================================
     /// NextNodeAction(s) START
     /// </summary> ============================================================

@@ -45,11 +45,6 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         UrsieDirector.stopped -= OnUrsieDirectorDone;    
     }
 
-    protected override void Update()
-    {
-        base.HandleDialogueAction();
-    }
-
     /// <summary>
     /// Called from NextNodeAction()
     /// </summary>

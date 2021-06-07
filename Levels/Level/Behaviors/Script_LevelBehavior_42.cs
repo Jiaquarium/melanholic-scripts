@@ -88,11 +88,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         }
     }
 
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     public void SetFireplaceExitActive(bool isActive)
     {
         fireplaceExit.SetInteractionActive(isActive);   

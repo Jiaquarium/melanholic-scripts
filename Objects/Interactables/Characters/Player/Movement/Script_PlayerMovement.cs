@@ -71,7 +71,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public float Progress
     {
-        get => (repeatDelay - timer) / repeatDelay;
+        get => 1 - timer / repeatDelay;
     }
     
     void OnDestroy()

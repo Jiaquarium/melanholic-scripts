@@ -263,11 +263,6 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
         Script_VCamManager.SetCameraOrthoSize(VCamLB7, Const_Camera.OrthoSizes.DefaultSize);
     }
 
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     /// <summary> 
     /// Demon Handlers: handle state
     /// </summary> 

@@ -59,11 +59,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         return false;
     }
 
-    protected override void HandleAction()
-    {
-        base.HandleDialogueAction();
-    }
-
     private void OnLevelInit()
     {
         if (game.IsRunDay(Script_Run.DayId.sun) && !didIdsMusicCutScene)

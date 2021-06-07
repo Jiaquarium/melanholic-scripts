@@ -201,12 +201,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     }
     // ------------------------------------------------------------------
 
-    protected override void HandleAction()
-    {
-        // for cutScene dialogue
-        base.HandleDialogueAction();
-    }
-
     private void HandleEndingExitState(bool isOpen)
     {
         hotelFrontDoor.gameObject.SetActive(!isOpen);

@@ -168,8 +168,6 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
                 game.TriggerMovingNPCMove(0);
             }
         }
-
-        base.HandleDialogueAction();
     }
 
     public override void SetSwitchState(int Id, bool isOn)
