@@ -210,8 +210,6 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             Script_VCamManager.VCamMain.SwitchToMainVCam(staticZoomOutVCam);
             yield return new WaitForSeconds(Script_VCamManager.defaultBlendTime);
 
-            XXXWorldBehavior.PaintingsDone();            
-            
             isTimelineControlled = true;
             Script_TransitionManager.Control.OnCurrentQuestDone(() => {
                 game.ChangeStateInteract();

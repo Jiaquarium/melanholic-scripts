@@ -25,6 +25,9 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_FrozenWell[] frozenWells;
     [SerializeField] private Script_DoorExitFireplace fireplaceExit;
     
+    [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;
+    [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
+    
     [SerializeField] private Script_CollectibleObject[] lastWellMaps;
     
     [SerializeField] private Script_Item lastSpellRecipeBookItem;
@@ -179,6 +182,16 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         SetMoosesActive(false);
         SetSuzettesActive(false);
+    }
+
+    public void FinishQuestPaintings()
+    {
+        ballroomPaintingEntrance.DonePainting();
+
+        foreach (var paintingEntrance in paintingEntrances)
+        {
+            paintingEntrance.DonePainting();
+        }
     }
 
     public void OnWellsWorldPaintingQuestDone()

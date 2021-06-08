@@ -15,7 +15,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     
     // ==================================================================
 
-    [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;   
+    [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;
+    [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
 
     private bool didMapNotification;
 
@@ -38,13 +39,19 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         }
     }
     
-    public void PaintingsDone()
+    // ------------------------------------------------------------------
+    // Timeline Signals
+    
+    public void FinishQuestPaintings()
     {
         foreach (var painting in paintingEntrances)
         {
             painting.DonePainting();
         }
+
+        ballroomPaintingEntrance.DonePainting();
     }
+    // ------------------------------------------------------------------
     
     public override void Setup()
     {

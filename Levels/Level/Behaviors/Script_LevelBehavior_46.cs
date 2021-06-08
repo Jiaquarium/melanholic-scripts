@@ -19,6 +19,9 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     public bool isCurrentPuzzleComplete;
     
+    [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;
+    [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
+    
     [SerializeField] private float successTransitionFadeInTime;
     [SerializeField] private float successBlackScreenTime;
     [SerializeField] private float successAfterFadeWaitTime;
@@ -186,6 +189,16 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     // ------------------------------------------------------------------
     // Timeline Signals
 
+    public void FinishQuestPaintings()
+    {
+        ballroomPaintingEntrance.DonePainting();
+
+        foreach (var paintingEntrance in paintingEntrances)
+        {
+            paintingEntrance.DonePainting();
+        }
+    }
+    
     // Follows OnSuccessCutSceneDone's Timeline.
     public void OnCelestialGardensPaintingTimelineDone()
     {
