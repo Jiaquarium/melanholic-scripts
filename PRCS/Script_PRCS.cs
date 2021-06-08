@@ -46,4 +46,11 @@ public class Script_PRCS : Script_FullArt
             Debug.LogError("You are trying to play a PRCS without a timeline");
         }
     }
+
+    public override void Setup()
+    {
+        GetComponent<Script_PRCSInitializer>()?.Initialize();
+
+        base.Setup();
+    }
 }

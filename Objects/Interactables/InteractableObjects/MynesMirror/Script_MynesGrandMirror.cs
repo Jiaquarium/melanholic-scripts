@@ -1,23 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// Not included in the Scarlet Cipher mirrors.
 /// 
 /// After Grand Mirror activation is done; switch graphic to broken.
+/// 
+/// Section is switched to decide which Dialogue to use after a non-mirror cut scene.
 /// </summary>
 public class Script_MynesGrandMirror : Script_MynesMirror
 {
     private enum Section
     {
         Intro = 0,
-        ItemGive = 1
+        NewWorldPaintings = 1,
+        ItemGive = 2
     }
     
     [SerializeField] private Script_StickerObject stickerObject;
+    [SerializeField] private Script_DialogueNode onNewWorldPaintingsTimelineDoneNode;
     [SerializeField] private Script_DialogueNode onStickerGiveDoneNode;
     [SerializeField] private Script_ExitMetadataObject exit;
+
+    [SerializeField] private PlayableDirector newWorldPaintingsDirector;
 
     private Section currentSection;
     private bool isActivated;
@@ -57,6 +68,9 @@ public class Script_MynesGrandMirror : Script_MynesMirror
             case (Section.Intro):
                 Script_DialogueManager.DialogueManager.StartDialogueNode(HintNode);
                 break;
+            case (Section.NewWorldPaintings):
+                Script_DialogueManager.DialogueManager.StartDialogueNode(onNewWorldPaintingsTimelineDoneNode);
+                break;
             case (Section.ItemGive):
                 Script_DialogueManager.DialogueManager.StartDialogueNode(onStickerGiveDoneNode);
                 break;
@@ -92,6 +106,30 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         }
     }
 
+    // ------------------------------------------------------------------
+    // Next Node Actions
+
+    public void PlayNewWorldPaintingsTimeline()
+    {
+        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
+            newWorldPaintingsDirector.Play();
+        });
+    }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
+    public void OnNewWorldPaintingsTimelineDone()
+    {
+        currentSection = Section.NewWorldPaintings;
+        Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirrorMidConvo);
+
+        // This will then trigger the Script_MynesMirrorEventsManager.OnEndTimeline event which will
+        // call StartDialogue, starting dialogue based on the Current Section.
+    }
+
+    // ------------------------------------------------------------------
+
     protected override bool CheckDisabled()
     {
         return
@@ -120,3 +158,19 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         currentSection = Section.Intro;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_MynesGrandMirror))]
+public class Script_MynesGrandMirrorTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_MynesGrandMirror t = (Script_MynesGrandMirror)target;
+        if (GUILayout.Button("On New World Paintings Timeline Done"))
+        {
+            t.OnNewWorldPaintingsTimelineDone();
+        }
+    }
+}
+#endif

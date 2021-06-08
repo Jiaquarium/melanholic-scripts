@@ -106,13 +106,14 @@ public class Script_PRCSManager : MonoBehaviour
                 MynesMirrorPRCS.Setup();
                 MynesMirrorPRCS.Open();
                 MynesMirrorPRCS.PlayTimeline(0);
-                /// MynesMirror Timeline controls Fade
+                // MynesMirror Timeline controls Fade
                 break;
                 
             case CustomTypes.MynesMirrorMidConvo:
                 PRCSCanvasGroup.alpha = 1f;
                 PRCSCanvasGroup.gameObject.SetActive(true);
                 
+                // Set Myne's Mirror CanvasGroup alpha to avoid flicker
                 MynesMirrorPRCS.Setup();
                 MynesMirrorPRCS.Open();
                 MynesMirrorPRCS.PlayTimeline(1);

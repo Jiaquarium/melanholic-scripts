@@ -110,6 +110,15 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         );   
     }
 
+    // ------------------------------------------------------------------
+    // Timeline Signal Reactions
+
+    public void SetStateActive()
+    {
+        State = States.Active;
+    }
+    // ------------------------------------------------------------------
+
     private void HandlePaintingDialogueNodeIndex()
     {
         if (paintingDialogueIndex == paintingDialogueNodes.Length - 1)

@@ -82,7 +82,7 @@ public class Script_FullArt : MonoBehaviour
         }
     }
 
-    public void Setup()
+    public virtual void Setup()
     {
         GetComponent<Script_CanvasGroupFadeInOut>().Initialize();
     }

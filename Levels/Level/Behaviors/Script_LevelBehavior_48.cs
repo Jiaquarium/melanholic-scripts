@@ -14,6 +14,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // ==================================================================
 
     [SerializeField] private Script_Snow snowEffectAlways;
+    [SerializeField] private Script_InteractablePaintingEntrance wellsWorldPainting;
+    [SerializeField] private Script_InteractablePaintingEntrance celestialGardensWorldPainting;
+    [SerializeField] private Script_InteractablePaintingEntrance xxxWorldPainting;
 
     public bool IsDone
     {
@@ -24,5 +27,23 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     void Awake()
     {
         snowEffectAlways.gameObject.SetActive(true);
-    }    
+    }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+    public void SetWellsWorldPaintingStateActive()
+    {
+        wellsWorldPainting.SetStateActive();
+    }
+
+    public void SetCelestialGardensWorldPaintingStateActive()
+    {
+        celestialGardensWorldPainting.SetStateActive();
+    }
+
+    public void SetXXXWorldPaintingStateActive()
+    {
+        xxxWorldPainting.SetStateActive();
+    }
+    // ------------------------------------------------------------------
 }
