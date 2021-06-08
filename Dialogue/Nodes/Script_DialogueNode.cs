@@ -64,6 +64,12 @@ public class Script_DialogueNode : MonoBehaviour
                         data.dialogue.sections[i].waitForTimeline = (bool)metadata[i].waitForTimeline;
                 }
             }
+
+            // Choice Text
+            if (!String.IsNullOrEmpty(languages.choiceText))
+            {
+                data.choiceText = languages.choiceText;
+            }
         }
     }
 }

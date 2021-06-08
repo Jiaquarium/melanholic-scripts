@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 public class Model_Languages
 {
-    public string speaker { get; set;}
-    public string[] EN { get; set;}
-    public Metadata[] metadata;
+    public string speaker { get; set; }
+    public string[] EN { get; set; }
+    public Metadata[] metadata { get; set; }
+    public string choiceText { get; set; }
     
     public class Metadata
     {
@@ -213,6 +214,65 @@ public static class Script_Dialogue
                 }
             }
         },
+
+        // ------------------------------------------------------------------
+        // Grand Mirror Room
+        {
+            "grand-mirror-room_grand-mirror_responsibility",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "......",
+                    "Because you are trusted, you will be given responsibility.",
+                    "Do you accept it?",
+                }
+            }
+        },
+        {
+            "grand-mirror-room_grand-mirror_responsibility_choice0",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Very well then, my dear, heh heh.",
+                },
+                choiceText = "Yes"
+            }
+        },
+        {
+            "grand-mirror-room_grand-mirror_responsibility_choice1",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Well that’s just too bad, my dear, heh heh.",
+                    "Because this responsibility is yours whether you like it or not."
+                },
+                choiceText = "No"
+            }
+        },
+        {
+            "grand-mirror-room_grand-mirror_responsibility1",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "But also...",
+                }
+            }
+        },
+        {
+            "grand-mirror-room_grand-mirror_responsibility2",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Like I said you are trusted so you are given responsibility.",
+                }
+            }
+        },
+
         // ------------------------------------------------------------------
         // Player
         {
