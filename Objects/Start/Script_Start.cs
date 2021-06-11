@@ -55,7 +55,7 @@ public class Script_Start : MonoBehaviour
 
             default:
                 Debug.Log("Default Start Screeen");
-                mainController.InitializeStartScreenState();
+                mainController.InitializeIntro();
                 break;
         }
     }

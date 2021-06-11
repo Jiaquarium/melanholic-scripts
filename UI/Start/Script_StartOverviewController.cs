@@ -13,9 +13,14 @@ public class Script_StartOverviewController : Script_UIState
 {
     [SerializeField] private SavedGameState savedGameState;
     [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
+    
+    [SerializeField] private Script_IntroController introController;
+    [SerializeField] private Script_StartScreenController startScreenController;
+    
     [SerializeField] private CanvasGroup savedGameCanvasGroup;
     [SerializeField] private CanvasGroup startScreenCanvasGroup;
     [SerializeField] private CanvasGroup gameOverCanvasGroup;
+    
     [SerializeField] private Script_SavedGameViewController savedGameController;
     [SerializeField] private Script_SavedGameSubmenuController submenuController;
     [SerializeField] private Transform continueSubmenu;
@@ -58,15 +63,39 @@ public class Script_StartOverviewController : Script_UIState
         crunchDirector.stopped -= OnCrunchPlayableDone;
     }
 
-    public void InitializeStartScreenState()
+    // Starts Intro Sequence.
+    // Intro Timeline, Full Playthrough > StartScreenStart() > ActivateStartScreenController()
+    // Intro Timeline, Skip Input > StartScreenStart() > ActivateStartScreenController()
+    public void InitializeIntro()
     {
-        bgmManager.Play(0);
-
-        startScreenCanvasGroup.gameObject.SetActive(true);
+        startScreenCanvasGroup.gameObject.SetActive(false);
         savedGameCanvasGroup.gameObject.SetActive(false);
         gameOverCanvasGroup.gameObject.SetActive(false);
         savedGameEventSystem.InitializeState();
+
+        introController.gameObject.SetActive(true);
+        startScreenController.gameObject.SetActive(false);
+        introController.Play();
     }
+
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+    
+    // Signals the Start screen is up. Start Screen Controller should be disabled here.
+    public void StartScreenStart()
+    {
+        introController.DisableInput();
+        startScreenCanvasGroup.gameObject.SetActive(true);
+    }
+
+    // Stops the intro timeline at the Start Screen.
+    // Switches control to the Start Screen Controller.
+    public void ActivateStartScreenController()
+    {
+        introController.gameObject.SetActive(false);
+        startScreenController.gameObject.SetActive(true);
+    }
+    // ----------------------------------------------------------------------
 
     public void InitializeGameOverState()
     {
@@ -135,7 +164,7 @@ public class Script_StartOverviewController : Script_UIState
             yield return new WaitForSeconds(crunchTimeDown);
 
             // switch when teeth are opening
-            InitializeStartScreenState();
+            InitializeIntro();
         }
     }
 
