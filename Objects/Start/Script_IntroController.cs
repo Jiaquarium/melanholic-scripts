@@ -32,6 +32,11 @@ public class Script_IntroController : MonoBehaviour
         introDirector.Play();
     }
 
+    public void Pause()
+    {
+        introDirector.Pause();
+    }
+
     // Skip to frame where Start Screen starts. Timeline will then initialize Start Screen via Signals.
     public void SkipToStartScreen()
     {

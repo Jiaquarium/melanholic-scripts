@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
@@ -20,6 +21,10 @@ using UnityEngine.Events;
 /// </summary>
 public class Script_DialogueManager : MonoBehaviour
 {
+    public const float charPauseDefault = 0.018f;
+    public const float pauseLength = 0.475f;
+    private const float charPauseFast = 0.0025f;
+    
     public enum States
     {
         Active              = 0,
@@ -91,17 +96,14 @@ public class Script_DialogueManager : MonoBehaviour
     [SerializeField] private Script_InputManager inputManager;
     [SerializeField] private Script_FullArtManager fullArtManager;
     [SerializeField] private Script_DialogueManagerCanvasHandler canvasHandler;
-
     
+    [SerializeField] private float charPauseLength = 0.018f;
 
     public bool isRenderingDialogueSection = false;
     public int lineCount = 0;
     public Queue<Model_DialogueSection> dialogueSections;
     public Queue<string> lines;
-    public float pauseLength;
-    [SerializeField] private float charPauseLength;
-    public float charPauseFast;
-    public float charPauseDefault;
+    
     public float typingVolumeScale;
     public float dialogueStartVolumeScale;
     public Script_DialogueNode currentNode;
@@ -511,11 +513,33 @@ public class Script_DialogueManager : MonoBehaviour
 
         formattedLine = Script_Utils.FormatString(unformattedLine);
 
-        coroutine = TeleTypeReveal(formattedLine);
-        StartCoroutine(coroutine);
+        HandleTeletypeReveal(formattedLine, activeCanvasText);
     }
 
-    IEnumerator TeleTypeReveal(string sentence)
+    private void HandleTeletypeReveal(string sentence, TextMeshProUGUI textUI)
+    {
+        coroutine = TeletypeRevealLine(
+            formattedLine,
+            activeCanvasText,
+            charPauseLength,
+            OnTeletypeRevealLineDone
+        );
+        StartCoroutine(coroutine);
+
+        void OnTeletypeRevealLineDone()
+        {
+            lineCount++;
+            DisplayNextLine();
+        }
+    }
+
+    public static IEnumerator TeletypeRevealLine(
+        string sentence,
+        TextMeshProUGUI textUI,
+        float defaultCharPause,
+        Action cb,
+        bool silenceOverride = false
+    )
     {
         // Hide Text Commands.
         string formattedSentence = sentence.Replace(
@@ -524,16 +548,16 @@ public class Script_DialogueManager : MonoBehaviour
         );
         
         // First initialize the canvas with text and hide all text.
-        activeCanvasText.text = formattedSentence;
-        activeCanvasText.maxVisibleCharacters = 0;
-        TMP_CharacterInfo[] charInfos = activeCanvasText.textInfo.characterInfo;
+        textUI.text = formattedSentence;
+        textUI.maxVisibleCharacters = 0;
+        TMP_CharacterInfo[] charInfos = textUI.textInfo.characterInfo;
         float charPauseTime;
         
         // Must wait a frame so TMP can update for new hidden text.
         yield return null;
 
         // Get # of visible characters in Text object.
-        int totalVisibleCharacters = activeCanvasText.textInfo.characterCount;
+        int totalVisibleCharacters = textUI.textInfo.characterCount;
         int counter = 0;
 
         while (true)
@@ -541,46 +565,31 @@ public class Script_DialogueManager : MonoBehaviour
             int visibleCount = counter % (totalVisibleCharacters + 1);
             
             // Reveal current character.
-            activeCanvasText.maxVisibleCharacters = visibleCount;
-            HandleTypingSFX();
+            textUI.maxVisibleCharacters = visibleCount;
 
             // Exit once the last character has been revealed.
             if (visibleCount >= totalVisibleCharacters)
                 break;
 
             // Get the next visible character and handle Text Commands.
-            TMP_CharacterInfo charInfo = activeCanvasText.textInfo.characterInfo[visibleCount];
+            TMP_CharacterInfo charInfo = textUI.textInfo.characterInfo[visibleCount];
             char nextVisibleChar = charInfo.character;
+            
             if (nextVisibleChar == PauseTextCommand)
             {
                 charPauseTime = pauseLength;
-                shouldPlayTypeSFX = true;
             }
             else
             {
-                charPauseTime = charPauseLength;
+                charPauseTime = defaultCharPause;
             }
 
             counter++;
             yield return new WaitForSeconds(charPauseTime);
-        }        
-
-        lineCount++;
-        DisplayNextLine();
-
-        void HandleTypingSFX()
-        {
-            // only play typeSFX every other char
-            if (shouldPlayTypeSFX == true && !isSilentTyping)
-            {
-                audioSource.PlayOneShot(typeSFX, typingVolumeScale);
-                shouldPlayTypeSFX = false;
-            }
-            else
-            {
-                shouldPlayTypeSFX = true;
-            }
         }
+
+        if (cb != null)
+            cb();
     }
 
     void FinishRenderingDialogueSection()

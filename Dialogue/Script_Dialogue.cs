@@ -16,12 +16,34 @@ public class Model_Languages
     }
 }
 
+public class Model_LanguagesUI
+{
+    public string EN { get; set; }
+}
+
 /// <summary>
 /// Helper to populate Dialogue Nodes. Keep the dynamic format here.
 /// Id: area_speaker_description_XXXX
 /// </summary>
 public static class Script_Dialogue
 {
+    public static Dictionary<string, Model_LanguagesUI> Text = new Dictionary<string, Model_LanguagesUI>
+    {
+        {
+            "intro_narrator_hotel",
+            new Model_LanguagesUI
+            {
+                EN = "I work at the seaside hotel about two hours away from my hometown."
+            }
+        },
+        {
+            "intro_narrator_hotel1",
+            new Model_LanguagesUI
+            {
+                EN = "Fortunately, they actually let me stay in a room here if one's not being used."
+            }
+        }
+    };
     
     public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<string, Model_Languages>
     {
@@ -149,7 +171,7 @@ public static class Script_Dialogue
                 speaker = "{0}",
                 EN = new string[]{
                     "It’s a textbook, <b>The Art of Fractal Geometry</b>.",
-                    "Absolutely no clue why we have this here... anyways, it’s interesting too."
+                    "Absolutely no clue why we have this here...| anyways, it’s interesting too."
                 }
             }
         },
