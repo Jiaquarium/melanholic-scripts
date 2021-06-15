@@ -546,7 +546,7 @@ public class Script_DialogueManager : MonoBehaviour
             PauseTextCommand.ToString(),
             $"<size=0>{PauseTextCommand.ToString()}</size>"
         );
-        
+
         // First initialize the canvas with text and hide all text.
         textUI.text = formattedSentence;
         textUI.maxVisibleCharacters = 0;

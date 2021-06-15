@@ -33,14 +33,51 @@ public static class Script_Dialogue
             "intro_narrator_hotel",
             new Model_LanguagesUI
             {
-                EN = "I work at the seaside hotel about two hours away from my hometown."
+                EN = "I work at the front desk of a seaside hotel.| It's about a two hour drive from my hometown."
             }
         },
         {
             "intro_narrator_hotel1",
             new Model_LanguagesUI
             {
-                EN = "Fortunately, they actually let me stay in a room here if one's not being used."
+                EN = "Fortunately, I can just use one of our empty rooms if I don't want to make the trip back though."
+            }
+        },
+        {
+            "intro_narrator_hotel2",
+            new Model_LanguagesUI
+            {
+                EN = "It usually works out,| since it's pretty slow this winter season."
+            }
+        },
+
+        {
+            "intro_narrator_hotel3",
+            new Model_LanguagesUI
+            {
+                EN = "Actually now that I think about it..."
+            }
+        },
+        {
+            "intro_narrator_hotel4",
+            new Model_LanguagesUI
+            {
+                EN = "I'm not quite sure how long it's been since I've been home."
+            }
+        },
+
+        {
+            "intro_narrator_hotel5",
+            new Model_LanguagesUI
+            {
+                EN = "And oh..."
+            }
+        },
+        {
+            "intro_narrator_hotel6",
+            new Model_LanguagesUI
+            {
+                EN = "I work the night shift."
             }
         }
     };
