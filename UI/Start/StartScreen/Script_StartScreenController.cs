@@ -9,10 +9,18 @@ public class Script_StartScreenController : MonoBehaviour
     // Timer to Restart Intro if Player is inactive for specified time.
     [SerializeField] private float inactivityResetTime;
     [SerializeField] private float timer;
+
+    [SerializeField] private Script_EventSystemLastSelected eventSystem;
     
     void OnEnable()
     {
-        timer = inactivityResetTime;    
+        Initialize();
+    }
+
+    void OnDisable()
+    {
+        // Prevent sound effect on re-initialization.
+        eventSystem.InitializeState();
     }
     
     void Update()
@@ -25,5 +33,10 @@ public class Script_StartScreenController : MonoBehaviour
         }
         
         GetComponent<Script_StartScreenInputManager>().HandleEnterInput();
+    }
+
+    public void Initialize()
+    {
+        timer = inactivityResetTime;
     }
 }

@@ -17,8 +17,10 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private Script_IntroController introController;
     [SerializeField] private Script_StartScreenController startScreenController;
     
+    [SerializeField] private CanvasGroup introCanvasGroup;
     [SerializeField] private CanvasGroup savedGameCanvasGroup;
     [SerializeField] private CanvasGroup startScreenCanvasGroup;
+    [SerializeField] private CanvasGroup startOptionsCanvasGroup;
     [SerializeField] private CanvasGroup gameOverCanvasGroup;
     
     [SerializeField] private Script_SavedGameViewController savedGameController;
@@ -75,26 +77,53 @@ public class Script_StartOverviewController : Script_UIState
 
         introController.gameObject.SetActive(true);
         startScreenController.gameObject.SetActive(false);
+        
+        introCanvasGroup.gameObject.SetActive(true);
         introController.Play();
+    }
+
+    public void StartOptionsOpen(bool isOpen)
+    {
+        startOptionsCanvasGroup.gameObject.SetActive(isOpen);
     }
 
     // ----------------------------------------------------------------------
     // Timeline Signals
     
     // Signals the Start screen is up. Start Screen Controller should be disabled here.
+    // Called from timeline as the starting point upon skipping intro.
+    // Start options should be hidden until player presses Start command.
     public void StartScreenStart()
     {
         introController.DisableInput();
         startScreenCanvasGroup.gameObject.SetActive(true);
+        StartOptionsOpen(false);
+        
+        introCanvasGroup.gameObject.SetActive(false);
     }
 
     // Stops the intro timeline at the Start Screen.
     // Switches control to the Start Screen Controller.
+    // Timeline calls this after calling StartScreenStart.
     public void ActivateStartScreenController()
     {
         introController.gameObject.SetActive(false);
         startScreenController.gameObject.SetActive(true);
     }
+    
+    
+    // ----------------------------------------------------------------------
+    // Unity Events
+
+    // Start Options / Start Game
+    public void ToSavedGames()
+    {
+        state = UIState.Disabled;
+        Script_Start.Main.CrunchTransitionDown();
+
+        StartCoroutine(WaitToSavedGames());
+    }
+
     // ----------------------------------------------------------------------
 
     public void InitializeGameOverState()
@@ -166,15 +195,6 @@ public class Script_StartOverviewController : Script_UIState
             // switch when teeth are opening
             InitializeIntro();
         }
-    }
-
-    
-    public void ToSavedGames()
-    {
-        state = UIState.Disabled;
-        Script_Start.Main.CrunchTransitionDown();
-
-        StartCoroutine(WaitToSavedGames());
     }
 
     IEnumerator WaitToSavedGames()

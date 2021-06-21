@@ -12,6 +12,11 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
     // describes gameObject where we don't want to play SFX when coming from it
     public GameObject transition;
     public Transform noSFXTransitionParent;
+    
+    // Specify this parent to only make OnSelect SFX when coming from a child of it.
+    // Useful when don't want SFX on initialize.
+    [SerializeField] private Transform onlySFXTransitionParent;
+    
     [SerializeField] private Button button { get { return GetComponent<Button>(); } }
     private AudioSource source;
     
@@ -46,6 +51,22 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
                     return;
                 }
             }
+        }
+        
+        if (onlySFXTransitionParent != null)
+        {
+            bool isOutsideSFXParent = true;
+
+            foreach (Transform child in onlySFXTransitionParent)
+            {
+                if (child.gameObject == eventSystem.lastSelected){
+                    Debug.Log("Ignoring SelectSFX because coming from child not specified by onlySFXTransitionParent");
+                    isOutsideSFXParent = false;
+                }
+            }
+
+            if (isOutsideSFXParent)
+                return;
         }
 
         PlaySFX();

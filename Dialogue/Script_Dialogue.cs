@@ -33,21 +33,21 @@ public static class Script_Dialogue
             "intro_narrator_hotel",
             new Model_LanguagesUI
             {
-                EN = "I work at the front desk of a seaside hotel.| It's about a two hour drive from my hometown."
+                EN = "I work at the front desk of a seaside hotel| about a two hour drive from my hometown."
             }
         },
         {
             "intro_narrator_hotel1",
             new Model_LanguagesUI
             {
-                EN = "Fortunately, I can just use one of our empty rooms if I don't want to make the trip back though."
+                EN = "It's fine though.| I can use one of the empty rooms if I don't want to make the trip home."
             }
         },
         {
             "intro_narrator_hotel2",
             new Model_LanguagesUI
             {
-                EN = "It usually works out,| since it's pretty slow this winter season."
+                EN = "There's always a few empty rooms,| since it's pretty slow this winter season."
             }
         },
 
