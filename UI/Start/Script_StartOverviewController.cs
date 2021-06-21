@@ -68,7 +68,7 @@ public class Script_StartOverviewController : Script_UIState
     // Starts Intro Sequence.
     // Intro Timeline, Full Playthrough > StartScreenStart() > ActivateStartScreenController()
     // Intro Timeline, Skip Input > StartScreenStart() > ActivateStartScreenController()
-    public void InitializeIntro()
+    public void InitializeIntro(bool isSkip = false)
     {
         startScreenCanvasGroup.gameObject.SetActive(false);
         savedGameCanvasGroup.gameObject.SetActive(false);
@@ -79,6 +79,10 @@ public class Script_StartOverviewController : Script_UIState
         startScreenController.gameObject.SetActive(false);
         
         introCanvasGroup.gameObject.SetActive(true);
+        
+        if (isSkip)
+            introController.SkipToStartScreen();
+        
         introController.Play();
     }
 
@@ -122,6 +126,22 @@ public class Script_StartOverviewController : Script_UIState
         Script_Start.Main.CrunchTransitionDown();
 
         StartCoroutine(WaitToSavedGames());
+    }
+
+    // Back Button
+    public void ToStartScreen(bool isSkipIntro = false)
+    {
+        state = UIState.Disabled;
+        Script_Start.Main.CrunchTransitionDown();
+        
+        StartCoroutine(WaitToStartScreen());
+        IEnumerator WaitToStartScreen()
+        {
+            yield return new WaitForSeconds(crunchTimeDown);
+
+            // switch when teeth are opening
+            InitializeIntro(isSkipIntro);
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -178,22 +198,6 @@ public class Script_StartOverviewController : Script_UIState
             gameOverCanvasGroup.GetComponent<Script_GameOverParent>().Setup();
             activeDeathByScreen.gameObject.SetActive(true);
             gameOverCanvasGroup.gameObject.SetActive(true);
-        }
-    }
-    
-    /// Called from Game Over
-    public void ToStartScreen()
-    {
-        state = UIState.Disabled;
-        Script_Start.Main.CrunchTransitionDown();
-        
-        StartCoroutine(WaitToStartScreen());
-        IEnumerator WaitToStartScreen()
-        {
-            yield return new WaitForSeconds(crunchTimeDown);
-
-            // switch when teeth are opening
-            InitializeIntro();
         }
     }
 
