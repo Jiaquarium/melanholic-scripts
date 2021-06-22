@@ -10,7 +10,15 @@ public class Script_StartScreenController : MonoBehaviour
     [SerializeField] private float inactivityResetTime;
     [SerializeField] private float timer;
 
+    [SerializeField] private Script_CanvasGroupController titleCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController startOptionsCanvasGroup;
+    
+    // Seconds
+    [SerializeField] private float titleFadeInTime = 2f;
+
     [SerializeField] private Script_EventSystemLastSelected eventSystem;
+
+    [SerializeField] private Transform startScreen;
     
     void OnEnable()
     {
@@ -35,8 +43,24 @@ public class Script_StartScreenController : MonoBehaviour
         GetComponent<Script_StartScreenInputManager>().HandleEnterInput();
     }
 
+    public void FadeInTitle()
+    {
+        titleCanvasGroup.InitialState();
+        titleCanvasGroup.FadeIn(titleFadeInTime);
+    }
+    
     public void Initialize()
     {
         timer = inactivityResetTime;
+    }
+
+    public void Setup()
+    {
+        startScreen.gameObject.SetActive(false);
+        startOptionsCanvasGroup.Close();
+        
+        titleCanvasGroup.Setup();
+
+        eventSystem.gameObject.SetActive(false);
     }
 }

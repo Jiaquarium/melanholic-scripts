@@ -20,6 +20,7 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_SceneManager sceneManager;
     [SerializeField] private Script_TimelineController crunchTimelineCtrl;
 
+    [SerializeField] private Script_SFXManager SFXManager;
     
     private void Awake()
     {
@@ -34,6 +35,7 @@ public class Script_Start : MonoBehaviour
 
         savedGameTitleControl.Setup();
         sceneManager.Setup();
+        SFXManager.Setup();
 
         Script_SystemSettings.TargetFrameRate();
         // Script_SystemSettings.FullScreen();

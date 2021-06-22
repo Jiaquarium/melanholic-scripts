@@ -20,7 +20,8 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private CanvasGroup introCanvasGroup;
     [SerializeField] private CanvasGroup savedGameCanvasGroup;
     [SerializeField] private CanvasGroup startScreenCanvasGroup;
-    [SerializeField] private CanvasGroup startOptionsCanvasGroup;
+    [SerializeField] private EventSystem startScreenEventSystem;
+    [SerializeField] private Script_CanvasGroupController startOptionsCanvasGroup;
     [SerializeField] private CanvasGroup gameOverCanvasGroup;
     
     [SerializeField] private Script_SavedGameViewController savedGameController;
@@ -66,8 +67,9 @@ public class Script_StartOverviewController : Script_UIState
     }
 
     // Starts Intro Sequence.
-    // Intro Timeline, Full Playthrough > StartScreenStart() > ActivateStartScreenController()
-    // Intro Timeline, Skip Input > StartScreenStart() > ActivateStartScreenController()
+    // Intro Timeline, Full Playthrough > StartScreenStart() via Signal > ActivateStartScreenController() via Signal
+    // Intro Timeline, Skip Intro > StartScreenStart() via Signal > ActivateStartScreenController() via Signal
+    // From Back, Skip Intro > Manually call StartScreenStart > ActivateStartScreenController()
     public void InitializeIntro(bool isSkip = false)
     {
         startScreenCanvasGroup.gameObject.SetActive(false);
@@ -79,16 +81,24 @@ public class Script_StartOverviewController : Script_UIState
         startScreenController.gameObject.SetActive(false);
         
         introCanvasGroup.gameObject.SetActive(true);
+        introController.Play();
         
         if (isSkip)
+        {
             introController.SkipToStartScreen();
-        
-        introController.Play();
+
+            // Must manually call functions Timeline calls with Marker,
+            // since won't fire marker upon Back button press.
+            StartScreenStart();
+        }
     }
 
     public void StartOptionsOpen(bool isOpen)
     {
-        startOptionsCanvasGroup.gameObject.SetActive(isOpen);
+        if (isOpen)
+            startOptionsCanvasGroup.Open();
+        else
+            startOptionsCanvasGroup.Close();
     }
 
     // ----------------------------------------------------------------------
@@ -100,10 +110,14 @@ public class Script_StartOverviewController : Script_UIState
     public void StartScreenStart()
     {
         introController.DisableInput();
+        
         startScreenCanvasGroup.gameObject.SetActive(true);
+        startScreenEventSystem.gameObject.SetActive(true);
         StartOptionsOpen(false);
         
         introCanvasGroup.gameObject.SetActive(false);
+
+        startScreenController.FadeInTitle();
     }
 
     // Stops the intro timeline at the Start Screen.
@@ -128,7 +142,7 @@ public class Script_StartOverviewController : Script_UIState
         StartCoroutine(WaitToSavedGames());
     }
 
-    // Back Button
+    // Saved Games/Back Button
     public void ToStartScreen(bool isSkipIntro = false)
     {
         state = UIState.Disabled;
@@ -543,6 +557,6 @@ public class Script_StartOverviewController : Script_UIState
     public void Setup()
     {
         savedGameController.Setup();
-        // savedGameController.RehydrateState();
+        startScreenController.Setup();
     }
 }

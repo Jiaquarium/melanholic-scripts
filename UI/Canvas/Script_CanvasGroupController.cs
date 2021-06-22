@@ -81,11 +81,26 @@ public class Script_CanvasGroupController : MonoBehaviour
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         fader.Initialize();
+
+        isFadedIn = false;
+        isFadedOut = false;
+        
+        if (fadeInCoroutine != null)
+        {
+            StopCoroutine(fadeInCoroutine);
+            fadeInCoroutine = null;
+        }
+
+        if (fadeOutCoroutine != null)
+        {
+            StopCoroutine(fadeOutCoroutine);
+            fadeOutCoroutine = null;
+        }
     }
 
     public virtual void Setup()
     {
-
+        InitialState();
     } 
 }
 

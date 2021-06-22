@@ -119,6 +119,9 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip Freeze;
     [Range(0f, 1f)] public float FreezeVol;
+
+    public AudioClip Dawn;
+    [Range(0f, 1f)] public float DawnVol;
     
     public void PlayQuestProgress(Action cb = null)
     {
@@ -172,6 +175,11 @@ public class Script_SFXManager : MonoBehaviour
             yield return new WaitForSeconds(SFXduration);
             cb();
         }   
+    }
+
+    public void PlayDawn()
+    {
+        SFXSource.PlayOneShot(Dawn, DawnVol);    
     }
     
     public void Setup()
