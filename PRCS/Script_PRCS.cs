@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 /// <summary>
-/// Standardized Pre Rendered Cut Scenes
+/// Standardized Pre Rendered Cut Scenes. To interact to Player input on PRCS.
 /// 
 /// Use these in conjunction with Timeline to allow for Done conditions.
 /// </summary>

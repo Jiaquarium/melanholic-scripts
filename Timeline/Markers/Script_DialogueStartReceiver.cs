@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+/// <summary>
+/// Use with DialogueStartMarker for Dialogue Nodes in between cut scenes.
+/// </summary>
 public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
 {
     [SerializeField] private Script_DialogueNode[] nodes;

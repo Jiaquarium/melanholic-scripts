@@ -242,7 +242,14 @@ public class Script_TransitionManager : MonoBehaviour
     // After played proper ending cut scene.
     public void RollCredits()
     {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
+        StartCoroutine(NextFrameCredits());
+        
+        IEnumerator NextFrameCredits()
+        {
+            yield return null;
+            
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
+        }
     }
 
     // ------------------------------------------------------------------

@@ -29,6 +29,8 @@ public static class Script_Dialogue
 {
     public static Dictionary<string, Model_LanguagesUI> Text = new Dictionary<string, Model_LanguagesUI>
     {
+        // ------------------------------------------------------------------
+        // Intro
         {
             "intro_narrator_hotel",
             new Model_LanguagesUI
@@ -79,7 +81,46 @@ public static class Script_Dialogue
             {
                 EN = "I work the night shift."
             }
-        }
+        },
+        // ------------------------------------------------------------------
+        // Good Ending
+        {
+            "good-ending_narrator_monologue",
+            new Model_LanguagesUI
+            {
+                EN = "After that day, I never saw {37} ever again."
+            }
+        },
+        {
+            "good-ending_narrator_monologue1",
+            new Model_LanguagesUI
+            {
+                EN = "Every now and then I still think back about all that happened there."
+            }
+        },
+        
+        {
+            "good-ending_narrator_monologue2",
+            new Model_LanguagesUI
+            {
+                EN = "But with each passing moment..."
+            }
+        },
+        {
+            "good-ending_narrator_monologue3",
+            new Model_LanguagesUI
+            {
+                EN = "The memory fades a bit more."
+            }
+        },
+
+        {
+            "good-ending_narrator_monologue4",
+            new Model_LanguagesUI
+            {
+                EN = "I'd like to think my time inside there was worth it."
+            }
+        },
     };
     
     public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<string, Model_Languages>
