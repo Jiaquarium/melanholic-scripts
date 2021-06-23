@@ -291,6 +291,14 @@ public class Script_LevelBehavior_32Tester : Editor
 
             Debug.Log($"------------ Result: {result} ------------");
         }
+
+        GUILayout.Space(8);
+
+        if (GUILayout.Button("Good Ending"))
+        {
+            Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.Good;
+            t.EndingCutScene();
+        }
     }
 }
 #endif

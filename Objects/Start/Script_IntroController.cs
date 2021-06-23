@@ -9,11 +9,9 @@ using UnityEngine.Playables;
 /// 
 /// On Key Press will skip to the end of the end and activate Start Menu.
 /// </summary>
-public class Script_IntroController : MonoBehaviour
+public class Script_IntroController : Script_TimelineSequenceController
 {
     [SerializeField] private float startScreenFrame;
-
-    [SerializeField] private PlayableDirector introDirector;
 
     [SerializeField] private Script_IntroInputManager inputManager;
 
@@ -26,22 +24,12 @@ public class Script_IntroController : MonoBehaviour
     {
         inputManager.HandleEnterInput();
     }
-    
-    public void Play()
-    {
-        introDirector.Play();
-    }
-
-    public void Pause()
-    {
-        introDirector.Pause();
-    }
 
     // Skip to frame where Start Screen starts. Timeline will then initialize Start Screen via Signals.
     public void SkipToStartScreen()
     {
-        introDirector.time = startScreenFrame / ((TimelineAsset)introDirector.playableAsset).editorSettings.fps;
-        introDirector.Evaluate();
+        director.time = startScreenFrame / ((TimelineAsset)director.playableAsset).editorSettings.fps;
+        director.Evaluate();
     }
 
     public void DisableInput()
