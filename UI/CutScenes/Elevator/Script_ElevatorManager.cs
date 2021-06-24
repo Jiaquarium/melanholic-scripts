@@ -123,6 +123,8 @@ public class Script_ElevatorManager : MonoBehaviour
         {
             Script_Game.Game.ChangeStateInteract();
         }
+
+        Script_BackgroundMusicManager.Control.FadeInMed();
     }
 
     /// Signal Reactions END ========================================================================

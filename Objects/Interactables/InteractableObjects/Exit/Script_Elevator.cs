@@ -58,6 +58,8 @@ public class Script_Elevator : Script_InteractableObjectExit
             /// Elevator in World Opens -> OnElevatorDoorsOpened()
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
             SetClosedState(false);
+
+            Script_BackgroundMusicManager.Control.FadeOutMed();
         }
     }
 
