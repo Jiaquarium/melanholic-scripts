@@ -82,6 +82,7 @@ public static class Script_Dialogue
                 EN = "I work the night shift."
             }
         },
+        
         // ------------------------------------------------------------------
         // Good Ending
         {
@@ -95,7 +96,7 @@ public static class Script_Dialogue
             "good-ending_narrator_monologue1",
             new Model_LanguagesUI
             {
-                EN = "Every now and then I still think back about all that happened there."
+                EN = "I often still think back about what happened there."
             }
         },
         
@@ -119,6 +120,54 @@ public static class Script_Dialogue
             new Model_LanguagesUI
             {
                 EN = "I'd like to think my time inside there was worth it."
+            }
+        },
+        
+        // ------------------------------------------------------------------
+        // True Ending
+        {
+            "true-ending_narrator_monologue",
+            new Model_LanguagesUI
+            {
+                EN = "After that day, I quit my job at the seaside hotel."
+            }
+        },
+        {
+            "true-ending_narrator_monologue1",
+            new Model_LanguagesUI
+            {
+                EN = "Needless to say, I never saw {37} ever again."
+            }
+        },
+        
+        {
+            "true-ending_narrator_monologue2",
+            new Model_LanguagesUI
+            {
+                EN = "It's been a few years now..."
+            }
+        },
+        {
+            "true-ending_narrator_monologue3",
+            new Model_LanguagesUI
+            {
+                EN = "But I know I'll never forget what I saw there."
+            }
+        },
+        
+        {
+            "true-ending_narrator_monologue4",
+            new Model_LanguagesUI
+            {
+                EN = "I'm confident that now I can say..."
+            }
+        },
+
+        {
+            "true-ending_narrator_monologue5",
+            new Model_LanguagesUI
+            {
+                EN = "We saved {18}."
             }
         },
     };

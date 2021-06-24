@@ -299,6 +299,12 @@ public class Script_LevelBehavior_32Tester : Editor
             Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.Good;
             t.EndingCutScene();
         }
+
+        if (GUILayout.Button("True Ending"))
+        {
+            Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.True;
+            t.EndingCutScene();
+        }
     }
 }
 #endif
