@@ -9,8 +9,9 @@ public class Script_Elevator : Script_InteractableObjectExit
 {
     public enum Types
     {
-        Default = 0,
-        Last    = 1,
+        Default     = 0,
+        Last        = 1,
+        GrandMirror = 2,
     }
     public static string IsClosed                   = "IsClosed";
     public static string CloseTrigger               = "Close";
@@ -24,6 +25,7 @@ public class Script_Elevator : Script_InteractableObjectExit
     public Types Type
     {
         get => type;
+        set => type = value;
     }
 
     protected override void OnEnable()
@@ -125,7 +127,22 @@ public class Script_Elevator : Script_InteractableObjectExit
             yield return new WaitForSeconds(preDoorCloseWaitTime);
 
             /// Call manager to handle Canvas UI
-            game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior, Type);
+            switch (type)
+            {
+                case (Script_Elevator.Types.Default):
+                    game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior, Type);
+                    break;
+                case (Script_Elevator.Types.Last):
+                    game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior, Type);
+                    break;
+                case (Script_Elevator.Types.GrandMirror):
+                    // Manager contains Grand Mirror info.
+                    game.ElevatorCloseDoorsCutScene(null, null, Type);
+                    break;
+                default:
+                    game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior, Type);
+                    break;
+            }
         }    
     }
 }

@@ -17,6 +17,8 @@ public class Script_ElevatorManager : MonoBehaviour
 
     [SerializeField] private Model_Exit currentExitData;
 
+    [SerializeField] private Script_ExitMetadataObject grandMirrorEntrance;
+
     
     /// <summary>
     /// UI Closes Elevator Doors
@@ -32,9 +34,10 @@ public class Script_ElevatorManager : MonoBehaviour
         Script_Exits.ExitType? exitTypeOverride = null
     )
     {
-        currentExitData = exitOverrideData ?? exit.data;
+        // For Last Elevator Sticker.
+        currentExitData = exitOverrideData ?? exit?.data;
         if (exitTypeOverride != null)   exitType = (Script_Exits.ExitType)exitTypeOverride;
-
+        
         currentExitBehavior = exitBehavior;
         elevatorCanvasGroupController.Open();
         
@@ -45,6 +48,12 @@ public class Script_ElevatorManager : MonoBehaviour
                 break;
             case (Script_Elevator.Types.Last):
                 elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 1);
+                break;
+            case (Script_Elevator.Types.GrandMirror):
+                // Send Player to Grand Mirror room.
+                currentExitData = grandMirrorEntrance.data;
+                
+                elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 2);
                 break;
         }
     }

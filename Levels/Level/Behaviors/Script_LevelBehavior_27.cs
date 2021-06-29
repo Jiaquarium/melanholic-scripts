@@ -18,10 +18,12 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
 
     [SerializeField] private Transform exitParent;
     [SerializeField] private Script_Elevator elevator; /// Ref'ed by ElevatorManager
+    
     [SerializeField] private Script_StickerObject PsychicDuck;
+    
     [SerializeField] private Script_TimelineController IdsTimelineController;
     [SerializeField] private Transform Ids;
-    [SerializeField] private Transform GrandMirrorPaintingEntrance;
+    
     private bool isInit = true;
 
     public bool GotPsychicDuck
@@ -55,14 +57,12 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     {
         if (game.IsGrandMirrorSetup())
         {
-            // switch out elevator for Grand Mirror
-            GrandMirrorPaintingEntrance.gameObject.SetActive(true);
-            exitParent.gameObject.SetActive(false);
+            // Notify Elevator to go to Grand Mirror Room
+            elevator.Type = Script_Elevator.Types.GrandMirror;
         }
         else
         {
-            GrandMirrorPaintingEntrance.gameObject.SetActive(false);
-            exitParent.gameObject.SetActive(true);
+            elevator.Type = Script_Elevator.Types.Last;
         }
     }
 
