@@ -132,6 +132,11 @@ public class Script_DialogueManager : MonoBehaviour
     private bool shouldCantUnderstandReaction;
     private bool didCantUnderstandReactionDone;
     [SerializeField] private float beforeCantUnderstandReactionWaitTime;
+    
+    // ------------------------------------------------------------------
+    // Sticker Reactions
+    [SerializeField] private Script_DialogueNode disabledMelancholyPianoReactionNode;
+
     // ------------------------------------------------------------------
 
     private States State
@@ -154,6 +159,42 @@ public class Script_DialogueManager : MonoBehaviour
             game.HandleDialogueNodeUpdateAction(currentNode.data.updateAction);
         }
     }
+    
+    // ------------------------------------------------------------------
+    // Player Dialogue Reactions
+    public void DisabledMelancholyPianoReaction()
+    {
+        StartDialogueNode(disabledMelancholyPianoReactionNode, SFXOn: false);   
+    }
+    
+    // If another cut scene or dialogue is planned after, skip this interaction.
+    private IEnumerator WaitToTryCantUnderstandDialogue(Script_DialogueNode prevNode)
+    {
+        // Manually prevent HUD from fading back in.
+        Script_HUDManager.Control.IsPaused = true;
+        yield return null;
+
+        if (
+            // Ensure we didn't enter a new cut scene.
+            Script_Game.Game.state == Const_States_Game.Interact
+            && Script_Game.Game.GetPlayer().State == Const_States_Player.Interact
+            // Ensure a new dialogue didn't already start.
+            && currentNode == prevNode
+        )
+        {
+            Script_Game.Game.GetPlayer().SetIsTalking();
+            game.ChangeStateCutScene();
+            
+            yield return new WaitForSeconds(beforeCantUnderstandReactionWaitTime);
+
+            StartDialogueNode(cantUnderstandReactionNode, SFXOn: false);
+            didCantUnderstandReactionDone = true;
+        }
+        
+        Script_HUDManager.Control.IsPaused = false;
+    }
+
+    // ------------------------------------------------------------------
     
     public bool IsActive()
     {
@@ -848,33 +889,6 @@ public class Script_DialogueManager : MonoBehaviour
                 StartCoroutine(WaitToTryCantUnderstandDialogue(currentNode));
                 shouldCantUnderstandReaction = false;
             }
-        }
-
-        // If another cut scene or dialogue is planned after, skip this interaction.
-        IEnumerator WaitToTryCantUnderstandDialogue(Script_DialogueNode prevNode)
-        {
-            // Manually prevent HUD from fading back in.
-            Script_HUDManager.Control.IsPaused = true;
-            yield return null;
-
-            if (
-                // Ensure we didn't enter a new cut scene.
-                Script_Game.Game.state == Const_States_Game.Interact
-                && Script_Game.Game.GetPlayer().State == Const_States_Player.Interact
-                // Ensure a new dialogue didn't already start.
-                && currentNode == prevNode
-            )
-            {
-                Script_Game.Game.GetPlayer().SetIsTalking();
-                game.ChangeStateCutScene();
-                
-                yield return new WaitForSeconds(beforeCantUnderstandReactionWaitTime);
-
-                StartDialogueNode(cantUnderstandReactionNode, SFXOn: false);
-                didCantUnderstandReactionDone = true;
-            }
-            
-            Script_HUDManager.Control.IsPaused = false;
         }
     }
 

@@ -574,6 +574,21 @@ public class Script_Game : MonoBehaviour
         state = Const_States_Game.Interact;
     }
 
+    public void NextFrameChangeStateInteract()
+    {
+        StartCoroutine(WaitToChangeState());
+        
+        IEnumerator WaitToChangeState()
+        {
+            yield return null;
+            
+            Debug.Log($"NEXT FRAME Game.state changed to: {Const_States_Game.Interact}; Game.lastState before this = {lastState}");
+            
+            lastState = state;
+            state = Const_States_Game.Interact;
+        }
+    }
+
     public void ChangeStateToInventory()
     {
         Debug.Log($"Game.state changed to: {Const_States_Game.Inventory}; Game.lastState before this = {lastState}");

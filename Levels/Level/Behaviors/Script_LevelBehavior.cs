@@ -9,8 +9,11 @@ using UnityEngine.Playables;
 public class Script_LevelBehavior : MonoBehaviour
 {
     public Script_Game game;
+    
     [SerializeField] private Script_Snow snowEffect;
     [SerializeField] private Script_VCamera levelVCam;
+
+    public bool IsMelancholyPianoDisabled { get; set; }
 
     public Script_VCamera LevelVCam
     {

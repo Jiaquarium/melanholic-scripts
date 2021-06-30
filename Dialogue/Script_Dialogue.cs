@@ -434,5 +434,16 @@ public static class Script_Dialogue
                 }
             }
         },
+
+        {
+            "sticker-reaction_player_disabled-melancholy-piano",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "The Piano chords echoed...| but nothing happened...",
+                }
+            }
+        },
     };
 }
