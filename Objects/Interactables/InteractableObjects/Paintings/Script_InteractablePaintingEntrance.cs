@@ -9,12 +9,15 @@ using UnityEditor;
 public class Script_InteractablePaintingEntrance : Script_QuestPainting
 {
     static readonly private string BoarNeedle = Const_Items.BoarNeedleId; 
-    static readonly private float BoarNeedleWaitTime = 0.5f; 
+    static readonly private float BoarNeedleWaitTime = 0.5f;
+
+    static readonly private string IsActive = "IsActive";
     
     [SerializeField] private Script_ExitMetadataObject exit;
     public Script_DialogueNode[] paintingDialogueNodes;
     
     [SerializeField] private SpriteRenderer paintingGraphics;
+    [SerializeField] private Animator animator;
     [SerializeField] private Sprite activeSprite;
     [SerializeField] private Sprite disabledSprite;
 
@@ -139,12 +142,18 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         {
             case (States.Active):
                 if (paintingGraphics != null && activeSprite != null)
+                {
                     paintingGraphics.sprite = activeSprite;
+                    animator?.SetBool(IsActive, true);
+                }
                 break;
             
             case (States.Disabled):
                 if (paintingGraphics != null && disabledSprite != null)
+                {
                     paintingGraphics.sprite = disabledSprite;
+                    animator?.SetBool(IsActive, false);
+                }
                 break;
         }
     }

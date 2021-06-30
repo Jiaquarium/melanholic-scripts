@@ -17,6 +17,8 @@ public class Script_LastElevatorEffect : Script_StickerEffect
     public override void Effect()
     {
         Script_Game game = Script_Game.Game;
+
+        game.ChangeStateCutScene();
         
         // Check Game if this is used in Mynes Grand Mirror where we need to switch to the Weekend Cycle.
         if (game.IsLastElevatorSaveAndStartWeekendCycle())

@@ -372,9 +372,17 @@ public static class Script_Dialogue
             {
                 speaker = "{10}",
                 EN = new string[]{
-                    "......",
-                    "Because you are trusted, you will be given responsibility.",
-                    "Do you accept it?",
+                    "You've come to visit me all the way down here?| How very nice of you.",
+                    "It seems you are proving your worth, my dear.",
+                    "And as a result, I'm beginning to trust you.|.|.| So I'm here to give you some greater responsibilities.",
+                    "Do you accept?",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true }
                 }
             }
         },
@@ -385,8 +393,14 @@ public static class Script_Dialogue
                 speaker = "{10}",
                 EN = new string[]{
                     "Very well then, my dear, heh heh.",
+                    "Allow me to demonstrate.",
                 },
-                choiceText = "Yes"
+                choiceText = "Yes",
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }
             }
         },
         {
@@ -396,9 +410,16 @@ public static class Script_Dialogue
                 speaker = "{10}",
                 EN = new string[]{
                     "Well that’s just too bad, my dear, heh heh.",
-                    "Because this responsibility is yours whether you like it or not."
+                    "Because it's the only way you can get out from down here...",
+                    "Now allow me to demonstrate.",
                 },
-                choiceText = "No"
+                choiceText = "No",
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }
             }
         },
         {
@@ -407,7 +428,11 @@ public static class Script_Dialogue
             {
                 speaker = "{10}",
                 EN = new string[]{
-                    "But also...",
+                    "Also...| You'll be needing this for the rest of your journey| in case you ever get| <b>l|o|s|t|</b>.",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
                 }
             }
         },
@@ -417,7 +442,13 @@ public static class Script_Dialogue
             {
                 speaker = "{10}",
                 EN = new string[]{
-                    "Like I said you are trusted so you are given responsibility.",
+                    "Why am I being so nice to you?| Well it's simple, my dear.| You might be of some use to me.",
+                    "Bye now.",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
                 }
             }
         },
