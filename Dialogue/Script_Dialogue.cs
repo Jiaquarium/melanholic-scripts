@@ -445,5 +445,18 @@ public static class Script_Dialogue
                 }
             }
         },
+
+        // ------------------------------------------------------------------
+        // Items
+        {
+            "item_sticker_last-elevator",
+            new Model_Languages
+            {
+                speaker = "",
+                EN = new string[]{
+                    "<b>If you ever get lost</b>, the @@LastElevator sticker can be used anywhere inside {18} to take the {66} back to the {72}.",
+                }
+            }
+        },
     };
 }

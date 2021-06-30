@@ -416,9 +416,8 @@ public class Script_DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ensures the choices also need player input
+    /// Ensures the choices also need player input.
     /// </summary>
-    /// <returns></returns>
     bool CheckChoices()
     {
         if (
@@ -664,7 +663,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
         else if (currentNode is Script_DialogueNode_PaintingEntrance)
         {
-            /// 1 child means it is a prompt before the final painting entrance question
+            // 1 child means it is a prompt before the final painting entrance question
             if (currentNode.data.children.Length > 1)
             {
                 paintingEntranceManager.StartPaintingEntrancePromptMode();
@@ -839,7 +838,7 @@ public class Script_DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// function when ACTUALLY ENDING dialogue (e.g. no more nodes )
+    /// function when ACTUALLY ENDING dialogue (e.g. no more nodes)
     /// NOTE: an event could trigger another dialogue start though
     /// </summary>
     public void HandleEndDialogue()

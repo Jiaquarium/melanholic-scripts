@@ -16,6 +16,6 @@ MonoBehaviour:
   focusedSprite: {fileID: 5821263585957794077, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: -5990679910767757089, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: can be used anywhere inside {18} to take the {66} back to the {72}.
+  description: Can be used anywhere inside {18} to take the {66} back to the {72}.
   isDroppable: 0
   _isSpecial: 0

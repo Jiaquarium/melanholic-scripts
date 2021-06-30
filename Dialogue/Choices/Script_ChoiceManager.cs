@@ -53,10 +53,18 @@ public class Script_ChoiceManager : MonoBehaviour
         activeCanvas.gameObject.SetActive(true);
     }
 
+    // Must wait for next frame or could reinteract with interactable (e.g. interactable text).
     public void InputChoice(int Id)
     {
-        EndChoiceMode();
-        dialogueManager.NextDialogueNode(Id);
+        StartCoroutine(WaitEndChoices());
+
+        IEnumerator WaitEndChoices()
+        {
+            yield return null;
+            
+            EndChoiceMode();
+            dialogueManager.NextDialogueNode(Id);
+        }
     }
 
     void EndChoiceMode()

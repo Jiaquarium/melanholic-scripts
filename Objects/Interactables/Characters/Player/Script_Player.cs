@@ -143,6 +143,19 @@ public class Script_Player : Script_Character
         Debug.Log($"Player state set to {state}!");
     }
 
+    public void EndOfFrameSetIsInteract()
+    {
+        StartCoroutine(WaitSetIsInteract());
+        
+        IEnumerator WaitSetIsInteract()
+        {
+            yield return new WaitForEndOfFrame();
+
+            SetState(Const_States_Player.Interact);
+            Debug.Log($"Player state set to {state}!");
+        }
+    }
+
     public void SetIsTalking()
     {
         SetState(Const_States_Player.Dialogue);
