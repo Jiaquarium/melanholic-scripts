@@ -469,10 +469,9 @@ public class Script_PlayerMovement : MonoBehaviour
         game = _game;
         player = GetComponent<Script_Player>();
         
+        // Setup ghost for smooth movement (allows cancellation of mid-animation)
         spriteRenderer = (SpriteRenderer)player.graphics;
         spriteRenderer.enabled = false;
-
-        // setup ghost for smooth movement (allows cancellation of mid-animation)
         playerGhost = CreatePlayerGhost(isLightOn);
         playerGhost.Setup(player);
         playerGhost.transform.SetParent(game.playerContainer, false);

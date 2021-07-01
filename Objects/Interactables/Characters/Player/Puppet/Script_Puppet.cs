@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Script_Puppet : Script_PlayerCopy
 {
     protected enum PuppetStates
@@ -16,7 +20,7 @@ public class Script_Puppet : Script_PlayerCopy
     // The new animator controller to swap when the puppet is active.
     [SerializeField] private RuntimeAnimatorController activatedAnimatorController;
     
-    private RuntimeAnimatorController inactiveAnimatorController;
+    [SerializeField] private RuntimeAnimatorController inactiveAnimatorController;
 
     void OnEnable()
     {
@@ -41,6 +45,8 @@ public class Script_Puppet : Script_PlayerCopy
     {
         Debug.Log($"My animator: {MyAnimator}");
         inactiveAnimatorController = MyAnimator.runtimeAnimatorController as RuntimeAnimatorController;
+        
+        SetAnimatorControllerActive(false);
     }
     
     protected override void Update()
@@ -67,16 +73,27 @@ public class Script_Puppet : Script_PlayerCopy
         }
     }
 
+    // Swaps the animator controller for specified one when active as a puppet.
     public void SetAnimatorControllerActive(bool isActive)
     {
         if (isActive)
         {
             if (activatedAnimatorController != null)
+            {
                 MyAnimator.runtimeAnimatorController = activatedAnimatorController;
+                playerMovementHandler.PlayerGhost.MyAnimator.runtimeAnimatorController = activatedAnimatorController;
+                
+                MyAnimator.AnimatorSetDirection(FacingDirection);
+                playerMovementHandler.PlayerGhost.MyAnimator.AnimatorSetDirection(FacingDirection);
+            }
         }
         else
         {
             MyAnimator.runtimeAnimatorController = inactiveAnimatorController;
+            playerMovementHandler.PlayerGhost.MyAnimator.runtimeAnimatorController = inactiveAnimatorController;
+
+            MyAnimator.AnimatorSetDirection(FacingDirection);
+            playerMovementHandler.PlayerGhost.MyAnimator.AnimatorSetDirection(FacingDirection);
         }
     }
 
@@ -102,3 +119,23 @@ public class Script_Puppet : Script_PlayerCopy
         SetAnimatorControllerActive(false);
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_Puppet))]
+public class Script_PuppetTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_Puppet t = (Script_Puppet)target;
+        if (GUILayout.Button("Switch to Active Animator"))
+        {
+            t.SetAnimatorControllerActive(true);
+        }
+        if (GUILayout.Button("Switch to Inactive Animator"))
+        {
+            t.SetAnimatorControllerActive(false);
+        }
+    }
+}
+#endif

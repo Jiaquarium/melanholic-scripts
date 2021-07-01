@@ -229,7 +229,7 @@ public class Script_Player : Script_Character
     protected void StopMovingAnimations()
     {
         MyAnimator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
-        playerMovementHandler.PlayerGhost.StopMoveAnimation();    
+        playerMovementHandler.PlayerGhost.StopMoveAnimation();
     }
 
     // ------------------------------------------------------------------

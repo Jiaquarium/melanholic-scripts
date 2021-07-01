@@ -32,6 +32,12 @@ public class Script_PlayerGhost : MonoBehaviour
         get => playerGhostGraphics;
     }
 
+    public Animator MyAnimator
+    {
+        get => animator;
+        set => animator = value;
+    }
+
     private Script_Player Player
     {
         get => player;

@@ -108,7 +108,7 @@ public static class Script_Utils
         return v;
     }
 
-    public static void AnimatorSetDirection(Animator animator, Directions dir)
+    public static void AnimatorSetDirection(this Animator animator, Directions dir)
     {
         if (dir == Directions.Up)
         {

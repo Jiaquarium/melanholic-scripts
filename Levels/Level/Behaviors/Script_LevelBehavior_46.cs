@@ -159,6 +159,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         if (other.GetComponent<Script_Puppet>() == puppet)
         {
             game.ChangeStateCutScene();
+            puppet.SetAnimatorControllerActive(false);
+            
             Script_DialogueManager.DialogueManager.StartDialogueNode(LatteBlockedNode);
             
             puppeteerVCam = Script_VCamManager.ActiveVCamera;
@@ -169,6 +171,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         else if (other.GetComponent<Script_Puppet>() == puppetMaster)
         {
             game.ChangeStateCutScene();
+            puppetMaster.SetAnimatorControllerActive(false);
+            
             Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeBlockedNode);
             
             puppeteerVCam = Script_VCamManager.ActiveVCamera;
@@ -181,6 +185,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     public void OnBlockedCutSceneDone()
     {
         game.ChangeStateInteract();
+        puppet.SetAnimatorControllerActive(true);
+        puppetMaster.SetAnimatorControllerActive(true);
 
         Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, puppeteerVCam);
         puppeteerVCam = null;
