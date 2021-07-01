@@ -142,8 +142,12 @@ public class Script_PlayerMovement : MonoBehaviour
     }
 
     // Handle the animation of ghost following this pointer.
-    public void HandleGhostTransform()
+    public void HandleGhostTransform(bool isForceTimerUpdate = false)
     {
+        // Manually reduce timer for non-moving game states where the timer is paused.
+        if (isForceTimerUpdate)
+            timer = Mathf.Max(0f, timer - Time.deltaTime);
+
         playerGhost.Move(Progress);
     }
 

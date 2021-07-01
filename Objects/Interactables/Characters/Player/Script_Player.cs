@@ -98,7 +98,7 @@ public class Script_Player : Script_Character
                 StopMovingAnimations();
                 
                 // Finish up Ghost Follow on nonmoving states.
-                playerMovementHandler.HandleGhostTransform();
+                playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
             }
             else
             {
@@ -117,7 +117,7 @@ public class Script_Player : Script_Character
             else
             {
                 StopMovingAnimations();
-                playerMovementHandler.HandleGhostTransform();
+                playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
             }
         }
     }

@@ -61,6 +61,9 @@ public class Script_Puppet : Script_PlayerCopy
             if (IsNotMovingState())
             {
                 StopMovingAnimations();
+
+                // Finish up Ghost Follow on nonmoving states.
+                playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
             }
             else
             {
@@ -70,6 +73,7 @@ public class Script_Puppet : Script_PlayerCopy
         else
         {
             StopMovingAnimations();
+            playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
         }
     }
 
