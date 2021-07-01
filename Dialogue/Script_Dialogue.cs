@@ -175,6 +175,43 @@ public static class Script_Dialogue
     public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<string, Model_Languages>
     {
         // ------------------------------------------------------------------
+        // Player
+        {
+            "any_player_first-psychic",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "Strange, I can't understand what they're saying.",
+                }
+            }
+        },
+
+        {
+            "sticker-reaction_player_disabled-melancholy-piano",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "The Piano chords echoed...| but nothing happened...",
+                }
+            }
+        },
+
+        // ------------------------------------------------------------------
+        // Items
+        {
+            "item_sticker_last-elevator",
+            new Model_Languages
+            {
+                speaker = "",
+                EN = new string[]{
+                    "<b>If you ever get lost</b>, the @@LastElevator sticker can be used anywhere inside {18} to take the {66} back to the {72}.",
+                }
+            }
+        },
+        
+        // ------------------------------------------------------------------
         // Hotel
         {
             "hotel-lobby_player_nautical-dawn",
@@ -347,7 +384,6 @@ public static class Script_Dialogue
             }
         },
 
-
         // ------------------------------------------------------------------
         // Parlor (Dining)
         {
@@ -454,40 +490,16 @@ public static class Script_Dialogue
         },
 
         // ------------------------------------------------------------------
-        // Player
+        // Celestial Gardens
         {
-            "any_player_first-psychic",
+            "celestial-gardens_garden-labyrinth_puppets",
             new Model_Languages
             {
-                speaker = "{0}",
+                speaker = "{10}",
                 EN = new string[]{
-                    "Strange, I can't understand what they're saying.",
+                    "Hand puppets...| This room actually reminds me a bit of a theatre stage.",
                 }
             }
-        },
-
-        {
-            "sticker-reaction_player_disabled-melancholy-piano",
-            new Model_Languages
-            {
-                speaker = "{0}",
-                EN = new string[]{
-                    "The Piano chords echoed...| but nothing happened...",
-                }
-            }
-        },
-
-        // ------------------------------------------------------------------
-        // Items
-        {
-            "item_sticker_last-elevator",
-            new Model_Languages
-            {
-                speaker = "",
-                EN = new string[]{
-                    "<b>If you ever get lost</b>, the @@LastElevator sticker can be used anywhere inside {18} to take the {66} back to the {72}.",
-                }
-            }
-        },
+        },       
     };
 }

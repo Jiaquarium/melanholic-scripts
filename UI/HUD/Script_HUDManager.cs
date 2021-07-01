@@ -16,6 +16,7 @@ public class Script_HUDManager : MonoBehaviour
     
     [SerializeField] private FadeSpeeds fadeSpeed;
     
+    [SerializeField] private Script_ClockManager clockManager;
     [SerializeField] private Script_Game game;
     
     private bool isPaused;
@@ -33,13 +34,19 @@ public class Script_HUDManager : MonoBehaviour
         
         if (
             game.state == Const_States_Game.Interact
-            && game.GetPlayer().State == Const_States_Player.Interact
+            && (
+                game.GetPlayer().State == Const_States_Player.Interact
+                // Also allow time to run during Puppeteering for time pressure.
+                || game.GetPlayer().State == Const_States_Player.Puppeteer
+            )
         )
         {
+            clockManager.ClockState = Script_Clock.States.Active;
             timeCanvasGroup.FadeIn(fadeSpeed.ToFadeTime(), null);
         }
         else
         {
+            clockManager.ClockState = Script_Clock.States.Paused;
             timeCanvasGroup.FadeOut(fadeSpeed.ToFadeTime(), null);
         }
     }

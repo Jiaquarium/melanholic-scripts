@@ -31,6 +31,12 @@ public class Script_ClockManager : MonoBehaviour
         get => clock.TimeState;
     }
 
+    public Script_Clock.States ClockState
+    {
+        get => clock.State;
+        set => clock.State = value;
+    }
+
     void Update()
     {
         if (clock.State == Script_Clock.States.Done && !didFireDoneEvent)
