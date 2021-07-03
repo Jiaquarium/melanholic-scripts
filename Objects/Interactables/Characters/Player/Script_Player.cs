@@ -16,7 +16,7 @@ public class Script_Player : Script_Character
     
     protected Script_PlayerAction playerActionHandler;
     private Script_PlayerThoughtManager playerThoughtManager;
-    private Script_PlayerEffect playerEffect;
+    [SerializeField] private Script_PlayerEffect playerEffect;
     public Script_InteractionBoxController interactionBoxController { get; private set; }
 
     [SerializeField] private Script_PlayerGraphics playerGraphics;
@@ -355,6 +355,11 @@ public class Script_Player : Script_Character
         pg.PlayerGhostGraphics.SetHidden(isEating);
     }
 
+    public void SetBuffEffectActive(bool isActive)
+    {
+        playerEffect.SetBuffEffectActive(isActive);
+    }
+
     // ------------------------------------------------------------------
     // Interactions
 
@@ -524,6 +529,11 @@ public class Script_PlayerTester : Editor
             
             player.Teleport(newPos);
         }
+
+        if (GUILayout.Button("Buff Effect"))
+        {
+            player.SetBuffEffectActive(true);
+        }   
     }
 }
 #endif

@@ -45,6 +45,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     [SerializeField] private Script_VCamera puppeteerVCam;
     
     [SerializeField] private Script_Game game;
+
+    private Script_TimelineController timelineController;
     
     public bool IsDone
     {
@@ -69,6 +71,11 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         Script_PlayerEventsManager.OnPuppeteerDeactivate    -= OnPuppeteerDeactivate;
     }
 
+    void Awake()
+    {
+        timelineController = GetComponent<Script_TimelineController>();
+    }
+
     
     void Update()
     {
@@ -86,9 +93,15 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         isDone = true;
     }
 
+    // Timeline to call OnPuppeteerActivateTimelineDone
     private void OnPuppeteerActivate()
     {
-        if (!isDone)    Script_VCamManager.VCamMain.SetNewVCam(puppeteerVCam);
+        if (!isDone)
+        {
+            game.ChangeStateCutScene();
+            timelineController.PlayableDirectorPlayFromTimelines(0, 4);
+            Script_VCamManager.VCamMain.SetNewVCam(puppeteerVCam);
+        }
     }
 
     private void OnPuppeteerDeactivate()
@@ -148,8 +161,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     {
         yield return new WaitForSeconds(WaitToPuzzleTransformTime);
         
-        var timelineController = GetComponent<Script_TimelineController>();
-
         var director = timelineController.PlayableDirectorPlayFromTimelines(0, timelineIdx);
 
         if (isInitialize)
@@ -170,6 +181,16 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     {
         Debug.Log("ON PUZZLE TRANSFORM DONE CALLED ON TIMELINE END!!!!!!!");
 
+        game.ChangeStateInteract();
+    }
+
+    public void PuppeteerActivateTimelinePlayerBuff()
+    {
+        Script_Game.Game.GetPlayer().SetBuffEffectActive(true);
+    }
+    
+    public void OnPuppeteerActivateTimelineDone()
+    {
         game.ChangeStateInteract();
     }
     // ------------------------------------------------------------------

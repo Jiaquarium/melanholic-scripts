@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Playables;
 
 public class Script_PlayerEffect : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class Script_PlayerEffect : MonoBehaviour
     [SerializeField] private AudioSource defaultSFXsource;
     [SerializeField] private AudioSource dropSFXsource;
     [SerializeField] private Script_GiantBoarNeedleEffect giantBoarNeedle;
+
+    [SerializeField] private Script_TimelineController effectsTimelineController;
+    [SerializeField] private Transform[] effects;
 
     public void QuestionMark(bool isShow)
     {
@@ -72,9 +76,24 @@ public class Script_PlayerEffect : MonoBehaviour
         giantBoarNeedle.Effect();
     }
 
+    public void SetBuffEffectActive(bool isActive)
+    {
+        PlayableDirector buffDirector = effectsTimelineController.playableDirectors[0];
+        
+        if (isActive)
+            effectsTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
+        else
+            buffDirector.Stop();
+    }
+
     public void Setup()
     {
         questionMark.Setup();
         itemDisplay.Setup();
+
+        foreach (var effect in effects)
+        {
+            effect.gameObject.SetActive(false);
+        }
     }
 }

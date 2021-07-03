@@ -13,6 +13,7 @@ public class Script_PuppeteerEffect : Script_StickerEffect
     {
         if (isActive)
         {
+            // Event to switch back to default view.
             Script_PlayerEventsManager.PuppeteerDeactivate();
             
             player.SetState(playerLastState);
@@ -22,6 +23,7 @@ public class Script_PuppeteerEffect : Script_StickerEffect
         }
         else
         {
+            // Event to switch to Puppeteer View.
             Script_PlayerEventsManager.PuppeteerActivate();
 
             playerLastState = player.State;
