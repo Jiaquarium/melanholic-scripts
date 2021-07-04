@@ -100,13 +100,16 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         {
             game.ChangeStateCutScene();
             timelineController.PlayableDirectorPlayFromTimelines(0, 4);
-            Script_VCamManager.VCamMain.SetNewVCam(puppeteerVCam);
         }
     }
 
     private void OnPuppeteerDeactivate()
     {
-        if (!isDone)    Script_VCamManager.VCamMain.SwitchToMainVCam(puppeteerVCam);
+        if (!isDone)
+        {
+            game.ChangeStateCutScene();
+            timelineController.PlayableDirectorPlayFromTimelines(0, 5);
+        }
     }
 
     // ------------------------------------------------------------------
@@ -188,11 +191,36 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     {
         Script_Game.Game.GetPlayer().SetBuffEffectActive(true);
     }
+
+    public void SetPuppeteerVCam()
+    {
+        Script_VCamManager.VCamMain.SetNewVCam(puppeteerVCam);
+    }
     
     public void OnPuppeteerActivateTimelineDone()
     {
         game.ChangeStateInteract();
+        Script_Game.Game.GetPlayer().SetBuffEffectActive(false);
     }
+
+    public void PuppeteerDeactivateTimelinePuppetBuffs()
+    {
+        Latte.SetBuffEffectActive(true);
+        Kaffe.SetBuffEffectActive(true);
+    }
+
+    public void SetMainVCam()
+    {
+        Script_VCamManager.VCamMain.SwitchToMainVCam(puppeteerVCam);
+    }
+
+    public void OnPuppeteerDeactivateTimelineDone()
+    {
+        game.ChangeStateInteract();
+        Latte.SetBuffEffectActive(false);
+        Kaffe.SetBuffEffectActive(false);
+    }
+
     // ------------------------------------------------------------------
 
     private bool CheckMatchingPlayersOnTrigger()
