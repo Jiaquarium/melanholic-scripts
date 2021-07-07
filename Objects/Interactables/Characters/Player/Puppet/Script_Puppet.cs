@@ -22,14 +22,18 @@ public class Script_Puppet : Script_PlayerCopy
     
     [SerializeField] private RuntimeAnimatorController inactiveAnimatorController;
 
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        
         Script_PlayerEventsManager.OnPuppeteerActivate      += OnPuppeteerActivate;
         Script_PlayerEventsManager.OnPuppeteerDeactivate    += OnPuppeteerDeactivate;
     }
 
     protected override void OnDisable()
     {
+        base.OnDisable();
+        
         Script_PlayerEventsManager.OnPuppeteerActivate      -= OnPuppeteerActivate;
         Script_PlayerEventsManager.OnPuppeteerDeactivate    -= OnPuppeteerDeactivate;
     }

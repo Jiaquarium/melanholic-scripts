@@ -8,14 +8,26 @@ using UnityEditor;
 
 public class Script_QuestPainting : Script_InteractableObjectText
 {
+    static readonly private string IsDone = "IsDone";
+    
     [SerializeField] private Sprite donePainting;
     [SerializeField] private SpriteRenderer questPaintingGraphics;
 
     [SerializeField] private Script_DialogueNode[] donePaintingNodes;
     [SerializeField] private Script_DialogueNode[] defaultNodes;
 
+    [SerializeField] protected Animator myAnimator;
+
     protected bool isDonePainting;
     private Sprite defaultPainting;
+    
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if (isDonePainting)
+            DonePainting();
+    }
     
     protected override void Awake() {
         base.Awake();
@@ -27,11 +39,14 @@ public class Script_QuestPainting : Script_InteractableObjectText
     // Timeline Signals
     public void DonePainting()
     {
-        questPaintingGraphics.sprite    = donePainting;
-        isDonePainting                  = true;
+        questPaintingGraphics.sprite = donePainting;
+        if (myAnimator != null)
+            myAnimator.SetBool(IsDone, true);
 
         defaultNodes = dialogueNodes;
         SwitchDialogueNodes(donePaintingNodes);
+        
+        isDonePainting = true;
     }
 
     public void DefaultPainting()

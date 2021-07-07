@@ -81,7 +81,20 @@ public class Script_Player : Script_Character
         get => focalPoint;
     }
 
-    // Update is called once per frame
+    protected virtual void OnEnable()
+    {
+        if (playerMovementHandler.PlayerGhost != null)
+            playerMovementHandler.PlayerGhost.gameObject.SetActive(true);
+    }
+    
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (playerMovementHandler.PlayerGhost != null)
+            playerMovementHandler.PlayerGhost.gameObject.SetActive(false);
+    }
+    
     protected virtual void Update()
     {   
         // ------------------------------------------------------------------

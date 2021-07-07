@@ -58,6 +58,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     private Script_VCamera puppeteerVCam;
     private Script_VCamera preSuccessVCam;
 
+    private bool isInitialized;
+
     public bool IsDone
     {
         get => meetupPuzzleController.IsDone;
@@ -284,47 +286,53 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         }
         else
         {
-            Model_PlayerState puppetMasterStartState = new Model_PlayerState(
-                (int)puppetMasterSpawn.transform.position.x,
-                (int)puppetMasterSpawn.transform.position.y,
-                (int)puppetMasterSpawn.transform.position.z,
-                puppetMasterSpawn.Direction
-            );
-            Model_PlayerState puppetStartState = new Model_PlayerState(
-                (int)puppetSpawn.transform.position.x,
-                (int)puppetSpawn.transform.position.y,
-                (int)puppetSpawn.transform.position.z,
-                puppetSpawn.Direction
-            );
+            if (!isInitialized)
+            {
+                Model_PlayerState puppetMasterStartState = new Model_PlayerState(
+                    (int)puppetMasterSpawn.transform.position.x,
+                    (int)puppetMasterSpawn.transform.position.y,
+                    (int)puppetMasterSpawn.transform.position.z,
+                    puppetMasterSpawn.Direction
+                );
+                Model_PlayerState puppetStartState = new Model_PlayerState(
+                    (int)puppetSpawn.transform.position.x,
+                    (int)puppetSpawn.transform.position.y,
+                    (int)puppetSpawn.transform.position.z,
+                    puppetSpawn.Direction
+                );
 
-            puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState, false);
-            puppetMaster.InitializeOnLevel(puppetMasterStartState, false, levelGrid.transform);
+                puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState, false);
+                puppetMaster.InitializeOnLevel(puppetMasterStartState, false, levelGrid.transform);
 
-            puppet.Setup(puppetStartState.faceDirection, puppetStartState, false);
-            puppet.InitializeOnLevel(puppetStartState, false, levelGrid.transform);
+                puppet.Setup(puppetStartState.faceDirection, puppetStartState, false);
+                puppet.InitializeOnLevel(puppetStartState, false, levelGrid.transform);
+
+                isInitialized = true;
+            }
 
             meetupPuzzleController.InitialState();
         }
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_46))]
-public class Script_LevelBehavior_46Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_LevelBehavior_46))]
+    public class Script_LevelBehavior_46Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_LevelBehavior_46 t = (Script_LevelBehavior_46)target;
-        if (GUILayout.Button("Puzzle Success Cut Scene"))
-        {
-            t.PuzzleSuccessCutScene();
-        }
+            Script_LevelBehavior_46 t = (Script_LevelBehavior_46)target;
+            if (GUILayout.Button("Puzzle Success Cut Scene"))
+            {
+                t.PuzzleSuccessCutScene();
+                t.meetupPuzzleController.IsDone = true;
+            }
 
-        if (GUILayout.Button("Snap Kaffe VCam"))
-        {
-            t.SnapCloseUpVCams();
+            if (GUILayout.Button("Snap Kaffe VCam"))
+            {
+                t.SnapCloseUpVCams();
+            }
         }
     }
+    #endif
 }
-#endif

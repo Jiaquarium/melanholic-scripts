@@ -51,6 +51,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public bool IsDone
     {
         get => isDone;
+        set => isDone = value;
     }
     
     protected override void OnEnable()
@@ -85,18 +86,18 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     
     public override void CompleteState()
     {
-        if (isDone)     return;
+        if (IsDone)     return;
 
         Debug.Log("PUZZLE IS DONE!!!!!!!!! BOTH TARGETS ON PLATFORM");
         Script_PuzzlesEventsManager.PuzzleSuccess(PuzzleId);
         
-        isDone = true;
+        IsDone = true;
     }
 
     // Timeline to call OnPuppeteerActivateTimelineDone
     private void OnPuppeteerActivate()
     {
-        if (!isDone)
+        if (!IsDone)
         {
             game.ChangeStateCutScene();
             timelineController.PlayableDirectorPlayFromTimelines(0, 4);
@@ -105,7 +106,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     private void OnPuppeteerDeactivate()
     {
-        if (!isDone)
+        if (!IsDone)
         {
             game.ChangeStateCutScene();
             timelineController.PlayableDirectorPlayFromTimelines(0, 5);
@@ -240,7 +241,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         FloorSwitchUp(true);
         FloorSwitch2Up(true);
         
-        if (!isDone)
+        if (!IsDone)
         {
             Kaffe.Teleport(KaffeSpawn.transform.position);
             Latte.Teleport(LatteSpawn.transform.position);

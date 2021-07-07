@@ -122,6 +122,7 @@ public class Script_PlayerGhost : MonoBehaviour
     public void UpdateLocation(Vector3 updatedPlayerLoc)
     {
         location = updatedPlayerLoc;
+        transform.position = location;
         startLocation = location;
     }
 

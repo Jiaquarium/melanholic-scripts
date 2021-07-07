@@ -17,7 +17,6 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
     public Script_DialogueNode[] paintingDialogueNodes;
     
     [SerializeField] private SpriteRenderer paintingGraphics;
-    [SerializeField] private Animator animator;
     [SerializeField] private Sprite activeSprite;
     [SerializeField] private Sprite disabledSprite;
 
@@ -144,7 +143,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
                 if (paintingGraphics != null && activeSprite != null)
                 {
                     paintingGraphics.sprite = activeSprite;
-                    animator?.SetBool(IsActive, true);
+                    myAnimator?.SetBool(IsActive, true);
                 }
                 break;
             
@@ -152,7 +151,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
                 if (paintingGraphics != null && disabledSprite != null)
                 {
                     paintingGraphics.sprite = disabledSprite;
-                    animator?.SetBool(IsActive, false);
+                    myAnimator?.SetBool(IsActive, false);
                 }
                 break;
         }
