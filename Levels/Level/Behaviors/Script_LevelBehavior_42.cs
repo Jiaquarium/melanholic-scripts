@@ -159,6 +159,12 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         game.ChangeStateInteract();
     }
+
+    public void WellsInitialState()
+    {
+        foreach (Script_FrozenWell frozenWell in frozenWells)
+            frozenWell.InitialState();
+    }
     
     // ----------------------------------------------------------------------
     // Timeline Signals
@@ -166,7 +172,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         // Play SFX Once here and disable for the Wells so all don't play at once.
         foreach (Script_FrozenWell frozenWell in frozenWells)
-            frozenWell.Freeze(isSFXOn: false);
+            frozenWell.Freeze(_isSFXOn: false);
 
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.Freeze, Script_SFXManager.SFX.FreezeVol
@@ -281,6 +287,11 @@ public class Script_LevelBehavior_42Tester : Editor
         if (GUILayout.Button("Moose Quest Done"))
         {
             t.MooseQuestDone();
+        }
+
+        if (GUILayout.Button("Wells Initial State"))
+        {
+            t.WellsInitialState();
         }
     }
 }
