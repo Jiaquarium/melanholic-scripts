@@ -114,6 +114,10 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip Secret;
     [Range(0f, 1f)] public float SecretVol;
+
+    public AudioClip CorrectPartialProgress;
+    [Range(0f, 1f)] public float CorrectPartialProgressVol;
+    
     public AudioClip MainQuestDone;
     [Range(0f, 1f)] public float MainQuestDoneVol;
 

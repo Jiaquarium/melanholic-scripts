@@ -6,6 +6,13 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// World Tiles References:
+/// - Game
+/// - World Tiles Controller
+/// - LB46 Painting Entrances
+/// </summary>
+
 public class Script_LevelBehavior_43 : Script_LevelBehavior
 {
     public const string MapName = "Celestial Gardens World";

@@ -55,8 +55,8 @@ public class Script_WellsPuzzleController : Script_PuzzleController
             Debug.Log($"CORRECT Well! {well}");
 
             // On Last Well
-            if (currentWellIdx == KeyWellsCount - 1)    ProgressNotification(CompleteState);
-            else                                        ProgressNotification();
+            if (currentWellIdx == KeyWellsCount - 1)    ProgressNotification(true);
+            else                                        ProgressNotification(false);
 
             currentWellIdx++;
         }
@@ -79,7 +79,7 @@ public class Script_WellsPuzzleController : Script_PuzzleController
         isDone = true;
     }
 
-    private void ProgressNotification(Action cb = null)
+    private void ProgressNotification(bool isLastWell)
     {
         game.ChangeStateCutScene();
 
@@ -89,13 +89,21 @@ public class Script_WellsPuzzleController : Script_PuzzleController
         {
             yield return new WaitForSeconds(beforePlaySecretSFXWaitTime);
             
-            GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.Secret, Script_SFXManager.SFX.SecretVol);
+            // Play Correct Partial Progress SFX if is correct well but not done yet. Play Secret SFX when done.
+            if (isLastWell)
+                GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.Secret, Script_SFXManager.SFX.SecretVol);
+            else
+                GetComponent<AudioSource>().PlayOneShot(
+                    Script_SFXManager.SFX.CorrectPartialProgress,
+                    Script_SFXManager.SFX.CorrectPartialProgressVol
+                );
 
             yield return new WaitForSeconds(afterPlaySecretSFXWaitTime);
 
             game.ChangeStateInteract();
 
-            if (cb != null)     cb();
+            if (isLastWell)
+                CompleteState();
         }
     }
 }
