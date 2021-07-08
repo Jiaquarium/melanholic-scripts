@@ -19,7 +19,7 @@ public class Script_HUDManager : MonoBehaviour
     [SerializeField] private Script_ClockManager clockManager;
     [SerializeField] private Script_Game game;
     
-    private bool isPaused;
+    [SerializeField] private bool isPaused;
 
     public bool IsPaused
     {

@@ -172,6 +172,7 @@ public class Script_DialogueManager : MonoBehaviour
     {
         // Manually prevent HUD from fading back in.
         Script_HUDManager.Control.IsPaused = true;
+        
         yield return null;
 
         if (

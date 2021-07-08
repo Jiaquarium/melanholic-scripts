@@ -157,7 +157,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void OnMooseCheckItemDialogueDone()
     {
-        game.ChangeStateInteract();
+        game.NextFrameChangeStateInteract();
     }
 
     public void WellsInitialState()
