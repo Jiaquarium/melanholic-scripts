@@ -20,6 +20,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     public bool isCurrentMooseQuestComplete;
 
+    [SerializeField] private float waitTimeBeforeCastMooseFinalSpell;
+
     [SerializeField] private Script_WellsPuzzleController wellsPuzzleController;
     
     [SerializeField] private Script_FrozenWell[] frozenWells;
@@ -36,7 +38,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode OnMissingLastSpellRecipeBookNode;
     [SerializeField] private Script_DialogueNode OnMooseGiveItemDoneNode;
 
-    [SerializeField] private Script_DemonNPC[] Mooses;
+    [SerializeField] private Script_Moose[] Mooses;
     [SerializeField] private Script_DemonNPC[] Suzettes;
 
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
@@ -151,8 +153,15 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         isMooseQuestDone                = true;
         isCurrentMooseQuestComplete     = true;
         
-        // Play Timeline for finishing Moose's quest
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+        StartCoroutine(WaitPlayPaintingQuestTimeline());
+
+        IEnumerator WaitPlayPaintingQuestTimeline()
+        {
+            yield return new WaitForSeconds(waitTimeBeforeCastMooseFinalSpell);            
+            
+            // Play Timeline for finishing Moose's quest
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+        }
     }
 
     public void OnMooseCheckItemDialogueDone()
@@ -184,10 +193,11 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
 
+    // Called after Moose checks Player has Last Spell Book.
     public void MooseExit()
     {
-        SetMoosesActive(false);
-        SetSuzettesActive(false);
+        foreach (var Moose in Mooses)
+            Moose.FinalSpellExit();
     }
 
     public void FinishQuestPaintings()
