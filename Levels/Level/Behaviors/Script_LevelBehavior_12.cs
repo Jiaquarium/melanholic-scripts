@@ -76,6 +76,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
     [SerializeField] private float zoomBackInTime;
     
     private PlayableDirector playerPlayableDirector;
+    
     private int playerMovesNeededToReachMirror;
 
     protected override void OnEnable()
@@ -280,8 +281,6 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         game.ChangeStateCutScene();
         game.DisableExits(false, 0);
         
-        // fade music out
-        // fade out music
         float defaultFastFadeTime = Script_AudioEffectsManager.GetFadeTime(FadeSpeeds.Fast);
         StartCoroutine(
             Script_AudioMixerFader.Fade(
@@ -293,14 +292,18 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
             )
         );
 
-        // bind player to the retreat timeline & play
+        // Bind Player & Player Ghost to the Retreat Timeline & play.
         Script_Player player = Script_Game.Game.GetPlayer();
-        playerObjsToBind.Add(player.gameObject);
-        playerObjsToBind.Add(player.MyAnimator.gameObject);
-
-        // foreach (GameObject obj in playerObjsToBind) Debug.Log($"player obj to bind: {obj}");
-        // foreach (var output in playerRetreatTimeline.outputs) Debug.Log($"track outputs to bind: {output}");
+        Script_PlayerGhost playerGhost = player.GetPlayerGhost();
         
+        playerObjsToBind.Clear();
+        
+        playerObjsToBind.Add(player.gameObject);
+        playerObjsToBind.Add(playerGhost.gameObject);
+        
+        playerObjsToBind.Add(player.MyAnimator.gameObject);
+        playerObjsToBind.Add(playerGhost.MyAnimator.gameObject);
+
         GetComponent<Script_TimelineController>().BindTimelineTracks(
             playerPlayableDirector,
             playerRetreatTimeline,
@@ -309,7 +312,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
 
         StartCoroutine(WaitForExplosionCutScene());
         
-        // zoom camera back in
+        // Zoom camera back in.
         IEnumerator WaitForExplosionCutScene()
         {
             Script_VCamManager.VCamMain.SwitchToMainVCam(staticZoomOutVCam);
@@ -318,6 +321,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
 
             // play manually do to dynamic handling of Player timeline via Script_TimelineController
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+            
             playerPlayableDirector.Play(playerRetreatTimeline);
         }
     }
@@ -424,7 +428,8 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         game.SetupPlayerReflection(playerReflectionEro);
         game.SetupInteractableFullArt(fullArtParent, isInit);
         isInit = false;
-        playerPlayableDirector = game.GetPlayer().GetComponent<PlayableDirector>();
+        
+        playerPlayableDirector = game.GetPlayer().Director;
         
         if (isCutSceneDone)
         {

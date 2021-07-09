@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using System;
 
 #if UNITY_EDITOR
@@ -8,6 +9,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Script_PlayerStats))]
+[RequireComponent(typeof(PlayableDirector))]
 public class Script_Player : Script_Character
 {
     public Renderer graphics;
@@ -35,6 +37,8 @@ public class Script_Player : Script_Character
     [SerializeField] private bool _isInvisible;
     
     [SerializeField] private Transform focalPoint;
+    
+    [SerializeField] private PlayableDirector director;
 
     protected Script_Game game;
     
@@ -57,6 +61,11 @@ public class Script_Player : Script_Character
     public Animator MyAnimator
     {
         get => playerMovementHandler.MyAnimator;
+    }
+
+    public PlayableDirector Director
+    {
+        get => director;
     }
 
     public bool isInvincible

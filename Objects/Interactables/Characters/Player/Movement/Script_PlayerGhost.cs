@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 /// <summary>
 /// Shows as a lag animation to Player to give illusion of moving smoothly
@@ -8,6 +9,7 @@ using UnityEngine;
 /// 
 /// NOTE: Ensure the Graphics offset here is same as Player
 /// </summary>
+[RequireComponent(typeof(PlayableDirector))]
 public class Script_PlayerGhost : MonoBehaviour
 {
     public AnimationCurve progressCurve;
@@ -24,6 +26,7 @@ public class Script_PlayerGhost : MonoBehaviour
     [SerializeField] private Script_Player player;
 
     [SerializeField] private Script_PlayerGhostGraphics playerGhostGraphics;
+    [SerializeField] private PlayableDirector director;
 
     private bool isMoving;
 
@@ -36,6 +39,11 @@ public class Script_PlayerGhost : MonoBehaviour
     {
         get => animator;
         set => animator = value;
+    }
+
+    public PlayableDirector Director
+    {
+        get => director;
     }
 
     private Script_Player Player
