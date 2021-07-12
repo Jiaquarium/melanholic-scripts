@@ -55,6 +55,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     [SerializeField] private Script_Marker playerPuzzleSuccessSpawn;
     [SerializeField] private Transform movingLabyrinth;
 
+    [SerializeField] private Script_ScarletCipherPiece scarletCipherPiece;
+
     private Script_VCamera puppeteerVCam;
     private Script_VCamera preSuccessVCam;
 
@@ -205,6 +207,11 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         {
             paintingEntrance.DonePainting();
         }
+    }
+
+    public void HandleScarletCipherPiece()
+    {
+        scarletCipherPiece?.UpdateActiveState();
     }
     
     // Follows OnSuccessCutSceneDone's Timeline.

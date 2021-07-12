@@ -18,16 +18,20 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;
     [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
 
+    [SerializeField] private Script_ScarletCipherPiece[] scarletCipherPieces;
+
     private bool didMapNotification;
 
     protected override void OnEnable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelInitComplete                    += OnLevelInitCompleteEvent;
+        Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp    += OnScarletCipherPickUp;
     }
 
     protected override void OnDisable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelInitComplete                    -= OnLevelInitCompleteEvent;
+        Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp    -= OnScarletCipherPickUp;
     }
 
     private void OnLevelInitCompleteEvent()
@@ -36,6 +40,17 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
             didMapNotification = true;
+        }
+    }
+
+    private void OnScarletCipherPickUp(int scarletCipherId)
+    {
+        if (scarletCipherId == scarletCipherPieces[0].ScarletCipherId)
+        {
+            foreach (var scarletCipherPiece in scarletCipherPieces)
+            {
+                scarletCipherPiece.UpdateActiveState();
+            }
         }
     }
     

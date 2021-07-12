@@ -10,6 +10,7 @@ public class Script_ItemsEventsManager : MonoBehaviour
     {
         if (OnItemPickUp != null)   OnItemPickUp(itemId);
     }
+    
     public delegate void ItemStashDelegate(string itemId);
     public static event ItemStashDelegate OnItemStash;
     public static void ItemStash(string itemId)

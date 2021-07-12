@@ -40,6 +40,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     [SerializeField] private Script_Moose[] Mooses;
     [SerializeField] private Script_DemonNPC[] Suzettes;
+    
+    [SerializeField] private Script_ScarletCipherPiece[] scarletCipherPieces;
 
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
     [SerializeField] private Script_Snow[] heavySnows;
@@ -48,18 +50,22 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     protected override void OnEnable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelInitComplete                            += OnLevelInitCompleteEvent;
         
-        Script_PuzzlesEventsManager.OnPuzzleSuccess     += OnPuzzleSuccess;
-        Script_ItemsEventsManager.OnItemPickUp          += OnItemPickUp;
+        Script_PuzzlesEventsManager.OnPuzzleSuccess                             += OnPuzzleSuccess;
+        Script_ItemsEventsManager.OnItemPickUp                                  += OnItemPickUp;
+
+        Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            += OnScarletCipherPickUp;
     }
 
     protected override void OnDisable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelInitComplete                            -= OnLevelInitCompleteEvent;
         
-        Script_PuzzlesEventsManager.OnPuzzleSuccess     -= OnPuzzleSuccess;
-        Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
+        Script_PuzzlesEventsManager.OnPuzzleSuccess                             -= OnPuzzleSuccess;
+        Script_ItemsEventsManager.OnItemPickUp                                  -= OnItemPickUp;
+        
+        Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            -= OnScarletCipherPickUp;
     }
 
     private void OnLevelInitCompleteEvent()
@@ -90,6 +96,17 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
 
             StartHeavySnow();
+        }
+    }
+
+    private void OnScarletCipherPickUp(int scarletCipherId)
+    {
+        if (scarletCipherId == scarletCipherPieces[0].ScarletCipherId)
+        {
+            foreach (var scarletCipherPiece in scarletCipherPieces)
+            {
+                scarletCipherPiece.UpdateActiveState();
+            }
         }
     }
 
@@ -198,6 +215,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         foreach (var Moose in Mooses)
             Moose.FinalSpellExit();
+    }
+
+    public void HandleScarletCipherPieces()
+    {
+        foreach (var scarletCipherPiece in scarletCipherPieces)
+        {
+            scarletCipherPiece?.UpdateActiveState();
+        }
     }
 
     public void FinishQuestPaintings()

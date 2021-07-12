@@ -33,6 +33,13 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
         Hide();
 
         game.GetPlayer().ScarletCipherPickUpSFX();
+
+        Script_ScarletCipherEventsManager.ScarletCipherPiecePickUp(ScarletCipherId);
+    }
+
+    public void UpdateActiveState()
+    {
+        this.gameObject.SetActive(!DidPickUp());
     }
 
     private void Hide()
