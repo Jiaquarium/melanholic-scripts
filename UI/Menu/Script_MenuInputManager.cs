@@ -20,10 +20,14 @@ public class Script_MenuInputManager : Script_ExitViewInputManager
     public override void HandleExitInput()
     {
         if (masterUIState != null && masterUIState.state == UIState.Disabled)
+        {
+            Debug.Log($"{name} Cannot exit; masterUI.state: {masterUIState.state}");
             return;
+        }
 
         if (Input.GetButtonDown("Inventory") || Input.GetButtonDown("Cancel"))
         {
+            Debug.Log("{name} Exit menu input detected");
             Script_MenuEventsManager.ExitMenu();
         }
     }

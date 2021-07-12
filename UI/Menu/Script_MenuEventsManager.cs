@@ -13,7 +13,7 @@ public class Script_MenuEventsManager : MonoBehaviour
             Debug.Log("ExitSubmenu event");
             OnExitSubmenu();
         }
-}
+    }
 
     public delegate void ExitMenuAction();
     public static event ExitMenuAction OnExitMenu;
