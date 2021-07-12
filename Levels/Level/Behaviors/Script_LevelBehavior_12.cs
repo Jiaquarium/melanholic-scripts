@@ -304,11 +304,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         playerObjsToBind.Add(player.MyAnimator.gameObject);
         playerObjsToBind.Add(playerGhost.MyAnimator.gameObject);
 
-        GetComponent<Script_TimelineController>().BindTimelineTracks(
-            playerPlayableDirector,
-            playerRetreatTimeline,
-            playerObjsToBind
-        );
+        playerPlayableDirector.BindTimelineTracks(playerRetreatTimeline, playerObjsToBind);
 
         StartCoroutine(WaitForExplosionCutScene());
         

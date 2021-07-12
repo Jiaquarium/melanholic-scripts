@@ -58,36 +58,6 @@ public class Script_TimelineController : MonoBehaviour
 
         return playableDirectors[playableDirectorIdx];
     }
-
-    public void BindTimelineTracks(
-        PlayableDirector playableDirector,
-        TimelineAsset timeline,
-        List<GameObject> objectsToBind
-    )
-    {
-        int i = 0;
-        
-        Debug.Log($"track count: {timeline.outputTrackCount}; obj to bind count: {objectsToBind.Count}");
-        Debug.Log($"Director to bind: {playableDirector}");
-
-        foreach (var track in timeline.outputs)
-        {
-            // Sometimes track.sourceObject will contain nulls, which will unsync tracks with objects to bind,
-            // so filter nulls here.
-            if (track.sourceObject == null)
-                continue;
-            
-            if (i > objectsToBind.Count - 1)
-            {
-                Debug.LogError($"{name} There are more tracks than objects you are binding.");
-                break;
-            }
-            
-            Debug.Log($"track: {track.sourceObject} to bind with: {objectsToBind[i]}, i={i}");
-            playableDirector.SetGenericBinding(track.sourceObject, objectsToBind[i]);
-            i++;
-        }
-    }
 }
 
 #if UNITY_EDITOR

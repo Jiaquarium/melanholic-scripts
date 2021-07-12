@@ -7,6 +7,8 @@ using System.Linq;
 using UnityEngine.UI;
 using System.Reflection;
 using UnityEngine.Events;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public delegate void modifierCallback(Vector3Int tileLoc);
 
@@ -671,5 +673,36 @@ public static class Script_Utils
     public static bool HasValue(this float value)
     {
         return !float.IsNaN(value) && !float.IsInfinity(value);
+    }
+
+    // Bind objects to tracks at runtime.
+    public static void BindTimelineTracks(
+        this PlayableDirector playableDirector,
+        TimelineAsset timeline,
+        List<GameObject> objectsToBind
+    )
+    {
+        int i = 0;
+        
+        Debug.Log($"track count: {timeline.outputTrackCount}; obj to bind count: {objectsToBind.Count}");
+        Debug.Log($"Director to bind: {playableDirector}");
+
+        foreach (var track in timeline.outputs)
+        {
+            // Sometimes track.sourceObject will contain nulls, which will unsync tracks with objects to bind,
+            // so filter nulls here.
+            if (track.sourceObject == null)
+                continue;
+            
+            if (i > objectsToBind.Count - 1)
+            {
+                Debug.LogError($"{playableDirector.name} There are more tracks than objects you are binding.");
+                break;
+            }
+            
+            Debug.Log($"track: {track.sourceObject} to bind with: {objectsToBind[i]}, i={i}");
+            playableDirector.SetGenericBinding(track.sourceObject, objectsToBind[i]);
+            i++;
+        }
     }
 }

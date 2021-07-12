@@ -136,11 +136,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
         playerObjsToBind.Add(player.gameObject);
         playerObjsToBind.Add(dropSFX.gameObject);
-        GetComponent<Script_TimelineController>().BindTimelineTracks(
-            playerPlayableDirector,
-            playerDropTimeline,
-            playerObjsToBind
-        );
+        
+        playerPlayableDirector.BindTimelineTracks(playerDropTimeline, playerObjsToBind);
         playerPlayableDirector.Play(playerDropTimeline);
     }
 

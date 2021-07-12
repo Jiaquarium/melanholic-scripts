@@ -44,7 +44,10 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private float repeatDelay;
     private Script_Game game;
+    
     private Script_Player player;
+    private PlayableDirector director;
+
     private Script_PlayerGhost playerGhost;
     private Script_PlayerReflection playerReflection;
     private Dictionary<Directions, Vector3> directionToVector;
@@ -449,14 +452,24 @@ public class Script_PlayerMovement : MonoBehaviour
     /// </summary>
     public void TimelineMoveUp()
     {
-        PlayableDirector playerDirector = GetComponent<PlayableDirector>();
-        playerDirector.Play(moveUpTimeline);
+        director.Play(moveUpTimeline);
     }
 
     public void EnterElevator()
     {
-        PlayableDirector playerDirector = GetComponent<PlayableDirector>();
-        playerDirector.Play(enterElevatorTimeline);
+        director.Play(enterElevatorTimeline);
+
+        // Need to bind Player Ghost to timeline.
+        List<GameObject> playerObjsToBind = new List<GameObject>();
+
+        // Ensure ordering of objects to bind is in sync with timeline tracks.
+        playerObjsToBind.Add(player.gameObject);
+        playerObjsToBind.Add(player.MyAnimator.gameObject);
+        playerObjsToBind.Add(playerGhost.gameObject);
+        playerObjsToBind.Add(playerGhost.MyAnimator.gameObject);
+
+        director.BindTimelineTracks(enterElevatorTimeline, playerObjsToBind);
+        director.Play(enterElevatorTimeline);
     }
     /// <summary>
     /// Called from Timeline
@@ -472,6 +485,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         game = _game;
         player = GetComponent<Script_Player>();
+        director = GetComponent<PlayableDirector>();
         
         // Setup ghost for smooth movement (allows cancellation of mid-animation)
         spriteRenderer = (SpriteRenderer)player.graphics;
