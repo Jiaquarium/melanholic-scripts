@@ -555,7 +555,7 @@ public static class Script_Utils
     {
         return obj.GetType().GetField(
             propertyName,
-            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
         ) != null;
     }
     
@@ -563,7 +563,7 @@ public static class Script_Utils
     {
         return (T)obj.GetType().GetField(
             propertyName,
-            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
         ).GetValue(obj);
     }
 
@@ -572,13 +572,16 @@ public static class Script_Utils
         Debug.Log($"Checking for method: {name}; got {obj.GetType().GetMethod(name, BindingFlags.NonPublic)}");
         return obj.GetType().GetMethod(
             name,
-            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
         ) != null;
     }
 
     public static void InvokeMethod(this object obj, string name)
     {
-        MethodInfo method = obj.GetType().GetMethod(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+        MethodInfo method = obj.GetType().GetMethod(
+            name,
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
+        );
         Debug.Log ($"invoking with MethodInfo: {method}");
         
         method.Invoke(obj, null);

@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_35 : Script_LevelBehavior
 {
-    public const string MapName = "The Dining Room";
+    public const string MapName = "Dining Room";
     
     /* =======================================================================
         STATE DATA

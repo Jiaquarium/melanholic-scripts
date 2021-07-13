@@ -25,7 +25,7 @@ public class Script_MenuInputManager : Script_ExitViewInputManager
             return;
         }
 
-        if (Input.GetButtonDown("Inventory") || Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown(Const_KeyCodes.Inventory) || Input.GetButtonDown(Const_KeyCodes.Cancel))
         {
             Debug.Log("{name} Exit menu input detected");
             Script_MenuEventsManager.ExitMenu();

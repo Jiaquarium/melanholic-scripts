@@ -9,11 +9,8 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_MelancholyPianoEffect : Script_StickerEffect
 {
-    [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
-    
     [SerializeField] private float disabledReactionWaitTime;
     
-    private int pianoIdx;
     private AudioSource audioSource;
     
     void Awake()
@@ -25,30 +22,20 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
     {
         Debug.Log($"{name} Effect()");
 
+        Script_Game.Game.ChangeStateCutScene();
+        
         // Check Level Behavior to ensure Piano effect is not disabled in current room.
         if (Script_Game.Game.levelBehavior.IsMelancholyPianoDisabled)
         {
-            Script_Game.Game.ChangeStateCutScene();
             audioSource.PlayOneShot(Script_SFXManager.SFX.piano, Script_SFXManager.SFX.pianoVol);
 
             StartCoroutine(WaitToReact());
             
             return;
         }
-        
-        var pianoSpawn = pianoSpawns[pianoIdx];
 
-        Script_Game.Game.Exit(
-            pianoSpawn.data.level,
-            pianoSpawn.data.playerSpawn,
-            pianoSpawn.data.facingDirection,
-            isExit: true,
-            isSilent: false,
-            exitType: Script_Exits.ExitType.Piano
-        );
-
-        pianoIdx++;
-        if (pianoIdx >= pianoSpawns.Count)  pianoIdx = 0;
+        // Open Piano UI
+        Script_PianoManager.Control.SetPianosCanvasGroupActive(true);
 
         IEnumerator WaitToReact()
         {
@@ -60,8 +47,7 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
 
     public void Setup()
     {
-        pianoIdx = 0;
-        pianoSpawns = Script_Game.Game.PianoSpawns;
+
     }
 }
 

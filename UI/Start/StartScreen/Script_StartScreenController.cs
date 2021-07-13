@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Script_StartScreenInputManager))]
 public class Script_StartScreenController : MonoBehaviour
 {
     [SerializeField] private Script_StartOverviewController mainController;

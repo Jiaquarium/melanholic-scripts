@@ -17,7 +17,7 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_20 : Script_LevelBehavior
 {
-    public const string MapName = "The Ballroom";
+    public const string MapName = "Ballroom";
     
     /* =======================================================================
         STATE DATA

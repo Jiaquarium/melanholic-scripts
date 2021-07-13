@@ -116,6 +116,8 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_MapNotificationsManager mapNotificationsManager;
     [SerializeField] private Script_DayNotificationManager dayNotificationManager;
 
+    [SerializeField] private Script_PianoManager pianoManager;
+
     // ------------------------------------------------------------------
     // Canvases
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
@@ -421,6 +423,7 @@ public class Script_Game : MonoBehaviour
         mynesMirrorManager.Setup();
         HUDManager.Setup();
         saveManager.Setup();
+        pianoManager.Setup();
     }
 
     // Load Save Data and Initiate level

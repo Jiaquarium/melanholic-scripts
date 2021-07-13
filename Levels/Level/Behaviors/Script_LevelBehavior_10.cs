@@ -20,7 +20,7 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_10 : Script_LevelBehavior
 {
-    public const string MapName = "The Sanctuary";
+    public const string MapName = "Sanctuary";
     
     public const string NRoomTriggerId = "room_N";
     public const string ERoomTriggerId = "room_E";
