@@ -15,7 +15,7 @@ public class Script_Piano : Script_InteractableObjectText
     public bool IsRemembered
     {
         get => pianoData.isRemembered;
-        private set => pianoData.isRemembered = value;
+        set => pianoData.isRemembered = value;
     }
     
     public int Level

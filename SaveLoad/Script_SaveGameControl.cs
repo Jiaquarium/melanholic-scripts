@@ -44,6 +44,8 @@ public class Script_SaveGameControl : MonoBehaviour
 
     [SerializeField] private Script_SaveLoadMynesMirror mynesMirrorHandler;
 
+    [SerializeField] private Script_SaveLoadPianos pianosHandler;
+
     public static void SetPath()
     {
         saveFileName                = $"saveData{Application.version}";
@@ -129,6 +131,7 @@ public class Script_SaveGameControl : MonoBehaviour
             scarletCipherHandler.SaveScarletCipher(data);
             eventCycleHandler.SaveEventCycle(data);
             mynesMirrorHandler.SaveMynesMirror(data);
+            pianosHandler.SavePianos(data);
         }
 
         void WriteSaveDataFile(BinaryFormatter bf, string filePath, Model_SaveData data)
@@ -212,6 +215,7 @@ public class Script_SaveGameControl : MonoBehaviour
                 scarletCipherHandler.LoadScarletCipher(data);
                 eventCycleHandler.LoadEventCycle(data);
                 mynesMirrorHandler.LoadMynesMirror(data);
+                pianosHandler.LoadPianos(data);
 
                 if (Debug.isDebugBuild) Debug.Log("Successful load at: " + saveFilePath);
                 return true;

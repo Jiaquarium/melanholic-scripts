@@ -6,8 +6,9 @@ using UnityEngine;
 public class Script_PianoManager : MonoBehaviour
 {
     public static Script_PianoManager Control;
+    public const int NumPianos = 3;
 
-    [SerializeField] private Script_Piano[] pianos = new Script_Piano[3];
+    [SerializeField] private Script_Piano[] pianos = new Script_Piano[NumPianos];
     
     [SerializeField] Script_CanvasGroupController pianosCanvasGroup;
     
@@ -15,6 +16,12 @@ public class Script_PianoManager : MonoBehaviour
 
     private AudioSource audioSource;
 
+    public Script_Piano[] Pianos
+    {
+        get => pianos;
+        set => pianos = value;
+    }
+    
     public string GetPianoMapName(int idx)
     {
         return pianos[idx].MapName;
