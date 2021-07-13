@@ -19,9 +19,17 @@ public class Script_StartOverviewController : Script_UIState
     
     [SerializeField] private CanvasGroup introCanvasGroup;
     [SerializeField] private CanvasGroup savedGameCanvasGroup;
+    
     [SerializeField] private CanvasGroup startScreenCanvasGroup;
     [SerializeField] private EventSystem startScreenEventSystem;
+    
     [SerializeField] private Script_CanvasGroupController startOptionsCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController startScreenTitle;
+    [SerializeField] private Script_CanvasGroupController startScreenCTA;
+    [SerializeField] private Script_CanvasGroupController settingsCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController controlsCanvasGroup;
+    [SerializeField] private Button[] settingsButtons;
+    
     [SerializeField] private CanvasGroup gameOverCanvasGroup;
     
     [SerializeField] private Script_SavedGameViewController savedGameController;
@@ -75,6 +83,10 @@ public class Script_StartOverviewController : Script_UIState
         startScreenCanvasGroup.gameObject.SetActive(false);
         savedGameCanvasGroup.gameObject.SetActive(false);
         gameOverCanvasGroup.gameObject.SetActive(false);
+        
+        settingsCanvasGroup.Close();
+        controlsCanvasGroup.Close();
+        
         savedGameEventSystem.InitializeState();
 
         introController.gameObject.SetActive(true);
@@ -93,12 +105,23 @@ public class Script_StartOverviewController : Script_UIState
         }
     }
 
+    // Will be called whenever a confirm key is pressed on Start Options (via Start Screen Controller).
     public void StartOptionsOpen(bool isOpen)
     {
         if (isOpen)
+        {
             startOptionsCanvasGroup.Open();
+            startScreenCTA.Close();
+
+            Debug.Log("Closing settings and controls canvases");
+            settingsCanvasGroup.Close();
+            controlsCanvasGroup.Close();
+        }
         else
+        {
             startOptionsCanvasGroup.Close();
+            startScreenCTA.Open();
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -156,6 +179,67 @@ public class Script_StartOverviewController : Script_UIState
             // switch when teeth are opening
             InitializeIntro(isSkipIntro);
         }
+    }
+
+    public void ToSettings(int buttonIdx)
+    {
+        // Stop detect keypresses.
+        // Also prevents restarting intro sequence from Settings and its child views.
+        startScreenController.gameObject.SetActive(false);
+        
+        startScreenTitle.Close();
+        startOptionsCanvasGroup.Close();
+        controlsCanvasGroup.Close();
+
+        Debug.Log($"{name} Opening settings canvasGroup");
+        settingsCanvasGroup.Open();
+
+        EventSystem.current.SetSelectedGameObject(settingsButtons[buttonIdx].gameObject);
+    }
+
+    public void ToControls()
+    {
+        startScreenController.gameObject.SetActive(false);
+        
+        startScreenTitle.Close();
+        startOptionsCanvasGroup.Close();
+        settingsCanvasGroup.Close();
+
+        controlsCanvasGroup.Open();
+        
+        EventSystem.current.SetSelectedGameObject(controlsCanvasGroup.firstToSelect.gameObject);
+    }
+
+    public void BackToStartOptions()
+    {
+        Debug.Log("BackToStartOptions() Closing settings and controls");
+        settingsCanvasGroup.Close();
+        controlsCanvasGroup.Close();
+        
+        Debug.Log($"startScreenTitle.IsFadingIn: {startScreenTitle.IsFadingIn}");
+        startScreenController.FadeInTitle();
+        
+        startScreenCTA.Close();
+        startOptionsCanvasGroup.Open();
+        
+        EventSystem.current.SetSelectedGameObject(startOptionsCanvasGroup.firstToSelect.gameObject);
+        
+        // If coming back from Settings, reactivate the controller.
+        StartCoroutine(WaitSetControllerActive());
+        
+        IEnumerator WaitSetControllerActive()
+        {
+            yield return null;
+
+            startScreenController.gameObject.SetActive(true);
+        }   
+    }
+
+    public void Quit()
+    {
+          Debug.Log($"{name} Quit called");
+          Debug.Break();
+          Application.Quit();
     }
 
     // ----------------------------------------------------------------------

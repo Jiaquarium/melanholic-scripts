@@ -38,6 +38,8 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController underDialogueController;
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_TimeManager timeManager;
+
+    [SerializeField] private float dieTimeScale;
     
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
@@ -91,7 +93,7 @@ public class Script_TransitionManager : MonoBehaviour
         game.ChangeStateCutScene();
 
         /// Slow down time and fade screen to black
-        Time.timeScale = timeManager.dieTimeScale;
+        Time.timeScale = dieTimeScale;
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
 
@@ -113,7 +115,7 @@ public class Script_TransitionManager : MonoBehaviour
         game.ChangeStateCutScene();
 
         /// Slow down time and fade screen to black
-        Time.timeScale = timeManager.dieTimeScale;
+        Time.timeScale = dieTimeScale;
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
     }
 

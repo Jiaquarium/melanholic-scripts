@@ -10,6 +10,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Script_CanvasConstantPixelScaler : MonoBehaviour
 {
     [SerializeField] private PixelPerfectCamera pixelPerfectCamera;
+    [SerializeField] private int customDivisor = 1;
     
     void OnEnable()
     {
@@ -35,7 +36,8 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
                 Setup();
             
             int scaleFactor = pixelPerfectCamera.pixelRatio;
-            GetComponent<CanvasScaler>().scaleFactor = scaleFactor;
+            int customScaleFactor = Mathf.FloorToInt(scaleFactor / customDivisor);
+            GetComponent<CanvasScaler>().scaleFactor = Mathf.Max(customScaleFactor, 1);
         }
         catch (System.Exception error)
         {

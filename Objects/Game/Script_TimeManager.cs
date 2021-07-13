@@ -6,7 +6,6 @@ public class Script_TimeManager : MonoBehaviour
 {
     [SerializeField] private Script_Game game;
     [SerializeField] private float timeSinceLastPlayed;
-    public float dieTimeScale;
 
     public float TotalPlayTime {
         get { return game.totalPlayTime; }

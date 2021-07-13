@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,11 +15,24 @@ using UnityEditor;
 [RequireComponent(typeof(Script_CanvasGroupFadeInOut))]
 public class Script_CanvasGroupController : MonoBehaviour
 {
+    // Can define the first button to select if an Event System needs this.
+    public Button firstToSelect;
+    
     private const float DefaultFadeTime = 0.5f;
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
     private bool isFadedIn;
     private bool isFadedOut;
+
+    public bool IsFadingIn
+    {
+        get => fadeInCoroutine != null;
+    }
+
+    public bool IsFadingOut
+    {
+        get => fadeOutCoroutine != null;
+    }
     
     public virtual void Open()
     {
@@ -51,6 +65,7 @@ public class Script_CanvasGroupController : MonoBehaviour
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
             if (a != null) a();
             isFadedIn = true;
+            fadeInCoroutine = null;
         }));
     }
 
@@ -74,6 +89,7 @@ public class Script_CanvasGroupController : MonoBehaviour
             if (a != null) a();
             isFadedOut = true;
             fader.gameObject.SetActive(false);
+            fadeOutCoroutine = null;
         }));
     }
 
