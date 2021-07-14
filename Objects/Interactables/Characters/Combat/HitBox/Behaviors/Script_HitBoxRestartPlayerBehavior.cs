@@ -12,12 +12,21 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
         print(col.tag);
         if (col.tag == Const_Tags.Player)
         {
-            print($"hit player");
-            if (Const_Dev.IsDevMode && Debug.isDebugBuild)  return;
+            print($"{name} Player hit: {col}");
+            Debug.Log($"Time Left (s): {Script_ClockManager.Control.TimeLeft}");
+            
+            if (Const_Dev.IsDevMode && Debug.isDebugBuild)
+                return;
 
+            // Ignore this behavior if the hit caused Time to run out.
+            if (
+                Script_ClockManager.Control.ClockState == Script_Clock.States.Done
+                || Script_ClockManager.Control.TimeLeft == 0
+            )
+                return;
+            
             Script_Game.Game.ChangeStateCutScene();
             
-            // fade in black
             StartCoroutine(Script_Game.Game.TransitionFadeIn(
                 Script_TransitionManager.RestartPlayerFadeInTime, () =>
                 {

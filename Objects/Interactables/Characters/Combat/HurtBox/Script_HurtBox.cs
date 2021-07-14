@@ -21,7 +21,6 @@ public class Script_HurtBox : MonoBehaviour
         // consider doing something with state, closing hurtbox?
     }
 
-
     private void OnDrawGizmos() {
         // if using a mesh collider, no need to draw the gizmo.
         if (myCollider == null)     return;

@@ -31,6 +31,11 @@ public class Script_ClockManager : MonoBehaviour
         get => clock.PercentTimeElapsed;
     }
     
+    public float TimeLeft
+    {
+        get => clock.TimeLeft;
+    }
+
     public Script_Clock.States ClockState
     {
         get => clock.State;

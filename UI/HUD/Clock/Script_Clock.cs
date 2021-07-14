@@ -50,6 +50,11 @@ public class Script_Clock : MonoBehaviour
     {
         get => (CurrentTime - StartTime) / TotalTime;
     }
+
+    public float TimeLeft
+    {
+        get => Mathf.Max(EndTime - CurrentTime, 0);
+    }
     
     public States State
     {
@@ -93,6 +98,7 @@ public class Script_Clock : MonoBehaviour
     public void FastForwardTime(int sec)
     {
         CurrentTime += (float)sec;
+        CheckDone();
     }
 
     private void CheckDone()

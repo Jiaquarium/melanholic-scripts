@@ -126,7 +126,7 @@ public class Script_TransitionManager : MonoBehaviour
             bgm.SetVolume(1f, BGMParam);
         }, BGMParam);
         
-        Time.timeScale = dieTimeScale;
+        EaseToPausedTimeScale();
         
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
     }
