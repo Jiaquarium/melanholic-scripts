@@ -199,6 +199,20 @@ public static class Script_Dialogue
         },
 
         // ------------------------------------------------------------------
+        // Narrator
+        {
+            "pianos_narrator_piano_remembered",
+            new Model_Languages
+            {
+                speaker = "",
+                EN = new string[]{
+                    "The chords of the piano complement the beating of your heart.",
+                    "This location is remembered."
+                }
+            }
+        },
+        
+        // ------------------------------------------------------------------
         // Items
         {
             "item_sticker_last-elevator",
@@ -500,6 +514,6 @@ public static class Script_Dialogue
                     "Hand puppets...| This room actually reminds me a bit of a theatre stage.",
                 }
             }
-        },       
+        },
     };
 }

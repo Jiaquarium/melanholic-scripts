@@ -12,6 +12,7 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
 
     public bool[] switchesStates;
     public bool isPuzzleCompleted;
+    
     public AudioClip puzzleCompleteSFX;
     public AudioSource audioSource;
     public GameObject mirrorReflection;
