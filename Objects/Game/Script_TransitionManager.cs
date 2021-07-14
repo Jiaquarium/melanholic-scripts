@@ -15,6 +15,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_TransitionManager : MonoBehaviour
 {
+    private static string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
+    
     public static Script_TransitionManager Control;
     
     public enum FinalNotifications
@@ -40,6 +42,9 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_TimeManager timeManager;
 
     [SerializeField] private float dieTimeScale;
+    [SerializeField] private float timeScaleEaseInDuration;
+    private float timeScaleTimer;
+    private Coroutine timeScaleCoroutine;
     
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
@@ -114,9 +119,35 @@ public class Script_TransitionManager : MonoBehaviour
     {
         game.ChangeStateCutScene();
 
-        /// Slow down time and fade screen to black
+        // Fade out BGM
+        Script_BackgroundMusicManager bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOutMed(() => {
+            bgm.Stop();
+            bgm.SetVolume(1f, BGMParam);
+        }, BGMParam);
+        
         Time.timeScale = dieTimeScale;
+        
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+    }
+
+    private void EaseToPausedTimeScale()
+    {
+        timeScaleTimer = timeScaleEaseInDuration;
+        timeScaleCoroutine = StartCoroutine(DecrementTimeScale());
+        
+        IEnumerator DecrementTimeScale()
+        {
+            while (timeScaleTimer > 0)
+            {
+                Time.timeScale = timeScaleTimer / timeScaleEaseInDuration;
+                timeScaleTimer -= Time.deltaTime;
+                
+                yield return null;
+            }
+
+            timeScaleCoroutine = null;
+        }
     }
 
     /// <summary>
@@ -174,6 +205,13 @@ public class Script_TransitionManager : MonoBehaviour
     // Timeline Signals
     public void OnTimesUpPlayableDone()
     {
+        // Stop TimeScale ease if is still running.
+        if (timeScaleCoroutine != null)
+        {
+            StopCoroutine(timeScaleCoroutine);
+            timeScaleCoroutine = null;
+        }
+        
         Time.timeScale = 1.0f;
 
         // Prompt Player

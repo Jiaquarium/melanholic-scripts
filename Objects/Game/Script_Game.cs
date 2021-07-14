@@ -321,14 +321,15 @@ public class Script_Game : MonoBehaviour
         LevelsInactivate();
     }
 
-    public static void LevelsInactivate()
+    public static void LevelsInactivate(bool isOnBeforeScene = true)
     {
         Debug.Log("~~~~~~~~ Disabling all level grids; ensure these are inactive in prod ~~~~~~~~");
 
         Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
         foreach (Script_LevelGrid lvl in lvls)
         {
-            if (lvl.gameObject.activeSelf)
+            // Only show error messaging if we're inactivating before Scene setup. 
+            if (lvl.gameObject.activeSelf && isOnBeforeScene)
             {
                 string s = $"{lvl.name} is active. You need to set this inactive at game load for prod.";
                 if (Const_Dev.IsDevMode)    Debug.Log(s);
