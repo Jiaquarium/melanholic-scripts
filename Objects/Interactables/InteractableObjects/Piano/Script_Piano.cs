@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(AudioSource))]
 public class Script_Piano : Script_InteractableObjectText
 {
     private const string MapNameField = "MapName";
@@ -56,10 +57,27 @@ public class Script_Piano : Script_InteractableObjectText
             return;     
         }
 
-        IsRemembered = true;
+        // Only play SFX on first interaction;
+        if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
+            GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.piano, Script_SFXManager.SFX.pianoVol);
         
         base.ActionDefault();
-    }       
+    }
+
+    // ------------------------------------------------------------------
+    // Next Node Action
+    public void RememberPiano()
+    {
+        if (!IsRemembered)
+        {
+            IsRemembered = true;
+            
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.CorrectPartialProgress,
+                Script_SFXManager.SFX.CorrectPartialProgressVol
+            );
+        }
+    }
 }
 
 #if UNITY_EDITOR
