@@ -39,7 +39,11 @@ public class Script_ScreenFXManager : MonoBehaviour
         
         if (game.IsInHotel())   return;
 
-        if (clockManager.ClockTimeState == Script_Clock.TimeStates.None)    return;
+        if (
+            clockManager.ClockTimeState == Script_Clock.TimeStates.None
+            || clockManager.ClockState == Script_Clock.States.Done
+        )
+            return;
 
         timer -= Time.deltaTime;
 
