@@ -24,7 +24,7 @@ public class Script_Clock : MonoBehaviour
     public const float StartTime        = 18660f; // 5:11:00
     public const float AwareTime        = 20460f; // 5:41:00 half game time is passed, 30 min (6 min IRL)
     public const float WarningTime      = 21360f; // 5:56:00 15 min left (3 min IRL)
-    public const float DangerTime       = 22200f; // 6:10:00 5 min left (1 min IRL)
+    public const float DangerTime       = 22200f; // 6:06:00 5 min left (1 min IRL)
     public const float EndTime          = 22260f; // 6:11:00 Nautical Dawn Chicago, IL Jan 1 2021
     public static float TimeMultiplier  = 5f;
     public static float TotalTime       = EndTime - StartTime;
@@ -44,6 +44,11 @@ public class Script_Clock : MonoBehaviour
     {
         get => currentTime;
         set => currentTime = Mathf.Clamp(value, StartTime, EndTime);
+    }
+
+    public float PercentTimeElapsed
+    {
+        get => (CurrentTime - StartTime) / TotalTime;
     }
     
     public States State
@@ -80,6 +85,7 @@ public class Script_Clock : MonoBehaviour
                 break;
             }
         }
+
         CheckDone();
         DisplayTime();
     }

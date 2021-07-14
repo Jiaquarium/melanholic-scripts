@@ -25,16 +25,15 @@ public class Script_ClockManager : MonoBehaviour
     {
         get => clock.CurrentTime;
     }
+
+    public float PercentTimeElapsed
+    {
+        get => clock.PercentTimeElapsed;
+    }
     
     public Script_Clock.TimeStates ClockTimeState
     {
         get => clock.TimeState;
-    }
-
-    public Script_Clock.States ClockState
-    {
-        get => clock.State;
-        set => clock.State = value;
     }
 
     void Update()
@@ -44,10 +43,23 @@ public class Script_ClockManager : MonoBehaviour
             TimesUp();
         }
         
-        if (game.IsInHotel())   clock.State = Script_Clock.States.Paused;
-        else                    clock.State = Script_Clock.States.Active;
+        if (IsClockRunning())
+            clock.State = Script_Clock.States.Active;
+        else
+            clock.State = Script_Clock.States.Paused;
 
         HandleTimebar();
+    }
+
+    public bool IsClockRunning()
+    {
+        return !game.IsInHotel()
+            && game.state == Const_States_Game.Interact
+            && (
+                game.GetPlayer().State == Const_States_Player.Interact
+                // Also allow time to run during Puppeteering for time pressure.
+                || game.GetPlayer().State == Const_States_Player.Puppeteer
+            );
     }
 
     public void TimesUp()
