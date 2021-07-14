@@ -14,11 +14,10 @@ using UnityEditor;
 public class Script_ScarletCipherManager : MonoBehaviour
 {
     public static Script_ScarletCipherManager Control;
-    public const int QuestionCount = 8;
+    public const int QuestionCount = 10;
     [SerializeField] private int[] _scarletCipher = new int[QuestionCount];
     [SerializeField] private bool[] _scarletCipherVisibility = new bool[QuestionCount];
-    [Tooltip("The relevant 8 question conversation nodes")]
-    [SerializeField] private Script_DialogueNode_MynesConversationChoiceParent[] dialogues = new Script_DialogueNode_MynesConversationChoiceParent[QuestionCount];
+    [Tooltip("The relevant 10 question conversation nodes")]
     [SerializeField] private bool[] _mynesMirrorsActivationStates = new bool[QuestionCount];
     [SerializeField] private bool[] _mynesMirrorsSolved = new bool[QuestionCount];
     
@@ -141,20 +140,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
 
         for (int i = 0; i < QuestionCount; i++)
         {
-            newCipher[i] = 9;
-            
-            // if (dialogues[i] == null)
-            // {
-            //     newCipher[i] = 9;
-            //     continue;
-            // }
-
-            // int choicesCount = dialogues[i].data.children.Length;
-            
-            // /// Choose a random choice for the node Random.Range(inclusive, exclusive)
-            // int choice = UnityEngine.Random.Range(0, choicesCount);
-            
-            // newCipher[i] = choice;
+            newCipher[i] = UnityEngine.Random.Range(0, 10);
         }
 
         ScarletCipher                   = newCipher;
@@ -182,7 +168,6 @@ public class Script_ScarletCipherEditor : Editor
 {
     private SerializedProperty scarletCipher;
     private SerializedProperty scarletCipherVisibility;
-    private SerializedProperty dialogue;
     private SerializedProperty mynesMirrorsActivationStates;
     private SerializedProperty mynesMirrorsSolved;
     private static bool[] showItemSlots = new bool[Script_ScarletCipherManager.QuestionCount];
@@ -197,7 +182,6 @@ public class Script_ScarletCipherEditor : Editor
     {
         scarletCipher                   = serializedObject.FindProperty(ScarletCipherName);
         scarletCipherVisibility         = serializedObject.FindProperty(ScarletCipherVisibilityName);
-        dialogue                        = serializedObject.FindProperty(DialoguesName);
         mynesMirrorsActivationStates    = serializedObject.FindProperty(MynesMirrorsActivationStatesName);
         mynesMirrorsSolved              = serializedObject.FindProperty(MynesMirrorsSolvedName);
     }
@@ -233,7 +217,6 @@ public class Script_ScarletCipherEditor : Editor
         {
             EditorGUILayout.PropertyField(scarletCipher.GetArrayElementAtIndex(i),                  new GUIContent("Cipher"));
             EditorGUILayout.PropertyField(scarletCipherVisibility.GetArrayElementAtIndex(i),        new GUIContent("Visibility"));
-            EditorGUILayout.PropertyField(dialogue.GetArrayElementAtIndex(i),                       new GUIContent("Dialogue"));
             EditorGUILayout.PropertyField(mynesMirrorsActivationStates.GetArrayElementAtIndex(i),   new GUIContent("Mirror Activated"));
             EditorGUILayout.PropertyField(mynesMirrorsSolved.GetArrayElementAtIndex(i),             new GUIContent("Mirror Solved"));
         }

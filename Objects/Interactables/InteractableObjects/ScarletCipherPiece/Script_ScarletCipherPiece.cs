@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Script_ScarletCipherPiece : Script_InteractableObject
 {
     [SerializeField] private int _scarletCipherId;
@@ -32,7 +36,8 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
         Script_ScarletCipherManager.Control.RevealScarletCipherSlot(ScarletCipherId);
         Hide();
 
-        game.GetPlayer().ScarletCipherPickUpSFX();
+        // Use Singleton for debugging purposes.
+        Script_Game.Game.GetPlayer().ScarletCipherPickUpSFX();
 
         Script_ScarletCipherEventsManager.ScarletCipherPiecePickUp(ScarletCipherId);
     }
@@ -47,3 +52,19 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
         this.gameObject.SetActive(false);
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_ScarletCipherPiece))]
+public class Script_ScarletCipherPieceTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_ScarletCipherPiece t = (Script_ScarletCipherPiece)target;
+        if (GUILayout.Button("Pick Up"))
+        {
+            t.ActionDefault();
+        }
+    }
+}
+#endif

@@ -26,7 +26,9 @@ public class Script_TopBarButton : MonoBehaviour, ISelectHandler
     // OnClick Handler
     public void OnClick()
     {
-        GameObject selectOnDown = GetComponent<Selectable>().navigation.selectOnDown.gameObject;
-        EventSystem.current.SetSelectedGameObject(selectOnDown);
+        GameObject selectOnDown = GetComponent<Selectable>().navigation.selectOnDown?.gameObject;
+
+        if (selectOnDown != null)
+            EventSystem.current.SetSelectedGameObject(selectOnDown);
     }
 }
