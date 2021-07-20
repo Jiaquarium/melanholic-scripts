@@ -830,7 +830,7 @@ public class Script_Game : MonoBehaviour
         );
         player.transform.SetParent(playerContainer, false);
         
-        SetVCamsFollowPlayer();
+        SetVCamsFollow(player.GetPlayerGhost().transform);
     }
 
     public void SetupPlayerOnLevel()
@@ -1798,10 +1798,10 @@ public class Script_Game : MonoBehaviour
         cinemachineBrain.enabled = true;
     }
 
-    public void SetVCamsFollowPlayer()
+    public void SetVCamsFollow(Transform t)
     {
-        VCam.FollowTarget(player.transform);
-        VCamDramaticZoom.FollowTarget(player.transform);
+        VCam.FollowTarget(t);
+        VCamDramaticZoom.FollowTarget(t);
     }
 
     public void PixelPerfectEnable(bool isEnable)

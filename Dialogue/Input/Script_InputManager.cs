@@ -63,6 +63,7 @@ public class Script_InputManager : MonoBehaviour
     public void InputSaveEntryChoice(int Id, string playerInputText)
     {
         int nextChildNodeIdx = 0;
+        
         // Submit
         if (Id == 0)
             nextChildNodeIdx = activeInputHandler.HandleSubmit(playerInputText);
