@@ -110,6 +110,20 @@ public static class Script_Utils
         return v;
     }
 
+    /// <summary>
+    /// Compare two Vector3s.
+    /// </summary>
+    /// <param name="vectorA"></param>
+    /// <param name="vectorB"></param>
+    /// <param name="decimalPlacesCompare">Specify number of decimal places to compare to</param>
+    /// <returns>True if similar, False if not</returns>
+    public static bool IsSame(this Vector3 vectorA, Vector3 vectorB, int decimalPlaces = 0)
+    {
+        return Math.Round(vectorA.x, decimalPlaces) == Math.Round(vectorB.x, decimalPlaces)
+            && Math.Round(vectorA.y, decimalPlaces) == Math.Round(vectorB.y, decimalPlaces)
+            && Math.Round(vectorA.z, decimalPlaces) == Math.Round(vectorB.z, decimalPlaces);
+    }
+
     public static void AnimatorSetDirection(this Animator animator, Directions dir)
     {
         if (dir == Directions.Up)

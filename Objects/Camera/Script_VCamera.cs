@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,20 +11,46 @@ using UnityEditor;
 public class Script_VCamera : MonoBehaviour
 {
     [SerializeField] private bool isFollowPlayer;
+
+    [SerializeField] private Vector3 offset = new Vector3(10.8f, 21f, -22f);
     
     public Transform Follow
     {
         get => GetComponent<CinemachineVirtualCamera>().Follow;
+        set => GetComponent<CinemachineVirtualCamera>().Follow = value;
     }
 
     public CinemachineVirtualCamera CinemachineVirtualCamera
     {
         get => GetComponent<CinemachineVirtualCamera>();
     }
-    
-    public void FollowTarget(Transform target)
+
+    public Vector3 OffsetTargetPosition
     {
-        GetComponent<CinemachineVirtualCamera>().Follow = target;
+        get => Follow.transform.position + offset;
+    }
+
+    void Start()
+    {
+        if (isFollowPlayer)
+        {
+            Debug.Log($"{name} Set to follow Player");
+            FollowCameraTargetFollower();
+            transform.position = OffsetTargetPosition;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (isFollowPlayer && Follow != null)
+        {
+            transform.position = OffsetTargetPosition;
+        }
+    }
+
+    public void FollowCameraTargetFollower()
+    {
+        Follow = Script_Game.Game?.CameraTargetFollower.transform;
     }
 
     public void SetPriority(int priority)
@@ -36,12 +63,4 @@ public class Script_VCamera : MonoBehaviour
         GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize = size;
     }
     
-    void Awake()
-    {
-        if (isFollowPlayer)
-        {
-            Debug.Log($"{name} Set to follow Player");
-            FollowTarget(Script_Game.Game?.GetPlayer().FocalPoint);
-        }
-    }
 }

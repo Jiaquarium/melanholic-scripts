@@ -86,7 +86,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         HandleWalkSpeed();
         
-        timer = Mathf.Max(0f, timer - Time.deltaTime);
+        HandleMoveBufferTimer();
 
         HandleAnimations();
         HandleGhostTransform();
@@ -144,12 +144,17 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
+    public void HandleMoveBufferTimer()
+    {
+        timer = Mathf.Max(0f, timer - Time.smoothDeltaTime);
+    }
+
     // Handle the animation of ghost following this pointer.
     public void HandleGhostTransform(bool isForceTimerUpdate = false)
     {
         // Manually reduce timer for non-moving game states where the timer is paused.
         if (isForceTimerUpdate)
-            timer = Mathf.Max(0f, timer - Time.deltaTime);
+            HandleMoveBufferTimer();
 
         playerGhost.Move(Progress);
     }

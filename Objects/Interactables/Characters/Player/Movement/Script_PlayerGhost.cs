@@ -27,6 +27,7 @@ public class Script_PlayerGhost : MonoBehaviour
 
     [SerializeField] private Script_PlayerGhostGraphics playerGhostGraphics;
     [SerializeField] private PlayableDirector director;
+    [SerializeField] private Transform focalPoint;
 
     private bool isMoving;
 
@@ -46,6 +47,11 @@ public class Script_PlayerGhost : MonoBehaviour
         get => director;
     }
 
+    public Transform FocalPoint
+    {
+        get => focalPoint;
+    }
+
     private Script_Player Player
     {
         get => player;
@@ -61,11 +67,13 @@ public class Script_PlayerGhost : MonoBehaviour
     {
         if (startLocation == null || location == null || !progress.HasValue())  return;
 
-        transform.position = Vector3.Lerp(
+        Vector3 newPosition = Vector3.Lerp(
             startLocation,
             location,
             progressCurve.Evaluate(progress)
         );
+
+        transform.position = newPosition;
     }
 
     public void SetIsNotMoving()

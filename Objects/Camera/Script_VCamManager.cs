@@ -10,6 +10,10 @@ using UnityEditor;
 
 /// <summary>
 /// The entry point to handle VCams through code.
+/// 
+/// Transposer Body
+/// Enum:Lock To Target With World Up
+/// Vector3(10.8, 21, -22)
 /// </summary>
 
 [RequireComponent(typeof(Script_CameraShake))]

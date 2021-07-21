@@ -168,6 +168,7 @@ public class Script_Game : MonoBehaviour
     
     [SerializeField] private Script_Player player;
     [SerializeField] private Script_LanternFollower lanternFollower;
+    [SerializeField] private Script_PlayerCameraTargetFollower cameraTargetFollower;
     private Script_PuppetMaster puppetMaster;
 
     [SerializeField] private Script_SavePoint savePoint; // max 1 per Level
@@ -269,6 +270,11 @@ public class Script_Game : MonoBehaviour
     public Script_LanternFollower LanternFollower
     {
         get => lanternFollower;
+    }
+
+    public Script_PlayerCameraTargetFollower CameraTargetFollower
+    {
+        get => cameraTargetFollower;
     }
 
     public Script_PuppetMaster PuppetMaster
@@ -811,7 +817,7 @@ public class Script_Game : MonoBehaviour
         _PLAYER_
     ======================================================================= */
 
-    void CreatePlayer()
+    private void CreatePlayer()
     {
         // TODO don't need this, put all player data into PlayerState 
         Model_Level levelData = Levels.levelsData[level];
@@ -830,7 +836,10 @@ public class Script_Game : MonoBehaviour
         );
         player.transform.SetParent(playerContainer, false);
         
-        SetVCamsFollow(player.GetPlayerGhost().transform);
+        CameraTargetFollower.MatchPlayerGhost();
+        
+        VCam.FollowCameraTargetFollower();
+        VCamDramaticZoom.FollowCameraTargetFollower();
     }
 
     public void SetupPlayerOnLevel()
@@ -848,6 +857,8 @@ public class Script_Game : MonoBehaviour
             playerData.isForceSortingLayer,
             playerData.isForceSortingLayerAxisZ
         );
+
+        CameraTargetFollower.MatchPlayerGhost();
 
         Debug.Log("---- ---- PLAYER SETUP ON LEVEL EVENT ---- ----");
         Script_GameEventsManager.PlayerSetupOnLevel();   
@@ -1796,12 +1807,6 @@ public class Script_Game : MonoBehaviour
 
         activeVCam?.gameObject.SetActive(true);
         cinemachineBrain.enabled = true;
-    }
-
-    public void SetVCamsFollow(Transform t)
-    {
-        VCam.FollowTarget(t);
-        VCamDramaticZoom.FollowTarget(t);
     }
 
     public void PixelPerfectEnable(bool isEnable)
