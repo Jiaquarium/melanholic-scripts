@@ -105,25 +105,25 @@ public class Script_PlayerMovement : MonoBehaviour
 
         // Give priority to new button presses.
         // Only relevant for Keyboard.
-        if (Input.GetButtonDown(Const_KeyCodes.Up) && lastMove != Directions.Up)
+        if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
             xWeight = 0f;
             yWeight = 1f;
             dirVector = new Vector2(xWeight, yWeight);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Down) && lastMove != Directions.Down)
+        else if (Input.GetButtonDown(Const_KeyCodes.Down))
         {
             xWeight = 0f;
             yWeight = -1f;
             dirVector = new Vector2(xWeight, yWeight);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Right) && lastMove != Directions.Right)
+        else if (Input.GetButtonDown(Const_KeyCodes.Right))
         {
             xWeight = 1f;
             yWeight = 0f;
             dirVector = new Vector2(xWeight, yWeight);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Left) && lastMove != Directions.Left)
+        else if (Input.GetButtonDown(Const_KeyCodes.Left))
         {
             xWeight = -1f;
             yWeight = 0f;
