@@ -49,7 +49,7 @@ public class Script_EnergySpikeAttack : Script_Attack
 
     protected virtual Script_EnergySpike[] GetSpikeChildren()
     {
-        return this.transform.GetChildren<Script_EnergySpike>();
+        return this.transform.GetComponentsInChildren<Script_EnergySpike>();
     }
 
     private void OnDisable()
@@ -185,7 +185,7 @@ public class Script_EnergySpikeAttack : Script_Attack
         ResetSpikesElevation();
         GetComponent<Script_TimelineController>().PlayAllPlayables();
 
-        StartCoroutine(WaitToEndSpike());   
+        StartCoroutine(WaitToEndSpike());
     }
 
     public void InitialState()

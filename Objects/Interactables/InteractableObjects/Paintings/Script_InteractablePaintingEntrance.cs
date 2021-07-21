@@ -143,7 +143,8 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
                 if (paintingGraphics != null && activeSprite != null)
                 {
                     paintingGraphics.sprite = activeSprite;
-                    myAnimator?.SetBool(IsActive, true);
+                    if (myAnimator != null)
+                        myAnimator.SetBool(IsActive, true);
                 }
                 break;
             
@@ -151,7 +152,8 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
                 if (paintingGraphics != null && disabledSprite != null)
                 {
                     paintingGraphics.sprite = disabledSprite;
-                    myAnimator?.SetBool(IsActive, false);
+                    if (myAnimator != null)
+                        myAnimator.SetBool(IsActive, false);
                 }
                 break;
         }

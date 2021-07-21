@@ -10,40 +10,13 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// Each row of spikes has unique hitBoxId (e.g. eileen-mind_energy-spikeXX)
+/// Used in Eileen's Mind.
 /// </summary>
 public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
 {
     [SerializeField] private Transform spikeParentsParent;
     [SerializeField] private Script_EnergySpikeParent[] spikeParents;
-
-    protected override void OnValidate()
-    {
-        spikeParents = spikeParentsParent.transform.GetChildren<Script_EnergySpikeParent>();
-        
-        base.OnValidate();
-
-        for (int i = 0; i < spikeParents.Length; i++)
-        {
-            Script_EnergySpike[] spikeChildren = spikeParents[i].transform.GetChildren<Script_EnergySpike>();
-            foreach (Script_EnergySpike spikeChild in spikeChildren)
-            {
-                spikeChild.hitBox.Id = string.IsNullOrEmpty(hitBoxId) ? spikeParents[i].hitBoxId : hitBoxId;
-            }
-        }
-    }
-    
-    protected override Script_EnergySpike[] GetSpikeChildren()
-    {
-        Script_EnergySpike[] spikes = new Script_EnergySpike[]{};
-        foreach (Script_EnergySpikeParent spikeParent in spikeParents)
-        {
-            Script_EnergySpike[] childrenSpikes = spikeParent.transform.GetChildren<Script_EnergySpike>();
-            spikes = spikes.Concat(childrenSpikes).ToArray();
-        }
-
-        return spikes;
-    }
+    [SerializeField] private PlayableDirector director;
     
     public void AlternatingSpikes()
     {
@@ -52,6 +25,16 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
         isInUse = true;
 
         SpikeSequence();
+    }
+
+    protected override void SpikeSequence()
+    {
+        SetHitBoxes();
+        SpikesSFX();
+        
+        director.Play();
+        
+        StartCoroutine(WaitToEndSpike());
     }
 
     public override void CollisionedWith(Collider collider, Script_HitBox hitBox)

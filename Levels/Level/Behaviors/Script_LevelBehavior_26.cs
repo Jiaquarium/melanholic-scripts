@@ -30,7 +30,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private Script_UrselkAttacks urselkAttacks;
     
     // Must be >1 because because the spike animation lasts 1 sec (30 frames)
-    // 1.8 is possible but very hard
+    // 1.9s allows for a very tight 7 moves.
+    // E.g. time of 2s gives 1s of movement time, 1s of animation where hitbox is exposed.
     [Range(1.80f, 2.00f)][SerializeField] private float attackInterval;
     
     [SerializeField] private float timer;

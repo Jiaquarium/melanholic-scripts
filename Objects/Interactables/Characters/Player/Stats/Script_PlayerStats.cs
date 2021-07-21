@@ -17,15 +17,22 @@ public class Script_PlayerStats : Script_CharacterStats
     /// TODO: REMOVE ISSWALLEDDEMON, give demons hitboxes and they pass it in
     public override int Hurt(int sec, Script_HitBox hitBox)
     {
-        if (GetComponent<Script_Player>().isInvincible)     return 0;
+        if (GetComponent<Script_Player>().isInvincible)
+            return 0;
 
         // reduce dmg by defense
         sec -= stats.defense.GetVal();
         sec = Mathf.Clamp(sec, 0, int.MaxValue);
         
-        HandleTakeDamage(sec);
-
-        Debug.Log($"Player {name} took damage {sec}. currentHp: {currentHp}. death type: {hitBox.deathType}");
+        if (Const_Dev.IsNoTimeHurt)
+        {
+            Debug.Log($"DEV MODE (IsNoTimeHurt): Player {name} would take damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime}");
+        }
+        else
+        {
+            HandleTakeDamage(sec);
+            Debug.Log($"Player {name} took damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime}");
+        }
 
         return sec;
     }
