@@ -31,10 +31,9 @@ public class Script_PlayerMovement : MonoBehaviour
     public Script_PlayerReflection PlayerReflectionPrefab;
 
     [SerializeField] private float defaultRepeatDelay;
+    [SerializeField] private float changeDirectionDelay;
     [SerializeField] private float runRepeatDelay;
     [SerializeField] private float devRunRepeatDelay;
-    [SerializeField] private float defaultGhostSpeed;
-    [SerializeField] private float runGhostSpeed;
     
     public int exitUpStairsOrderLayer;
     [SerializeField] private bool isMoving;
@@ -56,6 +55,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public Directions lastMove;
     public float timer;
+    public float changeDirectionTimer;
 
     public Animator MyAnimator
     {
@@ -82,6 +82,11 @@ public class Script_PlayerMovement : MonoBehaviour
         if (playerGhost != null)    Destroy(playerGhost.gameObject);
     }
     
+    void Update()
+    {
+        HandleChangeDirectionBufferTimer();   
+    }
+
     public void HandleMoveInput(bool isReversed = false)
     {
         HandleWalkSpeed();
@@ -149,6 +154,11 @@ public class Script_PlayerMovement : MonoBehaviour
         timer = Mathf.Max(0f, timer - Time.smoothDeltaTime);
     }
 
+    public void HandleChangeDirectionBufferTimer()
+    {
+        changeDirectionTimer = Mathf.Max(0f, changeDirectionTimer - Time.smoothDeltaTime);
+    }
+
     // Handle the animation of ghost following this pointer.
     public void HandleGhostTransform(bool isForceTimerUpdate = false)
     {
@@ -192,19 +202,28 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void Move(Directions dir)
     {
-        // On Button Press reset timer to allow for instant direction changes.
-        if (
-            Input.GetButtonDown(Const_KeyCodes.Up)
-            || Input.GetButtonDown(Const_KeyCodes.Right)
-            || Input.GetButtonDown(Const_KeyCodes.Down)
-            || Input.GetButtonDown(Const_KeyCodes.Left)
-        )
+        // Refresh direction change buffer when not moving;
+        if (!isMoving)
+            changeDirectionTimer = 0f;
+        
+        // Allow for first instant direction change and buffer preceding ones.
+        if (dir != lastMove && changeDirectionTimer == 0f)
         {
             timer = 0;
+            
+            // Start buffering changing directions when moving.
+            if (isMoving)
+                changeDirectionTimer = changeDirectionDelay;
+        }
+        // Subsequent direction changes are buffered so Player can't spam
+        // direction changes to travel faster.
+        else if (dir != lastMove && changeDirectionTimer > 0f)
+        {
+            return;
         }
 
         // Throttle repeat moves by timer.
-        if (dir == lastMove && timer != 0f)
+        if (timer != 0f)
         {
             return;
         }
