@@ -57,6 +57,9 @@ public class Script_PlayerMovement : MonoBehaviour
     public float timer;
     public float changeDirectionTimer;
 
+    public float xWeight;
+    public float yWeight;
+
     public Animator MyAnimator
     {
         get => animator;
@@ -96,56 +99,78 @@ public class Script_PlayerMovement : MonoBehaviour
         HandleAnimations();
         HandleGhostTransform();
 
-        Vector2 dirVector = new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
-        if (dirVector == Vector2.zero)  return;
+        Vector2 dirVector = new Vector2(
+            Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
+        );
+
+        // Give priority to new button presses.
+        // Only relevant for Keyboard.
+        if (Input.GetButtonDown(Const_KeyCodes.Up) && lastMove != Directions.Up)
+        {
+            xWeight = 0f;
+            yWeight = 1f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+        else if (Input.GetButtonDown(Const_KeyCodes.Down) && lastMove != Directions.Down)
+        {
+            xWeight = 0f;
+            yWeight = -1f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+        else if (Input.GetButtonDown(Const_KeyCodes.Right) && lastMove != Directions.Right)
+        {
+            xWeight = 1f;
+            yWeight = 0f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+        else if (Input.GetButtonDown(Const_KeyCodes.Left) && lastMove != Directions.Left)
+        {
+            xWeight = -1f;
+            yWeight = 0f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+        // On button holds
+        else if (
+            Input.GetButton(Const_KeyCodes.Up)
+            || Input.GetButton(Const_KeyCodes.Down)
+            || Input.GetButton(Const_KeyCodes.Right)
+            || Input.GetButton(Const_KeyCodes.Left)
+        )
+        {
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+        // No direction Input pressed.
+        else
+        {
+            xWeight = 0f;
+            yWeight = 0f;   
+        }
         
         if (isReversed)     HandleMoveReversed();
         else                HandleMoveDefault();
 
         void HandleMoveDefault()
         {
-            if (
-                Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y)
-                && dirVector.x > 0
-            )    
-            {
+            if (dirVector.x > 0)    
                 Move(Directions.Right);
-            }
-            else if (Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y) && dirVector.x < 0)
-            {
+            else if (dirVector.x < 0)
                 Move(Directions.Left);
-            }
-            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y > 0)
-            {
+            else if (dirVector.y > 0)
                 Move(Directions.Up);
-            }
-            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y < 0)
-            {
+            else if (dirVector.y < 0)
                 Move(Directions.Down);
-            }
         }
 
         void HandleMoveReversed()
         {
-            if (
-                Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y)
-                && dirVector.x > 0
-            )    
-            {
+            if (dirVector.x > 0)    
                 Move(Directions.Left);
-            }
-            else if (Mathf.Abs(dirVector.x) > Mathf.Abs(dirVector.y) && dirVector.x < 0)
-            {
+            else if (dirVector.x < 0)
                 Move(Directions.Right);
-            }
-            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y > 0)
-            {
+            else if (dirVector.y > 0)
                 Move(Directions.Down);
-            }
-            else if (Mathf.Abs(dirVector.y) > Mathf.Abs(dirVector.x) && dirVector.y < 0)
-            {
+            else if (dirVector.y < 0)
                 Move(Directions.Up);
-            }
         }
     }
 
