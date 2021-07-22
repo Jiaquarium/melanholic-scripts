@@ -23,7 +23,7 @@ public class Script_EnergySpikeAttack : Script_Attack
     /// IMPORTANT: MAKE SURE THIS MATCHES THE TIMELINE LENGTH FOR ACCURATE ENDATTACK EVENTS
     [SerializeField] private float spikeTime;
     [SerializeField] protected Transform[] spikes;
-    [SerializeField] private Script_HitBox[] hitBoxes;
+    [SerializeField] protected Script_HitBox[] hitBoxes;
     [SerializeField] private bool noSFXWhenTalking;
     [SerializeField] protected bool isInUse;
 
@@ -33,9 +33,12 @@ public class Script_EnergySpikeAttack : Script_Attack
     protected virtual void OnValidate()
     {
         Script_EnergySpike[] spikeObjs = GetSpikeChildren();
+        
         spikes = new Transform[spikeObjs.Length];
         hitBoxes = new Script_HitBox[spikeObjs.Length];
+        
         GetComponent<Script_TimelineController>().playableDirectors.Clear();
+        
         for (int i = 0; i < spikeObjs.Length; i++)
         {
             spikes[i]   = spikeObjs[i].transform;
@@ -49,7 +52,7 @@ public class Script_EnergySpikeAttack : Script_Attack
 
     protected virtual Script_EnergySpike[] GetSpikeChildren()
     {
-        return this.transform.GetComponentsInChildren<Script_EnergySpike>();
+        return this.transform.GetComponentsInChildren<Script_EnergySpike>(includeInactive: true);
     }
 
     private void OnDisable()

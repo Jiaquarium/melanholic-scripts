@@ -18,6 +18,20 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
     [SerializeField] private Script_EnergySpikeParent[] spikeParents;
     [SerializeField] private PlayableDirector director;
     
+    protected override void OnValidate()
+    {
+        // Only need reference to hitboxes
+        Script_EnergySpike[] spikeObjs = GetSpikeChildren();
+        
+        spikes = new Transform[0];
+        hitBoxes = new Script_HitBox[spikeObjs.Length];
+        
+        for (int i = 0; i < spikeObjs.Length; i++)
+        {
+            hitBoxes[i] = spikeObjs[i].hitBox;
+        }
+    }
+    
     public void AlternatingSpikes()
     {
         didHit = false;

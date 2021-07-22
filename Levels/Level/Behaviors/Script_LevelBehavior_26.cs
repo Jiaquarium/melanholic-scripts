@@ -122,12 +122,14 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         IEnumerator WaitSpikeCageDown()
         {
-            yield return new WaitForSeconds(attackInterval);
-            
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
-            
             isPuzzleComplete = true;
             isCurrentPuzzleComplete = true;
+            
+            // Ensure spikes are done.
+            yield return new WaitForSeconds(attackInterval);
+            
+            // Spike cage down Timeline
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
 
             yield return new WaitForSeconds(beforePaintingDoneCutSceneWaitTime);
 
@@ -155,13 +157,17 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     private void AttackTimer()
     {
-        if (timer == 0) timer = attackInterval;
+        if (timer == 0)
+            timer = attackInterval;
 
-        timer -= Time.deltaTime;
+        // Use Smooth Delta Time to match Player Movement timer.
+        timer -= Time.smoothDeltaTime;
 
-        if (timer <= 0 && switchesState[0])
+        if (timer <= 0 && !isCurrentPuzzleComplete)
         {
-            if (!isPauseSpikes)     Attack();
+            if (!isPauseSpikes)
+                Attack();
+            
             timer = 0;
         }
     }
