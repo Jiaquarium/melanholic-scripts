@@ -103,33 +103,30 @@ public class Script_PlayerMovement : MonoBehaviour
             Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
         );
 
+        // ------------------------------------------------------------------
+        // New Button Presses
+        
         // Give priority to new button presses.
         // Only relevant for Keyboard.
         if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
-            xWeight = 0f;
-            yWeight = 1f;
-            dirVector = new Vector2(xWeight, yWeight);
+            UpWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Down))
         {
-            xWeight = 0f;
-            yWeight = -1f;
-            dirVector = new Vector2(xWeight, yWeight);
+            DownWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Right))
         {
-            xWeight = 1f;
-            yWeight = 0f;
-            dirVector = new Vector2(xWeight, yWeight);
+            RightWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Left))
         {
-            xWeight = -1f;
-            yWeight = 0f;
-            dirVector = new Vector2(xWeight, yWeight);
+            LeftWeights();
         }
-        // On button holds
+        // ------------------------------------------------------------------
+        // Button Holds
+        
         else if (
             Input.GetButton(Const_KeyCodes.Up)
             || Input.GetButton(Const_KeyCodes.Down)
@@ -137,40 +134,79 @@ public class Script_PlayerMovement : MonoBehaviour
             || Input.GetButton(Const_KeyCodes.Left)
         )
         {
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-        // No direction Input pressed.
-        else
-        {
-            xWeight = 0f;
-            yWeight = 0f;   
+            // If coming from a moving state, use the last weights;
+            if (isMoving)
+                dirVector = new Vector2(xWeight, yWeight);
+            
+            // If coming from a nonmoving state, must define new weights based on input axis,
+            // giving priority Up, Down, Left, then Right.
+            else
+            {
+                if (dirVector.y > 0)
+                    UpWeights();
+                else if (dirVector.y < 0)
+                    DownWeights();
+                else if (dirVector.x > 0)
+                    RightWeights();
+                else if (dirVector.x < 0)
+                    LeftWeights();
+            }
         }
         
+        void UpWeights()
+        {
+            xWeight = 0f;
+            yWeight = 1f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+
+        void DownWeights()
+        {
+            xWeight = 0f;
+            yWeight = -1f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+
+        void RightWeights()
+        {
+            xWeight = 1f;
+            yWeight = 0f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+
+        void LeftWeights()
+        {
+            xWeight = -1f;
+            yWeight = 0f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+
+
         if (isReversed)     HandleMoveReversed();
         else                HandleMoveDefault();
 
         void HandleMoveDefault()
         {
-            if (dirVector.x > 0)    
-                Move(Directions.Right);
-            else if (dirVector.x < 0)
-                Move(Directions.Left);
-            else if (dirVector.y > 0)
+            if (dirVector.y > 0)
                 Move(Directions.Up);
             else if (dirVector.y < 0)
                 Move(Directions.Down);
+            else if (dirVector.x > 0)    
+                Move(Directions.Right);
+            else if (dirVector.x < 0)
+                Move(Directions.Left);
         }
 
         void HandleMoveReversed()
         {
-            if (dirVector.x > 0)    
-                Move(Directions.Left);
-            else if (dirVector.x < 0)
-                Move(Directions.Right);
-            else if (dirVector.y > 0)
+            if (dirVector.y > 0)
                 Move(Directions.Down);
             else if (dirVector.y < 0)
                 Move(Directions.Up);
+            else if (dirVector.x > 0)    
+                Move(Directions.Left);
+            else if (dirVector.x < 0)
+                Move(Directions.Right);
         }
     }
 
