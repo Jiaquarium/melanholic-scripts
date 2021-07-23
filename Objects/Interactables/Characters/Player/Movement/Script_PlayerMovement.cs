@@ -17,11 +17,16 @@ using UnityEngine.Timeline;
 [RequireComponent(typeof(Script_PlayerCheckCollisions))]
 public class Script_PlayerMovement : MonoBehaviour
 {
+    // ------------------------------------------------------------------
+    // PlayerMovement Animator Controller Params
     public const string PlayerMovingAnimatorParam   = "PlayerMoving";
     public const string MoveXAnimatorParam          = "MoveX";
     public const string MoveZAnimatorParam          = "MoveZ";
     public const string LastMoveXAnimatorParam      = "LastMoveX";
     public const string LastMoveZAnimatorParam      = "LastMoveZ";
+    
+    // ------------------------------------------------------------------
+    // Input Codes
     private const string Horizontal                  = "Horizontal";
     private const string Vertical                    = "Vertical";
     
@@ -41,6 +46,8 @@ public class Script_PlayerMovement : MonoBehaviour
     [SerializeField] private TimelineAsset moveUpTimeline;
     [SerializeField] private TimelineAsset enterElevatorTimeline;
 
+    [SerializeField] private RuntimeAnimatorController defaultAnimatorController;
+
     private float repeatDelay;
     private Script_Game game;
     
@@ -53,7 +60,7 @@ public class Script_PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Transform grid;
 
-    public Directions lastMove;
+    [SerializeField] private Directions lastMove;
     public float timer;
     public float changeDirectionTimer;
 
@@ -75,9 +82,19 @@ public class Script_PlayerMovement : MonoBehaviour
         get => player.interactionBoxController;
     }
 
+    public RuntimeAnimatorController DefaultAnimatorController
+    {
+        get => defaultAnimatorController;
+    }
+
     public float Progress
     {
         get => 1 - timer / repeatDelay;
+    }
+
+    public Directions LastMove
+    {
+        get => lastMove;
     }
     
     void OnDestroy()
