@@ -11,13 +11,27 @@ public static class Const_Dev
     ///     if (!Debug.isDebugBuild || !Const_Dev.IsDevMode)    { do prod tasks; }
     /// </summary>
     
-    // False for dev prod.                                          // Settings for Release
+                                                                    // Settings for Release
     public readonly static bool GiveItems       = false;            // false
+    
+    // False for "dev-prod".
     public readonly static bool IsDevMode       = false;            // false
+    
     public readonly static bool IsPersisting    = true;             // true
+    
     public readonly static bool IsPGVersion     = false;            // false
     
-    // True for release builds. For things we want only in prod
-    // but not in dev-prod.
+    // Toggle to turn off "time damage" to Player.
+    public readonly static bool IsNoTimeHurt    = false;            // false
+    
+    // Toggle to force camera guides on in prod.
+    public readonly static bool IsCamGuides     = false;            // false
+
+    // Toggle to force 
+    
+    // True for release builds.
+    // Forces spawn in hotel.
     public readonly static bool IsProd          = true;             // true
+    
+    public readonly static string Lang          = "EN";             // "EN"
 }

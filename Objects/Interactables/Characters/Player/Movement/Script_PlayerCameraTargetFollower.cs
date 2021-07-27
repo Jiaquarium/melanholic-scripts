@@ -12,10 +12,7 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
 
     void Awake()
     {
-        if (!Const_Dev.IsDevMode)
-        {
-            graphics.gameObject.SetActive(false);
-        }
+        graphics.gameObject.SetActive(Const_Dev.IsCamGuides);
     }
     
     void Update()
