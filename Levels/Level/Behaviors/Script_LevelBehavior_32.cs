@@ -274,7 +274,19 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             default:
                 break;
         }
-    }        
+
+        // TBD TODO: Remove Only for Dev
+        if (Const_Dev.IsTrueEnding)
+        {
+            game.ActiveEnding = Script_TransitionManager.Endings.True;
+            HandleEndingExitState(true);
+        }
+        else if (Const_Dev.IsGoodEnding)
+        {
+            game.ActiveEnding = Script_TransitionManager.Endings.Good;
+            HandleEndingExitState(true);
+        }
+    }
 }
 
 #if UNITY_EDITOR

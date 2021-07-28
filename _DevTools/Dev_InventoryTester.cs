@@ -55,6 +55,15 @@ public class Dev_InventoryTester : MonoBehaviour
         AddSuperSmallKey();
     }
 
+    public void GrandMirror()
+    {
+        AddPsychicDuck();
+        AddAnimalWithin();
+        AddBoarNeedle();
+        AddIceSpike();
+        AddMelancholyPiano();
+    }
+    
     public void WeekendCycle()
     {
         AddPsychicDuck();

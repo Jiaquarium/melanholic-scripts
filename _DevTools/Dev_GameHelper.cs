@@ -81,22 +81,6 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(WellsWorldEntrance);
     }
 
-    // Set to Last Elevator to go to Grand Mirror Room as if just completed Eileen's Mind Quest. 
-    public void BeforeGrandMirror()
-    {
-        Script_Game.Game.AddItemById(Const_Items.PsychicDuckId);
-        Script_Game.Game.AddItemById(Const_Items.AnimalWithinId);
-        Script_Game.Game.AddItemById(Const_Items.MelancholyPianoId);
-        Script_Game.Game.AddItemById(Const_Items.BoarNeedleId);
-        Script_Game.Game.AddItemById(Const_Items.IceSpikeId);
-        
-        LastElevatorBehavior.GotPsychicDuck = true;   
-        EileensMindBehavior.isPuzzleComplete = true;
-        EileensMindBehavior.isCurrentPuzzleComplete = true;
-        MynesGrandMirrorRoomBehavior.IsDone = false;
-        Teleport(LastElevatorEntrance);
-    }
-
     public void BuildSetup()
     {
         runsManager.StartWeekdayCycle();
@@ -134,6 +118,26 @@ public class Dev_GameHelper : MonoBehaviour
         Script_ScarletCipherManager.Control.Dev_ForceSolveAllMirrors();
     }
 
+    public void SaveCurrent()
+    {
+        Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.Initialize); 
+    }
+
+    private void Teleport(Script_ExitMetadata exit)
+    {
+        Script_Game.Game.Exit(
+            exit.data.level,
+            exit.data.playerSpawn,
+            exit.data.facingDirection,
+            isExit: true,
+            isSilent: false,
+            exitType: Script_Exits.ExitType.Default
+        );   
+    }
+
+    // ----------------------------------------------------------------------
+    // Game States
+
     // Set current save state to the Weekend Cycle.
     public void WeekendCycle()
     {
@@ -143,6 +147,34 @@ public class Dev_GameHelper : MonoBehaviour
         // Set Items for Weekend Cycle.
         inventoryTester.WeekendCycle();
         
+        ToGrandMirrorState();
+
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        // Set Run and Cycle data to Weekend Thursday.
+        Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
+    }
+
+    // Set to Last Elevator to go to Grand Mirror Room as if just completed Eileen's Mind Quest. 
+    public void BeforeGrandMirror()
+    {
+        ToGrandMirrorState();
+        MynesGrandMirrorRoomBehavior.IsDone = false;
+
+        // Set Items for Weekend Cycle.
+        inventoryTester.GrandMirror();
+
+        Teleport(LastElevatorEntrance);
+    }
+
+    public void WeekendWithLantern()
+    {
+        Script_Game.Game.AddItemById(Const_Items.LetThereBeLightId);   
+        WeekendCycle();
+    }
+
+    private void ToGrandMirrorState()
+    {
         // Set State at this point in game.
         woodsBehavior.didStartThought                               = true;
         
@@ -160,29 +192,9 @@ public class Dev_GameHelper : MonoBehaviour
         EileensMindBehavior.gotIceSpikeSticker                      = true;
 
         LastElevatorBehavior.GotPsychicDuck                         = true;
-
-        MynesGrandMirrorRoomBehavior.IsDone                         = true;
-
-        // Set Run and Cycle data to Weekend Thursday.
-        Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
     }
 
-    public void SaveCurrent()
-    {
-        Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.Initialize); 
-    }
-
-    private void Teleport(Script_ExitMetadata exit)
-    {
-        Script_Game.Game.Exit(
-            exit.data.level,
-            exit.data.playerSpawn,
-            exit.data.facingDirection,
-            isExit: true,
-            isSilent: false,
-            exitType: Script_Exits.ExitType.Default
-        );   
-    }
+    // ----------------------------------------------------------------------
 
     #if UNITY_EDITOR
     [CustomEditor(typeof(Dev_GameHelper))]
@@ -243,14 +255,19 @@ public class Dev_GameHelper : MonoBehaviour
                 t.SaveCurrent();
             }
 
+            if (GUILayout.Button("Last Elevator Before Grand Mirror"))
+            {
+                t.BeforeGrandMirror();
+            }
+            
             if (GUILayout.Button("Weekend Start"))
             {
                 t.WeekendCycle();
             }
 
-            if (GUILayout.Button("Last Elevator Before Grand Mirror"))
+            if (GUILayout.Button("Weekend Start with Lantern"))
             {
-                t.BeforeGrandMirror();
+                t.WeekendWithLantern();
             }
 
             EditorGUILayout.LabelField("Build Settings", EditorStyles.boldLabel);
