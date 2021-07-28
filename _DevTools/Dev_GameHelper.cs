@@ -24,14 +24,14 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_RunsManager runsManager;
 
     // ----------------------------------------------------------------------
-    // Weekday Cycle State
+    // Level Behaviors
     [SerializeField] private Script_LevelBehavior_0 woodsBehavior;
     [SerializeField] private Script_LevelBehavior_4 hallwayWithSecretBehavior;
     [SerializeField] private Script_LevelBehavior_10 IdsRoomBehavior;
     [SerializeField] private Script_LevelBehavior_21 EileensRoomBehavior;
     [SerializeField] private Script_LevelBehavior_25 ElleniasRoomBehavior;
-    [SerializeField] private Script_LevelBehavior_27 LastElevatorBehavior;
     [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;
+    [SerializeField] private Script_LevelBehavior_27 LastElevatorBehavior;
     [SerializeField] private Script_LevelBehavior_48 MynesGrandMirrorRoomBehavior;
 
     // ----------------------------------------------------------------------
@@ -79,6 +79,22 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToWellsWorld()
     {
         Teleport(WellsWorldEntrance);
+    }
+
+    // Set to Last Elevator to go to Grand Mirror Room as if just completed Eileen's Mind Quest. 
+    public void BeforeGrandMirror()
+    {
+        Script_Game.Game.AddItemById(Const_Items.PsychicDuckId);
+        Script_Game.Game.AddItemById(Const_Items.AnimalWithinId);
+        Script_Game.Game.AddItemById(Const_Items.MelancholyPianoId);
+        Script_Game.Game.AddItemById(Const_Items.BoarNeedleId);
+        Script_Game.Game.AddItemById(Const_Items.IceSpikeId);
+        
+        LastElevatorBehavior.GotPsychicDuck = true;   
+        EileensMindBehavior.isPuzzleComplete = true;
+        EileensMindBehavior.isCurrentPuzzleComplete = true;
+        MynesGrandMirrorRoomBehavior.IsDone = false;
+        Teleport(LastElevatorEntrance);
     }
 
     public void BuildSetup()
@@ -176,6 +192,8 @@ public class Dev_GameHelper : MonoBehaviour
             DrawDefaultInspector();
 
             Dev_GameHelper t = (Dev_GameHelper)target;
+            
+            EditorGUILayout.LabelField("Spawns", EditorStyles.boldLabel);
             if (GUILayout.Button("DefaultPlayerSpawnPos()"))
             {
                 t.DefaultPlayerSpawnPos();
@@ -206,7 +224,7 @@ public class Dev_GameHelper : MonoBehaviour
                 t.ExitToWellsWorld();
             }
 
-            GUILayout.Space(12);
+            EditorGUILayout.LabelField("Painting Quests", EditorStyles.boldLabel);
 
             if (GUILayout.Button("All Quests Done Today"))
             {
@@ -218,7 +236,7 @@ public class Dev_GameHelper : MonoBehaviour
                 t.SetQuestsDoneDynamic();
             }
 
-            GUILayout.Space(12);
+            EditorGUILayout.LabelField("Game State", EditorStyles.boldLabel);
 
             if (GUILayout.Button("Save Current"))
             {
@@ -230,7 +248,12 @@ public class Dev_GameHelper : MonoBehaviour
                 t.WeekendCycle();
             }
 
-            GUILayout.Space(12);
+            if (GUILayout.Button("Last Elevator Before Grand Mirror"))
+            {
+                t.BeforeGrandMirror();
+            }
+
+            EditorGUILayout.LabelField("Build Settings", EditorStyles.boldLabel);
 
             if (GUILayout.Button("Build Setup", GUILayout.Height(32)))
             {

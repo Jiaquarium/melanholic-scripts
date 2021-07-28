@@ -8,8 +8,22 @@ using UnityEditor;
 
 public class Dev_InventoryTester : MonoBehaviour
 {
+    public Dev_InventoryTester Control;
+    
     public string itemId;
 
+    void Awake()
+    {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    
     void Start()
     {
         if (Const_Dev.GiveItems)

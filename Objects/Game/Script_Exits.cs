@@ -288,6 +288,8 @@ public class Script_Exits : MonoBehaviour
         // leave the state as cut scene if the exit FollowUp is a cut scene though
         if (game.state == Const_States_Game.InitiateLevel)
         {
+            Debug.Log($"{name} OnDoneExitingTransition currentFollowUp: {currentFollowUp}");
+            
             switch(currentFollowUp)
             {
                 case (FollowUp.Default):

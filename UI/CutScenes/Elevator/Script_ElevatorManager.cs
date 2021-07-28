@@ -108,6 +108,8 @@ public class Script_ElevatorManager : MonoBehaviour
             }
             else
             {
+                currentElevator = null;
+                
                 Debug.Log($"You are not exposing a public {elevatorName} property on current Level Behavior");
             }
         }
@@ -130,6 +132,8 @@ public class Script_ElevatorManager : MonoBehaviour
         }
         else
         {
+            Debug.Log($"{name} There is no current World Elevator, changing state to interact");
+            
             Script_Game.Game.ChangeStateInteract();
         }
 

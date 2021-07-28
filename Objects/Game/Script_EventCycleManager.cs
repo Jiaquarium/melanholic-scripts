@@ -96,17 +96,22 @@ public class Script_EventCycleManager : MonoBehaviour
     
     // ------------------------------------------------------------------
     // Weekend Cycle Event Conditions
+    
+    // If didn't talk to Ids on Day 1 Weekend (Thu), he will be in Sanctuary.
     public bool IsIdsInSanctuary()
     {
         return game.IsRunDay(Script_Run.DayId.fri) && !didTalkToIds;
     }
 
+    // If didn't talk to Ids by Day 3 Weekend (Sat), he will be dead (i.e. didn't talk to him on
+    // Day 1 and then didn't find him in the Sanctuary Day 2).
     public bool IsIdsDead()
     {
         return game.IsRunDay(Script_Run.DayId.sat) && !didTalkToIds;
     }
     
-    // Check if not the same day we talked with Ellenia and is still active count down
+    // Check if not the same day we talked with Ellenia and is still active count down.
+    // Must talk with Ellenia on previous day for her to ask about her painting.
     public bool IsElleniaComfortable()
     {
         bool isSameDayTalked    = didTalkToElleniaCountdown == ElleniaCountdownMax;
@@ -115,6 +120,7 @@ public class Script_EventCycleManager : MonoBehaviour
         return !isSameDayTalked && isTalkedActive;
     }
 
+    // If it's Day 3 and you didn't talk on previous day, then Ellenia will be hurt.
     public bool IsElleniaHurt()
     {
         return game.IsRunDay(Script_Run.DayId.sat) && didTalkToElleniaCountdown == 0;
