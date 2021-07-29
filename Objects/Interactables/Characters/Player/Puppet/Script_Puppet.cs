@@ -57,7 +57,7 @@ public class Script_Puppet : Script_PlayerCopy
     {
         // ------------------------------------------------------------------
         // Visuals
-        HandleGhostGraphics();
+        HandleIsMoving();
         // ------------------------------------------------------------------
 
         if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)

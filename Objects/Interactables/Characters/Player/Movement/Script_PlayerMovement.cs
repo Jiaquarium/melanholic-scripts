@@ -41,6 +41,8 @@ public class Script_PlayerMovement : MonoBehaviour
     [SerializeField] private float devRunRepeatDelay;
     
     public int exitUpStairsOrderLayer;
+    
+    // Tracks if Ghost is done animating and no axis is pressed.
     [SerializeField] private bool isMoving;
     
     [SerializeField] private TimelineAsset moveUpTimeline;
@@ -61,11 +63,13 @@ public class Script_PlayerMovement : MonoBehaviour
     private Transform grid;
 
     [SerializeField] private Directions lastMove;
-    public float timer;
-    public float changeDirectionTimer;
+    [SerializeField] private float timer;
+    [SerializeField] private float changeDirectionTimer;
 
     public float xWeight;
     public float yWeight;
+
+    private Script_PlayerCheckCollisions playerCheckCollisions;
 
     public Animator MyAnimator
     {
@@ -102,16 +106,16 @@ public class Script_PlayerMovement : MonoBehaviour
         if (playerGhost != null)    Destroy(playerGhost.gameObject);
     }
     
-    void Update()
+    void Awake()
     {
-        HandleChangeDirectionBufferTimer();   
+        playerCheckCollisions = GetComponent<Script_PlayerCheckCollisions>();
     }
-
+    
     public void HandleMoveInput(bool isReversed = false)
     {
         HandleWalkSpeed();
         
-        HandleMoveBufferTimer();
+        HandleMoveBufferTimers();
 
         HandleAnimations();
         HandleGhostTransform();
@@ -127,23 +131,27 @@ public class Script_PlayerMovement : MonoBehaviour
         // Only relevant for Keyboard.
         if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
+            Debug.Log($"{name}____{Const_KeyCodes.Up} New Button Press");
             UpWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Down))
         {
+            Debug.Log($"{name}____{Const_KeyCodes.Down} New Button Press");
             DownWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Right))
         {
+            Debug.Log($"{name}____{Const_KeyCodes.Right} New Button Press");
             RightWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Left))
         {
+            Debug.Log($"{name}____{Const_KeyCodes.Left} New Button Press");
             LeftWeights();
         }
+        
         // ------------------------------------------------------------------
         // Button Holds
-        
         else if (
             Input.GetButton(Const_KeyCodes.Up)
             || Input.GetButton(Const_KeyCodes.Down)
@@ -151,14 +159,21 @@ public class Script_PlayerMovement : MonoBehaviour
             || Input.GetButton(Const_KeyCodes.Left)
         )
         {
-            // If coming from a moving state, use the last weights;
-            if (isMoving)
+            // If coming from a moving state, use the last weights if lastMove is still being held down.
+            // (Note: isMoving is reset at every level initialization)
+            if (isMoving && Input.GetButton(lastMove.DirectionToKeyCode()))
+            {
+                Debug.Log($"{name}____isMoving: {isMoving}, xWeight: {xWeight}, yWeight: {yWeight}");
+
                 dirVector = new Vector2(xWeight, yWeight);
+            }
             
             // If coming from a nonmoving state, must define new weights based on input axis,
             // giving priority Up, Down, Left, then Right.
             else
             {
+                Debug.Log($"{name}____coming from nonmoving state, dirVector.x: {dirVector.x} dirVector.y: {dirVector.y}");
+                
                 if (dirVector.y > 0)
                     UpWeights();
                 else if (dirVector.y < 0)
@@ -169,35 +184,6 @@ public class Script_PlayerMovement : MonoBehaviour
                     LeftWeights();
             }
         }
-        
-        void UpWeights()
-        {
-            xWeight = 0f;
-            yWeight = 1f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
-        void DownWeights()
-        {
-            xWeight = 0f;
-            yWeight = -1f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
-        void RightWeights()
-        {
-            xWeight = 1f;
-            yWeight = 0f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
-        void LeftWeights()
-        {
-            xWeight = -1f;
-            yWeight = 0f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
 
         if (isReversed)     HandleMoveReversed();
         else                HandleMoveDefault();
@@ -225,15 +211,100 @@ public class Script_PlayerMovement : MonoBehaviour
             else if (dirVector.x < 0)
                 Move(Directions.Right);
         }
+
+        void UpWeights()
+        {
+            xWeight = 0f;
+            yWeight = 1f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+
+        void DownWeights()
+        {
+            xWeight = 0f;
+            yWeight = -1f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+
+        void RightWeights()
+        {
+            xWeight = 1f;
+            yWeight = 0f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
+
+        void LeftWeights()
+        {
+            xWeight = -1f;
+            yWeight = 0f;
+            dirVector = new Vector2(xWeight, yWeight);
+        }
     }
 
-    public void HandleMoveBufferTimer()
+    public void Move(Directions dir)
+    {
+        // Refresh direction change buffer when coming from nonmoving state.
+        if (!isMoving)
+            changeDirectionTimer = 0f;
+
+        // When changing directions. 
+        if (dir != lastMove)
+        {
+            // Allow for first instant direction change and buffer preceding ones.
+            if (changeDirectionTimer <= 0f)
+            {
+                timer = 0;
+
+                // Start buffering changing directions when coming from moving state.
+                if (isMoving)
+                    changeDirectionTimer = changeDirectionDelay;
+            }
+            // Subsequent direction changes are buffered by changeDirectionDelay,
+            // so Player can't spam direction changes to travel faster.
+            else
+            {
+                return;
+            }            
+        }
+
+        // Throttle repeat moves by timer.
+        if (timer > 0f)
+        {
+            return;
+        }
+
+        Vector3 desiredMove = directionToVector[dir];
+        
+        AnimatorSetDirection(dir);
+        PushPushables(dir);
+        
+        if (CheckCollisions(dir, ref desiredMove))
+        {
+            Debug.Log($"{name}____Player Collision");
+
+            return;
+        }
+
+        // DDR mode, only changing directions to look like dancing.
+        if (game.state == Const_States_Game.DDR)    return;
+        
+        timer = repeatDelay;
+
+        // Move player to desired location.
+        playerGhost.startLocation = player.location;
+        player.location += desiredMove;
+        playerGhost.location += desiredMove;
+        
+        // Move player pointer.
+        transform.position = player.location;
+        
+        isMoving = true;
+        lastMove = dir;
+    }
+
+    public void HandleMoveBufferTimers()
     {
         timer = Mathf.Max(0f, timer - Time.smoothDeltaTime);
-    }
-
-    public void HandleChangeDirectionBufferTimer()
-    {
         changeDirectionTimer = Mathf.Max(0f, changeDirectionTimer - Time.smoothDeltaTime);
     }
 
@@ -242,7 +313,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         // Manually reduce timer for non-moving game states where the timer is paused.
         if (isForceTimerUpdate)
-            HandleMoveBufferTimer();
+            HandleMoveBufferTimers();
 
         playerGhost.Move(Progress);
     }
@@ -276,58 +347,6 @@ public class Script_PlayerMovement : MonoBehaviour
         );
 
         playerGhost.SetMoveAnimation();
-    }
-
-    public void Move(Directions dir)
-    {
-        // Refresh direction change buffer when not moving;
-        if (!isMoving)
-            changeDirectionTimer = 0f;
-        
-        // Allow for first instant direction change and buffer preceding ones.
-        if (dir != lastMove && changeDirectionTimer == 0f)
-        {
-            timer = 0;
-            
-            // Start buffering changing directions when moving.
-            if (isMoving)
-                changeDirectionTimer = changeDirectionDelay;
-        }
-        // Subsequent direction changes are buffered so Player can't spam
-        // direction changes to travel faster.
-        else if (dir != lastMove && changeDirectionTimer > 0f)
-        {
-            return;
-        }
-
-        // Throttle repeat moves by timer.
-        if (timer != 0f)
-        {
-            return;
-        }
-
-        Vector3 desiredMove = directionToVector[dir];
-        
-        AnimatorSetDirection(dir);
-        PushPushables(dir);
-        
-        if (CheckCollisions(dir, ref desiredMove))   return;
-
-        // DDR mode, only changing directions to look like dancing.
-        if (game.state == Const_States_Game.DDR)    return;
-        
-        timer = repeatDelay;
-
-        // Move player to desired location.
-        playerGhost.startLocation = player.location;
-        player.location += desiredMove;
-        playerGhost.location += desiredMove;
-        
-        // Move player pointer.
-        transform.position = player.location;
-        
-        isMoving = true;
-        lastMove = dir;
     }
 
     public void AnimatorSetDirection(Directions dir)
@@ -376,9 +395,7 @@ public class Script_PlayerMovement : MonoBehaviour
                 return true;
         }
         
-        return GetComponent<Script_PlayerCheckCollisions>().CheckCollisions(
-            player.location, dir, ref desiredMove
-        );
+        return playerCheckCollisions.CheckCollisions(player.location, dir, ref desiredMove);
     }
 
     void PushPushables(Directions dir)
@@ -391,12 +408,10 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    public void TrackPlayerGhost()
+    public void HandleIsMoving()
     {
         if (Progress >= 1f && isMoving)
         {
-            // Sprite must be visible before playerGhost invisible to avoid flicker.
-            // Only make visible if the player is no longer moving.
             Vector2 dirVector = new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
             if (dirVector == Vector2.zero)
             {
@@ -539,11 +554,21 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         playerGhost.SwitchLight(isOn);
     }
-    
+
+    // Called at each level initialization.
     public void InitializeOnLevel(Transform _grid)
     {
         playerGhost.Setup(player);
         grid = _grid;
+
+        timer = 0f;
+        changeDirectionTimer = 0f;
+        
+        xWeight = 0f;
+        yWeight = 0f;
+
+        lastMove = Directions.None;
+        isMoving = false;
     }
 
     // ------------------------------------------------------------------
@@ -597,7 +622,5 @@ public class Script_PlayerMovement : MonoBehaviour
         playerGhost.transform.SetParent(game.playerContainer, false);
         
         directionToVector = Script_Utils.GetDirectionToVectorDict();
-
-        timer = repeatDelay;
     }
 }

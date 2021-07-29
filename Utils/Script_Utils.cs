@@ -99,6 +99,40 @@ public static class Script_Utils
         return GetDirectionToVectorDict()[dir];
     }
 
+    public static Directions KeyCodeToDirections(this string keyCode)
+    {
+        switch (keyCode)
+        {
+            case Const_KeyCodes.Up:
+                return Directions.Up;
+            case Const_KeyCodes.Down:
+                return Directions.Down;
+            case Const_KeyCodes.Right:
+                return Directions.Right;
+            case Const_KeyCodes.Left:
+                return Directions.Left;
+            default:
+                return Directions.None;
+        }
+    }
+
+    public static string DirectionToKeyCode(this Directions dir)
+    {
+        switch (dir)
+        {
+            case Directions.Up:
+                return Const_KeyCodes.Up;
+            case Directions.Down:
+                return Const_KeyCodes.Down;
+            case Directions.Right:
+                return Const_KeyCodes.Right;
+            case Directions.Left:
+                return Const_KeyCodes.Left;
+            default:
+                return null;
+        }
+    }
+
     public static Vector3 MovesToVector(Model_MoveSet moveSet)
     {
         Dictionary<Directions, Vector3> directions = GetDirectionToVectorDict();

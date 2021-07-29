@@ -14,7 +14,7 @@ public class Script_PuppetMaster : Script_Puppet
     {
         // ------------------------------------------------------------------
         // Visuals
-        HandleGhostGraphics();
+        HandleIsMoving();
         // ------------------------------------------------------------------
 
         if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)

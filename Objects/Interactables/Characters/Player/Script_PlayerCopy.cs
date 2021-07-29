@@ -11,7 +11,7 @@ public class Script_PlayerCopy : Script_Player
     {
         // ------------------------------------------------------------------
         // Visuals
-        HandleGhostGraphics();
+        HandleIsMoving();
         // ------------------------------------------------------------------
 
         if (game.state == Const_States_Game.Interact)

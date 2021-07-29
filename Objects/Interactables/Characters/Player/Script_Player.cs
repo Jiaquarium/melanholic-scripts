@@ -108,7 +108,7 @@ public class Script_Player : Script_Character
     {   
         // ------------------------------------------------------------------
         // Visuals
-        HandleGhostGraphics();
+        HandleIsMoving();
         // ------------------------------------------------------------------
 
         if (game.state == Const_States_Game.Interact)
@@ -268,17 +268,9 @@ public class Script_Player : Script_Character
     
     // ------------------------------------------------------------------
     // Graphics
-    protected void HandleGhostGraphics()
+    protected void HandleIsMoving()
     {
-        if (isPlayerGhostMatchSortingLayer)
-        {
-            playerMovementHandler.PlayerGhostSortOrder(
-                Script_Utils.FindComponentInChildWithTag<SpriteRenderer>(
-                    this.gameObject, Const_Tags.PlayerAnimator
-                ).sortingOrder
-            );
-        }
-        playerMovementHandler.TrackPlayerGhost();
+        playerMovementHandler.HandleIsMoving();
     }
 
     public void ChangeMaterial(Script_PlayerGraphics.Materials material)
