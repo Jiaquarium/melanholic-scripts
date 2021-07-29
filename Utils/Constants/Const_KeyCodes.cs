@@ -29,4 +29,6 @@ public static class Const_KeyCodes
     public const string Effect9 = "Effect9";
     public const string Horizontal = "Horizontal";
     public const string Vertical = "Vertical";
+    
+    public const string Dev = "Dev";
 }

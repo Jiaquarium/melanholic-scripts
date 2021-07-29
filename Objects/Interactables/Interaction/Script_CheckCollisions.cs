@@ -22,7 +22,6 @@ public class Script_CheckCollisions : MonoBehaviour
         int desiredY = (int)Mathf.Round((currentLocation + desiredDirection).y);
         int desiredZ = (int)Mathf.Round((currentLocation + desiredDirection).z);
         
-        // Vector3Int tileWorldLocation = new Vector3Int(adjustedDesiredX, adjustedDesiredZ, 0);
         Vector3Int tileWorldLocation = new Vector3Int(desiredX, desiredY, desiredZ);
         
         bool isStairs = ModifyElevation(currentLocation, dir, ref desiredMove);
