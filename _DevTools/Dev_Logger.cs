@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using System.Text.RegularExpressions;
      
 public class Dev_Logger : MonoBehaviour
 {
-    static string myLog = "";
-    
+    static private int maxChars = 10000;
+    static private int maxLinesPerDisplay = 80;
+    static string myLog = new string(' ', maxChars);
+
     [SerializeField] private CanvasGroup devLoggerCanvasGroup; 
-    [SerializeField] private TextMeshProUGUI TMP;
+    [SerializeField] private TextMeshProUGUI displayText0;
+    [SerializeField] private TextMeshProUGUI displayText1;
     
     // State
     [SerializeField] private bool isActive;
@@ -43,7 +48,13 @@ public class Dev_Logger : MonoBehaviour
         HandleInput();
 
         if (isActive)
-            TMP.text = myLog;
+        {
+            // Put in displays Lines they can hold.
+            string[] logs = Regex.Split(myLog, "\r\n|\r|\n");
+            
+            displayText0.text = String.Join("\n", logs, 0, maxLinesPerDisplay);
+            displayText1.text = String.Join("\n", logs, maxLinesPerDisplay, maxLinesPerDisplay);
+        }
     }
 
     // Always log in background unless release builds.
@@ -52,10 +63,9 @@ public class Dev_Logger : MonoBehaviour
         output = logString;
         stack = stackTrace;
         myLog = output + "\n" + myLog;
-        if (myLog.Length > 5000)
-        {
-            myLog = myLog.Substring(0, 4000);
-        }
+        
+        // Shorten log to what Displays can hold.
+        myLog = myLog.Substring(0, maxChars);
     }
 
     void HandleInput()

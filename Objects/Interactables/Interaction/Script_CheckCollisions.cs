@@ -27,11 +27,27 @@ public class Script_CheckCollisions : MonoBehaviour
         bool isStairs = ModifyElevation(currentLocation, dir, ref desiredMove);
         if (isStairs)                                                       return false;
 
-        if (CheckNotOffTilemap(tileWorldLocation))                          return true;
+        if (CheckNotOffTilemap(tileWorldLocation))
+        {
+            Debug.Log($"{name} Tilemap Collision at tileWorldLocation {tileWorldLocation}");
+            return true;
+        }
 
-        if (CheckInteractableBlocking(dir))                                 return true;
-        if (CheckPushableBlocking(dir))                                     return true;
-        if (CheckUniqueBlocking(dir))                                       return true;
+        if (CheckInteractableBlocking(dir))
+        {
+            Debug.Log($"{name} Interactable Collision at dir {dir}");
+            return true;
+        }
+        if (CheckPushableBlocking(dir))
+        {
+            Debug.Log($"{name} Pushable Collision at dir {dir}");
+            return true;
+        }
+        if (CheckUniqueBlocking(dir))
+        {
+            Debug.Log($"{name} Unique Collision at dir {dir}");
+            return true;
+        }
 
         return false;
     }
