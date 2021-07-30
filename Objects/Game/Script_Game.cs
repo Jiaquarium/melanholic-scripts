@@ -470,8 +470,8 @@ public class Script_Game : MonoBehaviour
             if (isLoadedGame)   OnDidLoad();
         }
         
-        // TODO: REMOVE (only for dev)
-        if (!Const_Dev.IsProd && !isLoadedGame && (Debug.isDebugBuild || Const_Dev.IsDevMode))
+        // TBD TODO: REMOVE (only for dev)
+        if (Const_Dev.IsDevSpawn && !isLoadedGame)
         {
             OnNewGameDev();
 
@@ -625,13 +625,6 @@ public class Script_Game : MonoBehaviour
         lastState = prevLastState;
         Debug.Log($"ChangeStateLastState(): Game.state changed to: {state}; Game.lastState now = {lastState}");
     }
-
-    // public void ChangeStateToConvo()
-    // {
-    //     Debug.Log($"Game.state changed to: {Const_States_Game.DDR}; Game.lastState before this = {lastState}");
-    //     lastState = state;
-    //     state = Const_States_Game.Convo;
-    // }
 
     public void InitiateLevel()
     {
