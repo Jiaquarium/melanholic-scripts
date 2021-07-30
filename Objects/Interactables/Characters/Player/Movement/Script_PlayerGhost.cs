@@ -117,12 +117,13 @@ public class Script_PlayerGhost : MonoBehaviour
         }
     }
 
-    public void SetMoveAnimation()
+    public void SetMoveAnimation(bool isMoving)
     {
-        animator.SetBool(
-            Script_PlayerMovement.PlayerMovingAnimatorParam,
-            Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f
-        );
+        bool isMovingAnimation = isMoving
+            || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
+            || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f;
+        
+        animator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, isMovingAnimation);
     }
 
     public void StopMoveAnimation()

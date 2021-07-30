@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using System;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using System.Linq;
 
 /// <summary>
 /// For movement, uses PlayerGhost to simulate movement. We actually move Player as the pointer
@@ -25,18 +26,12 @@ public class Script_PlayerMovement : MonoBehaviour
     public const string LastMoveXAnimatorParam      = "LastMoveX";
     public const string LastMoveZAnimatorParam      = "LastMoveZ";
     
-    // ------------------------------------------------------------------
-    // Input Codes
-    private const string Horizontal                  = "Horizontal";
-    private const string Vertical                    = "Vertical";
-    
     [SerializeField] private Animator animator;
     
     public Script_PlayerGhost PlayerGhostPrefab;
     public Script_PlayerReflection PlayerReflectionPrefab;
 
     [SerializeField] private float defaultRepeatDelay;
-    [SerializeField] private float changeDirectionDelay;
     [SerializeField] private float runRepeatDelay;
     [SerializeField] private float devRunRepeatDelay;
     
@@ -64,7 +59,12 @@ public class Script_PlayerMovement : MonoBehaviour
 
     [SerializeField] private Directions lastMove;
     [SerializeField] private float timer;
-    [SerializeField] private float changeDirectionTimer;
+
+    [SerializeField] private Script_LimitedQueue<Directions> inputBuffer = new Script_LimitedQueue<Directions>(4);
+    
+    // TBD TODO: Remove, Only for Dev
+    [Tooltip("Only to show what is happening in the underlying Queue")]
+    [SerializeField] private List<Directions> inputBufferDisplay = new List<Directions>(4);
 
     public float xWeight;
     public float yWeight;
@@ -110,6 +110,12 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         playerCheckCollisions = GetComponent<Script_PlayerCheckCollisions>();
     }
+
+    void LateUpdate()
+    {
+        if (Const_Dev.IsDevMode)
+            inputBufferDisplay = inputBuffer.ToList();
+    }
     
     public void HandleMoveInput(bool isReversed = false)
     {
@@ -120,16 +126,56 @@ public class Script_PlayerMovement : MonoBehaviour
         HandleAnimations();
         HandleGhostTransform();
 
+        // ------------------------------------------------------------------
+        // Input Buffer
+        
+        // Fill buffer with any inputs caught during buffer time.
+        if (timer > 0)
+        {
+            BufferInput();
+            return;
+        }
+
+        Directions bufferedInput = Directions.None;
+        if (inputBuffer.Count > 0)
+            bufferedInput = inputBuffer.Peek();
+        
+        // ------------------------------------------------------------------
+
         Vector2 dirVector = new Vector2(
             Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
         );
 
         // ------------------------------------------------------------------
+        // Buffered Moves
+        // Give priority to new button presses.
+        
+        if (bufferedInput == Directions.Up)
+        {
+            Debug.Log($"Using bufferedInput: {bufferedInput}");
+            UpWeights();
+        }
+        else if (bufferedInput == Directions.Down)
+        {
+            Debug.Log($"Using bufferedInput: {bufferedInput}");
+            DownWeights();
+        }
+        else if (bufferedInput == Directions.Right)
+        {
+            Debug.Log($"Using bufferedInput: {bufferedInput}");
+            RightWeights();
+        }
+        else if (bufferedInput == Directions.Left)
+        {
+            Debug.Log($"Using bufferedInput: {bufferedInput}");
+            LeftWeights();
+        }
+        
+        // ------------------------------------------------------------------
         // New Button Presses
         
-        // Give priority to new button presses.
         // Only relevant for Keyboard.
-        if (Input.GetButtonDown(Const_KeyCodes.Up))
+        else if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
             Debug.Log($"{name}____{Const_KeyCodes.Up} New Button Press");
             UpWeights();
@@ -149,9 +195,10 @@ public class Script_PlayerMovement : MonoBehaviour
             Debug.Log($"{name}____{Const_KeyCodes.Left} New Button Press");
             LeftWeights();
         }
-        
+
         // ------------------------------------------------------------------
         // Button Holds
+
         else if (
             Input.GetButton(Const_KeyCodes.Up)
             || Input.GetButton(Const_KeyCodes.Down)
@@ -187,6 +234,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
         if (isReversed)     HandleMoveReversed();
         else                HandleMoveDefault();
+
+        inputBuffer.Clear();
 
         void HandleMoveDefault()
         {
@@ -241,32 +290,33 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
+    // Buffer new button presses during buffer timer.
+    private void BufferInput()
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.Up))
+        {
+            Debug.Log($"{name}____{Const_KeyCodes.Up} BUFFERED New Button Press");
+            inputBuffer.Enqueue(Const_KeyCodes.Up.KeyCodeToDirections());
+        }
+        else if (Input.GetButtonDown(Const_KeyCodes.Down))
+        {
+            Debug.Log($"{name}____{Const_KeyCodes.Down} BUFFERED New Button Press");
+            inputBuffer.Enqueue(Const_KeyCodes.Down.KeyCodeToDirections());
+        }
+        else if (Input.GetButtonDown(Const_KeyCodes.Right))
+        {
+            Debug.Log($"{name}____{Const_KeyCodes.Right} BUFFERED New Button Press");
+            inputBuffer.Enqueue(Const_KeyCodes.Right.KeyCodeToDirections());
+        }
+        else if (Input.GetButtonDown(Const_KeyCodes.Left))
+        {
+            Debug.Log($"{name}____{Const_KeyCodes.Left} BUFFERED New Button Press");
+            inputBuffer.Enqueue(Const_KeyCodes.Left.KeyCodeToDirections());
+        }
+    }
+
     public void Move(Directions dir)
     {
-        // Refresh direction change buffer when coming from nonmoving state.
-        if (!isMoving)
-            changeDirectionTimer = 0f;
-
-        // When changing directions. 
-        if (dir != lastMove)
-        {
-            // Allow for first instant direction change and buffer preceding ones.
-            if (changeDirectionTimer <= 0f)
-            {
-                timer = 0;
-
-                // Start buffering changing directions when coming from moving state.
-                if (isMoving)
-                    changeDirectionTimer = changeDirectionDelay;
-            }
-            // Subsequent direction changes are buffered by changeDirectionDelay,
-            // so Player can't spam direction changes to travel faster.
-            else
-            {
-                return;
-            }            
-        }
-
         // Throttle repeat moves by timer.
         if (timer > 0f)
         {
@@ -305,7 +355,6 @@ public class Script_PlayerMovement : MonoBehaviour
     public void HandleMoveBufferTimers()
     {
         timer = Mathf.Max(0f, timer - Time.smoothDeltaTime);
-        changeDirectionTimer = Mathf.Max(0f, changeDirectionTimer - Time.smoothDeltaTime);
     }
 
     // Handle the animation of ghost following this pointer.
@@ -341,12 +390,12 @@ public class Script_PlayerMovement : MonoBehaviour
     // Handle Moving State in Animator.
     private void HandleAnimations()
     {
-        animator.SetBool(
-            PlayerMovingAnimatorParam,
-            Input.GetAxis(Vertical) != 0f || Input.GetAxis(Horizontal) != 0f
-        );
+        bool isMovingAnimation = isMoving
+            || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
+            || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f;
+        animator.SetBool(PlayerMovingAnimatorParam, isMovingAnimation);
 
-        playerGhost.SetMoveAnimation();
+        playerGhost.SetMoveAnimation(isMoving);
     }
 
     public void AnimatorSetDirection(Directions dir)
@@ -412,7 +461,10 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (Progress >= 1f && isMoving)
         {
-            Vector2 dirVector = new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
+            Vector2 dirVector = new Vector2(
+                Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
+            );
+            
             if (dirVector == Vector2.zero)
             {
                 playerGhost.SetIsNotMoving();
@@ -562,7 +614,6 @@ public class Script_PlayerMovement : MonoBehaviour
         grid = _grid;
 
         timer = 0f;
-        changeDirectionTimer = 0f;
         
         xWeight = 0f;
         yWeight = 0f;
