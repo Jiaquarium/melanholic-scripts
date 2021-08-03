@@ -20,6 +20,6 @@ public class Script_Item : ScriptableObject
 
     public string Description
     {
-        get => Script_Dialogue.Text[id].GetProp<string>(Const_Dev.Lang) ?? description;
+        get => Script_UIText.Text[id].GetProp<string>(Const_Dev.Lang) ?? description;
     }
 }

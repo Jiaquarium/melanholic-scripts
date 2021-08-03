@@ -23,7 +23,7 @@ public class Script_TMProPopulator : MonoBehaviour
     {
         if (!String.IsNullOrEmpty(Id))
         {
-            string unformatted = Script_Dialogue.Text[Id].EN;
+            string unformatted = Script_UIText.Text[Id].EN;
             string formatted = Script_Utils.FormatString(unformatted);
             
             GetComponent<TextMeshProUGUI>().text = formatted;
