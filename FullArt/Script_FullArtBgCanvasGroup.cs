@@ -14,7 +14,7 @@ public class Script_FullArtBgCanvasGroup : MonoBehaviour
 
     public void FadeIn(FadeSpeeds fadeSpeed, Action cb, float maxAlpha = 1f)
     {
-        float fadeInTime = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        float fadeInTime = Script_Utils.GetFadeTime(fadeSpeed);
         StartCoroutine(
             GetComponent<Script_CanvasGroupFadeInOut>()
                 .FadeInCo(fadeInTime, () => 
@@ -28,7 +28,7 @@ public class Script_FullArtBgCanvasGroup : MonoBehaviour
 
     public void FadeOut(FadeSpeeds fadeSpeed, Action cb)
     {
-        float fadeOutTime = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        float fadeOutTime = Script_Utils.GetFadeTime(fadeSpeed);
         StartCoroutine(
             GetComponent<Script_CanvasGroupFadeInOut>()
                 .FadeOutCo(fadeOutTime, () => 

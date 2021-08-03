@@ -118,7 +118,7 @@ public class Script_FollowPlayer : MonoBehaviour
             }
             if (isFadedOut || fadeOutCoroutine != null)     return;
             
-            float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+            float t = Script_Utils.GetFadeTime(fadeSpeed);
             isFadedIn = false;
             fadeOutCoroutine = StartCoroutine(spriteFader.FadeOutCo(
                 () => {
@@ -139,7 +139,7 @@ public class Script_FollowPlayer : MonoBehaviour
             }
             if (isFadedIn || fadeInCoroutine != null)       return;
             
-            float t = Script_GraphicsManager.GetFadeTime(fadeSpeed);
+            float t = Script_Utils.GetFadeTime(fadeSpeed);
             isFadedOut = false;
             fadeInCoroutine = StartCoroutine(spriteFader.FadeInCo(
                 () => {

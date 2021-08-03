@@ -325,7 +325,7 @@ public class Script_Player : Script_Character
                 this.gameObject,
                 Const_Tags.PlayerAnimator
             ).EnableWithOffset(
-                Script_Graphics.playerSortOrderOffset,
+                Script_SortingOrder.playerSortOrderOffset,
                 isAxisZ
             );
         }

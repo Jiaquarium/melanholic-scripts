@@ -51,7 +51,7 @@ public class Script_FullArtManager : MonoBehaviour
     /// </summary>
     public void Hide(FadeSpeeds fadeOutMode, Action cb)
     {
-        float fadeOutTime = Script_GraphicsManager.GetFadeTime(fadeOutMode); 
+        float fadeOutTime = Script_Utils.GetFadeTime(fadeOutMode); 
         StartCoroutine(
             fullArtCanvas
                 .GetComponent<Script_CanvasGroupFadeInOut>()

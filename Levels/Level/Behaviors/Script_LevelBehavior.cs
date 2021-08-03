@@ -53,13 +53,17 @@ public class Script_LevelBehavior : MonoBehaviour
     {
         if (levelVCam != null)
         {
-            Script_VCamManager.VCamMain?.DisableLevelVCam(levelVCam);
+            if (Script_VCamManager.VCamMain != null)
+            {
+                Script_VCamManager.VCamMain.DisableLevelVCam(levelVCam);
+
+                game.SnapCam(
+                    levelVCam.transform.position,
+                    Script_VCamManager.VCamMain.transform,
+                    Script_VCamManager.VCamMain.VCamera.CinemachineVirtualCamera
+                );
+            }
             
-            game.SnapCam(
-                levelVCam.transform.position,
-                Script_VCamManager.VCamMain?.transform,
-                Script_VCamManager.VCamMain?.VCamera.CinemachineVirtualCamera
-            );
         }
     }
     

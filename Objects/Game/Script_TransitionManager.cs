@@ -86,6 +86,7 @@ public class Script_TransitionManager : MonoBehaviour
         timelineFader.Open();
     }
 
+    // Fader that will show under Art Frame.
     public void TimelineFadeIn(float t, Action action)
     {
         timelineFader.FadeIn(t, action);

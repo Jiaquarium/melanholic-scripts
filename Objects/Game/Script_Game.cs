@@ -85,6 +85,8 @@ public class Script_Game : MonoBehaviour
     public Script_FullArtManager fullArtManager;
     public Script_CutSceneManager cutSceneManager;
     [SerializeField] private Script_PRCSManager PRCSManager;
+    [SerializeField] private Script_ArtFrameManager artFrameManager;
+    [SerializeField] private Script_GraphicsManager graphicsManager;
     
     [SerializeField] private Script_ElevatorManager elevatorManager;
     [SerializeField] private Script_ClockManager clockManager;
@@ -394,6 +396,8 @@ public class Script_Game : MonoBehaviour
         ChangeStateToInitiateLevel();
 
         // Setup Singletons, Dicts, Managers and Canvases
+        graphicsManager.Setup();
+        
         scarletCipherManager.Setup();
         namesManager.Setup();
         exitsHandler.Setup(this);
@@ -406,6 +410,7 @@ public class Script_Game : MonoBehaviour
         VCamManager.Setup();
         fullArtManager.Setup();
         PRCSManager.Setup();
+        artFrameManager.Setup();
         itemPickUpTheatricsManager.Setup();
         
         runsManager.Setup();

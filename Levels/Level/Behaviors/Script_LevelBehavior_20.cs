@@ -70,6 +70,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     private bool didMapNotification;
     private bool didIdsRun;
+    public bool didStartKingsIntro;
 
     private float fadeTime;
     
@@ -162,12 +163,14 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
         // Check for Psychic Duck
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        if (isPsychicDuckActive && !isKingIntroCutSceneDone)
+        if (isPsychicDuckActive && !isKingIntroCutSceneDone && !didStartKingsIntro)
         {
+            didStartKingsIntro = true;
+
             game.ChangeStateCutScene();
 
             Script_BackgroundMusicManager.Control.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
-            
+
             Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {
                 Script_Player p = game.GetPlayer();
                 
@@ -180,6 +183,12 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 timelineController.PlayableDirectorPlayFromTimelines(0, 0);
             });
         }
+    }
+
+    // Called from KingsIntro after Black Screen fades out.
+    public void OpenArtFrame()
+    {
+        Script_ArtFrameManager.Control.Open(null);
     }
 
     // Set King's Position to center of Stage frame
@@ -201,10 +210,12 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     {
         isKingIntroCutSceneDone = true;
         
-        Script_BackgroundMusicManager.Control.FadeInMed(() => {
+        Script_ArtFrameManager.Control.Close(() => {
             game.ChangeStateInteract();
             game.CanvasesInitialState();
-        }, Const_AudioMixerParams.ExposedBGVolume);
+        });
+
+        Script_BackgroundMusicManager.Control.FadeInMed(null, Const_AudioMixerParams.ExposedBGVolume);
     }
 
     // Ids intro run away cut scene on initial tutorial run.
@@ -348,7 +359,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 ManTrees[seasonInt].FadeIn(null);
                 WomanTrees[seasonInt].FadeIn(null);
 
-                fadeTime = Script_GraphicsManager.GetFadeTime(
+                fadeTime = Script_Utils.GetFadeTime(
                     WomanTrees[seasonInt].fadeSpeed
                 );
             }

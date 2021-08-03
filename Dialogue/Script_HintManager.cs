@@ -23,13 +23,13 @@ public class Script_HintManager : MonoBehaviour
 
         hintCanvasGroup.gameObject.SetActive(true);
         
-        float fadeTime = Script_GraphicsManager.GetFadeTime(hint.fadeSpeed);
+        float fadeTime = Script_Utils.GetFadeTime(hint.fadeSpeed);
         StartCoroutine(hintCanvasGroup.FadeInCo(fadeTime, cb));
     }
 
     public void FadeOut(Script_Hint hint, Action cb = null)
     {
-        float fadeTime = Script_GraphicsManager.GetFadeTime(hint.fadeSpeed);
+        float fadeTime = Script_Utils.GetFadeTime(hint.fadeSpeed);
         StartCoroutine(hintCanvasGroup.FadeOutCo(fadeTime, OnFadedOut));
 
         void OnFadedOut()

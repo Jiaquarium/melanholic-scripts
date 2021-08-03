@@ -11,14 +11,14 @@ public class Script_SeasonsTree : MonoBehaviour
     
     public void FadeOut(Action cb, float? _fadeTime = null)
     {
-        float fadeTime = _fadeTime ?? Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        float fadeTime = _fadeTime ?? Script_Utils.GetFadeTime(fadeSpeed);
 
         StartCoroutine(spriteFader.FadeOutCo(cb, fadeTime));
     }
 
     public void FadeIn(Action cb, float? _fadeTime = null)
     {
-        float fadeTime = _fadeTime ?? Script_GraphicsManager.GetFadeTime(fadeSpeed);
+        float fadeTime = _fadeTime ?? Script_Utils.GetFadeTime(fadeSpeed);
 
         StartCoroutine(spriteFader.FadeInCo(cb, fadeTime));
     }

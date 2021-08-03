@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class Script_SortingOrder : MonoBehaviour
 {
+    public static int playerSortOrderOffset = 0;
+    
     public int defaultSortingOrder;
     public int sortingOrderBase;
     public int offset;

@@ -126,15 +126,21 @@ public class Script_MynesMirror : Script_InteractableObjectText
     public void Intro()
     {
         game.ChangeStateCutScene();
-        Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror);
-
-        // BGM coroutine may still be running, so ensure to Pause in case it was stopped prematurely
-        // and never called its callback to pause BGM
-        game.PauseBgMusic();
-        game.PauseBgThemeSpeakers();
         
-        Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
-        bgThemePlayer.gameObject.SetActive(true);
+        Script_ArtFrameManager.Control.Open(OnArtFrameAnimationDone);
+        
+        void OnArtFrameAnimationDone()
+        {
+            Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror);
+
+            // BGM coroutine may still be running, so ensure to Pause in case it was stopped prematurely
+            // and never called its callback to pause BGM
+            game.PauseBgMusic();
+            game.PauseBgThemeSpeakers();
+            
+            Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+            bgThemePlayer.gameObject.SetActive(true);
+        }
     }
     
     /// <summary>
@@ -152,8 +158,11 @@ public class Script_MynesMirror : Script_InteractableObjectText
         );
         
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
-            game.ChangeStateInteract();
             Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId] = true;
+            
+            Script_ArtFrameManager.Control.Close(() => {
+                game.ChangeStateInteract();
+            });
         });
 
         HandleIsActivatedGraphics(true);

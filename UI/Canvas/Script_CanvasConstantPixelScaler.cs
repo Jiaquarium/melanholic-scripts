@@ -16,7 +16,12 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 {
     private static float scaleAnimateTime = 0.5f;
 
-    [SerializeField] private PixelPerfectCamera pixelPerfectCamera;
+    /// <summary>
+    /// Use Pixel Ratio that will always fit canvases to smaller than screen size.
+    /// </summary>
+    [SerializeField] private bool isUpscaledRTScaleFactor;
+    
+    [SerializeField] private Script_GraphicsManager graphics;
     
     [SerializeField] private int targetScaleFactor;
     [SerializeField] private int hiddenScaleFactor;
@@ -25,12 +30,14 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 
     void OnEnable()
     {
-        SetScaleFactor();
+        if (!isScaling)
+            SetScaleFactor();
     }
 
     void Start()
     {
-        SetScaleFactor();
+        if (!isScaling)
+            SetScaleFactor();
     }
 
     void Update()
@@ -42,10 +49,12 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     // Animate frame to appear by moving from a scale factor that is outside the viewport to one that is inside.
     public void AnimateOpen(Action cb)
     {
-        gameObject.SetActive(true);
+        SetScaleFactor();
         
         CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
         float scaleDecrease = hiddenScaleFactor - targetScaleFactor;
+        
+        gameObject.SetActive(true);
         
         isScaling = true;
         
@@ -78,9 +87,10 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 
     public void AnimateClose(Action cb)
     {
+        SetScaleFactor();
+        
         CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
         float scaleIncrease = hiddenScaleFactor - targetScaleFactor;
-
 
         gameObject.SetActive(true);
         
@@ -120,10 +130,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         // Catch when Singletons aren't set yet.
         try
         {
-            if (pixelPerfectCamera == null)
-                Setup();
-            
-            targetScaleFactor = pixelPerfectCamera.pixelRatio;
+            targetScaleFactor = isUpscaledRTScaleFactor ? graphics.UpscaledRTPixelRatio : graphics.PixelRatio;
             
             // Will result in the canvas being hidden from view.
             hiddenScaleFactor = targetScaleFactor + 1;
@@ -135,15 +142,11 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
             Debug.LogWarning(error);
         }
     }
-
-    public void Setup()
-    {
-        pixelPerfectCamera = Script_Game.Game.PixelPerfectCamera;
-    }
 }
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Script_CanvasConstantPixelScaler))]
+[CanEditMultipleObjects]
 public class Script_CanvasConstantPixelScalerTester : Editor
 {
     public override void OnInspectorGUI() {
