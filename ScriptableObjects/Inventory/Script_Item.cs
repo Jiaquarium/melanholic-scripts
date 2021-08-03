@@ -17,4 +17,9 @@ public class Script_Item : ScriptableObject
     {
         get => _isSpecial;
     }
+
+    public string Description
+    {
+        get => Script_Dialogue.Text[id].GetProp<string>(Const_Dev.Lang) ?? description;
+    }
 }

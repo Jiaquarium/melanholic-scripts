@@ -295,7 +295,8 @@ public static class Script_Utils
             Script_Names.OtherSide,                     // {76}
             Script_Names.NauticalDawn,                  // {77}
             Script_Names.UrselksHall,                   // {78}
-            Script_Names.ActiveStickerCommand           // {79}
+            Script_Names.ActiveStickerCommand,          // {79}
+            Script_Names.SwitchActiveSticker            // {80}
         );
     }
 

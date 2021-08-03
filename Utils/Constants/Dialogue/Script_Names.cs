@@ -171,10 +171,10 @@ public class Script_Names: MonoBehaviour
     }
     
     public const string Flan                            = "<b>Flan the Guard</b>";              // {64}
-    public const string ActionSticker                   = "<b>Active Sticker</b>";              // {65}
+    public const string ActionSticker                   = "<b>Active Bauble</b>";              // {65}
     public const string LastElevator                    = "<b>Last Elevator</b>";               // {66}
-    public const string StickerSkill                    = "<b>Sticker Skill</b>";               // {67}
-    public const string StickerSkills                   = "<b>Sticker Skills</b>";              // {68}
+    public const string StickerSkill                    = "<b>Bauble Skill</b>";               // {67}
+    public const string StickerSkills                   = "<b>Bauble Skills</b>";              // {68}
     public const string Coconut                         = "<b>Coconut</b>";                     // {69}
     public const string WeekdayShift                    = "<b>Weekday Shift</b>";               // {70}
     public const string WeekendShift                    = "<b>Weekend Shift</b>";               // {71}
@@ -185,8 +185,8 @@ public class Script_Names: MonoBehaviour
     public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
     public const string NauticalDawn                    = "<b>Nautical Dawn</b>";               // {77}
     public const string UrselksHall                     = "<b>Urselks Hall</b>";                // {78}
-    public const string ActiveStickerCommand            = "<b>ACTIVE STICKER COMMAND</b>";      // {79}
-    public const string SwitchActiveSticker             = "<b>SWITCH ACTIVE STICKER</b>";       // {80}
+    public const string ActiveStickerCommand            = "<b>Bauble's Effect</b>";             // {79}
+    public const string SwitchActiveSticker             = "<b>Switch Bauble</b>";               // {80}
 
 
     // ------------------------------------------------------------------

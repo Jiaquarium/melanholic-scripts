@@ -12,6 +12,9 @@ using TMPro;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class Script_StringFormatTMP : MonoBehaviour
 {
+    /// <summary>
+    /// Populate with the dynamic text field.
+    /// </summary>
     [SerializeField] private bool useDynamicDisplay;
     [TextArea(3,10)] [SerializeField] private string dynamicText;
     

@@ -24,6 +24,11 @@ public class Script_ItemStringBuilder : MonoBehaviour
     {
         Params = new Dictionary<string, string>();
         
+        Params.Add("@@Sticker_Bold",            "<b>Bauble</b>");
+        Params.Add("@@Sticker_NoBold",          "Bauble");
+        Params.Add("@@Stickers_Bold",           "<b>Baubles</b>");
+        Params.Add("@@Stickers_NoBold",         "Baubles");
+        
         Params.Add("@@PsychicDuck",             "<b>Psychic Duck</b>");
         Params.Add("@@BoarNeedle",              "<b>Boar Needle</b>");
         Params.Add("@@AnimalWithin",            "<b>Animal Within</b>");

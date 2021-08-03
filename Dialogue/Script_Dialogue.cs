@@ -170,6 +170,116 @@ public static class Script_Dialogue
                 EN = "We saved {18}."
             }
         },
+
+        // ------------------------------------------------------------------
+        // Menu UI
+        {
+            "menu_top-bar_stickers",
+            new Model_LanguagesUI
+            {
+                EN = "Baubles"
+            }
+        },
+        {
+            "menu_top-bar_items",
+            new Model_LanguagesUI
+            {
+                EN = "Items"
+            }
+        },
+        {
+            "menu_top-bar_notes",
+            new Model_LanguagesUI
+            {
+                EN = "Notes"
+            }
+        },
+
+        // ------------------------------------------------------------------
+        // Items
+
+        {
+            "sticker_psychic-duck",
+            new Model_LanguagesUI
+            {
+                EN = @"Attach the @@PsychicDuck @@Sticker_NoBold to your {5} and switch it to your {65} to be able to converse with {19}. {68} are only in effect as your {65}. A @@PsychicDuck makes a wonderful sidekick!"
+            }
+        },
+        {
+            "item-object-UI_sticker_psychic-duck",
+            new Model_LanguagesUI
+            {
+                EN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. ♥ Go to your {32} to try it out!
+
+Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to engage with {19} in conversation."
+            }
+        },
+        {
+            "sticker_boar-needle",
+            new Model_LanguagesUI
+            {
+                EN = @"Allows you to enter paintings with doormats. The painting must have a doormat."
+            }
+        },
+        {
+            "sticker_animal-within",
+            new Model_LanguagesUI
+            {
+                EN = @"Use its {79} to let you eat away edible obstacles. CHOMP CHOMP!"
+            }
+        },
+        {
+            "sticker_ice-spike",
+            new Model_LanguagesUI
+            {
+                EN = @"A spike so powerful, it'll crack open just about anything."
+            }
+        },
+        {
+            "sticker_melancholy-piano",
+            new Model_LanguagesUI
+            {
+                EN = @"Follow the chords of your heart."
+            }
+        },
+        {
+            "sticker_last-elevator",
+            new Model_LanguagesUI
+            {
+                EN = @"Can be used anywhere inside {18} to take the {66} back to the {72}."
+            }
+        },
+        {
+            "sticker_let-there-be-light",
+            new Model_LanguagesUI
+            {
+                EN = @"Will illuminate certain dark areas."
+            }
+        },
+        {
+            "sticker_puppeteer",
+            new Model_LanguagesUI
+            {
+                EN = @"Use the @@Puppeteer @@Sticker_NoBold to control {73}. Not too shabby."
+            }
+        },
+        
+        // ------------------------------------------------------------------
+        // Items
+        {
+            "controls_action_active-sticker-command",
+            new Model_LanguagesUI
+            {
+                EN = @"{79}"
+            }
+        },
+        {
+            "controls_action_switch-active-sticker",
+            new Model_LanguagesUI
+            {
+                EN = @"{80}"
+            }
+        },
     };
     
     public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<string, Model_Languages>
@@ -512,6 +622,79 @@ public static class Script_Dialogue
                 speaker = "{10}",
                 EN = new string[]{
                     "Hand puppets...| This room actually reminds me a bit of a theatre stage.",
+                }
+            }
+        },
+
+        // ------------------------------------------------------------------
+        // Item Objects
+        {
+            "item-object_sticker_boar-needle",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    @"The @@BoarNeedle @@Sticker_NoBold allows you to enter paintings that have a doormat. Use the @@BoarNeedle's {67} when face-to-face with a painting with a doormat."
+                }
+            }
+        },
+        {
+            "item-object_sticker_animal-within",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    @"If there are edible obstacles in your way, use the @@AnimalWithin @@Sticker_NoBold to eat through them."
+                }
+            }
+        },
+        {
+            "item-object_sticker_ice-spike",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    @"The @@IceSpike is a spike so powerful, it'll crack open just about anything."
+                }
+            }
+        },
+        {
+            "item-object_sticker_melancholy-piano",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    @"Use the @@MelancholyPiano @@Sticker_NoBold to follow the chords of your heart to the next piano."
+                }
+            }
+        },
+        {
+            "item-object_sticker_last-elevator",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    @"<b>If you ever get lost</b>, the @@LastElevator @@Sticker_NoBold can be used anywhere inside {18} to take the {66} back to the {72}."
+                }
+            }
+        },
+        {
+            "item-object_sticker_let-there-be-light",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    @"@@LetThereBeLight @@Sticker_NoBold will illuminate certain dark areas."
+                }
+            }
+        },
+        {
+            "item-object_sticker_puppeteer",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    @"Use the @@Puppeteer @@Sticker_NoBold to control {73}. Not too shabby."
                 }
             }
         },

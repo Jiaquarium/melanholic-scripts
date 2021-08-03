@@ -26,7 +26,7 @@ public class Script_InventoryViewController : Script_SBookViewController
         }
         
         itemDescription.Name = item.name;
-        itemDescription.Text = item.description;
+        itemDescription.Text = item.Description;
         itemDescription.gameObject.SetActive(true);
     }
 
