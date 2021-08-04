@@ -24,11 +24,13 @@ public class Script_DemonNPCStats : Script_DemonStats
     private void AttackedByPlayerReaction()
     {
         if (reactionNode != null)
+        {
             Script_DialogueManager.DialogueManager.StartDialogueNode(
                 reactionNode,
                 SFXOn: true,
                 null,
                 GetComponent<Script_DemonNPC>()
             );
+        }
     }
 }

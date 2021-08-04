@@ -8,6 +8,8 @@ public class Model_Languages
     public Metadata[] metadata { get; set; }
     public string choiceText { get; set; }
     
+    // If Metadata is not defined, it will default to what is in the Editor;
+    // otherwise it will overwrite with what is present.
     public class Metadata
     {
         public bool? isUnskippable;
@@ -558,6 +560,16 @@ public static class Script_Dialogue
                 }
             }
         },
+        {
+            "ballroom_ursie_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{33}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
+                }
+            }
+        },
 
         // Moose
         {
@@ -579,6 +591,16 @@ public static class Script_Dialogue
                     "There’s no use. The {22}. It’s been decided.",
                     "I specialize in dealing with spells. No outsiders means no more new spells for me.",
                     "I’ll have to focus on the spells I know then."
+                }
+            }
+        },
+        {
+            "ballroom_moose_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{63}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
                 }
             }
         },
@@ -633,6 +655,16 @@ public static class Script_Dialogue
                 EN = new string[]{
                     "Everyone in this world is just a {59} anyways.",
                     "Why would I want more {60} in here?",
+                }
+            }
+        },
+        {
+            "ballroom_suzette_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{58}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
                 }
             }
         },
@@ -715,6 +747,302 @@ public static class Script_Dialogue
                 speaker = "{62}",
                 EN = new string[]{
                     "Right! A true {6} never complains.| Head down and never frown!",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{61} & {62}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
+                }
+            }
+        },
+        
+
+        // King Eclaire
+        {
+            "ballroom_king-eclaire_default",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "���� ��� �������...",
+                }
+            }
+        },
+        {
+            "ballroom_king-eclaire_psychic_intro",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "As you may have already heard, I am {57}.",
+                }
+            }
+        },
+        {
+            "ballroom_king-eclaire_psychic",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "It’s no secret we’re in a dire situation right now. I must take action.",
+                    "Intruders have invaded my {37}.",
+                }
+            }
+        },
+        {
+            "ballroom_king-eclaire_psychic1",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "As the King of {18}, it is my sworn duty to serve and protect its inhabitants.| So after careful thought I’ve come to the difficult decision –",
+                }
+            }
+        },
+        {
+            "ballroom_king-eclaire_psychic2",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "<b>To commence the</b> {22} <b>at</b> {49}",
+                }
+            }
+        },
+        {
+            "ballroom_king-eclaire_psychic3",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "It’s been a tough decision and comes with its pitfalls, but after weighing all the viable options, it is the logical path we must take. to protect my fellow {19}.",
+                }
+            }
+        },
+        {
+            "ballroom_king-eclaire_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
+                }
+            }
+        },
+
+        // King Eclaire - King's Intro Cut Scene
+        {
+            "ballroom_cut-scene_kings-intro_cursed-effects",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "I am {57}, master and servant of {37}.",
+                    "You have come to us while we are in a dire situation. <b>I am prepared to take action.</b>",
+                    "Intruders have invaded my {37}. If you could only see what I have seen...",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }   
+            }
+        },
+        {
+            "ballroom_cut-scene_kings-intro_sealing-explanation",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "As the King of {18}, it is my sworn duty to serve and protect its inhabitants. so after careful thought I’ve come to the difficult decision –",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }   
+            }
+        },
+        {
+            "ballroom_cut-scene_kings-intro_lock",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "<b>To commence the</b> {22} <b>at</b> {49}",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }   
+            }
+        },
+        {
+            "ballroom_cut-scene_kings-intro_dawn",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "At exactly {49} the line between sea and sky is drawn in the night.| Astronomers call it <b>Nautical Dawn</b>.",
+                    "But at that time we will draw another line!| One that marks the changing of our fate...",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }   
+            }
+        },
+        {
+            "ballroom_cut-scene_kings-intro_sealed",
+            new Model_Languages
+            {
+                speaker = "{57}",
+                EN = new string[]{
+                    "<b>We will lock our doors for eternity and drive out these wicked forces from my dear</b> {18}.",
+                    "Mark my word.| I will return {18} back to a time of peace with my plan.",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }   
+            }
+        },
+
+        // Kaffe
+        {
+            "ballroom_kaffe_default",
+            new Model_Languages
+            {
+                speaker = "{38}",
+                EN = new string[]{
+                    "����.",
+                }
+            }
+        },
+        {
+            "ballroom_kaffe_psychic",
+            new Model_Languages
+            {
+                speaker = "{38}",
+                EN = new string[]{
+                    "This is not the answer, for God’s sake! We need to get to the root of the problem.",
+                    "Find those damn intruders. Figure out where they’re coming from and attack them first! Not lock ourselves away!",
+                    "My whole family is outside of {18}. What do they expect me to do?!",
+                    "Of course I want to stay here with {39}, but the closer it gets to {49}..",
+                }
+            }
+        },
+        {
+            "ballroom_kaffe_psychic1",
+            new Model_Languages
+            {
+                speaker = "{38}",
+                EN = new string[]{
+                    "I was born outside the {37} walls, I don’t think I can stay here forever like the true {7} will.",
+                    "But I know I won’t be able to find anyone else like {39}.",
+                }
+            }
+        },
+        {
+            "ballroom_kaffe_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{38}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
+                }
+            }
+        },
+
+        // Latte
+        {
+            "ballroom_latte_default",
+            new Model_Languages
+            {
+                speaker = "{39}",
+                EN = new string[]{
+                    "����.",
+                }
+            }
+        },
+        {
+            "ballroom_latte_psychic",
+            new Model_Languages
+            {
+                speaker = "{39}",
+                EN = new string[]{
+                    "Yeah {38} gets really worked up sometimes. Oh of course, I don’t agree with the King’s decision either, but it’s reality, it’s going to happen. {49} on the dot.",
+                    "If he ends up leaving before the {22} to return to his family, I’d understand. It might be a sign rather. The way I look at it, it’s fate.",
+                }
+            }
+        },
+        {
+            "ballroom_latte_psychic1",
+            new Model_Languages
+            {
+                speaker = "{39}",
+                EN = new string[]{
+                    "Oh but please don’t tell him I said any of this. Like I said, he gets really worked up over nothing.",
+                }
+            }
+        },
+        {
+            "ballroom_latte_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{39}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
+                }
+            }
+        },
+
+        // Ero
+        {
+            "ballroom_ero_default",
+            new Model_Languages
+            {
+                speaker = "{4}",
+                EN = new string[]{
+                    "����...",
+                }
+            }
+        },
+        {
+            "ballroom_ero_psychic",
+            new Model_Languages
+            {
+                speaker = "{4}",
+                EN = new string[]{
+                    "......",
+                    "It's useless to fight against fate.",
+                }
+            }
+        },
+        {
+            "ballroom_ero_psychic1",
+            new Model_Languages
+            {
+                speaker = "{4}",
+                EN = new string[]{
+                    "What could I have done?",
+                }
+            }
+        },
+        {
+            "ballroom_ero_eat-reaction",
+            new Model_Languages
+            {
+                speaker = "{4}",
+                EN = new string[]{
+                    "(. ﾟーﾟ)",
                 }
             }
         },
