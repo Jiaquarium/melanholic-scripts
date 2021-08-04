@@ -273,9 +273,182 @@ public static class Script_Dialogue
         },
 
         // ------------------------------------------------------------------
-        // Parlor (Dining)
+        // Dining
         {
-            "parlor_myne_mirror_tues",
+            "dining_mynes-mirror_prompt",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "It’s a mirror. Should I look into it?",
+                }
+            }
+        },
+
+        // Myne's Mirror Interaction Nodes
+        {
+            "dining_mynes-mirror_interaction-node",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Welcome to...",
+                    "『 {37} 』",
+                    "I’ll be your host today.",
+                    "And for the rest of eternity.",
+                    "That was supposed to be a joke.",
+                    "Anyways, you see,| you and I, we share something.",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    null,
+                    null,
+                    null,
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_choice-prompt",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "......",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_choice0",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Well, you see, if I told you that, it would ruin everything.",
+                    "Besides, it’s better this way.",
+                    "He-he-he.",
+                },
+                choiceText = "Who are you?"
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_choice1",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Well there are a few things you can do for me...| That, in fact, only you can do for me.",
+                    "And the problem is that it has to be <b>you<b>.",
+                    "He-he-he.",
+                },
+                choiceText = "What do you want from me?"
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_end",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "The fact is...| I’ve been watching you for a long time now...",
+                    "And your fate is the same as mine.",
+                    "No need to rush into things| – all your questions will be answered in due time, my dear.",
+                },
+            }
+        },
+
+        {
+            "dining_mynes-mirror_interaction-node_1",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Welcome to...",
+                    "『 {37} 』",
+                    "I’ve already said that, haven’t I?",
+                    "He-he-he...",
+                    "You know, there’s a reason you can understand me even without that little @@PsychicDuck of yours.",
+                    "You see, dear,| you and I,| we understand each other.",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    new Model_Languages.Metadata { isUnskippable = true },
+                    null,
+                    null,
+                    null,
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_1_choice-prompt",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Are you familiar with the Ouroboros?",
+                },
+                metadata = new Model_Languages.Metadata[]
+                {
+                    new Model_Languages.Metadata { isUnskippable = true },
+                }
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_1_choice0",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Precisely, my dear.",
+                },
+                choiceText = "Yes, the snake eating its own tail?"
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_1_choice1",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "Well, this is no story, my dear.",
+                },
+                choiceText = "No, and I’m not interested in your stories."
+            }
+        },
+        {
+            "dining_mynes-mirror_interaction-node_1_end",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "What would make a snake begin to eat its own tail?",
+                    "Anywho...",
+                },
+            }
+        },
+        
+        {
+            "dining_mynes-mirror_mon",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "...",
+                    "You have come to visit us on a very special day. Yes, @@Run is a special day, indeed it is.",
+                    "For today, dear, just find the {66}.",
+                }
+            }
+        },
+        {
+            "dining_mynes-mirror_tues",
             new Model_Languages
             {
                 speaker = "{10}",
@@ -284,6 +457,56 @@ public static class Script_Dialogue
                     "You have come to visit us on a very special day. Yes, @@Run is a special day, indeed it is.",
                     "Why can {19} never get along?| Look, the sisters down the {78} may need your assistance.",
                     "Siblings know more about each other than they think... You’ll see what I mean I’m sure of it.",
+                }
+            }
+        },
+        {
+            "dining_mynes-mirror_wed",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "...",
+                    "You have come to visit us on a very special day. Yes, @@Run is a special day, indeed it is.",
+                    "The sheep are at home today.",
+                }
+            }
+        },
+        {
+            "dining_mynes-mirror_other",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "...",
+                    "You have come to visit us on a very special day. Yes, @@Run is a special day, indeed it is.",
+                }
+            }
+        },
+
+        {
+            "dining_mynes-mirror_default-end",
+            new Model_Languages
+            {
+                speaker = "{10}",
+                EN = new string[]{
+                    "You see, you’ve fallen into a terrible fate.",
+                    "Along with all of us here in {37}.",
+                    "But I’ll help you along the way.| Just promise me one thing...",
+                    "That you’ll never try to see...",
+                    "What’s under...",
+                    "This <b>mask</b>.",
+                }
+            }
+        },
+
+        {
+            "dining_go-table_default",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{
+                    "Only thing I hate about games is losing.",
                 }
             }
         },
@@ -460,6 +683,27 @@ public static class Script_Dialogue
                 EN = new string[]{
                     @"Use the @@Puppeteer @@Sticker_NoBold to control {73}. Not too shabby."
                 }
+            }
+        },
+        
+        // ------------------------------------------------------------------
+        // Choices
+        {
+            "choices_default_yes",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{},
+                choiceText = "Yes",
+            }
+        },
+        {
+            "choices_default_no",
+            new Model_Languages
+            {
+                speaker = "{0}",
+                EN = new string[]{},
+                choiceText = "No",
             }
         },
     };

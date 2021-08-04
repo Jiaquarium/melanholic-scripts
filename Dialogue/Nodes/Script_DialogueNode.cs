@@ -54,13 +54,13 @@ public class Script_DialogueNode : MonoBehaviour
                 
                 for (int i = 0; i < metadata.Length; i++)
                 {
-                    if (metadata[i].isUnskippable != null)
+                    if (metadata[i] != null && metadata[i].isUnskippable != null)
                         data.dialogue.sections[i].isUnskippable = (bool)metadata[i].isUnskippable;
                     
-                    if (metadata[i].noContinuationIcon != null)
+                    if (metadata[i] != null && metadata[i].noContinuationIcon != null)
                         data.dialogue.sections[i].noContinuationIcon = (bool)metadata[i].noContinuationIcon;
                     
-                    if (metadata[i].waitForTimeline != null)
+                    if (metadata[i] != null && metadata[i].waitForTimeline != null)
                         data.dialogue.sections[i].waitForTimeline = (bool)metadata[i].waitForTimeline;
                 }
             }
