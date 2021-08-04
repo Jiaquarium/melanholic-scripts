@@ -265,7 +265,7 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
         },
         
         // ------------------------------------------------------------------
-        // Items
+        // Controls
         {
             "controls_action_active-sticker-command",
             new Model_LanguagesUI

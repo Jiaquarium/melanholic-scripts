@@ -500,6 +500,7 @@ public static class Script_Dialogue
             }
         },
 
+        // Go Table
         {
             "dining_go-table_default",
             new Model_Languages
@@ -507,6 +508,213 @@ public static class Script_Dialogue
                 speaker = "{0}",
                 EN = new string[]{
                     "Only thing I hate about games is losing.",
+                }
+            }
+        },
+
+        // ------------------------------------------------------------------
+        // Dining
+        
+        // Ursie
+        {
+            "ballroom_ursie_default",
+            new Model_Languages
+            {
+                speaker = "{33}",
+                EN = new string[]{
+                    "� � �...",
+                }
+            }
+        },
+        {
+            "ballroom_ursie_psychic_intro",
+            new Model_Languages
+            {
+                speaker = "{33}",
+                EN = new string[]{
+                    "The name’s {33}.",
+                    "You look like you need a drink.| I can tell from all these years running the {35}."
+                }
+            }
+        },
+        {
+            "ballroom_ursie_psychic",
+            new Model_Languages
+            {
+                speaker = "{33}",
+                EN = new string[]{
+                    "To be frank,| some disturbing things have been happening at my <b>saloon</b>, so I’m here to speak to the <b>King</b> about it.",
+                }
+            }
+        },
+        {
+            "ballroom_ursie_psychic1",
+            new Model_Languages
+            {
+                speaker = "{33}",
+                EN = new string[]{
+                    "Hopefully the <b>King</b> takes action...| and fast.",
+                    "I got a business to run.| I’m <b>bleeding</b> sales as we speak, don’t you understand?"
+                }
+            }
+        },
+
+        // Moose
+        {
+            "ballroom_moose_default",
+            new Model_Languages
+            {
+                speaker = "{63}",
+                EN = new string[]{
+                    "�.",
+                }
+            }
+        },
+        {
+            "ballroom_moose_psychic",
+            new Model_Languages
+            {
+                speaker = "{63}",
+                EN = new string[]{
+                    "There’s no use. The {22}. It’s been decided.",
+                    "I specialize in dealing with spells. No outsiders means no more new spells for me.",
+                    "I’ll have to focus on the spells I know then."
+                }
+            }
+        },
+
+        // Suzette
+        {
+            "ballroom_suzette_default",
+            new Model_Languages
+            {
+                speaker = "{58}",
+                EN = new string[]{
+                    "���� ���...",
+                }
+            }
+        },
+        {
+            "ballroom_suzette_psychic_intro",
+            new Model_Languages
+            {
+                speaker = "{58}",
+                EN = new string[]{
+                    "There all just a bunch of {60}.",
+                }
+            }
+        },
+        {
+            "ballroom_suzette_psychic_intro1",
+            new Model_Languages
+            {
+                speaker = "{58}",
+                EN = new string[]{
+                    "Oh I’m {58}.",
+                }
+            }
+        },
+        {
+            "ballroom_suzette_psychic",
+            new Model_Languages
+            {
+                speaker = "{58}",
+                EN = new string[]{
+                    "Well the only thing anyone ever talks about these days is the {22}.| Me?| What do I think about it?",
+                    "Why would I care if anyone else is able to come into {18}?",
+                }
+            }
+        },
+        {
+            "ballroom_suzette_psychic1",
+            new Model_Languages
+            {
+                speaker = "{58}",
+                EN = new string[]{
+                    "Everyone in this world is just a {59} anyways.",
+                    "Why would I want more {60} in here?",
+                }
+            }
+        },
+        
+        // Peche & Melba
+        {
+            "ballroom_peche-melba_default",
+            new Model_Languages
+            {
+                speaker = "{61}",
+                EN = new string[]{
+                    "����!!",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_default_a",
+            new Model_Languages
+            {
+                speaker = "{62}",
+                EN = new string[]{
+                    "���� ��!",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_psychic_intro",
+            new Model_Languages
+            {
+                speaker = "{61}",
+                EN = new string[]{
+                    "Ha! Good riddance,| to tell you the truth I’m glad we’re going through with the {22}.| Isn’t that right, {62}?",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_psychic_intro_a",
+            new Model_Languages
+            {
+                speaker = "{62}",
+                EN = new string[]{
+                    "Yeah, you tell’em, {61}!",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_psychic",
+            new Model_Languages
+            {
+                speaker = "{61}",
+                EN = new string[]{
+                    "We opened our doors and now look at us. You give a wolf your foot and it’ll come back in the winter for your hand!",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_psychic_a",
+            new Model_Languages
+            {
+                speaker = "{62}",
+                EN = new string[]{
+                    "We’ll do just fine by ourselves in here. It’s how our ancestors lived, ain’t it?",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_psychic1",
+            new Model_Languages
+            {
+                speaker = "{61}",
+                EN = new string[]{
+                    "We here are {37} natives. Born and raised!| How can you call yourself an {6} when you can’t even toughen out through the {22}?!",
+                }
+            }
+        },
+        {
+            "ballroom_peche-melba_psychic1_a",
+            new Model_Languages
+            {
+                speaker = "{62}",
+                EN = new string[]{
+                    "Right! A true {6} never complains.| Head down and never frown!",
                 }
             }
         },
