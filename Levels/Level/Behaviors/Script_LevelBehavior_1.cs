@@ -18,9 +18,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     public bool isInit = true;
     public bool isDone = false;
     
-    public Transform pianoTextParent;
-    public Transform paintingTextParent;
-    
     public Script_DemonNPC Ero;
 
     public Script_DialogueNode[] IdsSickEroNodes;
@@ -131,9 +128,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
 
     public override void Setup()
     {
-        game.SetupInteractableObjectsText(pianoTextParent, isInit);
-        game.SetupInteractableObjectsText(paintingTextParent, isInit);
-        
         // Weekend Cycle Conditions
         if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
         {

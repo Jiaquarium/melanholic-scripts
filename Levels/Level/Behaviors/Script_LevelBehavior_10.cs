@@ -20,7 +20,7 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_10 : Script_LevelBehavior
 {
-    public const string MapName = "Sanctuary";
+    public const string MapName = "Basement";
     
     public const string NRoomTriggerId = "room_N";
     public const string ERoomTriggerId = "room_E";
@@ -39,7 +39,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // Tells us where Ids should spawn.
     [SerializeField] private Script_Marker[] IdsSpawns;
     
-    public bool isDeskSwitchedIn;
     public bool isInitialized;
 
 
@@ -64,8 +63,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Script_DialogueNode playerDanceIntroNode;
     public Script_DialogueNode badDanceOutroNode;
     public Script_DialogueNode goodDanceOutroNode;
-    public Script_DialogueNode deskIONode;
-    public Script_DialogueNode chaiseLoungeIONode;
     public GameObject lights;
     public GameObject crystalChandelier;
     public Script_LightFadeIn playerSpotLight;
@@ -74,14 +71,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Vector3 lightsDownOffset;
     public Vector3 crystalChandelierDownOffset;
     public Vector3 crystalChandelierUpOffset;
-    public GameObject chaiseLoungeObject;
-    public GameObject deskObject;
     public AudioMixer audioMixer;
     
     public Model_SongMoves playerSongMoves;
     public Model_SongMoves IdsSongMoves;
     public int mistakesAllowed;
-    public Transform[] IOTexts;
     public Script_MovingNPC Ids;
     [SerializeField] private PlayableDirector IdsDirector;
     [SerializeField] private Script_VCamera VCamLB10FollowIds;
@@ -126,7 +120,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
         
         IdsDirector.stopped                             += OnIdsMovesDone;    
-        nameplateDirector.stopped                       += OnNameplateDone;
         Script_DDREventsManager.OnDDRDone               += OnDDRDone;
         Script_ItemsEventsManager.OnItemStash           += OnItemStash;
     }
@@ -136,7 +129,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
         
         IdsDirector.stopped                             -= OnIdsMovesDone;
-        nameplateDirector.stopped                       -= OnNameplateDone;
         Script_DDREventsManager.OnDDRDone               -= OnDDRDone;
         Script_ItemsEventsManager.OnItemStash           -= OnItemStash;
         
@@ -172,9 +164,21 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void NameplateTimeline()
     {
         game.ChangeStateCutScene();
-        namePlatePRCSPlayer.Play();
+        
+        Script_ArtFrameManager.Control.Open(() => {
+            namePlatePRCSPlayer.Play();
+        });
     }
     
+    public void OnNameplateDone()
+    {
+        namePlatePRCSPlayer.Stop();
+
+        Script_ArtFrameManager.Control.Close(() => {
+            dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false);
+        });
+    }
+
     public void IdsWalkToERoom()
     {
         game.ChangeStateCutScene();
@@ -200,9 +204,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             isIdsDancing = true;
             crystalChandelier.GetComponent<Script_CrystalChandelier>()
                 .StartSpinning();
-
-            DeskSwitchIn();
-            isDeskSwitchedIn = true;
         }
     }
 
@@ -262,12 +263,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         {
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
         }
-    }
-    
-    private void OnNameplateDone(PlayableDirector aDirector)
-    {
-        namePlatePRCSPlayer.Stop();
-        dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false);
     }
 
     private void OnIdsMovesDone(PlayableDirector aDirector)
@@ -556,32 +551,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public override void HandleDDRArrowClick(int tier) {}
 
-    void ChaseLoungeSwitchIn()
-    {
-        SetupIOsDialogue(chaiseLoungeIONode);
-        chaiseLoungeObject.SetActive(true);
-        deskObject.SetActive(false);
-    }
-
-    void DeskSwitchIn()
-    {
-        SetupIOsDialogue(deskIONode);
-        chaiseLoungeObject.SetActive(false);
-        deskObject.SetActive(true);
-    }
-
-    void SetupIOsDialogue(Script_DialogueNode node)
-    {
-        List<Script_InteractableObject> IOs = game.GetInteractableObjects();
-        foreach (Script_InteractableObject IO in IOs)
-        {
-            if (IO.nameId == "chaise-lounge")
-            {
-                IO.SwitchDialogueNodes(new Script_DialogueNode[]{node});
-            }
-        }
-    }
-
     void HandleIdsInRoom()
     {
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
@@ -674,12 +643,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             IdsSpotLight.Setup(0f);
         }
         
-        foreach (Transform t in IOTexts )   game.SetupInteractableObjectsText(t, !isInitialized);
         game.SetupMovingNPC(Ids, !isInitialized);
         
-        if (!isDeskSwitchedIn)      ChaseLoungeSwitchIn();
-        else                        DeskSwitchIn();
-
         // Ids DDR quest is completed and the Locked Treasure Chest was opened.
         if (gotBoarNeedle)
         {

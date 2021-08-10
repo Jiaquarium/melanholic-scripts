@@ -15,6 +15,8 @@ public class Script_Interactable : MonoBehaviour
     [SerializeField] private bool _disableR;
     [SerializeField] private bool _disableU;
     [SerializeField] private bool _disableD;
+    
+    [Tooltip("Define explicit colliders to disable player interaction. Default behavior checks Player's facing direction.")]
     [SerializeField] private Script_DisablerController disablerController;
 
     [SerializeField] private Script_InteractableBox[] extraInteractableBoxes;
@@ -107,10 +109,10 @@ public class Script_Interactable : MonoBehaviour
                                             );
             
             return (
-                directionToPlayer == Directions.Left && DisableL
-                || directionToPlayer == Directions.Up && DisableU
-                || directionToPlayer == Directions.Right && DisableR
-                || directionToPlayer == Directions.Down && DisableD
+                Script_Game.Game.GetPlayer().FacingDirection == Directions.Right && DisableL
+                || Script_Game.Game.GetPlayer().FacingDirection == Directions.Down && DisableU
+                || Script_Game.Game.GetPlayer().FacingDirection == Directions.Left && DisableR
+                || Script_Game.Game.GetPlayer().FacingDirection == Directions.Up && DisableD
             );
         }
     }

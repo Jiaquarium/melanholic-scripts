@@ -48,8 +48,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private FadeSpeeds musicFadeOutSpeed;
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     
-    [SerializeField] private Transform textParent;
-    
     [SerializeField] private Script_LightsController lightsToVictoryController;
 
     [SerializeField] private float beforePaintingDoneCutSceneWaitTime;
@@ -302,7 +300,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     public override void Setup()
     {
-        game.SetupInteractableObjectsText(textParent, isInitialize);
         switchesState = switchHandler.SetupSwitchesState(
             switchParent,
             switchesState,

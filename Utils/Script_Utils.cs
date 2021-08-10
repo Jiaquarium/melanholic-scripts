@@ -258,8 +258,8 @@ public static class Script_Utils
             Script_Names.Latte,                         // {39}
             Script_Names.MagicCircle,                   // {40}
             Script_Names.Menu,                          // {41}
-            Script_Names.BadSpecters,                   // {42}
-            Script_Names.BadSpecter,                    // {43}
+            Script_Names.CursedOnes,                    // {42}
+            Script_Names.CursedOne,                     // {43}
             Script_Names.HouseMaster,                   // {44}
             Script_Names.Thoughts,                      // {45}
             Script_Names.HeartsCapacity,                // {46}

@@ -592,8 +592,17 @@ public class Script_DialogueManager : MonoBehaviour
         textUI.text = formattedSentence;
         textUI.maxVisibleCharacters = 0;
         TMP_CharacterInfo[] charInfos = textUI.textInfo.characterInfo;
-        float charPauseTime;
+
+        // TMP won't fill TextInfo with data until mesh is rendered so force the update manually.
+        // (Needed for skipping sentence on same frame as render, so we'll have access to an up
+        // to-date textInfo.characterCount)
+        textUI.ForceMeshUpdate(true);
         
+        Debug.Log($"TeletypeRevealLine() formattedSentence {formattedSentence}");
+        Debug.Log($"TeletypeRevealLine() textUI.textInfo.characterCount {textUI.textInfo.characterCount} TeletypeRevealLine() textUI.maxVisibleCharacters {textUI.maxVisibleCharacters}");
+        
+        float charPauseTime;
+
         // Must wait a frame so TMP can update for new hidden text.
         yield return null;
 
@@ -967,6 +976,9 @@ public class Script_DialogueManager : MonoBehaviour
                 
                 // Reset TMP visibility.
                 activeCanvasText.maxVisibleCharacters = activeCanvasText.textInfo.characterCount + 1;
+                
+                Debug.Log($"SkipTypingSentence() _formattedLine {_formattedLine}");
+                Debug.Log($"SkipTypingSentence() activeCanvasText.maxVisibleCharacters {activeCanvasText.maxVisibleCharacters} activeCanvasText.textInfo.characterCount {activeCanvasText.textInfo.characterCount}");
             }
 
             lines.Clear();

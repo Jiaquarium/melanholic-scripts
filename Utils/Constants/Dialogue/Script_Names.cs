@@ -121,8 +121,8 @@ public class Script_Names: MonoBehaviour
     
     public const string MagicCircle                     = "<b>Magic Circle</b>";                // {40}
     public const string Menu                            = "<b>Menu</b>";                        // {41}
-    public const string BadSpecters                     = "<b>Bad Specters</b>";                // {42}
-    public const string BadSpecter                      = "<b>Bad Specter</b>";                 // {43}
+    public const string CursedOnes                      = "<b>Cursed Ones</b>";                // {42}
+    public const string CursedOne                       = "<b>Cursed One</b>";                 // {43}
     public const string HouseMaster                     = "<b>House Master</b>";                // {44}
     public const string Thoughts                        = "<b>Thoughts</b>";                    // {45}
     public const string HeartsCapacity                  = "<b>Hearts Capacity</b>";             // {46}

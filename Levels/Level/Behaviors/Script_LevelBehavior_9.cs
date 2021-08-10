@@ -17,7 +17,6 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     [Space]
     [SerializeField] private Script_ProximitySpeaker speakerPrefab;
     [SerializeField] private Script_Marker speakerLoc;
-    [SerializeField] private Transform signTextParent;
     [SerializeField] private Script_InteractableFullArt IdsNote;
     [SerializeField] private Script_TileMapExitEntrance exitToIdsRoom;
     private bool isInitialized;
@@ -43,7 +42,6 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     
     public override void Setup()
     {
-        game.SetupInteractableObjectsText(signTextParent, !isInitialized);
         HandleSpeakerRegen();
         
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)

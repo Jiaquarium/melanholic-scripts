@@ -38,6 +38,7 @@ public class Script_CutSceneActionHandler : MonoBehaviour
         
         Script_ItemsEventsManager.ItemPickUp(item.id);
 
+        // Display item above Player's head.
         player.SetIsPickingUp(item);
         player.ItemPickUpEffect(true, item);
 
