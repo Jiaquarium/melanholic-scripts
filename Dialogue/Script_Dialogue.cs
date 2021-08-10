@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-08-06 13:07:55
+// Last created by Dialogue Exporter at 2021-08-09 22:27:09
 
 using System.Collections;
 using System.Collections.Generic;
@@ -588,6 +588,382 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 "Only thing I hate about games is losing.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Piano Room
+{
+    "piano-room_player_giant-painting",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "It’s a painting... close up it's a lot less flat than I thought. Whoever painted it used a lot of paint.",
+        },
+        
+    }
+},
+{
+    "piano-room_player_wall-text",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "Anonymous.| <i>Found My Other Half</i>.| 19XX.| Oil on linen.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ero
+{
+    "piano-room_ero_default",
+    new Model_Languages
+    {
+        speaker = "{4}",
+        EN = new string[]
+        {
+                "����.",
+        },
+        
+    }
+},
+{
+    "piano-room_ero_psychic",
+    new Model_Languages
+    {
+        speaker = "{4}",
+        EN = new string[]
+        {
+                "Grrrrrr......",
+        },
+        
+    }
+},
+{
+    "piano-room_ero_psychic_a",
+    new Model_Languages
+    {
+        speaker = "{4}",
+        EN = new string[]
+        {
+                "My duty is to guard, so guard is what I shall do.",
+                "If you know your role then play it with honor!",
+                "Woof!",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ero Weekend
+{
+    "piano-room_ero-weekend_psychic_ids-lost",
+    new Model_Languages
+    {
+        speaker = "{4}",
+        EN = new string[]
+        {
+                "*wimper*",
+                "I’ve failed my duty.",
+                "It truly is fate.",
+        },
+        
+    }
+},
+{
+    "piano-room_ero-weekend_psychic1_ids-lost",
+    new Model_Languages
+    {
+        speaker = "{4}",
+        EN = new string[]
+        {
+                "I’ve lost {3}.",
+                "It’s my job, my role, but I’ve failed. I am terribly sorry.",
+        },
+        
+    }
+},
+{
+    "piano-room_ero_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{4}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Nightclub Line
+{
+    "nightclub-line_sign_read",
+    new Model_Languages
+    {
+        speaker = "",
+        EN = new string[]
+        {
+                "Estimated wait from this point: 0 minutes.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ids' Room - Ids
+{
+    "basement_ids_default",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "�  �  �  �.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_talked-with-myne",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "{0}?",
+                "We’ve already met actually. Back when you couldn’t even speak to us.",
+                "Well I’m...",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_on-nameplate-done_talked-with-myne",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Pretty cool entrance, am I right? Spent a while coming up with that.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_on-nameplate-done_choices_talked-with-myne",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Wait sorry got a little caught up with myself, did you have something to say?",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_on-nameplate-done_choices_talked-with-myne_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "You’re not serious, are you?",
+                "No one’s met the {8}.",
+                "It’s not real,| it’s just a story,| something you tell little kids.",
+                "Please, you’re losing touch with reality.",
+                "Here, let’s do something to take your mind off things.",
+        },
+        choiceText = "The {8}, I met him.",
+        
+    }
+},
+{
+    "basement_ids_n-room_on-nameplate-done_choices_talked-with-myne_b",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Oh it looked like you wanted to say something... nevermind.",
+                "Here, let’s do something fun.",
+        },
+        choiceText = "(Don’t mention anything.)",
+        
+    }
+},
+{
+    "basement_ids_n-room_not-talked-with-myne",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "{0}?",
+                "We’ve already met actually. Back when you couldn’t even speak to us.",
+                "Well I’m...",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_on-nameplate-done_not-talked-with-myne",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Pretty cool entrance, am I right? Spent a while coming up with that.",
+        },
+        
+    }
+},
+{
+    "basement_ids_e-room_dance-intro",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Oh heyyy, {0}. Nice of you to join me, I was getting pretty lonely.",
+                "What are we about to do you ask!?| Well how about I show you {0}!",
+        },
+        
+    }
+},
+{
+    "basement_ids_e-room_player-dance-intro",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "You know why us {21} love dancing in the dark?",
+                "There’s just something so romantic about staring into complete blackness, while feeling our warm wool rubbing against one another...",
+                "Sorry I get a little mushy sometimes...| Okay your turn now!",
+        },
+        
+    }
+},
+{
+    "basement_ids_e-room_ddr-fail",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Wow...| you’re kinda terrible.| It’s okay though, you’re new here I can tell.",
+                "Anyways, {0}, that was quite fun. We should do it again another time.",
+        },
+        
+    }
+},
+{
+    "basement_ids_e-room_ddr-pass",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Wow you can really <b><i>move</i></b>.",
+                "It reminds me of...",
+                "*black beady eyes begin welling up with what appears to be tears*",
+                "I gotta admit, I can trust whoever got moves. So here.",
+        },
+        
+    }
+},
+{
+    "basement_ids_try-again-prompt",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Wanna try again?",
+        },
+        
+    }
+},
+{
+    "basement_ids_try-again-prompt_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Yay. Let’s go go go, move that body!",
+        },
+        choiceText = "Yes",
+        
+    }
+},
+{
+    "basement_ids_try-again-prompt_b",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Why must you tease me, hmph.",
+        },
+        choiceText = "No",
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ids' Room - Decor
+{
+    "basement_w-room_certificates_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "Two certificates of some sort... I wonder why one is hung higher than the other...",
+        },
+        
+    }
+},
+{
+    "basement_e-room_painting",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "The figures in the painting are dancing. Looks fun.",
+        },
+        
+    }
+},
+{
+    "basement_n-room_wall-text_read",
+    new Model_Languages
+    {
+        speaker = "",
+        EN = new string[]
+        {
+                "Anonymous. <i>You and I Forever</i>. 19XX. Oil on Linen.",
+        },
+        
+    }
+},
+{
+    "basement_n-room_desk_read",
+    new Model_Languages
+    {
+        speaker = "",
+        EN = new string[]
+        {
+                "...the answer to everything...",
+                "...a fresh way to approach a dull thing...",
+                "...a way of doing things...",
+                "...S&M style...",
         },
         
     }
@@ -1276,44 +1652,6 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 "And even if I royally mess up, I can just paint over it.",
                 "And over and over and over and over.",
                 "Then the hard part becomes knowing when to stop!",
-        },
-        
-    }
-},
-// ------------------------------------------------------------------
-// World Paintings
-{
-    "ballroom_world-paintings_wells-world",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                "I sometimes feel like I'm at the bottom of a well.",
-        },
-        
-    }
-},
-{
-    "ballroom_world-paintings_celestial-gardens-world",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                "A labyrinth. There's always an entrance and an exit to a labyrinth, right?",
-        },
-        
-    }
-},
-{
-    "ballroom_world-paintings_xxx-world",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                "Flowers are best when they're dried and hung.",
         },
         
     }
@@ -2390,6 +2728,293 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
+// Wells World
+{
+    "wells-world_moose_default",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+                "�.",
+        },
+        
+    }
+},
+{
+    "wells-world_moose_psychic",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+                "I can’t leave here until I learn this last spell...",
+        },
+        
+    }
+},
+{
+    "wells-world_moose_psychic_a",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+
+        },
+        choiceText = "I have what you’re looking for.",
+        
+    }
+},
+{
+    "wells-world_moose_psychic_b",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+                "You youngins just don't understand. Leave me be.",
+                "I have important spells to learn. I can’t be wasting my precious time with loafers like you.",
+        },
+        choiceText = "Please forget about the spell, you should really just get out of here.",
+        
+    }
+},
+{
+    "wells-world_moose_psychic_a_has-book",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+                "You are really proving to be a gem.",
+                "Here, I may be rough around the edges but I pay what’s due.",
+        },
+        
+    }
+},
+{
+    "wells-world_moose_psychic_a_has-book_a",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+                "I’m called {63} in this realm.",
+                "And let’s see about this spell... Ah this technique is quite familiar.",
+                "Hmm... ah! I think I got it!",
+        },
+        
+    }
+},
+{
+    "wells-world_moose_psychic_a_missing-book",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+                "You youngins just don't understand. Leave me be.",
+                "I have important spells to learn. I can’t be wasting my precious time with loafers like you.",
+        },
+        
+    }
+},
+{
+    "wells-world_moose_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{63}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Underworld
+{
+    "underworld_cursed-myne_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "���.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-myne_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "You’ll be just like me, dear.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-myne_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-HMS_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "�� ��.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-HMS_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "He-he, you’re just like me! He-he.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-HMS_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-female_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "���.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-female_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "Don’t be afraid dear, you’ll become just like me.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-female_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-HMS-bent_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "�� ��.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-HMS-bent_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "He-he, we’re the same can’t you see?? He-he.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-HMS-bent_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-abomination_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "�.",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-abomination_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "Ugo-ohhhhhhhhhh!",
+        },
+        
+    }
+},
+{
+    "underworld_cursed-abomination_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
 // Celestial Gardens
 {
     "celestial-gardens_garden-labyrinth_puppets",
@@ -2409,7 +3034,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "painting-entrances_default_read",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
                 "An empty painting with a doormat.",
@@ -2442,6 +3067,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
+    "painting-entrances_default-not-empty_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "A painting with a doormat.",
+        },
+        
+    }
+},
+{
     "painting-entrances_default-short_prompt",
     new Model_Languages
     {
@@ -2466,6 +3103,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
+    "painting-entrances_eileens-mind_read",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "This reminds me of a certain romantic painting.",
+        },
+        
+    }
+},
+{
     "painting-entrances_eileens-mind_prompt",
     new Model_Languages
     {
@@ -2485,6 +3134,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 "Now would you like to enter me?",
+        },
+        
+    }
+},
+{
+    "painting-entrances_dark-corridor_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "I've seen a painting like this somewhere.",
         },
         
     }
@@ -2541,6 +3202,68 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         
     }
 },
+{
+    "quest-paintings_ids-room_default",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "A sketch of a thorny vine.",
+        },
+        
+    }
+},
+{
+    "quest-paintings_ids-room_done",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "It's actually two vines weaving to be one.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// World Paintings
+{
+    "ballroom_world-paintings_wells-world",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "I sometimes feel like I'm at the bottom of a well.",
+        },
+        
+    }
+},
+{
+    "ballroom_world-paintings_celestial-gardens-world",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "A labyrinth. There's always an entrance and an exit to a labyrinth, right?",
+        },
+        
+    }
+},
+{
+    "ballroom_world-paintings_xxx-world",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "Flowers are best when they're dried and hung.",
+        },
+        
+    }
+},
 // ------------------------------------------------------------------
 // Items
 {
@@ -2552,7 +3275,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 "The @@BoarNeedle @@Sticker_NoBold allows you to enter paintings that have a doormat. Use the @@BoarNeedle's {67} when face-to-face with a painting with a doormat.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2564,7 +3293,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 "If there are edible obstacles in your way, use the @@AnimalWithin @@Sticker_NoBold to eat through them.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2576,7 +3311,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 "The @@IceSpike is a spike so powerful, it'll crack open just about anything.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2588,7 +3329,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 "Use the @@MelancholyPiano @@Sticker_NoBold to follow the chords of your heart to the next piano.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2600,7 +3347,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 "<b>If you ever get lost</b>, the @@LastElevator @@Sticker_NoBold can be used anywhere inside {18} to take the {66} back to the {72}.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2612,7 +3365,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 "@@LetThereBeLight @@Sticker_NoBold will illuminate certain dark areas.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2624,7 +3383,67 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 "Use the @@Puppeteer @@Sticker_NoBold to control {73}. Not too shabby.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "item-object_usable_super-small-key",
+    new Model_Languages
+    {
+        speaker = "",
+        EN = new string[]
+        {
+                "It's a @@SuperSmallKey! Made specifically for regular sized keyholes.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "item-object_collectible_last-well-map",
+    new Model_Languages
+    {
+        speaker = "",
+        EN = new string[]
+        {
+                "It's the @@LastWellMap. Rumor is everything begins in the Spring, including {18} itself.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "item-object_collectible_last-spell-recipe-book",
+    new Model_Languages
+    {
+        speaker = "",
+        EN = new string[]
+        {
+                "You've found the @@LastSpellRecipeBook. Promise this is the last one.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 // ------------------------------------------------------------------

@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-08-06 12:45:24
+// Last created by UI Exporter at 2021-08-09 22:27:05
 
 using System.Collections;
 using System.Collections.Generic;
@@ -147,7 +147,7 @@ public class Script_UIText
     }
 },
 // ------------------------------------------------------------------
-// Items
+// Stickers
 {
     "item-object-UI_sticker_psychic-duck",
     new Model_LanguagesUI
@@ -211,6 +211,51 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
     new Model_LanguagesUI
     {
         EN = @"Use the @@Puppeteer @@Sticker_NoBold to control {73}. Not too shabby."
+    }
+},
+// ------------------------------------------------------------------
+// Usables
+{
+    "usable_super-small-key",
+    new Model_LanguagesUI
+    {
+        EN = @"A @@SuperSmallKey."
+    }
+},
+// ------------------------------------------------------------------
+// Collectibles
+{
+    "collectible_last-well-map",
+    new Model_LanguagesUI
+    {
+        EN = @"Rumor is everything begins in Spring."
+    }
+},
+{
+    "collectible_last-spell-recipe-book",
+    new Model_LanguagesUI
+    {
+        EN = @"Promise this is the last time."
+    }
+},
+// ------------------------------------------------------------------
+// Ids
+{
+    "notes_ids_not-home",
+    new Model_LanguagesUI
+    {
+        EN = @"Hiya!
+
+If you’re reading this that means I'm out dancin'. You know what they say, a dance move a day keeps the {42} away.
+
+Please don’t miss me too much!"
+    }
+},
+{
+    "notes_ids_leave-me",
+    new Model_LanguagesUI
+    {
+        EN = @"Need to be alone."
     }
 },
 // ------------------------------------------------------------------

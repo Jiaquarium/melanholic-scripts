@@ -16,6 +16,6 @@ MonoBehaviour:
   focusedSprite: {fileID: -8362602881052143106, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: 6552564986207930973, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: will illuminate certain dark areas.
+  description: 
   isDroppable: 0
   _isSpecial: 0
