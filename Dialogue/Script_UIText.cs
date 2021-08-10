@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-08-09 22:27:05
+// Last created by UI Exporter at 2021-08-10 14:36:11
 
 using System.Collections;
 using System.Collections.Generic;
@@ -256,6 +256,43 @@ Please don’t miss me too much!"
     new Model_LanguagesUI
     {
         EN = @"Need to be alone."
+    }
+},
+// ------------------------------------------------------------------
+// Ursie
+{
+    "notes_ursie_thank-you",
+    new Model_LanguagesUI
+    {
+        EN = @"Howdy {0},
+
+I've come to my senses;
+I’m confident in my abilities now.
+Proving myself inside these
+{18} walls means nothing.
+
+{61}, {62} and I have hit the
+dusty trail. There’s bigger fish out
+there for us to fry."
+    }
+},
+{
+    "notes_ursie_thank-you1",
+    new Model_LanguagesUI
+    {
+        EN = @"Thank you for assisting us even at
+such lows.
+
+I’m not sure how I’ll repay you,
+how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
+    }
+},
+{
+    "notes_ursie_thank-you_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Sincerely,
+{33}"
     }
 },
 // ------------------------------------------------------------------

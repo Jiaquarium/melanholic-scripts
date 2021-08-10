@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-08-09 22:27:09
+// Last created by Dialogue Exporter at 2021-08-10 16:44:04
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2833,7 +2833,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
-// Underworld
+//     Underworld
 {
     "underworld_cursed-myne_default",
     new Model_Languages
@@ -3015,15 +3015,587 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
-// Celestial Gardens
+// Rock Garden
 {
-    "celestial-gardens_garden-labyrinth_puppets",
+    "rock-garden_ids_default",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "� � � �.",
+        },
+        
+    }
+},
+{
+    "rock-garden_ids_psychic",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "If it’s a rose it will bloom, if it’s a leaf it will fall... sigh, never underestimate it...",
+        },
+        
+    }
+},
+{
+    "rock-garden_ids_psychic_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Hey whoa, I didn’t think anyone would find me down here.",
+                "...But it’s actually really nice to see you again.",
+                "{0}, was it?",
+        },
+        
+    }
+},
+{
+    "rock-garden_ids_psychic_1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "When we call it sad it is joyful, when we call it joyful it is sad... sigh, never underestimate it...",
+        },
+        
+    }
+},
+{
+    "rock-garden_ids_psychic_1_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                "Well, thanks for listening, I’ll probably head back to my room now.",
+                "Just give me a sec.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+//     Garden Labyrinth
+{
+    "garden-labyrinth_puppets_thought",
     new Model_Languages
     {
         speaker = "{10}",
         EN = new string[]
         {
                 "Hand puppets...| This room actually reminds me a bit of a theatre stage.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_blocked",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                "No, I can't go any further, but I must find {39}.",
+                "No, it's much too dangerous on the other side.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_blocked",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                "I don’t think I should go any further than this. I need to find {38}...",
+                "I'm not ready to pass through here though. Who knows what could be on the other side?",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_success",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                "<size=16>{39}!</size>",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_success_a",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                "<size=16>My</size> <size=16>{38}!</size>",
+                "Oh I’ve finally found you.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_success_a_a",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                "We can finally leave here.| It’s finally over.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_success_a_a_a",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                "A new life. Let’s start a new life.| On the other side.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// XXX World
+{
+    "xxx-world_wandering-cursed-one_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "���.",
+        },
+        
+    }
+},
+{
+    "xxx-world_wandering-cursed-one_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "Just you wait, my dear, you’ll be just like me soon enough.",
+        },
+        
+    }
+},
+{
+    "xxx-world_wandering-cursed-one_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                "(. ﾟーﾟ)",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ursie
+{
+    "urselks-saloon_ursie_default",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "����...",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "Howdy! You sure look like you need a drink.| I can tell these things after all these years managing the {35}.",
+                "Ever since <i>it</i> started coming around here though, strange things began happening... strangeness I can take... but my business is getting ruined!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_prompt",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "So partner, what do you say, can you help me out here?",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_prompt_a",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+
+        },
+        choiceText = "Sure.",
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_prompt_a_a",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "Terrific! Recently <b>strange growths have infested</b> one of my KTV rooms.",
+                "And now all my regulars are scared out of their wits.",
+                "My clients come for the karaoke and <i>company</i>. Although, they stay for the drinks.| And that’s where we profit, cha-ching!",
+                "How is the {35} going to be the best watering well around if I’m bleeding this much business?",
+                "What did you say your name was again, youngin’?",
+                "{0}... interesting, hey I like that name. It has a nice ring to it, seems familiar, not quite sure why.",
+                "...Perhaps you can do something about those strange growths.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_prompt_b",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+
+        },
+        choiceText = "Sorry, I'm a little busy right now!",
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_prompt_b_a",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "Ah, well, that is very unfortunate...",
+                "I really hope the {35} can reach its full potential...",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_after-unlock",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "Alright let’s get the {35} to its glory days!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_prompt_talked",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "Ah so you <i>can</i> help out?",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_quest-active",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "It’s always been my dream to create the best saloon in all the land, a destination outsiders would travel far and wide just to visit.",
+                "It’s my fate, I know it, and I won’t leave here until I finish,| I promised that to myself at the very least.",
+                "And I don’t break promises.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_quest-active1",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "You know the {35} used to be the town grapevine. You got the latest news, gossip and of course specialty cocktails here.",
+                "And if you’re lucky you might even meet your special somebody here, he-he.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_quest-active2",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "If only I could get my KTV room back to operational again, maybe then the {35} could be the crown jewel of {37}.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_ursie_psychic_quest-active3",
+    new Model_Languages
+    {
+        speaker = "{33}",
+        EN = new string[]
+        {
+                "You know why I wanted to get into the nightlife business in the first place?",
+                "I thought us {19} tend to show our true selves at night. You know it’s the time where you can really let loose.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Peche & Melba
+{
+    "urselks-saloon_peche_default",
+    new Model_Languages
+    {
+        speaker = "{61}",
+        EN = new string[]
+        {
+                "��...",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_default_a-melba",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                "��!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic",
+    new Model_Languages
+    {
+        speaker = "{61}",
+        EN = new string[]
+        {
+                "It’s hard work working for {33}.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic_a-melba",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                "Yep.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic_a-melba_a-peche",
+    new Model_Languages
+    {
+        speaker = "{61}",
+        EN = new string[]
+        {
+                "Of course we have dreams!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic_a-melba_a-peche_a-melba",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                "Uh huh.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic_a-melba_a-peche_a-melba_a-peche",
+    new Model_Languages
+    {
+        speaker = "{61}",
+        EN = new string[]
+        {
+                "We gotta prove ourselves here first though!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic_a-melba_a-peche_a-melba_a-peche_a-melba",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                "Mhmm!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic1",
+    new Model_Languages
+    {
+        speaker = "{61}",
+        EN = new string[]
+        {
+                "Those strange growths are really killing our business...",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic1_a-melba",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                "Yep yep.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic1_a-melba_a-peche",
+    new Model_Languages
+    {
+        speaker = "{61}",
+        EN = new string[]
+        {
+                "No business means no tips...",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic1_a-melba_a-peche_a-melba",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                "You can say that again...",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic1_a-melba_a-peche_a-melba_a-peche",
+    new Model_Languages
+    {
+        speaker = "{61}",
+        EN = new string[]
+        {
+                "That’s why we gotta go through with the {22}, you hear?!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_peche_psychic1_a-melba_a-peche_a-melba_a-peche_a-melba",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                "Yup! So intruders don’t destroy our livelihoods like this!",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Bar
+{
+    "urselks-saloon_bar_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "Martini... 2 oz gin, 1/2 oz dry vermouth, shaken.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_bar_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "Margarita... 2 oz tequila, 1 oz triple sec, 1 oz lime juice, shaken.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_bar_thought2",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "Empty glasses... a sign that the time has passed.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// KTV Room 2
+{
+    "ktv-room-2_growth_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                "These pillars seem like they’re pulsing,",
         },
         
     }
