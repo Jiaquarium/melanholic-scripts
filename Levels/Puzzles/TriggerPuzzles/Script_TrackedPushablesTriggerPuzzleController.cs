@@ -65,8 +65,7 @@ public class Script_TrackedPushablesTriggerPuzzleController : Script_TriggerPuzz
     {
         for (var i = 0; i < trackers.Length; i++)
         {
-            trackers[i].GetComponent<Script_StopAnimation>().StopAnimation();
-            trackers[i].StopTracking();
+            trackers[i].Done();
             trackers[i].transform.position = triggers[i].transform.position;
 
             /// Disable trackers to solve quest

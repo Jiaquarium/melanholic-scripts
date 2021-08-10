@@ -266,11 +266,17 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followLatteCloseupVCam);
     }
 
+    // Called:
+    // 1) Latte's Blocking reaction Before Node Action
+    // 2) On Success
     public void UpdateKaffe()
     {
         Script_Names.UpdateKaffe();
     }
 
+    // Called:
+    // 1) Kaffe's Blocking reaction Before Node Action
+    // 2) On Success
     public void UpdateLatte()
     {
         Script_Names.UpdateLatte();

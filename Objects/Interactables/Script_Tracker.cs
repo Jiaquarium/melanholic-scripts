@@ -12,8 +12,19 @@ public class Script_Tracker : Script_Interactable
     [SerializeField] private Transform origin;
     [SerializeField] private Renderer graphics;
     [SerializeField] private bool isTracking = true;
+    
     private Vector3 startPos;
+    private Script_StopAnimation stopAnimationHelper;
+    private Script_InteractableObjectText[] interactableObjectTexts;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        stopAnimationHelper = GetComponent<Script_StopAnimation>();
+        interactableObjectTexts = GetComponentsInChildren<Script_InteractableObjectText>(true);
+    }
+    
     // Called from Script_Trackable after it updates position
     public void UpdatePos(Script_Trackable trackable)
     {
@@ -28,8 +39,14 @@ public class Script_Tracker : Script_Interactable
         graphics.enabled = isOn;
     }
 
-    public void StopTracking()
+    public void Done()
     {
+        if (stopAnimationHelper != null)
+            stopAnimationHelper.StopAnimation();
+        
+        foreach (var text in interactableObjectTexts)
+            text.State = Script_InteractableObject.States.Disabled;
+        
         isTracking = false;
     }
 

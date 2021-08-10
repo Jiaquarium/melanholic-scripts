@@ -14,9 +14,10 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         STATE DATA
     ======================================================================= */
     [SerializeField] private bool _isPuzzleComplete;
-    public bool IsPuzzleComplete {
-        get { return _isPuzzleComplete; }
-        set {_isPuzzleComplete = value; }
+    public bool IsPuzzleComplete
+    {
+        get => _isPuzzleComplete;
+        set => _isPuzzleComplete = value;
     }
     // alchemist circle persist
     public bool didPickUpSpringStone;
@@ -137,10 +138,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             // stop heartbeat bg music and stop pulsing animation of pillars
             if (heartBeatBgThemePlayer != null) DestroyBgThemePlayer();
             foreach (Script_Tracker tracker in pillars)
-            {
-                tracker.GetComponent<Script_StopAnimation>().StopAnimation();
-                tracker.StopTracking();
-            }
+                tracker.Done();
             
             game.ChangeStateCutScene();
             StartCoroutine(TransmutationScene());

@@ -8,6 +8,8 @@ using UnityEditor;
 
 public class Script_LevelBehavior_47 : Script_LevelBehavior
 {
+    public const string MapName = "Rock Garden";
+    
     // ==================================================================
     // State Data
     public bool didPickUpPuppeteerSticker;
@@ -16,16 +18,33 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
     [SerializeField] private Script_StickerObject puppeteerSticker;
     [SerializeField] private Script_DemonNPC Ids;
 
+    private bool didMapNotification;
+
     protected override void OnEnable()
     {
-        Script_ItemsEventsManager.OnItemPickUp += OnItemPickUp;
+        base.OnEnable();
+        
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_ItemsEventsManager.OnItemPickUp          += OnItemPickUp;
     }
 
     protected override void OnDisable()
     {
-        Script_ItemsEventsManager.OnItemPickUp -= OnItemPickUp;
+        base.OnDisable();
+
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
     }
-    
+
+    private void OnLevelInitCompleteEvent()
+    {
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
+    }
+
     private void OnItemPickUp(string itemId)
     {
         if (itemId == puppeteerSticker.Item.id)
