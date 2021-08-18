@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Script_PsychicDuckEffect : Script_StickerEffect
 {
-    [SerializeField] private RuntimeAnimatorController psychicDuckAnimatorController;
-    [SerializeField] private Script_PlayerMovement playerMovement;
-    
     public override void Effect()
     {
         AudioClip clip  = Script_SFXManager.SFX.psychicDuckQuack;
@@ -19,9 +16,14 @@ public class Script_PsychicDuckEffect : Script_StickerEffect
     {
         base.OnEquip();
 
-        playerMovement.MyAnimator.runtimeAnimatorController = psychicDuckAnimatorController;
-        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = psychicDuckAnimatorController;
+        // Save the current animation state so we can start the new controller at the same frame.
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
 
+        playerMovement.MyAnimator.runtimeAnimatorController = stickerAnimatorController;
+        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = stickerAnimatorController;
+
+        SyncAnimationFrame(animatorStateInfo);
+        
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
         playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
     }
@@ -30,8 +32,12 @@ public class Script_PsychicDuckEffect : Script_StickerEffect
     {
         base.OnUnequip();
 
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
+
         playerMovement.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
         playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
+
+        SyncAnimationFrame(animatorStateInfo);
 
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
         playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
