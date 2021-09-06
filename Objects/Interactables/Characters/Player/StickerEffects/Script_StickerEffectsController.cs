@@ -19,6 +19,15 @@ public class Script_StickerEffectsController : MonoBehaviour
     [SerializeField] private Script_PuppeteerEffect puppeteerEffect;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
+    [SerializeField] private float coolDown;
+
+    private float coolDownTimer;
+
+    void Update()
+    {
+        coolDownTimer = Mathf.Max(0, coolDownTimer - Time.deltaTime);
+    }
+    
     /// <summary>
     /// Error SFX if there is none to switch with
     /// Using the same slot as already-equipped unequips the active sticker
@@ -28,6 +37,11 @@ public class Script_StickerEffectsController : MonoBehaviour
     {
         /// Disable for when in Hotel
         if (Script_Game.Game.IsInHotel())
+        {
+            return;
+        }
+
+        if (coolDownTimer > 0f)
         {
             return;
         }
@@ -52,6 +66,8 @@ public class Script_StickerEffectsController : MonoBehaviour
             }
 
             SwitchSFX();
+
+            coolDownTimer = coolDown;
         }
 
         // When pressing a Sticker Holster slot that is currently the Action Sticker.
