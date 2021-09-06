@@ -36,14 +36,21 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
                 Debug.Log($"Detected Painting Entrance {obj.name}");
                 var paintingEntrance = (Script_InteractablePaintingEntrance)obj;
                 paintingEntrance.InitiatePaintingEntrance();
-                Play();
+                myDirector.Play(timeline);
             }
         }
     }
 
-    void Play()
+    protected override void OnEquip()
     {
-        myDirector.Play(timeline);
+        base.OnEquip();
+        OnEquipControllerSynced();
+    }
+
+    protected override void OnUnequip()
+    {
+        base.OnEquip();
+        OnUnequipControllerSynced();
     }
 }
 

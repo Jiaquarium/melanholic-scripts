@@ -57,7 +57,7 @@ public class Script_StickerEffectsController : MonoBehaviour
         // When pressing a Sticker Holster slot that is currently the Action Sticker.
         void UnequipActionSticker()
         {
-            EquipEffect(activeSticker, false);
+            EquipEffect(activeSticker, Script_StickerEffect.EquipType.Unequip);
                 
             Script_ActiveStickerManager.Control.RemoveSticker(i);
         }
@@ -66,11 +66,11 @@ public class Script_StickerEffectsController : MonoBehaviour
         void SwitchActionSticker()
         {
             // If there is an existing Action Sticker, call its Unequip Effect.
-            if (activeSticker != null)  EquipEffect(activeSticker, false);
+            if (activeSticker != null)  EquipEffect(activeSticker, Script_StickerEffect.EquipType.UnequipSwitch);
 
             Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch, i);
             
-            EquipEffect(stickerToSwitch, true);
+            EquipEffect(stickerToSwitch, Script_StickerEffect.EquipType.Equip);
         }
     }
     
@@ -127,41 +127,41 @@ public class Script_StickerEffectsController : MonoBehaviour
         Script_ActiveStickerManager.Control.AnimateActiveStickerSlot();
     }
 
-    public void EquipEffect(Script_Sticker sticker, bool isEquip)
+    public void EquipEffect(Script_Sticker sticker, Script_StickerEffect.EquipType equipType)
     {
         switch (sticker.id)
         {
             case Const_Items.PsychicDuckId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                psychicDuckEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                psychicDuckEffect.EquipEffect(equipType);
                 break;
             case Const_Items.BoarNeedleId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                boarNeedleEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                boarNeedleEffect.EquipEffect(equipType);
                 break;
             case Const_Items.AnimalWithinId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                animalWithinEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                animalWithinEffect.EquipEffect(equipType);
                 break;
             case Const_Items.IceSpikeId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                iceSpikeEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                iceSpikeEffect.EquipEffect(equipType);
                 break;
             case Const_Items.MelancholyPianoId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                melancholyPianoEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                melancholyPianoEffect.EquipEffect(equipType);
                 break;
             case Const_Items.LastElevatorId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                lastElevatorEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                lastElevatorEffect.EquipEffect(equipType);
                 break;
             case Const_Items.LetThereBeLightId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                letThereBeLightEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                letThereBeLightEffect.EquipEffect(equipType);
                 break;
             case Const_Items.PuppeteerId:
-                Debug.Log($"{sticker} isEquip {isEquip} Effect");
-                puppeteerEffect.EquipEffect(isEquip);
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                puppeteerEffect.EquipEffect(equipType);
                 break;
         }
     }

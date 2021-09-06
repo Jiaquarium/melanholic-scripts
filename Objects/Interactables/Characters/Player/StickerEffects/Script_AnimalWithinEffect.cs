@@ -8,4 +8,16 @@ public class Script_AnimalWithinEffect : Script_StickerEffect
     {
 
     }
+    
+    protected override void OnEquip()
+    {
+        base.OnEquip();
+        OnEquipControllerSynced();
+    }
+
+    protected override void OnUnequip()
+    {
+        base.OnEquip();
+        OnUnequipControllerSynced();
+    }
 }

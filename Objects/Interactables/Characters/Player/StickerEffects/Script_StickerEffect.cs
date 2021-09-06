@@ -4,6 +4,13 @@ using UnityEngine;
 
 public abstract class Script_StickerEffect : MonoBehaviour
 {
+    public enum EquipType
+    {
+        Equip           = 0,
+        Unequip         = 1,
+        UnequipSwitch   = 2,
+    }
+    
     protected const int Layer = 0;
     
     [SerializeField] protected Script_PlayerMovement playerMovement;
@@ -11,10 +18,20 @@ public abstract class Script_StickerEffect : MonoBehaviour
     
     public abstract void Effect();
 
-    public virtual void EquipEffect(bool isEquip)
+    public virtual void EquipEffect(EquipType type)
     {
-        if (isEquip)    OnEquip();
-        else            OnUnequip();
+        switch (type)
+        {
+            case EquipType.Equip:
+                OnEquip();
+                break;
+            case EquipType.Unequip:
+                OnUnequip();
+                break;
+            case EquipType.UnequipSwitch:
+                OnUnequipSwitch();
+                break;
+        }
     }
 
     protected virtual void OnEquip()
@@ -24,12 +41,47 @@ public abstract class Script_StickerEffect : MonoBehaviour
 
     protected virtual void OnUnequip()
     {
-        Debug.Log($"{name} OnUnequip()");
+        Debug.Log($"{name} OnEquip()");
+    }
+
+    // Unequip when switching to another Sticker. The main difference with this and OnUnequip is that
+    // this should not call OnUnequipControllerSynced() to resync to the default controller.
+    protected virtual void OnUnequipSwitch()
+    {
+        Debug.Log($"{name} OnEquip()");
+    }
+
+    // Switches to a controller that is a "mask" transformation, keeping the same state.
+    protected void OnEquipControllerSynced()
+    {
+        // Save the current animation state so we can start the new controller at the same frame.
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
+
+        playerMovement.MyAnimator.runtimeAnimatorController = stickerAnimatorController;
+        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = stickerAnimatorController;
+
+        SyncAnimatorState(animatorStateInfo);
+        
+        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
+        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
+    }
+
+    // Handle unequipping the active sticker to return to the default controller.
+    protected void OnUnequipControllerSynced()
+    {
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
+
+        playerMovement.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
+        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
+
+        SyncAnimatorState(animatorStateInfo);
+
+        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
+        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
     }
 
     // Play the new controller at the saved state time.
-    // NOTE: can only be used for "mask" transformations that keep the same animations as PlayerMovement.
-    protected void SyncAnimationFrame(AnimatorStateInfo animatorStateInfo)
+    private void SyncAnimatorState(AnimatorStateInfo animatorStateInfo)
     {
         playerMovement.MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);
         playerMovement.PlayerGhost.MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);

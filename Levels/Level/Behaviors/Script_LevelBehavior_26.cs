@@ -158,7 +158,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         if (timer == 0)
             timer = attackInterval;
 
-        // Use Smooth Delta Time to match Player Movement timer.
+        // Match Player Movement deltaTime.
         timer -= Time.smoothDeltaTime;
 
         if (timer <= 0 && !isCurrentPuzzleComplete)
