@@ -25,7 +25,7 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
     
     public override void Spike(Directions dir)
     {
-        player.SetIsAttacking();
+        player.SetIsEffect();
         didHit = false;
         
         switch (dir)
@@ -73,7 +73,7 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
         HideSpikes();
         isInUse = false;
 
-        player.SetLastState();
+        player.SetIsInteract();
     }
     // Timeline Signals End
     // ------------------------------------------------------------------------------------

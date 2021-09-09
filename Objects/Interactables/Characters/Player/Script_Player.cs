@@ -12,6 +12,8 @@ using UnityEditor;
 [RequireComponent(typeof(PlayableDirector))]
 public class Script_Player : Script_Character
 {
+    public const string IsEffectTrigger = "IsEffect";
+    
     public Renderer graphics;
     public Action onAttackDone; 
     [SerializeField] protected Script_PlayerMovement playerMovementHandler;
@@ -236,9 +238,17 @@ public class Script_Player : Script_Character
         Debug.Log($"Player state set to {state}!");
     }
 
+    public void SetIsEffect()
+    {
+        SetState(Const_States_Player.Effect);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
+    }
+
     protected bool IsNotMovingState()
     {
         return State == Const_States_Player.Attack
+                || State == Const_States_Player.Effect
                 || State == Const_States_Player.Dialogue
                 || State == Const_States_Player.Viewing
                 || State == Const_States_Player.PickingUp
@@ -374,6 +384,12 @@ public class Script_Player : Script_Character
         playerEffect.SetBuffEffectActive(isActive);
     }
 
+    public void TriggerEffect()
+    {
+        MyAnimator.SetTrigger(IsEffectTrigger);
+        playerMovementHandler.PlayerGhost.MyAnimator.SetTrigger(IsEffectTrigger);
+    }
+
     // ------------------------------------------------------------------
     // Interactions
 
@@ -495,7 +511,7 @@ public class Script_Player : Script_Character
         
         interactionBoxController = GetComponent<Script_InteractionBoxController>();
         playerStats = GetComponent<Script_PlayerStats>();
-
+        
         playerMovementHandler.Setup(game, isLightOn);
         playerActionHandler.Setup(game);
         playerThoughtManager.Setup();
@@ -503,7 +519,7 @@ public class Script_Player : Script_Character
         
         /// Setup character stats
         base.Setup();
-        
+
         location = transform.position;
         SetState(Const_States_Player.Interact);
         FaceDirection(direction);

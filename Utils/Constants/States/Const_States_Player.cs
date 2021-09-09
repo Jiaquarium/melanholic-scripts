@@ -11,6 +11,7 @@
     public const string Standby         = "standby";
     public const string Puppeteer       = "puppeteer";
     public const string PuppeteerNull   = "puppeteer-null";
+    public const string Effect          = "effect";
 
     // ------------------------------------------------------------------
     // Game state: Inventory

@@ -15,6 +15,9 @@ public class Script_IceSpikeEffect : Script_StickerEffect
         Debug.Log($"{name} Effect()");
         iceSpikeAttack.Spike(player.FacingDirection);
         
+        // NOTE Ensure the triggered Effect animation time <= time we remain in Effect state.
+        player.TriggerEffect();
+
         Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
             shakeTime,
             shakeAmp,
@@ -22,4 +25,16 @@ public class Script_IceSpikeEffect : Script_StickerEffect
             null
         );
     }
+
+    protected override void OnEquip()
+    {
+        base.OnEquip();
+        OnEquipControllerSynced();
+    }
+
+    protected override void OnUnequip()
+    {
+        base.OnEquip();
+        OnUnequipControllerSynced();
+    }    
 }
