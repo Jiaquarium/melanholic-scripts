@@ -67,8 +67,9 @@ public class Script_ClockManager : MonoBehaviour
             && game.state == Const_States_Game.Interact
             && (
                 game.GetPlayer().State == Const_States_Player.Interact
-                // Also allow time to run during Puppeteering for time pressure.
+                // Also allow time to run during following Effects
                 || game.GetPlayer().State == Const_States_Player.Puppeteer
+                || game.GetPlayer().State == Const_States_Player.LastElevatorEffect
             );
     }
 

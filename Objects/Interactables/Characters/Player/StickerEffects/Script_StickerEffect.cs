@@ -46,6 +46,8 @@ public abstract class Script_StickerEffect : MonoBehaviour
 
     // Unequip when switching to another Sticker. The main difference with this and OnUnequip is that
     // this should not call OnUnequipControllerSynced() to resync to the default controller.
+    // The reason for this is when switching the new controller overrides the previous so we don't
+    // need to unecessarily override with the Default controller before switching to the new one.
     protected virtual void OnUnequipSwitch()
     {
         Debug.Log($"{name} OnEquip()");
@@ -62,8 +64,8 @@ public abstract class Script_StickerEffect : MonoBehaviour
 
         SyncAnimatorState(animatorStateInfo);
         
-        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
-        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
+        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
     }
 
     // Handle unequipping the active sticker to return to the default controller.
@@ -76,8 +78,8 @@ public abstract class Script_StickerEffect : MonoBehaviour
 
         SyncAnimatorState(animatorStateInfo);
 
-        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
-        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.LastMove);
+        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
     }
 
     // Play the new controller at the saved state time.

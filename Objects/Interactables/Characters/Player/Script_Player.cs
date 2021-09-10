@@ -245,6 +245,13 @@ public class Script_Player : Script_Character
         Debug.Log($"Player state set to {state}!");
     }
 
+    public void SetIsLastElevatorEffect()
+    {
+        SetState(Const_States_Player.LastElevatorEffect);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
+    }
+
     protected bool IsNotMovingState()
     {
         return State == Const_States_Player.Attack
@@ -255,7 +262,8 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.Standby
                 || State == Const_States_Player.Puppeteer
                 || State == Const_States_Player.Inventory
-                || State == Const_States_Player.PuppeteerNull;
+                || State == Const_States_Player.PuppeteerNull
+                || State == Const_States_Player.LastElevatorEffect;
     }
 
     protected void StopMovingAnimations()

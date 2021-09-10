@@ -15,16 +15,22 @@ public class Script_StickerHolsterManager : MonoBehaviour
 
     [SerializeField] private Script_HUDManager HUDManager;
 
+    private bool IsHolsterShowing
+    {
+        get => game.state == Const_States_Game.Interact
+            && !game.IsInHotel()
+            && (
+                game.GetPlayer().State == Const_States_Player.Interact
+                || game.GetPlayer().State == Const_States_Player.LastElevatorEffect
+            );
+    }
+
     void Update()
     {
         if (HUDManager.IsPaused)
             return;
         
-        if (
-            game.state == Const_States_Game.Interact
-            && game.GetPlayer().State == Const_States_Player.Interact
-            && !game.IsInHotel()
-        )
+        if (IsHolsterShowing)
         {
             stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(fadeSpeed.ToFadeTime(), null);
         }

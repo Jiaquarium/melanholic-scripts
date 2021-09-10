@@ -49,6 +49,9 @@ public class Script_PlayerAction : MonoBehaviour
             case Const_States_Player.PuppeteerNull:
                 HandleExitPuppeteerNull(facingDirection);
                 break;
+            case Const_States_Player.LastElevatorEffect:
+                HandleLastElevatorActions(facingDirection, location);
+                break;       
         }
     }
 
@@ -66,7 +69,27 @@ public class Script_PlayerAction : MonoBehaviour
         {
             OpenInventory();
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect1))
+        else
+        {
+            HandleStickerSwitch(facingDirection, location);
+        }
+    }
+
+    private void HandleLastElevatorActions(Directions facingDirection, Vector3 location)
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        {
+            stickerEffectsController.Effect(facingDirection);
+        }
+        else
+        {
+            HandleStickerSwitch(facingDirection, location);
+        }
+    }
+
+    private void HandleStickerSwitch(Directions facingDirection, Vector3 location)
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.Effect1))
         {
             Debug.Log($"Switch to {Const_KeyCodes.Effect1}");
             stickerEffectsController.Switch(0);
@@ -85,31 +108,6 @@ public class Script_PlayerAction : MonoBehaviour
         {
             Debug.Log($"Switch to {Const_KeyCodes.Effect4}");
             stickerEffectsController.Switch(3);
-        }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect5))
-        {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect5}");
-            stickerEffectsController.Switch(4);
-        }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect6))
-        {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect6}");
-            stickerEffectsController.Switch(5);
-        }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect7))
-        {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect7}");
-            stickerEffectsController.Switch(6);
-        }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect8))
-        {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect8}");
-            stickerEffectsController.Switch(7);
-        }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect9))
-        {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect9}");
-            stickerEffectsController.Switch(8);
         }
     }
 

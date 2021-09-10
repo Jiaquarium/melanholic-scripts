@@ -96,6 +96,11 @@ public class Script_PlayerMovement : MonoBehaviour
         get => 1 - timer / repeatDelay;
     }
 
+    public Directions FacingDirection
+    {
+        get => player.FacingDirection;
+    }
+    
     public Directions LastMove
     {
         get => lastMove;

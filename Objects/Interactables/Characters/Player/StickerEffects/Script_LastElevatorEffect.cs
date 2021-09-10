@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Script_LastElevatorEffect : Script_StickerEffect
 {
+    [SerializeField] private Script_Player player; 
+    
     [SerializeField] protected Script_ExitMetadataObject exit;
     [SerializeField] private Script_Elevator.Types type;
     [SerializeField] private Script_ElevatorBehavior elevatorExitBehavior;
@@ -33,6 +35,8 @@ public class Script_LastElevatorEffect : Script_StickerEffect
 
     protected override void OnEquip()
     {
+        player.SetIsLastElevatorEffect();
+        
         base.OnEquip();
         OnEquipControllerSynced();
     }
@@ -41,5 +45,14 @@ public class Script_LastElevatorEffect : Script_StickerEffect
     {
         base.OnEquip();
         OnUnequipControllerSynced();
+
+        player.SetIsInteract();
+    }
+
+    protected override void OnUnequipSwitch()
+    {
+        base.OnEquip();
+
+        player.SetIsInteract();
     }
 }
