@@ -30,4 +30,16 @@ public class Script_LastElevatorEffect : Script_StickerEffect
             game.ElevatorCloseDoorsCutScene(exit, elevatorExitBehavior, type);
         }
     }
+
+    protected override void OnEquip()
+    {
+        base.OnEquip();
+        OnEquipControllerSynced();
+    }
+
+    protected override void OnUnequip()
+    {
+        base.OnEquip();
+        OnUnequipControllerSynced();
+    }
 }

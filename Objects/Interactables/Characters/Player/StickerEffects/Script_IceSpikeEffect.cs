@@ -36,5 +36,5 @@ public class Script_IceSpikeEffect : Script_StickerEffect
     {
         base.OnEquip();
         OnUnequipControllerSynced();
-    }    
+    }
 }
