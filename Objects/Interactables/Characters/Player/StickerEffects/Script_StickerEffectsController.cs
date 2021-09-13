@@ -195,9 +195,4 @@ public class Script_StickerEffectsController : MonoBehaviour
             Script_SFXManager.SFX.PlayerStashItem, Script_SFXManager.SFX.PlayerStashItemVol
         );
     }
-
-    public void Setup()
-    {
-        melancholyPianoEffect.Setup();
-    }
 }

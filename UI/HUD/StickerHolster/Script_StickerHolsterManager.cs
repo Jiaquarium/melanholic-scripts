@@ -22,6 +22,7 @@ public class Script_StickerHolsterManager : MonoBehaviour
             && (
                 game.GetPlayer().State == Const_States_Player.Interact
                 || game.GetPlayer().State == Const_States_Player.LastElevatorEffect
+                || game.GetPlayer().State == Const_States_Player.MelancholyPiano
             );
     }
 

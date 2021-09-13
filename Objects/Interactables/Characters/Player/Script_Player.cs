@@ -252,6 +252,13 @@ public class Script_Player : Script_Character
         Debug.Log($"Player state set to {state}!");
     }
 
+    public void SetIsMelancholyPianoEffect()
+    {
+        SetState(Const_States_Player.MelancholyPiano);
+        StopMovingAnimations();
+        Debug.Log($"Player state set to {state}!");
+    }
+
     protected bool IsNotMovingState()
     {
         return State == Const_States_Player.Attack
@@ -263,10 +270,11 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.Puppeteer
                 || State == Const_States_Player.Inventory
                 || State == Const_States_Player.PuppeteerNull
-                || State == Const_States_Player.LastElevatorEffect;
+                || State == Const_States_Player.LastElevatorEffect
+                || State == Const_States_Player.MelancholyPiano;
     }
 
-    protected void StopMovingAnimations()
+    public void StopMovingAnimations()
     {
         MyAnimator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
         playerMovementHandler.PlayerGhost.StopMoveAnimation();

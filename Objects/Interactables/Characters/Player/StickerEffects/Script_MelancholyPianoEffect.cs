@@ -9,6 +9,8 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_MelancholyPianoEffect : Script_StickerEffect
 {
+    [SerializeField] private Script_Player player; 
+    
     [SerializeField] private float disabledReactionWaitTime;
     
     private AudioSource audioSource;
@@ -45,9 +47,29 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
         }
     }
 
-    public void Setup()
+    protected override void OnEquip()
     {
+        player.SetIsLastElevatorEffect();
+        
+        base.OnEquip();
+        OnEquipControllerSynced();
+        
+        player.StopMovingAnimations();
+    }
 
+    protected override void OnUnequip()
+    {
+        base.OnEquip();
+        OnUnequipControllerSynced();
+
+        player.SetIsInteract();
+    }
+
+    protected override void OnUnequipSwitch()
+    {
+        base.OnEquip();
+
+        player.SetIsInteract();
     }
 }
 

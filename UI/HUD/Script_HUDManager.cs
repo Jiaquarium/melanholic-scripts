@@ -42,14 +42,16 @@ public class Script_HUDManager : MonoBehaviour
         }
     }
 
-    private bool IsClockShowing()
+    public bool IsClockShowing()
     {
         return game.state == Const_States_Game.Interact
             && (
                 game.GetPlayer().State == Const_States_Player.Interact
+                
                 // Also allow time to run during following Effects
                 || game.GetPlayer().State == Const_States_Player.Puppeteer
                 || game.GetPlayer().State == Const_States_Player.LastElevatorEffect
+                || game.GetPlayer().State == Const_States_Player.MelancholyPiano
             );
     }
 

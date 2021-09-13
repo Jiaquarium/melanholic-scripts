@@ -39,6 +39,8 @@ public class Script_LastElevatorEffect : Script_StickerEffect
         
         base.OnEquip();
         OnEquipControllerSynced();
+
+        player.StopMovingAnimations();
     }
 
     protected override void OnUnequip()

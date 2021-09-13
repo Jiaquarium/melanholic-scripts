@@ -13,6 +13,7 @@
     public const string PuppeteerNull       = "puppeteer-null";
     public const string Effect              = "effect";
     public const string LastElevatorEffect  = "last-elevator";
+    public const string MelancholyPiano     = "melancholy-piano";
 
     // ------------------------------------------------------------------
     // Game state: Inventory

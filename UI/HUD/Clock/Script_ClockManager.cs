@@ -14,6 +14,7 @@ public class Script_ClockManager : MonoBehaviour
     public static Script_ClockManager Control;
     public static int TimebarIncrements = 60;
     
+    [SerializeField] private Script_HUDManager HUDManager;
     [SerializeField] private Script_Clock clock;
     [SerializeField] private Script_Timebar timebar;
     
@@ -64,13 +65,7 @@ public class Script_ClockManager : MonoBehaviour
     public bool IsClockRunning()
     {
         return !game.IsInHotel()
-            && game.state == Const_States_Game.Interact
-            && (
-                game.GetPlayer().State == Const_States_Player.Interact
-                // Also allow time to run during following Effects
-                || game.GetPlayer().State == Const_States_Player.Puppeteer
-                || game.GetPlayer().State == Const_States_Player.LastElevatorEffect
-            );
+            && HUDManager.IsClockShowing();
     }
 
     public void TimesUp()

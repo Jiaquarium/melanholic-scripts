@@ -51,7 +51,10 @@ public class Script_PlayerAction : MonoBehaviour
                 break;
             case Const_States_Player.LastElevatorEffect:
                 HandleLastElevatorActions(facingDirection, location);
-                break;       
+                break;
+            case Const_States_Player.MelancholyPiano:
+                HandleMelancholyPianoActions(facingDirection, location);
+                break;
         }
     }
 
@@ -76,6 +79,18 @@ public class Script_PlayerAction : MonoBehaviour
     }
 
     private void HandleLastElevatorActions(Directions facingDirection, Vector3 location)
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        {
+            stickerEffectsController.Effect(facingDirection);
+        }
+        else
+        {
+            HandleStickerSwitch(facingDirection, location);
+        }
+    }
+
+    private void HandleMelancholyPianoActions(Directions facingDirection, Vector3 location)
     {
         if (Input.GetButtonDown(Const_KeyCodes.Action2))
         {
@@ -329,6 +344,5 @@ public class Script_PlayerAction : MonoBehaviour
         player = GetComponent<Script_Player>(); 
         interactionBoxController = GetComponent<Script_InteractionBoxController>();
         directions = Script_Utils.GetDirectionToVectorDict();
-        stickerEffectsController?.Setup();
     }
 }
