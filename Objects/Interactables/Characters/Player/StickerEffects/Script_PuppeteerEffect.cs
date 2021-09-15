@@ -20,6 +20,8 @@ public class Script_PuppeteerEffect : Script_StickerEffect
             playerLastState = string.Empty;
 
             isActive = false;
+
+            player.EffectHold = false;
         }
         else
         {
@@ -27,27 +29,32 @@ public class Script_PuppeteerEffect : Script_StickerEffect
             Script_PlayerEventsManager.PuppeteerActivate();
 
             playerLastState = player.State;
-            if (Script_Game.Game.PuppetMaster == null)  StartCoroutine(WaitNextFrameSwitchState());
-            else                                        player.SetIsPuppeteer();
+            if (Script_Game.Game.PuppetMaster == null)
+            {
+                // Should we do this on the next frame? Will cause movement to not stop immediately if we do.
+                player.SetIsPuppeteerNull();
+            }
+            else
+            {
+                player.SetIsPuppeteer();
+            }
 
             isActive = true;
-        }
 
-        IEnumerator WaitNextFrameSwitchState()
-        {
-            yield return null;
-            
-            player.SetIsPuppeteerNull();
+            player.EffectHold = true;
+
         }
     }
 
     protected override void OnEquip()
     {
         base.OnEquip();
+        OnEquipControllerSynced();
     }
 
     protected override void OnUnequip()
     {
         base.OnUnequip();
+        OnUnequipControllerSynced();
     }
 }

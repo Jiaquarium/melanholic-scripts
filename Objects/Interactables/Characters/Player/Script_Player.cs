@@ -13,6 +13,7 @@ using UnityEditor;
 public class Script_Player : Script_Character
 {
     public const string IsEffectTrigger = "IsEffect";
+    public const string IsEffectHoldBool = "IsEffectHold";
     
     public Renderer graphics;
     public Action onAttackDone; 
@@ -90,6 +91,15 @@ public class Script_Player : Script_Character
     public Transform FocalPoint
     {
         get => focalPoint;
+    }
+
+    public bool EffectHold
+    {
+        set
+        {
+            MyAnimator.SetBool(IsEffectHoldBool, value);
+            playerMovementHandler.PlayerGhost.MyAnimator.SetBool(IsEffectHoldBool, value);
+        }
     }
 
     protected virtual void OnEnable()

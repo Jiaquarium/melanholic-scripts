@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// aka Ice Princess
 public class Script_IceSpikeEffect : Script_StickerEffect
 {
     [SerializeField] private Script_IceSpikeAttack iceSpikeAttack;
