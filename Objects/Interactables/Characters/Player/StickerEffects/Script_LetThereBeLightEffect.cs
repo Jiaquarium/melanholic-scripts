@@ -4,32 +4,65 @@ using UnityEngine;
 
 public class Script_LetThereBeLightEffect : Script_StickerEffect
 {
-    private Script_LanternFollower lanternFollower;
+    [SerializeField] private Script_Player player;
     
-    void Awake()
-    {
-        lanternFollower = Script_Game.Game.LanternFollower;
-    }
+    [SerializeField] private RuntimeAnimatorController lanternOnAnimatorController;
     
+    
+    private bool isLanternOn;
+
     public override void Effect()
     {
-        lanternFollower.SwitchLightState();
+        if (isLanternOn)
+        {
+            OnEquipControllerSynced();   
+            
+            player.SwitchLight(false);
+            isLanternOn = false;
+        }
+        else
+        {
+            LanternOnController();
+            
+            player.SwitchLight(true);
+            isLanternOn = true;
+        }
     }
 
     protected override void OnEquip()
     {
         base.OnEquip();
-        
-        // Set Lantern Follower active.
-        lanternFollower.Activate();
+        OnEquipControllerSynced();
     }
 
     protected override void OnUnequip()
     {
         base.OnUnequip();
+        OnUnequipControllerSynced();
+
+        player.SwitchLight(false);
+        isLanternOn = false;
+    }
+
+    protected override void OnUnequipSwitch()
+    {
+        base.OnUnequipSwitch();
+
+        player.SwitchLight(false);
+        isLanternOn = false;
+    }
+
+    private void LanternOnController()
+    {
+        // Save the current animation state so we can start the new controller at the same frame.
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
+
+        playerMovement.MyAnimator.runtimeAnimatorController = lanternOnAnimatorController;
+        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = lanternOnAnimatorController;
+
+        SyncAnimatorState(animatorStateInfo);
         
-        // Set Lantern Follower inactive.
-        lanternFollower.LightOff();
-        lanternFollower.Deactivate();
+        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
     }
 }

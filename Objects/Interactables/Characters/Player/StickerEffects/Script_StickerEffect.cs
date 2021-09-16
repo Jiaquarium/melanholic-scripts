@@ -83,7 +83,7 @@ public abstract class Script_StickerEffect : MonoBehaviour
     }
 
     // Play the new controller at the saved state time.
-    private void SyncAnimatorState(AnimatorStateInfo animatorStateInfo)
+    protected void SyncAnimatorState(AnimatorStateInfo animatorStateInfo)
     {
         playerMovement.MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);
         playerMovement.PlayerGhost.MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);
