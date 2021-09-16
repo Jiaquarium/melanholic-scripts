@@ -11,10 +11,16 @@ using UnityEditor;
 [RequireComponent(typeof(PlayableDirector))]
 public class Script_GiantBoarNeedleEffect : Script_StickerEffect
 {
+    // 16 frame (@ 30 fps) duration timeline and Effect animation.
+    [SerializeField] private float effectDuration = 16f / 30f;
+    
     [SerializeField] private Script_Player player;
     [SerializeField] private Script_PlayerAction playerActionHandler;
+    
     [SerializeField] private Script_InteractionBoxController interactionBoxController;
+    
     [SerializeField] private TimelineAsset timeline;
+    
     private PlayableDirector myDirector;
 
     void Awake()
@@ -26,8 +32,12 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
     {
         Debug.Log($"{name} Effect()");
         
+        bool isPaintingEntranceDetected = false;
+
+        player.TriggerEffect();
+        player.SetIsEffect();
+        
         Script_InteractableObject[] objs = interactionBoxController.GetInteractableObject(player.FacingDirection);
-        if (objs.Length == 0)    return;
 
         foreach (Script_InteractableObject obj in objs)
         {
@@ -36,8 +46,23 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
                 Debug.Log($"Detected Painting Entrance {obj.name}");
                 var paintingEntrance = (Script_InteractablePaintingEntrance)obj;
                 paintingEntrance.InitiatePaintingEntrance();
+                
+                // 16 frame (@ 30 fps) duration timeline.
                 myDirector.Play(timeline);
+
+                isPaintingEntranceDetected = true;
             }
+        }
+
+        // Handle returning to interact state here if no Painting Entrance was detected.
+        if (!isPaintingEntranceDetected)
+            StartCoroutine(WaitToInteract());
+
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSeconds(effectDuration);
+            
+            player.SetIsInteract();
         }
     }
 

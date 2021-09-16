@@ -73,12 +73,13 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
 
     public void InitiatePaintingEntrance()
     {
-        Script_Game.Game.GetPlayer().SetIsStandby();
         StartCoroutine(WaitToStartEntranceNode());
 
         IEnumerator WaitToStartEntranceNode()
         {
             yield return new WaitForSeconds(BoarNeedleWaitTime);
+            
+            Script_Game.Game.GetPlayer().SetIsStandby();
 
             if (State == States.Disabled)
             {
