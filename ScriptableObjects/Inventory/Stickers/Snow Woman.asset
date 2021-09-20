@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c900340151bc94e168fe8cc078af54d9, type: 3}
-  m_Name: Ice Spike
+  m_Name: Snow Woman
   m_EditorClassIdentifier: 
   id: sticker_ice-spike
   focusedSprite: {fileID: -6618134905481563395, guid: db7ee588e0d764e038da855479f5e03a,
