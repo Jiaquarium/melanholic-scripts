@@ -724,6 +724,8 @@ public static class Script_Utils
 
     public static bool CheckInTags(this List<Const_Tags.Tags> tags, string tag)
     {
+        Debug.Log($"Checking for tag {tag}");
+
         if (tag == null)            return false;
 
         // Check if Everything is included
@@ -731,6 +733,8 @@ public static class Script_Utils
         if (isDetectEverything)     return true;
         
         Const_Tags.Tags result = tags.FirstOrDefault(_tag => Const_Tags.TagsMap[_tag] == tag);
+
+        Debug.Log($"Ignoring tag in tags with result {result}");
 
         if (result.Equals(default(Const_Tags.Tags)))    return false;
         else                                            return true;
