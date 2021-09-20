@@ -896,11 +896,6 @@ public class Script_Game : MonoBehaviour
         return player;
     }
 
-    public Script_PlayerGhost GetPlayerGhost()
-    {
-        return player.GetPlayerGhost();
-    }
-
     public void AddPlayerThought(Model_Thought thought)
     {
         playerThoughtHandler.AddPlayerThought(thought, thoughts);

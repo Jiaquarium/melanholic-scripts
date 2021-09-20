@@ -294,15 +294,14 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
 
         // Bind Player & Player Ghost to the Retreat Timeline & play.
         Script_Player player = Script_Game.Game.GetPlayer();
-        Script_PlayerGhost playerGhost = player.GetPlayerGhost();
         
         playerObjsToBind.Clear();
         
         playerObjsToBind.Add(player.gameObject);
-        playerObjsToBind.Add(playerGhost.gameObject);
+        // playerObjsToBind.Add(playerGhost.gameObject);
         
         playerObjsToBind.Add(player.MyAnimator.gameObject);
-        playerObjsToBind.Add(playerGhost.MyAnimator.gameObject);
+        // playerObjsToBind.Add(playerGhost.MyAnimator.gameObject);
 
         playerPlayableDirector.BindTimelineTracks(playerRetreatTimeline, playerObjsToBind);
 

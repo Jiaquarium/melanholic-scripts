@@ -19,7 +19,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     // =======================================================================
 
     private Script_PlayerMovementAnimator playerMovementAnimator;
-    private Script_PlayerGhost playerGhost;
     [SerializeField] private string hintTriggerId;
     
     [SerializeField] private Script_Hint hint; 
@@ -125,7 +124,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     public override void Setup()
     {
         playerMovementAnimator = game.GetPlayer().MyAnimator.GetComponent<Script_PlayerMovementAnimator>();
-        playerGhost = game.GetPlayerGhost();
 
         if (ShouldPlayIdsIntro())
             Ids.gameObject.SetActive(true);

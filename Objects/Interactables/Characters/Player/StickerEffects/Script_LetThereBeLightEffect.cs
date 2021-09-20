@@ -58,11 +58,9 @@ public class Script_LetThereBeLightEffect : Script_StickerEffect
         AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
 
         playerMovement.MyAnimator.runtimeAnimatorController = lanternOnAnimatorController;
-        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = lanternOnAnimatorController;
 
         SyncAnimatorState(animatorStateInfo);
         
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
-        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
     }
 }
