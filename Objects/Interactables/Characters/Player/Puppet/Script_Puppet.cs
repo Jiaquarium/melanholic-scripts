@@ -65,9 +65,6 @@ public class Script_Puppet : Script_PlayerCopy
             if (IsNotMovingState())
             {
                 StopMovingAnimations();
-
-                // Finish up Ghost Follow on nonmoving states.
-                playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
             }
             else
             {
@@ -77,7 +74,6 @@ public class Script_Puppet : Script_PlayerCopy
         else
         {
             StopMovingAnimations();
-            playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
         }
     }
 
@@ -89,19 +85,15 @@ public class Script_Puppet : Script_PlayerCopy
             if (activatedAnimatorController != null)
             {
                 MyAnimator.runtimeAnimatorController = activatedAnimatorController;
-                playerMovementHandler.PlayerGhost.MyAnimator.runtimeAnimatorController = activatedAnimatorController;
                 
                 MyAnimator.AnimatorSetDirection(FacingDirection);
-                playerMovementHandler.PlayerGhost.MyAnimator.AnimatorSetDirection(FacingDirection);
             }
         }
         else
         {
             MyAnimator.runtimeAnimatorController = inactiveAnimatorController;
-            playerMovementHandler.PlayerGhost.MyAnimator.runtimeAnimatorController = inactiveAnimatorController;
 
             MyAnimator.AnimatorSetDirection(FacingDirection);
-            playerMovementHandler.PlayerGhost.MyAnimator.AnimatorSetDirection(FacingDirection);
         }
     }
 

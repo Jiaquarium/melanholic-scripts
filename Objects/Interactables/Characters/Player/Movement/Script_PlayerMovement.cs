@@ -8,16 +8,19 @@ using UnityEngine.Timeline;
 using System.Linq;
 
 /// <summary>
-/// For movement, uses PlayerGhost to simulate movement. We actually move Player as the pointer
-/// immediately and have the visual representation PlayerGhost follow.
-/// 
-/// If we're not moving in world space (e.g. Timeline)
-/// then we don't do this since we don't need the PlayerGhost lag visuals.
+/// Using Player to move while keeping a Queue of buffered moves.
 /// </summary>
 [RequireComponent(typeof(PlayableDirector))]
 [RequireComponent(typeof(Script_PlayerCheckCollisions))]
 public class Script_PlayerMovement : MonoBehaviour
 {
+    public enum Speeds
+    {
+        Default     = 0,
+        Run         = 1,
+        Dev         = 999
+    }
+    
     // ------------------------------------------------------------------
     // PlayerMovement Animator Controller Params
     public const string PlayerMovingAnimatorParam   = "PlayerMoving";
@@ -31,34 +34,35 @@ public class Script_PlayerMovement : MonoBehaviour
     public Script_PlayerGhost PlayerGhostPrefab;
     public Script_PlayerReflection PlayerReflectionPrefab;
 
-    [SerializeField] private float defaultRepeatDelay;
-    [SerializeField] private float runRepeatDelay;
-    [SerializeField] private float devRunRepeatDelay;
+    [SerializeField] private float defaultSpeed;
+    [SerializeField] private float runSpeed;
+    [SerializeField] private float devRunSpeed;
     
     public int exitUpStairsOrderLayer;
     
     // Tracks if Ghost is done animating and no axis is pressed.
     [SerializeField] private bool isMoving;
+    [SerializeField] private Vector3 startLocation;
     
     [SerializeField] private TimelineAsset moveUpTimeline;
     [SerializeField] private TimelineAsset enterElevatorTimeline;
 
     [SerializeField] private RuntimeAnimatorController defaultAnimatorController;
 
-    private float repeatDelay;
+    private float progress;
+    private Speeds walkSpeed;
+    
     private Script_Game game;
     
     private Script_Player player;
     private PlayableDirector director;
 
-    private Script_PlayerGhost playerGhost;
     private Script_PlayerReflection playerReflection;
     private Dictionary<Directions, Vector3> directionToVector;
     private SpriteRenderer spriteRenderer;
     private Transform grid;
 
     [SerializeField] private Directions lastMove;
-    [SerializeField] private float timer;
 
     [SerializeField] private Script_LimitedQueue<Directions> inputBuffer = new Script_LimitedQueue<Directions>(4);
     
@@ -76,11 +80,6 @@ public class Script_PlayerMovement : MonoBehaviour
         get => animator;
     }
 
-    public Script_PlayerGhost PlayerGhost
-    {
-        get => playerGhost;
-    }
-
     public Script_InteractionBoxController InteractionBoxController
     {
         get => player.interactionBoxController;
@@ -93,7 +92,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public float Progress
     {
-        get => 1 - timer / repeatDelay;
+        get => progress;
     }
 
     public Directions FacingDirection
@@ -105,10 +104,23 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         get => lastMove;
     }
-    
-    void OnDestroy()
+
+    public float WalkSpeed
     {
-        if (playerGhost != null)    Destroy(playerGhost.gameObject);
+        get
+        {
+            switch (walkSpeed)
+            {
+                case (Speeds.Default):
+                    return defaultSpeed;
+                case (Speeds.Run):
+                    return runSpeed;
+                case (Speeds.Dev):
+                    return devRunSpeed;
+                default:
+                    return defaultSpeed;    
+            }
+        }
     }
     
     void Awake()
@@ -125,17 +137,13 @@ public class Script_PlayerMovement : MonoBehaviour
     public void HandleMoveInput(bool isReversed = false)
     {
         HandleWalkSpeed();
-        
-        HandleMoveBufferTimers();
-
         HandleAnimations();
-        HandleGhostTransform();
 
         // ------------------------------------------------------------------
         // Input Buffer
         
         // Fill buffer with any inputs caught during buffer time.
-        if (timer > 0)
+        if (progress < 1f)
         {
             BufferInput();
             return;
@@ -322,8 +330,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void Move(Directions dir)
     {
-        // Throttle repeat moves by timer.
-        if (timer > 0f)
+        if (progress < 1f)
         {
             return;
         }
@@ -343,33 +350,35 @@ public class Script_PlayerMovement : MonoBehaviour
         // DDR mode, only changing directions to look like dancing.
         if (game.state == Const_States_Game.DDR)    return;
         
-        timer = repeatDelay;
+        // timer = repeatDelay;
+        progress = 0f;
 
         // Move player to desired location.
-        playerGhost.startLocation = player.location;
+        startLocation = player.location;
         player.location += desiredMove;
-        playerGhost.location += desiredMove;
-        
-        // Move player pointer.
-        transform.position = player.location;
         
         isMoving = true;
         lastMove = dir;
     }
 
-    public void HandleMoveBufferTimers()
+    public void HandleMoveTransform()
     {
-        timer = Mathf.Max(0f, timer - Time.smoothDeltaTime);
-    }
+        if (progress < 1)
+        {
+            progress += WalkSpeed * Time.smoothDeltaTime;
+            
+            if (progress > 1f)
+                progress = 1f;
+            
+            Vector3 newPosition = Vector3.Lerp(
+                startLocation,
+                player.location,
+                progress
+            );    
+            transform.position = newPosition;
 
-    // Handle the animation of ghost following this pointer.
-    public void HandleGhostTransform(bool isForceTimerUpdate = false)
-    {
-        // Manually reduce timer for non-moving game states where the timer is paused.
-        if (isForceTimerUpdate)
-            HandleMoveBufferTimers();
-
-        playerGhost.Move(Progress);
+            isMoving = true;
+        }
     }
 
     private void HandleWalkSpeed()
@@ -383,12 +392,12 @@ public class Script_PlayerMovement : MonoBehaviour
             (isSpeedwalkStickerActive || isDev)
         )
         {
-            if (isDev)  repeatDelay = devRunRepeatDelay;
-            else        repeatDelay = runRepeatDelay;
+            if (isDev)  walkSpeed = Speeds.Dev;
+            else        walkSpeed = Speeds.Run;
         }
         else
         {
-            repeatDelay = defaultRepeatDelay;
+            walkSpeed = Speeds.Default;
         }
     }
 
@@ -398,9 +407,8 @@ public class Script_PlayerMovement : MonoBehaviour
         bool isMovingAnimation = isMoving
             || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
             || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f;
+        
         animator.SetBool(PlayerMovingAnimatorParam, isMovingAnimation);
-
-        playerGhost.SetMoveAnimation(isMoving);
     }
 
     public void AnimatorSetDirection(Directions dir)
@@ -436,8 +444,6 @@ public class Script_PlayerMovement : MonoBehaviour
             animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     1f);
             animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     0f);
         }
-
-        playerGhost.AnimatorSetDirection(dir);
     }
 
     bool CheckCollisions(Directions dir, ref Vector3 desiredMove)
@@ -472,7 +478,6 @@ public class Script_PlayerMovement : MonoBehaviour
             
             if (dirVector == Vector2.zero)
             {
-                playerGhost.SetIsNotMoving();
                 isMoving = false;
             }
         }
@@ -483,7 +488,7 @@ public class Script_PlayerMovement : MonoBehaviour
     /// </summary>
     public void UpdateLocation(Vector3 updatedPlayerLoc)
     {
-        playerGhost?.UpdateLocation(updatedPlayerLoc);
+        player.location = transform.position;
     }
 
     public void HandleExitTile()
@@ -555,25 +560,6 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         spriteRenderer.GetComponent<Script_SortingOrder>().enabled = false;
         spriteRenderer.sortingOrder = exitUpStairsOrderLayer;
-        player.PlayerGhostMatchSortingLayer();
-    }
-
-    Script_PlayerGhost CreatePlayerGhost(bool isLightOn)
-    {
-        Script_PlayerGhost pg = Instantiate(
-            PlayerGhostPrefab,
-            player.transform.position,
-            Quaternion.identity
-        );
-
-        pg.SwitchLight(isLightOn);
-
-        return pg;
-    }
-
-    public void PlayerGhostSortOrder(int sortingOrder)
-    {
-        playerGhost.spriteRenderer.sortingOrder = sortingOrder;
     }
 
     public Script_PlayerReflection CreatePlayerReflection(Vector3 reflectionAxis)
@@ -584,7 +570,6 @@ public class Script_PlayerMovement : MonoBehaviour
             Quaternion.identity
         );
         pr.Setup(
-            playerGhost,
             player,
             reflectionAxis
         );
@@ -607,18 +592,12 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    public void SwitchLight(bool isOn)
-    {
-        playerGhost.SwitchLight(isOn);
-    }
-
     // Called at each level initialization.
     public void InitializeOnLevel(Transform _grid)
     {
-        playerGhost.Setup(player);
         grid = _grid;
 
-        timer = 0f;
+        progress = 1f;
         
         xWeight = 0f;
         yWeight = 0f;
@@ -648,8 +627,6 @@ public class Script_PlayerMovement : MonoBehaviour
         // Ensure ordering of objects to bind is in sync with timeline tracks.
         playerObjsToBind.Add(player.gameObject);
         playerObjsToBind.Add(player.MyAnimator.gameObject);
-        playerObjsToBind.Add(playerGhost.gameObject);
-        playerObjsToBind.Add(playerGhost.MyAnimator.gameObject);
 
         director.BindTimelineTracks(enterElevatorTimeline, playerObjsToBind);
         director.Play(enterElevatorTimeline);
@@ -670,12 +647,7 @@ public class Script_PlayerMovement : MonoBehaviour
         player = GetComponent<Script_Player>();
         director = GetComponent<PlayableDirector>();
         
-        // Setup ghost for smooth movement (allows cancellation of mid-animation)
         spriteRenderer = (SpriteRenderer)player.graphics;
-        spriteRenderer.enabled = false;
-        playerGhost = CreatePlayerGhost(isLightOn);
-        playerGhost.Setup(player);
-        playerGhost.transform.SetParent(game.playerContainer, false);
         
         directionToVector = Script_Utils.GetDirectionToVectorDict();
     }

@@ -12,7 +12,6 @@ public class Script_ReflectionCreator : MonoBehaviour
         player = game.GetPlayer();
         Script_PlayerReflection pr = reflection.GetComponent<Script_PlayerReflection>();
         pr.Setup(
-            player.GetPlayerGhost(),
             player,
             pr.axisObject == null ? pr.axis : pr.axisObject.position // TODO: remove once we don't have to use CreateReflection
         );

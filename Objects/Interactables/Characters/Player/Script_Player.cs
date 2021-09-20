@@ -43,10 +43,11 @@ public class Script_Player : Script_Character
     
     [SerializeField] private PlayableDirector director;
 
+    [SerializeField] private Light playerLight;
+
     protected Script_Game game;
     
     private Script_PlayerReflection reflection;
-    protected bool isPlayerGhostMatchSortingLayer = false;
     private const string PlayerGlitch = "Base Layer.Player_Glitch";
     private Dictionary<Directions, Vector3> directionsToVector;
        
@@ -98,22 +99,22 @@ public class Script_Player : Script_Character
         set
         {
             MyAnimator.SetBool(IsEffectHoldBool, value);
-            playerMovementHandler.PlayerGhost.MyAnimator.SetBool(IsEffectHoldBool, value);
         }
+    }
+
+    public bool IsLightOn
+    {
+        set => playerLight.enabled = value;
     }
 
     protected virtual void OnEnable()
     {
-        if (playerMovementHandler.PlayerGhost != null)
-            playerMovementHandler.PlayerGhost.gameObject.SetActive(true);
+
     }
     
     protected override void OnDisable()
     {
         base.OnDisable();
-
-        if (playerMovementHandler.PlayerGhost != null)
-            playerMovementHandler.PlayerGhost.gameObject.SetActive(false);
     }
     
     protected virtual void Update()
@@ -122,6 +123,8 @@ public class Script_Player : Script_Character
         // Visuals
         HandleIsMoving();
         // ------------------------------------------------------------------
+        
+        playerMovementHandler.HandleMoveTransform();
 
         if (game.state == Const_States_Game.Interact)
         {
@@ -130,9 +133,6 @@ public class Script_Player : Script_Character
             if (IsNotMovingState())
             {
                 StopMovingAnimations();
-                
-                // Finish up Ghost Follow on nonmoving states.
-                playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
             }
             else
             {
@@ -151,7 +151,6 @@ public class Script_Player : Script_Character
             else
             {
                 StopMovingAnimations();
-                playerMovementHandler.HandleGhostTransform(isForceTimerUpdate: true);
             }
         }
     }
@@ -287,7 +286,6 @@ public class Script_Player : Script_Character
     public void StopMovingAnimations()
     {
         MyAnimator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
-        playerMovementHandler.PlayerGhost.StopMoveAnimation();
     }
 
     // ------------------------------------------------------------------
@@ -372,17 +370,6 @@ public class Script_Player : Script_Character
                 Const_Tags.PlayerAnimator
             ).DefaultSortingOrder();
         }
-        PlayerGhostMatchSortingLayer();
-    }
-
-    public void PlayerGhostMatchSortingLayer()
-    {
-        isPlayerGhostMatchSortingLayer = true;
-    }
-
-    public Script_PlayerGhost GetPlayerGhost()
-    {
-        return playerMovementHandler.PlayerGhost;
     }
 
     // Call with fadeTime = 0f for instant.
@@ -391,18 +378,12 @@ public class Script_Player : Script_Character
     {
         _isInvisible = isHide;
         
-        Script_PlayerGhost pg = GetPlayerGhost();
-        
-        // playerGraphics.SetHidden(_isInvisible);
-        pg.PlayerGhostGraphics.SetHidden(_isInvisible);
+        playerGraphics.SetHidden(_isInvisible);
     }
 
     public void HandleEatGraphics(bool isEating)
     {
-        Script_PlayerGhost pg = GetPlayerGhost();
-
         playerGraphics.SetHidden(!isEating);
-        pg.PlayerGhostGraphics.SetHidden(isEating);
     }
 
     public void SetBuffEffectActive(bool isActive)
@@ -413,7 +394,6 @@ public class Script_Player : Script_Character
     public void TriggerEffect()
     {
         MyAnimator.SetTrigger(IsEffectTrigger);
-        playerMovementHandler.PlayerGhost.MyAnimator.SetTrigger(IsEffectTrigger);
     }
 
     // ------------------------------------------------------------------
@@ -421,7 +401,7 @@ public class Script_Player : Script_Character
 
     public void SwitchLight(bool isOn)
     {
-        playerMovementHandler.SwitchLight(isOn);
+        IsLightOn = isOn;
     }
 
     public void TryPushPushable(Directions dir)
@@ -451,7 +431,6 @@ public class Script_Player : Script_Character
     /// </summary>
     public void UpdateLocation()
     {
-        location = transform.position;
         playerMovementHandler.UpdateLocation(location);
     }
 

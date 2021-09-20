@@ -60,12 +60,10 @@ public abstract class Script_StickerEffect : MonoBehaviour
         AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
 
         playerMovement.MyAnimator.runtimeAnimatorController = stickerAnimatorController;
-        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = stickerAnimatorController;
 
         SyncAnimatorState(animatorStateInfo);
         
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
-        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
     }
 
     // Handle unequipping the active sticker to return to the default controller.
@@ -74,18 +72,15 @@ public abstract class Script_StickerEffect : MonoBehaviour
         AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
 
         playerMovement.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
-        playerMovement.PlayerGhost.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
 
         SyncAnimatorState(animatorStateInfo);
 
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
-        playerMovement.PlayerGhost.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
     }
 
     // Play the new controller at the saved state time.
     protected void SyncAnimatorState(AnimatorStateInfo animatorStateInfo)
     {
         playerMovement.MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);
-        playerMovement.PlayerGhost.MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);
     }
 }
