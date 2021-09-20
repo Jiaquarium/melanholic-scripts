@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c900340151bc94e168fe8cc078af54d9, type: 3}
-  m_Name: Boar Needle
+  m_Name: Lantern
   m_EditorClassIdentifier: 
-  id: sticker_boar-needle
-  focusedSprite: {fileID: 21300022, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  sprite: {fileID: 21300020, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: allows you to enter paintings with doormats. the painting must have
-    a doormat.
+  id: sticker_let-there-be-light
+  focusedSprite: {fileID: -8362602881052143106, guid: db7ee588e0d764e038da855479f5e03a,
+    type: 3}
+  sprite: {fileID: 6552564986207930973, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
+  description: 
   isDroppable: 0
   _isSpecial: 0

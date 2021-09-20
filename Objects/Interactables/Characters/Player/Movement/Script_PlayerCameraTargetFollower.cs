@@ -22,7 +22,7 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
     
     public void MatchPlayerGhost()
     {
-        transform.position = game.GetPlayerGhost().FocalPoint.position;
+        transform.position = game.GetPlayer().FocalPoint.position;
     }
     
     // Making this a coroutine forces it to happen after Player movement in execution loop.
@@ -30,10 +30,10 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
     {
         yield return null;
 
-        Vector3 playerGhostPosition = game.GetPlayerGhost().FocalPoint.position;
+        Vector3 playerPosition = game.GetPlayer().FocalPoint.position;
         Vector3 myPosition = transform.position;
 
-        Vector3 newPosition = (playerGhostPosition * asymptoticTargetWeight) +
+        Vector3 newPosition = (playerPosition * asymptoticTargetWeight) +
             (myPosition * (1 - asymptoticTargetWeight));
 
         transform.position = newPosition;

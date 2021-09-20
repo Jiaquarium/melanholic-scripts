@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-08-10 14:36:11
+// Last created by UI Exporter at 2021-09-20 13:15:54
 
 using System.Collections;
 using System.Collections.Generic;
@@ -301,7 +301,7 @@ how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
     "menu_top-bar_stickers",
     new Model_LanguagesUI
     {
-        EN = @"Baubles"
+        EN = @"Masks"
     }
 },
 {
@@ -316,6 +316,13 @@ how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Notes"
+    }
+},
+{
+    "menu_equipment_label",
+    new Model_LanguagesUI
+    {
+        EN = @"Prepped Masks"
     }
 },
 // ------------------------------------------------------------------

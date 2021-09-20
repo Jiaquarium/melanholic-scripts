@@ -26,13 +26,12 @@ public class Script_PlayerReflection : MonoBehaviour
     }
 
     public void Setup(
-        Script_PlayerGhost _playerGhost,
         Script_Player _player,
         Vector3 _axis
     )
     {
         reflectionMovement = GetComponent<Script_PlayerReflectionMovement>();
-        reflectionMovement.Setup(this, _playerGhost, _player, _axis);
+        reflectionMovement.Setup(this, _player, _axis);
         
         player = _player;
         axis = axisObject == null ? axis = _axis : axis = axisObject.position;

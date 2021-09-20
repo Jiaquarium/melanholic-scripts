@@ -9,7 +9,6 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
     [SerializeField] private float zOffset;
     protected Script_Player player;
     private Script_PlayerReflection playerReflection;
-    private Script_PlayerGhost playerGhost;
     private Vector3 axis;
     private Vector3 lastPosition;
     
@@ -21,15 +20,9 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
     }
     protected virtual void ActuallyMove()
     {
-        if (playerGhost == null)    return;
-        
         lastPosition = transform.position;
         
-        // allows to reflect player when first spawned on level and not moving
-        if (!playerGhost.spriteRenderer.enabled)
-            transform.position = GetReflectionPosition(player.transform.position);
-        else
-            transform.position = GetReflectionPosition(playerGhost.transform.position);
+        transform.position = GetReflectionPosition(player.transform.position);
     }
 
     void MoveAnimation(Directions dir)
@@ -80,12 +73,10 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
 
     public void Setup(
         Script_PlayerReflection _playerReflection,
-        Script_PlayerGhost _playerGhost,
         Script_Player _player,
         Vector3 _axis
     )
     {
-        playerGhost = _playerGhost;
         player = _player;
         axis = _axis;
         playerReflection = _playerReflection;

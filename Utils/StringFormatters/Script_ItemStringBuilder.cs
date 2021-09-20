@@ -24,18 +24,18 @@ public class Script_ItemStringBuilder : MonoBehaviour
     {
         Params = new Dictionary<string, string>();
         
-        Params.Add("@@Sticker_Bold",            "<b>Bauble</b>");
-        Params.Add("@@Sticker_NoBold",          "Bauble");
-        Params.Add("@@Stickers_Bold",           "<b>Baubles</b>");
-        Params.Add("@@Stickers_NoBold",         "Baubles");
+        Params.Add("@@Sticker_Bold",            "<b>Mask</b>");
+        Params.Add("@@Sticker_NoBold",          "Mask");
+        Params.Add("@@Stickers_Bold",           "<b>Masks</b>");
+        Params.Add("@@Stickers_NoBold",         "Mask");
         
         Params.Add("@@PsychicDuck",             "<b>Psychic Duck</b>");
-        Params.Add("@@BoarNeedle",              "<b>Boar Needle</b>");
+        Params.Add("@@BoarNeedle",              "<b>Third Eye</b>");
         Params.Add("@@AnimalWithin",            "<b>Animal Within</b>");
-        Params.Add("@@IceSpike",                "<b>Ice Spike</b>");
+        Params.Add("@@IceSpike",                "<b>Snow Woman</b>");
         Params.Add("@@MelancholyPiano",         "<b>Melancholy Piano</b>");
         Params.Add("@@LastElevator",            "<b>Last Elevator</b>");
-        Params.Add("@@LetThereBeLight",         "<b>Let There Be Light</b>");
+        Params.Add("@@LetThereBeLight",         "<b>Lantern</b>");
         Params.Add("@@Puppeteer",               "<b>Puppeteer</b>");
         
         Params.Add("@@MasterKey",               "<b>Master Key</b>");

@@ -56,7 +56,7 @@ public class Script_InteractionBox : MonoBehaviour
             if (col == null)    continue;
             
             // Skip all tags specified in ignoreTags.
-            if ((ignoreTags != null && !ignoreTags.Any()) && ignoreTags.CheckInTags(col.tag))    continue;
+            if ((ignoreTags != null && ignoreTags.Any()) && ignoreTags.CheckInTags(col.tag))    continue;
             
             Script_Interactable interactable = col.transform.GetParentRecursive<Script_Interactable>();
             
