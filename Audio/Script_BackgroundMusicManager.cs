@@ -64,6 +64,12 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             GetComponent<AudioSource>().UnPause();
     }
 
+    public void UnPauseAll()
+    {
+        UnPause();
+        UnPauseBgThemeSpeakers();
+    }
+
     public bool GetIsPlaying()
     {
         return GetComponent<AudioSource>().isPlaying;

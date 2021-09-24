@@ -177,8 +177,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public void FadeInBGMusic()
     {
-        game.UnPauseBgMusic();
-        game.UnPauseBgThemeSpeakers();
+        Script_BackgroundMusicManager.Control.UnPauseAll();
         Script_BackgroundMusicManager.Control.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
     }
     // Next Node Actions END

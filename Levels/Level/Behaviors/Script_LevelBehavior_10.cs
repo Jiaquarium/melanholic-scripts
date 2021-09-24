@@ -86,7 +86,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_TreasureChest treasureChest;
 
     [SerializeField] private Script_InteractableFullArt IdsLeaveMeBeNote;
-    [SerializeField] private Script_InteractableFullArt DeadIds;
+    [SerializeField] private Script_InteractableObject DeadIds;
 
     private bool DDR = false;
     private bool isIdsDancing = false;
@@ -102,6 +102,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     private bool didMapNotification;
     private bool isTimelineControlled = false;
+
+    private bool isIdsDeadPRCSDone;
 
     private Script_DialogueNode IntroNode
     {
@@ -234,6 +236,30 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     }
     
     // ------------------------------------------------------------------------------------
+    // Unity Events
+    public void PlayIdsDeadPRCS()
+    {
+        Debug.Log("Play Ids dead PRCS");
+
+        if (isIdsDeadPRCSDone)
+            return;
+        
+        game.ChangeStateCutScene();
+        
+        Script_ArtFrameManager.Control.Open(OnArtFrameAnimationDone);
+        
+        void OnArtFrameAnimationDone()
+        {
+            Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.IdsDead);
+
+            game.PauseBgMusic();
+            game.PauseBgThemeSpeakers();
+            
+            Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+        }
+    }
+    
+    // ------------------------------------------------------------------------------------
     // Timeline Signals START
     public void OnIdsExitsIdsRoom()
     {
@@ -249,6 +275,25 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             game.ChangeStateInteract();
             isTimelineControlled = false;
         }, Script_TransitionManager.FinalNotifications.Ids);
+    }
+    
+    // Called from PlayIdsDeadPRCS Timeline.
+    public void OnIdsDeadPRCSDone()
+    {
+        Script_BackgroundMusicManager.Control.FadeOutMed(() => {
+                Script_BackgroundMusicManager.Control.UnPauseAll();
+                Script_BackgroundMusicManager.Control.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+            },
+            Const_AudioMixerParams.ExposedBGVolume
+        );
+        
+        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.IdsDead, () => {
+            isIdsDeadPRCSDone = true;
+            
+            Script_ArtFrameManager.Control.Close(() => {
+                game.ChangeStateInteract();
+            });
+        });    
     }
 
     // ------------------------------------------------------------------------------------

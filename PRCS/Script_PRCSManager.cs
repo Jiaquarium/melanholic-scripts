@@ -24,6 +24,7 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_PRCS MynesMirrorPRCS;
     [SerializeField] private Script_PRCS ElleniasHandPRCS;
     [SerializeField] private Script_PRCS toWeekendPRCS;
+    [SerializeField] private Script_PRCS IdsDeadPRCS;
 
     
     /// <summary>
@@ -35,7 +36,8 @@ public class Script_PRCSManager : MonoBehaviour
         MynesMirror,
         MynesMirrorMidConvo,
         ElleniasHand,
-        ToWeekend
+        ToWeekend,
+        IdsDead,
     }
 
     void OnValidate()
@@ -136,6 +138,15 @@ public class Script_PRCSManager : MonoBehaviour
                 toWeekendPRCS.Open();
                 toWeekendPRCS.PlayTimeline(0);
                 break;
+            
+            case CustomTypes.IdsDead:
+                PRCSCanvasGroup.alpha = 1f;
+                PRCSCanvasGroup.gameObject.SetActive(true);
+                
+                IdsDeadPRCS.Setup();
+                IdsDeadPRCS.Open();
+                IdsDeadPRCS.PlayTimeline(0);
+                break;
 
             default:
                 break;
@@ -156,6 +167,10 @@ public class Script_PRCSManager : MonoBehaviour
             
             case CustomTypes.ToWeekend:
                 HidePRCS(toWeekendPRCS, FadeSpeeds.None, cb);
+                break;
+            
+            case CustomTypes.IdsDead:
+                HidePRCS(IdsDeadPRCS, FadeSpeeds.Slow, cb);
                 break;
                 
             default:
