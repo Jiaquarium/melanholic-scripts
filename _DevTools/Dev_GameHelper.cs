@@ -15,6 +15,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
     [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
+    [SerializeField] private Script_ExitMetadataObject ElleniasRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
     [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
@@ -64,6 +65,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToIdsRoom()
     {
         Teleport(IdsRoomEntrance);
+    }
+
+    public void ExitToElleniasRoom()
+    {
+        Teleport(ElleniasRoomEntrance);
     }
 
     public void ExitToLastElevator()
@@ -219,6 +225,11 @@ public class Dev_GameHelper : MonoBehaviour
             if (GUILayout.Button("Go To: Ids Room"))
             {
                 t.ExitToIdsRoom();
+            }
+
+            if (GUILayout.Button("Go To: Ellenia's Room"))
+            {
+                t.ExitToElleniasRoom();
             }
 
             if (GUILayout.Button("Go To: Last Elevator"))
