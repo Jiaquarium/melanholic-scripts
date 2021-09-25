@@ -282,6 +282,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             yield return new WaitForSeconds(elleniaHurtCutSceneWaitToFadeInTime);
 
             StartCoroutine(game.TransitionFadeOut(cutSceneFadeInTime, () => {
+                // This Dialogue will call the PRCS Player.
                 Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceElleniaHurtNode, SFXOn: false);
             }));
         }
@@ -293,7 +294,9 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         {
             // Remove ElleniasHandPRCS
             ElleniasHandPRCSPlayer.CloseCustom(Script_PRCSManager.CustomTypes.ElleniasHand, () => {
-                Script_DialogueManager.DialogueManager.StartDialogueNode(onElleniasPRCSDoneNode);
+                Script_ArtFrameManager.Control.Close(() => {
+                    Script_DialogueManager.DialogueManager.StartDialogueNode(onElleniasPRCSDoneNode);
+                });
             });
         }
     }
@@ -485,10 +488,17 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         Script_EventCycleManager.Control.SetElleniaDidTalkCountdownMax();
     }
 
+    // Called from OnEntranceElleniaHurtNode
     public void PlayElleniasHandPRCS()
     {
         game.ChangeStateCutScene();
-        ElleniasHandPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
+        
+        Script_ArtFrameManager.Control.Open(OnArtFrameAnimationDone);
+
+        void OnArtFrameAnimationDone()
+        {
+            ElleniasHandPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
+        }
     }
 
     public void SwitchVCamElleniaHurt()

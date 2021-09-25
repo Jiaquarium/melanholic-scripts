@@ -15,6 +15,7 @@ using UnityEditor;
 public class Script_CanvasConstantPixelScaler : MonoBehaviour
 {
     private static float scaleAnimateTime = 0.5f;
+    private static float onScaleDonePauseTime = 0.25f;
 
     /// <summary>
     /// Use Pixel Ratio that will always fit canvases to smaller than screen size.
@@ -47,7 +48,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     }
 
     // Animate frame to appear by moving from a scale factor that is outside the viewport to one that is inside.
-    public void AnimateOpen(Action cb)
+    public void AnimateOpen(Action cb, bool shouldPauseAfter = true)
     {
         SetScaleFactor();
         
@@ -81,7 +82,12 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
             isScaling = false;
 
             if (cb != null)
+            {
+                if (shouldPauseAfter)
+                    yield return new WaitForSeconds(onScaleDonePauseTime); 
+                
                 cb();
+            }
         }
     }
 
