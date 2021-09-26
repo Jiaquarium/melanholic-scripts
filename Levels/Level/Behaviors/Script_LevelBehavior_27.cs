@@ -32,27 +32,6 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         set => _gotPsychicDuck = value;
     }
     
-    protected override void OnEnable()
-    {
-        Script_ItemsEventsManager.OnItemPickUpTheatricDone += OnItemPickUpTheatricsDone;
-    }
-
-    protected override void OnDisable()
-    {
-        Script_ItemsEventsManager.OnItemPickUpTheatricDone -= OnItemPickUpTheatricsDone;
-    }
-
-    public void OnItemPickUpTheatricsDone(Script_ItemPickUpTheatricsPlayer theatricsPlayer)
-    {
-        if (theatricsPlayer == PsychicDuck.pickUpTheatricsPlayer)
-        {
-            game.ChangeStateCutScene();
-
-            /// Ids moves to door and blocks it
-            IdsTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
-        }
-    }
-
     private void HandleGrandMirrorPaintingEntrance()
     {
         if (game.IsGrandMirrorSetup())
@@ -79,6 +58,14 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     // ----------------------------------------------------------------------
     // ----------------------------------------------------------------------
     // Timeline Signals START
+    public void OnItemPickUpDone()
+    {
+        game.ChangeStateCutScene();
+
+        /// Ids moves to door and blocks it
+        IdsTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
+    }
+    
     public void OnIdsMoveToBlockEntranceDone()
     {
         game.ChangeStateInteract();

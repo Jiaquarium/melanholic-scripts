@@ -207,6 +207,8 @@ public class Script_PlayerAction : MonoBehaviour
         {
             if (isContinuingDialogue == false)
             {
+                Debug.Log("Stashing Item after pickup dialogue.");
+
                 player.ItemPickUpEffect(false, null);
                 
                 StashItem(item);    // will fire Stash event
@@ -224,7 +226,7 @@ public class Script_PlayerAction : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Need to implement continuing item pick up dialogue");
+                Debug.Log("Continuing item pick up dialogue.");
             }
             
             return true;
@@ -323,6 +325,7 @@ public class Script_PlayerAction : MonoBehaviour
     void StashItem(Script_Item item)
     {
         Script_ItemsEventsManager.ItemStash(item.id);
+        
         itemStashAudioSource.PlayOneShot(
             Script_SFXManager.SFX.PlayerStashItem,
             Script_SFXManager.SFX.PlayerStashItemVol

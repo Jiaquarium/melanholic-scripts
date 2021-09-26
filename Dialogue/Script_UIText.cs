@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-09-20 13:15:54
+// Last created by UI Exporter at 2021-09-26 17:42:16
 
 using System.Collections;
 using System.Collections.Generic;
@@ -152,7 +152,7 @@ public class Script_UIText
     "item-object-UI_sticker_psychic-duck",
     new Model_LanguagesUI
     {
-        EN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. ♥ Go to your {32} to try it out!
+        EN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. Go to your {32} to try it out!
 
 Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to engage with {19} in conversation."
     }

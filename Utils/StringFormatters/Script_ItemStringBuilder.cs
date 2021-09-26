@@ -27,7 +27,7 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@Sticker_Bold",            "<b>Mask</b>");
         Params.Add("@@Sticker_NoBold",          "Mask");
         Params.Add("@@Stickers_Bold",           "<b>Masks</b>");
-        Params.Add("@@Stickers_NoBold",         "Mask");
+        Params.Add("@@Stickers_NoBold",         "Masks");
         
         Params.Add("@@PsychicDuck",             "<b>Psychic Duck</b>");
         Params.Add("@@BoarNeedle",              "<b>Third Eye</b>");

@@ -221,7 +221,7 @@ public static class Script_Utils
             Script_Names.MelzTheGreat,                  // {2}
             Script_Names.Ids,                           // {3}
             Script_Names.Ero,                           // {4}
-            Script_Names.SBook,                         // {5}
+            Script_Names.PreppedMasks,                  // {5}
             Script_Names.Urselk,                        // {6}
             Script_Names.Urselks,                       // {7}
             Script_Names.MaskedOne,                     // {8}
@@ -296,7 +296,9 @@ public static class Script_Utils
             Script_Names.NauticalDawn,                  // {77}
             Script_Names.UrselksHall,                   // {78}
             Script_Names.ActiveStickerCommand,          // {79}
-            Script_Names.SwitchActiveSticker            // {80}
+            Script_Names.SwitchActiveSticker,           // {80}
+            Script_Names.Prep,                          // {81}
+            Script_Names.SwitchActiveStickerKeyCodes    // {82}
         );
     }
 

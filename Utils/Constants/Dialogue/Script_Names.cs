@@ -39,7 +39,7 @@ public class Script_Names: MonoBehaviour
         set => Names._Ero = value;
     }
 
-    public const string SBook                           = "<b>S-book</b>";                      // {5}
+    public const string PreppedMasks                    = "<b>Prepped Masks</b>";               // {5}
     public const string Urselk                          = "<b>Urselk</b>";                      // {6}
     public const string Urselks                         = "<b>Urselks</b>";                     // {7}
     public const string MaskedOne                       = "<b>Masked One</b>";                  // {8}
@@ -88,7 +88,7 @@ public class Script_Names: MonoBehaviour
     public const string Action1                         = "<b><i>SPACE or ENTER</i></b>";       // {23}
     public const string Action2                         = "<b><i>X or RIGHT-SHIFT-KEY</i></b>"; // {24}
     public const string Action3                         = "<b><i>LEFT-SHIFT-KEY</i></b>";       // {25}
-    public const string InventoryKeyCode                = "<b><i>1</i></b>";                    // {26}
+    public const string InventoryKeyCode                = "<b><i>I</i></b>";                    // {26}
     public const string Escape                          = "<b><i>ESC</i></b>";                  // {27}
     public const string Skip                            = "<b><i>SPACE or ENTER</i></b>";       // {28}
     public const string Tedmas                          = "<b>Tedmas</b>";                      // {29}
@@ -171,10 +171,10 @@ public class Script_Names: MonoBehaviour
     }
     
     public const string Flan                            = "<b>Flan the Guard</b>";              // {64}
-    public const string ActionSticker                   = "<b>Active Bauble</b>";              // {65}
+    public const string ActionSticker                   = "<b>Active Mask</b>";              // {65}
     public const string LastElevator                    = "<b>Last Elevator</b>";               // {66}
-    public const string StickerSkill                    = "<b>Bauble Skill</b>";               // {67}
-    public const string StickerSkills                   = "<b>Bauble Skills</b>";              // {68}
+    public const string StickerSkill                    = "<b>Mask Ability</b>";               // {67}
+    public const string StickerSkills                   = "<b>Mask Abilities</b>";              // {68}
     public const string Coconut                         = "<b>Coconut</b>";                     // {69}
     public const string WeekdayShift                    = "<b>Weekday Shift</b>";               // {70}
     public const string WeekendShift                    = "<b>Weekend Shift</b>";               // {71}
@@ -185,8 +185,11 @@ public class Script_Names: MonoBehaviour
     public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
     public const string NauticalDawn                    = "<b>Nautical Dawn</b>";               // {77}
     public const string UrselksHall                     = "<b>Urselks Hall</b>";                // {78}
-    public const string ActiveStickerCommand            = "<b>Bauble's Effect</b>";             // {79}
-    public const string SwitchActiveSticker             = "<b>Switch Bauble</b>";               // {80}
+    public const string ActiveStickerCommand            = "<b>Mask Effect</b>";                 // {79}
+    public const string SwitchActiveSticker             = "<b>Switch Mask</b>";                 // {80}
+    public const string Prep                            = "<b>Prep</b>";                        // {81}
+    public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
+
 
 
     // ------------------------------------------------------------------
