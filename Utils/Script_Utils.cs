@@ -803,4 +803,18 @@ public static class Script_Utils
         }
         return fadeTime;
     }
+
+    /// <summary>
+    /// Frame rate independent damping
+    /// https://www.rorydriscoll.com/2016/03/07/frame-rate-independent-damping-using-lerp/
+    /// </summary>
+    /// <param name="source">from Vector</param>
+    /// <param name="target">to Vector</param>
+    /// <param name="smoothing">smoothing constant 0-1</param>
+    /// <param name="time">delta time</param>
+    /// <returns></returns>
+    public static Vector3 FrameRateAwareDamp(this Vector3 source, Vector3 target, float smoothing, float time)
+    {
+        return Vector3.Lerp(source, target, 1 - Mathf.Pow(smoothing, time));
+    }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Script_PlayerCameraTargetFollower : MonoBehaviour
 {
 
-    [Range(0, 20)]
-    [SerializeField] private float speed;
+    [Range(0, 1)]
+    [SerializeField] private float weight;
     [SerializeField] private SpriteRenderer graphics;
     
     [SerializeField] private Script_Game game;
@@ -27,9 +27,10 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
         graphics.gameObject.SetActive(Const_Dev.IsCamGuides);
     }
     
-    void Update()
+    void LateUpdate()
     {
-        StartCoroutine(MoveTowardsPlayer());
+        // MoveTowardsPlayer();
+        DampTowardsPlayer();
     }
     
     public void MatchPlayer()
@@ -39,32 +40,35 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
     }
     
     // Making this a coroutine forces it to happen after Player movement in execution loop.
-    public IEnumerator MoveTowardsPlayer()
+    public void MoveTowardsPlayer()
     {
-        yield return null;
-
         Script_Player player = game.GetPlayer();
-        targetPosition = player.FocalPoint.position;
+
+        Vector3 playerPosition = player.FocalPoint.position;
         Vector3 myPosition = transform.position;
 
-        if (!myPosition.IsSame(targetPosition, 4))
-            progress = 0f;
+        Vector3 newPosition = (playerPosition * weight) + (myPosition * (1 - weight));
 
-        if (progress < 1f)
-        {
-            progress += speed * Time.smoothDeltaTime;
+        transform.position = newPosition;
 
-            if (progress > 1f)
-                progress = 1f;
+        pixelTargetFollower.Move(newPosition);
+    }
 
-            Vector3 newPosition = Vector3.Lerp(
-                myPosition,
-                targetPosition,
-                progressCurve.Evaluate(progress)
-            );
+    /// <summary>
+    /// Frame rate independent damping
+    /// https://www.rorydriscoll.com/2016/03/07/frame-rate-independent-damping-using-lerp/
+    /// </summary>
+    public void DampTowardsPlayer()
+    {
+        Script_Player player = game.GetPlayer();
 
-            transform.position = newPosition;
-            pixelTargetFollower.Move(transform.position);
-        }
+        Vector3 playerPosition = player.FocalPoint.position;
+        Vector3 myPosition = transform.position;
+
+        Vector3 newPosition = myPosition.FrameRateAwareDamp(playerPosition, weight, Time.smoothDeltaTime);
+
+        transform.position = newPosition;
+
+        pixelTargetFollower.Move(newPosition);
     }
 }
