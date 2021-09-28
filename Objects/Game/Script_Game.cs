@@ -279,6 +279,11 @@ public class Script_Game : MonoBehaviour
         get => cameraTargetFollower;
     }
 
+    public Script_PixelTargetFollower PixelTargetFollower
+    {
+        get => cameraTargetFollower.PixelTargetFollower;
+    }
+
     public Script_PuppetMaster PuppetMaster
     {
         get => puppetMaster;
@@ -834,7 +839,7 @@ public class Script_Game : MonoBehaviour
         );
         player.transform.SetParent(playerContainer, false);
         
-        CameraTargetFollower.MatchPlayerGhost();
+        CameraTargetFollower.MatchPlayer();
         
         VCam.FollowCameraTargetFollower();
         VCamDramaticZoom.FollowCameraTargetFollower();
@@ -856,7 +861,7 @@ public class Script_Game : MonoBehaviour
             playerData.isForceSortingLayerAxisZ
         );
 
-        CameraTargetFollower.MatchPlayerGhost();
+        CameraTargetFollower.MatchPlayer();
 
         Debug.Log("---- ---- PLAYER SETUP ON LEVEL EVENT ---- ----");
         Script_GameEventsManager.PlayerSetupOnLevel();   

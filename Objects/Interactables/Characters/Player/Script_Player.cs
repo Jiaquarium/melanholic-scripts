@@ -67,6 +67,11 @@ public class Script_Player : Script_Character
         get => playerMovementHandler.MyAnimator;
     }
 
+    public bool IsMoving
+    {
+        get => playerMovementHandler.IsMoving;
+    }
+    
     public PlayableDirector Director
     {
         get => director;

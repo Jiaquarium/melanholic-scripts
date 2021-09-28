@@ -122,6 +122,11 @@ public class Script_PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    public bool IsMoving
+    {
+        get => isMoving;
+    }
     
     void Awake()
     {
@@ -363,7 +368,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void HandleMoveTransform()
     {
-        if (progress < 1)
+        if (progress < 1f)
         {
             progress += WalkSpeed * Time.smoothDeltaTime;
             

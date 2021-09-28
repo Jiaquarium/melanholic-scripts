@@ -11,6 +11,8 @@ using Cinemachine;
 public class Script_GraphicsManager : MonoBehaviour
 {
     public static Script_GraphicsManager Control;
+    public const int AssetsPPU = 36;
+
     [SerializeField] private PixelPerfectCamera pixelPerfectCamera;
     
     [Tooltip("[BROKEN] Pixel Ratio as defined on Pixel Perfect Camera.")]
@@ -23,8 +25,6 @@ public class Script_GraphicsManager : MonoBehaviour
     [Tooltip("Current ortho size dictated by Pixel Perfect Cam.")]
     [SerializeField] private float correctedOrthoSize;
 
-    [SerializeField] private int assetsPPU;
-
     [SerializeField] private int screenHeight;
     [SerializeField] private int screenWidth;
 
@@ -33,7 +33,7 @@ public class Script_GraphicsManager : MonoBehaviour
     [SerializeField] private int calcedPixelPerfectCameraPixelRatio;
     
     [Tooltip("An upscaled zoom that ensures the image scaled only so much that it will remain completely on screen.")]
-    [SerializeField] private int zoom;
+    [SerializeField] private int zoom = 1;
 
     public int PixelRatio
     {
@@ -47,7 +47,7 @@ public class Script_GraphicsManager : MonoBehaviour
 
     public int PPU
     {
-        get => assetsPPU;
+        get => AssetsPPU;
     }
     
     void OnEnable()
@@ -81,7 +81,6 @@ public class Script_GraphicsManager : MonoBehaviour
 
     private void UpdateForCameraProperties()
     {
-        assetsPPU = pixelPerfectCamera.assetsPPU;
         pixelPerfectCameraPixelRatio = pixelPerfectCamera.pixelRatio;
         
         CinemachineVirtualCamera liveVirtualCamera = Script_Game.Game.GetComponent<CinemachineBrain>()

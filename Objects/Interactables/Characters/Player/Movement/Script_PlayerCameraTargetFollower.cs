@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class Script_PlayerCameraTargetFollower : MonoBehaviour
 {
-    [SerializeField] private Script_Game game;
 
-    [Range(0, 1)]
-    [SerializeField] private float asymptoticTargetWeight = 0.1f;
+    [Range(0, 20)]
+    [SerializeField] private float speed;
     [SerializeField] private SpriteRenderer graphics;
+    
+    [SerializeField] private Script_Game game;
+    [SerializeField] private Script_PixelTargetFollower pixelTargetFollower;
 
+    [SerializeField] private AnimationCurve progressCurve;
+
+    [SerializeField] private Vector3 targetPosition;
+    private float progress;
+
+    public Script_PixelTargetFollower PixelTargetFollower
+    {
+        get => pixelTargetFollower;
+    }
+    
     void Awake()
     {
         graphics.gameObject.SetActive(Const_Dev.IsCamGuides);
@@ -17,25 +29,42 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
     
     void Update()
     {
-        StartCoroutine(MoveTowardsPlayerGhost());
+        StartCoroutine(MoveTowardsPlayer());
     }
     
-    public void MatchPlayerGhost()
+    public void MatchPlayer()
     {
         transform.position = game.GetPlayer().FocalPoint.position;
+        pixelTargetFollower.Move(transform.position);
     }
     
     // Making this a coroutine forces it to happen after Player movement in execution loop.
-    public IEnumerator MoveTowardsPlayerGhost()
+    public IEnumerator MoveTowardsPlayer()
     {
         yield return null;
 
-        Vector3 playerPosition = game.GetPlayer().FocalPoint.position;
+        Script_Player player = game.GetPlayer();
+        targetPosition = player.FocalPoint.position;
         Vector3 myPosition = transform.position;
 
-        Vector3 newPosition = (playerPosition * asymptoticTargetWeight) +
-            (myPosition * (1 - asymptoticTargetWeight));
+        if (!myPosition.IsSame(targetPosition, 4))
+            progress = 0f;
 
-        transform.position = newPosition;
+        if (progress < 1f)
+        {
+            progress += speed * Time.smoothDeltaTime;
+
+            if (progress > 1f)
+                progress = 1f;
+
+            Vector3 newPosition = Vector3.Lerp(
+                myPosition,
+                targetPosition,
+                progressCurve.Evaluate(progress)
+            );
+
+            transform.position = newPosition;
+            pixelTargetFollower.Move(transform.position);
+        }
     }
 }
