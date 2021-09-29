@@ -46,7 +46,7 @@ public class Script_TreasureChest : Script_InteractableObject
         ChangeSprite(IsOpen ? openSprite : closedSprite);
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         Debug.Log($"{name}: Action default called in TreasureChest");
         

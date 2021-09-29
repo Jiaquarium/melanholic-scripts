@@ -49,7 +49,7 @@ public class Script_Piano : Script_InteractableObjectText
         }
     }
     
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (CheckDisabled())
         {

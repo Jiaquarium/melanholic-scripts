@@ -73,6 +73,9 @@ public class Script_PlayerMovement : MonoBehaviour
     public float xWeight;
     public float yWeight;
 
+    [SerializeField] private Script_PlayerAction playerActionHandler;
+    private bool didTryExit;
+
     private Script_PlayerCheckCollisions playerCheckCollisions;
 
     public Animator MyAnimator
@@ -335,19 +338,14 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void Move(Directions dir)
     {
-        // Handle Exits, if in the desired Direction there is an exit,
-        // do not move, instead Player turns and exits.
-        if (HandleExitTile(dir))
-        {
-            StopMovingAnimations();
-            player.FaceDirection(dir);
+        // Should only try to exit once per tile.
+        if (!didTryExit && TryExit(dir))
             return;
-        }
+        else
+            didTryExit = true;
         
         if (progress < 1f)
-        {
             return;
-        }
 
         Vector3 desiredMove = directionToVector[dir];
         
@@ -373,6 +371,26 @@ public class Script_PlayerMovement : MonoBehaviour
         
         isMoving = true;
         lastMove = dir;
+        didTryExit = false;
+    }
+
+    private bool TryExit(Directions dir)
+    {
+        Debug.Log($"{name} Trying to exit on move");
+        
+        // Handle Exits, if in the desired Direction there is an exit,
+        // do not move, instead Player turns and exits.
+        if (
+            HandleExitTile(dir)
+            || HandleExitObject(dir)
+        )
+        {
+            StopMovingAnimations();
+            player.FaceDirection(dir);
+            return true;
+        }
+
+        return false;
     }
 
     public void HandleMoveTransform()
@@ -578,6 +596,11 @@ public class Script_PlayerMovement : MonoBehaviour
         }
 
         return false;
+    }
+
+    private bool HandleExitObject(Directions dir)
+    {
+        return playerActionHandler.DetectDoorExit(dir);
     }
 
     private void HandleStairsExitAnimation()

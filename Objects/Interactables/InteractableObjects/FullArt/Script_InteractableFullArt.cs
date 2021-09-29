@@ -70,7 +70,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         return false;
     }
     
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (isDialogueCoolDown)         return;
         if (CheckDisabledDirections())  return;

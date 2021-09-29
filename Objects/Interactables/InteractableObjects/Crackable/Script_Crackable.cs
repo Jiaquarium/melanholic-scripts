@@ -12,8 +12,8 @@ public class Script_Crackable : Script_InteractableObject
         base.AutoSetup();
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
-        if (textObject != null)   textObject.ActionDefault();
+        if (textObject != null)   textObject.HandleAction(Const_KeyCodes.Action1);
     } 
 }

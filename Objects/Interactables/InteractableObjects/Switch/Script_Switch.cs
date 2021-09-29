@@ -58,7 +58,7 @@ public class Script_Switch : Script_InteractableObject
         Script_InteractableObjectEventsManager.SwitchOn(nameId);
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         print("action default called in Switch");
         if (isOn)

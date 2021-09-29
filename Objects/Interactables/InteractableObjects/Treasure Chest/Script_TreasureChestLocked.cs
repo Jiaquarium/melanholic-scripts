@@ -30,7 +30,7 @@ public class Script_TreasureChestLocked : Script_TreasureChest
         ActionDefault();
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (IsLocked)
         {
@@ -47,20 +47,20 @@ public class Script_TreasureChestLocked : Script_TreasureChest
         
         base.ActionDefault();
     }
-}
+    
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_TreasureChestLocked))]
+    public class Script_TreasureChestLockedTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_TreasureChestLocked))]
-public class Script_TreasureChestLockedTester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
-
-        Script_TreasureChestLocked t = (Script_TreasureChestLocked)target;
-        if (GUILayout.Button("ActionDefault()"))
-        {
-            t.ActionDefault();
+            Script_TreasureChestLocked t = (Script_TreasureChestLocked)target;
+            if (GUILayout.Button("ActionDefault()"))
+            {
+                t.ActionDefault();
+            }
         }
     }
+    #endif
 }
-#endif

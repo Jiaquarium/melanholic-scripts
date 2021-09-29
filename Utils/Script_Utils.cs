@@ -726,8 +726,6 @@ public static class Script_Utils
 
     public static bool CheckInTags(this List<Const_Tags.Tags> tags, string tag)
     {
-        Debug.Log($"Checking for tag {tag}");
-
         if (tag == null)            return false;
 
         // Check if Everything is included

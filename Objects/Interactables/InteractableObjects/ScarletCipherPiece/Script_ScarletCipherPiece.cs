@@ -31,7 +31,7 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
         }
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         Script_ScarletCipherManager.Control.RevealScarletCipherSlot(ScarletCipherId);
         Hide();
@@ -51,20 +51,20 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
     {
         this.gameObject.SetActive(false);
     }
-}
+    
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_ScarletCipherPiece))]
+    public class Script_ScarletCipherPieceTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_ScarletCipherPiece))]
-public class Script_ScarletCipherPieceTester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
-
-        Script_ScarletCipherPiece t = (Script_ScarletCipherPiece)target;
-        if (GUILayout.Button("Pick Up"))
-        {
-            t.ActionDefault();
+            Script_ScarletCipherPiece t = (Script_ScarletCipherPiece)target;
+            if (GUILayout.Button("Pick Up"))
+            {
+                t.ActionDefault();
+            }
         }
     }
+    #endif
 }
-#endif

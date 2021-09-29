@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Script_Well : Script_InteractableObject
 {
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (CheckDisabled())  return;
 

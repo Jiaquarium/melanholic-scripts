@@ -79,7 +79,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
         base.Awake();
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         // Although this check is repeated in base, we need to check before we do other actions.
         if (CheckDisabled())  return;

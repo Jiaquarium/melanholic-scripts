@@ -53,7 +53,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
         dialogueNodes = _dialogueNodes;
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (CheckDisabled())
         {

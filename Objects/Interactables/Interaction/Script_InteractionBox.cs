@@ -122,4 +122,6 @@ public class Script_InteractionBox : MonoBehaviour
     public virtual Script_ItemObject GetItem() { return null; }
     
     public virtual Script_UsableTarget GetUsableTarget() { return null; }
+
+    public virtual Script_DoorExit GetDoorExit() { return null; }
 }

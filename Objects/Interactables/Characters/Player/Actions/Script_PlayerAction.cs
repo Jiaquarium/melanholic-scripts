@@ -259,7 +259,20 @@ public class Script_PlayerAction : MonoBehaviour
         return false;
     }
 
-    bool DetectNPC(string action, Directions dir)
+    /// <summary>
+    /// Called from Player Movement.
+    /// Action handled on movement into the exit object.
+    /// </summary>
+    public bool DetectDoorExit(Directions dir)
+    {
+        Script_DoorExit exit = interactionBoxController.GetDoorExit(dir);
+        if (exit == null)    return false;
+
+        exit.TryExit(dir);
+        return true;
+    }
+
+    private bool DetectNPC(string action, Directions dir)
     {
         Script_StaticNPC NPC = interactionBoxController.GetNPC(dir);
         if (NPC == null)    return false;

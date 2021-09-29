@@ -8,7 +8,7 @@ public class Script_InteractableObjectExit : Script_InteractableObject
     [SerializeField] private bool isExitSFXSilent = true;
     [SerializeField] private Script_Exits.ExitType exitType;
     
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         Debug.Log("Exit Object Interaction!");
         

@@ -19,7 +19,7 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
     private void Update()
     {
         playerIBoxes = Script_Game.Game.GetPlayer()
-            .interactionBoxController.GetInteractionBoxes();
+            .interactionBoxController.InteractionBoxes;
         
         // player N is now reflection's S
         interactionBoxes[0].transform.position = GetReflectionPosition(playerIBoxes[2]
@@ -68,7 +68,7 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
 
     private void Awake()
     {
-        interactionBoxes    = interactionBoxController.GetInteractionBoxes();
+        interactionBoxes    = interactionBoxController.InteractionBoxes;
         directionToVector   = Script_Utils.GetDirectionToVectorDict();
     }
 }

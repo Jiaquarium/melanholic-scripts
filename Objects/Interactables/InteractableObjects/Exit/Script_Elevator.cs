@@ -51,7 +51,7 @@ public class Script_Elevator : Script_InteractableObjectExit
         // UpdateState();
     }
 
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (isClosed)
         {

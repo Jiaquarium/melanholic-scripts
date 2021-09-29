@@ -70,4 +70,16 @@ public class Script_PlayerInteractionBox : Script_InteractionBox
 
         return null;
     }
+
+    public override Script_DoorExit GetDoorExit()
+    {
+        ExposeBox();
+        foreach (Collider col in colliders)
+        {
+            if (col != null && col.tag == Const_Tags.DoorExit)
+                return col.transform.parent.GetComponent<Script_DoorExit>();
+        }
+
+        return null;
+    }
 }

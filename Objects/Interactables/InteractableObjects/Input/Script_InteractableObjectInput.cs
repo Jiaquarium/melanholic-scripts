@@ -18,7 +18,7 @@ public class Script_InteractableObjectInput : Script_InteractableObject
     [SerializeField] private UnityEvent successAction;
     [SerializeField] private UnityEvent failureAction;
     
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (CheckDisabled())  return;
 

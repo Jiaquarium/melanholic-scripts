@@ -18,6 +18,7 @@ public static class Const_Tags
         Puppet                          = 9,
         UniqueBlockingPuppet            = 10,
         PlayerInteractionBox            = 11,
+        DoorExit                        = 12,
         Everything                      = 99,
     }
 
@@ -35,6 +36,7 @@ public static class Const_Tags
         { Tags.Puppet,                          Puppet },
         { Tags.UniqueBlockingPuppet,            UniqueBlockingPuppet },
         { Tags.PlayerInteractionBox,            PlayerInteractionBox },
+        { Tags.DoorExit,                        DoorExit },
     };
     
     public const string PlayerAnimator          = "tag_player-animator";
@@ -45,6 +47,7 @@ public static class Const_Tags
     public const string InteractableObject      = "tag_interactable_interactable-object";
     public const string ItemObject              = "tag_interactable_item-object";
     public const string UsableTarget            = "tag_interactable_usable-target";
+    public const string DoorExit                = "tag_interactable_door-exit";
     public const string DialogueChoice          = "tag_dialogue-choice-text";
     public const string Puppet                  = "tag_puppet";
     public const string UniqueBlockingPuppet    = "tag_unique-blocking_puppet";

@@ -47,7 +47,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         }
     }
     
-    public override void ActionDefault()
+    protected override void ActionDefault()
     {
         if (
             isDialogueCoolDown

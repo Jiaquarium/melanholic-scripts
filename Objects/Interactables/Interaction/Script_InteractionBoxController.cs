@@ -12,6 +12,17 @@ public class Script_InteractionBoxController : MonoBehaviour
     
     [SerializeField] List<Const_Tags.Tags> ignoreTags;
 
+    /// <returns>ordered N, E, S, W</returns>
+    public Script_InteractionBox[] InteractionBoxes
+    {
+        get => new Script_InteractionBox[]{
+            InteractionBoxN,
+            InteractionBoxE,
+            InteractionBoxS,
+            InteractionBoxW
+        };
+    }
+
     public void HandleActiveInteractionBox(Directions dir)
     {
         if (dir == Directions.Up)         SetActiveInteractionBox(InteractionBoxN);
@@ -80,14 +91,9 @@ public class Script_InteractionBoxController : MonoBehaviour
         return activeBox.GetUniqueBlocking(tag);
     }
 
-    /// <returns>ordered N, E, S, W</returns>
-    public Script_InteractionBox[] GetInteractionBoxes()
+    public Script_DoorExit GetDoorExit(Directions dir)
     {
-        return new Script_InteractionBox[]{
-            InteractionBoxN,
-            InteractionBoxE,
-            InteractionBoxS,
-            InteractionBoxW
-        };
+        HandleActiveInteractionBox(dir);
+        return activeBox.GetDoorExit();
     }
 }
