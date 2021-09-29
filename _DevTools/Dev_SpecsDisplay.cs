@@ -4,8 +4,15 @@ using System.Collections;
 [ExecuteAlways]
 public class Dev_SpecsDisplay : MonoBehaviour
 {
+	[SerializeField] private Camera cam;
+	
 	float deltaTime = 0.0f;
  
+	void Awake()
+    {
+        cam = GetComponent<Camera>();
+    }
+	
 	void Update()
 	{
 		// if (!Const_Dev.IsDevMode)   return;
@@ -34,10 +41,17 @@ public class Dev_SpecsDisplay : MonoBehaviour
         float screenHeight = Screen.currentResolution.height;
         string screenWidthText = string.Format("{0}", screenWidth);
         string screenHeightText = string.Format("{0}", screenHeight);
-        string resText = $"{screenWidthText}X{screenHeightText}";
+		string resText = $"{screenWidthText}X{screenHeightText}";
+		
+		float cameraPixelWidth = cam.pixelWidth;
+        float cameraPixelHeight = cam.pixelHeight;
+        string cameraWidthText = string.Format("{0}", cameraPixelWidth);
+        string cameraHeightText = string.Format("{0}", cameraPixelHeight);
+		string cameraPixelsText = $"camera pixels: {screenWidthText}X{screenHeightText}";
+        
 		string build = Const_Dev.IsDevMode ? "dev" : "prod";
 		string buildText = $"{build} build";
 
-        GUI.Label(rect, $"{fpsText}, {resText}\n{buildText}", style);
+        GUI.Label(rect, $"{fpsText}, {resText}\n{cameraPixelsText}\n{buildText}", style);
 	}
 }

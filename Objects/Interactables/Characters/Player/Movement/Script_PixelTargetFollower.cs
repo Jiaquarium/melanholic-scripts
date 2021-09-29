@@ -5,7 +5,7 @@ using UnityEngine;
 public class Script_PixelTargetFollower : MonoBehaviour
 {
     [SerializeField] private bool isFollowPixel = true;
-    
+
     public void Move(Vector3 position)
     {
         transform.position = isFollowPixel ? RoundToPixel(position) : position;
