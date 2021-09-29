@@ -40,7 +40,7 @@ public class Script_VCamera : MonoBehaviour
 
     public void FollowCameraTargetFollower()
     {
-        Follow = Script_Game.Game?.PixelTargetFollower.transform;
+        Follow = Script_Game.Game?.CameraTargetFollower.transform;
     }
 
     public void SetPriority(int priority)

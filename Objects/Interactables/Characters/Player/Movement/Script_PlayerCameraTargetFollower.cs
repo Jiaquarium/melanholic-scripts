@@ -7,20 +7,9 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
 
     [Range(0, 1)]
     [SerializeField] private float weight;
-    [SerializeField] private SpriteRenderer graphics;
     
+    [SerializeField] private SpriteRenderer graphics;   
     [SerializeField] private Script_Game game;
-    [SerializeField] private Script_PixelTargetFollower pixelTargetFollower;
-
-    [SerializeField] private AnimationCurve progressCurve;
-
-    [SerializeField] private Vector3 targetPosition;
-    private float progress;
-
-    public Script_PixelTargetFollower PixelTargetFollower
-    {
-        get => pixelTargetFollower;
-    }
     
     void Awake()
     {
@@ -36,7 +25,6 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
     public void MatchPlayer()
     {
         transform.position = game.GetPlayer().FocalPoint.position;
-        pixelTargetFollower.Move(transform.position);
     }
     
     // Making this a coroutine forces it to happen after Player movement in execution loop.
@@ -50,8 +38,6 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
         Vector3 newPosition = (playerPosition * weight) + (myPosition * (1 - weight));
 
         transform.position = newPosition;
-
-        pixelTargetFollower.Move(newPosition);
     }
 
     /// <summary>
@@ -68,7 +54,5 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
         Vector3 newPosition = myPosition.FrameRateAwareDamp(playerPosition, weight, Time.smoothDeltaTime);
 
         transform.position = newPosition;
-
-        pixelTargetFollower.Move(newPosition);
     }
 }

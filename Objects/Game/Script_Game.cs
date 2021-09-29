@@ -279,11 +279,6 @@ public class Script_Game : MonoBehaviour
         get => cameraTargetFollower;
     }
 
-    public Script_PixelTargetFollower PixelTargetFollower
-    {
-        get => cameraTargetFollower.PixelTargetFollower;
-    }
-
     public Script_PuppetMaster PuppetMaster
     {
         get => puppetMaster;
