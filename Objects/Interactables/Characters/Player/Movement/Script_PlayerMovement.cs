@@ -335,6 +335,15 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void Move(Directions dir)
     {
+        // Handle Exits, if in the desired Direction there is an exit,
+        // do not move, instead Player turns and exits.
+        if (HandleExitTile(dir))
+        {
+            StopMovingAnimations();
+            player.FaceDirection(dir);
+            return;
+        }
+        
         if (progress < 1f)
         {
             return;
@@ -406,6 +415,11 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
+    public void StopMovingAnimations()
+    {
+        animator.SetBool(PlayerMovingAnimatorParam, false);
+    }
+    
     // Handle Moving State in Animator.
     private void HandleAnimations()
     {
@@ -496,14 +510,17 @@ public class Script_PlayerMovement : MonoBehaviour
         player.location = transform.position;
     }
 
-    public void HandleExitTile()
+    public bool HandleExitTile(Directions dir)
     {
         Tilemap entrancesTileMap = game.EntranceTileMap;
         Tilemap[] exitsTileMaps = game.ExitTileMaps;
         
+        Vector3 desiredMove = directionToVector[dir];
+        Vector3 desiredLocation = player.location + desiredMove;
+        
         Vector3Int tileLocation = new Vector3Int(
-            (int)Mathf.Round(player.location.x - grid.position.x), // *adjust for grid offset*
-            (int)Mathf.Round(player.location.z - grid.position.z),
+            (int)Mathf.Round(desiredLocation.x - grid.position.x), // *adjust for grid offset*
+            (int)Mathf.Round(desiredLocation.z - grid.position.z),
             0
         );
 
@@ -524,7 +541,7 @@ public class Script_PlayerMovement : MonoBehaviour
                     if (exitInfo.Type == Script_Exits.ExitType.CutScene)
                     {
                         game.HandleExitCutSceneLevelBehavior();
-                        return;
+                        return true;
                     }                    
                     
                     game.Exit(
@@ -535,7 +552,7 @@ public class Script_PlayerMovement : MonoBehaviour
                         exitInfo.IsSilent,
                         exitInfo.Type
                     );
-                    return;
+                    return true;
                 }
             }
         }
@@ -557,8 +574,10 @@ public class Script_PlayerMovement : MonoBehaviour
                 entranceInfo.IsSilent,
                 entranceInfo.Type
             );
-            return;
+            return true;
         }
+
+        return false;
     }
 
     private void HandleStairsExitAnimation()

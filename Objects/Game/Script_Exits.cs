@@ -18,6 +18,8 @@ using UnityEditor;
 /// </summary>
 public class Script_Exits : MonoBehaviour
 {
+    public static Script_Exits Control;
+    
     public enum ExitType
     {
         Default                     = 0,
@@ -58,6 +60,11 @@ public class Script_Exits : MonoBehaviour
     private bool isDefaultFadeOut;
     private int levelToGo;
     private FollowUp currentFollowUp;
+    
+    public bool IsHandlingExit
+    {
+        get => isHandlingExit;
+    }
     
     void Update()
     {
@@ -313,6 +320,15 @@ public class Script_Exits : MonoBehaviour
 
     public void Setup(Script_Game _game)
     {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
+        }
+        
         game = _game;
         audioSource = GetComponent<AudioSource>();
     }

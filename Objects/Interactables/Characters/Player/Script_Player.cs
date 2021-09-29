@@ -141,9 +141,6 @@ public class Script_Player : Script_Character
             }
             else
             {
-                // once we know we move onto an exit space
-                // begin fading the screen out
-                playerMovementHandler.HandleExitTile();
                 playerMovementHandler.HandleMoveInput();
             }
         }
@@ -285,12 +282,13 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.Inventory
                 || State == Const_States_Player.PuppeteerNull
                 || State == Const_States_Player.LastElevatorEffect
-                || State == Const_States_Player.MelancholyPiano;
+                || State == Const_States_Player.MelancholyPiano
+                || Script_Exits.Control.IsHandlingExit;
     }
 
     public void StopMovingAnimations()
     {
-        MyAnimator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
+        playerMovementHandler.StopMovingAnimations();
     }
 
     // ------------------------------------------------------------------
