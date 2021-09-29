@@ -85,6 +85,10 @@ public class Script_GraphicsManager : MonoBehaviour
         
         CinemachineVirtualCamera liveVirtualCamera = Script_Game.Game.GetComponent<CinemachineBrain>()
             .ActiveVirtualCamera as CinemachineVirtualCamera;
+        
+        if (liveVirtualCamera == null)
+            return;
+
         targetOrthoSize = liveVirtualCamera.m_Lens.OrthographicSize;
         correctedOrthoSize = pixelPerfectCamera.CorrectCinemachineOrthoSize(targetOrthoSize);
 
