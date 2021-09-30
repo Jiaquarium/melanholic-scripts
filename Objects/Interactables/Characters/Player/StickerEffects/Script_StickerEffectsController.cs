@@ -115,7 +115,7 @@ public class Script_StickerEffectsController : MonoBehaviour
                 break;
             case Const_Items.AnimalWithinId:
                 Debug.Log($"{activeSticker} Effect Activated");
-                eatAttack.Eat(dir); // TBD Implement as effect
+                animalWithinEffect.Effect();
                 break;
             case Const_Items.IceSpikeId:
                 Debug.Log($"{activeSticker} Effect Activated");

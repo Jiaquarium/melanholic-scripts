@@ -4,9 +4,25 @@ using UnityEngine;
 
 public class Script_AnimalWithinEffect : Script_StickerEffect
 {
+    [SerializeField] private Script_PlayerAttackEat eatAttack;
+    [SerializeField] private Script_Player player; 
+
+    [SerializeField] private float shakeTime; 
+    [SerializeField] private float shakeAmp; 
+    [SerializeField] private float shakeFreq;
+    
     public override void Effect()
     {
+        Debug.Log($"{name} Effect()");
 
+        eatAttack.Eat(player.FacingDirection);
+
+        Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
+            shakeTime,
+            shakeAmp,
+            shakeFreq,
+            null
+        );
     }
     
     protected override void OnEquip()

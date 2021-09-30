@@ -8,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public class Script_PlayerAttackEat : Script_Attack
 {
+    const string EatTrigger = "Eat";
+    const string IsEatingBool = "IsEating";
+    
     [SerializeField] private float eatingTime;
     [SerializeField] private AudioClip crunchSFX;
     [SerializeField] private Script_Player player;
@@ -16,21 +19,6 @@ public class Script_PlayerAttackEat : Script_Attack
     private bool didHit;
     private Coroutine eatingCoroutine;
     private Script_AudioOneShotSource audioOneShotSource;
-
-    /* =============================================================        
-        ANIMATION FUNCS BEGIN: called from animation
-    ============================================================= */
-    // called from demon animation > game > here: Demon_Default-swallowed-heart-ending 
-    // CURRENTLY NOT USING
-    public void EatHeart()
-    {
-        // swallowing heart animation on trigger
-        animator.SetTrigger("Eat");
-    }
-
-    /* =============================================================    
-        END
-    ============================================================= */
 
     public void Eat(Directions direction)
     {
@@ -49,8 +37,7 @@ public class Script_PlayerAttackEat : Script_Attack
     {
         yield return new WaitForSeconds(eatingTime);
 
-        animator.SetBool("IsEating", false);
-        player.HandleEatGraphics(false);
+        animator.SetBool(IsEatingBool, false);
         player.SetLastState();
         
         base.EndAttack();
@@ -59,8 +46,7 @@ public class Script_PlayerAttackEat : Script_Attack
     private void OpenMouth()
     {
         // this conditional transition in animator causes mouth open
-        animator.SetBool("IsEating", true);
-        player.HandleEatGraphics(true);
+        animator.SetBool(IsEatingBool, true);
     }
 
     public override void CollisionedWith(Collider collider, Script_HitBox hitBox)

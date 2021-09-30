@@ -384,11 +384,6 @@ public class Script_Player : Script_Character
         playerGraphics.SetHidden(_isInvisible);
     }
 
-    public void HandleEatGraphics(bool isEating)
-    {
-        playerGraphics.SetHidden(!isEating);
-    }
-
     public void SetBuffEffectActive(bool isActive)
     {
         playerEffect.SetBuffEffectActive(isActive);
