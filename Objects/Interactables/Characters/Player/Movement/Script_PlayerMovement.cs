@@ -385,8 +385,6 @@ public class Script_PlayerMovement : MonoBehaviour
             || HandleExitObject(dir)
         )
         {
-            StopMovingAnimations();
-            player.FaceDirection(dir);
             return true;
         }
 
@@ -562,6 +560,8 @@ public class Script_PlayerMovement : MonoBehaviour
                         return true;
                     }                    
                     
+                    OnExitAnimations(dir);
+                    
                     game.Exit(
                         exitInfo.Level,
                         exitInfo.PlayerNextSpawnPosition,
@@ -570,6 +570,7 @@ public class Script_PlayerMovement : MonoBehaviour
                         exitInfo.IsSilent,
                         exitInfo.Type
                     );
+
                     return true;
                 }
             }
@@ -584,6 +585,8 @@ public class Script_PlayerMovement : MonoBehaviour
                 HandleStairsExitAnimation();
             }
 
+            OnExitAnimations(dir);
+
             game.Exit(
                 entranceInfo.Level,
                 entranceInfo.PlayerNextSpawnPosition,
@@ -592,10 +595,17 @@ public class Script_PlayerMovement : MonoBehaviour
                 entranceInfo.IsSilent,
                 entranceInfo.Type
             );
+            
             return true;
         }
 
         return false;
+    }
+
+    public void OnExitAnimations(Directions dir)
+    {
+        player.FaceDirection(dir);
+        StopMovingAnimations();
     }
 
     private bool HandleExitObject(Directions dir)

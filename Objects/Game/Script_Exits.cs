@@ -197,7 +197,6 @@ public class Script_Exits : MonoBehaviour
             canvas.alpha = 1f;
             isDefaultFadeOut = false;
             
-            
             switch (currentFollowUp)
             {
                 case (FollowUp.CutSceneNoFade):
@@ -289,33 +288,40 @@ public class Script_Exits : MonoBehaviour
 
     void OnDoneExitingTransition()
     {
-        isHandlingExit = false;
+        StartCoroutine(WaitToCompleteInit());
         
-        // after faded in, player can then move
-        // leave the state as cut scene if the exit FollowUp is a cut scene though
-        if (game.state == Const_States_Game.InitiateLevel)
+        IEnumerator WaitToCompleteInit()
         {
-            Debug.Log($"{name} OnDoneExitingTransition currentFollowUp: {currentFollowUp}");
+            yield return new WaitForSeconds(InitiateLevelWaitTime);
             
-            switch(currentFollowUp)
+            isHandlingExit = false;
+            
+            // after faded in, player can then move
+            // leave the state as cut scene if the exit FollowUp is a cut scene though
+            if (game.state == Const_States_Game.InitiateLevel)
             {
-                case (FollowUp.Default):
-                    game.ChangeStateInteract();
-                    break;
-                case (FollowUp.Piano):
-                    game.ChangeStateInteract();
-                    break;
-                default:
-                    break;
+                Debug.Log($"{name} OnDoneExitingTransition currentFollowUp: {currentFollowUp}");
+                
+                switch(currentFollowUp)
+                {
+                    case (FollowUp.Default):
+                        game.ChangeStateInteract();
+                        break;
+                    case (FollowUp.Piano):
+                        game.ChangeStateInteract();
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
-        
-        currentFollowUp = FollowUp.Default;
+            
+            currentFollowUp = FollowUp.Default;
 
-        /// Allows us to define new initial game state in level behavior
-        /// Also fire event, so other objects can react
-        game.levelBehavior.OnLevelInitComplete();
-        Script_GameEventsManager.LevelInitComplete();
+            /// Allows us to define new initial game state in level behavior
+            /// Also fire event, so other objects can react
+            game.levelBehavior.OnLevelInitComplete();
+            Script_GameEventsManager.LevelInitComplete();
+        }
     }
 
     public void Setup(Script_Game _game)

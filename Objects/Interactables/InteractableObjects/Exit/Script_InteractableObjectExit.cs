@@ -17,7 +17,7 @@ public class Script_InteractableObjectExit : Script_InteractableObject
         Exit();
     }
 
-    protected void Exit()
+    protected virtual void Exit()
     {
         Script_Game.Game.Exit(
             exit.data.level,

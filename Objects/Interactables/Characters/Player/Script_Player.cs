@@ -304,7 +304,7 @@ public class Script_Player : Script_Character
     }
     
     // ------------------------------------------------------------------
-    // Graphics
+    // Graphics & Animations
     protected void HandleIsMoving()
     {
         playerMovementHandler.HandleIsMoving();
@@ -394,6 +394,11 @@ public class Script_Player : Script_Character
         MyAnimator.SetTrigger(IsEffectTrigger);
     }
 
+    public void OnExitAnimations(Directions dir)
+    {
+        playerMovementHandler.OnExitAnimations(dir);
+    }
+
     // ------------------------------------------------------------------
     // Interactions
 
@@ -468,7 +473,9 @@ public class Script_Player : Script_Character
     {
         playerMovementHandler.Move(dir);
     }
+    
     // ------------------------------------------------------------------
+    // Spawning
 
     public void InitializeOnLevel(
         Model_PlayerState playerState,

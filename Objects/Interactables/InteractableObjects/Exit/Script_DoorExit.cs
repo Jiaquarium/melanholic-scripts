@@ -5,6 +5,8 @@ using UnityEngine;
 public class Script_DoorExit : Script_InteractableObjectExit
 {
     [SerializeField] protected List<Directions> exitDirections;
+
+    private Directions facingDirection;
     
     public bool TryExit(Directions dir)
     {
@@ -15,6 +17,7 @@ public class Script_DoorExit : Script_InteractableObjectExit
             {
                 if (dir == exitDirection)
                 {
+                    facingDirection = dir;
                     Exit();
                     return true;
                 }
@@ -22,6 +25,14 @@ public class Script_DoorExit : Script_InteractableObjectExit
         }
 
         return false;
+    }
+
+    protected override void Exit()
+    {
+        Script_Game.Game.GetPlayer().OnExitAnimations(facingDirection);
+        facingDirection = Directions.None;
+        
+        base.Exit();
     }
 
     protected override void ActionDefault()
