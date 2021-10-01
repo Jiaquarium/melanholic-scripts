@@ -37,7 +37,8 @@ public class Script_DialogueManager : MonoBehaviour
     public static float DialogueContinuationFlickerInterval = 0.75f;
     private static char PauseTextCommand = '|';
     
-    public Script_Interactable activeInteractable; // for cut scenes this will be null
+    // NOTE: for cut scenes this may be null if not defined by call to StartDialogue.
+    public Script_Interactable activeInteractable;
     public Script_Game game;
     public CanvasGroup canvas;
     public AudioSource audioSource;
@@ -125,6 +126,9 @@ public class Script_DialogueManager : MonoBehaviour
     private bool isSilentTyping = false;
     /// Flag to disable inputs while full art is fading in or out
     public bool isInputDisabled;
+    
+    // Flag to force an update of a passed in NPC's state.
+    private bool isForceUpdateNPCState;
 
     // ------------------------------------------------------------------
     // Player Feedback to First Psychic Node Interaction
@@ -143,6 +147,12 @@ public class Script_DialogueManager : MonoBehaviour
     {
         get => state;
         set => state = value;
+    }
+
+    public bool IsOnEndUpdateNPCState
+    {
+        get => isForceUpdateNPCState;
+        set => isForceUpdateNPCState = value;
     }
 
     void Update()
@@ -295,6 +305,7 @@ public class Script_DialogueManager : MonoBehaviour
             );
             return null;
         }
+        
         if (dialogueSections.Count == 0)
         {
             bool isEnding = OnEndDialogueSections();
@@ -887,8 +898,21 @@ public class Script_DialogueManager : MonoBehaviour
                 Script_Game.Game.GetPlayer().SetIsInteract();
             }
 
+            if (IsOnEndUpdateNPCState)
+            {
+                var NPC = activeInteractable as Script_StaticNPC;
+                if (NPC != null)
+                {
+                    Debug.Log($"{activeInteractable} State {NPC.State}");
+                    NPC.State = Script_StaticNPC.States.Interact;
+                }
+
+                IsOnEndUpdateNPCState = false;
+            }
+            
             HandleDialogueNodeAction();
             Script_DialogueEventsManager.DialogueEndEvent();
+
             activeInteractable?.StartDialogueCoolDown();
             activeInteractable = null;
 

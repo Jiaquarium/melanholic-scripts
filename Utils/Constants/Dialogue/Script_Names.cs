@@ -170,10 +170,15 @@ public class Script_Names: MonoBehaviour
         set => Names._Moose = value;
     }
     
-    public const string Flan                            = "<b>Flan the Guard</b>";              // {64}
-    public const string ActionSticker                   = "<b>Active Mask</b>";              // {65}
+    public static string Flan                                                                   // {64}
+    {
+        get => Names?._Flan;
+        set => Names._Flan = value;
+    }
+    
+    public const string ActionSticker                   = "<b>Active Mask</b>";                 // {65}
     public const string LastElevator                    = "<b>Last Elevator</b>";               // {66}
-    public const string StickerSkill                    = "<b>Mask Ability</b>";               // {67}
+    public const string StickerSkill                    = "<b>Mask Ability</b>";                // {67}
     public const string StickerSkills                   = "<b>Mask Abilities</b>";              // {68}
     public const string Coconut                         = "<b>Coconut</b>";                     // {69}
     public const string WeekdayShift                    = "<b>Weekday Shift</b>";               // {70}
@@ -210,6 +215,7 @@ public class Script_Names: MonoBehaviour
     [SerializeField] private string _Peche              = "<b>???</b>";
     [SerializeField] private string _Melba              = "<b>???</b>";
     [SerializeField] private string _Moose              = "<b>???</b>";
+    [SerializeField] private string _Flan               = "<b>???</b>";
 
     // ------------------------------------------------------------------
     // Updater functions. Call from dialogue to update the updateable name.
@@ -258,6 +264,9 @@ public class Script_Names: MonoBehaviour
 
     // Refs: (1) After completing Moose quest in Wells World
     public static void UpdateMoose() { Moose                                    = "<b>Moose</b>"; }
+
+    // Refs: (1) After Flan unblocks Hallway
+    public static void UpdateFlan() { Flan                                      = "<b>Flan the Guard</b>"; }
 
     // ------------------------------------------------------------------
     // For Game Load.

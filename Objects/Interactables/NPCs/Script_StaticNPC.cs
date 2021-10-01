@@ -54,6 +54,9 @@ public class Script_StaticNPC : Script_Interactable
     {
     }
 
+    /// <summary>
+    /// Should only be called by Player Action.
+    /// </summary>
     public void HandleAction(string action)
     {
         if (action == Const_KeyCodes.Action1)
@@ -74,8 +77,27 @@ public class Script_StaticNPC : Script_Interactable
             }
         }    
     }
+
+    /// <summary>
+    /// Call externally from other than Player Action.
+    /// For dialogue, ignores dialogue conditions like cooldowns, disabled directions, etc.
+    /// </summary>
+    public void ForceHandleAction(string action)
+    {
+        if (action == Const_KeyCodes.Action1)
+        {
+            dialogueManager.IsOnEndUpdateNPCState = true;
+            
+            if (!game.GetPlayerIsTalking())     TriggerDialogue();
+            else
+            {
+                if (dialogueManager.IsDialogueSkippable())  dialogueManager.SkipTypingSentence();
+                else                                        ContinueDialogue();
+            }
+        }
+    }
     
-    public virtual void TriggerDialogue()
+    protected virtual void TriggerDialogue()
     {
         if (isMute)                 return;
 

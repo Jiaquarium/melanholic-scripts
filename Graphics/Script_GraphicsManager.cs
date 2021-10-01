@@ -35,6 +35,8 @@ public class Script_GraphicsManager : MonoBehaviour
     [Tooltip("An upscaled zoom that ensures the image scaled only so much that it will remain completely on screen.")]
     [SerializeField] private int zoom = 1;
 
+    [SerializeField] private CinemachineBrain cinemachineBrain;
+
     public int PixelRatio
     {
         get => calcedPixelPerfectCameraPixelRatio;
@@ -83,7 +85,7 @@ public class Script_GraphicsManager : MonoBehaviour
     {
         pixelPerfectCameraPixelRatio = pixelPerfectCamera.pixelRatio;
         
-        CinemachineVirtualCamera liveVirtualCamera = Script_Game.Game.GetComponent<CinemachineBrain>()
+        CinemachineVirtualCamera liveVirtualCamera = cinemachineBrain
             .ActiveVirtualCamera as CinemachineVirtualCamera;
         
         if (liveVirtualCamera == null)

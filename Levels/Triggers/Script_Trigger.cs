@@ -17,15 +17,16 @@ public class Script_Trigger : MonoBehaviour
     
     void Update()
     {
-        // to prevent multiple OnTriggerEnters for same event;
-        // set isColliding to true in OnTriggerEnter and check if isColliding 
-        // physics is done before Update, so it'll be reset here
-        isColliding = false;
     }
     
     // allows triggers to know if an object has entered it on initialization of scene
     void LateUpdate()
     {
+        // to prevent multiple OnTriggerEnters for same event;
+        // set isColliding to true in OnTriggerEnter and check if isColliding 
+        // physics is done before Update, so it'll be reset here
+        isColliding = false;
+        
         if (isInitializing)     isInitializing = false;
     }
 }

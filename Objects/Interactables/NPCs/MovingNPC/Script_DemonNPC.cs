@@ -139,7 +139,7 @@ public class Script_DemonNPC : Script_MovingNPC
         hasTalkedPsychicLocal = false;
     }
     
-    public override void TriggerDialogue()
+    protected override void TriggerDialogue()
     {
         HandlePsychicDuck();
         base.TriggerDialogue();

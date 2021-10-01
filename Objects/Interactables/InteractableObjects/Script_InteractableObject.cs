@@ -15,6 +15,8 @@ public class Script_InteractableObject : Script_Interactable
     [SerializeField] private UnityEvent action;
     [Tooltip("Easier way to reference Game if we don't care about Setup()")] [SerializeField] protected bool autoSetup;
 
+    private bool didAutoSetupFail;
+
     public enum States
     {
         Active = 0,
@@ -47,13 +49,27 @@ public class Script_InteractableObject : Script_Interactable
     
     protected virtual void Start()
     {
-        
+        if (didAutoSetupFail)
+        {
+            game = Script_Game.Game;
+            game.AddInteractableObject(this);
+            
+            didAutoSetupFail = false;
+        }
     }
 
     protected virtual void AutoSetup()
     {
-        game = Script_Game.Game;
-        Script_Game.Game.AddInteractableObject(this);
+        try
+        {
+            game = Script_Game.Game;
+            game.AddInteractableObject(this);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Game is not instantiated yet: {e}");
+            didAutoSetupFail = true;
+        }
     }
     
     // Update is called once per frame

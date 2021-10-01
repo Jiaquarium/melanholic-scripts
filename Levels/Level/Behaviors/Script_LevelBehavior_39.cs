@@ -48,6 +48,9 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     // called from Trigger in front of Guard
     public void StartGuardDialogue()
     {
+        if (Flan.State == Script_StaticNPC.States.Dialogue)
+            return;
+
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
         
         Vector3 playerPos       = game.GetPlayer().transform.position;
@@ -72,7 +75,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         game.ChangeStateCutScene();
         
         Flan.FaceDirection(Flan.transform.position.GetDirectionToTarget(playerPos));
-        Flan.TriggerDialogue();
+        Flan.ForceHandleAction(Const_KeyCodes.Action1);
 
         // NOTE Flan's last dialogue node needs to call EndGuardDialogue()
     }
@@ -98,6 +101,8 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         game.ChangeStateInteract();
 
         didGuardConfirm = true;
+
+        Script_Names.UpdateFlan();
     }
     // ----------------------------------------------------------------------
 

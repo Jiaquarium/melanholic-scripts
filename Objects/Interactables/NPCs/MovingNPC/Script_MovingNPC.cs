@@ -61,7 +61,7 @@ public class Script_MovingNPC : Script_StaticNPC
         if (myDirector != null)     HandleTimelineAutoMove();
     }
 
-    public override void TriggerDialogue()
+    protected override void TriggerDialogue()
     {
         if (!disableFacingPlayerOnDialogue)     FacePlayer();
         base.TriggerDialogue();
@@ -77,7 +77,14 @@ public class Script_MovingNPC : Script_StaticNPC
         bool? didContinue = dialogueManager.ContinueDialogue();
         
         HandleReturnToDefaultDirection(didContinue);
-        if (didContinue == false)   State = States.Interact;
+        
+        if (didContinue == false)
+        {
+            Debug.Log($"{this.name} returning my state to {States.Interact}");
+
+            State = States.Interact;
+        }
+        
         return didContinue;
     }
 
