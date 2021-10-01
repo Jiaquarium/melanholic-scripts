@@ -21,14 +21,20 @@ public class Script_StickerHolster : MonoBehaviour
     {
         Active
     }
+    public const int numItemSlots = 4;
+    
     [SerializeField] private States _state = States.Active;
     [SerializeField] private Image[] stickerImages = new Image[numItemSlots]; 
     [SerializeField] private Script_Sticker[] stickers = new Script_Sticker[numItemSlots];
-    public const int numItemSlots = 9;
     public States State
     {
         get { return _state; }
         set { _state = value;}
+    }
+
+    public Script_Sticker[] Stickers
+    {
+        get => stickers;
     }
     
     public Script_Sticker GetStickerInSlot(int Id)

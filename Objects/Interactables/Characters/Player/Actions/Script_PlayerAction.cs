@@ -102,6 +102,11 @@ public class Script_PlayerAction : MonoBehaviour
         }
     }
 
+    public void HandleDefaultStickerState()
+    {
+        stickerEffectsController.DefaultStateNoEffect();
+    }
+    
     private void HandleStickerSwitch(Directions facingDirection, Vector3 location)
     {
         if (Input.GetButtonDown(Const_KeyCodes.Effect1))

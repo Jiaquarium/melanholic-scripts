@@ -6,9 +6,16 @@ public abstract class Script_StickerEffect : MonoBehaviour
 {
     public enum EquipType
     {
-        Equip           = 0,
-        Unequip         = 1,
-        UnequipSwitch   = 2,
+        Equip               = 0,
+        
+        // Unequipping by pressing the current active slot.
+        Unequip             = 1,
+        
+        // Unequipping by pressing a different active slot.
+        UnequipSwitch       = 2,
+        
+        // Use only if need to switch back to Player animator without triggering any effect.
+        UnequipState        = 3,
     }
     
     protected const int Layer = 0;
@@ -31,6 +38,9 @@ public abstract class Script_StickerEffect : MonoBehaviour
             case EquipType.UnequipSwitch:
                 OnUnequipSwitch();
                 break;
+            case EquipType.UnequipState:
+                OnUnequipState();
+                break;
         }
     }
 
@@ -41,7 +51,7 @@ public abstract class Script_StickerEffect : MonoBehaviour
 
     protected virtual void OnUnequip()
     {
-        Debug.Log($"{name} OnEquip()");
+        Debug.Log($"{name} OnUnequip()");
     }
 
     // Unequip when switching to another Sticker. The main difference with this and OnUnequip is that
@@ -50,7 +60,14 @@ public abstract class Script_StickerEffect : MonoBehaviour
     // need to unecessarily override with the Default controller before switching to the new one.
     protected virtual void OnUnequipSwitch()
     {
-        Debug.Log($"{name} OnEquip()");
+        Debug.Log($"{name} OnUnequipSwitch()");
+    }
+
+    protected virtual void OnUnequipState()
+    {
+        Debug.Log($"{name} OnUnequipState()");
+        
+        OnUnequipControllerSynced();
     }
 
     // Switches to a controller that is a "mask" transformation, keeping the same state.

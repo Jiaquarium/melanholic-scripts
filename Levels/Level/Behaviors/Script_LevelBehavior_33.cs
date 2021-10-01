@@ -37,10 +37,12 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         switch (Behavior)
         {
             case (State.Save):
+                PlayerDefaultState();
                 exitToLobby.Type = Script_Exits.ExitType.SaveAndRestart;
                 elevator.State = Script_InteractableObject.States.Disabled;
                 break;
             case (State.SaveAndStartWeekendCycle):
+                PlayerDefaultState();
                 exitToLobby.Type = Script_Exits.ExitType.SaveAndStartWeekendCycle;
                 elevator.State = Script_InteractableObject.States.Disabled;
                 break;
@@ -69,6 +71,11 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         {
             elevatorDisabledText.gameObject.SetActive(false);
         }
+    }
+
+    private void PlayerDefaultState()
+    {
+        game.GetPlayer().DefaultStickerState();
     }
     
     public override void Setup()

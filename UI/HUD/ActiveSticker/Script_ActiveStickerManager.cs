@@ -22,6 +22,22 @@ public class Script_ActiveStickerManager : MonoBehaviour
         get => activeSticker.Sticker;
     }
 
+    public int ActiveSlot
+    {
+        get
+        {
+            var stickers = stickerHolsterManager.Stickers;
+            
+            for (int i = 0; i < stickers.Length; i++)
+            {
+                if (stickers[i] == activeSticker.Sticker)
+                    return i;
+            }
+
+            return -1;
+        }
+    }
+
     public bool IsActiveSticker(string id)
     {
         return ActiveSticker?.id == id;
@@ -39,6 +55,16 @@ public class Script_ActiveStickerManager : MonoBehaviour
         stickerHolsterManager.HighlightSlot(i, false);
         
         return activeSticker.RemoveSticker();
+    }
+
+    public bool RemoveActiveSticker()
+    {
+        int i = ActiveSlot;
+        
+        if (i < 0)
+            return false;
+        
+        return RemoveSticker(i);
     }
 
     public void AnimateActiveStickerSlot()

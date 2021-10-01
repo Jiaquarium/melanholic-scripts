@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// The holster stickers map to the order of the sticker in equipment
 /// </summary>
@@ -88,6 +92,21 @@ public class Script_StickerEffectsController : MonoBehaviour
             
             EquipEffect(stickerToSwitch, Script_StickerEffect.EquipType.Equip);
         }
+    }
+
+    /// <summary>
+    /// To be called when need to return Player to Default state in the background.
+    /// </summary>
+    public void DefaultStateNoEffect()
+    {
+        Script_Sticker activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;
+
+        if (activeSticker == null)
+            return;
+
+        EquipEffect(activeSticker, Script_StickerEffect.EquipType.UnequipState);
+        
+        Script_ActiveStickerManager.Control.RemoveActiveSticker();
     }
     
     /// <summary>
@@ -196,3 +215,19 @@ public class Script_StickerEffectsController : MonoBehaviour
         );
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_StickerEffectsController))]
+public class Script_StickerEffectsControllerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_StickerEffectsController t = (Script_StickerEffectsController)target;
+        if (GUILayout.Button("Default State No Effect"))
+        {
+            t.DefaultStateNoEffect();
+        }
+    }
+}
+#endif

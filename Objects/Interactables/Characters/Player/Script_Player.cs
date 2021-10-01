@@ -298,6 +298,11 @@ public class Script_Player : Script_Character
         playerMovementHandler.StopMovingAnimations();
     }
 
+    public void DefaultStickerState()
+    {
+        playerActionHandler.HandleDefaultStickerState();
+    }
+
     // ------------------------------------------------------------------
     // Combat
     public int FullHeal()

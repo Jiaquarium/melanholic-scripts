@@ -15,6 +15,11 @@ public class Script_StickerHolsterManager : MonoBehaviour
 
     [SerializeField] private Script_HUDManager HUDManager;
 
+    public Script_Sticker[] Stickers
+    {
+        get => stickerHolster.Stickers;
+    }
+    
     private bool IsHolsterShowing
     {
         get => game.state == Const_States_Game.Interact
