@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-09-26 18:22:05
+// Last created by Dialogue Exporter at 2021-09-30 22:46:19
 
 using System.Collections;
 using System.Collections.Generic;
@@ -296,6 +296,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"It looks like he's half-smiling, half-crying.",
+        },
+        
+    }
+},
+{
+    "hotel-bay-v1-return_elevator_disabled_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"I should really get back to work.",
         },
         
     }

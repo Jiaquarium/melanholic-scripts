@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-09-26 17:42:16
+// Last created by UI Exporter at 2021-09-30 22:46:24
 
 using System.Collections;
 using System.Collections.Generic;
@@ -339,6 +339,45 @@ how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"『 DISARM SURVEILLANCE SYSTEM 』"
+    }
+},
+// ------------------------------------------------------------------
+// Saving & Loading
+{
+    "saving_default",
+    new Model_LanguagesUI
+    {
+        EN = @"SAVING GAME... Please do not turn off power."
+    }
+},
+{
+    "saving_to-weekend",
+    new Model_LanguagesUI
+    {
+        EN = @"You are given the responsibility of the {71}. {53} is your first day.
+
+SAVING GAME... Please do not turn off power."
+    }
+},
+{
+    "game-over_message",
+    new Model_LanguagesUI
+    {
+        EN = @"What to do, what to do..."
+    }
+},
+{
+    "game-over_choice_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Start your @@Run over."
+    }
+},
+{
+    "game-over_choice_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Go to main menu."
     }
 },
 // ------------------------------------------------------------------
