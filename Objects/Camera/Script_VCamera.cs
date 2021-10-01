@@ -10,6 +10,8 @@ using UnityEditor;
 
 public class Script_VCamera : MonoBehaviour
 {
+    [SerializeField] private bool isFollowPlayer = true;
+    
     [SerializeField] private Vector3 offset = new Vector3(10.8f, 21f, -22f);
     
     public Transform Follow
@@ -35,7 +37,12 @@ public class Script_VCamera : MonoBehaviour
 
     void Start()
     {
-    
+        if (isFollowPlayer)
+        {
+            Debug.Log($"{name} Set to follow Player");
+            FollowCameraTargetFollower();
+            transform.position = OffsetTargetPosition;
+        }
     }
 
     public void FollowCameraTargetFollower()
