@@ -155,7 +155,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     }
 
     // ----------------------------------------------------------------------
-    // King's Intro Unity Events, Next Node Actions and Timline Signals
+    // King's Intro Unity Events, Next Node Actions and Timeline Signals
     
     public void KingsIntroTimeline()
     {
@@ -213,6 +213,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Script_ArtFrameManager.Control.Close(() => {
             game.ChangeStateInteract();
             game.CanvasesInitialState();
+            
+            // Face King in the proper direction upon timeline restarting.
+            KingEclaire.FaceDirection(Directions.Left);
+            KingEclaire.State = Script_StaticNPC.States.Interact;
         });
 
         Script_BackgroundMusicManager.Control.FadeInMed(null, Const_AudioMixerParams.ExposedBGVolume);

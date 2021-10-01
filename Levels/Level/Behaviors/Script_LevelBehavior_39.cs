@@ -93,6 +93,12 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         didGuardConfirm = false;
     }
 
+    // Happens when Flan unblocks hallway.
+    public void UpdateFlan()
+    {
+        Script_Names.UpdateFlan();
+    }
+    
     public void OnEndGuardDialogueUnblock()
     {
         /// Remove barrier
@@ -101,8 +107,6 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         game.ChangeStateInteract();
 
         didGuardConfirm = true;
-
-        Script_Names.UpdateFlan();
     }
     // ----------------------------------------------------------------------
 

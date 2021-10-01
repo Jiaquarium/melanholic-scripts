@@ -122,13 +122,16 @@ public class Script_MovingNPC : Script_StaticNPC
             if (myDirector.playableGraph.IsPlaying())
             {
                 myDirector.Pause();
+                
                 if (!disableFacingPlayerOnDialogue) FacePlayer();
             }
         }
         else if (State == States.Interact)
         {
-            if (HandleBlocking(facingDirection))                myDirector.Pause();
-            else if (!myDirector.playableGraph.IsPlaying())     myDirector.Play();
+            if (HandleBlocking(facingDirection))
+                myDirector.Pause();
+            else if (!myDirector.playableGraph.IsPlaying())
+                myDirector.Play();
         }
 
         bool HandleBlocking(Directions dir)

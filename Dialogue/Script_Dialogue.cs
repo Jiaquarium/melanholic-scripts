@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-09-30 22:46:19
+// Last created by Dialogue Exporter at 2021-10-01 12:56:05
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1394,7 +1394,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{57}",
         EN = new string[]
         {
-                @"As the King of {18}, it is my sworn duty to serve and protect its inhabitants. so after careful thought I’ve come to the difficult decision –",
+                @"As the King of {18}, it is my sworn duty to serve and protect its inhabitants. So after careful thought I’ve come to the difficult decision –",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -1431,7 +1431,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"At exactly {49} the line between sea and sky is drawn in the night.| Astronomers call it <b>Nautical Dawn</b>.",
-                @"But at that time we will draw another line!| One that marks the changing of our fate...",
+                @"At that time we will draw another line!| One that marks the changing of our fate...",
         },
         metadata = new Model_Languages.Metadata[]
         {
