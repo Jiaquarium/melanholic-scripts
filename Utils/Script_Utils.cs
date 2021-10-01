@@ -144,6 +144,23 @@ public static class Script_Utils
         return v;
     }
 
+    public static Directions IntToDirection(this int i)
+    {
+        switch (i)
+        {
+            case 0:
+                return Directions.Up;
+            case 1:
+                return Directions.Right;
+            case 2:
+                return Directions.Down;
+            case 3:
+                return Directions.Left;
+            default:
+                return Directions.None;
+        }
+    }
+
     /// <summary>
     /// Compare two Vector3s.
     /// </summary>

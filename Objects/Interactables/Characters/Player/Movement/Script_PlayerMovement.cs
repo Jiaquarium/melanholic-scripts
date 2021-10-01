@@ -78,6 +78,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private Script_PlayerCheckCollisions playerCheckCollisions;
 
+    private bool isForceMoveAnimation;
+
     public Animator MyAnimator
     {
         get => animator;
@@ -433,12 +435,18 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void StopMovingAnimations()
     {
+        if (isForceMoveAnimation)
+            return;
+        
         animator.SetBool(PlayerMovingAnimatorParam, false);
     }
     
     // Handle Moving State in Animator.
     private void HandleAnimations()
     {
+        if (isForceMoveAnimation)
+            return;
+        
         bool isMovingAnimation = isMoving
             || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
             || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f;
@@ -664,7 +672,7 @@ public class Script_PlayerMovement : MonoBehaviour
     }
 
     // ------------------------------------------------------------------
-    // Timeline
+    // Timeline Signals
     /// NOTE: should only be called from Player
     /// <summary>
     /// Move up one space via Timeline
@@ -683,11 +691,12 @@ public class Script_PlayerMovement : MonoBehaviour
 
         // Ensure ordering of objects to bind is in sync with timeline tracks.
         playerObjsToBind.Add(player.gameObject);
-        playerObjsToBind.Add(player.MyAnimator.gameObject);
+        playerObjsToBind.Add(player.MySignalReceiver.gameObject);
 
         director.BindTimelineTracks(enterElevatorTimeline, playerObjsToBind);
         director.Play(enterElevatorTimeline);
     }
+    
     /// <summary>
     /// Called from Timeline
     /// </summary>
@@ -696,6 +705,26 @@ public class Script_PlayerMovement : MonoBehaviour
         Debug.Log("Calling this Enter Elevator EVENT!!!");
         Script_PlayerEventsManager.EnteredElevator();
     }
+
+    /// <summary>
+    /// Use when we don't want to define an animator for Player via Timeline
+    /// because animator controller may have changed based on Mask.
+    /// 
+    /// Ensure to call StopForceMoveAnimation at the end of Timeline.
+    /// </summary>
+    public void ForceMoveAnimation(int i)
+    {
+        isForceMoveAnimation = true;
+
+        player.FaceDirection(i.IntToDirection());
+        animator.SetBool(PlayerMovingAnimatorParam, true);
+    }
+
+    public void StopForceMoveAnimation()
+    {
+        isForceMoveAnimation = false;
+    }
+
     // ------------------------------------------------------------------
 
     public void Setup(Script_Game _game, bool isLightOn)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using System;
+using UnityEngine.Timeline;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -44,6 +45,7 @@ public class Script_Player : Script_Character
     [SerializeField] private PlayableDirector director;
 
     [SerializeField] private Light playerLight;
+    [SerializeField] private SignalReceiver signalReceiver;
 
     protected Script_Game game;
     
@@ -75,6 +77,11 @@ public class Script_Player : Script_Character
     public PlayableDirector Director
     {
         get => director;
+    }
+
+    public SignalReceiver MySignalReceiver
+    {
+        get => signalReceiver;
     }
 
     public bool isInvincible
@@ -427,7 +434,7 @@ public class Script_Player : Script_Character
     }
 
     // ------------------------------------------------------------------
-    // Public Utils
+    // Public Utils & Timeline Signals
     
     /// <summary>
     /// used when player is controlled by Timeline
@@ -455,7 +462,10 @@ public class Script_Player : Script_Character
         transform.position = newLocation;
         UpdateLocation();
     }
-    
+
+    /// <summary>
+    /// Called from Timeline Signal
+    /// </summary>    
     public void TimelineMoveUp()
     {
         playerMovementHandler.TimelineMoveUp();
