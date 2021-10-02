@@ -42,10 +42,9 @@ public class Script_Interactable : MonoBehaviour
         DialogueCoolDownReset();
     }
 
-    protected virtual void Awake()
-    {
-        
-    }
+    protected virtual void OnValidate() { }
+    
+    protected virtual void Awake() { }
 
     public virtual void ForcePush(Directions dir)
     {

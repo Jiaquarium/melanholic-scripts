@@ -8,7 +8,8 @@ using UnityEngine;
 /// </summary>
 public class Script_LightSwitch : Script_Switch
 {
-    public Light[] lights;
+    [SerializeField] private Transform lightsParent;
+    [SerializeField] private Light[] lights;
     [SerializeField] private Script_LightsController[] lightsControllers;
     
     public float onIntensity;
@@ -17,6 +18,18 @@ public class Script_LightSwitch : Script_Switch
     public AudioSource audioSource;
     public AudioClip onOffSFX;
 
+    protected override void OnValidate()
+    {
+        FindLights();    
+    }
+    
+    protected override void Awake()
+    {
+        FindLights();
+
+        base.Awake();
+    }
+    
     protected override void Start()
     {
         base.Start();
@@ -55,6 +68,14 @@ public class Script_LightSwitch : Script_Switch
         }
         
         foreach (Light l in lights)     l.intensity = offIntensity;
+    }
+
+    private void FindLights()
+    {
+        if (lightsParent != null)
+        {
+            lights = lightsParent.GetComponentsInChildren<Light>(true);
+        }
     }
 
     public override void SetupSwitch(
