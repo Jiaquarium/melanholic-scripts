@@ -62,5 +62,7 @@ public class Script_LetThereBeLightEffect : Script_StickerEffect
         SyncAnimatorState(animatorStateInfo);
         
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+
+        Script_StickerEffectEventsManager.Equip(sticker);
     }
 }
