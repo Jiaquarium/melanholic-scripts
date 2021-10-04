@@ -48,6 +48,8 @@ public class Script_TransitionManager : MonoBehaviour
     
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
+    public const float DefaultTransitionFadeInTime = 0.5f;
+    public const float DefaultTransitionFadeOutTime = 0.5f;
     public const float UnderDialogueFadeTime = 1.5f;
     public Script_CanvasGroupController restartPrompt;
 
@@ -60,9 +62,19 @@ public class Script_TransitionManager : MonoBehaviour
         return fader.FadeInCo(t, action);
     }
 
+    public Coroutine StartTransitionFadeInCoroutine(Action cb)
+    {
+        return StartCoroutine(FadeIn(DefaultTransitionFadeInTime, cb));
+    }
+
     public IEnumerator FadeOut(float t, Action action)
     {
         return fader.FadeOutCo(t, action);
+    }
+
+    public Coroutine StartTransitionFadeOutCoroutine(Action cb)
+    {
+        return StartCoroutine(FadeOut(DefaultTransitionFadeOutTime, cb));
     }
 
     public void UnderDialogueBlackScreen(bool isOpen = true)

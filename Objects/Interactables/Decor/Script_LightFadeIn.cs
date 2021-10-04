@@ -8,21 +8,36 @@ public class Script_LightFadeIn : MonoBehaviour
     public Transform t;
     public Vector3 offset;
     
-    [SerializeField]
-    private float maxIntensity;
-    [SerializeField]
+    [SerializeField] private float maxIntensity;
+    
     private float tmpIntensity;
-    private Light light;
+    private Light myLight;
 
+    void Awake()
+    {
+        t = GetComponent<Transform>();
+        myLight = GetComponent<Light>();
+        
+        if (maxIntensity == 0f)
+            maxIntensity = myLight.intensity;
+    }
+    
     public IEnumerator FadeInLightOnTarget(
         float maxTime,
         Transform target,
-        Action cb
+        Action cb,
+        float? newMaxIntensity = null
     )
     {
-        t.position = target.position + offset;
+        if (newMaxIntensity != null)
+            maxIntensity = (float)newMaxIntensity;
+        
+        if (target != null)
+            t.position = target.position + offset;
 
-        while (light.intensity < maxIntensity)
+        tmpIntensity = myLight.intensity;
+        
+        while (myLight.intensity < maxIntensity)
         {
             tmpIntensity += (Time.deltaTime / maxTime) * maxIntensity;
 
@@ -31,7 +46,7 @@ public class Script_LightFadeIn : MonoBehaviour
                 tmpIntensity = maxIntensity;
             }
 
-            light.intensity = tmpIntensity;
+            myLight.intensity = tmpIntensity;
             yield return null;
         }
 
@@ -43,7 +58,9 @@ public class Script_LightFadeIn : MonoBehaviour
         Action cb
     )
     {
-        while (light.intensity > 0f)
+        tmpIntensity = myLight.intensity;
+        
+        while (myLight.intensity > 0f)
         {
             tmpIntensity -= (Time.deltaTime / maxTime) * maxIntensity;
 
@@ -52,18 +69,10 @@ public class Script_LightFadeIn : MonoBehaviour
                 tmpIntensity = 0f;
             }
 
-            light.intensity = tmpIntensity;
+            myLight.intensity = tmpIntensity;
             yield return null;
         }
 
         if (cb != null)    cb();
-    }
-
-    public void Setup(float startingIntensity)
-    {
-        t = GetComponent<Transform>();
-        light = GetComponent<Light>();
-        light.intensity = startingIntensity;
-        tmpIntensity = startingIntensity;
     }
 }

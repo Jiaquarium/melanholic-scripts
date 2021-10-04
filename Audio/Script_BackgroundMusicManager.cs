@@ -58,6 +58,12 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         audio.volume = lastVol;
     }
 
+    public void PauseAll()
+    {
+        Pause();
+        PauseBgThemeSpeakers();
+    }
+
     public void UnPause()
     {
         if (GetComponent<AudioSource>() != null)

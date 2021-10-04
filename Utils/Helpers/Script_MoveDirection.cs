@@ -6,10 +6,8 @@ using System;
 public class Script_MoveDirection : MonoBehaviour
 {
     public Transform t;
-    [SerializeField]
-    private Vector3 startLoc;
-    [SerializeField]
-    private float progress;
+    [SerializeField] private Vector3 startLoc;
+    [SerializeField] private float progress;
     
     void Awake()
     {

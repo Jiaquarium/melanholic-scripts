@@ -42,6 +42,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public bool isInitialized;
 
 
+    public float lightsFadeOutTime;
     public float dropDiscoBallTime;
     public float postIdsDanceWaitTime;
     
@@ -63,12 +64,16 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Script_DialogueNode playerDanceIntroNode;
     public Script_DialogueNode badDanceOutroNode;
     public Script_DialogueNode goodDanceOutroNode;
-    public GameObject lights;
+    
     public GameObject crystalChandelier;
     public Script_LightFadeIn playerSpotLight;
     public Script_LightFadeIn IdsSpotLight;
+    [SerializeField] private Script_LightFadeIn levelDirectionalLight;
+    [SerializeField] private Script_LightFadeIn[] additionalFadingLights;
+    [SerializeField] private Script_MoveDirection[] movingLights;
     public Vector3 lightsUpOffset;
     public Vector3 lightsDownOffset;
+    
     public Vector3 crystalChandelierDownOffset;
     public Vector3 crystalChandelierUpOffset;
     public AudioMixer audioMixer;
@@ -76,9 +81,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Model_SongMoves playerSongMoves;
     public Model_SongMoves IdsSongMoves;
     public int mistakesAllowed;
+    
     public Script_MovingNPC Ids;
     [SerializeField] private PlayableDirector IdsDirector;
     [SerializeField] private Script_VCamera VCamLB10FollowIds;
+    
+    [SerializeField] private PlayableDirector danceSetupDirector;
+    [SerializeField] private Script_Marker playerDancePosition;
+    [SerializeField] private bool isRetry = false;
+    
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
     [SerializeField] private PlayableDirector nameplateDirector;
     [SerializeField] private Script_ItemObject smallKey;
@@ -195,20 +206,21 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         game.HandleItemReceive(smallKey);
     }
 
-    public void WaitToIdsDance()
+    public void DanceSetupCutScene()
     {
         game.ChangeStateCutScene();
-        SwitchLightsOutAnimation(OnIdsDance);
-
-        void OnIdsDance()
-        {
-            game.PlayNPCBgTheme(IdsCandyDanceShortThemePlayerPrefab);
-            isIdsDancing = true;
-            crystalChandelier.GetComponent<Script_CrystalChandelier>()
-                .StartSpinning();
-        }
+        
+        // Timeline Events:
+        // 1. Fade Screen Out
+        // 2. Reposition Player
+        // 3. Fade Out Lights
+        // 4. Drop Chandeleir
+        // 5. Ids Dances
+        Script_LightFXManager.Control.IsPaused = true;
+        danceSetupDirector.GetComponent<Script_TimelineController>()
+            .PlayableDirectorPlayFromTimelines(0, 0);
     }
-
+    
     public void WaitToDDR()
     {
         DDRManager.Activate();
@@ -221,7 +233,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             .StartSpinning();
         
         DDR = true;
-        game.ChangeStateDDR(); // this triggers the HandleDDRFinish
+        
+        // Triggers HandleDDRFinish
+        game.ChangeStateDDR();
     }
 
     public void OnDDRFailDialogueDone()
@@ -232,7 +246,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void DDRTryAgain()
     {
         game.ChangeStateCutScene();
-        SwitchLightsOutAnimation(WaitToDDR);
+        
+        DanceSetupCutScene();
+    }
+
+    public void OnTalkToIdsRetry()
+    {
+        HandlePauseMusic();
     }
     
     // ------------------------------------------------------------------------------------
@@ -252,8 +272,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         {
             Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.IdsDead);
 
-            game.PauseBgMusic();
-            game.PauseBgThemeSpeakers();
+            Script_BackgroundMusicManager.Control.PauseAll();
             
             Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
         }
@@ -261,6 +280,82 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     // ------------------------------------------------------------------------------------
     // Timeline Signals START
+    
+    // DanceSetupDirector DanceSetupTimeline
+    public void DanceSetup()
+    {
+        game.GetPlayer().Teleport(playerDancePosition.Position);
+        
+        // Move moving lights up.
+        foreach (var movingLight in movingLights)
+        {
+            StartCoroutine(
+                movingLight.MoveSmooth(lightsFadeOutTime, lightsUpOffset, null)
+            );
+        }
+        
+        StartCoroutine(playerSpotLight.FadeInLightOnTarget(
+            lightsFadeOutTime,
+            game.GetPlayerTransform(),
+            null
+        ));
+        StartCoroutine(IdsSpotLight.FadeInLightOnTarget(
+            lightsFadeOutTime,
+            game.GetNPC(0).GetComponent<Transform>(),
+            null
+        ));
+        StartCoroutine(levelDirectionalLight.FadeOutLight(
+            lightsFadeOutTime,
+            null
+        ));
+        
+        foreach (var fadingLight in additionalFadingLights)
+        {
+            StartCoroutine(fadingLight.FadeOutLight(
+                lightsFadeOutTime,
+                null
+            ));
+        }
+    }
+
+    // DanceSetupDirector DanceSetupTimeline
+    public void DropCrystalChandeleir()
+    {
+        // todo: setinactive after
+        crystalChandelier.SetActive(true);
+        
+        StartCoroutine(
+            crystalChandelier.GetComponent<Script_MoveDirection>().MoveSmooth(
+                dropDiscoBallTime,
+                crystalChandelierDownOffset,
+                null
+            )
+        );
+    }
+
+    public void OnDanceSetupDone()
+    {
+        // Ids Dancing
+        if (!isRetry)
+        {
+            IdsStartDancing();
+            isRetry = true;
+            return;
+        }
+        
+        // Otherwise, it's a retry, dance setup directly to DDR.
+        WaitToDDR();
+        
+        void IdsStartDancing()
+        {
+            game.PlayNPCBgTheme(IdsCandyDanceShortThemePlayerPrefab);
+            isIdsDancing = true;
+            crystalChandelier.GetComponent<Script_CrystalChandelier>()
+                .StartSpinning();
+        }
+    }
+    
+    
     public void OnIdsExitsIdsRoom()
     {
         Ids.gameObject.SetActive(false);
@@ -369,15 +464,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         triggers[0].gameObject.SetActive(false);
         
-        if (lb9.speaker != null)
-        {
-            lb9.speaker.audioSource.Pause();
-            Destroy(lb9.speaker.gameObject);
-        }
-        else
-        {
-            game.PauseBgMusic();
-        }
+        HandlePauseMusic();
+
         game.PlayNPCBgTheme(IdsBgThemePlayerPrefab);
         game.ChangeStateCutScene();
         game.PlayerFaceDirection(Directions.Up);
@@ -396,11 +484,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         game.PauseNPCBgTheme();
 
-        if (lb9.speaker != null)
-        {
-            lb9.speaker.audioSource.Pause();
-            Destroy(lb9.speaker.gameObject);
-        }
+        HandlePauseMusic();
 
         game.ChangeStateCutScene();
         
@@ -410,6 +494,19 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         activeTriggerIndex++;
         return true;
+    }
+
+    private void HandlePauseMusic()
+    {
+        if (lb9.speaker != null)
+        {
+            lb9.speaker.audioSource.Pause();
+            Destroy(lb9.speaker.gameObject);
+        }
+        else
+        {
+            game.PauseBgMusic();
+        }
     }
 
     void HandleIdsDanceScene()
@@ -529,52 +626,24 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         crystalChandelier.GetComponent<Script_CrystalChandelier>()
             .StopSpinning();
+        
+        Script_LightFXManager.Control.IsPaused = false;
         SwitchLightsInAnimation();
 
         dm.StartDialogueNode(node);
     }
 
-    void SwitchLightsOutAnimation(Action cb)
-    {
-        // todo: setinactive after
-        crystalChandelier.SetActive(true);
-        StartCoroutine(
-            lights.GetComponent<Script_MoveDirection>().MoveSmooth(
-                dropDiscoBallTime,
-                lightsUpOffset,
-                () => {
-                    if (cb != null) cb();
-                }
-            )
-        );
-        StartCoroutine(
-            crystalChandelier.GetComponent<Script_MoveDirection>().MoveSmooth(
-                dropDiscoBallTime,
-                crystalChandelierDownOffset,
-                null
-            )
-        );
-        StartCoroutine(playerSpotLight.FadeInLightOnTarget(
-            dropDiscoBallTime,
-            game.GetPlayerTransform(),
-            null
-        ));
-        StartCoroutine(IdsSpotLight.FadeInLightOnTarget(
-            dropDiscoBallTime,
-            game.GetNPC(0).GetComponent<Transform>(),
-            null
-        ));
-    }
-
     void SwitchLightsInAnimation()
     {
-        StartCoroutine(
-            lights.GetComponent<Script_MoveDirection>().MoveSmooth(
-                dropDiscoBallTime,
-                lightsDownOffset,
-                null
-            )
-        );
+        // Move moving lights back down.
+        foreach (var movingLight in movingLights)
+        {
+            StartCoroutine(
+                movingLight.MoveSmooth(dropDiscoBallTime, lightsDownOffset, null)
+            );
+        }
+        
+        // Move chandeleir back up.
         StartCoroutine(
             crystalChandelier.GetComponent<Script_MoveDirection>().MoveSmooth(
                 dropDiscoBallTime,
@@ -584,6 +653,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 }
             )
         );
+
         StartCoroutine(playerSpotLight.FadeOutLight(
             dropDiscoBallTime,
             null
@@ -592,6 +662,21 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             dropDiscoBallTime,
             null
         ));
+        StartCoroutine(levelDirectionalLight.FadeInLightOnTarget(
+            dropDiscoBallTime,
+            null,
+            null,
+            Script_LightFXManager.Control.CurrentIntensity
+        ));
+
+        foreach (var fadingLight in additionalFadingLights)
+        {
+            StartCoroutine(fadingLight.FadeInLightOnTarget(
+                dropDiscoBallTime,
+                null,
+                null
+            ));
+        }
     }
 
     public override void HandleDDRArrowClick(int tier) {}
@@ -625,7 +710,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             
             Ids.gameObject.SetActive(true);
             treasureChest.gameObject.SetActive(true);
-            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(true);
+            
+            foreach (Script_Trigger t in triggers)
+                t.gameObject.SetActive(true);
         }
 
         void HandleIdsNotHome()
@@ -639,7 +726,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             DeadIds.gameObject.SetActive(false);
 
             Ids.gameObject.SetActive(false);
-            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+            
+            foreach (Script_Trigger t in triggers)
+                t.gameObject.SetActive(false);
         }
 
         void HandleIdsDead()
@@ -653,7 +742,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             DeadIds.gameObject.SetActive(true);
 
             Ids.gameObject.SetActive(false);
-            foreach (Script_Trigger t in triggers)  t.gameObject.SetActive(false);
+            
+            foreach (Script_Trigger t in triggers)
+                t.gameObject.SetActive(false);
         }
     }
     
@@ -684,8 +775,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         if (!isInitialized)
         {
             crystalChandelier.SetActive(false);
-            playerSpotLight.Setup(0f);
-            IdsSpotLight.Setup(0f);
         }
         
         game.SetupMovingNPC(Ids, !isInitialized);
@@ -724,20 +813,30 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         HandleIdsInRoom();
         HandleIdsSpawn();
     }
-}
+    
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_LevelBehavior_10))]
+    public class Script_LevelBehavior_10Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_10))]
-public class Script_LevelBehavior_10Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+            Script_LevelBehavior_10 t = (Script_LevelBehavior_10)target;
+            if (GUILayout.Button("Ids DDR Success Quest Done"))
+            {
+                t.IdsGivesSmallKey();
+            }
 
-        Script_LevelBehavior_10 t = (Script_LevelBehavior_10)target;
-        if (GUILayout.Button("Ids DDR Success Quest Done"))
-        {
-            t.IdsGivesSmallKey();
+            if (GUILayout.Button("Lights Fade Out"))
+            {
+                t.DanceSetupCutScene();
+            }
+
+            if (GUILayout.Button("Lights Fade In"))
+            {
+                t.SwitchLightsInAnimation();
+            }
         }
     }
+    #endif
 }
-#endif

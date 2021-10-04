@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Script_LightFXManager : MonoBehaviour
 {
+    public static Script_LightFXManager Control;
+    
+    [SerializeField] private bool isPaused;
+    
     [SerializeField] float currentIntensity = 0.15f;
     [SerializeField] float defaultIntensity = 0.15f;
     [SerializeField] float endingIntensity = 20f;
@@ -20,6 +24,18 @@ public class Script_LightFXManager : MonoBehaviour
 
     private float timer;
 
+    public bool IsPaused
+    {
+        get => isPaused;
+        set => isPaused = value;
+    }
+    
+    public float CurrentIntensity
+    {
+        get => currentIntensity;
+        private set => currentIntensity = value;
+    }
+    
     void OnDisable()
     {
         foreach (Light l in directionalLights)
@@ -57,8 +73,12 @@ public class Script_LightFXManager : MonoBehaviour
             float intensityDelta = endingIntensity - defaultIntensity;
             float newIntensity = lightCurvePercent * intensityDelta + defaultIntensity;
             
-            l.intensity = newIntensity;
-            currentIntensity = l.intensity;
+            CurrentIntensity = newIntensity;
+            
+            if (IsPaused)
+                return;
+            
+            l.intensity = CurrentIntensity;
         }
     }
 
@@ -68,8 +88,24 @@ public class Script_LightFXManager : MonoBehaviour
         {
             if (l.type != LightType.Directional)    return;
 
-            l.intensity = defaultIntensity;
-            currentIntensity = l.intensity;
+            CurrentIntensity = defaultIntensity;
+            
+            if (IsPaused)
+                return;
+            
+            l.intensity = CurrentIntensity;
+        }
+    }
+
+    public void Setup()
+    {
+        if (Control == null)
+        {
+            Control = this;
+        }
+        else if (Control != this)
+        {
+            Destroy(this.gameObject);
         }
     }
 }
