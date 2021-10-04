@@ -106,11 +106,14 @@ public class Script_Player : Script_Character
         get => focalPoint;
     }
 
-    public bool EffectHold
+    public bool AnimatorEffectHold
     {
+        get => MyAnimator.GetBool(IsEffectHoldBool);
         set
         {
             MyAnimator.SetBool(IsEffectHoldBool, value);
+
+            Script_StickerEffectEventsManager.AnimatorEffectHold(value);
         }
     }
 
@@ -401,9 +404,11 @@ public class Script_Player : Script_Character
         playerEffect.SetBuffEffectActive(isActive);
     }
 
-    public void TriggerEffect()
+    public void AnimatorEffectTrigger()
     {
         MyAnimator.SetTrigger(IsEffectTrigger);
+
+        Script_StickerEffectEventsManager.AnimatorEffectTrigger();
     }
 
     public void OnExitAnimations(Directions dir)

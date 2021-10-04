@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class Script_PlayerReflectionMovement : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    protected const string PlayerMovingBool = "PlayerMoving";
+    private const string NPCMovingBool = "NPCMoving";
+    
+    [SerializeField] protected Animator animator;
     [SerializeField] private float xOffset;
     [SerializeField] private float zOffset;
     protected Script_Player player;
     private Script_PlayerReflection playerReflection;
     private Vector3 axis;
-    private Vector3 lastPosition;
     
     public void HandleMove()
     {
         ActuallyMove();
         MoveAnimation(player.FacingDirection);
-        // if (Script_Game.Game.state != Const_States_Game.Interact)   SetNotMoving();
     }
+    
     protected virtual void ActuallyMove()
     {
-        lastPosition = transform.position;
-        
         transform.position = GetReflectionPosition(player.transform.position);
     }
 
@@ -30,31 +30,14 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
         Directions myFaceDirection = ToOppositeDirectionZ(dir);
         Script_Utils.AnimatorSetDirection(animator, myFaceDirection);
         
-        bool isMoving = Vector3.Distance(transform.position, lastPosition) != 0;
+        bool isMoving = Script_Game.Game.GetPlayer().MyAnimator.GetBool(PlayerMovingBool);
         
-        // if game is in interact mode, even if reflection is not moving position
-        // it should still show movement animation like the player (e.g. walking into wall)
-        if (
-            (
-                Script_Game.Game.state == Const_States_Game.Interact
-                && player.State == Const_States_Player.Interact
-            )
-            && (
-                Input.GetButton(Const_KeyCodes.Up)
-                || Input.GetButton(Const_KeyCodes.Right)
-                || Input.GetButton(Const_KeyCodes.Down)
-                || Input.GetButton(Const_KeyCodes.Left)
-            )
-        )
-        {
-            isMoving = true;
-        }
-        animator.SetBool("NPCMoving", isMoving);
+        SetIsMoving(isMoving);
     }
 
-    void SetNotMoving()
+    protected virtual void SetIsMoving(bool isMoving)
     {
-        animator.SetBool("NPCMoving", false);
+        animator.SetBool(NPCMovingBool, isMoving);
     }
 
     protected Directions ToOppositeDirectionZ(Directions desiredDir)

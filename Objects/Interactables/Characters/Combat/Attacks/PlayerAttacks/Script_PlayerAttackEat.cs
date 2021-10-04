@@ -8,9 +8,6 @@ using UnityEngine;
 /// </summary>
 public class Script_PlayerAttackEat : Script_Attack
 {
-    const string EatTrigger = "Eat";
-    const string IsEatingBool = "IsEating";
-    
     [SerializeField] private float eatingTime;
     [SerializeField] private AudioClip crunchSFX;
     [SerializeField] private Script_Player player;
@@ -26,7 +23,7 @@ public class Script_PlayerAttackEat : Script_Attack
         player.SetIsAttacking();
         
         // play eating animation
-        OpenMouth();
+        player.AnimatorEffectHold = true;
 
         didHit = false;
         base.Attack(direction);
@@ -37,16 +34,11 @@ public class Script_PlayerAttackEat : Script_Attack
     {
         yield return new WaitForSeconds(eatingTime);
 
-        animator.SetBool(IsEatingBool, false);
+        player.AnimatorEffectHold = false;
+        
         player.SetLastState();
         
         base.EndAttack();
-    }
-
-    private void OpenMouth()
-    {
-        // this conditional transition in animator causes mouth open
-        animator.SetBool(IsEatingBool, true);
     }
 
     public override void CollisionedWith(Collider collider, Script_HitBox hitBox)

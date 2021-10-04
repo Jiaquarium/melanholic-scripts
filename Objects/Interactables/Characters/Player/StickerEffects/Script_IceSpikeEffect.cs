@@ -17,7 +17,7 @@ public class Script_IceSpikeEffect : Script_StickerEffect
         iceSpikeAttack.Spike(player.FacingDirection);
         
         // NOTE Ensure the triggered Effect animation time <= time we remain in Effect state.
-        player.TriggerEffect();
+        player.AnimatorEffectTrigger();
 
         Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
             shakeTime,

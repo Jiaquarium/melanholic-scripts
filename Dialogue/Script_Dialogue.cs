@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-01 12:56:05
+// Last created by Dialogue Exporter at 2021-10-04 11:19:41
 
 using System.Collections;
 using System.Collections.Generic;
@@ -707,6 +707,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Mirror Halls
+{
+    "mirror-hall-2_hint_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"A very poetic self-reminder...",
         },
         
     }

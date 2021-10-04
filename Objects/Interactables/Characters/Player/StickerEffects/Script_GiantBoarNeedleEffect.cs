@@ -34,7 +34,7 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
         
         bool isPaintingEntranceDetected = false;
 
-        player.TriggerEffect();
+        player.AnimatorEffectTrigger();
         player.SetIsEffect();
         
         Script_InteractableObject[] objs = interactionBoxController.GetInteractableObject(player.FacingDirection);

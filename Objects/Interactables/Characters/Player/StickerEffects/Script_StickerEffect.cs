@@ -18,10 +18,12 @@ public abstract class Script_StickerEffect : MonoBehaviour
         UnequipState        = 3,
     }
     
-    protected const int Layer = 0;
+    public const int Layer = 0;
     
     [SerializeField] protected Script_PlayerMovement playerMovement;
     [SerializeField] protected RuntimeAnimatorController stickerAnimatorController;
+
+    [SerializeField] protected Script_Sticker sticker;
     
     public abstract void Effect();
 
@@ -47,6 +49,7 @@ public abstract class Script_StickerEffect : MonoBehaviour
     protected virtual void OnEquip()
     {
         Debug.Log($"{name} OnEquip()");
+        
     }
 
     protected virtual void OnUnequip()
@@ -63,6 +66,7 @@ public abstract class Script_StickerEffect : MonoBehaviour
         Debug.Log($"{name} OnUnequipSwitch()");
     }
 
+    // To be used in the background when needing to return back to default state.
     protected virtual void OnUnequipState()
     {
         Debug.Log($"{name} OnUnequipState()");
@@ -81,6 +85,8 @@ public abstract class Script_StickerEffect : MonoBehaviour
         SyncAnimatorState(animatorStateInfo);
         
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+
+        Script_StickerEffectEventsManager.Equip(sticker);
     }
 
     // Handle unequipping the active sticker to return to the default controller.
@@ -93,6 +99,8 @@ public abstract class Script_StickerEffect : MonoBehaviour
         SyncAnimatorState(animatorStateInfo);
 
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+
+        Script_StickerEffectEventsManager.Unequip(sticker);
     }
 
     // Play the new controller at the saved state time.

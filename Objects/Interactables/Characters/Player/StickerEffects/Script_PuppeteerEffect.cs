@@ -21,7 +21,7 @@ public class Script_PuppeteerEffect : Script_StickerEffect
 
             isActive = false;
 
-            player.EffectHold = false;
+            player.AnimatorEffectHold = false;
         }
         else
         {
@@ -41,7 +41,7 @@ public class Script_PuppeteerEffect : Script_StickerEffect
 
             isActive = true;
 
-            player.EffectHold = true;
+            player.AnimatorEffectHold = true;
 
         }
     }

@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-09-30 22:46:24
+// Last created by UI Exporter at 2021-10-04 11:19:49
 
 using System.Collections;
 using System.Collections.Generic;
@@ -236,6 +236,16 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
     new Model_LanguagesUI
     {
         EN = @"Promise this is the last time."
+    }
+},
+// ------------------------------------------------------------------
+// Mirror Halls
+{
+    "notes_mirror-hall-2_hint",
+    new Model_LanguagesUI
+    {
+        EN = @"Some in shadow, some in light,
+Choose the switches left and right."
     }
 },
 // ------------------------------------------------------------------
