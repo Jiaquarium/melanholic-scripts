@@ -19,6 +19,12 @@ public class Script_InteractionBox : MonoBehaviour
     
     [SerializeField] private int max = 10;
 
+    public Vector3 BoxSize
+    {
+        get => boxSize;
+        set => boxSize = value;
+    }
+    
     protected virtual void Start()
     {
         colliders = new Collider[max];

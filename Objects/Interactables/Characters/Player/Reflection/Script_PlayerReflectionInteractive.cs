@@ -18,6 +18,8 @@ public class Script_PlayerReflectionInteractive : Script_PlayerReflection
         
         List<Script_Pushable> pushables = GetComponent<Script_InteractionBoxController>()
             .GetPushables(myFaceDirection);
-        if (pushables.Count > 0) pushables[0].Push(myFaceDirection);
+        
+        if (pushables.Count > 0)
+            pushables[0].Push(myFaceDirection);
     }
 }

@@ -244,7 +244,9 @@ public class Script_PlayerAction : MonoBehaviour
     public void TryPushPushable(Directions dir)
     {
         List<Script_Pushable> pushables = interactionBoxController.GetPushables(dir);
-        if (pushables.Count > 0) pushables[0].Push(dir);
+        
+        if (pushables.Count > 0)
+            pushables[0].Push(dir);
     }
 
     public bool UseUsableKey(Script_UsableKey key, Directions dir)

@@ -19,6 +19,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
     [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
+    [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
 
@@ -85,6 +86,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToWellsWorld()
     {
         Teleport(WellsWorldEntrance);
+    }
+
+    public void ExitToFireplaceTraining1()
+    {
+        Teleport(FireplaceTraining1Entrance);
     }
 
     public void BuildSetup()
@@ -217,7 +223,7 @@ public class Dev_GameHelper : MonoBehaviour
                 t.DefaultPlayerSpawnPos();
             }
             
-            if (GUILayout.Button("Go To:"))
+            if (GUILayout.Button("Go To: <playerTeleportPos>"))
             {
                 t.ExitToLevel();
             }
@@ -245,6 +251,11 @@ public class Dev_GameHelper : MonoBehaviour
             if (GUILayout.Button("Go To: Wells World"))
             {
                 t.ExitToWellsWorld();
+            }
+
+            if (GUILayout.Button("Go To: Fireplace Training 1"))
+            {
+                t.ExitToFireplaceTraining1();
             }
 
             EditorGUILayout.LabelField("Painting Quests", EditorStyles.boldLabel);

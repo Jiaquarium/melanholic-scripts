@@ -31,10 +31,12 @@ public class Script_Pushable : Script_InteractableObject
         spawnLocation = transform.position;
     }
     
-    /// Using fixedUpdate to allow to work at lower framerates
+    // Using fixedUpdate to allow Fireplace trigger
+    // to work at lower framerates.
     void FixedUpdate()
     {
-        if (isMoving)   ActuallyMove();
+        if (isMoving)
+            ActuallyMove();
     }
     
     public void Push(Directions dir)

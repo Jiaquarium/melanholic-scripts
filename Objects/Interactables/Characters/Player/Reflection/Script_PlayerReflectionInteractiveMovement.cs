@@ -16,23 +16,17 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
 
     private Dictionary<Directions, Vector3> directionToVector;
     
-    private void Update()
+    void Awake()
     {
-        playerIBoxes = Script_Game.Game.GetPlayer()
-            .interactionBoxController.InteractionBoxes;
-        
-        // player N is now reflection's S
-        interactionBoxes[0].transform.position = GetReflectionPosition(playerIBoxes[2]
-            .transform.position) + iBoxOffset;
-        // & vise versa; player S is now reflection's N
-        interactionBoxes[2].transform.position = GetReflectionPosition(playerIBoxes[0]
-            .transform.position) + iBoxOffset;
-        interactionBoxes[1].transform.position = GetReflectionPosition(playerIBoxes[1]
-            .transform.position) + iBoxOffset;
-        interactionBoxes[3].transform.position = GetReflectionPosition(playerIBoxes[3]
-            .transform.position) + iBoxOffset;
+        interactionBoxes    = interactionBoxController.InteractionBoxes;
+        directionToVector   = Script_Utils.GetDirectionToVectorDict();
     }
-    
+
+    void Update()
+    {
+        ReflectCopyPlayerIBoxTransforms();
+    }
+
     /// <summary>
     /// Player will dictate the moves by checking CanMove()
     /// ActuallyMove() here will set the proper active interaction box
@@ -61,14 +55,32 @@ public class Script_PlayerReflectionInteractiveMovement : Script_PlayerReflectio
         return true;
     }
 
-    void HandleActiveInteractionBox(Directions dir)
+    private void HandleActiveInteractionBox(Directions dir)
     {
         interactionBoxController.HandleActiveInteractionBox(dir);
     }
 
-    private void Awake()
+    private void ReflectCopyPlayerIBoxTransforms()
     {
-        interactionBoxes    = interactionBoxController.InteractionBoxes;
-        directionToVector   = Script_Utils.GetDirectionToVectorDict();
+        playerIBoxes = Script_Game.Game.GetPlayer()
+            .interactionBoxController.InteractionBoxes;
+        
+        // player N is now reflection's S
+        interactionBoxes[0].transform.position = GetReflectionPosition(playerIBoxes[2]
+            .transform.position) + iBoxOffset;
+        interactionBoxes[0].BoxSize = playerIBoxes[2].BoxSize;
+        
+        // & vise versa; player S is now reflection's N
+        interactionBoxes[2].transform.position = GetReflectionPosition(playerIBoxes[0]
+            .transform.position) + iBoxOffset;
+        interactionBoxes[2].BoxSize = playerIBoxes[0].BoxSize;
+        
+        interactionBoxes[1].transform.position = GetReflectionPosition(playerIBoxes[1]
+            .transform.position) + iBoxOffset;
+        interactionBoxes[1].BoxSize = playerIBoxes[1].BoxSize;
+
+        interactionBoxes[3].transform.position = GetReflectionPosition(playerIBoxes[3]
+            .transform.position) + iBoxOffset;
+        interactionBoxes[3].BoxSize = playerIBoxes[3].BoxSize;
     }
 }
