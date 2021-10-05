@@ -14,7 +14,6 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     ======================================================================= */
 
     /* ======================================================================= */
-    [SerializeField] private bool isTriggerActivated;
     [SerializeField] private Script_DemonNPC Ids;
 
     private bool didIdsRun;
@@ -38,12 +37,10 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     public void OnTriggerWallTransition()
     {
         Debug.Log("Change wall sprites");
-        isTriggerActivated = true;
     }
     
     public override void InitialState()
     {
-        isTriggerActivated = false;
     }
 
     // ------------------------------------------------------------------

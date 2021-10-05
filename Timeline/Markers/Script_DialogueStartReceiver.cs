@@ -10,7 +10,6 @@ public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
 {
     [SerializeField] private Script_DialogueNode[] nodes;
     
-    private bool isPaused;
     private PlayableDirector director;
 
     public void OnNotify(Playable origin, INotification notification, object context)
@@ -32,8 +31,6 @@ public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
             {
                 director = (origin.GetGraph().GetResolver() as PlayableDirector);
                 director.Pause();
-
-                isPaused = true;
             }
         }
     }
@@ -43,7 +40,6 @@ public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
     {
         Script_DialogueManager dialogueManager = Script_DialogueManager.DialogueManager;
         dialogueManager.SetActive(true);
-        isPaused = false;
 
         director.Play();
         director = null;

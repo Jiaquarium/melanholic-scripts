@@ -19,7 +19,6 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     [SerializeField] private Script_Marker speakerLoc;
     [SerializeField] private Script_InteractableFullArt IdsNote;
     [SerializeField] private Script_TileMapExitEntrance exitToIdsRoom;
-    private bool isInitialized;
     
     void Awake()
     {
@@ -65,8 +64,6 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
                 HandleIdsHome();
             }
         }
-
-        isInitialized = true;
 
         void HandleIdsHome()
         {

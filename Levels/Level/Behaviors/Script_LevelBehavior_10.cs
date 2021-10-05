@@ -99,7 +99,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_InteractableFullArt IdsLeaveMeBeNote;
     [SerializeField] private Script_InteractableObject DeadIds;
 
-    private bool DDR = false;
     private bool isIdsDancing = false;
     private float timer;
     private int leftMoveCount;
@@ -231,8 +230,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         );
         crystalChandelier.GetComponent<Script_CrystalChandelier>()
             .StartSpinning();
-        
-        DDR = true;
         
         // Triggers HandleDDRFinish
         game.ChangeStateDDR();
@@ -619,7 +616,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     void DDRFinish(Script_DialogueNode node)
     {
-        DDR = false;
         game.ManagePlayerViews(Const_States_PlayerViews.Health);
         game.ChangeStateCutScene();
         game.PlayerFaceDirection(Directions.Right);

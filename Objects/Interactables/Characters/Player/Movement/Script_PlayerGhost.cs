@@ -29,8 +29,6 @@ public class Script_PlayerGhost : MonoBehaviour
     [SerializeField] private PlayableDirector director;
     [SerializeField] private Transform focalPoint;
 
-    private bool isMoving;
-
     public Script_PlayerGhostGraphics PlayerGhostGraphics
     {
         get => playerGhostGraphics;
@@ -78,8 +76,6 @@ public class Script_PlayerGhost : MonoBehaviour
 
     public void SetIsNotMoving()
     {
-        isMoving = false;
-
         StopMoveAnimation();
     }
 

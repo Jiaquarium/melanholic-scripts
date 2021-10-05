@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-04 11:19:41
+// Last created by Dialogue Exporter at 2021-10-05 14:48:59
 
 using System.Collections;
 using System.Collections.Generic;
@@ -323,7 +323,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It’s a mirror. Should I look into it?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 // ------------------------------------------------------------------

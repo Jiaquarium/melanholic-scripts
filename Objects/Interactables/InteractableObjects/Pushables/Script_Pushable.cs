@@ -25,7 +25,9 @@ public class Script_Pushable : Script_InteractableObject
         spawnLocation = transform.position;
     }
 
-    void OnValidate() {
+    protected override void OnValidate() {
+        base.OnValidate();
+
         spawnLocation = transform.position;
     }
     

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Script_LetThereBeLightEffect : Script_StickerEffect
 {
-    [SerializeField] private Script_Player player;
-    
     [SerializeField] private RuntimeAnimatorController lanternOnAnimatorController;
     
     

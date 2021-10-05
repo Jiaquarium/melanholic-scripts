@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Script_LastElevatorEffect : Script_StickerEffect
 {
-    [SerializeField] private Script_Player player; 
-    
     [SerializeField] protected Script_ExitMetadataObject exit;
     [SerializeField] private Script_Elevator.Types type;
     [SerializeField] private Script_ElevatorBehavior elevatorExitBehavior;

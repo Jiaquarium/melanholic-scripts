@@ -34,7 +34,6 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     [SerializeField] private float OnUnlockDoneWaitTimeForDialogue;
 
     private bool spokenWithUrsie;
-    private bool isInit = true;
 
     private void Awake()
     {
@@ -147,8 +146,6 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         {
             return LB24.IsCurrentPuzzleComplete && !isUrsieCutsceneDone;
         }
-        
-        isInit = false;
     }
 }
 

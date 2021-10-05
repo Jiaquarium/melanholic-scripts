@@ -20,6 +20,7 @@ public abstract class Script_StickerEffect : MonoBehaviour
     
     public const int Layer = 0;
     
+    [SerializeField] protected Script_Player player;
     [SerializeField] protected Script_PlayerMovement playerMovement;
     [SerializeField] protected RuntimeAnimatorController stickerAnimatorController;
 
@@ -69,9 +70,10 @@ public abstract class Script_StickerEffect : MonoBehaviour
     // To be used in the background when needing to return back to default state.
     protected virtual void OnUnequipState()
     {
-        Debug.Log($"{name} OnUnequipState()");
+        Debug.Log($"{name} OnUnequipState(). Player state set to <b>Interact</b>");
         
         OnUnequipControllerSynced();
+        player.SetIsInteract();
     }
 
     // Switches to a controller that is a "mask" transformation, keeping the same state.

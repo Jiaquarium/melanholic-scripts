@@ -27,7 +27,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Ids; 
 
     private bool didIdsRun;
-    private bool isInit = true;
 
     private void Start()
     {
@@ -129,7 +128,5 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
             Ids.gameObject.SetActive(true);
         else
             Ids.gameObject.SetActive(false);
-        
-        isInit = false;
     }
 }

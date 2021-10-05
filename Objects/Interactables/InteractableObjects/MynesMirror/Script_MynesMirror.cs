@@ -46,8 +46,10 @@ public class Script_MynesMirror : Script_InteractableObjectText
         get => Script_MynesMirrorManager.Control.ActiveNode ?? HintNode;
     }
 
-    void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
+        
         if (Id != MynesMirrorId)
         {
             Debug.LogError($"This Mynes Mirror {name} Id and MynesMirrorId were not matching");

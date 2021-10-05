@@ -96,8 +96,11 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
             isActivated = true;
-            game.ChangeStateInteract();
             SetWeekendCycleState();
+            
+            Script_ArtFrameManager.Control.Close(() => {
+                game.ChangeStateInteract();
+            });
         });
 
         void SetWeekendCycleState()

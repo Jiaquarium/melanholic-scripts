@@ -8,9 +8,7 @@ using UnityEditor;
 
 [RequireComponent(typeof(AudioSource))]
 public class Script_MelancholyPianoEffect : Script_StickerEffect
-{
-    [SerializeField] private Script_Player player; 
-    
+{    
     [SerializeField] private float disabledReactionWaitTime;
     
     private AudioSource audioSource;

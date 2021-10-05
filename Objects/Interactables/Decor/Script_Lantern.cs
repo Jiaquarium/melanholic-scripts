@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Script_Lantern : MonoBehaviour
 {
-    public Light light;
+    public Light l;
     public Vector3 up;
     public Vector3 right;
     public Vector3 down;
@@ -26,16 +27,16 @@ public class Script_Lantern : MonoBehaviour
     
     void Awake()
     {
-        upPos       = light.transform.position + up;
-        rightPos    = light.transform.position + right;
-        downPos     = light.transform.position + down;
-        leftPos     = light.transform.position + left;
+        upPos       = l.transform.position + up;
+        rightPos    = l.transform.position + right;
+        downPos     = l.transform.position + down;
+        leftPos     = l.transform.position + left;
         locs = new Vector3[]{
             upPos, rightPos, downPos, leftPos
         };
 
         startLoc = locs[i];
-        light.transform.position = startLoc;
+        l.transform.position = startLoc;
         i++;
     }
 
@@ -45,7 +46,7 @@ public class Script_Lantern : MonoBehaviour
         
         if (progress >= 1f)    progress = 1f;
 
-        light.transform.position = Vector3.Lerp(
+        l.transform.position = Vector3.Lerp(
             startLoc,
             locs[i],
             progress

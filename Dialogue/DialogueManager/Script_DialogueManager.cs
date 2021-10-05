@@ -119,10 +119,7 @@ public class Script_DialogueManager : MonoBehaviour
     private IEnumerator coroutine;
     private Model_DialogueSection dialogueSection;
     private string formattedLine;
-    /// <summary>
-    /// to notify special characters we must play SFX for (e.g. always play SFX after "|" pause)
-    /// </summary>
-    private bool shouldPlayTypeSFX = true;
+
     private bool isSilentTyping = false;
     /// Flag to disable inputs while full art is fading in or out
     public bool isInputDisabled;

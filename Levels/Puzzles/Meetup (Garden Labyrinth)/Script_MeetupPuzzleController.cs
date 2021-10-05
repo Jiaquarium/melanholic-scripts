@@ -29,8 +29,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     [SerializeField] private float WaitToPuzzleTransformTime;
     
-    [SerializeField] private PuzzleOuterStates outerState;
-    [SerializeField] private PuzzleCourtyardStates courtyardState;
     public List<Script_Player> playersOnTrigger;
     
     [SerializeField] private List<Script_Player> targetPlayersOnTrigger;
@@ -123,7 +121,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         game.ChangeStateCutScene();
         // Send event to clear doorways in case a Player/Puppet is blocking a door.
         Script_PuzzlesEventsManager.ClearDoorways();
-        outerState = PuzzleOuterStates.Open;
 
         StartCoroutine(WaitToPuzzleTransformTimeline(0));
     }
@@ -134,7 +131,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
-        courtyardState = PuzzleCourtyardStates.Open;
 
         StartCoroutine(WaitToPuzzleTransformTimeline(2));
     }
@@ -145,7 +141,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
-        outerState = PuzzleOuterStates.Closed;
 
         StartCoroutine(WaitToPuzzleTransformTimeline(1, isInitialize));
     }
@@ -156,7 +151,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
-        courtyardState = PuzzleCourtyardStates.Closed;
 
         StartCoroutine(WaitToPuzzleTransformTimeline(3, isInitialize));
     }

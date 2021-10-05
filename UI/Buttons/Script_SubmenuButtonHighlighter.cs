@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Script_SubmenuButtonHighlighter : Script_ButtonHighlighter
 {
-    private bool isOpen = true;
+
 }

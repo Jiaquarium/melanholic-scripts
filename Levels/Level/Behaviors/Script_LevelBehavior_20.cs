@@ -74,8 +74,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     private float fadeTime;
     
-    private bool isInit = true;
-
     private Dictionary<string, Seasons> SeasonStonesEnums = new Dictionary<string, Seasons>{
         {"collectible_winter-stone",    Seasons.Winter},
         {"collectible_spring-stone",    Seasons.Spring},
@@ -296,8 +294,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             SetDynamicSpectersActive(true);
             SetPaintingEntrancesActive(false);
         }
-
-        isInit = false;
     }
 
     // -------------------------------------------------------------------------------------

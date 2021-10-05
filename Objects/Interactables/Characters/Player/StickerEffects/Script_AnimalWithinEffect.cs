@@ -5,7 +5,6 @@ using UnityEngine;
 public class Script_AnimalWithinEffect : Script_StickerEffect
 {
     [SerializeField] private Script_PlayerAttackEat eatAttack;
-    [SerializeField] private Script_Player player; 
 
     [SerializeField] private float shakeTime; 
     [SerializeField] private float shakeAmp; 

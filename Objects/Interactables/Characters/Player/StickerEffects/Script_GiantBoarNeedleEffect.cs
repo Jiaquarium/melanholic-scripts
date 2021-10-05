@@ -14,7 +14,6 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
     // 16 frame (@ 30 fps) duration timeline and Effect animation.
     [SerializeField] private float effectDuration = 16f / 30f;
     
-    [SerializeField] private Script_Player player;
     [SerializeField] private Script_PlayerAction playerActionHandler;
     
     [SerializeField] private Script_InteractionBoxController interactionBoxController;

@@ -63,7 +63,7 @@ public class Script_SlotsViewController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"errored lastSelected was {lastSelected}");
+            Debug.LogError($"Errored lastSelected was {lastSelected}: {e}");
         }
     }
 

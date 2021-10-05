@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Script_PuppeteerEffect : Script_StickerEffect
 {
-    [SerializeField] private Script_Player player;
-    
     private bool isActive;
     private string playerLastState;
     

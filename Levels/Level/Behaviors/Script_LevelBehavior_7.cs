@@ -55,7 +55,6 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
     [SerializeField] private Script_VCamera VCamLB7Zoomed;
     [SerializeField] private Script_Hint hint;
 
-    [SerializeField] private bool didEatDemons = false;
     [SerializeField] private bool shownHint = false;
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
     [SerializeField] private PlayableDirector nameplateDirector;
