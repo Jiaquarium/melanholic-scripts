@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-04 20:33:47
+// Last created by UI Exporter at 2021-10-05 13:20:56
 
 using System.Collections;
 using System.Collections.Generic;
@@ -303,6 +303,39 @@ how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
     {
         EN = @"Sincerely,
 {33}"
+    }
+},
+// ------------------------------------------------------------------
+// Eileen
+{
+    "notes_eileen_thank-you",
+    new Model_LanguagesUI
+    {
+        EN = @"Dear {0},
+
+It seems the spikes have stopped
+for a bit.
+
+My mind is a bit clearer now.
+I've decided to finally leave this place."
+    }
+},
+{
+    "notes_eileen_thank-you1",
+    new Model_LanguagesUI
+    {
+        EN = @"Things seem to look brighter
+after meeting you.
+
+See you on the other side."
+    }
+},
+{
+    "notes_eileen_thank-you_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Bye,
+{11}"
     }
 },
 // ------------------------------------------------------------------

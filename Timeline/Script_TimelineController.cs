@@ -33,6 +33,9 @@ public class Script_TimelineController : MonoBehaviour
     {
         foreach (PlayableDirector playable in playableDirectors)
         {
+            if (playable == null)
+                return;
+
             if (playable.state == PlayState.Playing)
             {
                 print($"playable {playable} is playing, stopping now.");

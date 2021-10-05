@@ -20,23 +20,41 @@ public class Script_HitBox : MonoBehaviour
     [SerializeField] protected Collider[] colliders;
     [SerializeField] private Vector3 boxSize; // half extants
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private Color inactiveColor;
-    [SerializeField] private Color collisionOpenColor;
-    [SerializeField] private Color collidingColor;
+    [SerializeField] private Color inactiveColor = new Color(255, 255, 0, 75);
+    [SerializeField] private Color collisionOpenColor = new Color(255, 0, 0, 125);
+    [SerializeField] private Color collidingColor = new Color(255, 0, 0, 215);
+    [SerializeField] private Color disabledColor = new Color(0, 0, 0, 125);
     [SerializeField] private ColliderState state;
 
     [SerializeField] private int max = 10;
 
+    // Allow for optimization for hitboxes that will never collide with Player.
+    [SerializeField] private bool isDisabled;
+
     private IHitBoxResponder responder = null;
+    
+    public bool IsDisabled
+    {
+        get => isDisabled;
+        set => isDisabled = value;
+    }
     
     void Start()
     {
         colliders = new Collider[max];
+
+        if (
+            (transform.position.x != 0f || transform.position.y != 0f || transform.position.z != 0f)
+            && (transform.localScale.x != 1f || transform.localScale.y != 1f || transform.localScale.z != 1f)
+        )
+        {
+            Debug.LogWarning($"{transform.parent.name} {name} needs to have an origin local position for scale change");
+        }
     }
     
     void Update()
     {
-        if (state == ColliderState.Closed)
+        if (state == ColliderState.Closed || isDisabled)
             return;
         
         ExposeBox();
@@ -87,6 +105,12 @@ public class Script_HitBox : MonoBehaviour
     }
 
     private void CheckGizmoColor() {
+        if (isDisabled)
+        {
+            Gizmos.color = disabledColor;
+            return;
+        }
+        
         switch(state) {
             case ColliderState.Closed:
                 Gizmos.color = inactiveColor;
