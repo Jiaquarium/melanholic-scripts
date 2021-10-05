@@ -36,7 +36,9 @@ public class Script_HitBox : MonoBehaviour
     
     void Update()
     {
-        if (state == ColliderState.Closed)  return;
+        if (state == ColliderState.Closed)
+            return;
+        
         ExposeBox();
         CheckColliding();
     }

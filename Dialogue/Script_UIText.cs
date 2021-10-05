@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-04 11:19:49
+// Last created by UI Exporter at 2021-10-04 20:33:47
 
 using System.Collections;
 using System.Collections.Generic;
@@ -349,6 +349,22 @@ how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"『 DISARM SURVEILLANCE SYSTEM 』"
+    }
+},
+// ------------------------------------------------------------------
+// Painting Entrances
+{
+    "painting-entrances_default_choice_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Yes"
+    }
+},
+{
+    "painting-entrances_default_choice_1",
+    new Model_LanguagesUI
+    {
+        EN = @"No"
     }
 },
 // ------------------------------------------------------------------

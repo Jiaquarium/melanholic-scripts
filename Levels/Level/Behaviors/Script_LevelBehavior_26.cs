@@ -35,6 +35,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [Range(1.80f, 2.00f)][SerializeField] private float attackInterval;
     
     [SerializeField] private float timer;
+    [SerializeField] private float dramaActuallyCompleteWaitTime;
     [SerializeField] private Script_Switch puzzleSwitch;
     
     [SerializeField] private PlayableDirector spikeCageDirector;
@@ -54,6 +55,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     private Script_LBSwitchHandler switchHandler;
     private bool isPauseSpikes;
+
+    private bool isDramaActuallyDone;
     
     private bool didMapNotification;
     
@@ -66,6 +69,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
         dramaticThoughtsDirector.stopped                    += OnDramaticThoughtsDone;
+        Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestart;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
     }
 
@@ -75,6 +79,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         
         Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
         dramaticThoughtsDirector.stopped                    -= OnDramaticThoughtsDone;
+        Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestart;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
 
         bgThemePlayer.gameObject.SetActive(false);
@@ -183,18 +188,51 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             isPauseSpikes = true;
             return true;
         }
+        // On DramaDone trigger, give extra time before
+        // actually turning off Drama music because Player may have activated
+        // trigger at same time as being struck by Needle HitBox.
+        // isDramaActuallyDone is reset when player is hit by Spike.
         else if (Id == "drama-done")
         {
             if (!isCurrentPuzzleComplete)
             {
-                FadeOutDramaticMusic();
-                // Need to also fade out these lights for the 8 max light count
-                FadeOutDramaticLights();
+                isDramaActuallyDone = true;
+                StartCoroutine(WaitCheckDramaActuallyComplete());
             }
         }
 
         return false;
+    }
 
+    private IEnumerator WaitCheckDramaActuallyComplete()
+    {
+        yield return new WaitForSeconds(dramaActuallyCompleteWaitTime);
+
+        if (isDramaActuallyDone)
+        {
+            FadeOutDramaticMusic();
+            // Need to also fade out these lights for the 8 max light count
+            FadeOutDramaticLights();       
+        }
+    }
+
+    private void OnPlayerRestart(string tag, Script_HitBox hitBox)
+    {
+        Debug.Log($"OnPlayerRestart() hurtbox tag: {tag}, hitBox tag: {hitBox.tag}");
+        
+        if (tag == Const_Tags.Player)
+        {
+            Debug.Log($"Resetting drama done timer");
+            isDramaActuallyDone = false;
+
+            // If music was previously stopped, restart it.
+            if (!bgThemePlayer.gameObject.activeSelf)
+            {
+                Debug.Log("Restarting Bg Theme Player");
+                
+                bgThemePlayer.Play();
+            }
+        }
     }
     
     private void FadeOutDramaticMusic()
@@ -206,7 +244,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                 Script_AudioEffectsManager.GetFadeTime(musicFadeOutSpeed),
                 0f,
                 () => {
+                    bgThemePlayer.SoftStop();
                     bgThemePlayer.gameObject.SetActive(false);
+                    Script_BackgroundMusicManager.Control.SetVolume(1f, BGMParam);
                 }
             )
         );

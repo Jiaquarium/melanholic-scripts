@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Used to create separate speaker for BG music so we can persist
 /// if no need to persist, use game.SwitchBgMusic(int) instead
@@ -64,4 +68,31 @@ public class Script_BgThemePlayer : Script_Speaker
             if (cb != null)     cb();
         }
     }
+
+    public void Play()
+    {
+        gameObject.SetActive(true);
+        GetComponent<AudioSource>().Play();
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_BgThemePlayer))]
+public class Script_BgThemePlayerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_BgThemePlayer t = (Script_BgThemePlayer)target;
+        if (GUILayout.Button("Soft Stop"))
+        {
+            t.SoftStop();
+        }
+        
+        if (GUILayout.Button("Play"))
+        {
+            t.Play();
+        }
+    }
+}
+#endif

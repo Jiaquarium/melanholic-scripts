@@ -175,22 +175,18 @@ public class Script_PlayerMovement : MonoBehaviour
         
         if (bufferedInput == Directions.Up)
         {
-            Debug.Log($"Using bufferedInput: {bufferedInput}");
             UpWeights();
         }
         else if (bufferedInput == Directions.Down)
         {
-            Debug.Log($"Using bufferedInput: {bufferedInput}");
             DownWeights();
         }
         else if (bufferedInput == Directions.Right)
         {
-            Debug.Log($"Using bufferedInput: {bufferedInput}");
             RightWeights();
         }
         else if (bufferedInput == Directions.Left)
         {
-            Debug.Log($"Using bufferedInput: {bufferedInput}");
             LeftWeights();
         }
         
@@ -200,22 +196,18 @@ public class Script_PlayerMovement : MonoBehaviour
         // Only relevant for Keyboard.
         else if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Up} New Button Press");
             UpWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Down))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Down} New Button Press");
             DownWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Right))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Right} New Button Press");
             RightWeights();
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Left))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Left} New Button Press");
             LeftWeights();
         }
 
@@ -233,8 +225,6 @@ public class Script_PlayerMovement : MonoBehaviour
             // (Note: isMoving is reset at every level initialization)
             if (isMoving && Input.GetButton(lastMove.DirectionToKeyCode()))
             {
-                Debug.Log($"{name}____isMoving: {isMoving}, xWeight: {xWeight}, yWeight: {yWeight}");
-
                 dirVector = new Vector2(xWeight, yWeight);
             }
             
@@ -242,8 +232,6 @@ public class Script_PlayerMovement : MonoBehaviour
             // giving priority Up, Down, Left, then Right.
             else
             {
-                Debug.Log($"{name}____coming from nonmoving state, dirVector.x: {dirVector.x} dirVector.y: {dirVector.y}");
-                
                 if (dirVector.y > 0)
                     UpWeights();
                 else if (dirVector.y < 0)
@@ -318,22 +306,18 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Up} BUFFERED New Button Press");
             inputBuffer.Enqueue(Const_KeyCodes.Up.KeyCodeToDirections());
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Down))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Down} BUFFERED New Button Press");
             inputBuffer.Enqueue(Const_KeyCodes.Down.KeyCodeToDirections());
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Right))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Right} BUFFERED New Button Press");
             inputBuffer.Enqueue(Const_KeyCodes.Right.KeyCodeToDirections());
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Left))
         {
-            Debug.Log($"{name}____{Const_KeyCodes.Left} BUFFERED New Button Press");
             inputBuffer.Enqueue(Const_KeyCodes.Left.KeyCodeToDirections());
         }
     }
@@ -356,8 +340,6 @@ public class Script_PlayerMovement : MonoBehaviour
         
         if (CheckCollisions(dir, ref desiredMove))
         {
-            Debug.Log($"{name}____Player Collision");
-
             return;
         }
 
@@ -378,8 +360,6 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private bool TryExit(Directions dir)
     {
-        Debug.Log($"{name} Trying to exit on move");
-        
         // Handle Exits, if in the desired Direction there is an exit,
         // do not move, instead Player turns and exits.
         if (
