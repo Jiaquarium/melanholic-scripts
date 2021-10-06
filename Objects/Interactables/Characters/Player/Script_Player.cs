@@ -21,7 +21,6 @@ public class Script_Player : Script_Character
     [SerializeField] protected Script_PlayerMovement playerMovementHandler;
     
     protected Script_PlayerAction playerActionHandler;
-    private Script_PlayerThoughtManager playerThoughtManager;
     [SerializeField] private Script_PlayerEffect playerEffect;
     public Script_InteractionBoxController interactionBoxController { get; private set; }
 
@@ -119,7 +118,11 @@ public class Script_Player : Script_Character
 
     public bool IsLightOn
     {
-        set => playerLight.enabled = value;
+        set
+        {
+            if (playerLight != null)
+                playerLight.enabled = value;
+        }
     }
 
     protected virtual void OnEnable()
@@ -527,8 +530,7 @@ public class Script_Player : Script_Character
     
     public void Setup(
         Directions direction,
-        Model_PlayerState playerState,
-        bool isLightOn
+        Model_PlayerState playerState
     )
     {   
         game = Script_Game.Game;
@@ -536,15 +538,13 @@ public class Script_Player : Script_Character
         
         playerMovementHandler = GetComponent<Script_PlayerMovement>();
         playerActionHandler = GetComponent<Script_PlayerAction>();
-        playerThoughtManager = GetComponent<Script_PlayerThoughtManager>();
         playerEffect = GetComponent<Script_PlayerEffect>();
         
         interactionBoxController = GetComponent<Script_InteractionBoxController>();
         playerStats = GetComponent<Script_PlayerStats>();
         
-        playerMovementHandler.Setup(game, isLightOn);
+        playerMovementHandler.Setup(game);
         playerActionHandler.Setup(game);
-        playerThoughtManager.Setup();
         playerEffect.Setup();
         
         /// Setup character stats

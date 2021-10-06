@@ -269,12 +269,16 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         wellsPuzzleController.InitialState();
 
         // On Snow Day, the Fireplace Exit is open.
-        if (weatherFXManager.IsSnowDay)     fireplaceExit.SetInteractionActive(true);
-        else                                fireplaceExit.SetInteractionActive(false);
+        if (weatherFXManager.IsSnowDay)
+            fireplaceExit.SetInteractionActive(true);
+        else
+            fireplaceExit.SetInteractionActive(false);
 
         // Only Spawn Last Well Map if Player has not picked it up.
-        if (didPickUpLastWellMap)           SetMapsActive(false);
-        else                                SetMapsActive(true);
+        if (didPickUpLastWellMap)
+            SetMapsActive(false);
+        else
+            SetMapsActive(true);
 
         if (isCurrentMooseQuestComplete)
         {

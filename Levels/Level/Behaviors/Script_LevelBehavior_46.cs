@@ -67,6 +67,10 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         get => meetupPuzzleController.IsDone;
     }
 
+    public bool IsInitialized
+    {
+        get => isInitialized;
+    }
 
     protected override void OnEnable()
     {
@@ -291,6 +295,32 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         movingLabyrinth.gameObject.SetActive(false);
     }
     
+    // Depending on Execution Order, Meetup Puzzle Controller may need to have
+    // Puppets set up beforehand. If so, it will handle initialization.
+    public void InitializePuppets()
+    {
+        Model_PlayerState puppetMasterStartState = new Model_PlayerState(
+            (int)puppetMasterSpawn.transform.position.x,
+            (int)puppetMasterSpawn.transform.position.y,
+            (int)puppetMasterSpawn.transform.position.z,
+            puppetMasterSpawn.Direction
+        );
+        Model_PlayerState puppetStartState = new Model_PlayerState(
+            (int)puppetSpawn.transform.position.x,
+            (int)puppetSpawn.transform.position.y,
+            (int)puppetSpawn.transform.position.z,
+            puppetSpawn.Direction
+        );
+
+        puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState);
+        puppetMaster.InitializeOnLevel(puppetMasterStartState, false, levelGrid.transform);
+
+        puppet.Setup(puppetStartState.faceDirection, puppetStartState);
+        puppet.InitializeOnLevel(puppetStartState, false, levelGrid.transform);
+
+        isInitialized = true;
+    }
+    
     public override void Setup()
     {
         if (IsDone)
@@ -301,26 +331,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         {
             if (!isInitialized)
             {
-                Model_PlayerState puppetMasterStartState = new Model_PlayerState(
-                    (int)puppetMasterSpawn.transform.position.x,
-                    (int)puppetMasterSpawn.transform.position.y,
-                    (int)puppetMasterSpawn.transform.position.z,
-                    puppetMasterSpawn.Direction
-                );
-                Model_PlayerState puppetStartState = new Model_PlayerState(
-                    (int)puppetSpawn.transform.position.x,
-                    (int)puppetSpawn.transform.position.y,
-                    (int)puppetSpawn.transform.position.z,
-                    puppetSpawn.Direction
-                );
-
-                puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState, false);
-                puppetMaster.InitializeOnLevel(puppetMasterStartState, false, levelGrid.transform);
-
-                puppet.Setup(puppetStartState.faceDirection, puppetStartState, false);
-                puppet.InitializeOnLevel(puppetStartState, false, levelGrid.transform);
-
-                isInitialized = true;
+                InitializePuppets();
             }
 
             meetupPuzzleController.InitialState();

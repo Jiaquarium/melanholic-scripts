@@ -60,8 +60,12 @@ public class Script_Puppet : Script_PlayerCopy
         HandleIsMoving();
         // ------------------------------------------------------------------
 
+        playerMovementHandler.HandleMoveTransform();
+        
         if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)
         {
+            // Puppets do not take action inputs.
+            
             if (IsNotMovingState())
             {
                 StopMovingAnimations();

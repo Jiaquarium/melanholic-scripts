@@ -17,6 +17,11 @@ public class Script_PuppetMasterAction : Script_PlayerAction
         }
     }
 
+    public override bool DetectDoorExit(Directions dir)
+    {
+        return false;
+    }    
+
     /// <summary>
     /// Call the Player's Sticker Effects Controller
     /// </summary>

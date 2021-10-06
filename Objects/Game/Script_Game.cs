@@ -831,8 +831,7 @@ public class Script_Game : MonoBehaviour
         player = Instantiate(PlayerPrefab, spawnLocation, Quaternion.identity);
         player.Setup(
             playerState.faceDirection,
-            playerState,
-            playerData.isLightOn
+            playerState
         );
         player.transform.SetParent(playerContainer, false);
         

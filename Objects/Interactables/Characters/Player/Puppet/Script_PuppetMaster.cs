@@ -17,8 +17,11 @@ public class Script_PuppetMaster : Script_Puppet
         HandleIsMoving();
         // ------------------------------------------------------------------
 
+        playerMovementHandler.HandleMoveTransform();
+        
         if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)
         {
+            // Puppet Masters have their specified action override.
             playerActionHandler.HandleActionInput(FacingDirection, location);
             
             if (IsNotMovingState())

@@ -42,6 +42,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     [SerializeField] private Script_VCamera puppeteerVCam;
     
+    [SerializeField] private Script_LevelBehavior_46 LB46;
+    
     [SerializeField] private Script_Game game;
 
     private Script_TimelineController timelineController;
@@ -237,6 +239,11 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         
         if (!IsDone)
         {
+            if (!LB46.IsInitialized)
+            {
+                LB46.InitializePuppets();
+            }
+            
             Kaffe.Teleport(KaffeSpawn.transform.position);
             Latte.Teleport(LatteSpawn.transform.position);
         }

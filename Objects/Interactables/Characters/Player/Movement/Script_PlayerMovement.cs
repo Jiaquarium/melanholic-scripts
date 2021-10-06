@@ -514,7 +514,7 @@ public class Script_PlayerMovement : MonoBehaviour
         player.location = transform.position;
     }
 
-    public bool HandleExitTile(Directions dir)
+    public virtual bool HandleExitTile(Directions dir)
     {
         Tilemap entrancesTileMap = game.EntranceTileMap;
         Tilemap[] exitsTileMaps = game.ExitTileMaps;
@@ -707,7 +707,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     // ------------------------------------------------------------------
 
-    public void Setup(Script_Game _game, bool isLightOn)
+    public void Setup(Script_Game _game)
     {
         game = _game;
         player = GetComponent<Script_Player>();

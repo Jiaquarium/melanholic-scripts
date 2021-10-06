@@ -270,7 +270,7 @@ public class Script_PlayerAction : MonoBehaviour
     /// Called from Player Movement.
     /// Action handled on movement into the exit object.
     /// </summary>
-    public bool DetectDoorExit(Directions dir)
+    public virtual bool DetectDoorExit(Directions dir)
     {
         Script_DoorExit exit = interactionBoxController.GetDoorExit(dir);
         if (exit == null)    return false;
