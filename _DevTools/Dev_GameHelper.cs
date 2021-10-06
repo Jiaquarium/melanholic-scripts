@@ -19,6 +19,8 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
     [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
+    [SerializeField] private Script_ExitMetadataObject XXXWorldEntrance;
+    [SerializeField] private Script_ExitMetadataObject UrselksSaloonHallwayEntrance;
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
@@ -86,6 +88,16 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToWellsWorld()
     {
         Teleport(WellsWorldEntrance);
+    }
+
+    public void ExitToXXXWorld()
+    {
+        Teleport(XXXWorldEntrance);
+    }
+
+    public void ExitToUrselksSaloonHallway()
+    {
+        Teleport(UrselksSaloonHallwayEntrance);
     }
 
     public void ExitToFireplaceTraining1()
@@ -218,6 +230,7 @@ public class Dev_GameHelper : MonoBehaviour
             Dev_GameHelper t = (Dev_GameHelper)target;
             
             EditorGUILayout.LabelField("Spawns", EditorStyles.boldLabel);
+            
             if (GUILayout.Button("DefaultPlayerSpawnPos()"))
             {
                 t.DefaultPlayerSpawnPos();
@@ -248,6 +261,8 @@ public class Dev_GameHelper : MonoBehaviour
                 t.ExitToBallroomFromHMSHall();
             }
 
+            EditorGUILayout.LabelField("Wells World", EditorStyles.miniLabel);
+            
             if (GUILayout.Button("Go To: Wells World"))
             {
                 t.ExitToWellsWorld();
@@ -256,6 +271,18 @@ public class Dev_GameHelper : MonoBehaviour
             if (GUILayout.Button("Go To: Fireplace Training 1"))
             {
                 t.ExitToFireplaceTraining1();
+            }
+            
+            EditorGUILayout.LabelField("XXX World", EditorStyles.miniLabel);
+            
+            if (GUILayout.Button("Go To: XXX World"))
+            {
+                t.ExitToXXXWorld();
+            }
+
+            if (GUILayout.Button("Go To: Urselks Saloon Hallway"))
+            {
+                t.ExitToUrselksSaloonHallway();
             }
 
             EditorGUILayout.LabelField("Painting Quests", EditorStyles.boldLabel);
