@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-05 13:20:56
+// Last created by UI Exporter at 2021-10-06 16:04:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -161,35 +161,35 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
     "sticker_psychic-duck",
     new Model_LanguagesUI
     {
-        EN = @"Attach the @@PsychicDuck @@Stickers_NoBold to your {5} and switch it to your {65} to be able to converse with {19}. {68} are only in effect as your {65}. A @@PsychicDuck makes a wonderful sidekick!"
-    }
-},
-{
-    "sticker_boar-needle",
-    new Model_LanguagesUI
-    {
-        EN = @"Allows you to enter paintings with doormats. The painting must have a doormat."
+        EN = @"Wearing the @@PsychicDuck @@Sticker_Bold allows you to converse with {19}. @@Stickers_Bold can be worn after preparing them. Passive {68} will work as long as you are wearing the @@Sticker_Bold."
     }
 },
 {
     "sticker_animal-within",
     new Model_LanguagesUI
     {
-        EN = @"Use its {79} to let you eat away edible obstacles. CHOMP CHOMP!"
+        EN = @"Use its {79} to chomp away edible obstacles."
+    }
+},
+{
+    "sticker_boar-needle",
+    new Model_LanguagesUI
+    {
+        EN = @"Allows you to enter paintings that have a doormat. Use its {79} when face-to-face with a painting that has a doormat."
     }
 },
 {
     "sticker_ice-spike",
     new Model_LanguagesUI
     {
-        EN = @"A spike so powerful, it'll crack open just about anything."
+        EN = @"Summon a spike so powerful, it'll crack open just about anything."
     }
 },
 {
     "sticker_melancholy-piano",
     new Model_LanguagesUI
     {
-        EN = @"Follow the chords of your heart."
+        EN = @"Follow the chords of your heart to any previously remembered piano."
     }
 },
 {
@@ -203,14 +203,14 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
     "sticker_let-there-be-light",
     new Model_LanguagesUI
     {
-        EN = @"Will illuminate certain dark areas."
+        EN = @"Illuminate dark areas. Certain areas will light up better than others."
     }
 },
 {
     "sticker_puppeteer",
     new Model_LanguagesUI
     {
-        EN = @"Use the @@Puppeteer @@Sticker_NoBold to control {73}. Not too shabby."
+        EN = @"Gain control of {73}. Your control will not be perfect though."
     }
 },
 // ------------------------------------------------------------------
@@ -228,14 +228,14 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
     "collectible_last-well-map",
     new Model_LanguagesUI
     {
-        EN = @"Rumor is everything begins in Spring."
+        EN = @"It seems to be a treasure map of sorts."
     }
 },
 {
     "collectible_last-spell-recipe-book",
     new Model_LanguagesUI
     {
-        EN = @"Promise this is the last time."
+        EN = @"Does there have to be a last one?"
     }
 },
 // ------------------------------------------------------------------

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-05 14:48:59
+// Last created by Dialogue Exporter at 2021-10-06 16:04:13
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3877,10 +3877,11 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"You got the @@PsychicDuck @@Sticker_NoBold!",
+                @"You got the @@PsychicDuck @@Sticker_Bold!|
+The @@Sticker_Bold contains the sealed spirit of a {13}.",
                 @"@@Stickers_Bold allow you to inhabit the body of the mask's original owner.",
                 @"Open your {32} and set it to {82} in the @@Stickers_Bold Screen.",
-                @"Wear the mask with {82}. Press {82} again to return to your normal self.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -3888,6 +3889,35 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 {
                     isUnskippable = true, 
                 },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "item-object_sticker_animal-within",
+    new Model_Languages
+    {
+        speaker = "",
+        EN = new string[]
+        {
+                @"You got the @@AnimalWithin @@Sticker_Bold!|
+Its original owner had a penchant for eating souls.",
+                @"Use its {79} while wearing the @@Sticker_Bold to chomp through edible obstacles.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -3910,7 +3940,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"The @@BoarNeedle @@Sticker_NoBold allows you to enter paintings that have a doormat. Use the @@BoarNeedle's {67} when face-to-face with a painting with a doormat.",
+                @"You got the @@BoarNeedle @@Sticker_Bold!|
+Its original owner desired to see what was invisible.",
+                @"The @@BoarNeedle @@Sticker_Bold allows you to enter paintings that have a doormat.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -3918,20 +3951,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 {
                     isUnskippable = true, 
                 },
-        }
-    }
-},
-{
-    "item-object_sticker_animal-within",
-    new Model_Languages
-    {
-        speaker = "",
-        EN = new string[]
-        {
-                @"If there are edible obstacles in your way, use the @@AnimalWithin @@Sticker_NoBold to eat through them.",
-        },
-        metadata = new Model_Languages.Metadata[]
-        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -3946,10 +3969,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"The @@IceSpike is a spike so powerful, it'll crack open just about anything.",
+                @"You got the @@IceSpike @@Sticker_Bold!|
+Its original owner was said to have been caught in a snowstorm.",
+                @"The @@IceSpike @@Sticker_Bold can summon a dark spike so powerful it can crack open just about anything.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -3964,10 +3998,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"Use the @@MelancholyPiano @@Sticker_NoBold to follow the chords of your heart to the next piano.",
+                @"You got the @@MelancholyPiano @@Sticker_Bold!|
+Its original owner played a melancholic tune.",
+                @"Use the @@MelancholyPiano @@Sticker_Bold to follow the chords of your heart to the next piano.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -3982,10 +4027,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"<b>If you ever get lost</b>, the @@LastElevator @@Sticker_NoBold can be used anywhere inside {18} to take the {66} back to the {72}.",
+                @"You got the @@LastElevator @@Sticker_Bold!|
+Not much is known of its original owner.",
+                @"If you are ever <b>lost</b>, the @@LastElevator @@Sticker_Bold can be used anywhere inside {18} to take the {66} back to the {72}.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -4000,10 +4056,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"@@LetThereBeLight @@Sticker_NoBold will illuminate certain dark areas.",
+                @"You got the @@LetThereBeLight @@Sticker_Bold!|
+Its original owner constructed the lighting within {18}.",
+                @"The @@LetThereBeLight @@Sticker_Bold will illuminate certain dark areas.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -4018,10 +4085,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"Use the @@Puppeteer @@Sticker_NoBold to control {73}. Not too shabby.",
+                @"You got the @@Puppeteer @@Sticker_Bold!|
+Its original owner spent each waking moment trying to bring life to handmade puppets.",
+                @"Use the @@Puppeteer @@Sticker_Bold to control {73}.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -4036,10 +4114,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"It's a @@SuperSmallKey! Made specifically for regular sized keyholes.",
+                @"You found the @@SuperSmallKey!",
+                @"It is made specifically for regular sized keyholes.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -4054,10 +4137,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"It's the @@LastWellMap. Rumor is everything begins in the Spring, including {18} itself.",
+                @"You found the @@LastWellMap!",
+                @"It seems to be a treasure map of sorts.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -4072,10 +4160,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "",
         EN = new string[]
         {
-                @"You've found the @@LastSpellRecipeBook. Promise this is the last one.",
+                @"You found the @@LastSpellRecipeBook!",
+                @"Does there have to be a last one?",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 

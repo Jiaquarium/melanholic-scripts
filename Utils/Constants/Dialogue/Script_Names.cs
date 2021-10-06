@@ -178,8 +178,10 @@ public class Script_Names: MonoBehaviour
     
     public const string ActionSticker                   = "<b>Active Mask</b>";                 // {65}
     public const string LastElevator                    = "<b>Last Elevator</b>";               // {66}
-    public const string StickerSkill                    = "<b>Mask Ability</b>";                // {67}
-    public const string StickerSkills                   = "<b>Mask Abilities</b>";              // {68}
+    
+    // These refer to Passive Effects.
+    public const string StickerSkill                    = "<b>Mask Effect</b>";                 // {67}
+    public const string StickerSkills                   = "<b>Mask Effects</b>";                // {68}
     public const string Coconut                         = "<b>Coconut</b>";                     // {69}
     public const string WeekdayShift                    = "<b>Weekday Shift</b>";               // {70}
     public const string WeekendShift                    = "<b>Weekend Shift</b>";               // {71}
@@ -190,7 +192,9 @@ public class Script_Names: MonoBehaviour
     public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
     public const string NauticalDawn                    = "<b>Nautical Dawn</b>";               // {77}
     public const string UrselksHall                     = "<b>Urselks Hall</b>";                // {78}
-    public const string ActiveStickerCommand            = "<b>Mask Effect</b>";                 // {79}
+    
+    // The Active Mask Command.
+    public const string ActiveStickerCommand            = "<b>Mask Command</b>";                // {79}
     public const string SwitchActiveSticker             = "<b>Switch Mask</b>";                 // {80}
     public const string Prep                            = "<b>Prep</b>";                        // {81}
     public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
