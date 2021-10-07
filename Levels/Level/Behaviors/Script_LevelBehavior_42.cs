@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -57,6 +58,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_ItemsEventsManager.OnItemPickUp                                  += OnItemPickUp;
 
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            += OnScarletCipherPickUp;
+
+        Script_InteractableObjectEventsManager.OnFrozenWellDie                  += OnFrozenWellDie;
     }
 
     protected override void OnDisable()
@@ -67,6 +70,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_ItemsEventsManager.OnItemPickUp                                  -= OnItemPickUp;
         
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            -= OnScarletCipherPickUp;
+
+        Script_InteractableObjectEventsManager.OnFrozenWellDie                  -= OnFrozenWellDie;
     }
 
     private void OnLevelInitCompleteEvent()
@@ -131,6 +136,33 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         foreach (var heavySnow in heavySnows)
             heavySnow.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// When Player destroys one Well, they should all be destroyed so all the World
+    /// Tiles can remain in sync.
+    /// </summary>
+    public void OnFrozenWellDie(Script_CrackableIceStats iceStats)
+    {
+        Script_FrozenWell destroyedFrozenWell = iceStats.GetComponent<Script_FrozenWell>();
+
+        if (destroyedFrozenWell == null)
+            return;
+
+        // If one of the frozen wells destroyed is 1 we are tracking, then destroy
+        // all frozen wells.
+        Script_FrozenWell matchingFrozenWell = frozenWells.FirstOrDefault(
+            frozenWell => frozenWell == destroyedFrozenWell
+        );
+
+        if (matchingFrozenWell != null)
+        {
+            foreach (var frozenWell in frozenWells)
+            {
+                Debug.Log($"Setting frozenWell inactive: {frozenWell.gameObject.name}");
+                frozenWell.gameObject.SetActive(false);
+            }
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -297,47 +329,52 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             SetSuzettesActive(true);
         }
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_42))]
-public class Script_LevelBehavior_42Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_LevelBehavior_42))]
+    public class Script_LevelBehavior_42Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_LevelBehavior_42 t = (Script_LevelBehavior_42)target;
-        if (GUILayout.Button("Activate Fireplace Exit"))
-        {
-            t.SetFireplaceExitActive(true);
-        }
+            Script_LevelBehavior_42 t = (Script_LevelBehavior_42)target;
+            if (GUILayout.Button("Activate Fireplace Exit"))
+            {
+                t.SetFireplaceExitActive(true);
+            }
 
-        if (GUILayout.Button("Disable Fireplace Exit"))
-        {
-            t.SetFireplaceExitActive(false);
-        }
+            if (GUILayout.Button("Disable Fireplace Exit"))
+            {
+                t.SetFireplaceExitActive(false);
+            }
 
-        if (GUILayout.Button("Start Heavy Snow"))
-        {
-            t.StartHeavySnow();
-        }
+            if (GUILayout.Button("Start Heavy Snow"))
+            {
+                t.StartHeavySnow();
+            }
 
-        if (GUILayout.Button("Stop Heavy Snow"))
-        {
-            t.StopHeavySnow();
-        }
+            if (GUILayout.Button("Stop Heavy Snow"))
+            {
+                t.StopHeavySnow();
+            }
 
-        GUILayout.Space(12);
+            if (GUILayout.Button("Destroy Frozen Wells"))
+            {
+                t.OnFrozenWellDie(t.frozenWells[0].GetComponent<Script_CrackableIceStats>());
+            }
 
-        if (GUILayout.Button("Moose Quest Done"))
-        {
-            t.MooseQuestDone();
-        }
+            GUILayout.Space(12);
 
-        if (GUILayout.Button("Wells Initial State"))
-        {
-            t.WellsInitialState();
+            if (GUILayout.Button("Moose Quest Done"))
+            {
+                t.MooseQuestDone();
+            }
+
+            if (GUILayout.Button("Wells Initial State"))
+            {
+                t.WellsInitialState();
+            }
         }
     }
+    #endif
 }
-#endif
