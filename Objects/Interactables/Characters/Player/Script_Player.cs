@@ -171,7 +171,10 @@ public class Script_Player : Script_Character
         }
     }
 
-    
+    public void ClearLevelState()
+    {
+        playerMovementHandler.UnsetPlayerReflection();
+    }
 
     // ------------------------------------------------------------------
     // State

@@ -31,7 +31,6 @@ public class Script_PlayerMovement : MonoBehaviour
     
     [SerializeField] private Animator animator;
     
-    public Script_PlayerGhost PlayerGhostPrefab;
     public Script_PlayerReflection PlayerReflectionPrefab;
 
     [SerializeField] private float defaultSpeed;
@@ -471,8 +470,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
     bool CheckCollisions(Directions dir, ref Vector3 desiredMove)
     {   
-        // If reflection is interactive check if it can move; if not, disallow player from moving as well.
-        if (playerReflection is Script_PlayerReflectionInteractive)
+        // Do not allow Player to move if Reflection cannot move.
+        if (playerReflection is Script_PlayerReflectionInteractive && playerReflection.gameObject.activeInHierarchy)
         {
             if (!playerReflection.GetComponent<Script_PlayerReflectionInteractive>().CanMove())
                 return true;
@@ -483,7 +482,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
     void PushPushables(Directions dir)
     {
-        player.TryPushPushable(dir); // push needs to come before collision detection
+        // Push needs to come before collision detection.
+        player.TryPushPushable(dir);
         
         if (playerReflection is Script_PlayerReflectionInteractive)
         {
@@ -629,11 +629,16 @@ public class Script_PlayerMovement : MonoBehaviour
         playerReflection = pr;
     }
 
+    public void UnsetPlayerReflection()
+    {
+        playerReflection = null;
+    }
+
     public void RemoveReflection()
     {
         if (playerReflection != null)
         {
-            Destroy(playerReflection.gameObject);
+            playerReflection.gameObject.SetActive(false);
         }
     }
 

@@ -669,6 +669,7 @@ public class Script_Game : MonoBehaviour
     public void DestroyLevel()
     {
         levelBehavior.Cleanup();
+        GetPlayer().ClearLevelState();
         
         ClearNPCs();
         ClearInteractableObjects();

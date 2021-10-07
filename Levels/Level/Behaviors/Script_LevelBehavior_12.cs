@@ -297,11 +297,10 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         
         playerObjsToBind.Clear();
         
+        // Player Transform Track
         playerObjsToBind.Add(player.gameObject);
-        // playerObjsToBind.Add(playerGhost.gameObject);
-        
-        playerObjsToBind.Add(player.MyAnimator.gameObject);
-        // playerObjsToBind.Add(playerGhost.MyAnimator.gameObject);
+        // Player Signal Receiver Track
+        playerObjsToBind.Add(player.gameObject);
 
         playerPlayableDirector.BindTimelineTracks(playerRetreatTimeline, playerObjsToBind);
 
@@ -480,7 +479,7 @@ public class Script_LevelBehavior_12Tester : Editor
             lb.FadeInMusic();
         }
 
-        if (GUILayout.Button("OnPuzzleComplete(null)"))
+        if (GUILayout.Button("Complete Puzzle"))
         {
             lb.OnPuzzleComplete(null);
         }
