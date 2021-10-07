@@ -127,6 +127,11 @@ public class Script_Player : Script_Character
         get => playerActionHandler.IsLanternLightOn;
     }
 
+    public bool IsPuppeteerEffectHoldOn
+    {
+        get => playerActionHandler.IsPuppeteerEffectHoldOn;
+    }
+
     protected virtual void OnEnable()
     {
 
@@ -296,8 +301,8 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.Viewing
                 || State == Const_States_Player.PickingUp
                 || State == Const_States_Player.Standby
-                || State == Const_States_Player.Puppeteer
                 || State == Const_States_Player.Inventory
+                || State == Const_States_Player.Puppeteer
                 || State == Const_States_Player.PuppeteerNull
                 || State == Const_States_Player.LastElevatorEffect
                 || State == Const_States_Player.MelancholyPiano
@@ -450,6 +455,14 @@ public class Script_Player : Script_Character
     {
         Debug.Log($"{name}: HandleEndItemDescriptionDialogue() itemShown: {playerActionHandler.itemShown}");
         playerActionHandler.HandleEndItemDescriptionDialogue(playerActionHandler.itemShown);
+    }
+
+    /// <summary>
+    /// To be called externally from Script.
+    /// </summary>
+    public void HandlePuppeteerEffectHold()
+    {
+        playerActionHandler.PuppetMasterEffect(FacingDirection);
     }
 
     // ------------------------------------------------------------------

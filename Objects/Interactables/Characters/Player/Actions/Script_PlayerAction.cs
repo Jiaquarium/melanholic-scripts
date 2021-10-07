@@ -27,6 +27,11 @@ public class Script_PlayerAction : MonoBehaviour
         get => stickerEffectsController?.IsLanternLightOn ?? false;
     }
 
+    public bool IsPuppeteerEffectHoldOn
+    {
+        get => stickerEffectsController?.IsPuppeteerEffectHoldOn ?? false;
+    }
+
     public virtual void HandleActionInput(Directions facingDirection, Vector3 location)
     {   
         /// <summary>
@@ -45,6 +50,9 @@ public class Script_PlayerAction : MonoBehaviour
                 break;
             case Const_States_Player.PickingUp:
                 HandlePickingUp();
+                break;
+            case Const_States_Player.Puppeteer:
+                // Control is given to Puppet Master.
                 break;
             case Const_States_Player.PuppeteerNull:
                 HandleExitPuppeteerNull(facingDirection);
@@ -360,7 +368,7 @@ public class Script_PlayerAction : MonoBehaviour
         }
     }
 
-    public void EffectFromPuppetMaster(Directions dir)
+    public void PuppetMasterEffect(Directions dir)
     {
         stickerEffectsController.Effect(dir);
     }

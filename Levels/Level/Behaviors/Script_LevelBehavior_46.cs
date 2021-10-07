@@ -104,6 +104,17 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
         IEnumerator WaitToSetupCutScene()
         {
+            var player = game.GetPlayer();
+            
+            // Remove Puppeteer Effect Hold if Active
+            if (player.IsPuppeteerEffectHoldOn)
+            {
+                player.HandlePuppeteerEffectHold();
+                // Instantly stop the Effect Hold animation with the default wait time
+                // so Puppeteer is in default non-Effect when timeline starts.
+                player.AnimatorEffectHold = false;
+            }
+            
             // Move all characters to cut scene position
             puppetMaster.Teleport(puppetMasterPuzzleSuccessSpawn.transform.position);
             puppetMaster.SetAnimatorControllerActive(false);
@@ -111,7 +122,6 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             puppet.Teleport(puppetPuzzleSuccessSpawn.transform.position);
             puppet.SetAnimatorControllerActive(false);
             
-            var player = game.GetPlayer();
             player.Teleport(playerPuzzleSuccessSpawn.transform.position);
             player.FaceDirection(Directions.Down);
             

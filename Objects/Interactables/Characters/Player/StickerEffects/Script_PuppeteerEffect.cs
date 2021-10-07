@@ -4,43 +4,26 @@ using UnityEngine;
 
 public class Script_PuppeteerEffect : Script_StickerEffect
 {
-    private bool isActive;
-    private string playerLastState;
+    [Tooltip("Ensure this matches the PuppeteerDeactivate timeline length.")]
+    [SerializeField] private float StopEffectHoldAnimationWaitTime;
     
+    private bool isEffectHoldActive;
+    
+    public bool IsEffectHoldActive
+    {
+        get => isEffectHoldActive;
+        private set => isEffectHoldActive = value;
+    }
+
     public override void Effect()
     {
-        if (isActive)
+        if (!IsEffectHoldActive)
         {
-            // Event to switch back to default view.
-            Script_PlayerEventsManager.PuppeteerDeactivate();
-            
-            player.SetState(playerLastState);
-            playerLastState = string.Empty;
-
-            isActive = false;
-
-            player.AnimatorEffectHold = false;
+            StartEffectHold();
         }
         else
         {
-            // Event to switch to Puppeteer View.
-            Script_PlayerEventsManager.PuppeteerActivate();
-
-            playerLastState = player.State;
-            if (Script_Game.Game.PuppetMaster == null)
-            {
-                // Should we do this on the next frame? Will cause movement to not stop immediately if we do.
-                player.SetIsPuppeteerNull();
-            }
-            else
-            {
-                player.SetIsPuppeteer();
-            }
-
-            isActive = true;
-
-            player.AnimatorEffectHold = true;
-
+            StopEffectHold();
         }
     }
 
@@ -54,5 +37,48 @@ public class Script_PuppeteerEffect : Script_StickerEffect
     {
         base.OnUnequip();
         OnUnequipControllerSynced();
+    }
+
+    private void StartEffectHold()
+    {
+        // Puppet Master will react to this event and set itself as Script_Game.Game.PuppetMaster.
+        Script_PlayerEventsManager.PuppeteerActivate();
+        
+        player.AnimatorEffectHold = true;
+
+        if (Script_Game.Game.PuppetMaster == null)
+            player.SetIsPuppeteerNull();
+        else
+            player.SetIsPuppeteer();
+
+        IsEffectHoldActive = true;
+    }
+    
+    private void StopEffectHold()
+    {
+        // Puppet Master will react to this and reset Script_Game.Game.Puppeteer.
+        Script_PlayerEventsManager.PuppeteerDeactivate();
+        
+        // If we are coming from the Puppeteer state, we want to wait until the PuppeteerDeactivate
+        // Timeline is done before stopping the Player's Effect Hold animation (arms in the air).
+        if (player.State == Const_States_Player.Puppeteer)
+            StartCoroutine(WaitToStopEffectHoldAnimation());
+        else
+            SetToInteract();
+
+        IsEffectHoldActive = false;
+
+        IEnumerator WaitToStopEffectHoldAnimation()
+        {
+            yield return new WaitForSeconds(StopEffectHoldAnimationWaitTime);
+
+            SetToInteract();
+        }
+
+        void SetToInteract()
+        {
+            player.AnimatorEffectHold = false;
+            player.SetIsInteract();
+        }
     }
 }

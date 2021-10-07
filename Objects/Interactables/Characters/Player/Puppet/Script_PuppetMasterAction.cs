@@ -13,7 +13,7 @@ public class Script_PuppetMasterAction : Script_PlayerAction
     {
         if (Input.GetButtonDown(Const_KeyCodes.Action2))
         {
-            PlayerStickerEffect(facingDirection, location);
+            PlayerStickerEffect();
         }
     }
 
@@ -25,9 +25,8 @@ public class Script_PuppetMasterAction : Script_PlayerAction
     /// <summary>
     /// Call the Player's Sticker Effects Controller
     /// </summary>
-    private void PlayerStickerEffect(Directions facingDirection, Vector3 location)
+    private void PlayerStickerEffect()
     {
-        Script_Game.Game?.GetPlayer()?.GetComponent<Script_PlayerAction>()?
-                .EffectFromPuppetMaster(facingDirection);
+        Script_Game.Game?.GetPlayer()?.HandlePuppeteerEffectHold();
     }
 }
