@@ -6,8 +6,12 @@ public class Script_LetThereBeLightEffect : Script_StickerEffect
 {
     [SerializeField] private RuntimeAnimatorController lanternOnAnimatorController;
     
-    
     private bool isLanternOn;
+
+    public bool IsLanternOn
+    {
+        get => isLanternOn;
+    }
 
     public override void Effect()
     {
@@ -45,6 +49,14 @@ public class Script_LetThereBeLightEffect : Script_StickerEffect
     protected override void OnUnequipSwitch()
     {
         base.OnUnequipSwitch();
+
+        player.SwitchLight(false);
+        isLanternOn = false;
+    }
+
+    protected override void OnUnequipState()
+    {
+        base.OnUnequipState();
 
         player.SwitchLight(false);
         isLanternOn = false;

@@ -16,8 +16,6 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     [SerializeField] private Light directionalLight;
     [SerializeField] private Script_CollectibleObject lastSpellRecipeBook;
     
-    private Script_LanternFollower lanternFollower;
-    
     // Should not be saved in state because this quest should be repeatable on
     // subsequent runs.
     private bool didPickUpLastSpellRecipeBook;
@@ -25,6 +23,8 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     protected override void OnEnable()
     {
         Script_ItemsEventsManager.OnItemPickUp      += OnItemPickUp;
+
+        HandleLanternReactions(game.GetPlayer().IsLightOn);
     }
 
     protected override void OnDisable()
@@ -36,7 +36,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     {
         base.Update();
 
-        HandleLanternReactions(lanternFollower.IsLightOn);
+        HandleLanternReactions(game.GetPlayer().IsLightOn);
     }
 
     private void OnItemPickUp(string itemId)
@@ -50,18 +50,10 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     private void HandleLanternReactions(bool isLightOn)
     {
         directionalLight.gameObject.SetActive(isLightOn);
-
-        if (lastSpellRecipeBook != null)
-        {
-            if (!didPickUpLastSpellRecipeBook)
-                lastSpellRecipeBook.gameObject.SetActive(isLightOn);
-        }
     }
 
     public override void Setup()
     {
-        lanternFollower = game.LanternFollower;
-
         if (lastSpellRecipeBook != null)
         {
             if (didPickUpLastSpellRecipeBook)   lastSpellRecipeBook.gameObject.SetActive(false);

@@ -118,6 +118,7 @@ public class Script_Player : Script_Character
 
     public bool IsLightOn
     {
+        get => playerActionHandler.IsLanternLightOn;
         set
         {
             if (playerLight != null)
@@ -502,7 +503,6 @@ public class Script_Player : Script_Character
 
     public void InitializeOnLevel(
         Model_PlayerState playerState,
-        bool isLightOn,
         Transform grid
     )
     {
@@ -523,7 +523,8 @@ public class Script_Player : Script_Character
         location = transform.position;
         FaceDirection(playerState.faceDirection);
         playerMovementHandler.InitializeOnLevel(grid);
-        SwitchLight(isLightOn);
+        
+        SwitchLight(IsLightOn);
 
         Debug.Log($"Player initialized at position: {adjustedSpawnLocation.x}, {adjustedSpawnLocation.y}, {adjustedSpawnLocation.z}");
     }

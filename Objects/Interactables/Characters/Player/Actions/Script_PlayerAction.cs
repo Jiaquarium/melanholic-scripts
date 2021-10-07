@@ -22,11 +22,11 @@ public class Script_PlayerAction : MonoBehaviour
         set => _itemShown = value;
     }
 
-    public Script_StickerEffectsController StickerEffectsController
+    public bool IsLanternLightOn
     {
-        get => stickerEffectsController;
+        get => stickerEffectsController.IsLanternLightOn;
     }
-    
+
     public virtual void HandleActionInput(Directions facingDirection, Vector3 location)
     {   
         /// <summary>
@@ -358,6 +358,11 @@ public class Script_PlayerAction : MonoBehaviour
         {
             stickerEffectsController.Effect(facingDirection);
         }
+    }
+
+    public void EffectFromPuppetMaster(Directions dir)
+    {
+        stickerEffectsController.Effect(dir);
     }
 
     public void Setup(Script_Game _game)

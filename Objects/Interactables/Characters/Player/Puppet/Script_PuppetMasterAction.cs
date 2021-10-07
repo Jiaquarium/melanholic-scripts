@@ -28,6 +28,6 @@ public class Script_PuppetMasterAction : Script_PlayerAction
     private void PlayerStickerEffect(Directions facingDirection, Vector3 location)
     {
         Script_Game.Game?.GetPlayer()?.GetComponent<Script_PlayerAction>()?
-                .StickerEffectsController.Effect(facingDirection);
+                .EffectFromPuppetMaster(facingDirection);
     }
 }

@@ -848,7 +848,6 @@ public class Script_Game : MonoBehaviour
 
         player.InitializeOnLevel(
             playerState,
-            playerData.isLightOn,
             grid.transform
         );
 

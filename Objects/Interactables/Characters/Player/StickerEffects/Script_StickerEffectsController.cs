@@ -27,6 +27,11 @@ public class Script_StickerEffectsController : MonoBehaviour
 
     private float coolDownTimer;
 
+    public bool IsLanternLightOn
+    {
+        get => letThereBeLightEffect.IsLanternOn;
+    }
+
     void Update()
     {
         coolDownTimer = Mathf.Max(0, coolDownTimer - Time.deltaTime);

@@ -313,10 +313,10 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         );
 
         puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState);
-        puppetMaster.InitializeOnLevel(puppetMasterStartState, false, levelGrid.transform);
+        puppetMaster.InitializeOnLevel(puppetMasterStartState, levelGrid.transform);
 
         puppet.Setup(puppetStartState.faceDirection, puppetStartState);
-        puppet.InitializeOnLevel(puppetStartState, false, levelGrid.transform);
+        puppet.InitializeOnLevel(puppetStartState, levelGrid.transform);
 
         isInitialized = true;
     }

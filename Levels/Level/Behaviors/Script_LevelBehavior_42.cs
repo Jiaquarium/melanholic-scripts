@@ -358,6 +358,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
                 t.StopHeavySnow();
             }
 
+            GUILayout.Space(12);
+
             if (GUILayout.Button("Destroy Frozen Wells"))
             {
                 t.OnFrozenWellDie(t.frozenWells[0].GetComponent<Script_CrackableIceStats>());
