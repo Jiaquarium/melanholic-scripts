@@ -24,7 +24,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     public bool IsLanternLightOn
     {
-        get => stickerEffectsController.IsLanternLightOn;
+        get => stickerEffectsController?.IsLanternLightOn ?? false;
     }
 
     public virtual void HandleActionInput(Directions facingDirection, Vector3 location)

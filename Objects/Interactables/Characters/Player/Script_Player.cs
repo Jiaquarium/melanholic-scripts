@@ -119,11 +119,6 @@ public class Script_Player : Script_Character
     public bool IsLightOn
     {
         get => playerActionHandler.IsLanternLightOn;
-        set
-        {
-            if (playerLight != null)
-                playerLight.enabled = value;
-        }
     }
 
     protected virtual void OnEnable()
@@ -428,7 +423,8 @@ public class Script_Player : Script_Character
 
     public void SwitchLight(bool isOn)
     {
-        IsLightOn = isOn;
+        if (playerLight != null)
+            playerLight.enabled = isOn;
     }
 
     public void TryPushPushable(Directions dir)
