@@ -165,34 +165,41 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     public void OnUniqueBlockingTrigger(Transform other)
     {
         if (other.GetComponent<Script_Puppet>() == puppet)
-        {
-            game.ChangeStateCutScene();
-            puppet.SetAnimatorControllerActive(false);
-            
-            Script_DialogueManager.DialogueManager.StartDialogueNode(LatteBlockedNode);
-            
-            puppeteerVCam = Script_VCamManager.ActiveVCamera;
-            Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followLatteVCam);
-            
-            LatteBlockedTrigger.gameObject.SetActive(false);
-        }
+            LatteBlockedCutScene();
         else if (other.GetComponent<Script_Puppet>() == puppetMaster)
-        {
-            game.ChangeStateCutScene();
-            puppetMaster.SetAnimatorControllerActive(false);
-            
-            Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeBlockedNode);
-            
-            puppeteerVCam = Script_VCamManager.ActiveVCamera;
-            Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followKaffeVCam);
-            
-            KaffeBlockedTrigger.gameObject.SetActive(false);
-        }
+            KaffeBlockedCutScene();
+    }
+
+    private void LatteBlockedCutScene()
+    {
+        game.ChangeStateCutScene();
+        puppet.SetAnimatorControllerActive(false);
+        
+        Script_DialogueManager.DialogueManager.StartDialogueNode(LatteBlockedNode);
+        
+        puppeteerVCam = Script_VCamManager.ActiveVCamera;
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followLatteVCam);
+        
+        LatteBlockedTrigger.gameObject.SetActive(false);
+    }
+
+    private void KaffeBlockedCutScene()
+    {
+        game.ChangeStateCutScene();
+        puppetMaster.SetAnimatorControllerActive(false);
+        
+        Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeBlockedNode);
+        
+        puppeteerVCam = Script_VCamManager.ActiveVCamera;
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followKaffeVCam);
+        
+        KaffeBlockedTrigger.gameObject.SetActive(false);
     }
 
     public void OnBlockedCutSceneDone()
     {
         game.ChangeStateInteract();
+        
         puppet.SetAnimatorControllerActive(true);
         puppetMaster.SetAnimatorControllerActive(true);
 
@@ -337,7 +344,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             meetupPuzzleController.InitialState();
         }
     }
-
+    
     #if UNITY_EDITOR
     [CustomEditor(typeof(Script_LevelBehavior_46))]
     public class Script_LevelBehavior_46Tester : Editor
@@ -346,6 +353,16 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             DrawDefaultInspector();
 
             Script_LevelBehavior_46 t = (Script_LevelBehavior_46)target;
+            if (GUILayout.Button("Latte Blocked Cut Scene"))
+            {
+                t.LatteBlockedCutScene();
+            }
+
+            if (GUILayout.Button("Kaffe Blocked Cut Scene"))
+            {
+                t.KaffeBlockedCutScene();
+            }
+            
             if (GUILayout.Button("Puzzle Success Cut Scene"))
             {
                 t.PuzzleSuccessCutScene();
@@ -360,3 +377,4 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     }
     #endif
 }
+

@@ -145,14 +145,17 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
                 this
             );
         }
-        else    dialogueManager.ContinueDialogue();
+        else
+            dialogueManager.ContinueDialogue();
     }
 
     private void HandleFirstInteraction()
     {
         isInputDisabled = true;
         // fade in via fullartmanager
+        
         Script_Game.Game.GetPlayer().SetIsViewing();
+        
         Script_Game.Game.fullArtManager.ShowFullArt(
             activeFullArt,
             fadeInSpeed, () => {    // Use iobject fadeIn speed so fullArt can be extensible
@@ -208,7 +211,9 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         isInputDisabled = true;
         // fade in via fullartmanager
         Script_Game.Game.fullArtManager.TransitionOutFullArt(activeFullArt, fadeInSpeed, null);
+        
         activeFullArt = activeFullArt.nextFullArt;
+        
         Script_Game.Game.fullArtManager.ShowFullArt(
             activeFullArt,
             fadeInSpeed, () => {

@@ -501,8 +501,12 @@ public class Script_DialogueManager : MonoBehaviour
         else
             isSilentTyping = false;
 
-        /// Item types, player will be in picking-up state 
-        if (type != Const_DialogueTypes.Type.Item)     Script_Game.Game.GetPlayer().SetIsTalking();
+        // This tells dialogue continuation how to continue.
+        // For Item types, player will be in picking-up state, which
+        // follows a different dialogue pattern.
+        if (type != Const_DialogueTypes.Type.Item)
+            Script_Game.Game.GetPlayer().SetIsTalking();
+        
         ShowDialogue();
 
         if (SFXOn && !isSilentTyping)
@@ -856,7 +860,7 @@ public class Script_DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// function when ACTUALLY ENDING dialogue (e.g. no more nodes)
+    /// ACTUALLY ENDING dialogue (e.g. no more nodes)
     /// NOTE: an event could trigger another dialogue start though
     /// </summary>
     public void HandleEndDialogue()
@@ -892,9 +896,20 @@ public class Script_DialogueManager : MonoBehaviour
             /// back to Interact.
             if (currentNode.data.type != Const_DialogueTypes.Type.Item)
             {
-                Script_Game.Game.GetPlayer().SetIsInteract();
+                // Handle if coming from a State where Dialogue was called externally
+                // and Player needs to return to previous state.
+                if (
+                    Script_Game.Game.GetPlayer().LastState == Const_States_Player.Puppeteer
+                    || Script_Game.Game.GetPlayer().LastState == Const_States_Player.PuppeteerNull
+                )
+                    Script_Game.Game.GetPlayer().SetLastState();
+                // Default Player state after dialogue is interact.
+                else
+                    Script_Game.Game.GetPlayer().SetIsInteract();
             }
 
+            // Handle NPC state when externally calling NPC HandleAction -> DialogueAction
+            // from script instead of an interaction.
             if (IsOnEndUpdateNPCState)
             {
                 var NPC = activeInteractable as Script_StaticNPC;

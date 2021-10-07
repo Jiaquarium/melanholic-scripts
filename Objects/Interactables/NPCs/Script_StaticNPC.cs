@@ -165,7 +165,8 @@ public class Script_StaticNPC : Script_Interactable
     {
         bool? didContinue = dialogueManager.ContinueDialogue();
         
-        if (didContinue == false)   State = States.Interact;
+        if (didContinue == false)
+            State = States.Interact;
         
         return didContinue;
     }

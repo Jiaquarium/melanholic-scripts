@@ -52,9 +52,15 @@ public class Script_Player : Script_Character
     private const string PlayerGlitch = "Base Layer.Player_Glitch";
     private Dictionary<Directions, Vector3> directionsToVector;
        
-    public string State {
+    public string State
+    {
         get => state;
         private set => state = value;
+    }
+
+    public string LastState
+    {
+        get => lastState;
     }
 
     public Directions FacingDirection
