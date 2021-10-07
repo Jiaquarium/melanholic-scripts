@@ -32,6 +32,15 @@ public class Script_WorldTilesController : MonoBehaviour
         get => zLength;
     }
 
+    /// <summary>
+    /// The current World Tile the Player is on.
+    /// Set via PlayerCheckCollisions.
+    /// </summary>
+    public Script_WorldTile OriginWorldTile
+    {
+        get => originWorldTile;
+    }
+
     void Start()
     {
         InitialState();

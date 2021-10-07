@@ -7,6 +7,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Script_TimelineController))]
+[RequireComponent(typeof(Script_WorldTilesController))]
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_42 : Script_LevelBehavior
 {
@@ -93,7 +94,12 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             game.ChangeStateCutScene();
 
             // Play Freeze Timeline
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+            var currentWorldTileVCam = GetComponent<Script_WorldTilesController>()
+                .OriginWorldTile?.GetComponent<Script_WellsWorldBehavior>()?.VirtualCamera;
+            
+            GetComponent<Script_TimelineController>().BindVirtualCameraAndPlayFromDirector(
+                0, 0, currentWorldTileVCam
+            );
 
             StartHeavySnow();
         }

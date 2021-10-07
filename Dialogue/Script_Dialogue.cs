@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-06 16:04:13
+// Last created by Dialogue Exporter at 2021-10-06 19:35:12
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2760,7 +2760,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
-// Wells World
+// Moose
 {
     "wells-world_moose_default",
     new Model_Languages
@@ -2857,6 +2857,58 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     new Model_Languages
     {
         speaker = "{63}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Suzette
+{
+    "wells-world_suzette_default",
+    new Model_Languages
+    {
+        speaker = "{58}",
+        EN = new string[]
+        {
+                @"���.",
+        },
+        
+    }
+},
+{
+    "wells-world_suzette_psychic",
+    new Model_Languages
+    {
+        speaker = "{58}",
+        EN = new string[]
+        {
+                @"A dark place.",
+                @"An even darker place than here is where you can find it.",
+        },
+        
+    }
+},
+{
+    "wells-world_suzette_psychic1",
+    new Model_Languages
+    {
+        speaker = "{58}",
+        EN = new string[]
+        {
+                @"It's all I’ve ever known.",
+                @"Damn {60}.",
+        },
+        
+    }
+},
+{
+    "wells-world_suzette_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{58}",
         EN = new string[]
         {
                 @"(. ﾟーﾟ)",

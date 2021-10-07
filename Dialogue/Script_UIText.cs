@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-06 16:04:15
+// Last created by UI Exporter at 2021-10-06 17:25:54
 
 using System.Collections;
 using System.Collections.Generic;
@@ -366,6 +366,41 @@ See you on the other side."
     new Model_LanguagesUI
     {
         EN = @"Prepped Masks"
+    }
+},
+{
+    "menu_item-choices_prepare",
+    new Model_LanguagesUI
+    {
+        EN = @"Prepare"
+    }
+},
+{
+    "menu_item-choices_examine",
+    new Model_LanguagesUI
+    {
+        EN = @"Examine"
+    }
+},
+{
+    "menu_item-choices_cancel",
+    new Model_LanguagesUI
+    {
+        EN = @"Cancel"
+    }
+},
+{
+    "menu_item-choices_drop",
+    new Model_LanguagesUI
+    {
+        EN = @"Drop"
+    }
+},
+{
+    "menu_item-choices_use",
+    new Model_LanguagesUI
+    {
+        EN = @"Use"
     }
 },
 // ------------------------------------------------------------------

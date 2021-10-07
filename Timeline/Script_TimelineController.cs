@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using Cinemachine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -60,6 +61,41 @@ public class Script_TimelineController : MonoBehaviour
         playableDirectors[playableDirectorIdx].Play(selectedAsset);
 
         return playableDirectors[playableDirectorIdx];
+    }
+
+    public void BindVirtualCameraAndPlayFromDirector(int i, int j, CinemachineVirtualCamera virtualCamera)
+    {
+        if (playableDirectors.Count <= i || playableDirectors[i] == null)
+        {
+            Debug.LogWarning($"{name} playableDirector at current idx {i} is null");
+            return;
+        }
+        
+        if (timelines.Count <= j || timelines[j] == null)
+        {
+            Debug.LogWarning($"{name} timeline at current idx {j} is null");
+            return;
+        }
+        
+        PlayableDirector director = playableDirectors[i];
+        TimelineAsset timeline = timelines[j];
+
+        foreach (var track in timeline.GetOutputTracks())
+        {
+            var clips = track.GetClips();
+
+            foreach (TimelineClip clip in clips)
+            {
+                var shot = clip.asset as CinemachineShot;
+                
+                if (shot == null)
+                    continue;
+                
+                director.SetReferenceValue(shot.VirtualCamera.exposedName, virtualCamera);
+            }
+        }
+        
+        PlayableDirectorPlayFromTimelines(i, j);
     }
 }
 
