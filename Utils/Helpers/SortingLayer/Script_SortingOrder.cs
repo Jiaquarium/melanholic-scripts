@@ -26,8 +26,8 @@ public class Script_SortingOrder : MonoBehaviour
 
     void Update()
     {
-        if (isParent)   SetChildrenSortingOrder();
-        else            SetSortingOrder(r);
+        SetChildrenSortingOrder();
+        SetSortingOrder(r);
 
         if (runOnlyOnce)    this.enabled = false;
     }
@@ -48,6 +48,9 @@ public class Script_SortingOrder : MonoBehaviour
 
     void SetSortingOrder(Renderer r)
     {
+        if (r == null)
+            return;
+        
         if (sortingOrderIsAxisZ)
         {
             r.sortingOrder = (int)(((sortingOrderBase - transform.position.z) * 10) + offset);
@@ -61,6 +64,8 @@ public class Script_SortingOrder : MonoBehaviour
     void SetChildrenSortingOrder()
     {
         Renderer[] childrenRenderers = transform.GetChildren<Renderer>();
-        foreach (Renderer r in childrenRenderers)   SetSortingOrder(r);
+        
+        foreach (Renderer r in childrenRenderers)
+            SetSortingOrder(r);
     }
 }

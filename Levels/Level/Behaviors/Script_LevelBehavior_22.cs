@@ -31,6 +31,8 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
 
     [SerializeField] private Script_DoorLock KTVRoomDoorCage;
 
+    [SerializeField] private Script_InteractableObjectText barMid1Text;
+
     [SerializeField] private float OnUnlockDoneWaitTimeForDialogue;
 
     private bool spokenWithUrsie;
@@ -66,6 +68,9 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
 
         // Remove Ursie's Bar interaction boxes so they aren't blocking the KTV Door.
         Ursie.RemoveExtraInteractableBoxes();
+
+        // The drinks in front of Ursie are now interactable.
+        barMid1Text.gameObject.SetActive(true);
         
         // Play Timeline to unnlock KTV Room2
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
@@ -124,6 +129,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         PecheMelba.gameObject.SetActive(false);
 
         thankYouNote.gameObject.SetActive(true);
+        barMid1Text.gameObject.SetActive(true);
     }
     
     public override void InitialState()
@@ -134,6 +140,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         PecheMelba.gameObject.SetActive(true);
 
         thankYouNote.gameObject.SetActive(false);
+        barMid1Text.gameObject.SetActive(false);
     }
 
     

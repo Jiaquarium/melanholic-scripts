@@ -37,8 +37,6 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     [SerializeField] private float beforeSpawnWaitTime;
     [SerializeField] private float afterSpawnWaitTime;
     
-    [SerializeField] private Transform interactableObjectsTextParent;
-    [SerializeField] private Script_InteractableObjectText[] pillarTextObjs;
     [SerializeField] private Script_BgThemePlayer heartBeatBgThemePlayerPrefab;
     
     [SerializeField] private Script_LevelBehavior_23 LB23;
@@ -49,7 +47,6 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     [SerializeField] private Script_LevelBehavior_44 XXXWorldBehavior;
 
     private Script_BgThemePlayer heartBeatBgThemePlayer;
-    private bool isInit = true;
     private bool isTimelineControlled = false;
     
     public bool IsCurrentPuzzleComplete
@@ -215,8 +212,12 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             });
         }
     }
+
+    public void FinishQuestPaintings()
+    {
+        XXXWorldBehavior.FinishQuestPaintings();
+    }
     
-    // Timeline Signals END
     // ------------------------------------------------------------------
 
     void Awake()
@@ -234,10 +235,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
 
     public override void Setup()
     {
-        game.SetupInteractableObjectsText(interactableObjectsTextParent, isInit);
-        game.SetupInteractableObjectsTextManually(pillarTextObjs, isInit);
 
-        isInit = false;
     }
 }
 

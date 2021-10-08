@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-06 19:35:12
+// Last created by Dialogue Exporter at 2021-10-08 15:42:29
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3680,6 +3680,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"These pillars seem like they’re pulsing,",
+        },
+        
+    }
+},
+{
+    "ktv-room-2_rock_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Oh it’s a rock... and it’s really smooth...",
         },
         
     }
