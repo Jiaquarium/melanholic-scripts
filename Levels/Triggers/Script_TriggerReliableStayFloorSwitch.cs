@@ -14,26 +14,35 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
         
         base.HandleUpState(SFXOn);
 
-        GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.FloorSwitchUp, Script_SFXManager.SFX.FloorSwitchUpVol);   
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.FloorSwitchUp, Script_SFXManager.SFX.FloorSwitchUpVol
+        );
         
-        if (switchUpGraphics != null)       switchUpGraphics.gameObject.SetActive(true);
-        if (switchDownGraphics != null)     switchDownGraphics.gameObject.SetActive(false);
+        if (switchUpGraphics != null)
+            switchUpGraphics.gameObject.SetActive(true);
+        if (switchDownGraphics != null)
+            switchDownGraphics.gameObject.SetActive(false);
     }
     
     protected override void HandleDownState(bool SFXOn)
     {
         base.HandleDownState(SFXOn);
 
-        GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.FloorSwitchDown, Script_SFXManager.SFX.FloorSwitchDownVol);   
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.FloorSwitchDown, Script_SFXManager.SFX.FloorSwitchDownVol
+        );
         
-        if (switchUpGraphics != null)       switchUpGraphics.gameObject.SetActive(false);
-        if (switchDownGraphics != null)     switchDownGraphics.gameObject.SetActive(true);
+        if (switchUpGraphics != null)
+            switchUpGraphics.gameObject.SetActive(false);
+        if (switchDownGraphics != null)
+            switchDownGraphics.gameObject.SetActive(true);
     }
 
     public override void InitialState()
     {
         base.InitialState();
         
-        if (pointLight != null)             pointLight.gameObject.SetActive(true);
+        if (pointLight != null)
+            pointLight.gameObject.SetActive(true);
     }
 }

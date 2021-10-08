@@ -115,6 +115,9 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
                 player.AnimatorEffectHold = false;
             }
             
+            // Turn off SFX Volume, so won't hear Floor Switches go back up if standing on one
+            Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedSFXVolume);
+
             // Move all characters to cut scene position
             puppetMaster.Teleport(puppetMasterPuzzleSuccessSpawn.transform.position);
             puppetMaster.SetAnimatorControllerActive(false);
@@ -124,7 +127,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             
             player.Teleport(playerPuzzleSuccessSpawn.transform.position);
             player.FaceDirection(Directions.Down);
-            
+
             // Hide Labyrinth
             movingLabyrinth.gameObject.SetActive(false);
 
@@ -133,6 +136,9 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             Script_VCamManager.VCamMain.SwitchBetweenVCams(preSuccessVCam, successCutSceneVCam);
             
             yield return new WaitForSeconds(successBlackScreenTime);
+
+            // Turn back on SFX Volume
+            Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedSFXVolume);
 
             StartCoroutine(game.TransitionFadeOut(successTransitionFadeInTime, () => {
                 // Start cut scene dialogue.
