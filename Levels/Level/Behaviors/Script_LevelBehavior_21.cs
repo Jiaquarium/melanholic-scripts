@@ -197,7 +197,6 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
     private void BaseSetup()
     {
-        
         EileenElleniaHurt.gameObject.SetActive(false);
         // Interactable FullArt on bookshelf.
         drawingFullArt.gameObject.SetActive(true);

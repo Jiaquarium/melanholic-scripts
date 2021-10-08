@@ -96,6 +96,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+
+        SetupCycleConditions();
     }
 
     protected override void OnDisable()
@@ -153,7 +155,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     }
 
     // ----------------------------------------------------------------------
-    // King's Intro Unity Events, Next Node Actions and Timeline Signals
+    // King's Intro Unity Events, Next Node Actions
     
     public void KingsIntroTimeline()
     {
@@ -183,6 +185,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
     }
 
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+    
     // Called from KingsIntro after Black Screen fades out.
     public void OpenArtFrame()
     {
@@ -227,6 +232,13 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         didIdsRun = true;
     }
 
+    public void TimelineSetup()
+    {
+        Debug.Log($"{name} Setup from Timeline");
+        
+        Ids.gameObject.SetActive(false);
+    }
+
     // ----------------------------------------------------------------------
 
     private void SetDynamicSpectersActive(bool isActive)
@@ -264,23 +276,16 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         return !didIdsRun && Script_EventCycleManager.Control.IsLastElevatorTutorialRun();
     }
 
-    public override void Setup()
+    private void SetupCycleConditions()
     {
-        // ----------------------------------------------------------------------
-        // Cycle Conditions
-        
-        // Ids runs away on tutorial run.
-        if (ShouldPlayIdsIntro())
-            Ids.gameObject.SetActive(true);
-        else
-            Ids.gameObject.SetActive(false);
-        
         // Ero reports of missing Ids.
         if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
         {
             // Handle Ero Event Cycle
-            if (Script_EventCycleManager.Control.IsIdsDead())   Ero.gameObject.SetActive(true);
-            else                                                Ero.gameObject.SetActive(false);
+            if (Script_EventCycleManager.Control.IsIdsDead())
+                Ero.gameObject.SetActive(true);
+            else
+                Ero.gameObject.SetActive(false);
 
             // Remove all NPCs except for King, they've gone to their respective rooms.
             SetDynamicSpectersActive(false);
@@ -294,6 +299,15 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             SetDynamicSpectersActive(true);
             SetPaintingEntrancesActive(false);
         }
+    }
+    
+    public override void Setup()
+    {
+        // Ids runs away on tutorial run.
+        if (ShouldPlayIdsIntro())
+            Ids.gameObject.SetActive(true);
+        else
+            Ids.gameObject.SetActive(false);
     }
 
     // -------------------------------------------------------------------------------------

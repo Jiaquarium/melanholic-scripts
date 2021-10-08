@@ -280,6 +280,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     public void OnSuccessCutSceneDone()
     {
         // Play Painting Done Timeline.
+        // Ballroom Setup via Timeline Signals.
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
 

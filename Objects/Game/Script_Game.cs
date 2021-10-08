@@ -708,6 +708,15 @@ public class Script_Game : MonoBehaviour
         return runsManager.Run.dayId == dayId;
     }
 
+    // ----------------------------------------------------------------------
+    // Timeline Setup Signals
+    // 
+    // Especially useful when a Level is needing to activate another Level.
+    public void TimelineSetupBallroom()
+    {
+        BallroomBehavior.TimelineSetup();
+    }
+
     /* =======================================================================
         _ENDING SEQENCES_DEATH_TIMESUP_TRANSITIONS
     ======================================================================= */
