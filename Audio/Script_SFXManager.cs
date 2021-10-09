@@ -13,6 +13,7 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioSource SFXSource;
     
+    [Header("---- World SFX ----")]
     public AudioClip PlayerStashItem;
     [Range(0f, 1f)] public float PlayerStashItemVol;
     
@@ -90,18 +91,6 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip piano;
     [Range(0f, 1f)] public float pianoVol;
-    
-    public AudioClip UIErrorSFX;
-    [Range(0f, 1f)] public float UIErrorSFXVol;
-
-    public AudioClip UIWrongSFX;
-    [Range(0f, 1f)] public float UIWrongSFXVol;
-    
-    public AudioClip UITypingSFX;
-    [Range(0f, 1f)] public float UITypingSFXVol;
-    
-    public AudioClip UICodeTypingSFX;
-    [Range(0f, 1f)] public float UICodeTypingSFXVol;
 
     public AudioClip WellSFX;
     [Range(0f, 1f)] public float WellSFXVol;
@@ -126,6 +115,44 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip Dawn;
     [Range(0f, 1f)] public float DawnVol;
+
+    [Header("---- UI SFX ----")]
+
+    public AudioClip UIErrorSFX;
+    [Range(0f, 1f)] public float UIErrorSFXVol;
+
+    public AudioClip ErrorBlip;
+    [Range(0f, 1f)] public float ErrorBlipVol;
+
+    public AudioClip UIWrongSFX;
+    [Range(0f, 1f)] public float UIWrongSFXVol;
+    
+    public AudioClip UITypingSFX;
+    [Range(0f, 1f)] public float UITypingSFXVol;
+    
+    public AudioClip UICodeTypingSFX;
+    [Range(0f, 1f)] public float UICodeTypingSFXVol;
+
+    public AudioClip OpenCloseBook;
+    [Range(0f, 1f)] public float OpenCloseBookVol;
+
+    public AudioClip OpenCloseBookHeavy;
+    [Range(0f, 1f)] public float OpenCloseBookHeavyVol;
+
+    public AudioClip Select;
+    [Range(0f, 1f)] public float SelectVol;
+
+    public AudioClip StickerOn;
+    [Range(0f, 1f)] public float StickerOnVol;
+
+    public AudioClip StickerOff;
+    [Range(0f, 1f)] public float StickerOffVol;
+
+    public AudioClip CrunchDown;
+    [Range(0f, 1f)] public float CrunchDownVol;
+
+    public AudioClip CrunchUp;
+    [Range(0f, 1f)] public float CrunchUpVol;
     
     public void PlayQuestProgress(Action cb = null)
     {

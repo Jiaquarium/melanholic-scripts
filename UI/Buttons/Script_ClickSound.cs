@@ -8,10 +8,8 @@ using UnityEngine.EventSystems;
 public class Script_ClickSound : MonoBehaviour, ISubmitHandler
 {
     public Script_InventoryAudioSettings settings;
-    [SerializeField]
-    protected AudioSource source;
+    [SerializeField] protected AudioSource source;
     
-
     protected virtual void Awake()
     {
         source = settings.clickAudioSource;
@@ -19,6 +17,6 @@ public class Script_ClickSound : MonoBehaviour, ISubmitHandler
 
     public void OnSubmit(BaseEventData e)
     {
-        source.PlayOneShot(settings.clickSFX, settings.clickVolume);
+        source.PlayOneShot(Script_SFXManager.SFX.OpenCloseBook, Script_SFXManager.SFX.OpenCloseBookVol);
     }
 }

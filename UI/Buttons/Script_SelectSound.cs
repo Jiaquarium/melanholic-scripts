@@ -75,6 +75,6 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
 
     protected void PlaySFX()
     {
-        source.PlayOneShot(settings.selectSFX, settings.selectVolume);
+        source.PlayOneShot(Script_SFXManager.SFX.Select, Script_SFXManager.SFX.SelectVol);
     }
 }

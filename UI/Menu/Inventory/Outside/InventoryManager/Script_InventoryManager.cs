@@ -511,14 +511,16 @@ public class Script_InventoryManager : MonoBehaviour
 
     public void ErrorSFX()
     {
-        settings.inventoryAudioSource.PlayOneShot(settings.errorSFX, settings.errorVolume);
+        settings.inventoryAudioSource.PlayOneShot(
+            Script_SFXManager.SFX.UIErrorSFX, Script_SFXManager.SFX.UIErrorSFXVol
+        );
     }
 
     public void CantUseSFX()
     {
         settings.inventoryAudioSource.PlayOneShot(
-            settings.UsableTargetNotFound,
-            settings.UsableTargetNotFoundVol
+            Script_SFXManager.SFX.ErrorBlip,
+            Script_SFXManager.SFX.ErrorBlipVol
         );
     }
 

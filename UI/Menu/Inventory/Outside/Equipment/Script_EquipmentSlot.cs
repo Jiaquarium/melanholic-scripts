@@ -11,8 +11,7 @@ public class Script_EquipmentSlot : Script_Slot
     /// </summary>
     public void OnEnter()
     {
-        // give prompt
-        print("enter is clicked on me");
+        print($"{name} Enter is clicked on me");
         
         // TODO: TEST FOR IF ITEM IS PRESENT
         

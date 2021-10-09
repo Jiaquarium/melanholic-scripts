@@ -59,12 +59,18 @@ public class Script_StickersInventoryHandler : MonoBehaviour
 
     void StickerOnSFX()
     {
-        settings.inventoryAudioSource.PlayOneShot(settings.stickerOnSFX, settings.stickerOnVol);
+        settings.inventoryAudioSource.PlayOneShot(
+            Script_SFXManager.SFX.StickerOn,
+            Script_SFXManager.SFX.StickerOnVol
+        );
     }
 
     void StickerOffSFX()
     {
-        settings.inventoryAudioSource.PlayOneShot(settings.stickerOffSFX, settings.stickerOffVol);
+        settings.inventoryAudioSource.PlayOneShot(
+            Script_SFXManager.SFX.StickerOff,
+            Script_SFXManager.SFX.StickerOffVol
+        );
     }
 
     public void Setup(

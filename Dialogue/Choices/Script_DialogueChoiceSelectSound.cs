@@ -33,9 +33,8 @@ public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, I
         else                isInitialize = false;
     }
 
-
     protected void PlaySFX()
     {
-        source.PlayOneShot(settings.selectSFX, settings.selectVolume);
+        source.PlayOneShot(Script_SFXManager.SFX.Select, Script_SFXManager.SFX.SelectVol);
     }
 }

@@ -407,8 +407,7 @@ public class Script_StartOverviewController : Script_UIState
         }
         else
         {
-            // error SFX
-            GetComponent<AudioSource>().PlayOneShot(audioSettings.errorSFX, audioSettings.errorVolume);
+            ErrorSFX();
         }
         
     }
@@ -504,8 +503,7 @@ public class Script_StartOverviewController : Script_UIState
         }
         else
         {
-            // error SFX
-            GetComponent<AudioSource>().PlayOneShot(audioSettings.errorSFX, audioSettings.errorVolume);
+            ErrorSFX();
         }
     }
 
@@ -561,8 +559,7 @@ public class Script_StartOverviewController : Script_UIState
         }
         else
         {
-            // error SFX
-            GetComponent<AudioSource>().PlayOneShot(audioSettings.errorSFX, audioSettings.errorVolume);
+            ErrorSFX();
         }
     }
 
@@ -619,11 +616,16 @@ public class Script_StartOverviewController : Script_UIState
 
     private void EnterSubmenuSFX()
     {
-        Debug.Log("EnterSubmenuSFX()");
-        
         GetComponent<AudioSource>().PlayOneShot(
-            audioSettings.clickEnterSubmenuSFX,
-            audioSettings.clickEnterSubemenuSFXVolume
+            Script_SFXManager.SFX.OpenCloseBookHeavy,
+            Script_SFXManager.SFX.OpenCloseBookHeavyVol
+        );
+    }
+
+    private void ErrorSFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.UIErrorSFX, Script_SFXManager.SFX.UIErrorSFXVol
         );
     }
 
