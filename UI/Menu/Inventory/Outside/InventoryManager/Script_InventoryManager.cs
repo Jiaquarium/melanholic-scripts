@@ -232,7 +232,7 @@ public class Script_InventoryManager : MonoBehaviour
         }
 
         Debug.Log("no item in slot");
-        ErrorSFX();
+        ErrorDullSFX();
         return false;
         
         bool GetItemInStickers(int itemSlotId)
@@ -339,20 +339,16 @@ public class Script_InventoryManager : MonoBehaviour
 
     public void HandleEquipmentSlotOnEnter(int stickerSlotId)
     {
-        if (equipment.GetStickerInSlot(stickerSlotId))
-        {
-            UnstickSticker(
-                (Script_Sticker)equipment.GetStickerInSlot(stickerSlotId),
-                equipment,
-                inventory,
-                stickerSlotId
-            );
-            return;
-        }
-
-        print("no sticker in slot");
-        // TODO: SFX
-        ErrorSFX();
+        var stickerToRemove = equipment.GetStickerInSlot(stickerSlotId) as Script_Sticker;
+        
+        // No Sticker in Slot.
+        if (stickerToRemove == null)
+            ErrorDullSFX();
+        // Sticker is in use.
+        else if (Script_ActiveStickerManager.Control.ActiveSticker == stickerToRemove)
+            ErrorUnableSFX();
+        else
+            UnstickSticker(stickerToRemove, equipment, inventory, stickerSlotId);
     }
 
     void Drop(Script_Item item, int itemSlotId)
@@ -376,7 +372,7 @@ public class Script_InventoryManager : MonoBehaviour
         }        
         else
         {
-            ErrorSFX();
+            ErrorDullSFX();
             Debug.LogError($"Drop item: {item.id} failed.");
             return;
         }
@@ -445,7 +441,7 @@ public class Script_InventoryManager : MonoBehaviour
     {
         if (collectible.isExamineDisabled)
         {
-            ErrorSFX();
+            ErrorDullSFX();
             return;
         }
         
@@ -469,7 +465,7 @@ public class Script_InventoryManager : MonoBehaviour
         }
         else
         {
-            CantUseSFX();
+            ErrorUnableSFX();
             return;
         }
     }
@@ -509,14 +505,14 @@ public class Script_InventoryManager : MonoBehaviour
         }
     }
 
-    public void ErrorSFX()
+    public void ErrorDullSFX()
     {
         settings.inventoryAudioSource.PlayOneShot(
             Script_SFXManager.SFX.UIErrorSFX, Script_SFXManager.SFX.UIErrorSFXVol
         );
     }
 
-    public void CantUseSFX()
+    public void ErrorUnableSFX()
     {
         settings.inventoryAudioSource.PlayOneShot(
             Script_SFXManager.SFX.ErrorBlip,

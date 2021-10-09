@@ -28,7 +28,7 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         else
         {
             Debug.Log("Failed to equip sticker");
-            GetComponent<Script_InventoryManager>().ErrorSFX();
+            GetComponent<Script_InventoryManager>().ErrorDullSFX();
             return false;
         }
     }
@@ -53,7 +53,7 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         {
             print("failed to unstick sticker; no space in inventory or not found");
             // TODO: show messaging or SFX
-            GetComponent<Script_InventoryManager>().ErrorSFX();
+            GetComponent<Script_InventoryManager>().ErrorDullSFX();
         }
     }
 
