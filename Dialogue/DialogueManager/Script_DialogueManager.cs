@@ -876,18 +876,22 @@ public class Script_DialogueManager : MonoBehaviour
         {
             fullArtManager.HideFullArt(fullArtManager.activeFullArt, currentNode.data.fadeOut, () =>
             {
-                isInputDisabled = false;
-                EndDialogue();
+                StartCoroutine(EndDialogue());
             });
         }
         else
         {
-            isInputDisabled = false;
-            EndDialogue();
+            StartCoroutine(EndDialogue());
         }
 
-        void EndDialogue()
+        // Wait a frame before actually ending dialogue. This prevents processing the End Dialogue
+        // input with a new interaction (e.g. a cut scene happens when in front of a Text Object).
+        IEnumerator EndDialogue()
         {
+            yield return null;
+
+            isInputDisabled = false;
+            
             if (!HandleKeepDialogueUpOnAction())
                 HideDialogue();
 
