@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 public class Script_PlayerCheckCollisions : Script_CheckCollisions
 {
@@ -20,24 +21,16 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
         Tilemap tileMap                         = Script_Game.Game.TileMap;
         Tilemap[] extraTileMaps                 = Script_Game.Game.ExtraTileMaps;
         Script_WorldTile[] worldTileMaps        = Script_Game.Game.WorldTiles;
-        Tilemap entrancesTileMap                = Script_Game.Game.EntranceTileMap;
-        Tilemap[] exitsTileMaps                 = Script_Game.Game.ExitTileMaps;
 
         // Option to use multiple Infinite World Tiles.
         if (worldTileMaps != null && worldTileMaps.Length > 0)
         {
-            foreach (var worldTile in worldTileMaps)
+            Script_WorldTile worldTile = GetCurrentWorldTile(worldTileMaps, tileWorldLocation);
+            
+            if (worldTile != null)
             {
-                // https://docs.unity3d.com/ScriptReference/Tilemaps.Tilemap.GetCellCenterWorld.html   
-                // Getting grid location based on tileMap assumes entrances and exits
-                // are relatively in the same world space.
-                Vector3Int tileLoc = worldTile.TileMap.WorldToCell(tileWorldLocation);
-                
-                if (!IsOutOfBounds(worldTile.TileMap, tileLoc))
-                {
-                    worldTile.SetAsNewOrigin();
-                    return false;
-                }
+                worldTile.SetAsNewOrigin();
+                return false;
             }
 
             Debug.Log($"tileWorldLocation: {tileWorldLocation} NOT in World Tile Maps");
@@ -57,42 +50,60 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
         // Check the default Ground Tilemap.
         Vector3Int tileLocation = tileMap.WorldToCell(tileWorldLocation);
         return IsOutOfBounds(tileMap, tileLocation);
+    }
 
-        bool IsOutOfBounds(Tilemap tileMap, Vector3Int tileLocation)
+    public Script_WorldTile GetCurrentWorldTile(Script_WorldTile[] worldTileMaps, Vector3Int tileWorldLocation)
+    {
+        return worldTileMaps.FirstOrDefault(worldTile => {
+            // https://docs.unity3d.com/ScriptReference/Tilemaps.Tilemap.GetCellCenterWorld.html   
+            // Getting grid location based on tileMap assumes entrances and exits
+            // are relatively in the same world space.
+            Vector3Int tileLoc = worldTile.TileMap.WorldToCell(tileWorldLocation);
+            
+            if (!IsOutOfBounds(worldTile.TileMap, tileLoc))
+                return true;
+            
+            return false;
+        });
+    }
+    
+    private bool IsOutOfBounds(Tilemap tileMap, Vector3Int tileLocation)
+    {
+        Tilemap entrancesTileMap                = Script_Game.Game.EntranceTileMap;
+        Tilemap[] exitsTileMaps                 = Script_Game.Game.ExitTileMaps;
+        
+        // tiles map from (xyz) to (xz)
+        if (!tileMap.HasTile(tileLocation))
         {
-            // tiles map from (xyz) to (xz)
-            if (!tileMap.HasTile(tileLocation))
+            // tile may not be in current tilemap but could still be in an entrance tilemap
+            if (
+                entrancesTileMap != null
+                && entrancesTileMap.HasTile(tileLocation)
+                && !entrancesTileMap.GetComponent<Script_TileMapExitEntrance>().IsDisabled
+                && entrancesTileMap.gameObject.activeSelf
+            )
             {
-                // tile may not be in current tilemap but could still be in an entrance tilemap
+                return false;
+            }
+            
+            foreach(Tilemap tm in exitsTileMaps)
+            {
+                // tile may not be in current tilemap but could still be in an exit tilemap
                 if (
-                    entrancesTileMap != null
-                    && entrancesTileMap.HasTile(tileLocation)
-                    && !entrancesTileMap.GetComponent<Script_TileMapExitEntrance>().IsDisabled
-                    && entrancesTileMap.gameObject.activeSelf
+                    tm != null
+                    && tm.HasTile(tileLocation)
+                    && !tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled
+                    && tm.gameObject.activeSelf
                 )
                 {
                     return false;
                 }
-                
-                foreach(Tilemap tm in exitsTileMaps)
-                {
-                    // tile may not be in current tilemap but could still be in an exit tilemap
-                    if (
-                        tm != null
-                        && tm.HasTile(tileLocation)
-                        && !tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled
-                        && tm.gameObject.activeSelf
-                    )
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
             }
 
-            return false;
+            return true;
         }
+
+        return false;
     }
 
     protected override bool ModifyElevation(Vector3 loc, Directions dir, ref Vector3 desiredMove)

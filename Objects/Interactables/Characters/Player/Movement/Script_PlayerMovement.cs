@@ -642,6 +642,17 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
+    public Script_WorldTile GetCurrentWorldTile(Vector3 location)
+    {
+        Vector3Int tileWorldLocation = location.ToVector3Int();
+        Script_WorldTile[] worldTiles = Script_Game.Game.WorldTiles;
+
+        if (worldTiles == null || worldTiles.Length == 0)
+            return null;
+        
+        return playerCheckCollisions.GetCurrentWorldTile(worldTiles, tileWorldLocation);
+    }
+
     // Called at each level initialization.
     public void InitializeOnLevel(Transform _grid)
     {

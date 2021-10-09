@@ -17,15 +17,11 @@ public class Script_CheckCollisions : MonoBehaviour
     public bool CheckCollisions(Vector3 currentLocation, Directions dir, ref Vector3 desiredMove)
     {
         Vector3 desiredDirection = Script_Utils.GetDirectionToVectorDict()[dir];
-
-        int desiredX = (int)Mathf.Round((currentLocation + desiredDirection).x);
-        int desiredY = (int)Mathf.Round((currentLocation + desiredDirection).y);
-        int desiredZ = (int)Mathf.Round((currentLocation + desiredDirection).z);
-        
-        Vector3Int tileWorldLocation = new Vector3Int(desiredX, desiredY, desiredZ);
+        Vector3Int tileWorldLocation = (currentLocation + desiredDirection).ToVector3Int();
         
         bool isStairs = ModifyElevation(currentLocation, dir, ref desiredMove);
-        if (isStairs)                                                       return false;
+        if (isStairs)
+            return false;
 
         if (CheckNotOffTilemap(tileWorldLocation))
         {

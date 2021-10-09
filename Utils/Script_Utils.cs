@@ -670,9 +670,13 @@ public static class Script_Utils
         method.Invoke(obj, null);
     }
 
-    public static Vector3Int ToVector3Int(this Vector3 vector3)
+    public static Vector3Int ToVector3Int(this Vector3 location)
     {
-        return new Vector3Int((int)vector3.x, (int)vector3.y, (int)vector3.z);
+        int x = (int)Mathf.Round(location.x);
+        int y = (int)Mathf.Round(location.y);
+        int z = (int)Mathf.Round(location.z);
+
+        return new Vector3Int(x, y, z);
     }
 
     public static bool IsSorted(this int[] arr, bool isStrict = false)

@@ -41,6 +41,29 @@ public class Script_WorldTilesController : MonoBehaviour
         get => originWorldTile;
     }
 
+    void OnEnable()
+    {
+        Script_GameEventsManager.OnPlayerSetupOnLevel += SetCurrentWorldTileAsOrigin;
+    }
+
+    void OnDisable()
+    {
+        Script_GameEventsManager.OnPlayerSetupOnLevel -= SetCurrentWorldTileAsOrigin;
+    }
+    
+    // When Player spawns on World Tiles map, make it the new origin.
+    // This will prevent cases where you exit and can see edges of the world.
+    private void SetCurrentWorldTileAsOrigin()
+    {
+        var currentPlayerWorldTile = Script_Game.Game.GetPlayer().GetCurrentWorldTile();
+        Debug.Log($"Current World Tile {currentPlayerWorldTile}");
+        
+        if (currentPlayerWorldTile != null)
+            SetNewOriginWorldTile(currentPlayerWorldTile);
+        else
+            Debug.LogWarning($"Could not find current World Tile Player spawned on WorldTile: {currentPlayerWorldTile}");
+    }
+
     void Start()
     {
         InitialState();

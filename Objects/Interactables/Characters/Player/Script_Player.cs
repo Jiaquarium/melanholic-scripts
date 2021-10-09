@@ -515,6 +515,11 @@ public class Script_Player : Script_Character
     {
         playerMovementHandler.Move(dir);
     }
+
+    public Script_WorldTile GetCurrentWorldTile()
+    {
+        return playerMovementHandler.GetCurrentWorldTile(location);
+    }
     
     // ------------------------------------------------------------------
     // Spawning
