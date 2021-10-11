@@ -14,10 +14,12 @@ public class Dev_GameHelper : MonoBehaviour
     
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
+    [SerializeField] private Script_ExitMetadataObject DiningEntrance;
     [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject ElleniasRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
+    [SerializeField] private Script_ExitMetadataObject EileensMindEntrance;
     [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject XXXWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject UrselksSaloonHallwayEntrance;
@@ -66,6 +68,11 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(playerTeleportPos);
     }
 
+    public void ExitToDining()
+    {
+        Teleport(DiningEntrance);
+    }
+    
     public void ExitToIdsRoom()
     {
         Teleport(IdsRoomEntrance);
@@ -84,6 +91,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToBallroomFromHMSHall()
     {
         Teleport(BallroomEntranceFromHMSHall);
+    }
+
+    public void ExitToEileensMind()
+    {
+        Teleport(EileensMindEntrance);
     }
 
     public void ExitToWellsWorld()
@@ -249,6 +261,11 @@ public class Dev_GameHelper : MonoBehaviour
 
             EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);
             
+            if (GUILayout.Button("Go To: Dining"))
+            {
+                t.ExitToDining();
+            }
+            
             if (GUILayout.Button("Go To: Ids Room"))
             {
                 t.ExitToIdsRoom();
@@ -267,6 +284,11 @@ public class Dev_GameHelper : MonoBehaviour
             if (GUILayout.Button("Go To: Ballroom (HMS Hall Entrance)"))
             {
                 t.ExitToBallroomFromHMSHall();
+            }
+
+            if (GUILayout.Button("Go To: Eileen's Mind"))
+            {
+                t.ExitToEileensMind();
             }
 
             EditorGUILayout.LabelField("Wells World", EditorStyles.miniLabel);

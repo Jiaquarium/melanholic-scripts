@@ -10,11 +10,10 @@ public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, I
 {
     public Script_InventoryAudioSettings settings;
     private AudioSource source;
-    private bool isInitialize;
     
     void OnEnable()
     {
-        isInitialize = true;
+        Debug.Log($"{name} {this.GetType()} OnEnable");
     }
     
     void Awake()
@@ -28,12 +27,12 @@ public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, I
 
     public virtual void OnSelect(BaseEventData e)
     {
-        // isInitialize flag prevents SFX when pulling up the Canvas
-        if (!isInitialize)  PlaySFX();
-        else                isInitialize = false;
+        Debug.Log($"{name} {this.GetType()} OnSelect");
+        
+        SelectSFX();
     }
 
-    protected void PlaySFX()
+    private void SelectSFX()
     {
         source.PlayOneShot(Script_SFXManager.SFX.Select, Script_SFXManager.SFX.SelectVol);
     }
