@@ -22,6 +22,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject XXXWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject UrselksSaloonHallwayEntrance;
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
+    [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
 
@@ -103,6 +104,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToFireplaceTraining1()
     {
         Teleport(FireplaceTraining1Entrance);
+    }
+
+    public void ExitToGrandMirror()
+    {
+        Teleport(GrandMirrorEntrance);
     }
 
     public void BuildSetup()
@@ -241,6 +247,8 @@ public class Dev_GameHelper : MonoBehaviour
                 t.ExitToLevel();
             }
 
+            EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);
+            
             if (GUILayout.Button("Go To: Ids Room"))
             {
                 t.ExitToIdsRoom();
@@ -283,6 +291,13 @@ public class Dev_GameHelper : MonoBehaviour
             if (GUILayout.Button("Go To: Urselks Saloon Hallway"))
             {
                 t.ExitToUrselksSaloonHallway();
+            }
+
+            EditorGUILayout.LabelField("Myne's", EditorStyles.miniLabel);
+
+            if (GUILayout.Button("Go To: Grand Mirror"))
+            {
+                t.ExitToGrandMirror();
             }
 
             EditorGUILayout.LabelField("Painting Quests", EditorStyles.boldLabel);

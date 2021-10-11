@@ -20,7 +20,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     /// <summary>
     /// Use Pixel Ratio that will always fit canvases to smaller than screen size.
     /// </summary>
-    [SerializeField] private bool isUpscaledRTScaleFactor;
+    [SerializeField] private bool isOnlyUpscaled;
     
     [SerializeField] private Script_GraphicsManager graphics;
     
@@ -29,6 +29,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 
     private bool isScaling;
 
+    
     void OnEnable()
     {
         if (!isScaling)
@@ -136,7 +137,9 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         // Catch when Singletons aren't set yet.
         try
         {
-            targetScaleFactor = isUpscaledRTScaleFactor ? graphics.UpscaledRTPixelRatio : graphics.PixelRatio;
+            targetScaleFactor = isOnlyUpscaled
+                ? graphics.UpscaledRTPixelRatio
+                : Mathf.Max(graphics.PixelRatio, graphics.UpscaledRTPixelRatio);
             
             // Will result in the canvas being hidden from view.
             hiddenScaleFactor = targetScaleFactor + 1;

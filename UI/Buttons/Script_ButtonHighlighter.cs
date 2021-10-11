@@ -24,10 +24,12 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     void OnEnable()
     {
         InitializeState();
+        HandleSlowAwakeOnEnable();
     }
 
     /// Prevent FOUC on showing if using same menu and changing active button while inactive
-    void OnDisable() {
+    void OnDisable()
+    {
         InitializeState();
     }
 
@@ -62,15 +64,23 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         
         /// If this is slow awakening UI store if this should be highlighted 
         if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject)
-        {
             isHighlighted = true;
-        }
+    }
+
+    // HandleSlowAwake will handle in Update. This handles before rendering.
+    private void HandleSlowAwakeOnEnable()
+    {
+        if (
+            EventSystem.current != null
+            && EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>() != null
+        )
+            HandleHighlight(false);
     }
 
     /// <summary>
     /// SlowAwakeEventSystem will disable sendNavigationEvents until it is ready to be interacted with
     /// </summary>
-    void HandleSlowAwake()
+    private void HandleSlowAwake()
     {
         /// Don't show highlight for Slow Awake Event Systems (Choices) 
         if (
@@ -79,26 +89,29 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
             && isLoading
         )
         {
-            foreach (Image img in outlines) img.enabled = false;
+            HandleHighlight(false);
         }
         else
         {
             isLoading = false;
-            if (isHighlighted)  foreach (Image img in outlines) img.enabled = true;
+            if (isHighlighted)
+                HandleHighlight(true);
         }
     }
 
     protected virtual void HighlightOutline(bool isOn)
     {
         if (isOn)   Debug.Log($"{name}: HighlightOutline {isOn}");
-        // if (isHighlighted == isOn)  return;)
 
-        foreach (Image img in outlines)
-        {
-            img.enabled = isOn;
-        }
+        HandleHighlight(isOn);
         
         isHighlighted = isOn;
+    }
+
+    private void HandleHighlight(bool isOn)
+    {
+        foreach (Image img in outlines)
+            img.enabled = isOn;
     }
 
     /// <summary>
