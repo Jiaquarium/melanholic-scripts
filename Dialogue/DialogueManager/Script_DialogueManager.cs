@@ -551,16 +551,7 @@ public class Script_DialogueManager : MonoBehaviour
             return;
         }
         activeCanvasText = activeCanvasTexts[lineCount];
-
-        if (currentNode.data.isDynamicLines)
-        {
-            activeCanvasText.enableWordWrapping = false;
-            activeCanvasText.overflowMode = TMPro.TextOverflowModes.Overflow;
-        }
-        else
-        {
-            activeCanvasText.enableWordWrapping = true;
-        }
+        activeCanvasText.enableWordWrapping = true;
         
         string unformattedLine = lines.Dequeue();
 
@@ -1166,9 +1157,10 @@ public class Script_DialogueManager : MonoBehaviour
     {
         Debug.Log("Attempting to set up name now");
 
-        if (nameText == null)   return;
+        if (nameText == null)
+            return;
 
-        nameText.text = Script_Utils.FormatString(name) + (string.IsNullOrEmpty(name) ? "" : ":");
+        nameText.text = Script_Utils.FormatString(name).FormatName();
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode && (name == "" || name == null))
         {

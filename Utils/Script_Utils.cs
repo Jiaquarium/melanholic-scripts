@@ -319,6 +319,11 @@ public static class Script_Utils
         );
     }
 
+    public static string FormatName(this string s)
+    {
+        return string.IsNullOrEmpty(s) ? "「 ? 」" : $"「 {s} 」";
+    }
+
     /// <summary>
     /// copies elements from array 1 into array 2; depends on array2 size
     /// </summary>

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-08 15:42:29
+// Last created by Dialogue Exporter at 2021-10-09 19:51:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3099,7 +3099,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
-// Rock Garden
+//     Rock Garden
 {
     "rock-garden_ids_default",
     new Model_Languages
@@ -3169,7 +3169,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "garden-labyrinth_puppets_thought",
     new Model_Languages
     {
-        speaker = "{10}",
+        speaker = "{0}",
         EN = new string[]
         {
                 @"Hand puppets...| This room actually reminds me a bit of a theatre stage.",
@@ -3248,6 +3248,131 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"A new life. Let’s start a new life.| On the other side.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_default",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"����.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_psychic",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"“Meet me at the <b>courtyard</b>.” Yes, that was her favorite spot.",
+                @"It was in the <b>center</b> of all this mess, but I've lost my way. I’ll never find my way there at this rate.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_psychic1",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"I can’t leave this wretched place alone.",
+                @"What’s the point of it all without {39}?",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_psychic2",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"You would never understand.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_default",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"����.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_psychic",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"We always used to meet at the <b>courtyard</b>...",
+                @"It was in the <b>center</b> of all this. I know {38} will be waiting for me there, if I could just find it...",
+                @"Usually I know which turns to take, but it's completely left my memory ever since <i><b>they</b></i> started coming in here.| Kinda sad how fast my memory fades now, ha.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_psychic1",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"Really strange things have been happening in here lately. If I can be honest with you, I'm ready to leave this place as soon as I can.",
+                @"I just need to find {38} first...",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_psychic2",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"I really have my doubts about all this.| The {22} you know.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_latte_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
         },
         
     }
