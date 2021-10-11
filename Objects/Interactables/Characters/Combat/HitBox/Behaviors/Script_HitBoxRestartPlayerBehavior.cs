@@ -6,6 +6,7 @@ using Cinemachine;
 public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
 {
     [SerializeField] private Transform restartDestination;
+    [SerializeField] private Directions facingDirection = Directions.Up;
 
     public override void Hit(Collider col)
     {
@@ -35,6 +36,7 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
                     Vector3 prevPlayerPos = p.transform.position;
                     
                     p.Teleport(restartDestination.position);
+                    p.FaceDirection(facingDirection);
                     
                     Script_Game.Game.SnapActiveCam(prevPlayerPos);
                     FadeOut();        

@@ -14,9 +14,10 @@ public class Script_HurtBox : MonoBehaviour
 
     public int Hurt(int dmg, Script_HitBox hitBox)
     {
+        int dmgActuallyTaken = stats.Hurt(dmg, hitBox);
+        
         Script_HurtBoxEventsManager.Hurt(tag, hitBox);
         
-        int dmgActuallyTaken = stats.Hurt(dmg, hitBox);
         print($"{this.name} took {dmgActuallyTaken} damage from hitbox ${hitBox.Id}.");
 
         return dmgActuallyTaken;

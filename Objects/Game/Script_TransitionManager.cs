@@ -142,6 +142,8 @@ public class Script_TransitionManager : MonoBehaviour
         EaseToPausedTimeScale();
         
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+
+        // Timeline will call Game.LevelsInactivate.
     }
 
     private void EaseToPausedTimeScale()
@@ -275,7 +277,7 @@ public class Script_TransitionManager : MonoBehaviour
             onAllPuzzlesDoneCutsceneDone = null;
         }
     }
-
+    
     // After screen has faded to Black play the proper timeline.
     public void PlayEndingCutScene()
     {

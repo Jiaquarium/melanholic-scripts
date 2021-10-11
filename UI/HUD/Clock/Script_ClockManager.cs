@@ -49,9 +49,12 @@ public class Script_ClockManager : MonoBehaviour
 
     void Update()
     {
-        if (clock.State == Script_Clock.States.Done && !didFireDoneEvent)
+        if (clock.State == Script_Clock.States.Done)
         {
-            TimesUp();
+            if (!didFireDoneEvent)
+                TimesUp();
+
+            return;
         }
         
         if (IsClockRunning())

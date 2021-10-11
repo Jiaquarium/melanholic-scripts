@@ -69,7 +69,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
         dramaticThoughtsDirector.stopped                    += OnDramaticThoughtsDone;
-        Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestart;
+        Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
     }
 
@@ -79,7 +79,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         
         Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
         dramaticThoughtsDirector.stopped                    -= OnDramaticThoughtsDone;
-        Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestart;
+        Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
 
         bgThemePlayer.gameObject.SetActive(false);
@@ -216,9 +216,16 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         }
     }
 
-    private void OnPlayerRestart(string tag, Script_HitBox hitBox)
+    private void OnPlayerRestartHandleBgm(string tag, Script_HitBox hitBox)
     {
-        Debug.Log($"OnPlayerRestart() hurtbox tag: {tag}, hitBox tag: {hitBox.tag}");
+        // Ignore if this Hurt Event caused Time to run out.
+        if (Script_ClockManager.Control.ClockState == Script_Clock.States.Done)
+        {
+            Debug.Log($"{name} Ignore trying to restart BGM on Hurt because Time has run out");
+            return;
+        }
+        
+        Debug.Log($"OnPlayerRestartHandleBgm() hurtbox tag: {tag}, hitBox tag: {hitBox.tag}");
         
         if (tag == Const_Tags.Player)
         {

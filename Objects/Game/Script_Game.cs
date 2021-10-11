@@ -747,9 +747,8 @@ public class Script_Game : MonoBehaviour
         transitionManager.StartEndingSequence(ending);
     }
 
-    /// <summary> =======================================================================
-    /// Signal
-    /// </summary> ======================================================================
+    // ------------------------------------------------------------------
+    // Timeline Signals
     public void OnTimesUpPlayableDone()
     {
         transitionManager.OnTimesUpPlayableDone();
@@ -1759,15 +1758,16 @@ public class Script_Game : MonoBehaviour
     /* =========================================================================
         _VCAMERA_
     ========================================================================= */
-    // disable and then enable the Vcam after the Follow Target teleports will snap this
+    
     public CinemachineVirtualCamera SnapActiveCam(Vector3 prevPos, Transform t = null)
     {
         CinemachineVirtualCamera activeVCam = cinemachineBrain
             .ActiveVirtualCamera.VirtualCameraGameObject
             .GetComponent<CinemachineVirtualCamera>();
         
-        Debug.Log($"Snap activeVCam to {t} or player: {activeVCam}");
         var target = t ?? GetPlayer().transform;
+        
+        Debug.Log($"Snapping activeVCam <{activeVCam}> to <{target}>");
         
         // https://forum.unity.com/threads/cameras-no-longer-snapping-after-being-disabled-enabled.729242/#post-6276506
         activeVCam.OnTargetObjectWarped(target.transform, target.transform.position - prevPos);
@@ -1775,6 +1775,9 @@ public class Script_Game : MonoBehaviour
         // https://forum.unity.com/threads/proper-way-to-reset-follow-camera.747101/
         activeVCam.PreviousStateIsValid = false;
 
+        // Match the Camera Follower
+        cameraTargetFollower.MatchPlayer();
+        
         return activeVCam;
     }
 

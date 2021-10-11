@@ -32,13 +32,12 @@ public class Script_ScreenFXManager : MonoBehaviour
     [SerializeField] private float currentInterval;
     [SerializeField] private float timer;
     private Script_Clock.TimeStates lastState;
-    
+
     void Update()
     {
         UpdateScreenFX();
         
         if (game.IsInHotel())   return;
-
         if (
             clockManager.ClockTimeState == Script_Clock.TimeStates.None
             || clockManager.ClockState == Script_Clock.States.Done
