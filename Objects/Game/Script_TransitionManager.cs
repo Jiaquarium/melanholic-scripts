@@ -199,9 +199,10 @@ public class Script_TransitionManager : MonoBehaviour
         if (endingOverride != Endings.None)     game.ActiveEnding = endingOverride;
 
         game.ChangeStateCutScene();
+        
         Script_BackgroundMusicManager.Control.FadeOutSlow();
 
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);        
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
     }
 
     /// <summary>

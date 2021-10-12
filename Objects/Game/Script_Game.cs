@@ -720,14 +720,23 @@ public class Script_Game : MonoBehaviour
     /* =======================================================================
         _ENDING SEQENCES_DEATH_TIMESUP_TRANSITIONS
     ======================================================================= */
+    public void OnEndingSequenceHideAll()
+    {
+        LevelsInactivate(isOnBeforeScene: false);
+        SetPlayerActive(false);
+    }
+    
     public void DieEffects(Script_GameOverController.DeathTypes deathType)
     {
         transitionManager.DieEffects(deathType);
     }
-    void OnDiePlayableDone(PlayableDirector aDirector)
+    
+    private void OnDiePlayableDone(PlayableDirector aDirector)
     {
         transitionManager.OnDiePlayableDone(aDirector);
     }
+
+    
 
     /// ------------------------------------------------------------------
     /// Times Up
@@ -1025,6 +1034,11 @@ public class Script_Game : MonoBehaviour
     public void UnhidePlayer()
     {
         GetPlayer().SetInvisible(false, 0f);
+    }
+
+    public void SetPlayerActive(bool isActive)
+    {
+        GetPlayer().gameObject.SetActive(isActive);
     }
 
     /* =======================================================================
