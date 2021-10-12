@@ -162,7 +162,7 @@ public class Dev_GameHelper : MonoBehaviour
 
     public void SaveCurrent()
     {
-        Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.Initialize); 
+        Script_SaveGameControl.control.Save(); 
     }
 
     private void Teleport(Script_ExitMetadata exit)

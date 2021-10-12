@@ -65,7 +65,6 @@ public class Script_SaveGameControl : MonoBehaviour
     /// <param name="type">SavePoint saves within Kelsingor</param>
     /// <param name="playerStateOverride">Option to override player state</param>
     public void Save(
-        Saves type,
         Model_PlayerState playerStateOverride = null,
         Model_GameData gameDataOverride = null
     )
@@ -82,29 +81,10 @@ public class Script_SaveGameControl : MonoBehaviour
             /// Main data to pass around and modify
             Model_SaveData saveData = new Model_SaveData();
 
-            /// Depending on what type of save, we need to modify Run data appropriately
-            switch (type)
-            {
-                case (Saves.SavePoint):
-                    SaveGame(saveData);
-                    OverridePlayerData(saveData, playerStateOverride);
-                    HandleSaveRun(saveData);
-                    WriteSaveDataFile(bf, saveFilePath, saveData);
-                    break;
-                
-                /// Called when passing a Last Elevator. Currently exactly like SavePoint save
-                case (Saves.Initialize):
-                    SaveGame(saveData);
-                    OverridePlayerData(saveData, playerStateOverride);
-                    HandleSaveRun(saveData);
-                    WriteSaveDataFile(bf, saveFilePath, saveData);
-                    break;
-                
-                /// Replace current game saved data and with the SaveDataInitialize
-                case (Saves.RestartInitialized):
-                    HandleRestartFromInitialSave();
-                    break;
-            }
+            SaveGame(saveData);
+            OverridePlayerData(saveData, playerStateOverride);
+            HandleSaveRun(saveData);
+            WriteSaveDataFile(bf, saveFilePath, saveData);
 
             /// Create SavedGameTitleData
             FileStream titleFile    = File.Create(savedGameTitleDataPath);            
@@ -150,44 +130,6 @@ public class Script_SaveGameControl : MonoBehaviour
         void HandleSaveRun(Model_SaveData data)
         {
             levelsHandler.SaveLevels(data);
-        }
-        
-        // void HandleInitialSave(Model_SaveData data)
-        // {
-        //     data.runData = new Model_RunData();
-        // }
-
-        void HandleRestartFromInitialSave()
-        {
-            try
-            {
-                if (File.Exists(saveFilePath) && File.Exists(saveInitializeFilePath))
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    FileStream initFile = File.Open(saveInitializeFilePath, FileMode.Open);
-                    Model_SaveData data = (Model_SaveData)bf.Deserialize(initFile);
-                    initFile.Close();
-                    
-                    /// Update playtime
-                    gameHandler.UpdatePlayTime(data);
-                    
-                    /// Update init file with new play time
-                    WriteSaveDataFile(bf, saveInitializeFilePath, data);
-                    
-                    /// Replace saveFile with the updated init file
-                    File.Copy(saveInitializeFilePath, saveFilePath, true);
-                }
-                else
-                {
-                    Debug.LogError(
-                        $"You are missing the save file and/or saveInitialize file when you should have both"
-                    );
-                }
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("Failed copying saveInitialized file with exception: " + e.ToString());
-            }
         }
     }
 

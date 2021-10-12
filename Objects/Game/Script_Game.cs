@@ -729,6 +729,8 @@ public class Script_Game : MonoBehaviour
         transitionManager.OnDiePlayableDone(aDirector);
     }
 
+    /// ------------------------------------------------------------------
+    /// Times Up
     /// <summary>
     /// Called on TimesUp Event Firing
     /// </summary>
@@ -737,22 +739,47 @@ public class Script_Game : MonoBehaviour
         transitionManager.TimesUpEffects();
     }
 
-    public void ToTitleScreen()
-    {
-        Script_SceneManager.ToTitleScene();
-    }
-
-    public void EndingCutScene(Script_TransitionManager.Endings ending)
-    {
-        transitionManager.StartEndingSequence(ending);
-    }
-
-    // ------------------------------------------------------------------
-    // Timeline Signals
+    // ------------------------------------
+    // Times Up: Timeline Signals
     public void OnTimesUpPlayableDone()
     {
         transitionManager.OnTimesUpPlayableDone();
     }
+
+    /// ------------------------------------------------------------------
+    /// Ending
+    
+    public void EndingCutScene(Script_TransitionManager.Endings ending)
+    {
+        transitionManager.StartEndingSequence(ending);
+    }
+    
+    /// ------------------------------------------------------------------
+    /// To Title
+    public void ToTitle()
+    {
+        StartCoroutine(WaitToTitleScreen());
+
+        IEnumerator WaitToTitleScreen()
+        {
+            yield return new WaitForSeconds(transitionManager.ToTitleWaitTime);
+
+            transitionManager.PlayToTitleTimeline();
+        }
+    }
+
+    private void ToTitleScene()
+    {
+        Script_SceneManager.ToTitleScene();
+    }
+
+    // ------------------------------------
+    // To Title: Timeline Signals
+    public void ToTitleFromTimeline()
+    {
+        ToTitleScene();
+    }
+
     
     /* =======================================================================
         _LEVEL BEHAVIOR_
@@ -958,11 +985,6 @@ public class Script_Game : MonoBehaviour
     public Vector3 GetPlayerLocation()
     {
         return player.GetComponent<Transform>().position;
-    }
-
-    public Transform GetPlayerTransform()
-    {
-        return player.GetComponent<Transform>();
     }
 
     public bool GetPlayerIsTalking()
@@ -1927,14 +1949,15 @@ public class Script_Game : MonoBehaviour
     /* =========================================================================
         _RESTARTING_
     ========================================================================= */
+    
     /// <summary>
-    /// There are three ways to restart
+    /// -------- Saving & Restarting --------
     /// 1. Moving to the next run
-    /// 2. Restarting from the current initialized run
-    /// 3. Restarting from any last save
+    /// 2. Restarting the day
     /// </summary>
     
-    /// 1. <!-- Move to Next Run -->
+    /// ------------------------------------------------------------------
+    /// 1. Move to Next Run
     /// <summary>
     /// Exiting the Elevator Bay after exiting via a Last Elevator
     /// (TBD: Upgraded Elevator Sticker)
@@ -2004,7 +2027,6 @@ public class Script_Game : MonoBehaviour
         );
         
         saveGameControl.Save(
-            Script_SaveGameControl.Saves.Initialize,
             isLobbySpawn ? lobbySpawnPlayer : null,
             isLobbySpawn ? gameData : null 
         );
@@ -2013,7 +2035,7 @@ public class Script_Game : MonoBehaviour
 
         IEnumerator WaitToRestartGame()
         {
-            yield return new WaitForSeconds(saveManager.RestartGameTime);
+            yield return new WaitForSeconds(transitionManager.RestartGameTimeOnSave);
             RestartGame();
         }
     }
@@ -2045,30 +2067,35 @@ public class Script_Game : MonoBehaviour
         saveManager.ShowSaveAndStartWeekendMessage();
     }
 
-    /// 2. <!-- Restart from Current Initialized Run -->
     /// <summary>
-    /// Restart from the initialized run, will erase game data
+    /// ------------------------------------------------------------------
+    /// 2. Restarting
+    ///
+    /// Restarts from the lobby of the current day (last save).
     /// </summary>
-    public void RestartInitialized()
+    
+    public void Restart()
     {
-        CleanRun();
-        Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.RestartInitialized);
-        RestartGame();
+        StartCoroutine(WaitToRestartGame());
+
+        IEnumerator WaitToRestartGame()
+        {
+            yield return new WaitForSeconds(transitionManager.RestartGameTimeOnBadEnding);
+            
+            // Timeline will call RestartGameFromTimeline.
+            transitionManager.PlayRestartGameTimeline();
+        }
     }
 
-    /// 3. <!-- Restart from Last Save -->
-    /// <summary>
-    /// Restarts from any last save, whether it is the initialized or last SavePoint (Tedmunch)
-    /// </summary>
-    public void RestartRun()
+    // ------------------------------------
+    // Restarting: Timeline Signal
+    // Called from Transition Manager's RestartTimeline 
+    public void RestartGameFromTimeline()
     {
-        RestartGame();
+        RestartGame();   
     }
 
-    public void SaveDefault()
-    {
-        saveGameControl.Save(Script_SaveGameControl.Saves.Initialize);   
-    }
+    // ------------------------------------------------------------------
 
     private void CleanRun()
     {

@@ -28,6 +28,7 @@ public class Script_Exits : MonoBehaviour
         CutScene                    = 3,
         Piano                       = 4,
         SaveAndStartWeekendCycle    = 5,
+        // Dev only
         SaveAndRestartOnLevel       = 6,
         StairsUp                    = 10,
     }

@@ -11,10 +11,6 @@ public class Script_SaveViewManager : MonoBehaviour
 {
     public static Script_SaveViewManager Control;
     
-    // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
-    // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
-    [SerializeField] private float restartGameTime;
-    
     [SerializeField] private Script_Game game;
     
     [SerializeField] private Script_CanvasGroupController saveAndRestartCanvasGroup;
@@ -41,11 +37,6 @@ public class Script_SaveViewManager : MonoBehaviour
     [SerializeField] private float showSavingCompleteTime;
     
     private bool isShowingSaving;
-
-    public float RestartGameTime
-    {
-        get => restartGameTime;
-    }
     
     void Update()
     {
@@ -121,7 +112,7 @@ public class Script_SaveViewManager : MonoBehaviour
             );
             
             saveProgressCanvas.SetActive(true);
-            Script_SaveGameControl.control.Save(Script_SaveGameControl.Saves.SavePoint);
+            Script_SaveGameControl.control.Save();
 
             isShowingSaving = true;
             Script_AwaitFile.AwaitFile(Script_SaveGameControl.saveFilePath);

@@ -34,6 +34,14 @@ public class Script_TransitionManager : MonoBehaviour
         Dream           = 4,
     }
     
+    // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
+    // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
+    [SerializeField] private float restartGameTimeOnSave;
+    // Time to wait to restart game after Bad Ending cut scene.
+    [SerializeField] private float restartGameTimeOnBadEnding;
+    // Time to wait to before starting restart game timeline.
+    [SerializeField] private float toTitleWaitTime;
+    
     public Script_CanvasGroupFadeInOut fader;
     [SerializeField] private Script_CanvasGroupController timelineFader;
     
@@ -56,6 +64,21 @@ public class Script_TransitionManager : MonoBehaviour
     private Action onAllPuzzlesDoneCutsceneDone;
     private Script_GameOverController.DeathTypes deathType;
     private bool didPlayAllPuzzlesDoneCutScene = false;
+    
+    public float RestartGameTimeOnSave
+    {
+        get => restartGameTimeOnSave;
+    }
+
+    public float RestartGameTimeOnBadEnding
+    {
+        get => restartGameTimeOnBadEnding;
+    }
+
+    public float ToTitleWaitTime
+    {
+        get => toTitleWaitTime;
+    }
     
     public IEnumerator FadeIn(float t, Action action)
     {
@@ -130,6 +153,9 @@ public class Script_TransitionManager : MonoBehaviour
 
     public void TimesUpEffects()
     {
+        // Time HUD Remain Up to indicate Time Up.
+        Script_HUDManager.Control.IsTimesUp = true;
+        
         game.ChangeStateCutScene();
 
         // Fade out BGM
@@ -326,30 +352,31 @@ public class Script_TransitionManager : MonoBehaviour
         });
     }
 
-    /// ------------------------------------------------------------
-    /// Called from RestartPrompt UIChoices
-    /// ------------------------------------------------------------
-    /// <summary>
-    /// Restart from last save (Tedmunch or initialized)
-    /// </summary>
-    public void RestartRun()
+    // ------------------------------------------------------------
+    // Restarting
+    public void PlayRestartGameTimeline()
     {
-        game.RestartRun();
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 9);
     }
 
-    /// <summary>
-    /// Restart from the initialized run, will erase game data
-    /// </summary>
-    public void RestartGameInitialized()
+    public void PlayToTitleTimeline()
     {
-        game.RestartInitialized();
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 10);
     }
 
+    // ------------------------------------
+    // Restarting: Unity Events called Restart UI Choices
     public void ToTitleScreen()
     {
-        game.ToTitleScreen();
+        game.ToTitle();
     }
-    /// ------------------------------------------------------------
+
+    public void Restart()
+    {
+        game.Restart();
+    }
+
+    // ------------------------------------------------------------
 
     public void InitialState()
     {

@@ -7,7 +7,12 @@ using System;
 [RequireComponent(typeof(CanvasGroup))]
 public class Script_CanvasGroupFadeInOut : MonoBehaviour
 {
-    public IEnumerator FadeInCo(float t, Action cb = null, float maxAlpha = 1f)
+    public IEnumerator FadeInCo(
+        float t,
+        Action cb = null,
+        float maxAlpha = 1f,
+        bool isUnscaledTime = false
+    )
     {
         maxAlpha = maxAlpha <= 0f ? 1f : maxAlpha;
         CanvasGroup cg = GetComponent<CanvasGroup>();
@@ -17,7 +22,9 @@ public class Script_CanvasGroupFadeInOut : MonoBehaviour
 
         while (cg.alpha < maxAlpha)
         {
-            alpha += (Time.deltaTime / t) * maxAlpha;
+            var deltaTime = isUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+            
+            alpha += (deltaTime / t) * maxAlpha;
             if (alpha > maxAlpha)   alpha = maxAlpha;
 
             cg.alpha = alpha;
@@ -27,7 +34,11 @@ public class Script_CanvasGroupFadeInOut : MonoBehaviour
         if (cb != null)    cb();
     }
     
-    public IEnumerator FadeOutCo(float t, Action cb = null)
+    public IEnumerator FadeOutCo(
+        float t,
+        Action cb = null,
+        bool isUnscaledTime = false
+    )
     {
         CanvasGroup cg = GetComponent<CanvasGroup>();
         float alpha = cg.alpha;
@@ -36,7 +47,9 @@ public class Script_CanvasGroupFadeInOut : MonoBehaviour
 
         while (cg.alpha > 0f)
         {
-            alpha -= Time.deltaTime / t;
+            var deltaTime = isUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+            
+            alpha -= deltaTime / t;
             if (alpha > 1f)   alpha = 1f;
 
             cg.alpha = alpha;

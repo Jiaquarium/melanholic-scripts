@@ -48,7 +48,11 @@ public class Script_CanvasGroupController : MonoBehaviour
         c.gameObject.SetActive(false);
     }
 
-    public virtual void FadeIn(float t = DefaultFadeTime, Action a = null)
+    public virtual void FadeIn(
+        float t = DefaultFadeTime,
+        Action a = null,
+        bool isUnscaledTime = false
+    )
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         fader.gameObject.SetActive(true);
@@ -63,16 +67,23 @@ public class Script_CanvasGroupController : MonoBehaviour
 
         isFadedOut = false;
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
-            if (a != null) a();
-            isFadedIn = true;
-            fadeInCoroutine = null;
-        }));
+                if (a != null) a();
+                isFadedIn = true;
+                fadeInCoroutine = null;
+            },
+            maxAlpha: 1f,
+            isUnscaledTime: isUnscaledTime
+        ));
     }
 
     /// <summary>
     /// NOTE: will close canvas group afterwards
     /// </summary>
-    public virtual void FadeOut(float t = DefaultFadeTime, Action a = null)
+    public virtual void FadeOut(
+        float t = DefaultFadeTime,
+        Action a = null,
+        bool isUnscaledTime = false
+    )
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         if (fader == null)  return;
@@ -86,11 +97,13 @@ public class Script_CanvasGroupController : MonoBehaviour
 
         isFadedIn = false;
         fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(t, () => {
-            if (a != null) a();
-            isFadedOut = true;
-            fader.gameObject.SetActive(false);
-            fadeOutCoroutine = null;
-        }));
+                if (a != null) a();
+                isFadedOut = true;
+                fader.gameObject.SetActive(false);
+                fadeOutCoroutine = null;
+            },
+            isUnscaledTime: isUnscaledTime
+        ));
     }
 
     public void InitialState()

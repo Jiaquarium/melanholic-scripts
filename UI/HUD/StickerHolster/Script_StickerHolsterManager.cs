@@ -28,7 +28,8 @@ public class Script_StickerHolsterManager : MonoBehaviour
                 game.GetPlayer().State == Const_States_Player.Interact
                 || game.GetPlayer().State == Const_States_Player.LastElevatorEffect
                 || game.GetPlayer().State == Const_States_Player.MelancholyPiano
-            );
+            )
+            && Script_ClockManager.Control.ClockState != Script_Clock.States.Done;
     }
 
     void Update()
@@ -38,11 +39,15 @@ public class Script_StickerHolsterManager : MonoBehaviour
         
         if (IsHolsterShowing)
         {
-            stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(fadeSpeed.ToFadeTime(), null);
+            stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(
+                fadeSpeed.ToFadeTime(), null, isUnscaledTime: true
+            );
         }
         else
         {
-            stickerHolster.GetComponent<Script_CanvasGroupController>().FadeOut(fadeSpeed.ToFadeTime(), null);
+            stickerHolster.GetComponent<Script_CanvasGroupController>().FadeOut(
+                fadeSpeed.ToFadeTime(), null, isUnscaledTime: true
+            );
         }
     }
     

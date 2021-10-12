@@ -293,7 +293,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         StartCoroutine(playerSpotLight.FadeInLightOnTarget(
             lightsFadeOutTime,
-            game.GetPlayerTransform(),
+            game.GetPlayer().transform,
             null
         ));
         StartCoroutine(IdsSpotLight.FadeInLightOnTarget(

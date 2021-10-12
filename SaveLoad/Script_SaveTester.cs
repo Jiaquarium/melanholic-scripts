@@ -17,7 +17,7 @@ public class Script_SaveTester : Editor
         Script_SaveGameControl control = (Script_SaveGameControl)target;
         if (GUILayout.Button("Save"))
         {
-            control.Save(Script_SaveGameControl.Saves.Initialize);
+            control.Save();
         }
 
         if (GUILayout.Button("Delete Game Data"))

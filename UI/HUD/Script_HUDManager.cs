@@ -21,6 +21,8 @@ public class Script_HUDManager : MonoBehaviour
     
     [SerializeField] private bool isPaused;
 
+    public bool IsTimesUp { get; set; }
+
     public bool IsPaused
     {
         get => isPaused;
@@ -29,16 +31,17 @@ public class Script_HUDManager : MonoBehaviour
 
     void Update()
     {
-        if (isPaused)
+        // After IsTimesUp, this will be controlled by TimesUp timeline.
+        if (isPaused || IsTimesUp)
             return;
         
-        if (IsClockShowing())
+        if (IsClockShowing() || IsTimesUp)
         {
-            timeCanvasGroup.FadeIn(fadeSpeed.ToFadeTime(), null);
+            timeCanvasGroup.FadeIn(fadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
         }
         else
         {
-            timeCanvasGroup.FadeOut(fadeSpeed.ToFadeTime(), null);
+            timeCanvasGroup.FadeOut(fadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
         }
     }
 

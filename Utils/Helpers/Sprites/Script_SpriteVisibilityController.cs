@@ -17,7 +17,8 @@ public class Script_SpriteVisibilityController : MonoBehaviour
     public float maxTimer;
     protected Script_Game g;
     [SerializeField] private bool isParent;
-    [Tooltip("Hide until meets the Transform")][SerializeField] private bool isShowOnReachedTarget;
+    [Tooltip("Hide until meets the Transform")]
+    [SerializeField] private bool isShowOnReachedTarget;
     [SerializeField] private Script_SpriteFadeOut spriteFader;
     [SerializeField] protected FadeSpeeds fadeSpeed;
 
@@ -30,6 +31,7 @@ public class Script_SpriteVisibilityController : MonoBehaviour
     void Awake() {
         if (spriteFader == null)    spriteFader = GetComponent<Script_SpriteFadeOut>();
         if (isParent)   spriteFader.isParent = true;
+        
         SetVisibilityTargetByTransform();
     }
     
@@ -129,15 +131,22 @@ public class Script_SpriteVisibilityController : MonoBehaviour
 
     protected virtual bool CheckShouldFadeIn()
     {
-        Vector3 playerLoc = g.GetPlayerLocation();
+        var player = g.GetPlayer();
+
+        if (player == null)
+            return false;
+
+        Vector3 playerLoc = player.transform.position;
 
         bool isPlayerReachedTarget;
 
         if (isAxisZ)    isPlayerReachedTarget = playerLoc.z >= targetLoc.z;
         else            isPlayerReachedTarget = playerLoc.x >= targetLoc.x;
 
-        if (isShowOnReachedTarget)  return isPlayerReachedTarget;
-        else                        return !isPlayerReachedTarget;
+        if (isShowOnReachedTarget)
+            return isPlayerReachedTarget;
+        else
+            return !isPlayerReachedTarget;
     }
 
     private void HandleFadeOut(bool isFadeIn)
