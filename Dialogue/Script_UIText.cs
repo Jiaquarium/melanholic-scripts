@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-12 12:26:58
+// Last created by UI Exporter at 2021-10-12 15:20:42
 
 using System.Collections;
 using System.Collections.Generic;
@@ -498,7 +498,88 @@ SAVING GAME... Please do not turn off power."
     }
 },
 // ------------------------------------------------------------------
+// Start
+{
+    "start_cta_press",
+    new Model_LanguagesUI
+    {
+        EN = @"Press Enter or Space"
+    }
+},
+{
+    "start_options_start",
+    new Model_LanguagesUI
+    {
+        EN = @"Start"
+    }
+},
+{
+    "start_options_settings",
+    new Model_LanguagesUI
+    {
+        EN = @"Settings"
+    }
+},
+{
+    "start_options_exit",
+    new Model_LanguagesUI
+    {
+        EN = @"End"
+    }
+},
+// ------------------------------------------------------------------
+// Settings
+{
+    "settings_title",
+    new Model_LanguagesUI
+    {
+        EN = @"『 Settings 』"
+    }
+},
+{
+    "settings_controls",
+    new Model_LanguagesUI
+    {
+        EN = @"Controls"
+    }
+},
+{
+    "settings_graphics",
+    new Model_LanguagesUI
+    {
+        EN = @"Graphics"
+    }
+},
+{
+    "settings_back",
+    new Model_LanguagesUI
+    {
+        EN = @"Back"
+    }
+},
+// ------------------------------------------------------------------
 // Save Files
+{
+    "save-files_button_back",
+    new Model_LanguagesUI
+    {
+        EN = @"Back"
+    }
+},
+{
+    "save-files_button_copy",
+    new Model_LanguagesUI
+    {
+        EN = @"Copy"
+    }
+},
+{
+    "save-files_button_delete",
+    new Model_LanguagesUI
+    {
+        EN = @"Delete"
+    }
+},
 {
     "save-files_submenu_continue_message",
     new Model_LanguagesUI
@@ -527,13 +608,41 @@ SAVING GAME... Please do not turn off power."
         EN = @"Overwrite this existing file? The previous adventure will be permanently lost."
     }
 },
+{
+    "save-files_saved-game_empty",
+    new Model_LanguagesUI
+    {
+        EN = @"『 Empty 』"
+    }
+},
 // ------------------------------------------------------------------
 // Controls
 {
-    "controls_action_active-sticker-command",
+    "controls_title",
     new Model_LanguagesUI
     {
-        EN = @"{79}"
+        EN = @"『 Controls 』"
+    }
+},
+{
+    "controls_move_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Move"
+    }
+},
+{
+    "controls_interact_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Interact / Confirm"
+    }
+},
+{
+    "controls_inventory_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Inventory"
     }
 },
 {
@@ -541,6 +650,13 @@ SAVING GAME... Please do not turn off power."
     new Model_LanguagesUI
     {
         EN = @"{80}"
+    }
+},
+{
+    "controls_action_active-sticker-command",
+    new Model_LanguagesUI
+    {
+        EN = @"{79}"
     }
 },
 

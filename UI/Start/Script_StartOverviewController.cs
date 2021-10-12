@@ -12,6 +12,8 @@ using UnityEngine.Playables;
 public class Script_StartOverviewController : Script_UIState
 {
     [SerializeField] private int startScreenBgm;
+    [Tooltip("Wait time after crunch transition to stay in UI Disabled state.")]
+    [SerializeField] private float transitionWaitTime;
     
     [SerializeField] private SavedGameState savedGameState;
     [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
@@ -55,10 +57,13 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private Script_DeathByScreen[] deathByScreens;
     [SerializeField] private Script_BackgroundMusicManager bgmManager;
     [SerializeField] private float playGameOverBGWaitTime;
+    
     private Script_DeathByScreen activeDeathByScreen;
     private Script_SavedGameSubmenuInputChoice[] choices;
      
     private int copiedSlotId;
+
+    private bool isCrunchActive;
     
     void OnEnable()
     {
@@ -143,24 +148,33 @@ public class Script_StartOverviewController : Script_UIState
         
         startScreenCanvasGroup.gameObject.SetActive(true);
         startScreenEventSystem.gameObject.SetActive(true);
-        StartOptionsOpen(false);
-        
         introCanvasGroup.gameObject.SetActive(false);
 
         startScreenController.FadeInTitle();
-
-        // If coming from Back, allow song to continue as is. 
-        if (!isFromBack)
+        
+        HandleEntryPoint();
+        
+        void HandleEntryPoint()
         {
-            bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
-            bgmManager.PlayFadeIn(
-                startScreenBgm,
-                null,
-                true,
-                Script_AudioEffectsManager.fadeMedTime,
-                Const_AudioMixerParams.ExposedBGVolume
-            );
+            // If coming from Saved Games > Back, have start options immediately available.
+            StartOptionsOpen(isFromBack);
 
+            if (isFromBack)
+            {
+                startScreenCTA.Close();
+            }
+            else
+            {
+                // Start song if coming from Intro Bgm.
+                bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
+                bgmManager.PlayFadeIn(
+                    startScreenBgm,
+                    null,
+                    true,
+                    Script_AudioEffectsManager.fadeMedTime,
+                    Const_AudioMixerParams.ExposedBGVolume
+                );
+            }
         }
     }
 
@@ -180,25 +194,52 @@ public class Script_StartOverviewController : Script_UIState
     // Start Options / Start Game
     public void ToSavedGames()
     {
+        if (isCrunchActive)
+            return;
+        
         state = UIState.Disabled;
+        
         Script_Start.Main.CrunchTransitionDown();
+        isCrunchActive = true;
 
         StartCoroutine(WaitToSavedGames());
+
+        IEnumerator WaitToSavedGames()
+        {
+            yield return new WaitForSeconds(crunchTimeDown);
+
+            // Switch when teeth are opening
+            startScreenCanvasGroup.gameObject.SetActive(false);
+            savedGameCanvasGroup.gameObject.SetActive(true);
+
+            InitializeSavedGamesState();
+
+            isCrunchActive = false;
+        }
     }
 
-    // Saved Games/Back Button
-    public void ToStartScreen(bool isSkipIntro = false)
+    // From Saved Games > Back Button
+    // From Game Over
+    public void ToStartScreenNonIntro(bool isSkipIntro = false)
     {
+        if (isCrunchActive)
+            return;
+        
         state = UIState.Disabled;
+        
         Script_Start.Main.CrunchTransitionDown();
+        isCrunchActive = true;
         
         StartCoroutine(WaitToStartScreen());
+        
         IEnumerator WaitToStartScreen()
         {
             yield return new WaitForSeconds(crunchTimeDown);
 
             // switch when teeth are opening
             InitializeIntro(isSkipIntro);
+
+            isCrunchActive = false;
         }
     }
 
@@ -320,16 +361,6 @@ public class Script_StartOverviewController : Script_UIState
         }
     }
 
-    IEnumerator WaitToSavedGames()
-    {
-        yield return new WaitForSeconds(crunchTimeDown);
-
-        // switch when teeth are opening
-        savedGameCanvasGroup.gameObject.SetActive(true);
-        startScreenCanvasGroup.gameObject.SetActive(false);
-        InitializeSavedGamesState();
-    }
-
     public void OnCrunchPlayableDone(PlayableDirector aDirector)
     {
         // After Crunch Down complete
@@ -340,7 +371,13 @@ public class Script_StartOverviewController : Script_UIState
         // After Crunch Up complete
         else if (aDirector.playableAsset == crunchDirector.GetComponent<Script_TimelineController>().timelines[1])
         {
-            // unfreeze game
+            StartCoroutine(WaitToInteract());
+        }
+
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSeconds(transitionWaitTime);
+
             state = UIState.Interact;
         }
     }

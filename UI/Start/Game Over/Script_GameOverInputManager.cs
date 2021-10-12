@@ -9,7 +9,7 @@ public class Script_GameOverInputManager : MonoBehaviour
     {
         if (Input.GetButtonDown(Const_KeyCodes.Submit))
         {
-            mainController.ToStartScreen();
+            mainController.ToStartScreenNonIntro();
         }
     }
 }

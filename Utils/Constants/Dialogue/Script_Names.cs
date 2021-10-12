@@ -195,7 +195,7 @@ public class Script_Names: MonoBehaviour
     
     // The Active Mask Command.
     public const string ActiveStickerCommand            = "<b>Mask Command</b>";                // {79}
-    public const string SwitchActiveSticker             = "<b>Switch Mask</b>";                 // {80}
+    public const string SwitchActiveSticker             = "<b>Wear Mask</b>";                 // {80}
     public const string Prep                            = "<b>Prep</b>";                        // {81}
     public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
 
