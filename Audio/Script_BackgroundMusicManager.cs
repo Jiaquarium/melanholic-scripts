@@ -19,43 +19,71 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     private int currentClipIndex = -1;
     private Coroutine currentFadeCoroutine;
+    private Coroutine currentWaiToPlayCoroutine;
 
     public void Play(int i, bool forcePlay = false)
     {
+        var source = GetComponent<AudioSource>();
+        
         if (i == -1)
         {
-            GetComponent<AudioSource>().Stop();
+            source.Stop();
             return;
         }
         
         if (
             i == currentClipIndex
             && !forcePlay
-            && GetComponent<AudioSource>().isPlaying
+            && source.isPlaying
         )
         {
             // continue track is isPlaying
             return;
         }
 
-        GetComponent<AudioSource>().clip = AudioClips[i];
-        GetComponent<AudioSource>().Play();
+        source.clip = AudioClips[i];
+        source.Play();
 
         currentClipIndex = i;
     }
 
+    public void PlayFadeIn(
+        int i,
+        Action cb,
+        bool forcePlay = true,
+        float fadeTime = Script_AudioEffectsManager.fadeMedTime,
+        string outputMixer = Const_AudioMixerParams.ExposedMasterVolume
+    )
+    {
+        // SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+        FadeIn(cb, fadeTime, outputMixer);
+        
+        currentWaiToPlayCoroutine = StartCoroutine(WaitNextFramePlay());
+        
+        // To avoid ripping sound.
+        IEnumerator WaitNextFramePlay()
+        {
+            yield return null;
+            
+            Play(i);
+        }
+    }
+
     public void Stop()
     {
-        GetComponent<AudioSource>().Stop();    
+        AudioSource source = GetComponent<AudioSource>();
+        source.volume = 0f;
+        source.Stop();
+        source.volume = 1f;
     }
 
     public void Pause()
     {
-        AudioSource audio = GetComponent<AudioSource>();
-        float lastVol = audio.volume;
-        audio.volume = 0f; // to avoid any ripping noise
-        audio.Pause();
-        audio.volume = lastVol;
+        AudioSource source = GetComponent<AudioSource>();
+        float lastVol = source.volume;
+        source.volume = 0f; // to avoid any ripping noise
+        source.Pause();
+        source.volume = lastVol;
     }
 
     public void PauseAll()
@@ -66,8 +94,9 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public void UnPause()
     {
-        if (GetComponent<AudioSource>() != null)
-            GetComponent<AudioSource>().UnPause();
+        var source = GetComponent<AudioSource>();
+        if (source != null)
+            source.UnPause();
     }
 
     public void UnPauseAll()
@@ -85,7 +114,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     // AudioMixer Helpers
     public void SetVolume(float newVol, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
     {
-        EndCurrentCoroutine();
+        EndCurrentCoroutines();
         Script_AudioMixerVolume.SetVolume(audioMixer, outputMixer, newVol);
     }
     
@@ -95,7 +124,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         string outputMixer = Const_AudioMixerParams.ExposedMasterVolume
     )
     {
-        EndCurrentCoroutine();
+        EndCurrentCoroutines();
         currentFadeCoroutine = StartCoroutine(
             Script_AudioMixerFader.Fade(
                 audioMixer,
@@ -115,7 +144,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         string outputMixer = Const_AudioMixerParams.ExposedMasterVolume
     )
     {
-        EndCurrentCoroutine();
+        EndCurrentCoroutines();
         currentFadeCoroutine = StartCoroutine(
             Script_AudioMixerFader.Fade(
                 audioMixer,
@@ -169,12 +198,18 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         FadeIn(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
     }
 
-    private void EndCurrentCoroutine()
+    private void EndCurrentCoroutines()
     {
         if (currentFadeCoroutine != null)
         {
             StopCoroutine(currentFadeCoroutine);
             currentFadeCoroutine = null;
+        }
+
+        if (currentWaiToPlayCoroutine != null)
+        {
+            StopCoroutine(currentWaiToPlayCoroutine);
+            currentWaiToPlayCoroutine = null;
         }
     }
 
@@ -188,6 +223,12 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void UnPauseBgThemeSpeakers()
     {
         bgThemeSpeakersController.UnPauseSpeakers();
+    }
+
+    public void SetDefault(string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        EndCurrentCoroutines();
+        SetVolume(1f, outputMixer);
     }
 
     public void Setup()

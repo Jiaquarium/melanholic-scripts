@@ -11,6 +11,8 @@ using UnityEngine.Playables;
 [RequireComponent(typeof(AudioSource))]
 public class Script_StartOverviewController : Script_UIState
 {
+    [SerializeField] private int startScreenBgm;
+    
     [SerializeField] private SavedGameState savedGameState;
     [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
     
@@ -101,7 +103,12 @@ public class Script_StartOverviewController : Script_UIState
 
             // Must manually call functions Timeline calls with Marker,
             // since won't fire marker upon Back button press.
-            StartScreenStart();
+            StartScreenStart(isFromBack: true);
+        }
+        else
+        {
+            bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
+            bgmManager.Stop();
         }
     }
 
@@ -130,7 +137,7 @@ public class Script_StartOverviewController : Script_UIState
     // Signals the Start screen is up. Start Screen Controller should be disabled here.
     // Called from timeline as the starting point upon skipping intro.
     // Start options should be hidden until player presses Start command.
-    public void StartScreenStart()
+    public void StartScreenStart(bool isFromBack = false)
     {
         introController.DisableInput();
         
@@ -141,6 +148,20 @@ public class Script_StartOverviewController : Script_UIState
         introCanvasGroup.gameObject.SetActive(false);
 
         startScreenController.FadeInTitle();
+
+        // If coming from Back, allow song to continue as is. 
+        if (!isFromBack)
+        {
+            bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
+            bgmManager.PlayFadeIn(
+                startScreenBgm,
+                null,
+                true,
+                Script_AudioEffectsManager.fadeMedTime,
+                Const_AudioMixerParams.ExposedBGVolume
+            );
+
+        }
     }
 
     // Stops the intro timeline at the Start Screen.

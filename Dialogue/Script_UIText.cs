@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-06 17:25:54
+// Last created by UI Exporter at 2021-10-12 12:26:58
 
 using System.Collections;
 using System.Collections.Generic;
@@ -413,10 +413,33 @@ See you on the other side."
     }
 },
 {
+    "input_default_cancel",
+    new Model_LanguagesUI
+    {
+        EN = @"Cancel"
+    }
+},
+{
     "input_CCTV_disarm",
     new Model_LanguagesUI
     {
         EN = @"『 DISARM SURVEILLANCE SYSTEM 』"
+    }
+},
+// ------------------------------------------------------------------
+// Input Choices
+{
+    "input-choices_default_yes",
+    new Model_LanguagesUI
+    {
+        EN = @"Yes"
+    }
+},
+{
+    "input-choices_default_no",
+    new Model_LanguagesUI
+    {
+        EN = @"No"
     }
 },
 // ------------------------------------------------------------------
@@ -472,6 +495,36 @@ SAVING GAME... Please do not turn off power."
     new Model_LanguagesUI
     {
         EN = @"Go to main menu."
+    }
+},
+// ------------------------------------------------------------------
+// Save Files
+{
+    "save-files_submenu_continue_message",
+    new Model_LanguagesUI
+    {
+        EN = @"Open this file?"
+    }
+},
+{
+    "save-files_submenu_new-game_message",
+    new Model_LanguagesUI
+    {
+        EN = @"Begin a new adventure?"
+    }
+},
+{
+    "save-files_submenu_delete_message",
+    new Model_LanguagesUI
+    {
+        EN = @"This adventure will be permanently lost, okay?"
+    }
+},
+{
+    "save-files_submenu_paste_message",
+    new Model_LanguagesUI
+    {
+        EN = @"Overwrite this existing file? The previous adventure will be permanently lost."
     }
 },
 // ------------------------------------------------------------------
