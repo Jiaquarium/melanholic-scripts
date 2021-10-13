@@ -7,9 +7,14 @@ public class Script_TimeManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     [SerializeField] private float timeSinceLastPlayed;
 
+    void Update()
+    {
+        UpdateTotalPlayTime();
+    }
+    
     public float TotalPlayTime {
-        get { return game.totalPlayTime; }
-        set { game.totalPlayTime = value; }
+        get => game.totalPlayTime;
+        set => game.totalPlayTime = value;
     }
 
     public float UpdateTotalPlayTime()

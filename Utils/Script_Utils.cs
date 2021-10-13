@@ -478,12 +478,12 @@ public static class Script_Utils
         int min = Mathf.FloorToInt(tRemainder / 60);
         tRemainder -= min * 60;
 
-        int sec = tRemainder;
+        int sec = Mathf.RoundToInt(tRemainder);
 
         return $"{hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)}";
     }
 
-    public static string FormatSecondsHrMin(this float t)
+    public static string FormatSecondsHrMinSec(this float t)
     {
         string fmt = "0";
 
@@ -495,12 +495,14 @@ public static class Script_Utils
         int min = Mathf.FloorToInt(tRemainder / 60);
         tRemainder -= min * 60;
 
-        return $"{hours.ToString(fmt)} hr {min.ToString(fmt)} min";
+        int sec = Mathf.RoundToInt(tRemainder);
+
+        return $"{hours.ToString(fmt)} hr {min.ToString(fmt)} min {sec.ToString(fmt)} sec";
     }
 
     public static string FormatTotalPlayTime(this float t)
     {
-        return $"Total play time: {t.FormatSecondsHrMin()}";
+        return $"Total time: {t.FormatSecondsHrMinSec()}";
     }
 
     public static string FormatSecondsClock(this float t, bool isClose, bool hideColons = false)

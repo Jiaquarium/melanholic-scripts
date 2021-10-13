@@ -8,6 +8,8 @@ public class Script_SaveLoadGame : MonoBehaviour
 
     public void SaveGameData(Model_SaveData data, Model_GameData gameDataOverride)
     {
+        Debug.Log($"Saving Total Time Played {game.totalPlayTime.FormatTotalPlayTime()}");
+        
         data.gameData = new Model_GameData(
             gameDataOverride?.runIdx        ?? game.RunIdx,
             gameDataOverride?.level         ?? game.level,
