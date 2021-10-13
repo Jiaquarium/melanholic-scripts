@@ -24,21 +24,39 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     // Also disables blinking.
     [SerializeField] private bool isHighlighterCaret;
 
+    [TextArea]
+    [SerializeField] private string defaultValue;
+    [SerializeField] private bool isResetDefault = true;
+    [SerializeField] private bool isSelectAllOnFocus;
+
     private TMP_InputField TMPInputField;
     private TextMeshProUGUI TMPGUI;
     private float caretBlinkRate;
     private Color caretColor;
 
-    public void Awake()
+    void OnValidate()
+    {
+        SetDefault();
+    }
+    
+    void Awake()
     {
         TMPGUI = GetComponent<TextMeshProUGUI>();
         TMPInputField = GetComponent<TMP_InputField>();
+        
+        TMPInputField.onFocusSelectAll = isSelectAllOnFocus;
+
         SetCaretAttributes();
+
+        SetDefault();
     }
     
     void OnEnable()
     {
         SetCaretAttributes();
+        
+        if (isResetDefault)
+            SetDefault();
     }
     
     void OnGUI()
@@ -59,7 +77,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         PreventCaretOverflow();
     }
 
-    void HandleNavigateToSubmit()
+    private void HandleNavigateToSubmit()
     {
         // Script_SlowAwakeEventSystem will disable navigation events on prompt start up.
         // If we're still in this start up period, disable auto submit selection.
@@ -79,10 +97,14 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     
     public void OnSelect(BaseEventData e)
     {
-        // set cursor to end when we initialize with existing entry (this already happens on deselect)
-        TMPInputField.caretPosition = caretPositionZeroAlways ? 0 : TMPInputField.text.Length;
-        Debug.Log($"Setting caret position to: {TMPInputField?.caretPosition}");
-        Debug.Log($"Caret blinkrate is: {TMPInputField?.caretBlinkRate}");
+        if (!isSelectAllOnFocus)
+        {
+            // set cursor to end when we initialize with existing entry (this already happens on deselect)
+            TMPInputField.caretPosition = caretPositionZeroAlways ? 0 : TMPInputField.text.Length;
+            Debug.Log($"Setting caret position to: {TMPInputField?.caretPosition}");
+            Debug.Log($"Caret blinkrate is: {TMPInputField?.caretBlinkRate}");
+        }
+
         SetCaretVisible(true);
     }
 
@@ -91,7 +113,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         SetCaretVisible(false);
     }
 
-    void SetCaretVisible(bool isOn)
+    private void SetCaretVisible(bool isOn)
     {
         // As a precaution, if we're selecting the input field
         // ensure it's active. Sometimes the caret doesn't show.
@@ -132,6 +154,15 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             TMPInputField.caretPosition = TMPInputField.text.Length - 1;
             TMPInputField.ForceLabelUpdate();
         }
+    }
+
+    private void SetDefault()
+    {
+        var input = TMPInputField ?? GetComponent<TMP_InputField>();
+        
+        input.text = string.IsNullOrEmpty(defaultValue)
+            ? string.Empty
+            : defaultValue;
     }
 
     public void InitializeState(string text)

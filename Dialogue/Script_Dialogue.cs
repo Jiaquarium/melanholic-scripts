@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-09 19:51:25
+// Last created by Dialogue Exporter at 2021-10-13 15:22:30
 
 using System.Collections;
 using System.Collections.Generic;
@@ -110,7 +110,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"If you accept, sign your name next to the X.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
