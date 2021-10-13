@@ -14,6 +14,7 @@ public class Script_IntroController : Script_TimelineSequenceController
     [SerializeField] private float startScreenFrame;
 
     [SerializeField] private Script_IntroInputManager inputManager;
+    [SerializeField] private Script_StartOverviewController mainController;
 
     void OnEnable()
     {
@@ -30,6 +31,16 @@ public class Script_IntroController : Script_TimelineSequenceController
     {
         director.time = startScreenFrame / ((TimelineAsset)director.playableAsset).editorSettings.fps;
         director.Evaluate();
+        
+        if (!director.playableGraph.IsPlaying())
+        {
+            Debug.Log($"{name} Playable is currently Paused");
+            Play();
+        }
+
+        // Must manually call StartScreenStart, cannot use Signal because Evaluate ignores.
+        // https://forum.unity.com/threads/timeline-notifications-arent-sent-in-playabledirector-manual-mode.711494/
+        mainController.StartScreenStart(false);
     }
 
     public void DisableInput()

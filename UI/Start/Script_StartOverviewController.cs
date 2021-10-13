@@ -83,7 +83,7 @@ public class Script_StartOverviewController : Script_UIState
 
     // Starts Intro Sequence.
     // Intro Timeline, Full Playthrough > StartScreenStart() via Signal > ActivateStartScreenController() via Signal
-    // Intro Timeline, Skip Intro > StartScreenStart() via Signal > ActivateStartScreenController() via Signal
+    // Intro Timeline, Skip Intro > StartScreenStart() via call > ActivateStartScreenController() via Signal
     // From Back, Skip Intro > Manually call StartScreenStart > ActivateStartScreenController()
     public void InitializeIntro(bool isSkip = false)
     {
@@ -144,6 +144,8 @@ public class Script_StartOverviewController : Script_UIState
     // Start options should be hidden until player presses Start command.
     public void StartScreenStart(bool isFromBack = false)
     {
+        Debug.Log($"{name} StartScreenStart called isFromBack: {isFromBack}");
+        
         introController.DisableInput();
         
         startScreenCanvasGroup.gameObject.SetActive(true);

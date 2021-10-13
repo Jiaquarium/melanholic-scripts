@@ -17,6 +17,7 @@ public class Script_IntroInputManager : MonoBehaviour
     {
         if (Input.GetButtonDown(Const_KeyCodes.Submit) && !isDisabled)
         {
+            Debug.Log($"{name} HandleEnterInput() skipping to Start Screen");
             introController.SkipToStartScreen();
         }
     }
