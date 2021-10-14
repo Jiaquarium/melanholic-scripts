@@ -21,8 +21,14 @@ public class Script_TriggerEnterOnce : Script_Trigger
             || other.tag == Const_Tags.Player
         )
         {
+            Debug.Log($"{name} detected other <{other.gameObject.name}> with tag <{other.tag}>");
             OnEnter(other);
         }
+    }
+
+    public void Reactivate()
+    {
+        this.gameObject.SetActive(true);
     }
 
     private void OnEnter(Collider other)
@@ -39,6 +45,7 @@ public class Script_TriggerEnterOnce : Script_Trigger
         // For entering once.
         else if (game.ActivateTrigger(Id))
         {
+            Debug.Log($"{name} Entered: <{other.gameObject.name}> Setting inactive");
             this.gameObject.SetActive(false);
         }
     }

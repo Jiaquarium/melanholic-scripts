@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-13 15:22:30
+// Last created by Dialogue Exporter at 2021-10-13 21:56:06
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1770,9 +1770,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"A cat jumping onto a bed!",
-                @"Wait why am I getting so excited?",
-                @"It’s too high for me to get a really good look at it...",
+                @"A cat jumping onto a bed! I actually quite enjoy cat paintings.",
+                @"Why is it hung so high though? I can't really get a good look at it.",
         },
         
     }
@@ -2033,7 +2032,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "ellenias-room_bookshelf_hentai-zine_prompt",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
                 @"Should I skim through this magazine purposefully shoved into the dark corner of this bookshelf?",
@@ -2045,7 +2044,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "ellenias-room_bookshelf_hentai-zine",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
                 @"I'm guessing I'm not supposed to see that...",
@@ -2054,10 +2053,22 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
+    "ellenias-room_easle_angry",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"Hey! Don’t look, it’s not finished yet!",
+        },
+        
+    }
+},
+{
     "ellenias-room_painting_snake-head",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
                 @"A snake. Or to be more exact, a cobra.",
@@ -2069,7 +2080,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "ellenias-room_painting_bear-claw",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
                 @"I can’t imagine what it must feel like to get slashed by these.",
@@ -2191,7 +2202,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"They say a few {19} have actually seen the {8}. and the ones that do meet a terrible fate.",
+                @"They say a few {19} have actually seen the {8}... and the ones that do meet a terrible fate.",
         },
         
     }
@@ -2251,7 +2262,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"But you see, I’m not after beauty. no! I’m after what's never been seen before!",
+                @"But you see, I’m not after beauty. No! I’m after what's never been seen before!",
         },
         
     }
@@ -2320,7 +2331,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"I know it’s probably the greatest gift you’ve ever gotten in your miserable life, ha! But I won’t be needing it where I’m going.",
+                @"I know it’s probably the greatest gift you’ve ever received in your miserable life, ha! But I won’t be needing it where I’m going.",
                 @"It’s time for me to make a name for us {7} once and for all!",
                 @"Bye!",
         },

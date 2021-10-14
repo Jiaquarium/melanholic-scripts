@@ -10,6 +10,7 @@ public class Script_EventSystemLastSelected : MonoBehaviour {
     // gets set to NULL on inventory close
     public GameObject lastSelected;
     public Button failCaseObject;
+    [SerializeField] private GameObject failCaseGameObject;
     
     void OnEnable()
     {
@@ -38,7 +39,10 @@ public class Script_EventSystemLastSelected : MonoBehaviour {
         // to be extra safe, if the rare case currentSelected is still empty, set it to the first choice
         if (currentSelected == null)
         {
-            if (failCaseObject != null)   currentSelected = failCaseObject.gameObject;
+            if (failCaseObject != null)
+                currentSelected = failCaseObject.gameObject;
+            else if (failCaseGameObject != null)
+                currentSelected = failCaseGameObject;
         }
     }
 

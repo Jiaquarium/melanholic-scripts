@@ -41,6 +41,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private PlayableDirector spikeCageDirector;
     [SerializeField] private PlayableDirector dramaticThoughtsDirector;
     [SerializeField] Script_TriggerEnterOnce dramaticThoughtsCutSceneTrigger;
+    [SerializeField] Script_TriggerEnterOnce dramaDoneTrigger;
     
     [SerializeField] Script_StickerObject iceSpike;
     [SerializeField] Transform spikeCage;
@@ -191,7 +192,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         // On DramaDone trigger, give extra time before
         // actually turning off Drama music because Player may have activated
         // trigger at same time as being struck by Needle HitBox.
-        // isDramaActuallyDone is reset when player is hit by Spike.
+        // isDramaActuallyDone is reset (via OnPlayerRestartHandleBgm)
+        // when player is hit by Spike.
         else if (Id == "drama-done")
         {
             if (!isCurrentPuzzleComplete)
@@ -199,6 +201,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                 isDramaActuallyDone = true;
                 StartCoroutine(WaitCheckDramaActuallyComplete());
             }
+
+            return true;
         }
 
         return false;
@@ -210,18 +214,30 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         if (isDramaActuallyDone)
         {
+            Debug.Log("Drama is actually done");
+
             FadeOutDramaticMusic();
             // Need to also fade out these lights for the 8 max light count
-            FadeOutDramaticLights();       
+            FadeOutDramaticLights();
         }
     }
 
+    // Only need to handle Bgm after activating the "drama done" Trigger.
+    // If the player gets hit when checking for drama done, stop checking
+    // and reset the Enter Once Trigger.
     private void OnPlayerRestartHandleBgm(string tag, Script_HitBox hitBox)
     {
-        // Ignore if this Hurt Event caused Time to run out.
+        // Ignore if this Hurt Event caused Time to run out or if we're not checking for
+        // drama actually done.
         if (Script_ClockManager.Control.ClockState == Script_Clock.States.Done)
         {
             Debug.Log($"{name} Ignore trying to restart BGM on Hurt because Time has run out");
+            return;
+        }
+
+        if (!isDramaActuallyDone)
+        {
+            Debug.Log($"{name} Ignore trying to restart BGM on Hurt because not checking for drama done");
             return;
         }
         
@@ -229,14 +245,15 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         
         if (tag == Const_Tags.Player)
         {
-            Debug.Log($"Resetting drama done timer");
+            Debug.Log($"Resetting drama done timer & trigger");
             isDramaActuallyDone = false;
+            dramaDoneTrigger.Reactivate();
 
-            // If music was previously stopped, restart it.
+            // If FadeOutDramaticMusic was previously called to stop
+            // the dramatic music, restart the Bgm speaker.
             if (!bgThemePlayer.gameObject.activeSelf)
             {
-                Debug.Log("Restarting Bg Theme Player");
-                
+                Script_BackgroundMusicManager.Control.SetVolume(1f, BGMParam);
                 bgThemePlayer.Play();
             }
         }
@@ -362,7 +379,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             bgThemePlayer.gameObject.SetActive(true);
             game.PauseBgMusic();
         }
-        // if puzzle if done just use default music
+        // If puzzle is done just use default music.
         else
         {
             bgThemePlayer.gameObject.SetActive(false);
