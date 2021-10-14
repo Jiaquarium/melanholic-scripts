@@ -53,7 +53,12 @@ public class Script_TriggerReliableStay : Script_Trigger
         
         if (detectTags.CheckInTags(other.tag))
         {   
-            if (onTriggerEnterAction.CheckUnityEventAction()) onTriggerEnterAction.Invoke();
+            if (onTriggerEnterAction.CheckUnityEventAction())
+            {
+                Debug.Log($"OnTriggerEnter name: <{other.name}> tag: <{other.tag}>");
+                onTriggerEnterAction.Invoke();
+            }
+            
             OnEnter(other);
 
             SetIsPressed(true);
@@ -66,7 +71,12 @@ public class Script_TriggerReliableStay : Script_Trigger
         
         if (detectTags.CheckInTags(other.tag))
         {   
-            if (onTriggerExitAction.CheckUnityEventAction()) onTriggerExitAction.Invoke();
+            if (onTriggerExitAction.CheckUnityEventAction())
+            {
+                Debug.Log($"OnTriggerExit name: <{other.name}> tag: <{other.tag}>");
+                onTriggerExitAction.Invoke();
+            }
+            
             OnExit(other);
 
             SetIsPressed(false);

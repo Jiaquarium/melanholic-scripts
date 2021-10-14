@@ -302,7 +302,6 @@ public class Script_StartOverviewController : Script_UIState
     public void Quit()
     {
           Debug.Log($"{name} Quit called");
-          Debug.Break();
           Application.Quit();
     }
 

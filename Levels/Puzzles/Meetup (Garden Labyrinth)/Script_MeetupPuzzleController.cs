@@ -48,6 +48,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     [SerializeField] private Script_Game game;
 
     private Script_TimelineController timelineController;
+    private bool isWallsMoving;
     
     public bool IsDone
     {
@@ -119,7 +120,10 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public void FloorSwitchDown()
     {
         // If puzzle is done, the Labyrinth should be gone.
-        if (IsDone)     return;
+        if (IsDone || isWallsMoving)
+            return;
+        
+        isWallsMoving = true;
 
         game.ChangeStateCutScene();
         // Send event to clear doorways in case a Player/Puppet is blocking a door.
@@ -130,7 +134,10 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     public void FloorSwitch2Down()
     {
-        if (IsDone)     return;
+        if (IsDone || isWallsMoving)
+            return;
+        
+        isWallsMoving = true;
         
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
@@ -140,7 +147,10 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     
     public void FloorSwitchUp(bool isInitialize = false)
     {
-        if (IsDone)     return;
+        if (IsDone || isWallsMoving)
+            return;
+        
+        isWallsMoving = true;
         
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
@@ -150,7 +160,10 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     public void FloorSwitch2Up(bool isInitialize = false)
     {
-        if (IsDone)     return;
+        if (IsDone || isWallsMoving)
+            return;
+        
+        isWallsMoving = true;
         
         game.ChangeStateCutScene();
         Script_PuzzlesEventsManager.ClearDoorways();
@@ -181,8 +194,15 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public void OnPuzzleTransformDone()
     {
         Debug.Log("ON PUZZLE TRANSFORM DONE CALLED ON TIMELINE END!!!!!!!");
-
-        game.ChangeStateInteract();
+        
+        isWallsMoving = false;
+        
+        // If it is the unique blocking cut scene, need to remain in cut scene state.
+        // Allow LB46 to handle changing state back to interact.
+        // This should only happen if there's a bug and Kaffe moves 2 spaces out of
+        // the FloorSwitch2 onto his Unique Blocking Trigger.
+        if (!LB46.IsUniqueBlockedCutscene)
+            game.ChangeStateInteract();
     }
 
     public void PuppeteerActivateTimelinePlayerBuff()

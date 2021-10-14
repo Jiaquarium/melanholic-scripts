@@ -60,6 +60,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     private Script_VCamera puppeteerVCam;
     private Script_VCamera preSuccessVCam;
 
+    private bool isUniqueBlockedCutscene;
+
     private bool isInitialized;
 
     public bool IsDone
@@ -70,6 +72,12 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     public bool IsInitialized
     {
         get => isInitialized;
+    }
+
+    public bool IsUniqueBlockedCutscene
+    {
+        get => isUniqueBlockedCutscene;
+        private set => isUniqueBlockedCutscene = value;
     }
 
     protected override void OnEnable()
@@ -202,6 +210,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followLatteVCam);
         
         LatteBlockedTrigger.gameObject.SetActive(false);
+
+        IsUniqueBlockedCutscene = true;
     }
 
     private void KaffeBlockedCutScene()
@@ -215,6 +225,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followKaffeVCam);
         
         KaffeBlockedTrigger.gameObject.SetActive(false);
+
+        IsUniqueBlockedCutscene = true;
     }
 
     public void OnBlockedCutSceneDone()
@@ -226,6 +238,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
         Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, puppeteerVCam);
         puppeteerVCam = null;
+
+        IsUniqueBlockedCutscene = false;
     }
 
     // ------------------------------------------------------------------

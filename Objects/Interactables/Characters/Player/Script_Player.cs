@@ -513,6 +513,8 @@ public class Script_Player : Script_Character
     /// </summary>
     public override void ForcePush(Directions dir)
     {
+        Debug.Log($"Player is force pushed dir {dir}");
+        
         playerMovementHandler.Move(dir);
     }
 
