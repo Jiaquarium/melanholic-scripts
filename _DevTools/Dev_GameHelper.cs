@@ -23,7 +23,9 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject XXXWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject UrselksSaloonHallwayEntrance;
+    [SerializeField] private Script_ExitMetadataObject FireplacePuzzleEntrance;
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
+    [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
@@ -116,6 +118,16 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToFireplaceTraining1()
     {
         Teleport(FireplaceTraining1Entrance);
+    }
+
+    public void ExitToFireplacePuzzle()
+    {
+        Teleport(FireplacePuzzleEntrance);
+    }
+
+    public void ExitToCatWalk()
+    {
+        Teleport(CatWalkEntrance);
     }
 
     public void ExitToGrandMirror()
@@ -301,6 +313,16 @@ public class Dev_GameHelper : MonoBehaviour
             if (GUILayout.Button("Go To: Fireplace Training 1"))
             {
                 t.ExitToFireplaceTraining1();
+            }
+
+            if (GUILayout.Button("Go To: Fireplace Puzzle"))
+            {
+                t.ExitToFireplacePuzzle();
+            }
+
+            if (GUILayout.Button("Go To: Catwalk"))
+            {
+                t.ExitToCatWalk();
             }
             
             EditorGUILayout.LabelField("XXX World", EditorStyles.miniLabel);

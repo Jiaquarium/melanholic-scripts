@@ -325,7 +325,10 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         // Should only try to exit once per tile.
         if (!didTryExit && TryExit(dir))
+        {
+            Debug.Log("Try Exit is TRUE");
             return;
+        }
         else
             didTryExit = true;
         
@@ -399,8 +402,8 @@ public class Script_PlayerMovement : MonoBehaviour
         bool isDev = Debug.isDebugBuild && Const_Dev.IsDevMode;
 
         if (
-            Input.GetButton(Const_KeyCodes.Action3) &
-            (isSpeedwalkStickerActive || isDev)
+            Input.GetButton(Const_KeyCodes.Action3)
+            && (isSpeedwalkStickerActive || isDev)
         )
         {
             if (isDev)  walkSpeed = Speeds.Dev;

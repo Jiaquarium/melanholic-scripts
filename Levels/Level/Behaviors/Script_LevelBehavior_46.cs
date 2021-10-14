@@ -125,8 +125,13 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             puppet.Teleport(puppetPuzzleSuccessSpawn.transform.position);
             puppet.SetAnimatorControllerActive(false);
             
+            var previousPosition = player.transform.position;
+            
             player.Teleport(playerPuzzleSuccessSpawn.transform.position);
             player.FaceDirection(Directions.Down);
+            
+            // Snap main VCam for after cut scene
+            game.SnapActiveCam(previousPosition);
 
             // Hide Labyrinth
             movingLabyrinth.gameObject.SetActive(false);

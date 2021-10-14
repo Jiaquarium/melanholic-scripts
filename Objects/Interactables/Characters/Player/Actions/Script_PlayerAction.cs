@@ -278,13 +278,14 @@ public class Script_PlayerAction : MonoBehaviour
     /// Called from Player Movement.
     /// Action handled on movement into the exit object.
     /// </summary>
+    /// <param name="dir"></param>
+    /// <returns>True, only if there is an exit detected and it matches the current facingDirection</returns>
     public virtual bool DetectDoorExit(Directions dir)
     {
         Script_DoorExit exit = interactionBoxController.GetDoorExit(dir);
         if (exit == null)    return false;
 
-        exit.TryExit(dir);
-        return true;
+        return exit.TryExit(dir);
     }
 
     private bool DetectNPC(string action, Directions dir)

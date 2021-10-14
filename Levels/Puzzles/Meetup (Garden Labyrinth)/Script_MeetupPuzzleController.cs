@@ -29,6 +29,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     [SerializeField] private float WaitToPuzzleTransformTime;
     
+    // MeetupTriggerReliableStay will add players to this List.
     public List<Script_Player> playersOnTrigger;
     
     [SerializeField] private List<Script_Player> targetPlayersOnTrigger;
@@ -222,11 +223,13 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
 
     private bool CheckMatchingPlayersOnTrigger()
     {
-        if (playersOnTrigger.Count != targetPlayersOnTrigger.Count)     return false;
+        if (playersOnTrigger.Count == 0)
+            return false;
         
         foreach (Script_Player player in targetPlayersOnTrigger)
         {
-            if (playersOnTrigger.Find(target => player == target) == null)    return false;
+            if (playersOnTrigger.Find(target => player == target) == null)
+                return false;
         }
 
         return true;
