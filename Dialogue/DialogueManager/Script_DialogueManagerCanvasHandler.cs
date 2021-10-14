@@ -46,10 +46,7 @@ public class Script_DialogueManagerCanvasHandler : MonoBehaviour
         foreach (Canvas canvas in dialogueCanvases)
         {
             if (canvas != GetComponent<Script_DialogueManager>().activeCanvas)
-            {
-                if (canvas.GetComponent<Script_Canvas>().ContinuationIcon != null)
-                    canvas.GetComponent<Script_Canvas>().ContinuationIcon.Disable();
-            }
+                canvas.GetComponent<Script_Canvas>().DisableContinuationIcon();
         }
     }
 }

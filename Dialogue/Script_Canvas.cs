@@ -33,9 +33,16 @@ public class Script_Canvas : MonoBehaviour
     {
         return dialogueBox.GetText();
     }
+
+    public void DisableContinuationIcon()
+    {
+        if (ContinuationIcon != null)
+            ContinuationIcon.Disable();
+    }
     
     public void Setup()
     {
-        if (ContinuationIcon != null)   ContinuationIcon.Setup();
+        if (ContinuationIcon != null)
+            ContinuationIcon.Setup();
     }
 }

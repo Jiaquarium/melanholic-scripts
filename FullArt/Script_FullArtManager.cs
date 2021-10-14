@@ -37,7 +37,7 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private Script_FullArtBgCanvasGroup[] bgs;
     public Script_FullArt activeFullArt { get; private set; }
     
-    public CanvasGroup fullArtCanvas;
+    public CanvasGroup fullArtCanvasGroup;
     public Canvas fullArtParent;
     public CanvasGroup fullArtBgCanvasGroup;
     
@@ -46,6 +46,13 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private float bgAlpha;
     [SerializeField] private Transform[] fullArtParentsToSetActive;
     
+    void Awake()
+    {
+        var canvas = fullArtParent.GetComponent<Canvas>();
+        if (canvas != null && canvas.sortingOrder != DefaultSortingOrder)
+            Debug.LogWarning($"FullArtCanvas Sorting Order <{canvas.sortingOrder}> != DefaulSortingOrder");
+    }
+    
     /// <summary>
     /// fades out fullArt canvases and does callback after finishing fadeOut
     /// </summary>
@@ -53,11 +60,11 @@ public class Script_FullArtManager : MonoBehaviour
     {
         float fadeOutTime = Script_Utils.GetFadeTime(fadeOutMode); 
         StartCoroutine(
-            fullArtCanvas
+            fullArtCanvasGroup
                 .GetComponent<Script_CanvasGroupFadeInOut>()
                 .FadeOutCo(fadeOutTime, () =>
                 {
-                    fullArtCanvas.gameObject.SetActive(false);
+                    fullArtCanvasGroup.gameObject.SetActive(false);
                     
                     foreach (var bg in bgs) bg.gameObject.SetActive(false);
 
@@ -80,8 +87,8 @@ public class Script_FullArtManager : MonoBehaviour
         
         HandleFullArtSortingOrder();
         
-        fullArtCanvas.alpha = 1;
-        fullArtCanvas.gameObject.SetActive(true);
+        fullArtCanvasGroup.alpha = 1;
+        fullArtCanvasGroup.gameObject.SetActive(true);
         
         fullArt.Setup();
         fullArt.gameObject.SetActive(true);
@@ -114,8 +121,8 @@ public class Script_FullArtManager : MonoBehaviour
         
         fullArt.FadeOut(fadeOutSpeed, () =>
         {
-            fullArtCanvas.alpha = 0f;
-            fullArtCanvas.gameObject.SetActive(false);
+            fullArtCanvasGroup.alpha = 0f;
+            fullArtCanvasGroup.gameObject.SetActive(false);
             
             if (Script_Game.Game.GetPlayer().State == Const_States_Player.Viewing)
                 Script_Game.Game.GetPlayer().SetIsInteract();
@@ -146,11 +153,11 @@ public class Script_FullArtManager : MonoBehaviour
     {
         /// First have gameObject active because state machine resets when is turned on/off
         /// but still hidden
-        fullArtCanvas.alpha = 0f;
-        fullArtCanvas.gameObject.SetActive(true);
+        fullArtCanvasGroup.alpha = 0f;
+        fullArtCanvasGroup.gameObject.SetActive(true);
         fullArt.gameObject.SetActive(true);
 
-        fullArt.EntranceFromRight(fullArtCanvas);
+        fullArt.EntranceFromRight(fullArtCanvasGroup);
     }
 
     /// <summary>
