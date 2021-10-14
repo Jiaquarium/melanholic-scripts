@@ -18,7 +18,7 @@ public class Script_MatchPlayerAnimator : MonoBehaviour
 
     void OnDisable()
     {
-        Script_StickerEffectEventsManager.OnUnequip                 -= MatchPlayerAnimator;
+        Script_StickerEffectEventsManager.OnEquip                   -= MatchPlayerAnimator;
         Script_StickerEffectEventsManager.OnAnimatorEffectTrigger   -= AnimatorEffectTrigger;
         Script_StickerEffectEventsManager.OnAnimatorEffectHold      -= AnimatorEffectHold;
     }

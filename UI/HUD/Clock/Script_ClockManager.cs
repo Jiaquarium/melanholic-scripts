@@ -68,6 +68,7 @@ public class Script_ClockManager : MonoBehaviour
     public bool IsClockRunning()
     {
         return !game.IsInHotel()
+            && !game.IsInGrandMirrorRoom()
             && HUDManager.IsClockShowing();
     }
 

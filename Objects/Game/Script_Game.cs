@@ -811,6 +811,11 @@ public class Script_Game : MonoBehaviour
         return false;
     }
 
+    public bool IsInGrandMirrorRoom()
+    {
+        return levelBehavior == grandMirrorRoomBehavior;
+    }
+
     public bool IsGrandMirrorSetup()
     {
         return EileensMindBehavior.isPuzzleComplete && !grandMirrorRoomBehavior.IsDone;
