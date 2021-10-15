@@ -7,6 +7,10 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Linq;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Using Player to move while keeping a Queue of buffered moves.
 /// </summary>
@@ -61,7 +65,7 @@ public class Script_PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Transform grid;
 
-    [SerializeField] private Directions lastMove;
+    [SerializeField] private Directions lastMoveInput;
 
     [SerializeField] private Script_LimitedQueue<Directions> inputBuffer = new Script_LimitedQueue<Directions>(4);
     
@@ -104,11 +108,6 @@ public class Script_PlayerMovement : MonoBehaviour
         get => player.FacingDirection;
     }
     
-    public Directions LastMove
-    {
-        get => lastMove;
-    }
-
     public float WalkSpeed
     {
         get
@@ -170,7 +169,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
         // ------------------------------------------------------------------
         // Buffered Moves
-        // Give priority to new button presses.
+        // Buffer new button presses if we're in the middle of a move.
+        // Buffered moves always take priority.
         
         if (bufferedInput == Directions.Up)
         {
@@ -220,9 +220,9 @@ public class Script_PlayerMovement : MonoBehaviour
             || Input.GetButton(Const_KeyCodes.Left)
         )
         {
-            // If coming from a moving state, use the last weights if lastMove is still being held down.
+            // If coming from a moving state, use the last weights if lastMoveInput is still being held down.
             // (Note: isMoving is reset at every level initialization)
-            if (isMoving && Input.GetButton(lastMove.DirectionToKeyCode()))
+            if (isMoving && Input.GetButton(lastMoveInput.DirectionToKeyCode()))
             {
                 dirVector = new Vector2(xWeight, yWeight);
             }
@@ -232,20 +232,28 @@ public class Script_PlayerMovement : MonoBehaviour
             else
             {
                 if (dirVector.y > 0)
+                {
                     UpWeights();
+                }
                 else if (dirVector.y < 0)
+                {
                     DownWeights();
+                }
                 else if (dirVector.x > 0)
+                {
                     RightWeights();
+                }
                 else if (dirVector.x < 0)
+                {
                     LeftWeights();
+                }
             }
         }
 
         if (isReversed)     HandleMoveReversed();
         else                HandleMoveDefault();
 
-        inputBuffer.Clear();
+        ClearInputBuffer();
 
         void HandleMoveDefault()
         {
@@ -321,42 +329,42 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
+    public void ClearInputBuffer()
+    {
+        inputBuffer.Clear();
+    }
+
     public void Move(Directions dir)
     {
-        // Should only try to exit once per tile.
+        lastMoveInput = dir;
+        
+        // Handle Exits (once per tile)
         if (!didTryExit && TryExit(dir))
-        {
-            Debug.Log("Try Exit is TRUE");
             return;
-        }
         else
             didTryExit = true;
         
         if (progress < 1f)
             return;
-
-        Vector3 desiredMove = directionToVector[dir];
         
         AnimatorSetDirection(dir);
         PushPushables(dir);
         
+        Vector3 desiredMove = directionToVector[dir];
         if (CheckCollisions(dir, ref desiredMove))
-        {
             return;
-        }
 
         // DDR mode, only changing directions to look like dancing.
-        if (game.state == Const_States_Game.DDR)    return;
+        if (game.state == Const_States_Game.DDR)
+            return;
         
-        // timer = repeatDelay;
         progress = 0f;
 
-        // Move player to desired location.
+        // Actually move player to desired location.
         startLocation = player.location;
         player.location += desiredMove;
-        
+
         isMoving = true;
-        lastMove = dir;
         didTryExit = false;
     }
 
@@ -666,7 +674,7 @@ public class Script_PlayerMovement : MonoBehaviour
         xWeight = 0f;
         yWeight = 0f;
 
-        lastMove = Directions.None;
+        lastMoveInput = Directions.None;
         isMoving = false;
     }
 
@@ -737,3 +745,24 @@ public class Script_PlayerMovement : MonoBehaviour
         directionToVector = Script_Utils.GetDirectionToVectorDict();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_PlayerMovement))]
+public class Script_PlayerMovementTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_PlayerMovement player = (Script_PlayerMovement)target;
+        if (GUILayout.Button("Change Game State: Cut Scene"))
+        {
+            Script_Game.Game.ChangeStateCutScene();
+        }
+
+        if (GUILayout.Button("Change Game State: Interact"))
+        {
+            Script_Game.Game.ChangeStateInteract();
+        }
+    }
+}
+#endif

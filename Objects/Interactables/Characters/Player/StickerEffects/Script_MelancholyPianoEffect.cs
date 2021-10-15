@@ -52,7 +52,7 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
         base.OnEquip();
         OnEquipControllerSynced();
         
-        player.StopMovingAnimations();
+        player.StopMoving();
     }
 
     protected override void OnUnequip()

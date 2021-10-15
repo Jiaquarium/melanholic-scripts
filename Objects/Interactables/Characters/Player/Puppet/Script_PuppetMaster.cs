@@ -26,7 +26,7 @@ public class Script_PuppetMaster : Script_Puppet
             
             if (IsNotMovingState())
             {
-                StopMovingAnimations();
+                StopMoving();
             }
             else
             {
@@ -35,7 +35,7 @@ public class Script_PuppetMaster : Script_Puppet
         }
         else
         {
-            StopMovingAnimations();
+            StopMoving();
         }
     }
 

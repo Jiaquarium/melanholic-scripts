@@ -157,7 +157,7 @@ public class Script_Player : Script_Character
             
             if (IsNotMovingState())
             {
-                StopMovingAnimations();
+                StopMoving();
             }
             else
             {
@@ -172,7 +172,7 @@ public class Script_Player : Script_Character
             }
             else
             {
-                StopMovingAnimations();
+                StopMoving();
             }
         }
     }
@@ -217,21 +217,21 @@ public class Script_Player : Script_Character
     public void SetIsTalking()
     {
         SetState(Const_States_Player.Dialogue);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsViewing()
     {
         SetState(Const_States_Player.Viewing);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsPickingUp(Script_Item item)
     {
         SetState(Const_States_Player.PickingUp);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
         
         SetItemShown(item);
@@ -240,56 +240,56 @@ public class Script_Player : Script_Character
     public void SetIsInventory()
     {
         SetState(Const_States_Player.Inventory);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsAttacking()
     {
         SetState(Const_States_Player.Attack);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsStandby()
     {
         SetState(Const_States_Player.Standby);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsPuppeteer()
     {
         SetState(Const_States_Player.Puppeteer);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsPuppeteerNull()
     {
         SetState(Const_States_Player.PuppeteerNull);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsEffect()
     {
         SetState(Const_States_Player.Effect);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsLastElevatorEffect()
     {
         SetState(Const_States_Player.LastElevatorEffect);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
     public void SetIsMelancholyPianoEffect()
     {
         SetState(Const_States_Player.MelancholyPiano);
-        StopMovingAnimations();
+        StopMoving();
         Debug.Log($"Player state set to {state}!");
     }
 
@@ -309,9 +309,10 @@ public class Script_Player : Script_Character
                 || Script_Exits.Control.IsHandlingExit;
     }
 
-    public void StopMovingAnimations()
+    public void StopMoving()
     {
         playerMovementHandler.StopMovingAnimations();
+        playerMovementHandler.ClearInputBuffer();
     }
 
     public void DefaultStickerState()

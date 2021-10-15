@@ -16,12 +16,14 @@ public class Script_PlayerCopy : Script_Player
 
         if (game.state == Const_States_Game.Interact)
         {
-            if (IsNotMovingState())     StopMovingAnimations();
-            else                        playerMovementHandler.HandleMoveInput();
+            if (IsNotMovingState())
+                StopMoving();
+            else
+                playerMovementHandler.HandleMoveInput();
         }
         else
         {
-            StopMovingAnimations();
+            StopMoving();
         }
     }    
 }

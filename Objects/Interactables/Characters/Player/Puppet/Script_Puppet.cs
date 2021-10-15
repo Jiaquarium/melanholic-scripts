@@ -68,7 +68,7 @@ public class Script_Puppet : Script_PlayerCopy
             
             if (IsNotMovingState())
             {
-                StopMovingAnimations();
+                StopMoving();
             }
             else
             {
@@ -77,7 +77,7 @@ public class Script_Puppet : Script_PlayerCopy
         }
         else
         {
-            StopMovingAnimations();
+            StopMoving();
         }
     }
 
