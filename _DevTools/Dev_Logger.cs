@@ -29,7 +29,7 @@ public class Dev_Logger : MonoBehaviour
     void Awake()
     {
         if (!Const_Dev.IsDevMode)
-            Debug.LogWarning("{name} is active in this production build");
+            Debug.LogWarning($"{name} is active in this production build");
         
         devLoggerCanvasGroup.gameObject.SetActive(isActive);
         

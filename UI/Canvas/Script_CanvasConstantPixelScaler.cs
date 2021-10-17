@@ -139,7 +139,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         {
             targetScaleFactor = isOnlyUpscaled
                 ? graphics.UpscaledRTPixelRatio
-                : Mathf.Max(graphics.PixelRatio, graphics.UpscaledRTPixelRatio);
+                : graphics.UIDefaultScaleFactor;
             
             // Will result in the canvas being hidden from view.
             hiddenScaleFactor = targetScaleFactor + 1;

@@ -318,6 +318,11 @@ public class Script_Game : MonoBehaviour
         get => GetComponent<PixelPerfectCamera>();
     }
 
+    public float CameraSize
+    {
+        get => GetComponent<Camera>().orthographicSize;
+    }
+
     /// <summary>
     /// (DEV): Sets all levels to inactive from Dev'ing
     /// to avoid errors when a level is active on load where their GameObjects's
@@ -349,6 +354,11 @@ public class Script_Game : MonoBehaviour
         }
     }
     
+    void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteAll();    
+    }
+    
     void OnEnable()
     {
         Script_ClockEventsManager.OnTimesUp += TimesUpEffects;
@@ -372,6 +382,7 @@ public class Script_Game : MonoBehaviour
     /// NOTE: no refs to Game or other Managers in Awake, only allowed in Start()
     void Awake()
     {
+        PlayerPrefs.DeleteAll();
         DevCleanup();
 
         if (Game == null)
@@ -386,8 +397,7 @@ public class Script_Game : MonoBehaviour
         saveGameControl.Setup();
 
         Script_SystemSettings.TargetFrameRate();
-        Script_SystemSettings.FullScreen();
-        PlayerPrefs.DeleteAll();
+        Script_SystemSettings.SetScreenSettings();
         Script_SystemSettings.DisableMouse();
 
         cinemachineBrain = GetComponent<CinemachineBrain>();

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Entry point for Title scene
 /// </summary>
@@ -22,8 +26,15 @@ public class Script_Start : MonoBehaviour
 
     [SerializeField] private Script_SFXManager SFXManager;
     
+    void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteAll();    
+    }
+    
     private void Awake()
     {
+        PlayerPrefs.DeleteAll();
+        
         if (Main == null)
         {
             Main = this;
@@ -36,10 +47,9 @@ public class Script_Start : MonoBehaviour
         savedGameTitleControl.Setup();
         sceneManager.Setup();
         SFXManager.Setup();
-
+        
         Script_SystemSettings.TargetFrameRate();
-        // Script_SystemSettings.FullScreen();
-        PlayerPrefs.DeleteAll();
+        Script_SystemSettings.SetScreenSettings();
         Script_SystemSettings.DisableMouse();
     }
 
@@ -72,3 +82,15 @@ public class Script_Start : MonoBehaviour
         crunchTimelineCtrl.PlayableDirectorPlayFromTimelines(0, 1);
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_Start))]
+public class Script_StartTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_Start t = (Script_Start)target;
+    }
+}
+#endif

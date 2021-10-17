@@ -6,34 +6,42 @@ public class Script_SystemSettings : MonoBehaviour
 {
     public static readonly int FrameRate = 60;
 
+    [SerializeField] private FullScreenMode currentScreenMode = 0;
+
     public static void TargetFrameRate()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = FrameRate;
     }
     
-    public static void FullScreen()
+    public static void SetScreenSettings()
     {
-        Screen.fullScreen = true;
-        Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+        Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
     }
-    
+
     public static void DisableMouse()
     {
-        // Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    void OnGUI() {
-        int w = Screen.width, h = Screen.height;
- 
-		GUIStyle style = new GUIStyle();
- 
-		Rect rect = new Rect(0, 0, w, h * 2 / 100);
-		style.alignment = TextAnchor.UpperLeft;
-		style.fontSize = h * 2 / 100;
-		style.normal.textColor = new Color (255f, 255f, 255f, 1.0f);
-
-        GUI.Label(rect, $"cursor visible: {Cursor.visible}", style);
+    void Start()
+    {
+        if (Const_Dev.IsDevMode)
+            Screen.fullScreenMode = currentScreenMode;
+    }
+    
+    void Update()
+    {
+        if (!Const_Dev.IsDevMode)
+            return;
+        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            currentScreenMode += 1;
+            if (!FullScreenMode.IsDefined(typeof(FullScreenMode), currentScreenMode))
+                currentScreenMode = 0;
+            
+            Screen.fullScreenMode = currentScreenMode;
+        }
     }
 }

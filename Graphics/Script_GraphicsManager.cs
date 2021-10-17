@@ -51,6 +51,12 @@ public class Script_GraphicsManager : MonoBehaviour
     {
         get => AssetsPPU;
     }
+
+    // Scale UI to largest possible for screen size.
+    public int UIDefaultScaleFactor
+    {
+        get => Mathf.Max(PixelRatio, UpscaledRTPixelRatio);
+    }
     
     void OnEnable()
     {

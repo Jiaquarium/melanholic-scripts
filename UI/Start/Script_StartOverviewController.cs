@@ -704,4 +704,15 @@ public class Script_StartOverviewController : Script_UIState
         savedGameController.Setup();
         startScreenController.Setup();
     }
+
+    public void BuildSettings()
+    {
+        startScreenCanvasGroup.gameObject.SetActive(false);
+        savedGameCanvasGroup.gameObject.SetActive(false);
+        gameOverCanvasGroup.gameObject.SetActive(false);
+        introCanvasGroup.gameObject.SetActive(false);
+        
+        settingsCanvasGroup.Close();
+        controlsCanvasGroup.Close();   
+    }
 }
