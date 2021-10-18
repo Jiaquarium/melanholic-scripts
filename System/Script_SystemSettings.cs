@@ -4,32 +4,26 @@ using UnityEngine;
 
 public class Script_SystemSettings : MonoBehaviour
 {
-    public static readonly int FrameRate = 60;
-
+    [SerializeField] private int vSyncCount = 1;
+    [SerializeField] private int targetFrameRate = 60;
     [SerializeField] private FullScreenMode currentScreenMode = 0;
-
-    public static void TargetFrameRate()
-    {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = FrameRate;
-    }
-    
-    public static void SetScreenSettings()
-    {
-        Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
-    }
 
     public static void DisableMouse()
     {
         Cursor.visible = false;
     }
 
-    void Start()
+    public void TargetFrameRate()
     {
-        if (Const_Dev.IsDevMode)
-            Screen.fullScreenMode = currentScreenMode;
+        QualitySettings.vSyncCount = vSyncCount;
+        Application.targetFrameRate = targetFrameRate;
     }
     
+    public void SetScreenSettings()
+    {
+        Screen.fullScreenMode = currentScreenMode;
+    }
+
     void Update()
     {
         if (!Const_Dev.IsDevMode)

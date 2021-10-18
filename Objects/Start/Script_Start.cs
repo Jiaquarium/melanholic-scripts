@@ -25,6 +25,7 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_TimelineController crunchTimelineCtrl;
 
     [SerializeField] private Script_SFXManager SFXManager;
+    [SerializeField] private Script_SystemSettings systemSettings;
     
     void OnApplicationQuit()
     {
@@ -48,9 +49,9 @@ public class Script_Start : MonoBehaviour
         sceneManager.Setup();
         SFXManager.Setup();
         
-        Script_SystemSettings.TargetFrameRate();
-        Script_SystemSettings.SetScreenSettings();
         Script_SystemSettings.DisableMouse();
+        systemSettings.TargetFrameRate();
+        systemSettings.SetScreenSettings();
     }
 
     void Start()

@@ -26,12 +26,6 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_TransitionManager.Endings activeEnding;
     /* ======================================================================= */
 
-    /* -----------------------------------------------------------------------
-        RUNTIME SYSTEM OPTIONS
-    ----------------------------------------------------------------------- */
-    public int targetFrameRate;
-    /* -------------------------------------------------------------------- */
-
     public Model_Levels Levels;
     public string state;
     public Model_PlayerState playerState;
@@ -74,6 +68,8 @@ public class Script_Game : MonoBehaviour
     
     // ------------------------------------------------------------------
     // Managers
+    
+    [SerializeField] private Script_SystemSettings systemSettings;
     public Script_DialogueManager dialogueManager;
     [SerializeField] private Script_SaveViewManager saveManager;
     [SerializeField] private Script_MenuController menuController;
@@ -396,9 +392,9 @@ public class Script_Game : MonoBehaviour
         
         saveGameControl.Setup();
 
-        Script_SystemSettings.TargetFrameRate();
-        Script_SystemSettings.SetScreenSettings();
         Script_SystemSettings.DisableMouse();
+        systemSettings.TargetFrameRate();
+        systemSettings.SetScreenSettings();
 
         cinemachineBrain = GetComponent<CinemachineBrain>();
 

@@ -8,11 +8,11 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	[SerializeField] private Camera cam;
 	[SerializeField] private Script_GraphicsManager graphics;
 	[SerializeField] private PixelPerfectCamera pixelPerfectCamera;
-	[SerializeField] private float fpsRefreshRate;
+	[SerializeField] private float fpsRefreshTimer;
 	
-	private float timer = 0.0f;
-	private float currentFps;
-	private float frameTime;
+	private float fps;
+	private float frameTimeMs;
+	private float timer;
  
 	void Awake()
     {
@@ -21,13 +21,12 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	
 	void Update()
 	{
-        timer -= Time.unscaledDeltaTime;
-		
-		if (timer <= 0f)
+		timer -= Time.unscaledDeltaTime;
+
+		if (timer <= 0)
 		{
-			timer = fpsRefreshRate;
-			currentFps = (int)(1f / Time.unscaledDeltaTime);
-			frameTime = Time.unscaledDeltaTime;
+			RefreshFrameData();
+			timer = fpsRefreshTimer;
 		}
 	}
  
@@ -43,14 +42,37 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		style.fontSize = fontSize;
 		style.normal.textColor = new Color (255f, 255f, 255f, 1.0f);
 		
-        GUI.Label(rect, $"{FrameData()}, {Resolution()}\n{PixelPerfectData()}\n{CameraSize()}\n{ScreenMode()}\n{BuildText()}", style);
+        GUI.Label(rect,
+@$"{FrameData()}, {VSyncData()}
+{Resolution()}
+{PixelPerfectData()}
+{CameraSize()}
+{ScreenMode()}
+{BuildText()}",
+		style);
 	}
 
+	private void RefreshFrameData()
+	{
+		frameTimeMs = Time.smoothDeltaTime * 1000f;
+		fps = 1f / Time.smoothDeltaTime;
+	}
+	
 	private string FrameData()
 	{
-		string fpsText = string.Format("{0:0.0} ms ({1:0.} fps)", frameTime, currentFps);
-
+		string fpsText = string.Format("{0:0.0} ms ({1:0.} fps)", frameTimeMs, fps);
+		
 		return fpsText;
+	}
+
+	private string VSyncData()
+	{
+		int vSyncCount = QualitySettings.vSyncCount;
+		int targetFrameRate = Application.targetFrameRate;
+
+		string vSyncText = $"vSync: {vSyncCount}, targetFps: {targetFrameRate}";
+
+		return vSyncText;
 	}
 
 	private string Resolution()
