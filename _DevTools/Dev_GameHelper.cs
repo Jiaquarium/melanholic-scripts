@@ -27,6 +27,8 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
+    [SerializeField] private Script_ExitMetadataObject RockGardenEntrance;
+    [SerializeField] private Script_ExitMetadataObject FountainEntrance;
     [SerializeField] private Script_ExitMetadataObject LabyrinthEntrance;
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
@@ -136,6 +138,16 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(GrandMirrorEntrance);
     }
 
+    public void ExitToRockGarden()
+    {
+        Teleport(RockGardenEntrance);
+    }
+
+    public void ExitToFountain()
+    {
+        Teleport(FountainEntrance);
+    }
+    
     public void ExitToLabyrinth()
     {
         Teleport(LabyrinthEntrance);
@@ -352,10 +364,20 @@ public class Dev_GameHelper : MonoBehaviour
 
             EditorGUILayout.LabelField("Celestial Gardens World", EditorStyles.miniLabel);
             
+            if (GUILayout.Button("Go To: Rock Garden"))
+            {
+                t.ExitToRockGarden();
+            }
+            
+            if (GUILayout.Button("Go To: Fountain"))
+            {
+                t.ExitToFountain();
+            }    
+            
             if (GUILayout.Button("Go To: Labyrinth"))
             {
                 t.ExitToLabyrinth();
-            }    
+            }
 
             EditorGUILayout.LabelField("Painting Quests", EditorStyles.boldLabel);
 

@@ -407,7 +407,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         /// TBD Check active sticker for speedwalk 
         bool isSpeedwalkStickerActive = Script_ActiveStickerManager.Control.IsActiveSticker("speedwalk-sticker");
-        bool isDev = Debug.isDebugBuild && Const_Dev.IsDevMode;
+        bool isDev = Debug.isDebugBuild || Const_Dev.IsDevMode;
 
         if (
             Input.GetButton(Const_KeyCodes.Action3)
