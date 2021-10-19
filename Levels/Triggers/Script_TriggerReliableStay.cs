@@ -9,7 +9,9 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// Tag Detection Reliable Stay Trigger
+/// Tag Detection Stay Trigger
+/// 
+/// Note: Removed Reliable Trigger Code
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
 public class Script_TriggerReliableStay : Script_Trigger
@@ -49,13 +51,13 @@ public class Script_TriggerReliableStay : Script_Trigger
     
     void OnTriggerEnter(Collider other)
     {
-        Script_ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
-        
+        Debug.Log($"{name} OnTriggerEnter other <{other}> tag <{other.tag}>");
+
         if (detectTags.CheckInTags(other.tag))
         {   
             if (onTriggerEnterAction.CheckUnityEventAction())
             {
-                Debug.Log($"OnTriggerEnter name: <{other.name}> tag: <{other.tag}>");
+                Debug.Log($"Invoking OnTriggerEnter Action");
                 onTriggerEnterAction.Invoke();
             }
             
@@ -67,13 +69,13 @@ public class Script_TriggerReliableStay : Script_Trigger
 
     void OnTriggerExit(Collider other)
     {
-        Script_ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
+        Debug.Log($"{name} OnTriggerExit other <{other}> tag <{other.tag}>");
         
         if (detectTags.CheckInTags(other.tag))
         {   
             if (onTriggerExitAction.CheckUnityEventAction())
             {
-                Debug.Log($"OnTriggerExit name: <{other.name}> tag: <{other.tag}>");
+                Debug.Log($"Invoking OnTriggerExit Action");
                 onTriggerExitAction.Invoke();
             }
             

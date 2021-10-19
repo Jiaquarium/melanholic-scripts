@@ -27,6 +27,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
+    [SerializeField] private Script_ExitMetadataObject LabyrinthEntrance;
 
     [SerializeField] private Dev_InventoryTester inventoryTester;
 
@@ -133,6 +134,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToGrandMirror()
     {
         Teleport(GrandMirrorEntrance);
+    }
+
+    public void ExitToLabyrinth()
+    {
+        Teleport(LabyrinthEntrance);
     }
 
     public void BuildSetup()
@@ -303,6 +309,13 @@ public class Dev_GameHelper : MonoBehaviour
                 t.ExitToEileensMind();
             }
 
+            EditorGUILayout.LabelField("Myne's Lair", EditorStyles.miniLabel);
+
+            if (GUILayout.Button("Go To: Grand Mirror"))
+            {
+                t.ExitToGrandMirror();
+            }
+
             EditorGUILayout.LabelField("Wells World", EditorStyles.miniLabel);
             
             if (GUILayout.Button("Go To: Wells World"))
@@ -337,12 +350,12 @@ public class Dev_GameHelper : MonoBehaviour
                 t.ExitToUrselksSaloonHallway();
             }
 
-            EditorGUILayout.LabelField("Myne's", EditorStyles.miniLabel);
-
-            if (GUILayout.Button("Go To: Grand Mirror"))
+            EditorGUILayout.LabelField("Celestial Gardens World", EditorStyles.miniLabel);
+            
+            if (GUILayout.Button("Go To: Labyrinth"))
             {
-                t.ExitToGrandMirror();
-            }
+                t.ExitToLabyrinth();
+            }    
 
             EditorGUILayout.LabelField("Painting Quests", EditorStyles.boldLabel);
 

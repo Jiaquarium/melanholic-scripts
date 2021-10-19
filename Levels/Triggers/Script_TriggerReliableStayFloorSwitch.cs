@@ -20,6 +20,7 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
         
         if (switchUpGraphics != null)
             switchUpGraphics.gameObject.SetActive(true);
+        
         if (switchDownGraphics != null)
             switchDownGraphics.gameObject.SetActive(false);
     }
@@ -34,6 +35,7 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
         
         if (switchUpGraphics != null)
             switchUpGraphics.gameObject.SetActive(false);
+        
         if (switchDownGraphics != null)
             switchDownGraphics.gameObject.SetActive(true);
     }

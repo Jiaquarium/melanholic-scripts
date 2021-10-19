@@ -754,7 +754,7 @@ public static class Script_Utils
 
     public static bool CheckInTags(this List<Const_Tags.Tags> tags, string tag)
     {
-        if (tag == null)
+        if (string.IsNullOrEmpty(tag))
             return false;
 
         // Check if Everything is included
