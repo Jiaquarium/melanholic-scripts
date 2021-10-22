@@ -19,6 +19,12 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     /* ======================================================================= */
     
     [SerializeField] private Script_DialogueNode startNode;
+    
+    [SerializeField] private float beforeInternalThoughtWaitTime;
+    [SerializeField] private Script_DialogueNode frozenTimeThoughtNode;
+
+    [SerializeField] private Script_DialogueNode monR2Node;
+    
     [SerializeField] private Script_DialogueNode[] frontDoorNodes;
 
     [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
@@ -55,11 +61,29 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 _isInteractAfter: false
             );
         }
-        else
+
+        // Mon R2 Ren directs attention towards repeating cycle
+        else if (
+            game.CycleCount == 1
+            && game.Run.dayId == Script_Run.DayId.mon
+            && isFirstLoad
+        )
+        {
+            Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                {
+                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.FadeInSlow(StartMonR2Sequence, BGMParam);
+                },
+                _isInteractAfter: false
+            );
+
+            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+        }
+
+        // Default Day Notification.
+        else if (isFirstLoad)
         {
             // On First Load of subsequent days, play the Day Notification only once.
-            if (isFirstLoad)
-            {
                 Script_DayNotificationManager.Control.PlayDayNotification(() =>
                     {
                         Script_BackgroundMusicManager.Control.UnPause();
@@ -71,20 +95,19 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 );
 
                 StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
-            }
             
             // If not first load, we do not need to play the Day Notification and
             // will not have take down the UnderDialogue Canvas bc did not set it up.
-
-            IEnumerator CloseUnderDialogueBlackScreenNextFrame()
-            {
-                yield return null;
-
-                Script_TransitionManager.Control.UnderDialogueBlackScreen(false);
-            }
         }
 
         isFirstLoad = false;
+        
+        IEnumerator CloseUnderDialogueBlackScreenNextFrame()
+        {
+            yield return null;
+
+            Script_TransitionManager.Control.UnderDialogueBlackScreen(false);
+        }
 
         void StartNewGameSequence()
         {
@@ -92,6 +115,20 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             
             Script_DialogueManager.DialogueManager.StartDialogueNode(startNode);
             didStartThought = true;
+        }
+
+        void StartMonR2Sequence()
+        {
+            game.ChangeStateCutScene();
+
+            StartCoroutine(WaitForPlayerThought());
+
+            IEnumerator WaitForPlayerThought()
+            {
+                yield return new WaitForSeconds(beforeInternalThoughtWaitTime);
+
+                Script_DialogueManager.DialogueManager.StartDialogueNode(monR2Node);
+            }
         }
     }
 
@@ -125,6 +162,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
     // Next Node Action START
+    
+    // Called from StartNode on New Game.
     public void OnEndStartDialogue()
     {
         Script_BackgroundMusicManager.Control.UnPause();
@@ -133,8 +172,23 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         /// Fade out black canvas
         Script_TransitionManager.Control.UnderDialogueFadeOut(
             Script_TransitionManager.UnderDialogueFadeTime, () => {
-            game.ChangeStateInteract();
+            
+            // Wait a moment to start Node: hotel-lobby_player-internal_time-stopped
+            StartCoroutine(WaitForPlayerThought());
         });
+
+        IEnumerator WaitForPlayerThought()
+        {
+            yield return new WaitForSeconds(beforeInternalThoughtWaitTime);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(frozenTimeThoughtNode);
+        }
+    }
+
+    // Called from frozenTimeThoughtNode
+    public void GameInteract()
+    {
+        game.ChangeStateInteract();
     }
 
     public void PanToCCTVCamera()
