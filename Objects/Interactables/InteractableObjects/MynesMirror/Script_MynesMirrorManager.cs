@@ -11,6 +11,7 @@ public class Script_MynesMirrorManager : MonoBehaviour
     public static Script_MynesMirrorManager Control;
 
     [SerializeField] private int interactionCount;
+    [SerializeField] private bool didSealingDialogue;
 
     [SerializeField] private Script_DialogueNode[] interactionNodes;
     
@@ -28,6 +29,12 @@ public class Script_MynesMirrorManager : MonoBehaviour
     public bool DidInteract
     {
         get => interactionCount > 0;
+    }
+
+    public bool DidSealingDialogue
+    {
+        get => didSealingDialogue;
+        set => didSealingDialogue = value;
     }
     
     // ----------------------------------------------------------------------

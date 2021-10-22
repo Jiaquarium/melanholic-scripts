@@ -9,10 +9,14 @@ using UnityEngine.Events;
 /// 1. Intro() from prompt (BG Music is faded out here) -> yes node NextNodeAction
 ///
 /// 2. StartDialogue() from Timeline End Signal
-///     Dialogue:
-///     a) Interaction Node? (Myne's Mirror Manager gives this node based on # of interactions with Mirror)
-///     b) Hint Node? (only if hint is needed / quest is not done)
-///     c) Default Node (Default END)
+///     Dialogue Flow:
+///     A) Default
+///         1) Interaction Node? (Myne's Mirror Manager gives this node based on # of interactions with Mirror)
+///         2) Hint Node? Check cases in MynesMirrorNodesController_Mirror0 (based on Day)
+///         3) Default Node (Default END)
+///     
+///     B) Special Conditions
+///         1) Specially defined override Nodes, completely define a custom flow
 /// 
 /// 3. End() from Dialogue End NextNodeAction
 /// </summary>
@@ -43,7 +47,18 @@ public class Script_MynesMirror : Script_InteractableObjectText
 
     private Script_DialogueNode InteractionNode
     {
-        get => Script_MynesMirrorManager.Control.ActiveNode ?? HintNode;
+        get
+        {
+            var specialConditionNodes = dialogueController?.SpecialConditionNodes;
+            var interactionNode = Script_MynesMirrorManager.Control.ActiveNode;
+            
+            if (specialConditionNodes != null && specialConditionNodes.Length > 0)
+                return specialConditionNodes[0];
+            else if (interactionNode != null)
+                return interactionNode;
+            else
+                return HintNode;
+        }
     }
 
     protected override void OnValidate()

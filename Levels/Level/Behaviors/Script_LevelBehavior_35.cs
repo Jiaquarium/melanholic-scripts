@@ -46,6 +46,12 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
     {
         meshFadeController.FadeOut(meshFadeTime);
     }
+
+    // Called from Node: dining_mynes-mirror_interaction-node_end0
+    public void UpdateMyneName()
+    {
+        Script_Names.UpdateMyne(); 
+    }
     // ------------------------------------------------------------------
     // Timeline Signal Reactions
     public void OnIdsRunAwayTimelineDone()

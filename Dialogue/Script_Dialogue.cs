@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-22 15:18:13
+// Last created by Dialogue Exporter at 2021-10-22 17:08:26
 
 using System.Collections;
 using System.Collections.Generic;
@@ -624,7 +624,14 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"{0} was it? You really should not be here.",
                 @"What business do you have here?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -1390,26 +1397,14 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
-    "ballroom_king-eclaire_psychic_intro",
-    new Model_Languages
-    {
-        speaker = "{57}",
-        EN = new string[]
-        {
-                @"As you may have already heard, I am {57}.",
-        },
-        
-    }
-},
-{
     "ballroom_king-eclaire_psychic",
     new Model_Languages
     {
         speaker = "{57}",
         EN = new string[]
         {
-                @"It’s no secret we’re in a dire situation right now. I must take action.",
-                @"Intruders have invaded my {37}.",
+                @"It’s no secret we’re in a dire situation right now.",
+                @"The {42}... They've invaded. Most folks have already fled...",
         },
         
     }
@@ -1421,7 +1416,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{57}",
         EN = new string[]
         {
-                @"As the King of {18}, it is my sworn duty to serve and protect its inhabitants.| So after careful thought I’ve come to the difficult decision –",
+                @"But my plan will save {18}! Mark my words. I have already made preparations.",
         },
         
     }
@@ -1433,7 +1428,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{57}",
         EN = new string[]
         {
-                @"<b>To commence the</b> {22} <b>at</b> {49}",
+                @"<b>At exactly</b> {49}<b>, the {22} will be complete.</b>",
         },
         
     }
@@ -1445,7 +1440,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{57}",
         EN = new string[]
         {
-                @"It’s been a tough decision and comes with its pitfalls, but after weighing all the viable options, it is the logical path we must take. to protect my fellow {19}.",
+                @"<b>We will lock our doors and drive out these wicked forces!</b>",
         },
         
     }
@@ -1471,9 +1466,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{57}",
         EN = new string[]
         {
-                @"I am the sacred elder of {18} with the sworn duty to protect its inhabitants. I go by {57},",
+                @"Are you here to try and help?| Rest assured, I am the sacred elder of {18}, {57}. It is my sworn duty to protect our residents!",
                 @"What is all this commotion about? We are in a dire situation.",
-                @"Intruders have invaded {37}. The {42}.",
+                @"Intruders have invaded {37}...| The {42}.",
                 @"Rumor has it they even have the power to transform the innocent.",
         },
         metadata = new Model_Languages.Metadata[]
@@ -1504,7 +1499,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{57}",
         EN = new string[]
         {
-                @"Most our residents have left already.",
+                @"Most of our citizens have left already.",
                 @"But I have a plan to save {18}!",
         },
         metadata = new Model_Languages.Metadata[]

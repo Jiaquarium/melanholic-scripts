@@ -845,4 +845,24 @@ public static class Script_Utils
     {
         return Vector3.Lerp(source, target, 1 - Mathf.Pow(smoothing, time));
     }
+
+    // -------------------------------------------------------------------------------------
+    // Dialogue Utils
+    public static bool IsChoicesNode(this Script_DialogueNode node)
+    {
+        return node.data.children.Length > 1 ||
+            node.data.isChoices ||
+            node.CheckChildrenForChoiceText();
+    }
+
+    static bool CheckChildrenForChoiceText(this Script_DialogueNode node)
+    {
+        foreach (var child in node.data.children)
+        {
+            if (!string.IsNullOrEmpty(child?.data?.choiceText))
+                return true;
+        }
+
+        return false;
+    }
 }

@@ -63,4 +63,9 @@ public class Script_PsychicNodesController : MonoBehaviour
             }
         }
     }
+
+    public virtual Script_DialogueNode[] SpecialConditionNodes
+    {
+        get => null;
+    }
 }

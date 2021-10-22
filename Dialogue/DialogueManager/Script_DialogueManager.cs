@@ -430,7 +430,7 @@ public class Script_DialogueManager : MonoBehaviour
     bool CheckChoices()
     {
         if (
-            (currentNode.data.children.Length > 1 || currentNode.data.isChoices)
+            currentNode.IsChoicesNode()
             && !( // following node types have their own managers
                 currentNode is Script_DialogueNode_SavePoint
                 || currentNode is Script_DialogueNode_PaintingEntrance
