@@ -601,8 +601,8 @@ public class Script_DialogueManager : MonoBehaviour
         // to-date textInfo.characterCount)
         textUI.ForceMeshUpdate(true);
         
-        Debug.Log($"TeletypeRevealLine() formattedSentence {formattedSentence}");
-        Debug.Log($"TeletypeRevealLine() textUI.textInfo.characterCount {textUI.textInfo.characterCount} TeletypeRevealLine() textUI.maxVisibleCharacters {textUI.maxVisibleCharacters}");
+        Debug.Log($"FormattedSentence <{formattedSentence}>");
+        Debug.Log($"characterCount <{textUI.textInfo.characterCount}> maxVisibleCharacters <{textUI.maxVisibleCharacters}>");
         
         float charPauseTime;
 
@@ -611,35 +611,29 @@ public class Script_DialogueManager : MonoBehaviour
 
         // Get # of visible characters in Text object.
         int totalVisibleCharacters = textUI.textInfo.characterCount;
-        int counter = 0;
+        int visibleCount = 0;
 
-        while (true)
+        while (visibleCount < totalVisibleCharacters)
         {
-            int visibleCount = counter % (totalVisibleCharacters + 1);
-            
             // Reveal current character.
             textUI.maxVisibleCharacters = visibleCount;
-
-            // Exit once the last character has been revealed.
-            if (visibleCount >= totalVisibleCharacters)
-                break;
 
             // Get the next visible character and handle Text Commands.
             TMP_CharacterInfo charInfo = textUI.textInfo.characterInfo[visibleCount];
             char nextVisibleChar = charInfo.character;
             
             if (nextVisibleChar == PauseTextCommand)
-            {
                 charPauseTime = pauseLength;
-            }
             else
-            {
                 charPauseTime = defaultCharPause;
-            }
 
-            counter++;
             yield return new WaitForSeconds(charPauseTime);
+            
+            visibleCount++;
         }
+
+        // Reveal the last character.
+        textUI.maxVisibleCharacters = visibleCount;
 
         if (cb != null)
             cb();

@@ -25,7 +25,7 @@ public class Script_Names: MonoBehaviour
         set { Names._Player = value; }
     }
     
-    public const string Melz                            = "<b>Melz</b>";                        // {1}
+    public const string Mask                            = "<b>mask</b>";                        // {1}
     public const string MelzTheGreat                    = "<b>Melz the Great</b>";              // {2}
     public static string Ids                                                                    // {3}
     {
@@ -42,7 +42,7 @@ public class Script_Names: MonoBehaviour
     public const string PreppedMasks                    = "<b>Prepped Masks</b>";               // {5}
     public const string Urselk                          = "<b>Urselk</b>";                      // {6}
     public const string Urselks                         = "<b>Urselks</b>";                     // {7}
-    public const string MaskedOne                       = "<b>Masked One</b>";                  // {8}
+    public const string Owner                           = "<b>owner</b>";                       // {8}
     public const string Aenimals                        = "<b>ænimals</b>";                     // {9}
     
     public static string Myne                                                                    // {10}
@@ -104,7 +104,7 @@ public class Script_Names: MonoBehaviour
     
     public const string UrselkHouse                     = "<b>Urselk House</b>";                // {34}
     public const string UrselksSaloon                   = "<b>Urselks Saloon</b>";              // {35}
-    public const string UrselksBallroom                 = "<b>Urselks Ballroom</b>";            // {36}
+    public const string Ballroom                        = "<b>Ballroom</b>";                    // {36}
     public const string KelsingorMansion                = "<b>Kelsingør Mansion</b>";           // {37}
     
     public static string Kaffe                                                                  // {38}
@@ -195,7 +195,7 @@ public class Script_Names: MonoBehaviour
     
     // The Active Mask Command.
     public const string ActiveStickerCommand            = "<b>Mask Command</b>";                // {79}
-    public const string SwitchActiveSticker             = "<b>Wear Mask</b>";                 // {80}
+    public const string SwitchActiveSticker             = "<b>Wear Mask</b>";                   // {80}
     public const string Prep                            = "<b>Prep</b>";                        // {81}
     public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
 
@@ -229,6 +229,7 @@ public class Script_Names: MonoBehaviour
     
     public static void UpdateEro() { Ero                                        = "<b>Ero</b>"; }
     
+    // Refs: (1) Myne's Mirror Interaction0
     public static void UpdateMyne() { Myne                                      = "<b>Myne</b>"; }
 
     // Refs: (1) Eileen's room via UpdateSisters in Level Behavior
@@ -255,7 +256,7 @@ public class Script_Names: MonoBehaviour
     public static void UpdateLatte() { Latte                                    = "<b>Latte</b>"; }
     
     // Refs: (1) King's Dialogue in Ballroom
-    public static void UpdateKingEclaire() { KingEclaire                        = "<b>King Eclaire</b>"; }
+    public static void UpdateKingEclaire() { KingEclaire                        = "<b>Elder Eclaire</b>"; }
     
     // Refs: (1) Suzette's Dialogue in Ballroom
     public static void UpdateSuzette() { Suzette                                = "<b>Suzette</b>"; }

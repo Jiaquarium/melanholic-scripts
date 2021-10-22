@@ -70,6 +70,10 @@ public class Script_DialogueNode : MonoBehaviour
             {
                 data.choiceText = languages.choiceText;
             }
+            else
+            {
+                data.choiceText = string.Empty;
+            }
         }
     }
 }

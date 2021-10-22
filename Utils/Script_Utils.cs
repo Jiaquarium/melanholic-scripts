@@ -234,14 +234,14 @@ public static class Script_Utils
         return string.Format(
             itemAndDynamicFormattedStr,
             Script_Names.Player,                        // {0}
-            Script_Names.Melz,                          // {1}
+            Script_Names.Mask,                          // {1}
             Script_Names.MelzTheGreat,                  // {2}
             Script_Names.Ids,                           // {3}
             Script_Names.Ero,                           // {4}
             Script_Names.PreppedMasks,                  // {5}
             Script_Names.Urselk,                        // {6}
             Script_Names.Urselks,                       // {7}
-            Script_Names.MaskedOne,                     // {8}
+            Script_Names.Owner,                         // {8}
             Script_Names.Aenimals,                      // {9}
             Script_Names.Myne,                          // {10}
             Script_Names.Eileen,                        // {11}  
@@ -269,7 +269,7 @@ public static class Script_Utils
             Script_Names.Ursie,                         // {33}
             Script_Names.UrselkHouse,                   // {34}
             Script_Names.UrselksSaloon,                 // {35}
-            Script_Names.UrselksBallroom,               // {36}
+            Script_Names.Ballroom,                      // {36}
             Script_Names.KelsingorMansion,              // {37}
             Script_Names.Kaffe,                         // {38}
             Script_Names.Latte,                         // {39}
