@@ -351,6 +351,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SetNewVCam(followElleniaVCam);
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
+    
     public void ElleniaFacesPainting()
     {
         Ellenia.FaceDirection(Directions.Up);
@@ -438,7 +439,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         game.HandleItemReceive(AnimalWithinSticker);
     }
 
-    public void GiverStickerPlayerHas()
+    public void GiveStickerPlayerHas()
     {
         game.ChangeStateCutScene();
         StartCoroutine(WaitToContinueDialogue());
@@ -581,7 +582,9 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             Ellenia.gameObject.SetActive(true);
             
             HandleElleniaDialogueState();
-            if (isPuzzleComplete)   Ellenia.MyPastQuestState = Script_DemonNPC.PastQuestState.Done;
+            
+            if (isPuzzleComplete)
+                Ellenia.MyPastQuestState = Script_DemonNPC.PastQuestState.Done;
 
             if (isCurrentPuzzleComplete)
             {

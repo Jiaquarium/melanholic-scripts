@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-22 17:08:26
+// Last created by Dialogue Exporter at 2021-10-22 22:39:06
 
 using System.Collections;
 using System.Collections.Generic;
@@ -848,7 +848,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"{0}.",
-                @"Well kiddo, I have a hunch.",
+                @"Listen kiddo, I have a hunch.",
         },
         
     }
@@ -860,7 +860,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Pretty cool entrance, am I right? Spent a while coming up with that.",
+                @"......",
         },
         
     }
@@ -872,7 +872,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Oh you had something to tell me?",
+                @"But first that look on your face...",
         },
         
     }
@@ -886,10 +886,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"I know.",
                 @"......",
-                @"This might sound crazy but...",
+                @"This might sound crazy but|.|.|.",
         },
         choiceText = "I met him, {10}.",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -914,7 +922,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"{0}.",
-                @"Well kiddo, I have a hunch.",
+                @"Listen kiddo, I have a hunch.",
         },
         
     }
@@ -926,9 +934,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"This might sound crazy but...",
+                @"This might sound crazy but|.|.|.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2286,19 +2300,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"I call this one...<b><i>Labyrinth of Reflections</i></b>",
-        },
-        
-    }
-},
-{
-    "ellenias-room_ellenia_psychic_snake-painting_a",
-    new Model_Languages
-    {
-        speaker = "{12}",
-        EN = new string[]
-        {
-
+                @"I call this one... <b><i>Labyrinth of Reflections</i></b>.",
         },
         
     }
@@ -2310,7 +2312,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"<b><i>Through the Frozen Garden</i></b>",
+                @"<b><i>Through the Frozen Garden</i></b>.",
         },
         
     }
@@ -2322,19 +2324,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"<b><i>Everything Returns to Zero</i></b>",
-        },
-        
-    }
-},
-{
-    "ellenias-room_ellenia_psychic_bear-claws-painting_a",
-    new Model_Languages
-    {
-        speaker = "{12}",
-        EN = new string[]
-        {
-
+                @"<b><i>Everything Returns to Zero</i></b>.",
         },
         
     }
@@ -2346,19 +2336,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"But you see, I’m not after beauty. No! I’m after what's never been seen before!",
-        },
-        
-    }
-},
-{
-    "ellenias-room_ellenia_psychic_explain_a",
-    new Model_Languages
-    {
-        speaker = "{12}",
-        EN = new string[]
-        {
-                @"Oh you've heard about the {22}.",
+                @"Yes, it's all coming together now!",
         },
         
     }
@@ -2371,7 +2349,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"So, I've been working on this new one for a while now. What do you think?",
-                @"Be honest! Give me one word that describes it!",
+                @"C'mon now! Give me one word that describes its essence!",
         },
         
     }
@@ -2462,19 +2440,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"So scared to try anything truly new... scared every decision is the wrong one.",
                 @"It's so clear now.",
                 @"I need to leave this place and take my work to the outside world.",
-        },
-        
-    }
-},
-{
-    "ellenias-room_ellenia_psychic_on-correct_redo_a",
-    new Model_Languages
-    {
-        speaker = "{12}",
-        EN = new string[]
-        {
-                @"It’s time for me to make a name for us {7} once and for all!",
-                @"Bye!",
+                @"As a token of my appreciation, take this...",
         },
         
     }
@@ -2529,8 +2495,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"Have we met before?",
-                @"For some reason it feels like we’ve met before.",
+                @"Have we met before? For some reason you seem familiar.",
                 @"Anyways, it’s not like I need any advice, especially from a stranger!",
                 @"But it looks like you have something to say about my painting?",
         },

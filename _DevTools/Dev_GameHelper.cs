@@ -266,163 +266,204 @@ public class Dev_GameHelper : MonoBehaviour
         LastElevatorBehavior.GotPsychicDuck                         = true;
     }
 
+    public void SetElleniaPuzzleDone()
+    {
+        ElleniasRoomBehavior.isPuzzleComplete                       = true;
+        ElleniasRoomBehavior.spokenWithEllenia                      = true;
+    }
+
+    public void ElleniaComfortableState()
+    {
+        // Must be either Fri or Sat because of Ellenia's condition.
+        if (Script_Game.Game.Run.dayId == Script_Run.DayId.thu)
+            runsManager.IncrementRun();
+        
+        Script_EventCycleManager.Control.SetElleniaDidTalkCountdownMax();
+        Script_EventCycleManager.Control.DidTalkToEllenia--;
+    }    
+
     // ----------------------------------------------------------------------
 
     #if UNITY_EDITOR
     [CustomEditor(typeof(Dev_GameHelper))]
     public class Dev_GameHelperTester : Editor
     {
+        private static bool showSpawns;
+        private static bool showPaintingQuests;
+        private static bool showStates;
+        private static bool showBuildSettings;
+        
         public override void OnInspectorGUI() {
             DrawDefaultInspector();
 
-            Dev_GameHelper t = (Dev_GameHelper)target;
-            
-            EditorGUILayout.LabelField("Spawns", EditorStyles.boldLabel);
-            
-            if (GUILayout.Button("DefaultPlayerSpawnPos()"))
+            Dev_GameHelper t = target as Dev_GameHelper;
+
+            var style = EditorStyles.foldoutHeader;
+
+            showSpawns = EditorGUILayout.Foldout(showSpawns, "Spawns", style);
+            if (showSpawns)
             {
-                t.DefaultPlayerSpawnPos();
-            }
-            
-            if (GUILayout.Button("Go To: <playerTeleportPos>"))
-            {
-                t.ExitToLevel();
+                if (GUILayout.Button("DefaultPlayerSpawnPos()"))
+                {
+                    t.DefaultPlayerSpawnPos();
+                }
+                
+                if (GUILayout.Button("Go To: <playerTeleportPos>"))
+                {
+                    t.ExitToLevel();
+                }
+
+                EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);
+                
+                if (GUILayout.Button("Go To: Dining"))
+                {
+                    t.ExitToDining();
+                }
+                
+                if (GUILayout.Button("Go To: Ids Room"))
+                {
+                    t.ExitToIdsRoom();
+                }
+
+                if (GUILayout.Button("Go To: Ellenia's Room"))
+                {
+                    t.ExitToElleniasRoom();
+                }
+
+                if (GUILayout.Button("Go To: Last Elevator"))
+                {
+                    t.ExitToLastElevator();
+                }
+
+                if (GUILayout.Button("Go To: Ballroom (HMS Hall Entrance)"))
+                {
+                    t.ExitToBallroomFromHMSHall();
+                }
+
+                if (GUILayout.Button("Go To: Eileen's Mind"))
+                {
+                    t.ExitToEileensMind();
+                }
+
+                EditorGUILayout.LabelField("Myne's Lair", EditorStyles.miniLabel);
+
+                if (GUILayout.Button("Go To: Grand Mirror"))
+                {
+                    t.ExitToGrandMirror();
+                }
+
+                EditorGUILayout.LabelField("Wells World", EditorStyles.miniLabel);
+                
+                if (GUILayout.Button("Go To: Wells World"))
+                {
+                    t.ExitToWellsWorld();
+                }
+
+                if (GUILayout.Button("Go To: Fireplace Training 1"))
+                {
+                    t.ExitToFireplaceTraining1();
+                }
+
+                if (GUILayout.Button("Go To: Fireplace Puzzle"))
+                {
+                    t.ExitToFireplacePuzzle();
+                }
+
+                if (GUILayout.Button("Go To: Catwalk"))
+                {
+                    t.ExitToCatWalk();
+                }
+                
+                EditorGUILayout.LabelField("XXX World", EditorStyles.miniLabel);
+                
+                if (GUILayout.Button("Go To: XXX World"))
+                {
+                    t.ExitToXXXWorld();
+                }
+
+                if (GUILayout.Button("Go To: Urselks Saloon Hallway"))
+                {
+                    t.ExitToUrselksSaloonHallway();
+                }
+
+                EditorGUILayout.LabelField("Celestial Gardens World", EditorStyles.miniLabel);
+                
+                if (GUILayout.Button("Go To: Rock Garden"))
+                {
+                    t.ExitToRockGarden();
+                }
+                
+                if (GUILayout.Button("Go To: Fountain"))
+                {
+                    t.ExitToFountain();
+                }    
+                
+                if (GUILayout.Button("Go To: Labyrinth"))
+                {
+                    t.ExitToLabyrinth();
+                }
             }
 
-            EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);
-            
-            if (GUILayout.Button("Go To: Dining"))
+            showPaintingQuests = EditorGUILayout.Foldout(showPaintingQuests, "Painting Quests", style);
+            if (showPaintingQuests)
             {
-                t.ExitToDining();
-            }
-            
-            if (GUILayout.Button("Go To: Ids Room"))
-            {
-                t.ExitToIdsRoom();
-            }
+                if (GUILayout.Button("All Quests Done Today"))
+                {
+                    t.SetAllQuestsDoneToday();
+                }
 
-            if (GUILayout.Button("Go To: Ellenia's Room"))
-            {
-                t.ExitToElleniasRoom();
+                if (GUILayout.Button("Quests Done Dynamic Today"))
+                {
+                    t.SetQuestsDoneDynamic();
+                }
             }
 
-            if (GUILayout.Button("Go To: Last Elevator"))
+            showStates = EditorGUILayout.Foldout(showStates, "Game States", style);
+            if (showStates)
             {
-                t.ExitToLastElevator();
+                if (GUILayout.Button("Save Current"))
+                {
+                    t.SaveCurrent();
+                }
+
+                if (GUILayout.Button("Last Elevator Before Grand Mirror"))
+                {
+                    t.BeforeGrandMirror();
+                }
+                
+                if (GUILayout.Button("Weekend Start"))
+                {
+                    t.WeekendCycle();
+                }
+
+                if (GUILayout.Button("Weekend Start with Lantern"))
+                {
+                    t.WeekendWithLantern();
+                }
+
+                if (GUILayout.Button("Ellenia Quest Done"))
+                {
+                    t.SetElleniaPuzzleDone();
+                }
+
+                if (GUILayout.Button("Ellenia Comfortable State"))
+                {
+                    t.ElleniaComfortableState();
+                }
             }
 
-            if (GUILayout.Button("Go To: Ballroom (HMS Hall Entrance)"))
+            showBuildSettings = EditorGUILayout.Foldout(showBuildSettings, "Build Settings", style);
+            if (showBuildSettings)
             {
-                t.ExitToBallroomFromHMSHall();
-            }
+                if (GUILayout.Button("Build Setup", GUILayout.Height(32)))
+                {
+                    t.BuildSetup();
+                }
 
-            if (GUILayout.Button("Go To: Eileen's Mind"))
-            {
-                t.ExitToEileensMind();
-            }
-
-            EditorGUILayout.LabelField("Myne's Lair", EditorStyles.miniLabel);
-
-            if (GUILayout.Button("Go To: Grand Mirror"))
-            {
-                t.ExitToGrandMirror();
-            }
-
-            EditorGUILayout.LabelField("Wells World", EditorStyles.miniLabel);
-            
-            if (GUILayout.Button("Go To: Wells World"))
-            {
-                t.ExitToWellsWorld();
-            }
-
-            if (GUILayout.Button("Go To: Fireplace Training 1"))
-            {
-                t.ExitToFireplaceTraining1();
-            }
-
-            if (GUILayout.Button("Go To: Fireplace Puzzle"))
-            {
-                t.ExitToFireplacePuzzle();
-            }
-
-            if (GUILayout.Button("Go To: Catwalk"))
-            {
-                t.ExitToCatWalk();
-            }
-            
-            EditorGUILayout.LabelField("XXX World", EditorStyles.miniLabel);
-            
-            if (GUILayout.Button("Go To: XXX World"))
-            {
-                t.ExitToXXXWorld();
-            }
-
-            if (GUILayout.Button("Go To: Urselks Saloon Hallway"))
-            {
-                t.ExitToUrselksSaloonHallway();
-            }
-
-            EditorGUILayout.LabelField("Celestial Gardens World", EditorStyles.miniLabel);
-            
-            if (GUILayout.Button("Go To: Rock Garden"))
-            {
-                t.ExitToRockGarden();
-            }
-            
-            if (GUILayout.Button("Go To: Fountain"))
-            {
-                t.ExitToFountain();
-            }    
-            
-            if (GUILayout.Button("Go To: Labyrinth"))
-            {
-                t.ExitToLabyrinth();
-            }
-
-            EditorGUILayout.LabelField("Painting Quests", EditorStyles.boldLabel);
-
-            if (GUILayout.Button("All Quests Done Today"))
-            {
-                t.SetAllQuestsDoneToday();
-            }
-
-            if (GUILayout.Button("Quests Done Dynamic Today"))
-            {
-                t.SetQuestsDoneDynamic();
-            }
-
-            EditorGUILayout.LabelField("Game State", EditorStyles.boldLabel);
-
-            if (GUILayout.Button("Save Current"))
-            {
-                t.SaveCurrent();
-            }
-
-            if (GUILayout.Button("Last Elevator Before Grand Mirror"))
-            {
-                t.BeforeGrandMirror();
-            }
-            
-            if (GUILayout.Button("Weekend Start"))
-            {
-                t.WeekendCycle();
-            }
-
-            if (GUILayout.Button("Weekend Start with Lantern"))
-            {
-                t.WeekendWithLantern();
-            }
-
-            EditorGUILayout.LabelField("Build Settings", EditorStyles.boldLabel);
-
-            if (GUILayout.Button("Build Setup", GUILayout.Height(32)))
-            {
-                t.BuildSetup();
-            }
-
-            if (GUILayout.Button("Build Dev Explore Setup"))
-            {
-                t.BuildDevExploreSetup();
+                if (GUILayout.Button("Build Dev Explore Setup"))
+                {
+                    t.BuildDevExploreSetup();
+                }
             }
         }
     }

@@ -71,9 +71,10 @@ public class Script_DemonNPC : Script_MovingNPC
         {
             switch (value)
             {
-                // Switch psychic nodes with done state ones
+                // Switch psychic nodes with Talked state ones
                 case (DialogueState.Talked):
-                    if (value != _dialogueState)    OnPsychicDialogueTalked();
+                    if (value != _dialogueState)
+                        OnPsychicDialogueTalked();
                     break;
             }
 
@@ -90,7 +91,7 @@ public class Script_DemonNPC : Script_MovingNPC
 
             switch (value)
             {
-                // Switch psychic nodes with done state ones
+                // Switch psychic nodes with Done state ones
                 case (PastQuestState.Done):
                     OnPastQuestDone();
                     break;

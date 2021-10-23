@@ -832,6 +832,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             {
                 t.SwitchLightsInAnimation();
             }
+
+            if (GUILayout.Button("Nameplate Timeline"))
+            {
+                t.NameplateTimeline();
+            }
         }
     }
     #endif
