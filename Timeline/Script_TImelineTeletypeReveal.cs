@@ -23,7 +23,8 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
         var textUI = GetComponent<TextMeshProUGUI>();
         
         // Pause Timeline
-        sequenceController.Pause();
+        if (sequenceController != null)
+            sequenceController.Pause();
 
         // Hide all text preemptively because we must wait a frame to allow for text replacement.
         textUI.maxVisibleCharacters = 0;
@@ -67,6 +68,7 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
             return;
         }
 
-        sequenceController.Play();
+        if (sequenceController != null)
+            sequenceController.Play();
     }
 }

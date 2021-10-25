@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-12 15:20:42
+// Last created by UI Exporter at 2021-10-25 15:40:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -657,6 +657,36 @@ SAVING GAME... Please do not turn off power."
     new Model_LanguagesUI
     {
         EN = @"{79}"
+    }
+},
+// ------------------------------------------------------------------
+// Eileen's Mind
+{
+    "eileens-mind_myne_challenge_passive",
+    new Model_LanguagesUI
+    {
+        EN = @"Stop! There is no chance you will make it in time! It's for your own good."
+    }
+},
+{
+    "eileens-mind_myne_challenge_passive1",
+    new Model_LanguagesUI
+    {
+        EN = @"You are going to hurt yourself, can you not see?!"
+    }
+},
+{
+    "eileens-mind_myne_challenge_passive2",
+    new Model_LanguagesUI
+    {
+        EN = @"You imbecile! Put a stop to this right now!"
+    }
+},
+{
+    "eileens-mind_myne_challenge_passive3",
+    new Model_LanguagesUI
+    {
+        EN = @"You will pay for this, mark my words!"
     }
 },
 

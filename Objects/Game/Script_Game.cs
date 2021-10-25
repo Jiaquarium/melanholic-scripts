@@ -113,6 +113,7 @@ public class Script_Game : MonoBehaviour
 
     [SerializeField] private Script_MapNotificationsManager mapNotificationsManager;
     [SerializeField] private Script_DayNotificationManager dayNotificationManager;
+    [SerializeField] private Script_TeletypeNotificationManager teletypeNotificationManager;
     [SerializeField] private Script_LightFXManager lightFXManager;
 
     [SerializeField] private Script_PianoManager pianoManager;
@@ -425,6 +426,7 @@ public class Script_Game : MonoBehaviour
         eventCycleManager.Setup();
         mapNotificationsManager.Setup();
         dayNotificationManager.Setup();
+        teletypeNotificationManager.Setup();
         lightFXManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);

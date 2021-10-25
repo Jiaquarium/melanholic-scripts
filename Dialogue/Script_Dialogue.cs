@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-22 22:39:06
+// Last created by Dialogue Exporter at 2021-10-25 15:55:24
 
 using System.Collections;
 using System.Collections.Generic;
@@ -67,6 +67,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Time......| It seems to be frozen in here.",
+                @"I always get this feeling just before the sun is about to come up.",
         },
         
     }
@@ -78,7 +79,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"My head is throbbing... what day is it today anyways?",
+                @"Why do I feel half asleep... what day is it today anyways?",
         },
         
     }
@@ -2693,6 +2694,50 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"I’ll be alright... alright.",
         },
         
+    }
+},
+// ------------------------------------------------------------------
+// Eileen's Mind
+{
+    "eileens-mind_myne_challenge_stop",
+    new Model_Languages
+    {
+        speaker = "{10}",
+        EN = new string[]
+        {
+                @"{0}, how did you find the way in here?",
+                @"I am trying to be of assistance to you...| but how can I assist you when you're wandering around like this?",
+                @"The best thing for you to do is to turn back now, dear.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                null,
+                null,
+        }
+    }
+},
+{
+    "eileens-mind_myne_challenge_stop1",
+    new Model_Languages
+    {
+        speaker = "{10}",
+        EN = new string[]
+        {
+                @"Really?| Stop this madness!",
+                @"You are officially trespassing, do you not understand?!",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                null,
+        }
     }
 },
 // ------------------------------------------------------------------

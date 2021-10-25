@@ -16,6 +16,16 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public const string MapName = "Inside a Painting";
     private const string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
     
+    private const string MyneChallenge0 = "myne-challenge_0";
+    private const string MyneChallenge1 = "myne-challenge_1";
+    private const string MyneChallengePassive0 = "myne-challenge_passive_0";
+    private const string MyneChallengePassive1 = "myne-challenge_passive_1";
+    private const string MyneChallengePassive2 = "myne-challenge_passive_2";
+    private const string MyneChallengePassive3 = "myne-challenge_passive_3";
+    
+    private const string DramaticThoughts = "dramatic-thoughts";
+    private const string DramaDone = "drama-done";
+    
     /* =======================================================================
         STATE DATA
     ======================================================================= */
@@ -54,6 +64,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     [SerializeField] private float beforePaintingDoneCutSceneWaitTime;
 
+    
+    [Header("Myne's Challenge Settings")]
+    [SerializeField] private Script_DialogueNode[] mynesStopDialogue; 
+    
     private Script_LBSwitchHandler switchHandler;
     private bool isPauseSpikes;
 
@@ -183,7 +197,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     public override bool ActivateTrigger(string Id)
     {
-        if (Id == "dramatic-thoughts")
+        if (Id == DramaticThoughts)
         {
             game.ChangeStateCutScene();
             isPauseSpikes = true;
@@ -194,7 +208,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         // trigger at same time as being struck by Needle HitBox.
         // isDramaActuallyDone is reset (via OnPlayerRestartHandleBgm)
         // when player is hit by Spike.
-        else if (Id == "drama-done")
+        else if (Id == DramaDone)
         {
             if (!isCurrentPuzzleComplete)
             {
@@ -204,8 +218,56 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
             return true;
         }
+        else if (Id == MyneChallenge0)
+        {
+            if (!didActivateDramaticThoughts)
+                PlayMynesStopDialogue(0);
+            
+            return true;
+        }
+        else if (Id == MyneChallenge1)
+        {
+            if (!didActivateDramaticThoughts)
+                PlayMynesStopDialogue(1);
+            
+            return true;
+        }
+        else if (Id == MyneChallengePassive0)
+        {
+            if (!didActivateDramaticThoughts)
+                Script_TeletypeNotificationManager.Control.ShowEileensMindDialogue(0);
+            
+            return true;
+        }
+        else if (Id == MyneChallengePassive1)
+        {
+            if (!didActivateDramaticThoughts)
+                Script_TeletypeNotificationManager.Control.ShowEileensMindDialogue(1);
+            
+            return true;
+        }
+        else if (Id == MyneChallengePassive2)
+        {
+            if (!didActivateDramaticThoughts)
+                Script_TeletypeNotificationManager.Control.ShowEileensMindDialogue(2);
+            
+            return true;
+        }
+        else if (Id == MyneChallengePassive3)
+        {
+            if (!didActivateDramaticThoughts)
+                Script_TeletypeNotificationManager.Control.ShowEileensMindDialogue(3);
+            
+            return true;
+        }
 
         return false;
+    }
+
+    private void PlayMynesStopDialogue(int i)
+    {
+        game.ChangeStateCutScene();
+        Script_DialogueManager.DialogueManager.StartDialogueNode(mynesStopDialogue[i]);
     }
 
     private IEnumerator WaitCheckDramaActuallyComplete()
@@ -298,6 +360,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                     () => game.StopBgMusic()
                 )
             );
+
+            Script_TeletypeNotificationManager.Control.InitialState();
         }
     }
 
@@ -310,6 +374,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_AudioMixerVolume.SetVolume(
             audioMixer, BGMParam, 1f
         );
+        
         isPauseSpikes = false;
         timer = 0.001f; // make Attack instantly after
     }
@@ -358,6 +423,14 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public void UnhidePlayer()
     {
         game.GetPlayer().SetInvisible(false, 0f);
+    }
+
+    // ----------------------------------------------------------------------
+    // Next Node Actions
+
+    public void OnMyneChallengeDialogueDone()
+    {
+        game.ChangeStateInteract();
     }
 
     // ----------------------------------------------------------------------
