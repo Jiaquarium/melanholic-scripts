@@ -27,8 +27,6 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     void Awake()
     {
         snowEffectAlways.gameObject.SetActive(true);
-        
-        IsMelancholyPianoDisabled = true;
     }
 
     // ------------------------------------------------------------------

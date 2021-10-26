@@ -101,6 +101,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         {
             DefaultBgMusicLevels();
         }
+
+        Script_TeletypeNotificationManager.Control.InitialState();
     }
 
     private void Awake()

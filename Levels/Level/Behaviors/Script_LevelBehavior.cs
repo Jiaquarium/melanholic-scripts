@@ -13,24 +13,9 @@ public class Script_LevelBehavior : MonoBehaviour
     [SerializeField] private Script_Snow snowEffect;
     [SerializeField] private Script_VCamera levelVCam;
 
-    public bool IsMelancholyPianoDisabled { get; set; }
-
     public Script_VCamera LevelVCam
     {
         get => levelVCam;
-    }
-
-    void Awake()
-    {
-        /// NOTE: Awake() will occur before Setup()
-        /// Will only happen once when level is set to active
-        /// useful for init
-    }
-    
-    void Start()
-    {
-        /// NOTE: Awake() will occur before Setup()
-        /// "" same as Awake() otherwise
     }
 
     // Update is called once per frame

@@ -7,6 +7,7 @@ using UnityEngine.Playables;
 using Cinemachine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
+using System.Linq;
 
 /// <summary>
 /// Entry point for Game scene
@@ -176,6 +177,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Transform newGameSpawnDestination;
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
+    [SerializeField] private Script_LevelBehavior[] disabledPianoLevels;
     
     // ------------------------------------------------------------------
     // Spawn points
@@ -306,6 +308,11 @@ public class Script_Game : MonoBehaviour
     public bool IsInBallroom
     {
         get => levelBehavior == BallroomBehavior;
+    }
+
+    public bool IsMelancholyPianoDisabled
+    {
+        get => disabledPianoLevels.FirstOrDefault(lvl => lvl == levelBehavior) != null;
     }
 
     // ------------------------------------------------------------------

@@ -22,10 +22,11 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
     {
         Debug.Log($"{name} Effect()");
 
-        Script_Game.Game.ChangeStateCutScene();
+        var game = Script_Game.Game;
+        game.ChangeStateCutScene();
         
         // Check Level Behavior to ensure Piano effect is not disabled in current room.
-        if (Script_Game.Game.levelBehavior.IsMelancholyPianoDisabled)
+        if (game.IsMelancholyPianoDisabled)
         {
             audioSource.PlayOneShot(Script_SFXManager.SFX.piano, Script_SFXManager.SFX.pianoVol);
 
