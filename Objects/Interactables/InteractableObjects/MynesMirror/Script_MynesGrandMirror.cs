@@ -30,8 +30,27 @@ public class Script_MynesGrandMirror : Script_MynesMirror
 
     [SerializeField] private PlayableDirector newWorldPaintingsDirector;
 
+    [SerializeField] private SpriteRenderer[] grandMirrorGlassGraphics;
+
     private Section currentSection;
     private bool isActivated;
+    
+    protected override Sprite MirrorGraphicsSprite
+    {
+        get => grandMirrorGlassGraphics != null && grandMirrorGlassGraphics.Length > 0
+            ? grandMirrorGlassGraphics[0].sprite
+            : null;
+        set
+        {
+            foreach (var spriteRenderer in grandMirrorGlassGraphics)
+                spriteRenderer.sprite = value;
+        }
+    }
+
+    private SpriteRenderer[] GrandMirrorGlassGraphics
+    {
+        get => grandMirrorGlassGraphics;
+    }
     
     protected override void OnEnable()
     {
@@ -52,13 +71,6 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         base.Awake();
         
         Initialize();
-    }
-    
-    public void GiveSticker()
-    {
-        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
-            game.HandleItemReceive(stickerObject);
-        });
     }
 
     public override void StartDialogue()
@@ -109,6 +121,11 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         }
     }
 
+    public void SetMirrorGraphics(bool isDefault, int i)
+    {
+        GrandMirrorGlassGraphics[i].sprite = isDefault ? defaultMirrorSprite : brokenMirrorSprite;
+    }
+
     // ------------------------------------------------------------------
     // Next Node Actions
 
@@ -122,6 +139,13 @@ public class Script_MynesGrandMirror : Script_MynesMirror
     // ------------------------------------------------------------------
     // Timeline Signals
 
+    public void GiveSticker()
+    {
+        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
+            game.HandleItemReceive(stickerObject);
+        });
+    }
+    
     public void OnNewWorldPaintingsTimelineDone()
     {
         currentSection = Section.NewWorldPaintings;

@@ -10,6 +10,8 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
     
     [SerializeField] private SpriteRenderer graphics;   
     [SerializeField] private Script_Game game;
+
+    public bool IsFollowing { get; set; }
     
     void Awake()
     {
@@ -18,8 +20,8 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
     
     void LateUpdate()
     {
-        // MoveTowardsPlayer();
-        DampTowardsPlayer();
+        if (IsFollowing)
+            DampTowardsPlayer();
     }
     
     public void MatchPlayer()

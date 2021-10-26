@@ -116,6 +116,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_DayNotificationManager dayNotificationManager;
     [SerializeField] private Script_TeletypeNotificationManager teletypeNotificationManager;
     [SerializeField] private Script_LightFXManager lightFXManager;
+    [SerializeField] private Script_GlitchFXManager glitchFXManager;
 
     [SerializeField] private Script_PianoManager pianoManager;
 
@@ -435,6 +436,7 @@ public class Script_Game : MonoBehaviour
         dayNotificationManager.Setup();
         teletypeNotificationManager.Setup();
         lightFXManager.Setup();
+        glitchFXManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
         
@@ -901,6 +903,7 @@ public class Script_Game : MonoBehaviour
         player.transform.SetParent(playerContainer, false);
         
         CameraTargetFollower.MatchPlayer();
+        CameraTargetFollower.IsFollowing = true;
         
         VCam.FollowCameraTargetFollower();
         VCamDramaticZoom.FollowCameraTargetFollower();

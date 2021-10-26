@@ -32,7 +32,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
 
     [SerializeField] protected SpriteRenderer mirrorGraphics;
 
-    [SerializeField] private Sprite defaultMirrorSprite;
+    [SerializeField] protected Sprite defaultMirrorSprite;
     [SerializeField] protected Sprite brokenMirrorSprite;
 
     private bool isSolved;
@@ -59,6 +59,12 @@ public class Script_MynesMirror : Script_InteractableObjectText
             else
                 return HintNode;
         }
+    }
+
+    protected virtual Sprite MirrorGraphicsSprite
+    {
+        get => mirrorGraphics.sprite;
+        set => mirrorGraphics.sprite = value;
     }
 
     protected override void OnValidate()
@@ -121,8 +127,10 @@ public class Script_MynesMirror : Script_InteractableObjectText
 
     protected virtual void HandleIsActivatedGraphics(bool isActivated)
     {
-        if (isActivated)    mirrorGraphics.sprite = brokenMirrorSprite;
-        else                mirrorGraphics.sprite = defaultMirrorSprite;
+        if (isActivated)
+            MirrorGraphicsSprite = brokenMirrorSprite;
+        else
+            MirrorGraphicsSprite = defaultMirrorSprite;
     }
 
     // ------------------------------------------------------------------
