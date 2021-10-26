@@ -83,7 +83,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete        += OnLevelInitCompleteEvent;
 
         Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
-        dramaticThoughtsDirector.stopped                    += OnDramaticThoughtsDone;
         Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
     }
@@ -93,7 +92,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete        -= OnLevelInitCompleteEvent;
         
         Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
-        dramaticThoughtsDirector.stopped                    -= OnDramaticThoughtsDone;
         Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
 
@@ -365,20 +363,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         }
     }
 
-    private void OnDramaticThoughtsDone(PlayableDirector aDirector)
-    {
-        GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.ThoughtsDone, Script_SFXManager.SFX.ThoughtsDoneVol);
-        
-        game.ChangeStateInteract();
-        bgThemePlayer.gameObject.SetActive(true);
-        Script_AudioMixerVolume.SetVolume(
-            audioMixer, BGMParam, 1f
-        );
-        
-        isPauseSpikes = false;
-        timer = 0.001f; // make Attack instantly after
-    }
-
     private void OnSwitchOff(string switchId)
     {
         if (switchId == puzzleSwitch.nameId)
@@ -405,6 +389,22 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     // ----------------------------------------------------------------------
     // Timeline Signals
 
+    // Called after dramatic thoughts timeline.
+    public void OnDramaticThoughtsCutsceneDone()
+    {
+        GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.ThoughtsDone, Script_SFXManager.SFX.ThoughtsDoneVol);
+        
+        game.ChangeStateInteract();
+        
+        bgThemePlayer.gameObject.SetActive(true);
+        Script_AudioMixerVolume.SetVolume(
+            audioMixer, BGMParam, 1f
+        );
+        
+        isPauseSpikes = false;
+        timer = 0.001f; // make Attack instantly after
+    }
+    
     public void OnEileensMindPaintingTimelineDone()
     {
         isTimelineControlled = true;

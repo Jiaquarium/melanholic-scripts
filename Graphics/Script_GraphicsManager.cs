@@ -21,6 +21,9 @@ public class Script_GraphicsManager : MonoBehaviour
     
     [Tooltip("The size of current live Virtual Camera.")]
     [SerializeField] private float targetOrthoSize;
+    [Tooltip(@"The main virtual camera we want to base calcs on. If empty, will default to live VCam.
+Warning: If left to live camera, UI will scale whenever switching to a zoomed in camera")]
+    [SerializeField] private CinemachineVirtualCamera mainVirtualCameraTarget;
     
     [Tooltip("Current ortho size dictated by Pixel Perfect Cam.")]
     [SerializeField] private float correctedOrthoSize;
@@ -91,13 +94,19 @@ public class Script_GraphicsManager : MonoBehaviour
     {
         pixelPerfectCameraPixelRatio = pixelPerfectCamera.pixelRatio;
         
-        CinemachineVirtualCamera liveVirtualCamera = cinemachineBrain
-            .ActiveVirtualCamera as CinemachineVirtualCamera;
-        
-        if (liveVirtualCamera == null)
-            return;
+        CinemachineVirtualCamera targetVirtualCamera;
+        if (mainVirtualCameraTarget != null)
+        {
+            targetVirtualCamera = mainVirtualCameraTarget;
+        }
+        else
+        {
+            targetVirtualCamera = cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera;
+            if (targetVirtualCamera == null)
+                return;
+        }
 
-        targetOrthoSize = liveVirtualCamera.m_Lens.OrthographicSize;
+        targetOrthoSize = targetVirtualCamera.m_Lens.OrthographicSize;
         correctedOrthoSize = pixelPerfectCamera.CorrectCinemachineOrthoSize(targetOrthoSize);
 
         screenHeight = Screen.height;

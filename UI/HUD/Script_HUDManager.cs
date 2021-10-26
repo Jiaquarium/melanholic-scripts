@@ -33,7 +33,9 @@ public class Script_HUDManager : MonoBehaviour
     {
         // After IsTimesUp, this will be controlled by TimesUp timeline.
         if (isPaused || IsTimesUp)
+        {
             return;
+        }
         
         if (IsClockShowing() || IsTimesUp)
         {
