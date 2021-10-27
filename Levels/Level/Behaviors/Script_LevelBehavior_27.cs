@@ -24,12 +24,26 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     [SerializeField] private Script_TimelineController IdsTimelineController;
     [SerializeField] private Transform Ids;
     
+    private bool isGlitched;
+    
     private bool isInit = true;
 
     public bool GotPsychicDuck
     {
         get => _gotPsychicDuck;
         set => _gotPsychicDuck = value;
+    }
+    
+    protected override void OnDisable()
+    {
+        if (isGlitched)
+            Script_GlitchFXManager.Control.SetBlend(0f);
+    }
+    
+    void Start()
+    {
+        if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
+            Script_GlitchFXManager.Control.SetBlend(1f);
     }
     
     private void HandleGrandMirrorPaintingEntrance()
