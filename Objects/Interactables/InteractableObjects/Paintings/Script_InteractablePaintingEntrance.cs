@@ -12,6 +12,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
     static readonly private float BoarNeedleWaitTime = 0.5f;
 
     static readonly private string IsActive = "IsActive";
+    static readonly private string Sketch = "Sketch";
     
     [SerializeField] private Script_ExitMetadataObject exit;
     public Script_DialogueNode[] paintingDialogueNodes;
@@ -33,6 +34,13 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
 
             HandlePaintingSprite(_state);
         }
+    }
+
+    protected override void OnEnable()
+    {
+        HandlePaintingSprite(State);
+        
+        base.OnEnable();
     }
     
     // Painting Entrance have option to allow text interaction.
@@ -113,6 +121,12 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         );   
     }
 
+    public void SetSketchAnimation()
+    {
+        if (myAnimator != null)
+            myAnimator.SetTrigger(Sketch);
+    }
+
     // ------------------------------------------------------------------
     // Timeline Signal Reactions
 
@@ -187,6 +201,11 @@ public class Script_InteractablePaintingEntranceTester : Editor
         if (GUILayout.Button("Set State Active"))
         {
             t.State = Script_InteractablePaintingEntrance.States.Active;
+        }
+
+        if (GUILayout.Button("Sketch"))
+        {
+            t.SetSketchAnimation();
         }
     }
 }

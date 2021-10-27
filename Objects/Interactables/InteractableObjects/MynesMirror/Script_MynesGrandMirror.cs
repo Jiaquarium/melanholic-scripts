@@ -146,6 +146,7 @@ public class Script_MynesGrandMirror : Script_MynesMirror
         });
     }
     
+    // Not in use.
     public void OnNewWorldPaintingsTimelineDone()
     {
         currentSection = Section.NewWorldPaintings;

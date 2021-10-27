@@ -777,6 +777,7 @@ public static class Script_Utils
     }
 
     // Bind objects to tracks at runtime.
+    // NOTE: do not use nested tracks, ordering can be unpredictable.
     public static void BindTimelineTracks(
         this PlayableDirector playableDirector,
         TimelineAsset timeline,

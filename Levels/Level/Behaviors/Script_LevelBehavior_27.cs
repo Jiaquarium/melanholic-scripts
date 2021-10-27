@@ -34,16 +34,26 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         set => _gotPsychicDuck = value;
     }
     
-    protected override void OnDisable()
+    protected override void OnEnable()
     {
-        if (isGlitched)
-            Script_GlitchFXManager.Control.SetBlend(0f);
+        base.OnEnable();
+
+        if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
+        {
+            Script_GlitchFXManager.Control.SetBlend(1f);
+            isGlitched = true;
+        }
     }
     
-    void Start()
+    protected override void OnDisable()
     {
-        if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
-            Script_GlitchFXManager.Control.SetBlend(1f);
+        base.OnDisable();
+
+        if (isGlitched)
+        {
+            Script_GlitchFXManager.Control.SetBlend(0f);
+            isGlitched = false;
+        }
     }
     
     private void HandleGrandMirrorPaintingEntrance()

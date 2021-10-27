@@ -1,13 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Playables;
 
 public class Script_CrackableStats : Script_CharacterStats
 {
+    [SerializeField] private UnityEvent<Script_CrackableStats> crackedAction;
+    [Tooltip("Does not Die on crack. All behavior will be specified by crackedAction.")]
+    [SerializeField] private bool isHandleDieExplicit;    
+    
     [SerializeField] private Sprite defaultImage;
     [SerializeField] private Sprite lowHealthImage;
     [SerializeField] private int lowHealthThreshold;
+    
     [SerializeField] private SpriteRenderer graphics;
+
+    [SerializeField] private PlayableDirector crackingDirector;
+
+    [SerializeField] private List<GameObject> visibleChildren;
+    
+    protected UnityEvent<Script_CrackableStats> CrackedAction
+    {
+        get => crackedAction;
+    }
     
     public override int Hurt(int dmg, Script_HitBox hitBox)
     {
@@ -21,7 +37,13 @@ public class Script_CrackableStats : Script_CharacterStats
         
         if (currentHp == 0)
         {
-            Die(Script_GameOverController.DeathTypes.Default);
+            InvokeCrackedAction();
+
+            if (crackingDirector != null)
+                crackingDirector.Play();
+            
+            if (!isHandleDieExplicit)
+                Die(Script_GameOverController.DeathTypes.Default);
         }
         else
         {
@@ -44,5 +66,33 @@ public class Script_CrackableStats : Script_CharacterStats
         
         if      (hp <= lowHealthThreshold)      graphics.sprite = lowHealthImage;
         else                                    graphics.sprite = defaultImage;
+    }
+
+    private void InvokeCrackedAction()
+    {
+        if (CrackedAction.CheckUnityEvent())
+            CrackedAction.Invoke(this);
+    }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+    public void DieTimeline()
+    {
+        // Only turn off graphics so we can still play the rest of Timeline.
+        foreach (var child in visibleChildren)
+            child.SetActive(false);
+    }
+
+    public void OnIceBlockCrackingTimelineDone(Script_CrackableStats ice)
+    {
+        Debug.Log($"OnIceBlockCrackingTimelineDone ice <{ice}>");
+        
+        Script_InteractableObjectEventsManager.IceCrackingTimelineDone(this);
+
+        gameObject.SetActive(false);
+        
+        // Revert children state from DieTimeline().
+        foreach (var child in visibleChildren)
+            child.SetActive(true);
     }
 }

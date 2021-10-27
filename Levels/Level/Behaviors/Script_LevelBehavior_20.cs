@@ -95,6 +95,12 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
 
         SetupCycleConditions();
+
+        if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
+        {
+            Script_GlitchFXManager.Control.SetBlend(1f);
+            isGlitched = true;
+        }
     }
 
     protected override void OnDisable()
@@ -102,18 +108,15 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
 
         if (isGlitched)
+        {
             Script_GlitchFXManager.Control.SetBlend(0f);
+            isGlitched = false;
+        }
     }
 
     void Awake()
     {
         timelineController = GetComponent<Script_TimelineController>();
-    }
-
-    void Start()
-    {
-        if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
-            Script_GlitchFXManager.Control.SetBlend(1f);
     }
 
     protected override void Update()
@@ -262,7 +265,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Ursie.gameObject.SetActive(isActive);
     }
 
-    private void SetPaintingEntrancesActive(bool isActive)
+    public void SetPaintingEntrancesActive(bool isActive)
     {
         Script_InteractableObject.States paintingState;
         
@@ -308,7 +311,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         {
             Ero.gameObject.SetActive(false);
             SetDynamicSpectersActive(true);
-            SetPaintingEntrancesActive(false);
+            
+            // Ignore setting entrances to disabled if we're in Grand Mirror room, meaning
+            // we're in the middle of the World Painting Reveal cut scene.
+            if (!game.IsInGrandMirrorRoom())
+                SetPaintingEntrancesActive(false);
         }
     }
     

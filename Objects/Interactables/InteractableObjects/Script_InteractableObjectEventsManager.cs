@@ -35,4 +35,12 @@ public class Script_InteractableObjectEventsManager : MonoBehaviour
         if (OnFrozenWellDie != null)
             OnFrozenWellDie(iceStats);
     }
+
+    public delegate void IceCrackingTimelineDoneDelegate(Script_CrackableStats iceStats);
+    public static event IceCrackingTimelineDoneDelegate OnIceCrackingTimelineDone;
+    public static void IceCrackingTimelineDone(Script_CrackableStats iceStats)
+    {
+        if (OnIceCrackingTimelineDone != null)
+            OnIceCrackingTimelineDone(iceStats);
+    }
 }
