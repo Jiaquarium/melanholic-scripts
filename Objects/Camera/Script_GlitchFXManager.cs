@@ -12,15 +12,65 @@ using UnityEditor;
 public class Script_GlitchFXManager : MonoBehaviour
 {
     public static Script_GlitchFXManager Control;
+
+    [Header("---- Initial State Settings ----")]
+    
+    [SerializeField] private GlitchImageEffect.GlitchType type = GlitchImageEffect.GlitchType.Type1;
+    
+    [Range(0, 1)]
+    [SerializeField] private float blend;
+
+    [Header("Parameters of Type1")]
+    [Range(0, 10)]
+    [SerializeField] private float frequency;
+
+    [Range(0, 500)]
+    [SerializeField] private float interference;
+
+    [Range(0, 5)]
+    [SerializeField] private float noise;
+
+    [Range(0, 20)]
+    [SerializeField] private float scanLine;
+
+    [Range(0, 1)]
+    [SerializeField] private float colored;
+
+    [Header("Parameters of Type3")]
+    [Range(0, 30)]
+    [SerializeField] private float intensityType3;
+
+    [Header("Parameters of Type4")]
+    [Range(100, 500)]
+    [SerializeField] private float lines;
+
+    [Range(1, 6)]
+    [SerializeField] private float scanSpeed;
+
+    [Range(0.1f, 0.9f)]
+    [SerializeField] private float linesThreshold;
+
+    [Range(0, 0.8f)]
+    [SerializeField] private float exposure;
+    
+    [SerializeField] private Texture2D noiseTex;
+    [SerializeField] private Material material;
     
     [SerializeField] private GlitchImageEffect glitchFeature;
 
     private Coroutine blendCoroutine;
     private float timer;
+
+    private GlitchImageEffect.GlitchImageEffectSettings defaultSettings;
+    
+    void OnValidate()
+    {
+        SaveSettings(glitchFeature.settings);
+    }
     
     void OnDisable()
     {
-        InitialState();
+        SaveSettings(glitchFeature.settings, defaultSettings);
     }
     
     public void BlendTo(float blendValue, float time = 0.5f, Action cb = null)
@@ -49,22 +99,55 @@ public class Script_GlitchFXManager : MonoBehaviour
                 float percentDone = 1 - (timer / time);
                 float newBlend = originalBlend + (percentDone * blendDifference);
                 
-                glitchFeature.settings.blend = Mathf.Clamp(newBlend, 0f, 1f);
+                blend = Mathf.Clamp(newBlend, 0f, 1f);
+                SaveSettings(glitchFeature.settings);
             }
 
             if (cb != null)
                 cb();
         }
     }
-    
-    public void SetBlend(float value)
-    {
-        glitchFeature.settings.blend = value;
-    }
 
+    public void SetBlend(float val)
+    {
+        blend = val;
+        SaveSettings(glitchFeature.settings);
+    }
+    
+    // Inject the settings either defined on this manager or another settings object.
+    private void SaveSettings(
+        GlitchImageEffect.GlitchImageEffectSettings _settings,
+        GlitchImageEffect.GlitchImageEffectSettings fromSettings = null
+    )
+    {
+        _settings.type              = fromSettings != null ? fromSettings.type : type;
+        
+        _settings.blend             = fromSettings != null ? fromSettings.blend : blend;
+        
+        _settings.frequency         = fromSettings != null ? fromSettings.frequency : frequency;
+        _settings.interference      = fromSettings != null ? fromSettings.interference : interference;
+        _settings.noise             = fromSettings != null ? fromSettings.noise : noise;
+        _settings.scanLine          = fromSettings != null ? fromSettings.scanLine : scanLine;
+        _settings.colored           = fromSettings != null ? fromSettings.colored : colored;
+        
+        _settings.intensityType3    = fromSettings != null ? fromSettings.intensityType3 : intensityType3;
+        
+        _settings.lines             = fromSettings != null ? fromSettings.lines : lines;
+        _settings.scanSpeed         = fromSettings != null ? fromSettings.scanSpeed : scanSpeed;
+        _settings.linesThreshold    = fromSettings != null ? fromSettings.linesThreshold : linesThreshold;
+        _settings.exposure          = fromSettings != null ? fromSettings.exposure : exposure;
+
+        _settings.noiseTex          = fromSettings != null ? fromSettings.noiseTex : noiseTex;
+        _settings.material          = fromSettings != null ? fromSettings.material : material;      
+    }
+    
+    // Save a copy of the default settings;
     private void InitialState()
     {
-        SetBlend(0f);
+        defaultSettings = new GlitchImageEffect.GlitchImageEffectSettings();
+        
+        SaveSettings(defaultSettings);
+        SaveSettings(glitchFeature.settings);
     }
 
     public void Setup()

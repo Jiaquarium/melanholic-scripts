@@ -73,6 +73,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     public bool didStartKingsIntro;
 
     private float fadeTime;
+
+    private bool isGlitched;
     
     private Dictionary<string, Seasons> SeasonStonesEnums = new Dictionary<string, Seasons>{
         {"collectible_winter-stone",    Seasons.Winter},
@@ -88,11 +90,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         {Seasons.Autumn,            3},
     };
 
-    private void Awake()
-    {
-        timelineController = GetComponent<Script_TimelineController>();
-    }
-    
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
@@ -103,6 +100,20 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+
+        if (isGlitched)
+            Script_GlitchFXManager.Control.SetBlend(0f);
+    }
+
+    void Awake()
+    {
+        timelineController = GetComponent<Script_TimelineController>();
+    }
+
+    void Start()
+    {
+        if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
+            Script_GlitchFXManager.Control.SetBlend(1f);
     }
 
     protected override void Update()

@@ -291,6 +291,11 @@ public class Script_Game : MonoBehaviour
         get => ElleniasRoomBehavior.isCurrentPuzzleComplete && EileensMindBehavior.isCurrentPuzzleComplete;
     }
 
+    public bool IsEileensMindQuestDone
+    {
+        get => EileensMindBehavior.isCurrentPuzzleComplete;
+    }
+
     public bool IsInEileensRoom
     {
         get => levelBehavior == EileensRoomBehavior;
