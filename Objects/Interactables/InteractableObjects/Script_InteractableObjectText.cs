@@ -80,7 +80,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
             );
             
             // Invoke binded Events only upon initially prompting the text object.
-            InvokeAction();
+            MyAction.SafeInvoke();
             HandleDialogueNodeIndex();
         }
         /// Player is mid-dialogue, can either 1) skip 2) continue if no longer rendering dialogue

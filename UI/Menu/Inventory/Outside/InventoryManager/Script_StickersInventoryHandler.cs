@@ -33,11 +33,12 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         }
     }
 
-    public void UnstickSticker(
+    public bool UnstickSticker(
         Script_Sticker sticker,
         Script_Equipment equipment,
         Script_Inventory inventory,
-        int stickerSlotId
+        int stickerSlotId,
+        bool isBackground = false
     )
     {
         // try to unequip, checking if inventory is full
@@ -47,13 +48,18 @@ public class Script_StickersInventoryHandler : MonoBehaviour
             /// and also update Sticker Holster (done in Equipment)
             inventory.AddItem(sticker);
 
-            StickerOffSFX();
+            if (!isBackground)
+                StickerOffSFX();
+            
+            return true;
         }
         else
         {
-            print("failed to unstick sticker; no space in inventory or not found");
+            Debug.LogWarning("Failed to unstick sticker; no space in inventory or not found");
             // TODO: show messaging or SFX
             GetComponent<Script_InventoryManager>().ErrorDullSFX();
+            
+            return false;
         }
     }
 

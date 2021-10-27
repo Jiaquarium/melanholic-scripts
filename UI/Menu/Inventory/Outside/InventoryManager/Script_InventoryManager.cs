@@ -348,7 +348,32 @@ public class Script_InventoryManager : MonoBehaviour
         else if (Script_ActiveStickerManager.Control.ActiveSticker == stickerToRemove)
             ErrorUnableSFX();
         else
-            UnstickSticker(stickerToRemove, equipment, inventory, stickerSlotId);
+            UnstickSticker(stickerToRemove, equipment, inventory, stickerSlotId, true);
+    }
+
+    // Note, this will not remove ones past the point of a full equipment.
+    public bool HandleUnequipAll()
+    {
+        // Unequip currently worn mask.
+        Script_Game.Game.GetPlayer().DefaultStickerState();
+        
+        bool didRemoveAll = true;
+
+        for (int i = 0; i < Script_Equipment.numItemSlots; i++)
+        {
+            var stickerToRemove = equipment.GetStickerInSlot(i) as Script_Sticker;
+            
+            if (stickerToRemove == null)
+                continue;
+            else
+            {
+                bool didRemove = UnstickSticker(stickerToRemove, equipment, inventory, i);
+                if (!didRemove)
+                    didRemoveAll = false;
+            }
+        }
+
+        return didRemoveAll;
     }
 
     void Drop(Script_Item item, int itemSlotId)
@@ -425,14 +450,15 @@ public class Script_InventoryManager : MonoBehaviour
         return false;
     }
 
-    void UnstickSticker(
+    bool UnstickSticker(
         Script_Sticker sticker,
         Script_Equipment equipment,
         Script_Inventory inventory,
-        int stickerSlotId
+        int stickerSlotId,
+        bool isBackground = false
     )
     {
-        stickersHandler.UnstickSticker(sticker, equipment, inventory, stickerSlotId);
+        return stickersHandler.UnstickSticker(sticker, equipment, inventory, stickerSlotId, isBackground);
     }
 
     void Examine(

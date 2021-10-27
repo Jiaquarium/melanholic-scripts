@@ -25,6 +25,7 @@ public class Script_TransitionManager : MonoBehaviour
         Ids             = 1,
         Ellenia         = 2
     }
+    
     public enum Endings
     {
         None            = 0,
@@ -33,7 +34,7 @@ public class Script_TransitionManager : MonoBehaviour
         True            = 3,
         Dream           = 4,
     }
-    
+
     // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
     // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
     [SerializeField] private float restartGameTimeOnSave;
@@ -56,8 +57,8 @@ public class Script_TransitionManager : MonoBehaviour
     
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
-    public const float DefaultTransitionFadeInTime = 0.5f;
-    public const float DefaultTransitionFadeOutTime = 0.5f;
+    public const float FadeTimeDefault = 0.5f;
+    public const float FadeTimeSlow = 2.0f;
     public const float UnderDialogueFadeTime = 1.5f;
     public Script_CanvasGroupController restartPrompt;
 
@@ -85,9 +86,9 @@ public class Script_TransitionManager : MonoBehaviour
         return fader.FadeInCo(t, action);
     }
 
-    public Coroutine StartTransitionFadeInCoroutine(Action cb)
+    public Coroutine FadeInCoroutine(float t, Action cb = null)
     {
-        return StartCoroutine(FadeIn(DefaultTransitionFadeInTime, cb));
+        return StartCoroutine(FadeIn(t, cb));
     }
 
     public IEnumerator FadeOut(float t, Action action)
@@ -95,9 +96,9 @@ public class Script_TransitionManager : MonoBehaviour
         return fader.FadeOutCo(t, action);
     }
 
-    public Coroutine StartTransitionFadeOutCoroutine(Action cb)
+    public Coroutine FadeOutCoroutine(float t, Action cb = null)
     {
-        return StartCoroutine(FadeOut(DefaultTransitionFadeOutTime, cb));
+        return StartCoroutine(FadeOut(t, cb));
     }
 
     public void UnderDialogueBlackScreen(bool isOpen = true)
@@ -125,6 +126,11 @@ public class Script_TransitionManager : MonoBehaviour
     public void TimelineFadeIn(float t, Action action)
     {
         timelineFader.FadeIn(t, action);
+    }
+
+    public void TimelineFadeOut(float t, Action action)
+    {
+        timelineFader.FadeOut(t, action);
     }
 
     public void DieEffects(Script_GameOverController.DeathTypes _deathType)

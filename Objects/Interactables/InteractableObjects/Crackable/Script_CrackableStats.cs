@@ -37,7 +37,7 @@ public class Script_CrackableStats : Script_CharacterStats
         
         if (currentHp == 0)
         {
-            InvokeCrackedAction();
+            CrackedAction.SafeInvokeDynamic(this);
 
             if (crackingDirector != null)
                 crackingDirector.Play();
@@ -66,12 +66,6 @@ public class Script_CrackableStats : Script_CharacterStats
         
         if      (hp <= lowHealthThreshold)      graphics.sprite = lowHealthImage;
         else                                    graphics.sprite = defaultImage;
-    }
-
-    private void InvokeCrackedAction()
-    {
-        if (CrackedAction.CheckUnityEvent())
-            CrackedAction.Invoke(this);
     }
 
     // ------------------------------------------------------------------

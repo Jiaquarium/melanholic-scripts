@@ -1155,6 +1155,12 @@ public class Script_Game : MonoBehaviour
         return menuController.AddEquippedItemInSlotById(equipmentId, i);
     }
 
+    // Remove all prepped masks. Place them back in inventory.
+    public bool UnequipAll()
+    {
+        return menuController.UnequipAll();
+    }
+
     public bool RemoveItemFromInventory(Script_Item item)
     {
         return menuController.RemoveItem(item);

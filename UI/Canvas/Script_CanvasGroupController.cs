@@ -110,7 +110,7 @@ public class Script_CanvasGroupController : MonoBehaviour
         ));
     }
 
-    public void InitialState()
+    public virtual void InitialState()
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         fader.Initialize();

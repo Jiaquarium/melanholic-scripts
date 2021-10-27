@@ -17,6 +17,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private bool isDone;
     // ==================================================================
 
+    [SerializeField] private float panicTime;
+    
     [SerializeField] private Script_Snow snowEffectAlways;
 
     [SerializeField] private PlayableDirector newWorldPaintingsDirector;
@@ -24,6 +26,10 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_CrackableStats iceBlockStatsLeft;
     [SerializeField] private Script_CrackableStats iceBlockStatsMid;
     [SerializeField] private Script_CrackableStats iceBlockStatsRight;
+
+    [SerializeField] private bool isIceBlockLeftCracked;
+    [SerializeField] private bool isIceBlockMidCracked;
+    [SerializeField] private bool isIceBlockRightCracked;
 
     [SerializeField] private List<GameObject> iceBlockTimelineObjects;
     [SerializeField] private List<CinemachineVirtualCamera> virtualCameras;
@@ -100,31 +106,70 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         }
     }
 
+    // Called from end of NewWorldRevealPaintingTimeline
     public void OnNewWorldRevealPaintingDone()
     {
-        game.ChangeStateInteract();
+        // If all three ice blocks have been destroyed, start the Awakening scene.
+        if (IsAllIceBlocksCracked())
+        {
+            AwakeningCutscene();
+        }
+        else
+        {
+            game.ChangeStateInteract();
+        }
+        
+        void AwakeningCutscene()
+        {
+            // Start heavy glitch effect if was third ice stat.
+            var glitchManager = Script_GlitchFXManager.Control;
+            
+            glitchManager.SetPanic();
+            glitchManager.BlendTo(1f, 5f, () => Script_TransitionManager.Control.FadeInCoroutine(
+                Script_TransitionManager.FadeTimeSlow,
+                () => FadeInStartTimeline()
+            ));
+
+            void FadeInStartTimeline()
+            {
+                // Show Awakening canvas immediately (fader transition will handle fading).
+                Script_PRCSManager.Control.SetAwakeningActive(true);
+
+                Script_TransitionManager.Control.FadeOutCoroutine(Script_TransitionManager.FadeTimeSlow);
+                
+                // Awakening Timeline's TimelineTeletypeReveal's UnityEvents will enable/disable
+                // Eye's animator during Pause/Play states (Timeline loses control when paused).
+                timelineController.PlayableDirectorPlayFromTimelines(1, 1);
+            }
+        }
+    }
+
+    public void OnAwakeningTimelineDone()
+    {
+        // Set Fade Canvas Active
+        Script_TransitionManager.Control.TimelineBlackScreen();
+
+        Script_PRCSManager.Control.SetAwakeningActive(false);
+        
+        Debug.Log("Waiting for next part in sequence!!!");
+
+        // Wait a few seconds for black screen to stay up and then fade out.
+        // Do all inventory calls here.
+        
+        // Unequip all Prepped Masks
+        game.UnequipAll();
+
+        // Give Last Elevator mask in background
+
+        // Equip it in background (without SFX)
     }
     
     // ------------------------------------------------------------------
     // Unity Events
 
-    public void OnIceBlockCrackedLeft(Script_CrackableStats ice)
+    public void OnIceBlockCracked(Script_CrackableStats ice)
     {
         Debug.Log($"Cracked Left Ice Block <{ice}>");
-
-        game.ChangeStateCutScene();
-    }
-
-    public void OnIceBlockCrackedMid(Script_CrackableStats ice)
-    {
-        Debug.Log($"Cracked Mid Ice Block <{ice}>");
-
-        game.ChangeStateCutScene();
-    }
-
-    public void OnIceBlockCrackedRight(Script_CrackableStats ice)
-    {
-        Debug.Log($"Cracked Right Ice Block <{ice}>");
 
         game.ChangeStateCutScene();
     }
@@ -138,18 +183,26 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         // Bind the proper objects depending on which crackable stats.
         if (currentIceBlockStats == iceBlockStatsLeft)
         {
+            isIceBlockLeftCracked = true;
             newWorldPaintingsDirector.BindTimelineTracks(newWorldPaintingRevealTimeline, iceBlockTimelineObjects);
             timelineController.BindVirtualCameraAndPlayFromDirector(0, 0, virtualCameras[0]);
         }
         else if (currentIceBlockStats == iceBlockStatsMid)
         {
+            isIceBlockMidCracked = true;
             newWorldPaintingsDirector.BindTimelineTracks(newWorldPaintingRevealTimeline, iceBlockTimelineObjects);
             timelineController.BindVirtualCameraAndPlayFromDirector(0, 0, virtualCameras[1]);
         }
         else if (currentIceBlockStats == iceBlockStatsRight)
         {
+            isIceBlockRightCracked = true;
             newWorldPaintingsDirector.BindTimelineTracks(newWorldPaintingRevealTimeline, iceBlockTimelineObjects);
             timelineController.BindVirtualCameraAndPlayFromDirector(0, 0, virtualCameras[2]);
         }
+    }
+
+    private bool IsAllIceBlocksCracked()
+    {
+        return isIceBlockLeftCracked && isIceBlockMidCracked && isIceBlockRightCracked;
     }
 }

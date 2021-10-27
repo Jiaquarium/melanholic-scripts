@@ -244,6 +244,12 @@ public class Script_MenuController : Script_UIState
         return inventoryManager.AddEquippedItemInSlotById(equipmentId, i);
     }
 
+    // Remove all masks from Prepped Masks.
+    public bool UnequipAll()
+    {
+        return inventoryManager.HandleUnequipAll();
+    }
+
     public bool CheckStickerEquipped(Script_Sticker sticker)
     {
         return inventoryManager.CheckStickerEquipped(sticker);

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 /// <summary>
 /// Use for when want to show dialogue purely via Timeline. Useful if the format is extremely different
 /// than the default provided by Dialogue Manager.
+/// 
+/// Can also be used without timeline to purely reveal Text On Enable.
 /// </summary>
 
 [RequireComponent(typeof(TextMeshProUGUI))]
@@ -16,7 +19,20 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
     // Give option to wait for Submit input to move Timeline forward, instead of automatically.
     [SerializeField] private bool isOnInputContinue;
 
+    [SerializeField] private UnityEvent pauseAction;
+    [SerializeField] private UnityEvent resumeAction;
+
     private bool isListening;
+
+    private UnityEvent PauseAction
+    {
+        get => pauseAction;
+    }
+
+    private UnityEvent ResumeAction
+    {
+        get => resumeAction;
+    }
 
     void OnEnable()
     {
@@ -24,7 +40,10 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
         
         // Pause Timeline
         if (sequenceController != null)
+        {
+            PauseAction.SafeInvoke();
             sequenceController.Pause();
+        }
 
         // Hide all text preemptively because we must wait a frame to allow for text replacement.
         textUI.maxVisibleCharacters = 0;
@@ -51,6 +70,7 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
         {
             Debug.Log("Playing timeline on input");
             
+            ResumeAction.SafeInvoke();
             sequenceController.Play();
 
             isListening = false;

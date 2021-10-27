@@ -13,64 +13,42 @@ public class Script_GlitchFXManager : MonoBehaviour
 {
     public static Script_GlitchFXManager Control;
 
-    [Header("---- Initial State Settings ----")]
+    [Header("Glitch Settings")]
     
-    [SerializeField] private GlitchImageEffect.GlitchType type = GlitchImageEffect.GlitchType.Type1;
-    
-    [Range(0, 1)]
-    [SerializeField] private float blend;
-
-    [Header("Parameters of Type1")]
-    [Range(0, 10)]
-    [SerializeField] private float frequency;
-
-    [Range(0, 500)]
-    [SerializeField] private float interference;
-
-    [Range(0, 5)]
-    [SerializeField] private float noise;
-
-    [Range(0, 20)]
-    [SerializeField] private float scanLine;
-
-    [Range(0, 1)]
-    [SerializeField] private float colored;
-
-    [Header("Parameters of Type3")]
-    [Range(0, 30)]
-    [SerializeField] private float intensityType3;
-
-    [Header("Parameters of Type4")]
-    [Range(100, 500)]
-    [SerializeField] private float lines;
-
-    [Range(1, 6)]
-    [SerializeField] private float scanSpeed;
-
-    [Range(0.1f, 0.9f)]
-    [SerializeField] private float linesThreshold;
-
-    [Range(0, 0.8f)]
-    [SerializeField] private float exposure;
-    
-    [SerializeField] private Texture2D noiseTex;
-    [SerializeField] private Material material;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings currentSettings;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings defaultSettings;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings panicSettings;
     
     [SerializeField] private GlitchImageEffect glitchFeature;
 
     private Coroutine blendCoroutine;
     private float timer;
 
-    private GlitchImageEffect.GlitchImageEffectSettings defaultSettings;
-    
     void OnValidate()
     {
-        SaveSettings(glitchFeature.settings);
+        SaveSettings(glitchFeature.settings, currentSettings);
     }
     
     void OnDisable()
     {
-        SaveSettings(glitchFeature.settings, defaultSettings);
+        SetDefault();
+    }
+    
+    public void SetDefault()
+    {
+        SaveSettings(currentSettings, defaultSettings);
+        UpdateGlitchFXState();
+    }
+
+    public void SetPanic()
+    {
+        SaveSettings(currentSettings, panicSettings);
+        UpdateGlitchFXState();
+    }
+
+    private void UpdateGlitchFXState()
+    {
+        SaveSettings(glitchFeature.settings, currentSettings);    
     }
     
     public void BlendTo(float blendValue, float time = 0.5f, Action cb = null)
@@ -99,8 +77,8 @@ public class Script_GlitchFXManager : MonoBehaviour
                 float percentDone = 1 - (timer / time);
                 float newBlend = originalBlend + (percentDone * blendDifference);
                 
-                blend = Mathf.Clamp(newBlend, 0f, 1f);
-                SaveSettings(glitchFeature.settings);
+                currentSettings.blend = Mathf.Clamp(newBlend, 0f, 1f);
+                UpdateGlitchFXState();
             }
 
             if (cb != null)
@@ -110,43 +88,41 @@ public class Script_GlitchFXManager : MonoBehaviour
 
     public void SetBlend(float val)
     {
-        blend = val;
-        SaveSettings(glitchFeature.settings);
+        currentSettings.blend = val;
+        UpdateGlitchFXState();
     }
     
-    // Inject the settings either defined on this manager or another settings object.
+    // Inject the settings either defined on this manager or an override settings object.
     private void SaveSettings(
         GlitchImageEffect.GlitchImageEffectSettings _settings,
-        GlitchImageEffect.GlitchImageEffectSettings fromSettings = null
+        GlitchImageEffect.GlitchImageEffectSettings settingsOverride = null
     )
     {
-        _settings.type              = fromSettings != null ? fromSettings.type : type;
+        _settings.type              = settingsOverride?.type ?? defaultSettings.type;
         
-        _settings.blend             = fromSettings != null ? fromSettings.blend : blend;
+        _settings.blend             = settingsOverride?.blend ?? defaultSettings.blend;
         
-        _settings.frequency         = fromSettings != null ? fromSettings.frequency : frequency;
-        _settings.interference      = fromSettings != null ? fromSettings.interference : interference;
-        _settings.noise             = fromSettings != null ? fromSettings.noise : noise;
-        _settings.scanLine          = fromSettings != null ? fromSettings.scanLine : scanLine;
-        _settings.colored           = fromSettings != null ? fromSettings.colored : colored;
+        _settings.frequency         = settingsOverride?.frequency ?? defaultSettings.frequency;
+        _settings.interference      = settingsOverride?.interference ?? defaultSettings.interference;
+        _settings.noise             = settingsOverride?.noise ?? defaultSettings.noise;
+        _settings.scanLine          = settingsOverride?.scanLine ?? defaultSettings.scanLine;
+        _settings.colored           = settingsOverride?.colored ?? defaultSettings.colored;
         
-        _settings.intensityType3    = fromSettings != null ? fromSettings.intensityType3 : intensityType3;
+        _settings.intensityType3    = settingsOverride?.intensityType3 ?? defaultSettings.intensityType3;
         
-        _settings.lines             = fromSettings != null ? fromSettings.lines : lines;
-        _settings.scanSpeed         = fromSettings != null ? fromSettings.scanSpeed : scanSpeed;
-        _settings.linesThreshold    = fromSettings != null ? fromSettings.linesThreshold : linesThreshold;
-        _settings.exposure          = fromSettings != null ? fromSettings.exposure : exposure;
+        _settings.lines             = settingsOverride?.lines ?? defaultSettings.lines;
+        _settings.scanSpeed         = settingsOverride?.scanSpeed ?? defaultSettings.scanSpeed;
+        _settings.linesThreshold    = settingsOverride?.linesThreshold ?? defaultSettings.linesThreshold;
+        _settings.exposure          = settingsOverride?.exposure ?? defaultSettings.exposure;
 
-        _settings.noiseTex          = fromSettings != null ? fromSettings.noiseTex : noiseTex;
-        _settings.material          = fromSettings != null ? fromSettings.material : material;      
+        _settings.noiseTex          = settingsOverride?.noiseTex ?? defaultSettings.noiseTex;
+        _settings.material          = settingsOverride?.material ?? defaultSettings.material;      
     }
     
-    // Save a copy of the default settings;
+    // Initialize the current settings with default.
     private void InitialState()
     {
-        defaultSettings = new GlitchImageEffect.GlitchImageEffectSettings();
-        
-        SaveSettings(defaultSettings);
+        SaveSettings(currentSettings);
         SaveSettings(glitchFeature.settings);
     }
 
@@ -169,6 +145,16 @@ public class Script_GlitchFXManagerTester : Editor
         DrawDefaultInspector();
 
         Script_GlitchFXManager t = (Script_GlitchFXManager)target;
+        
+        if (GUILayout.Button("Set Default"))
+        {
+            t.SetDefault();
+        }
+
+        if (GUILayout.Button("Set Panic"))
+        {
+            t.SetPanic();
+        }
         
         if (GUILayout.Button("Set Blend 1f"))
         {

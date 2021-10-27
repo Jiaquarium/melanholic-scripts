@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-25 15:40:25
+// Last created by UI Exporter at 2021-10-27 12:56:55
 
 using System.Collections;
 using System.Collections.Generic;
@@ -687,6 +687,43 @@ SAVING GAME... Please do not turn off power."
     new Model_LanguagesUI
     {
         EN = @"You will pay for this, mark my words!"
+    }
+},
+// ------------------------------------------------------------------
+// Grand Mirror Room
+{
+    "grand-mirror-room_player_welling-up",
+    new Model_LanguagesUI
+    {
+        EN = @"At that moment,| something began to well up inside of me."
+    }
+},
+{
+    "grand-mirror-room_player_welling-up1",
+    new Model_LanguagesUI
+    {
+        EN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance – that's what I felt."
+    }
+},
+{
+    "grand-mirror-room_player_welling-up2",
+    new Model_LanguagesUI
+    {
+        EN = @"I tried to stop it."
+    }
+},
+{
+    "grand-mirror-room_player_welling-up3",
+    new Model_LanguagesUI
+    {
+        EN = @"But then everything went dark."
+    }
+},
+{
+    "grand-mirror-room_player_change",
+    new Model_LanguagesUI
+    {
+        EN = @"This is how people change."
     }
 },
 

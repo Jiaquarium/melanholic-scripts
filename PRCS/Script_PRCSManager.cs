@@ -16,7 +16,9 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
 
-    [SerializeField] private Script_CanvasGroupController TimelinePRCSCanvasGroup;
+    [UnityEngine.Serialization.FormerlySerializedAs("TimelinePRCSCanvasGroup")]
+    [SerializeField] private Script_CanvasGroupController KingsIntroCanvasGroup;
+    [SerializeField] private Script_AwakeningCanvasGroupController AwakeningCanvasGroup;
     
     [SerializeField] private Transform customCanvasesParent;
     [SerializeField] private Canvas[] customCanvases;
@@ -178,6 +180,14 @@ public class Script_PRCSManager : MonoBehaviour
         }
     }
 
+    public void SetAwakeningActive(bool isActive)
+    {
+        if (isActive)
+            AwakeningCanvasGroup.Open();
+        else
+            AwakeningCanvasGroup.Close();
+    }
+
     public void Initialize()
     {
         /// Hide CanvasGroup but ensure the PRCS canvas and ready to use
@@ -194,8 +204,12 @@ public class Script_PRCSManager : MonoBehaviour
             prcs.gameObject.SetActive(false);
         }
 
-        TimelinePRCSCanvasGroup.InitialState();
-        TimelinePRCSCanvasGroup.gameObject.SetActive(true);
+        // Initialize purely customized PRCS
+        KingsIntroCanvasGroup.InitialState();
+        KingsIntroCanvasGroup.gameObject.SetActive(true);
+
+        AwakeningCanvasGroup.InitialState();
+        AwakeningCanvasGroup.gameObject.SetActive(false);
     }
 
     public void Setup()

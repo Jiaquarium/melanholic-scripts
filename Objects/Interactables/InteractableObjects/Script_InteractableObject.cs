@@ -87,7 +87,7 @@ public class Script_InteractableObject : Script_Interactable
     protected virtual void ActionDefault()
     {
         Debug.Log($"{name} Action default called in InteractableObject");
-        InvokeAction();
+        MyAction.SafeInvoke();
     }
 
     public void SetInteractionActive(bool isActive)
@@ -106,11 +106,6 @@ public class Script_InteractableObject : Script_Interactable
         State = States.Disabled;
     }
 
-    protected void InvokeAction()
-    {
-        if (MyAction.CheckUnityEventAction()) MyAction.Invoke();
-    }
-    
     public virtual void ActionB() {}
     
     public virtual void ActionC() {}

@@ -722,28 +722,40 @@ public static class Script_Utils
     /// counts as not null if has attached an object target;
     /// doesn't need to have to specify a function.
     /// </summary>
-    public static bool CheckUnityEventAction(this UnityEvent onClickEvent)
+    public static bool CheckUnityEventAction(this UnityEvent unityEvent)
     {
-        for (int i = 0; i < onClickEvent.GetPersistentEventCount(); i++)
+        for (int i = 0; i < unityEvent.GetPersistentEventCount(); i++)
         {
-            if (onClickEvent.GetPersistentTarget(i) != null)    return true;
+            if (unityEvent.GetPersistentTarget(i) != null)    return true;
         }
 
         return false;
+    }
+
+    public static void SafeInvoke(this UnityEvent unityEvent)
+    {
+        if (unityEvent.CheckUnityEventAction())
+            unityEvent.Invoke();
     }
 
     /// <summary>
     /// Same as CheckUnityEventAction but allows to specify passing a param
     /// through the Event.
     /// </summary>
-    public static bool CheckUnityEvent<T>(this UnityEvent<T> onClickEvent)
+    public static bool CheckUnityEvent<T>(this UnityEvent<T> unityEvent)
     {
-        for (int i = 0; i < onClickEvent.GetPersistentEventCount(); i++)
+        for (int i = 0; i < unityEvent.GetPersistentEventCount(); i++)
         {
-            if (onClickEvent.GetPersistentTarget(i) != null)    return true;
+            if (unityEvent.GetPersistentTarget(i) != null)    return true;
         }
 
         return false;
+    }
+
+    public static void SafeInvokeDynamic<T>(this UnityEvent<T> unityEvent, T arg)
+    {
+        if (unityEvent.CheckUnityEvent<T>())
+            unityEvent.Invoke(arg);
     }
 
     public static void DebugToConsole(object obj)

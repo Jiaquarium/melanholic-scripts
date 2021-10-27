@@ -9,6 +9,7 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
     
     private bool isListening;
 
+    // For Dialogue Markers.
     void Update()
     {
         if (isListening && Input.GetButtonDown(Const_KeyCodes.Submit))
@@ -21,6 +22,7 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
         }
     }
     
+    // For Dialogue Markers.
     public void OnNotify(Playable origin, INotification notification, object context)
     {
         Script_TimelineControlMarker tm = notification as Script_TimelineControlMarker;
