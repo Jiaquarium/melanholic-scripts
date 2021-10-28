@@ -65,6 +65,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         base.OnDisable();
 
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone -= PlayRevealNewWorldTimeline;
+
+        var glitchManager = Script_GlitchFXManager.Control;
+        
+        glitchManager.SetDefault();
+        glitchManager.SetBlend(0f);
     }
     
     void Awake()
@@ -137,6 +142,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
             void FadeInStartTimeline()
             {
+                glitchManager.SetDefault();
+                glitchManager.SetBlend(0f);
+                
                 // Show Awakening canvas immediately (fader transition will handle fading).
                 Script_PRCSManager.Control.SetAwakeningActive(true);
 
@@ -162,6 +170,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         // Wait a few seconds for black screen to stay up and then fade out.
         EquipLastElevatorMaskBackground();
+
+        var glitchManager = Script_GlitchFXManager.Control;
+        
+        glitchManager.SetSoft();
+        glitchManager.SetBlend(1f);
 
         StartCoroutine(WaitToFadeOut());
 
