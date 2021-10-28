@@ -42,7 +42,6 @@ public class Script_InteractionBox : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        if (!isExposed)     return;
         Gizmos.color = color;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
         Gizmos.DrawCube(Vector3.zero, new Vector3(boxSize.x * 2, boxSize.y * 2, boxSize.z * 2)); // size is halfExtents

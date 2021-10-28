@@ -43,14 +43,18 @@ public class Script_PlayerMovement : MonoBehaviour
     
     public int exitUpStairsOrderLayer;
     
-    // Tracks if Ghost is done animating and no axis is pressed.
     [SerializeField] private bool isMoving;
     [SerializeField] private Vector3 startLocation;
+
+    [SerializeField] private bool isNorthWind;
+    [SerializeField] private float windAdjustment;
     
     [SerializeField] private TimelineAsset moveUpTimeline;
     [SerializeField] private TimelineAsset enterElevatorTimeline;
 
     [SerializeField] private RuntimeAnimatorController defaultAnimatorController;
+
+    [SerializeField] private Script_PlayerInteractionBox[] diagonalInteractionBoxes;
 
     private float progress;
     private Speeds walkSpeed;
@@ -82,6 +86,7 @@ public class Script_PlayerMovement : MonoBehaviour
     private Script_PlayerCheckCollisions playerCheckCollisions;
 
     private bool isForceMoveAnimation;
+    private bool isNoInputMoveByWind;
 
     public Animator MyAnimator
     {
@@ -129,6 +134,12 @@ public class Script_PlayerMovement : MonoBehaviour
     public bool IsMoving
     {
         get => isMoving;
+    }
+
+    public bool IsNorthWind
+    {
+        get => isNorthWind;
+        set => isNorthWind = value;
     }
     
     void Awake()
@@ -249,6 +260,17 @@ public class Script_PlayerMovement : MonoBehaviour
                 }
             }
         }
+        
+        // No input
+        else
+        {
+            if (IsNorthWind)
+            {
+                Move(Directions.Down, _isNoInputMoveByWind: true);
+                ClearInputBuffer();
+                StopMovingAnimations();
+            }
+        }
 
         if (isReversed)     HandleMoveReversed();
         else                HandleMoveDefault();
@@ -334,8 +356,10 @@ public class Script_PlayerMovement : MonoBehaviour
         inputBuffer.Clear();
     }
 
-    public void Move(Directions dir)
+    public void Move(Directions dir, bool _isNoInputMoveByWind = false)
     {
+        isNoInputMoveByWind = _isNoInputMoveByWind;
+        
         lastMoveInput = dir;
         
         // Handle Exits (once per tile)
@@ -347,11 +371,59 @@ public class Script_PlayerMovement : MonoBehaviour
         if (progress < 1f)
             return;
         
-        AnimatorSetDirection(dir);
+        if (!isNoInputMoveByWind)
+            AnimatorSetDirection(dir);
+        
         PushPushables(dir);
         
         Vector3 desiredMove = directionToVector[dir];
-        if (CheckCollisions(dir, ref desiredMove))
+
+        if (IsNorthWind)
+        {
+            // On LR moves, move also 1 down.
+            if (dir == Directions.Left || dir == Directions.Right)
+            {
+                windAdjustment = 1f;
+
+                var canMoveDiagonallyDown = true;
+                
+                // Handle adjusted tile collisions.
+                var adjustedLocation = new Vector3(player.location.x, player.location.y, player.location.z - 1);
+                if (CheckCollisions(adjustedLocation, dir, ref desiredMove))
+                    canMoveDiagonallyDown = false;
+                
+                // Set DL & DR collision detectors on, and if there is a collision
+                // default to moving L or R.
+                if (
+                    (dir == Directions.Left && diagonalInteractionBoxes[0].GetInteractablesBlocking().Count > 0)
+                    || (dir == Directions.Right && diagonalInteractionBoxes[1].GetInteractablesBlocking().Count > 0)
+                )
+                    canMoveDiagonallyDown = false;
+
+                if (canMoveDiagonallyDown)
+                {
+                    windAdjustment = 0.75f;
+                    desiredMove.z -= 1;
+                }
+            }
+            else if (dir == Directions.Up)
+            {
+                windAdjustment = 0.5f;
+            }
+            else if (dir == Directions.Down)
+            {
+                if (isNoInputMoveByWind)
+                    windAdjustment = 0.5f;
+                else
+                    windAdjustment = 1.5f;
+            }
+        }
+        else
+        {
+            windAdjustment = 1f;
+        }
+
+        if (CheckCollisions(player.location, dir, ref desiredMove))
             return;
 
         // DDR mode, only changing directions to look like dancing.
@@ -387,7 +459,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (progress < 1f)
         {
-            progress += WalkSpeed * Time.smoothDeltaTime;
+            progress += (WalkSpeed * windAdjustment) * Time.smoothDeltaTime;
             
             if (progress > 1f)
                 progress = 1f;
@@ -398,7 +470,6 @@ public class Script_PlayerMovement : MonoBehaviour
                 progress
             );    
             transform.position = newPosition;
-
             isMoving = true;
         }
     }
@@ -437,9 +508,11 @@ public class Script_PlayerMovement : MonoBehaviour
         if (isForceMoveAnimation)
             return;
         
-        bool isMovingAnimation = isMoving
+        bool isMovingAnimation = !isNoInputMoveByWind && (
+            isMoving
             || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
-            || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f;
+            || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f
+        );
         
         animator.SetBool(PlayerMovingAnimatorParam, isMovingAnimation);
     }
@@ -479,7 +552,7 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    bool CheckCollisions(Directions dir, ref Vector3 desiredMove)
+    bool CheckCollisions(Vector3 location, Directions dir, ref Vector3 desiredMove)
     {   
         // Do not allow Player to move if Reflection cannot move.
         if (playerReflection is Script_PlayerReflectionInteractive && playerReflection.gameObject.activeInHierarchy)
@@ -488,7 +561,7 @@ public class Script_PlayerMovement : MonoBehaviour
                 return true;
         }
         
-        return playerCheckCollisions.CheckCollisions(player.location, dir, ref desiredMove);
+        return playerCheckCollisions.CheckCollisions(location, dir, ref desiredMove);
     }
 
     void PushPushables(Directions dir)
@@ -676,6 +749,10 @@ public class Script_PlayerMovement : MonoBehaviour
 
         lastMoveInput = Directions.None;
         isMoving = false;
+
+        isNoInputMoveByWind = false;
+        windAdjustment = 1f;
+        IsNorthWind = false;
     }
 
     // ------------------------------------------------------------------

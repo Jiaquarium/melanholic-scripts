@@ -17,8 +17,8 @@ public class Script_GlitchFXManager : MonoBehaviour
     
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings currentSettings;
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings defaultSettings;
-    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings panicSettings;
-    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings softSettings;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings highSettings;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings lowSettings;
     
     [SerializeField] private GlitchImageEffect glitchFeature;
 
@@ -41,15 +41,15 @@ public class Script_GlitchFXManager : MonoBehaviour
         UpdateGlitchFXState();
     }
 
-    public void SetPanic()
+    public void SetHigh()
     {
-        SaveSettings(currentSettings, panicSettings);
+        SaveSettings(currentSettings, highSettings);
         UpdateGlitchFXState();
     }
 
-    public void SetSoft()
+    public void SetLow()
     {
-        SaveSettings(currentSettings, softSettings);
+        SaveSettings(currentSettings, lowSettings);
         UpdateGlitchFXState();
     }
 
@@ -158,14 +158,14 @@ public class Script_GlitchFXManagerTester : Editor
             t.SetDefault();
         }
 
-        if (GUILayout.Button("Set Panic"))
+        if (GUILayout.Button("Set High"))
         {
-            t.SetPanic();
+            t.SetHigh();
         }
 
-        if (GUILayout.Button("Set Soft"))
+        if (GUILayout.Button("Set Low"))
         {
-            t.SetSoft();
+            t.SetLow();
         }
         
         if (GUILayout.Button("Set Blend 1f"))

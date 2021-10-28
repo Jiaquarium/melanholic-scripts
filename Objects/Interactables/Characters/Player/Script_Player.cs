@@ -132,6 +132,12 @@ public class Script_Player : Script_Character
         get => playerActionHandler.IsPuppeteerEffectHoldOn;
     }
 
+    public bool IsNorthWind
+    {
+        get => playerMovementHandler.IsNorthWind;
+        set => playerMovementHandler.IsNorthWind = value;
+    }
+
     protected virtual void OnEnable()
     {
 

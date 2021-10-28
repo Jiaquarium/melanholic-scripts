@@ -23,6 +23,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private PlayableDirector newWorldPaintingsDirector;
 
+    [SerializeField] private Script_BgThemePlayer northWindPlayer;
+
     [SerializeField] private Script_CrackableStats iceBlockStatsLeft;
     [SerializeField] private Script_CrackableStats iceBlockStatsMid;
     [SerializeField] private Script_CrackableStats iceBlockStatsRight;
@@ -134,7 +136,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             // Start heavy glitch effect if was third ice stat.
             var glitchManager = Script_GlitchFXManager.Control;
             
-            glitchManager.SetPanic();
+            glitchManager.SetHigh();
             glitchManager.BlendTo(1f, 5f, () => Script_TransitionManager.Control.FadeInCoroutine(
                 Script_TransitionManager.FadeTimeSlow,
                 () => FadeInStartTimeline()
@@ -173,7 +175,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         var glitchManager = Script_GlitchFXManager.Control;
         
-        glitchManager.SetSoft();
+        glitchManager.SetLow();
         glitchManager.SetBlend(1f);
 
         StartCoroutine(WaitToFadeOut());
@@ -239,6 +241,17 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             newWorldPaintingsDirector.BindTimelineTracks(newWorldPaintingRevealTimeline, iceBlockTimelineObjects);
             timelineController.BindVirtualCameraAndPlayFromDirector(0, 0, virtualCameras[2]);
         }
+    }
+
+    // Zone trigger events
+    public void SetNorthWindActive(bool isActive)
+    {
+        game.GetPlayer().IsNorthWind = isActive;
+
+        if (isActive)
+            northWindPlayer.FadeInPlay();
+        else
+            northWindPlayer.FadeOutStop();
     }
 
     // ------------------------------------------------------------------
