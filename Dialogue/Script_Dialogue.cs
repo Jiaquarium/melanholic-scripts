@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-25 15:55:24
+// Last created by Dialogue Exporter at 2021-10-27 22:09:19
 
 using System.Collections;
 using System.Collections.Generic;
@@ -4326,6 +4326,7 @@ Its original owner played a melancholic tune.",
         speaker = "",
         EN = new string[]
         {
+                @"You returned to the conscious world wearing a mask.",
                 @"You got the @@LastElevator @@Sticker_Bold!|
 Not much is known of its original owner.",
                 @"If you are ever <b>lost</b>, the @@LastElevator @@Sticker_Bold can be used anywhere inside {18} to take the {66} back to the {72}.",
@@ -4333,6 +4334,10 @@ Not much is known of its original owner.",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 

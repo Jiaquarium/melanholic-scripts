@@ -42,6 +42,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_Sticker lastElevatorMask;
     [SerializeField] private int targetEquipmentSlot;
 
+    [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
+
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
 
@@ -149,6 +151,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     public void OnAwakeningTimelineDone()
     {
+        game.ChangeStateCutScene();
+        
         // Set Fade Canvas Active
         Script_TransitionManager.Control.TimelineBlackScreen();
 
@@ -167,7 +171,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
             Script_TransitionManager.Control.TimelineFadeOut(
                 Script_TransitionManager.FadeTimeSlow,
-                game.ChangeStateInteract
+                () => Script_DialogueManager.DialogueManager.StartDialogueNode(lastElevatorMaskDialogue)
             );            
         }
     }
@@ -223,6 +227,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             timelineController.BindVirtualCameraAndPlayFromDirector(0, 0, virtualCameras[2]);
         }
     }
+
+    // ------------------------------------------------------------------
+    // Next Node Actions
+
+    public void OnLastElevatorDialogueDone()
+    {
+        game.ChangeStateInteract();
+    }
+
+    // ------------------------------------------------------------------
 
     private bool IsAllIceBlocksCracked()
     {

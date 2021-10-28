@@ -495,6 +495,7 @@ public class Script_DialogueManager : MonoBehaviour
         if (
             type == Const_DialogueTypes.Type.Read
             || type == Const_DialogueTypes.Type.Item
+            || type == Const_DialogueTypes.Type.ItemNoPickUp
             || type == Const_DialogueTypes.Type.PaintingEntrance
         )
             isSilentTyping = true;
@@ -886,10 +887,12 @@ public class Script_DialogueManager : MonoBehaviour
             if (currentNode.data.type != Const_DialogueTypes.Type.Item)
             {
                 // Handle if coming from a State where Dialogue was called externally
-                // and Player needs to return to previous state.
+                // (meaning Player was changed to Dialogue State) and Player
+                // needs to return to the previous state, not Interact.
                 if (
                     Script_Game.Game.GetPlayer().LastState == Const_States_Player.Puppeteer
                     || Script_Game.Game.GetPlayer().LastState == Const_States_Player.PuppeteerNull
+                    || Script_Game.Game.GetPlayer().LastState == Const_States_Player.LastElevatorEffect
                 )
                     Script_Game.Game.GetPlayer().SetLastState();
                 // Default Player state after dialogue is interact.
@@ -1031,7 +1034,10 @@ public class Script_DialogueManager : MonoBehaviour
     {
         /// Allow option item descriptions to not override text
         if (
-            currentNode.data.type == Const_DialogueTypes.Type.Item
+            (
+                currentNode.data.type == Const_DialogueTypes.Type.Item
+                || currentNode.data.type == Const_DialogueTypes.Type.ItemNoPickUp
+            )
             && currentNode.data.isKeepLastDialogueUp
         )
         {
@@ -1075,7 +1081,10 @@ public class Script_DialogueManager : MonoBehaviour
                 // activeCanvas.GetComponent<Script_Canvas>().ContinuationIcon.Setup();
             }
         }
-        else if (type == Const_DialogueTypes.Type.Item)
+        else if (
+            type == Const_DialogueTypes.Type.Item
+            || type == Const_DialogueTypes.Type.ItemNoPickUp
+        )
         {
             if (canvasLocType == Const_DialogueTypes.Location.Top)
             {

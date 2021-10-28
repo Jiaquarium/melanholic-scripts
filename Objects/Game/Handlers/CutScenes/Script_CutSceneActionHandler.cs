@@ -16,7 +16,8 @@ public class Script_CutSceneActionHandler : MonoBehaviour
                 else
                     game.dialogueManager.ContinueDialogue();
             }
-            else if (player.State == Const_States_Player.PickingUp)   HandleEndItemDescriptionDialogue(player);
+            else if (player.State == Const_States_Player.PickingUp)
+                HandleEndItemDescriptionDialogue(player);
         }
     }
 
