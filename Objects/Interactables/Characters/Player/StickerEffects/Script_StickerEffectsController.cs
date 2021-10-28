@@ -47,7 +47,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     /// Using the same slot as already-equipped unequips the active sticker
     /// Switch the active sticker with the selected
     /// </summary>
-    public void Switch(int i)
+    public void Switch(int i, bool isBackground = false)
     {
         /// Disable for when in Hotel
         if (Script_Game.Game.IsInHotel())
@@ -76,10 +76,11 @@ public class Script_StickerEffectsController : MonoBehaviour
             }
             else
             {
-                SwitchActionSticker();   
+                SwitchActionSticker();
             }
 
-            SwitchSFX();
+            if (!isBackground)
+                SwitchSFX();
 
             coolDownTimer = coolDown;
         }

@@ -17,7 +17,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private bool isDone;
     // ==================================================================
 
-    [SerializeField] private float panicTime;
+    [SerializeField] private float waitTimeAfterAwakening;
     
     [SerializeField] private Script_Snow snowEffectAlways;
 
@@ -38,6 +38,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private TimelineAsset newWorldPaintingRevealTimeline;
 
     [SerializeField] private Script_LevelBehavior_20 ballroomBehavior;
+
+    [SerializeField] private Script_Sticker lastElevatorMask;
+    [SerializeField] private int targetEquipmentSlot;
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
@@ -154,14 +157,34 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         Debug.Log("Waiting for next part in sequence!!!");
 
         // Wait a few seconds for black screen to stay up and then fade out.
-        // Do all inventory calls here.
-        
-        // Unequip all Prepped Masks
+        EquipLastElevatorMaskBackground();
+
+        StartCoroutine(WaitToFadeOut());
+
+        IEnumerator WaitToFadeOut()
+        {
+            yield return new WaitForSeconds(waitTimeAfterAwakening);
+
+            Script_TransitionManager.Control.TimelineFadeOut(
+                Script_TransitionManager.FadeTimeSlow,
+                game.ChangeStateInteract
+            );            
+        }
+    }
+
+    private void EquipLastElevatorMaskBackground()
+    {
+        // Unequip all Prepped Masks.
         game.UnequipAll();
 
-        // Give Last Elevator mask in background
+        // Give Last Elevator mask in background.
+        game.AddItemById(lastElevatorMask.id);
 
-        // Equip it in background (without SFX)
+        // Set as Prepped Mask in background.
+        game.AddEquippedItemInSlotById(lastElevatorMask.id, targetEquipmentSlot);
+
+        // Set as active in background.
+        game.GetPlayer().ForceStickerSwitchBackground(targetEquipmentSlot);
     }
     
     // ------------------------------------------------------------------
@@ -205,4 +228,26 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     {
         return isIceBlockLeftCracked && isIceBlockMidCracked && isIceBlockRightCracked;
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_LevelBehavior_48))]
+    public class Script_LevelBehavior_48Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_LevelBehavior_48 t = (Script_LevelBehavior_48)target;
+            
+            if (GUILayout.Button("Switch to Last Elevator Background"))
+            {
+                t.EquipLastElevatorMaskBackground();
+            }
+
+            if (GUILayout.Button("On Awakening Timeline Done"))
+            {
+                t.OnAwakeningTimelineDone();
+            }
+        }
+    }
+#endif   
 }

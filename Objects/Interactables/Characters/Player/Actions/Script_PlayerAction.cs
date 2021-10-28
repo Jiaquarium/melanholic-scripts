@@ -114,6 +114,11 @@ public class Script_PlayerAction : MonoBehaviour
     {
         stickerEffectsController.DefaultStateNoEffect();
     }
+
+    public void HandleForceStickerSwitchBackground(int i)
+    {
+        stickerEffectsController.Switch(i, true);
+    }
     
     private void HandleStickerSwitch(Directions facingDirection, Vector3 location)
     {

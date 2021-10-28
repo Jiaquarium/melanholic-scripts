@@ -320,6 +320,12 @@ public class Script_Player : Script_Character
         playerActionHandler.HandleDefaultStickerState();
     }
 
+    // Called externally to make a certain mask active.
+    public void ForceStickerSwitchBackground(int i)
+    {
+        playerActionHandler.HandleForceStickerSwitchBackground(i);
+    }
+
     // ------------------------------------------------------------------
     // Combat
     public int FullHeal()

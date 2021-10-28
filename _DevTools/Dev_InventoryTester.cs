@@ -74,6 +74,11 @@ public class Dev_InventoryTester : MonoBehaviour
         AddLastElevator();
     }
 
+    public void UnequipAll()
+    {
+        Script_Game.Game.UnequipAll();
+    }
+    
     // ------------------------------------------------------------------------
     //  Stickers
     public void AddPsychicDuck()
@@ -169,96 +174,87 @@ public class Dev_InventoryTesterTester : Editor
     public override void OnInspectorGUI() {
         DrawDefaultInspector();
 
-        Dev_InventoryTester inventoryTester = (Dev_InventoryTester)target;
-        if (GUILayout.Button("AddItemById()"))
+        Dev_InventoryTester t = (Dev_InventoryTester)target;
+        
+        var style = EditorStyles.foldoutHeader;
+
+        EditorGUILayout.LabelField("Item Utils");
+
+        if (GUILayout.Button("Add Item By Id"))
         {
-            inventoryTester.AddItemById();
+            t.AddItemById();
+        }
+
+        if (GUILayout.Button("Unequip All"))
+        {
+            t.UnequipAll();
         }
         
         GUILayout.Space(8);
+
+        EditorGUILayout.LabelField("Masks");
         
         if (GUILayout.Button("Add: Psychic Duck"))
         {
-            inventoryTester.AddPsychicDuck();
+            t.AddPsychicDuck();
         }
 
         if (GUILayout.Button("Add: Boar Needle"))
         {
-            inventoryTester.AddBoarNeedle();
+            t.AddBoarNeedle();
         }
 
         if (GUILayout.Button("Add: Animal Within"))
         {
-            inventoryTester.AddAnimalWithin();
+            t.AddAnimalWithin();
         }
 
         if (GUILayout.Button("Add: Ice Spike"))
         {
-            inventoryTester.AddIceSpike();
+            t.AddIceSpike();
         }
 
         if (GUILayout.Button("Add: Melancholy Piano"))
         {
-            inventoryTester.AddMelancholyPiano();
+            t.AddMelancholyPiano();
         }
 
         if (GUILayout.Button("Add: Last Elevator"))
         {
-            inventoryTester.AddLastElevator();
+            t.AddLastElevator();
         }
 
         if (GUILayout.Button("Add: Let There Be Light"))
         {
-            inventoryTester.AddLetThereBeLight();
+            t.AddLetThereBeLight();
         }
 
         if (GUILayout.Button("Add: Puppeteer"))
         {
-            inventoryTester.AddPuppeteer();
+            t.AddPuppeteer();
         }
 
         GUILayout.Space(8);
 
-        if (GUILayout.Button("Add: Master Key"))
-        {
-            inventoryTester.AddMasterKey();
-        }
+        EditorGUILayout.LabelField("Usables");
 
         if (GUILayout.Button("Add: Super Small Key"))
         {
-            inventoryTester.AddSuperSmallKey();
+            t.AddSuperSmallKey();
         }
 
         GUILayout.Space(8);
 
-        if (GUILayout.Button("Add: Winter Stone"))
-        {
-            inventoryTester.AddWinterStone();
-        }
-
-        if (GUILayout.Button("Add: Spring Stone"))
-        {
-            inventoryTester.AddSpringStone();
-        }
-
-        if (GUILayout.Button("Add: Summer Stone"))
-        {
-            inventoryTester.AddSummerStone();
-        }
-
-        if (GUILayout.Button("Add: Autumn Stone"))
-        {
-            inventoryTester.AddAutumnStone();
-        }
+        EditorGUILayout.LabelField("Collectibles");
 
         if (GUILayout.Button("Add: Last Well Map"))
         {
-            inventoryTester.AddLastWellMap();
+            t.AddLastWellMap();
         }
 
         if (GUILayout.Button("Add: Last Spell Recipe Book"))
         {
-            inventoryTester.AddLastSpellRecipeBook();
+            t.AddLastSpellRecipeBook();
         }
     }
 }

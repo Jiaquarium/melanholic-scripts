@@ -367,7 +367,7 @@ public class Script_InventoryManager : MonoBehaviour
                 continue;
             else
             {
-                bool didRemove = UnstickSticker(stickerToRemove, equipment, inventory, i);
+                bool didRemove = UnstickSticker(stickerToRemove, equipment, inventory, i, isBackground: true);
                 if (!didRemove)
                     didRemoveAll = false;
             }
