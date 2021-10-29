@@ -9,6 +9,11 @@ using Cinemachine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// Player cracks the 3 Ice Blocks covering Myne's Grand Mirror.
+/// Each respective Ice Stats plays their timeline on their "Die"
+/// to reveal the respective world painting.
+/// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_48 : Script_LevelBehavior
 {
@@ -26,6 +31,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private Script_BgThemePlayer northWindPlayer;
 
+    [SerializeField] private Script_MynesGrandMirror mynesGrandMirror;
+    
     [SerializeField] private Script_CrackableStats iceBlockStatsLeft;
     [SerializeField] private Script_CrackableStats iceBlockStatsMid;
     [SerializeField] private Script_CrackableStats iceBlockStatsRight;
@@ -212,9 +219,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     public void OnIceBlockCracked(Script_CrackableStats ice)
     {
-        Debug.Log($"Cracked Left Ice Block <{ice}>");
-
         game.ChangeStateCutScene();
+        
+        Debug.Log($"Cracked Ice Block <{ice}>");
+
+        if (ice == iceBlockStatsLeft)
+            mynesGrandMirror.SetMirrorGraphics(false, 0);   
+        else if (ice == iceBlockStatsMid)
+            mynesGrandMirror.SetMirrorGraphics(false, 1);
+        else if (ice == iceBlockStatsRight)
+            mynesGrandMirror.SetMirrorGraphics(false, 2);
     }
 
     public void PlayRevealNewWorldTimeline(Script_CrackableStats iceStats)
