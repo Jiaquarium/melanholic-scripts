@@ -25,6 +25,11 @@ public class Script_GlitchFXManager : MonoBehaviour
     private Coroutine blendCoroutine;
     private float timer;
 
+    public float CurrentBlend
+    {
+        get => currentSettings.blend;
+    }
+
     void OnValidate()
     {
         SaveSettings(glitchFeature.settings, currentSettings);
@@ -35,22 +40,40 @@ public class Script_GlitchFXManager : MonoBehaviour
         SetDefault();
     }
     
-    public void SetDefault()
+    public void SetDefault(bool useCurrentBlend = false)
     {
+        float lastBlend = currentSettings.blend;
+        
         SaveSettings(currentSettings, defaultSettings);
-        UpdateGlitchFXState();
+
+        if (useCurrentBlend)
+            SetBlend(lastBlend);
+        else
+            UpdateGlitchFXState();
     }
 
-    public void SetHigh()
+    public void SetHigh(bool useCurrentBlend = false)
     {
+        float lastBlend = currentSettings.blend;
+
         SaveSettings(currentSettings, highSettings);
-        UpdateGlitchFXState();
+        
+        if (useCurrentBlend)
+            SetBlend(lastBlend);
+        else
+            UpdateGlitchFXState();
     }
 
-    public void SetLow()
+    public void SetLow(bool useCurrentBlend = false)
     {
+        float lastBlend = currentSettings.blend;
+        
         SaveSettings(currentSettings, lowSettings);
-        UpdateGlitchFXState();
+        
+        if (useCurrentBlend)
+            SetBlend(lastBlend);
+        else
+            UpdateGlitchFXState();
     }
 
     private void UpdateGlitchFXState()
@@ -71,20 +94,22 @@ public class Script_GlitchFXManager : MonoBehaviour
         IEnumerator BlendCoroutine(float newBlendValue, float time, Action cb)
         {
             timer = time;
-            float originalBlend = glitchFeature.settings.blend;
-            float blendDifference = newBlendValue - originalBlend;
+            float startingBlend = currentSettings.blend;
+            float blendDifference = newBlendValue - startingBlend;
             
             while (timer > 0f)
             {
                 yield return null;
                 
-                float timeSinceLastFrame = Time.unscaledDeltaTime;
-                timer = Mathf.Max(timer - timeSinceLastFrame, 0f);
+                timer = Mathf.Max(timer - Time.unscaledDeltaTime, 0f);
 
                 float percentDone = 1 - (timer / time);
-                float newBlend = originalBlend + (percentDone * blendDifference);
+                float newBlend = startingBlend + (percentDone * blendDifference);
                 
-                currentSettings.blend = Mathf.Clamp(newBlend, 0f, 1f);
+                newBlend = Mathf.Clamp(newBlend, 0f, 1f);
+                
+                currentSettings.blend = newBlend;
+
                 UpdateGlitchFXState();
             }
 
@@ -95,7 +120,7 @@ public class Script_GlitchFXManager : MonoBehaviour
 
     public void SetBlend(float val)
     {
-        currentSettings.blend = val;
+        currentSettings.blend = Mathf.Clamp(val, 0f, 1f);
         UpdateGlitchFXState();
     }
     
@@ -127,7 +152,7 @@ public class Script_GlitchFXManager : MonoBehaviour
     }
     
     // Initialize the current settings with default.
-    private void InitialState()
+    public void InitialState()
     {
         SaveSettings(currentSettings);
         SaveSettings(glitchFeature.settings);

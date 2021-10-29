@@ -138,6 +138,11 @@ public class Script_Player : Script_Character
         set => playerMovementHandler.IsNorthWind = value;
     }
 
+    public Directions LastMove
+    {
+        get => playerMovementHandler.LastMove;
+    }
+
     protected virtual void OnEnable()
     {
 

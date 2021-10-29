@@ -141,6 +141,11 @@ public class Script_PlayerMovement : MonoBehaviour
         get => isNorthWind;
         set => isNorthWind = value;
     }
+
+    public Directions LastMove
+    {
+        get => lastMoveInput;
+    }
     
     void Awake()
     {

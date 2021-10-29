@@ -17,6 +17,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private bool isDone;
     // ==================================================================
 
+    [SerializeField] private int glitchZoneSteps;
     [SerializeField] private float waitTimeAfterAwakening;
     
     [SerializeField] private Script_Snow snowEffectAlways;
@@ -48,6 +49,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
+    private float currentTargetBlend;
+    private Script_GlitchFXManager glitchManager;
 
     public bool IsDone
     {
@@ -60,6 +63,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         base.OnEnable();
 
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone += PlayRevealNewWorldTimeline;
+
+        currentTargetBlend = 0f;
+        glitchManager.InitialState();
     }
 
     protected override void OnDisable()
@@ -68,14 +74,13 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone -= PlayRevealNewWorldTimeline;
 
-        var glitchManager = Script_GlitchFXManager.Control;
-        
-        glitchManager.SetDefault();
-        glitchManager.SetBlend(0f);
+        glitchManager.InitialState();
     }
     
     void Awake()
     {
+        glitchManager = Script_GlitchFXManager.Control;
+        
         timelineController = GetComponent<Script_TimelineController>();
         
         snowEffectAlways.gameObject.SetActive(true);
@@ -134,8 +139,6 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         void AwakeningCutscene()
         {
             // Start heavy glitch effect if was third ice stat.
-            var glitchManager = Script_GlitchFXManager.Control;
-            
             glitchManager.SetHigh();
             glitchManager.BlendTo(1f, 5f, () => Script_TransitionManager.Control.FadeInCoroutine(
                 Script_TransitionManager.FadeTimeSlow,
@@ -173,8 +176,6 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         // Wait a few seconds for black screen to stay up and then fade out.
         EquipLastElevatorMaskBackground();
 
-        var glitchManager = Script_GlitchFXManager.Control;
-        
         glitchManager.SetLow();
         glitchManager.SetBlend(1f);
 
@@ -251,8 +252,43 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         if (isActive)
             northWindPlayer.FadeInPlay();
         else
-            northWindPlayer.FadeOutStop();
+        {
+            // Abrubtly stop music when player clears the top of wind zone.
+            Directions lastMove = game.GetPlayer().LastMove;
+            
+            if (lastMove == Directions.Up)
+                northWindPlayer.SoftStop();
+            else
+                northWindPlayer.FadeOutStop();
+        }
     }
+
+    public void IncreaseGlitchBlend()
+    {
+        float blendStep = 1f / glitchZoneSteps;
+        currentTargetBlend += blendStep;
+
+        // Ensure current settings is Default.
+        glitchManager.SetDefault(useCurrentBlend: true);
+        glitchManager.BlendTo(currentTargetBlend);
+    }
+
+    public void DecreaseGlitchBlend()
+    {
+        float blendStep = 1f / glitchZoneSteps;
+        currentTargetBlend -= blendStep;
+
+        // Ensure current settings is Default.
+        glitchManager.SetDefault(useCurrentBlend: true);
+        
+        // Once player clears the top of the wind zone, immediately set Blend for abrubt effect.
+        Directions lastMove = game.GetPlayer().LastMove;
+        
+        if (lastMove == Directions.Up)
+            glitchManager.SetBlend(currentTargetBlend);
+        else
+            glitchManager.BlendTo(currentTargetBlend);
+        }
 
     // ------------------------------------------------------------------
     // Next Node Actions
