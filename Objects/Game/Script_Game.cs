@@ -117,6 +117,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_TeletypeNotificationManager teletypeNotificationManager;
     [SerializeField] private Script_LightFXManager lightFXManager;
     [SerializeField] private Script_GlitchFXManager glitchFXManager;
+    [SerializeField] private Script_WindManager windManager;
 
     [SerializeField] private Script_PianoManager pianoManager;
 
@@ -331,7 +332,7 @@ public class Script_Game : MonoBehaviour
     public float CameraSize
     {
         get => GetComponent<Camera>().orthographicSize;
-    }
+    } 
 
     /// <summary>
     /// (DEV): Sets all levels to inactive from Dev'ing
@@ -442,6 +443,7 @@ public class Script_Game : MonoBehaviour
         teletypeNotificationManager.Setup();
         lightFXManager.Setup();
         glitchFXManager.Setup();
+        windManager.Setup();
 
         canvasesAudioSource.gameObject.SetActive(true);
         

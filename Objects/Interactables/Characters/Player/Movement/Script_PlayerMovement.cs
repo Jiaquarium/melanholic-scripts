@@ -87,6 +87,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private bool isForceMoveAnimation;
     private bool isNoInputMoveByWind;
+    private Script_WindManager windManager;
 
     public Animator MyAnimator
     {
@@ -117,17 +118,24 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         get
         {
+            float speed;
             switch (walkSpeed)
             {
                 case (Speeds.Default):
-                    return defaultSpeed;
+                    speed = defaultSpeed;
+                    break;
                 case (Speeds.Run):
-                    return runSpeed;
+                    speed = runSpeed;
+                    break;
                 case (Speeds.Dev):
-                    return devRunSpeed;
+                    speed = devRunSpeed;
+                    break;
                 default:
-                    return defaultSpeed;    
+                    speed = defaultSpeed;    
+                    break;
             }
+
+            return isNorthWind ? speed * windAdjustment : speed;
         }
     }
 
@@ -383,50 +391,7 @@ public class Script_PlayerMovement : MonoBehaviour
         
         Vector3 desiredMove = directionToVector[dir];
 
-        if (IsNorthWind)
-        {
-            // On LR moves, move also 1 down.
-            if (dir == Directions.Left || dir == Directions.Right)
-            {
-                windAdjustment = 1f;
-
-                var canMoveDiagonallyDown = true;
-                
-                // Handle adjusted tile collisions.
-                var adjustedLocation = new Vector3(player.location.x, player.location.y, player.location.z - 1);
-                if (CheckCollisions(adjustedLocation, dir, ref desiredMove))
-                    canMoveDiagonallyDown = false;
-                
-                // Set DL & DR collision detectors on, and if there is a collision
-                // default to moving L or R.
-                if (
-                    (dir == Directions.Left && diagonalInteractionBoxes[0].GetInteractablesBlocking().Count > 0)
-                    || (dir == Directions.Right && diagonalInteractionBoxes[1].GetInteractablesBlocking().Count > 0)
-                )
-                    canMoveDiagonallyDown = false;
-
-                if (canMoveDiagonallyDown)
-                {
-                    windAdjustment = 0.75f;
-                    desiredMove.z -= 1;
-                }
-            }
-            else if (dir == Directions.Up)
-            {
-                windAdjustment = 0.5f;
-            }
-            else if (dir == Directions.Down)
-            {
-                if (isNoInputMoveByWind)
-                    windAdjustment = 0.5f;
-                else
-                    windAdjustment = 1.5f;
-            }
-        }
-        else
-        {
-            windAdjustment = 1f;
-        }
+        HandleNorthWindAdjustment(dir, ref desiredMove);
 
         if (CheckCollisions(player.location, dir, ref desiredMove))
             return;
@@ -443,6 +408,52 @@ public class Script_PlayerMovement : MonoBehaviour
 
         isMoving = true;
         didTryExit = false;
+
+        // Adjust desiredMove and walk speed to simulate wind resistance.
+        void HandleNorthWindAdjustment(Directions dir, ref Vector3 desiredMove)
+        {
+            if (IsNorthWind)
+            {
+                var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+                
+                // On LR moves, move also 1 down.
+                if (dir == Directions.Left || dir == Directions.Right)
+                {
+                    var adjustedLocation = new Vector3(player.location.x, player.location.y, player.location.z - 1);
+                    
+                    if (
+                        // Handle adjusted tile collisions.
+                        (CheckCollisions(adjustedLocation, dir, ref desiredMove))
+                        // Detect SW & SE collisions.
+                        || (dir == Directions.Left && diagonalInteractionBoxes[0].GetInteractablesBlocking().Count > 0)
+                        || (dir == Directions.Right && diagonalInteractionBoxes[1].GetInteractablesBlocking().Count > 0)
+                    )
+                    {
+                        windAdjustment = windManager.Lateral(activeMaskId);
+                    }
+                    else
+                    {
+                        windAdjustment = windManager.Diagonal(activeMaskId);
+                        desiredMove.z -= 1;
+                    }
+                }
+                else if (dir == Directions.Up)
+                {
+                    windAdjustment = windManager.Headwind(activeMaskId);
+                }
+                else if (dir == Directions.Down)
+                {
+                    if (isNoInputMoveByWind)
+                        windAdjustment = windManager.Passive(activeMaskId);
+                    else
+                        windAdjustment = windManager.Tailwind(activeMaskId);
+                }
+            }
+            else
+            {
+                windAdjustment = windManager.NoEffectFactor;
+            }
+        }
     }
 
     private bool TryExit(Directions dir)
@@ -464,7 +475,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (progress < 1f)
         {
-            progress += (WalkSpeed * windAdjustment) * Time.smoothDeltaTime;
+            progress += WalkSpeed * Time.smoothDeltaTime;
             
             if (progress > 1f)
                 progress = 1f;
@@ -557,7 +568,7 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    bool CheckCollisions(Vector3 location, Directions dir, ref Vector3 desiredMove)
+    private bool CheckCollisions(Vector3 location, Directions dir, ref Vector3 desiredMove)
     {   
         // Do not allow Player to move if Reflection cannot move.
         if (playerReflection is Script_PlayerReflectionInteractive && playerReflection.gameObject.activeInHierarchy)
@@ -569,7 +580,7 @@ public class Script_PlayerMovement : MonoBehaviour
         return playerCheckCollisions.CheckCollisions(location, dir, ref desiredMove);
     }
 
-    void PushPushables(Directions dir)
+    private void PushPushables(Directions dir)
     {
         // Push needs to come before collision detection.
         player.TryPushPushable(dir);
@@ -756,7 +767,7 @@ public class Script_PlayerMovement : MonoBehaviour
         isMoving = false;
 
         isNoInputMoveByWind = false;
-        windAdjustment = 1f;
+        windAdjustment = windManager.NoEffectFactor;
         IsNorthWind = false;
     }
 
@@ -825,6 +836,8 @@ public class Script_PlayerMovement : MonoBehaviour
         spriteRenderer = (SpriteRenderer)player.graphics;
         
         directionToVector = Script_Utils.GetDirectionToVectorDict();
+
+        windManager = Script_WindManager.Control;
     }
 }
 
