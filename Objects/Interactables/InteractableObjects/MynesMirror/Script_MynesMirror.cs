@@ -85,8 +85,11 @@ public class Script_MynesMirror : Script_InteractableObjectText
         Script_MynesMirrorEventsManager.OnEndTimeline           += StartDialogue;
         Script_MynesMirrorEventsManager.OnInteractionNodeDone   += OnInteractionDialogueDone;
 
-        bool isActivated = Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId];
-        HandleIsActivatedGraphics(isActivated);
+        var isActivated = Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId];
+        var isWeekend = game.RunCycle == Script_RunsManager.Cycle.Weekend;
+        var isShattered = isActivated || isWeekend;
+        
+        HandleIsActivatedGraphics(isShattered);
     }
 
     protected override void OnDisable()
@@ -119,10 +122,19 @@ public class Script_MynesMirror : Script_InteractableObjectText
         base.ActionDefault();
     }
 
+    /// <summary>
+    /// Myne's Mirror should be disabled after interacting once per run.
+    /// On Weekend, always disabled.
+    /// </summary>
     protected override bool CheckDisabled()
     {
-        bool isActivated = Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId];
-        return isActivated || base.CheckDisabled();
+        var isActivated = Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId];
+        var isWeekend = game.RunCycle == Script_RunsManager.Cycle.Weekend;
+        var isDisabled = isActivated || isWeekend || base.CheckDisabled();
+
+        Debug.Log($"{name} isActivated: <{isActivated}>, isWeekend: <{isWeekend}>, Base Disabled? {base.CheckDisabled()}");
+        
+        return isDisabled;
     }
 
     protected virtual void HandleIsActivatedGraphics(bool isActivated)

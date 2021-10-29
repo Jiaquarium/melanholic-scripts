@@ -49,9 +49,9 @@ public class Script_TriggerReliableStay : Script_Trigger
     
     void OnTriggerEnter(Collider other)
     {
-        Script_ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
-        
         Debug.Log($"{name} OnTriggerEnter other <{other}> tag <{other.tag}>");
+        
+        Script_ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
 
         if (detectTags.CheckInTags(other.tag))
         {   
@@ -65,9 +65,9 @@ public class Script_TriggerReliableStay : Script_Trigger
 
     void OnTriggerExit(Collider other)
     {
+        Debug.Log($"{name} OnTriggerExit other: <{other}> tag: <{other.tag}>");
+        
         Script_ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
-
-        Debug.Log($"{name} OnTriggerExit other <{other}> tag <{other.tag}>");
         
         if (detectTags.CheckInTags(other.tag))
         {   
