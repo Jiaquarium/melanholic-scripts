@@ -25,12 +25,16 @@ public class Script_TeletypeNotificationManager : MonoBehaviour
 
     public void InitialState()
     {
-        canvasGroupController.Close();
+        if (canvasGroupController != null)
+            canvasGroupController.Close();
         
         foreach (var dialogue in dialogues)
         {
-            dialogue.InitialState();
-            dialogue.gameObject.SetActive(true);
+            if (dialogue != null)
+            {
+                dialogue.InitialState();
+                dialogue.gameObject.SetActive(true);
+            }
         }
     }
     

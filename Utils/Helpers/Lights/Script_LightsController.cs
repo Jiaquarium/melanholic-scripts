@@ -46,7 +46,8 @@ public class Script_LightsController : MonoBehaviour
 
     void Update()
     {
-        if (shouldUpdate)    UpdateLights();
+        if (shouldUpdate)
+            UpdateLights();
     }
 
     private void UpdateLights()

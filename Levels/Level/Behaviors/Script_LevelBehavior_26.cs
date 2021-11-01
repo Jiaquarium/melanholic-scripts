@@ -37,19 +37,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public bool[] switchesState;
     public bool isCurrentPuzzleComplete;
     [SerializeField] private Transform switchParent;
-    [SerializeField] private Script_UrselkAttacks urselkAttacks;
     
-    // Must be >1 because because the spike animation lasts 1 sec (30 frames)
-    // 1.9s allows for a very tight 7 moves.
-    // E.g. time of 2s gives 1s of movement time, 1s of animation where hitbox is exposed.
-    [Range(1.80f, 2.00f)][SerializeField] private float attackInterval;
+    [SerializeField] private Script_LevelAttackController attackController;
     
-    [SerializeField] private float timer;
     [SerializeField] private float dramaActuallyCompleteWaitTime;
     [SerializeField] private Script_Switch puzzleSwitch;
     
-    [SerializeField] private PlayableDirector spikeCageDirector;
-    [SerializeField] private PlayableDirector dramaticThoughtsDirector;
     [SerializeField] Script_TriggerEnterOnce dramaticThoughtsCutSceneTrigger;
     [SerializeField] Script_TriggerEnterOnce dramaDoneTrigger;
     
@@ -57,7 +50,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] Transform spikeCage;
     
     [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private FadeSpeeds musicFadeOutSpeed;
+    [SerializeField] private float musicFadeOutSpeed;
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     
     [SerializeField] private Script_LightsController lightsToVictoryController;
@@ -75,6 +68,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     private bool didMapNotification;
     
+    private Coroutine fadingOutMusicCoroutine;
+
     private bool isInitialize = true;
     private bool isTimelineControlled = false;
     
@@ -128,7 +123,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     protected override void Update()
     {
-        AttackTimer();
+        attackController.AttackTimer(isPauseSpikes || isCurrentPuzzleComplete);
         HandleDramaticThoughtsCutScene();
     }
 
@@ -144,7 +139,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             isCurrentPuzzleComplete = true;
             
             // Ensure spikes are done.
-            yield return new WaitForSeconds(attackInterval);
+            yield return new WaitForSeconds(attackController.AttackInterval);
             
             // Spike cage down Timeline
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
@@ -171,28 +166,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         {
             gotIceSpikeSticker = true;
         }
-    }
-
-    private void AttackTimer()
-    {
-        if (timer == 0)
-            timer = attackInterval;
-
-        // Match Player Movement deltaTime.
-        timer -= Time.smoothDeltaTime;
-
-        if (timer <= 0 && !isCurrentPuzzleComplete)
-        {
-            if (!isPauseSpikes)
-                Attack();
-            
-            timer = 0;
-        }
-    }
-    
-    public void Attack()
-    {
-        urselkAttacks.AlternatingSpikesAttack();
     }
 
     public override bool ActivateTrigger(string Id)
@@ -279,8 +252,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             Debug.Log("Drama is actually done");
 
             FadeOutDramaticMusic();
-            // Need to also fade out these lights for the 8 max light count
-            FadeOutDramaticLights();
         }
     }
 
@@ -313,8 +284,15 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
             // If FadeOutDramaticMusic was previously called to stop
             // the dramatic music, restart the Bgm speaker.
-            if (!bgThemePlayer.gameObject.activeSelf)
+            if (!bgThemePlayer.gameObject.activeSelf || fadingOutMusicCoroutine != null)
             {
+                // Meaning we were in process of fading out Bgm but were hit.
+                if (fadingOutMusicCoroutine != null)
+                {
+                    StopCoroutine(fadingOutMusicCoroutine);
+                    fadingOutMusicCoroutine = null;
+                }
+
                 Script_BackgroundMusicManager.Control.SetVolume(1f, BGMParam);
                 bgThemePlayer.Play();
             }
@@ -323,30 +301,34 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     private void FadeOutDramaticMusic()
     {
-        StartCoroutine(
+        fadingOutMusicCoroutine = StartCoroutine(
             Script_AudioMixerFader.Fade(
                 audioMixer,
                 BGMParam,
-                Script_AudioEffectsManager.GetFadeTime(musicFadeOutSpeed),
+                musicFadeOutSpeed,
                 0f,
                 () => {
                     bgThemePlayer.SoftStop();
                     bgThemePlayer.gameObject.SetActive(false);
                     Script_BackgroundMusicManager.Control.SetVolume(1f, BGMParam);
+                    
+                    TurnOffDramaticLights();
+
+                    fadingOutMusicCoroutine = null;
                 }
             )
         );
     }
 
-    private void FadeOutDramaticLights()
+    private void TurnOffDramaticLights()
     {
-        Debug.Log("Fading out lights to victory!!!");
+        Debug.Log("Fading out lights to victory after music has faded out!!!");
         lightsToVictoryController.ShouldUpdate = true;
     }
 
     private void HandleDramaticThoughtsCutScene()
     {
-        if (isPauseSpikes && timer == 0 && !didActivateDramaticThoughts)
+        if (isPauseSpikes && attackController.Timer == 0 && !didActivateDramaticThoughts)
         {
             didActivateDramaticThoughts = true;
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
@@ -355,7 +337,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                 Script_AudioMixerFader.Fade(
                     audioMixer,
                     BGMParam,
-                    Script_AudioEffectsManager.GetFadeTime(musicFadeOutSpeed),
+                    musicFadeOutSpeed,
                     0f,
                     () => game.StopBgMusic()
                 )
@@ -404,7 +386,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         );
         
         isPauseSpikes = false;
-        timer = 0.001f; // make Attack instantly after
+        
+        // Make Attack instantly after cut scene is done.
+        attackController.Timer = 0.001f;
     }
     
     public void OnEileensMindPaintingTimelineDone()
@@ -444,8 +428,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             switchesState,
             isInitialize
         );
-        
-        timer = attackInterval;
         
         // If player activated the dramatic thoughts, and came back later
         // start off with dramatic music

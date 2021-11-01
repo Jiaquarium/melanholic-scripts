@@ -8,11 +8,10 @@ using UnityEditor;
 
 public class Script_LevelBehavior_49 : Script_LevelBehavior
 {
-    // ==================================================================
-    // State Data
-
-
-    // ==================================================================
-
-
+    [SerializeField] private Script_LevelAttackController attackController;
+    
+    protected override void Update()
+    {
+        attackController.AttackTimer(false);
+    }
 }

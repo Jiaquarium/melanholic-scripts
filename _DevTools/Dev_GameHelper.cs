@@ -28,6 +28,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
     [SerializeField] private Script_ExitMetadataObject RockGardenEntrance;
+    [SerializeField] private Script_ExitMetadataObject CatWalk2Entrance;
     [SerializeField] private Script_ExitMetadataObject FountainEntrance;
     [SerializeField] private Script_ExitMetadataObject LabyrinthEntrance;
 
@@ -141,6 +142,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToRockGarden()
     {
         Teleport(RockGardenEntrance);
+    }
+
+    public void ExitToCatWalk2()
+    {
+        Teleport(CatWalk2Entrance);
     }
 
     public void ExitToFountain()
@@ -393,10 +399,16 @@ public class Dev_GameHelper : MonoBehaviour
                     t.ExitToRockGarden();
                 }
                 
+                if (GUILayout.Button("Go To: CatWalk2"))
+                {
+                    t.ExitToCatWalk2();
+                }    
+                
                 if (GUILayout.Button("Go To: Fountain"))
                 {
                     t.ExitToFountain();
-                }    
+                }
+
                 
                 if (GUILayout.Button("Go To: Labyrinth"))
                 {

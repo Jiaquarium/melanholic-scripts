@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Should exist in world, not instanstiated.
+/// Can be attached to a Music Speaker or on a SFX player (isSFXSpeaker flag). 
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
 public class Script_ProximitySpeaker : Script_Speaker
@@ -11,17 +11,25 @@ public class Script_ProximitySpeaker : Script_Speaker
     public AudioSource audioSource;
     public float maxDistance;
     public float maxVol;
+    
+    [SerializeField] private Transform speakerLocationOverride;
+    [SerializeField] private bool isSFXSpeaker;
+
     [SerializeField] private float currentDistance; // for Dev
 
     protected virtual void OnDisable()
     {
-        audioSource.Stop();
+        // SFX speakers only need volume to be adjusted.
+        if (!isSFXSpeaker)
+            audioSource.Stop();
     }
 
     protected virtual void OnEnable()
     {
         AdjustVolume();
-        audioSource.Play();
+        
+        if (!isSFXSpeaker)
+            audioSource.Play();
     }
 
     protected virtual void Awake()
@@ -43,7 +51,8 @@ public class Script_ProximitySpeaker : Script_Speaker
             return;
         }
         
-        currentDistance = Vector3.Distance(Script_Game.Game.GetPlayerLocation(), transform.position);
+        var speakerLocation = speakerLocationOverride == null ? transform.position : speakerLocationOverride.position;
+        currentDistance = Vector3.Distance(Script_Game.Game.GetPlayerLocation(), speakerLocation);
         
         if (currentDistance >= maxDistance)
         {
