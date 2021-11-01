@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-10-27 22:09:19
+// Last created by Dialogue Exporter at 2021-11-01 12:49:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3288,6 +3288,35 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
+    "garden-labyrinth_latte_opening",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"We would always meet at the courtyard in the <b>center</b> of this garden...",
+                @"Usually I know which turns to take, but it's completely left my memory ever since <i><b>they</b></i> started coming in here.",
+                @"Honestly, I'm ready to leave this place for good...| but I can't leave without {38}, no.",
+                @"I really miss {38}.",
+        },
+        
+    }
+},
+{
+    "garden-labyrinth_kaffe_opening_a",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"“Meet me under the <b>garden gazebo</b>.” That's what {39} would always tell me.",
+                @"But somehow I've managed to lose her.| I'm not sure how much longer I can go on without {39}.",
+                @"This was never this much of a maze before! It didn't used to be like this...",
+        },
+        
+    }
+},
+{
     "garden-labyrinth_kaffe_blocked",
     new Model_Languages
     {
@@ -3381,7 +3410,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{38}",
         EN = new string[]
         {
-                @"“Meet me at the <b>courtyard</b>.” Yes, that was her favorite spot.",
+                @"“Meet me under the <b>garden gazebo</b>.” Yes, that was her favorite spot.",
                 @"It was in the <b>center</b> of all this mess, but I've lost my way. I’ll never find my way there at this rate.",
         },
         
@@ -3443,7 +3472,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{39}",
         EN = new string[]
         {
-                @"We always used to meet at the <b>courtyard</b>...",
+                @"We always used to meet at the courtyard under the <b>garden gazebo</b>...",
                 @"It was in the <b>center</b> of all this. I know {38} will be waiting for me there, if I could just find it...",
                 @"Usually I know which turns to take, but it's completely left my memory ever since <i><b>they</b></i> started coming in here.| Kinda sad how fast my memory fades now, ha.",
         },

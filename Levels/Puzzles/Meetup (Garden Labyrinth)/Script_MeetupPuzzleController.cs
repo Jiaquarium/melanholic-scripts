@@ -152,7 +152,9 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         
         isWallsMoving = true;
         
-        game.ChangeStateCutScene();
+        if (!isInitialize)
+            game.ChangeStateCutScene();
+        
         Script_PuzzlesEventsManager.ClearDoorways();
 
         StartCoroutine(WaitToPuzzleTransformTimeline(1, isInitialize));
@@ -165,7 +167,9 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         
         isWallsMoving = true;
         
-        game.ChangeStateCutScene();
+        if (!isInitialize)
+            game.ChangeStateCutScene();
+        
         Script_PuzzlesEventsManager.ClearDoorways();
 
         StartCoroutine(WaitToPuzzleTransformTimeline(3, isInitialize));
@@ -177,6 +181,8 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         
         var director = timelineController.PlayableDirectorPlayFromTimelines(0, timelineIdx);
 
+        // On Initialization, don't actually play the timeline animation. Only need the ending
+        // state, so fast forward to it.
         if (isInitialize)
         {
             var playableAsset = (PlayableAsset)timelineController.timelines[timelineIdx];
@@ -184,14 +190,15 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
             director.Evaluate();
             director.Stop();
 
-            // Timeline ending signal is not called
-            OnPuzzleTransformDone();
+            // Timeline ending signal function (OnPuzzleTransformDone) is not called on manual Evaluate.
+            // https://forum.unity.com/threads/timeline-notifications-arent-sent-in-playabledirector-manual-mode.711494/
+            OnPuzzleTransformDone(isInitialize: true);
         }
     }
 
     // ------------------------------------------------------------------
     // Timeline Signals
-    public void OnPuzzleTransformDone()
+    public void OnPuzzleTransformDone(bool isInitialize = false)
     {
         Debug.Log("ON PUZZLE TRANSFORM DONE CALLED ON TIMELINE END!!!!!!!");
         
@@ -201,8 +208,15 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         // Allow LB46 to handle changing state back to interact.
         // This should only happen if there's a bug and Kaffe moves 2 spaces out of
         // the FloorSwitch2 onto his Unique Blocking Trigger.
-        if (!LB46.IsUniqueBlockedCutscene)
+        if (
+            !LB46.IsUniqueBlockedCutScene
+            // Initialize Moving Walls Timeline should not change state to cut scene,
+            // so ignore trying to reset state to Interact.
+            && !isInitialize
+        )
+        {
             game.ChangeStateInteract();
+        }
     }
 
     public void PuppeteerActivateTimelinePlayerBuff()

@@ -38,6 +38,10 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     [SerializeField] private Script_Marker puppetMasterSpawn;
     [SerializeField] private Script_Marker puppetSpawn;
 
+    [SerializeField] private Script_DialogueNode LatteOpeningNode;
+    [SerializeField] private Script_DialogueNode KaffeOpeningNode;
+    [SerializeField] private float openingCameraBlendTime;
+    
     [SerializeField] private Script_DialogueNode KaffeBlockedNode;
     [SerializeField] private Script_DialogueNode LatteBlockedNode;
     [SerializeField] private Script_DialogueNode successCutSceneNode;
@@ -45,6 +49,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     [SerializeField] private Script_TriggerEnterOnce KaffeBlockedTrigger;
     [SerializeField] private Script_TriggerEnterOnce LatteBlockedTrigger;
 
+    [SerializeField] private Script_VCamera followKaffeOpeningVCam;
+    [SerializeField] private Script_VCamera followLatteOpeningVCam;
     [SerializeField] private Script_VCamera followKaffeVCam;
     [SerializeField] private Script_VCamera followLatteVCam;
     [SerializeField] private Script_VCamera followKaffeCloseupVCam;
@@ -58,10 +64,12 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     [SerializeField] private Script_ScarletCipherPiece scarletCipherPiece;
 
+    private Script_VCamera preOpeningVCam;
     private Script_VCamera puppeteerVCam;
     private Script_VCamera preSuccessVCam;
 
-    private bool isUniqueBlockedCutscene;
+    private bool isUniqueBlockedCutScene;
+    private bool isOpeningCutSceneDone;
 
     private bool isInitialized;
 
@@ -75,10 +83,10 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         get => isInitialized;
     }
 
-    public bool IsUniqueBlockedCutscene
+    public bool IsUniqueBlockedCutScene
     {
-        get => isUniqueBlockedCutscene;
-        private set => isUniqueBlockedCutscene = value;
+        get => isUniqueBlockedCutScene;
+        private set => isUniqueBlockedCutScene = value;
     }
 
     protected override void OnEnable()
@@ -93,6 +101,17 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         base.OnDisable();
 
         Script_PuzzlesEventsManager.OnPuzzleSuccess -= HandlePuzzleSuccess;
+    }
+
+    public override void OnLevelInitComplete()
+    {
+        base.OnLevelInitComplete();
+
+        // Play Kaffe Latte Opening Cut Scene.
+        if (!isOpeningCutSceneDone)
+        {
+            OpeningCutScene();
+        }
     }
     
     private void HandlePuzzleSuccess(string puzzleId)
@@ -190,6 +209,31 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         game.SnapCam(prevLatteFocalPointPos, LatteFocalPoint, followLatteCloseupVCam.CinemachineVirtualCamera);
     }
 
+    /// <summary>
+    /// 1. Camera slowly pans to Latte (to show location)
+    /// 2. Latte opening dialogue
+    /// 3. Camera slowly pans to Kaffe
+    /// 4. Kaffe opening dialogue
+    /// </summary>
+    private void OpeningCutScene()
+    {
+        Debug.Log($"{name} Opening cut scene!");
+        
+        game.ChangeStateCutScene();
+
+        preOpeningVCam = Script_VCamManager.ActiveVCamera;
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(preOpeningVCam, followLatteOpeningVCam);
+        
+        StartCoroutine(WaitForCameraBlend());
+
+        IEnumerator WaitForCameraBlend()
+        {
+            yield return new WaitForSeconds(openingCameraBlendTime);
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(LatteOpeningNode);
+        }
+    }
+
     // ------------------------------------------------------------------
     // Unity Events
     public void OnUniqueBlockingTrigger(Transform other)
@@ -212,7 +256,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         
         LatteBlockedTrigger.gameObject.SetActive(false);
 
-        IsUniqueBlockedCutscene = true;
+        IsUniqueBlockedCutScene = true;
     }
 
     private void KaffeBlockedCutScene()
@@ -227,7 +271,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         
         KaffeBlockedTrigger.gameObject.SetActive(false);
 
-        IsUniqueBlockedCutscene = true;
+        IsUniqueBlockedCutScene = true;
     }
 
     public void OnBlockedCutSceneDone()
@@ -240,7 +284,17 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, puppeteerVCam);
         puppeteerVCam = null;
 
-        IsUniqueBlockedCutscene = false;
+        IsUniqueBlockedCutScene = false;
+    }
+
+    private void LatteOpeningCloseUp()
+    {
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followLatteOpeningVCam);
+    }
+
+    private void KaffeOpeningCloseUp()
+    {
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followKaffeOpeningVCam);
     }
 
     // ------------------------------------------------------------------
@@ -307,6 +361,38 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     
     // ------------------------------------------------------------------
     // Next Node Actions
+    
+    // After Latte's Opening node
+    public void SlowPanCameraToKaffeOpening()
+    {
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followKaffeOpeningVCam);
+        
+        StartCoroutine(WaitForCameraBlend());
+
+        IEnumerator WaitForCameraBlend()
+        {
+            yield return new WaitForSeconds(openingCameraBlendTime);
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeOpeningNode);
+        }
+    }
+
+    public void OnOpeningCutSceneDone()
+    {
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, preOpeningVCam);
+        preOpeningVCam = null;
+
+        StartCoroutine(WaitForCameraBlend());
+
+        IEnumerator WaitForCameraBlend()
+        {
+            yield return new WaitForSeconds(openingCameraBlendTime);
+            
+            game.ChangeStateInteract();
+
+            isOpeningCutSceneDone = true;
+        }
+    }
     
     // Last Success Dialogue Node.
     public void OnSuccessCutSceneDone()
