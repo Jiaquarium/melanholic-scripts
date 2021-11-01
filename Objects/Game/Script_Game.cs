@@ -25,6 +25,8 @@ public class Script_Game : MonoBehaviour
     
     // Private to avoid ending staying non-None in Editor after Dev'ing.
     [SerializeField] private Script_TransitionManager.Endings activeEnding;
+
+    public int faceOffCounter;
     /* ======================================================================= */
 
     public Model_Levels Levels;
@@ -1158,9 +1160,30 @@ public class Script_Game : MonoBehaviour
     }
 
     // Remove all prepped masks. Place them back in inventory.
-    public bool UnequipAll()
+    public bool UnequipAll(string[] excludes = null)
     {
-        return menuController.UnequipAll();
+        return menuController.UnequipAll(excludes);
+    }
+
+    public void EquipLastElevatorMaskBackground(bool isGive = false)
+    {
+        UnequipAll(new string[]{ Const_Items.LastElevatorId });
+
+        if (isGive)
+            AddItemById(Const_Items.LastElevatorId);
+
+        UnequipAll();
+        
+        // Set as Prepped Mask in background.
+        StickStickerBackground(Const_Items.LastElevatorId);
+
+        // Set as active in background.
+        GetPlayer().ForceStickerSwitchBackground(0);
+    }
+
+    public bool StickStickerBackground(string stickerId)
+    {
+        return menuController.StickStickerBackground(stickerId);
     }
 
     public bool RemoveItemFromInventory(Script_Item item)
@@ -1209,6 +1232,11 @@ public class Script_Game : MonoBehaviour
     public Script_Item GetItemsInventoryItem(string itemId, out int slot)
     {
         return menuController.GetItemsInventoryItem(itemId, out slot);
+    }
+
+    public void OrganizeInventory()
+    {
+        menuController.Organize();
     }
 
     /* =======================================================================
@@ -2069,11 +2097,12 @@ public class Script_Game : MonoBehaviour
         );
 
         Model_GameData gameData = new Model_GameData(
-            runsManager.RunIdx,
+            RunIdx,
             SpawnLevelNo,
             CycleCount,
             totalPlayTime,
-            activeEnding
+            activeEnding,
+            faceOffCounter
         );
         
         saveGameControl.Save(

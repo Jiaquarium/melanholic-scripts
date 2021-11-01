@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 
 [RequireComponent(typeof(Script_StickersInventoryHandler))]
 [RequireComponent(typeof(Script_UsablesInventoryHandler))]
@@ -200,6 +200,11 @@ public class Script_InventoryManager : MonoBehaviour
         }
     }
 
+    public void Organize()
+    {
+        inventory.Organize();
+    }
+
     // ------------------------------------------------------------------
     // View
     private void HandleItemDescription(int i, Types type)
@@ -352,7 +357,7 @@ public class Script_InventoryManager : MonoBehaviour
     }
 
     // Note, this will not remove ones past the point of a full equipment.
-    public bool HandleUnequipAll()
+    public bool HandleUnequipAll(string[] excludes = null)
     {
         // Unequip currently worn mask.
         Script_Game.Game.GetPlayer().DefaultStickerState();
@@ -367,6 +372,9 @@ public class Script_InventoryManager : MonoBehaviour
                 continue;
             else
             {
+                if (excludes != null && excludes.FirstOrDefault(id => id == stickerToRemove.id) != null)
+                    continue;
+                
                 bool didRemove = UnstickSticker(stickerToRemove, equipment, inventory, i, isBackground: true);
                 if (!didRemove)
                     didRemoveAll = false;
@@ -374,6 +382,20 @@ public class Script_InventoryManager : MonoBehaviour
         }
 
         return didRemoveAll;
+    }
+
+    public bool StickStickerByIdBackground(string id)
+    {
+        int itemSlot;
+        var sticker = inventory.SearchForItemById(id, out itemSlot) as Script_Sticker;
+
+        if (sticker == null)
+        {
+            Debug.LogWarning($"You are trying to stick a mask not in inventory <{id}>");
+            return false;
+        }
+
+        return stickersHandler.StickSticker(sticker, equipment, inventory, itemSlot, isBackground: true);
     }
 
     void Drop(Script_Item item, int itemSlotId)

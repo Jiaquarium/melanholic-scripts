@@ -63,6 +63,11 @@ public class Script_Inventory : MonoBehaviour
     {
         return Script_InventoryHelpers.SearchForItemById(Id, out slot, items);
     }
+
+    public void Organize()
+    {
+        Script_InventoryHelpers.Organize(items, itemImages);
+    }
 }
 
 #if UNITY_EDITOR

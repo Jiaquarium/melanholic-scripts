@@ -18,6 +18,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     // State Data
     public bool didPickUpLastWellMap;
     public bool isMooseQuestDone;
+    public bool didPlayFaceOff;
     // ==================================================================
     
     public bool isCurrentMooseQuestComplete;
@@ -276,7 +277,22 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public void OnWellsWorldPaintingQuestDone()
     {
         Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-            game.ChangeStateInteract();
+            // Play TalkingSelf Timeline if haven't played yet.
+            if (!didPlayFaceOff)
+            {
+                var PRCSManager = Script_PRCSManager.Control;
+
+                PRCSManager.TalkingSelfSequence(() => {
+                    PRCSManager.PlayFaceOffTimeline(() => {
+                        game.ChangeStateInteract();
+                        didPlayFaceOff = true;
+                    });
+                });
+            }
+            else
+            {
+                game.ChangeStateInteract();
+            }
         });
     }
     // ----------------------------------------------------------------------

@@ -21,6 +21,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     }
     // alchemist circle persist
     public bool didPickUpSpringStone;
+    public bool didPlayFaceOff;
 
     /* ======================================================================= */
     
@@ -207,8 +208,23 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
 
             isTimelineControlled = true;
             Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-                game.ChangeStateInteract();
                 isTimelineControlled = false;
+                
+                if (!didPlayFaceOff)
+                {
+                    var PRCSManager = Script_PRCSManager.Control;
+
+                    PRCSManager.TalkingSelfSequence(() => {
+                        PRCSManager.PlayFaceOffTimeline(() => {
+                            game.ChangeStateInteract();
+                            didPlayFaceOff = true;
+                        });
+                    });
+                }
+                else
+                {
+                    game.ChangeStateInteract();
+                }
             });
         }
     }

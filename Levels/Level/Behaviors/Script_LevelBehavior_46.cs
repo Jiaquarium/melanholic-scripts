@@ -14,6 +14,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     // ==================================================================
     // State Data
     public bool isPuzzleComplete;
+    public bool didPlayFaceOff;
 
     // ==================================================================
 
@@ -280,13 +281,25 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
             // Fade out black screen.
             StartCoroutine(game.TransitionFadeOut(successTransitionFadeInTime, () => {
-                // TBD Give Scarlet Cipher Piece?
-                
                 isPuzzleComplete        = true;
                 isCurrentPuzzleComplete = true;
 
                 Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-                    game.ChangeStateInteract();
+                    if (!didPlayFaceOff)
+                    {
+                        var PRCSManager = Script_PRCSManager.Control;
+
+                        PRCSManager.TalkingSelfSequence(() => {
+                            PRCSManager.PlayFaceOffTimeline(() => {
+                                game.ChangeStateInteract();
+                                didPlayFaceOff = true;
+                            });
+                        });
+                    }
+                    else
+                    {
+                        game.ChangeStateInteract();
+                    }
                 });                
             }));
         }

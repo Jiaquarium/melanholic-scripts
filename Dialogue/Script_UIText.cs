@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-27 12:56:55
+// Last created by UI Exporter at 2021-10-31 23:02:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -724,6 +724,159 @@ SAVING GAME... Please do not turn off power."
     new Model_LanguagesUI
     {
         EN = @"This is how people change."
+    }
+},
+// ------------------------------------------------------------------
+// Quest 1*
+{
+    "faceoff_ren-myne_quest0_block0_0",
+    new Model_LanguagesUI
+    {
+        EN = @"{0}, dear, you really understand nothing!"
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block0_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Don’t you get it?| You are the intruder here."
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block1_0",
+    new Model_LanguagesUI
+    {
+        EN = @"You really think you can go around solving everyone’s problems?"
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block1_1",
+    new Model_LanguagesUI
+    {
+        EN = @"And somehow there will be some magical happy ending?"
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block2_0",
+    new Model_LanguagesUI
+    {
+        EN = @"What will be left of you, dear?"
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block2_1",
+    new Model_LanguagesUI
+    {
+        EN = @"You will just be back, working in that same old hotel."
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block2_2",
+    new Model_LanguagesUI
+    {
+        EN = @"How about you do us both a favor and|.|.|."
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block3_0",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>Go back to your normal life.</b>"
+    }
+},
+// ------------------------------------------------------------------
+// Quest 2*
+{
+    "faceoff_ren-myne_quest1_block0_0",
+    new Model_LanguagesUI
+    {
+        EN = @"You think you are better than all of us down here?"
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block0_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Like someone appointed you to save us?"
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block0_2",
+    new Model_LanguagesUI
+    {
+        EN = @"Well, dear, you are not above us."
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block1_0",
+    new Model_LanguagesUI
+    {
+        EN = @"You really have no conscience, do you, dear?"
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block1_1",
+    new Model_LanguagesUI
+    {
+        EN = @"How can you waltz in here, acting as if all this is yours?"
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block1_2",
+    new Model_LanguagesUI
+    {
+        EN = @"Remember, I am the one who built this place."
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block2_0",
+    new Model_LanguagesUI
+    {
+        EN = @"You are a nobody."
+    }
+},
+// ------------------------------------------------------------------
+// Quest 3*
+{
+    "faceoff_ren-myne_quest2_block0_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Please, I beg you..."
+    }
+},
+{
+    "faceoff_ren-myne_quest2_block0_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Just leave..."
+    }
+},
+{
+    "faceoff_ren-myne_quest2_block1_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Who are you?"
+    }
+},
+{
+    "faceoff_ren-myne_quest2_block1_1",
+    new Model_LanguagesUI
+    {
+        EN = @"I will do anything you want."
+    }
+},
+{
+    "faceoff_ren-myne_quest2_block1_2",
+    new Model_LanguagesUI
+    {
+        EN = @"Please just leave already."
+    }
+},
+{
+    "faceoff_ren-myne_quest2_block2_0",
+    new Model_LanguagesUI
+    {
+        EN = @"I need things to stay how they are."
     }
 },
 

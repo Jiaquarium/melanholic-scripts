@@ -9,7 +9,8 @@ public class Script_SaveLoadLevelBehavior_46 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_46 lvlModel = new Model_LevelBehavior_46(
-            _isPuzzleComplete               : LB46.isPuzzleComplete
+            _isPuzzleComplete               : LB46.isPuzzleComplete,
+            _didPlayFaceOff                 : LB46.didPlayFaceOff
         );
         
         data.levelsData.LB46 = lvlModel;
@@ -20,6 +21,7 @@ public class Script_SaveLoadLevelBehavior_46 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_46 lvlModel         = data.levelsData.LB46;
         
         LB46.isPuzzleComplete                   = lvlModel.isPuzzleComplete;
+        LB46.didPlayFaceOff                     = lvlModel.didPlayFaceOff;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);

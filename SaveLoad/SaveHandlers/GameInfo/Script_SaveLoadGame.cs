@@ -11,21 +11,22 @@ public class Script_SaveLoadGame : MonoBehaviour
         Debug.Log($"Saving Total Time Played {game.totalPlayTime.FormatTotalPlayTime()}");
         
         data.gameData = new Model_GameData(
-            gameDataOverride?.runIdx        ?? game.RunIdx,
-            gameDataOverride?.level         ?? game.level,
-            gameDataOverride?.cycleCount    ?? game.CycleCount,
-            gameDataOverride?.totalPlayTime ?? game.totalPlayTime,
-            gameDataOverride?.activeEnding  ?? game.ActiveEnding
+            gameDataOverride?.runIdx            ?? game.RunIdx,
+            gameDataOverride?.level             ?? game.level,
+            gameDataOverride?.cycleCount        ?? game.CycleCount,
+            gameDataOverride?.totalPlayTime     ?? game.totalPlayTime,
+            gameDataOverride?.activeEnding      ?? game.ActiveEnding,
+            gameDataOverride?.faceOffCounter    ?? game.faceOffCounter
         );
     }
 
     public void LoadGameData(Model_SaveData data)
     {
         game.LoadRun(data.gameData.runIdx, data.gameData.cycleCount);
-        
         game.level          = data.gameData.level;
         game.totalPlayTime  = data.gameData.totalPlayTime;
         game.ActiveEnding   = data.gameData.activeEnding;
+        game.faceOffCounter = data.gameData.faceOffCounter;
 
         Debug.Log($"---- LOADED {data.gameData} ----");
         Debug.Log($"runIdx:             {data.gameData.runIdx}");
@@ -41,7 +42,8 @@ public class Script_SaveLoadGame : MonoBehaviour
             data.gameData.level,
             data.gameData.cycleCount,
             game.totalPlayTime,
-            game.ActiveEnding
+            data.gameData.activeEnding,
+            data.gameData.faceOffCounter
         );
     }
 }

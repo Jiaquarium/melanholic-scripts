@@ -11,7 +11,8 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         Script_Sticker sticker,
         Script_Equipment equipment,
         Script_Inventory inventory,
-        int itemSlotId
+        int itemSlot,
+        bool isBackground = false
     )
     {
         /// Try to equip, checking if we can equip it & if equipment is full
@@ -20,9 +21,11 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         {
             /// On successful equip, remove sticker from Inventory
             /// and also update Sticker Holster (done in Equipment)
-            inventory.RemoveItemInSlot(itemSlotId);
+            inventory.RemoveItemInSlot(itemSlot);
 
-            StickerOnSFX();
+            if (!isBackground)
+                StickerOnSFX();
+            
             return true;
         }
         else

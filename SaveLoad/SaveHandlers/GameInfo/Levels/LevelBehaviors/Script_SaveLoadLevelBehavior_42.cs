@@ -10,7 +10,8 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
     {
         Model_LevelBehavior_42 lvlModel = new Model_LevelBehavior_42(
             _didPickUpLastWellMap           : LB42.didPickUpLastWellMap,
-            _isMooseQuestDone               : LB42.isMooseQuestDone
+            _isMooseQuestDone               : LB42.isMooseQuestDone,
+            _didPlayFaceOff                 : LB42.didPlayFaceOff
         );
         
         data.levelsData.LB42 = lvlModel;
@@ -22,6 +23,7 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
         
         LB42.didPickUpLastWellMap               = lvlModel.didPickUpLastWellMap;
         LB42.isMooseQuestDone                   = lvlModel.isMooseQuestDone;
+        LB42.didPlayFaceOff                     = lvlModel.didPlayFaceOff;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);

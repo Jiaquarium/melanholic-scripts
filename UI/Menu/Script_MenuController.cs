@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Handles overall menu state based on TopBar and settings
 /// 
@@ -245,9 +249,9 @@ public class Script_MenuController : Script_UIState
     }
 
     // Remove all masks from Prepped Masks.
-    public bool UnequipAll()
+    public bool UnequipAll(string[] excludes = null)
     {
-        return inventoryManager.HandleUnequipAll();
+        return inventoryManager.HandleUnequipAll(excludes);
     }
 
     public bool CheckStickerEquipped(Script_Sticker sticker)
@@ -281,6 +285,16 @@ public class Script_MenuController : Script_UIState
     public bool RemoveItem(Script_Item item)
     {
         return inventoryManager.RemoveItem(item);
+    }
+
+    public bool StickStickerBackground(string stickerId)
+    {
+        return inventoryManager.StickStickerByIdBackground(stickerId);
+    }
+
+    public void Organize()
+    {
+        inventoryManager.Organize();
     }
 
     public void HandleNullViewStates()
@@ -359,3 +373,26 @@ public class Script_MenuController : Script_UIState
         }
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_MenuController))]
+public class Script_MenuControllerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_MenuController t = (Script_MenuController)target;
+        
+        if (GUILayout.Button("Unequip All Except Last Elevator"))
+        {
+            string[] excludes = new string[]{ Const_Items.LastElevatorId };
+            t.UnequipAll(excludes);
+        }
+
+        if (GUILayout.Button("Organize Inventory"))
+        {
+            t.Organize();
+        }
+    }
+}
+#endif   

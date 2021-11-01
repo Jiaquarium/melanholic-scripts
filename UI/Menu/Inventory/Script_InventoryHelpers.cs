@@ -128,4 +128,40 @@ public static class Script_InventoryHelpers
         slot = -1;
         return null;
     }
+
+    public static void Organize
+    (
+        Script_Item[] items,
+        Image[] itemImages
+    )
+    {
+        // make new lists
+        List<Script_Item> itemsList = new List<Script_Item>();
+        List<Image> itemImagesList = new List<Image>();
+
+        for (var i = 0; i < items.Length; i++)
+        {
+            if (items[i] != null)
+                itemsList.Add(items[i]);
+            
+            if (itemImages[i] != null)
+                itemImagesList.Add(itemImages[i]);
+        }
+
+        // replace current items and itemImages with these
+        for (var i = 0; i < items.Length; i++)
+        {
+            if (i > itemsList.Count - 1)
+            {
+                items[i] = null;
+                itemImages[i].sprite = null;
+                itemImages[i].enabled = false;
+                continue;
+            }
+            
+            items[i] = itemsList[i];
+            itemImages[i].sprite = items[i].sprite;
+            itemImages[i].enabled = true;
+        }
+    }
 }

@@ -239,13 +239,17 @@ public class Script_TransitionManager : MonoBehaviour
                     break;
             }
 
-            if (cb != null) onAllPuzzlesDoneCutsceneDone = cb;
+            if (cb != null)
+                onAllPuzzlesDoneCutsceneDone = cb;
+            
             didPlayAllPuzzlesDoneCutScene = true;
 
             return true;
         }
 
-        if (cb != null) cb();
+        if (cb != null)
+            cb();
+        
         return false;
     }
 

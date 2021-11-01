@@ -9,6 +9,9 @@ using TMPro;
 /// than the default provided by Dialogue Manager.
 /// 
 /// Can also be used without timeline to purely reveal Text On Enable.
+/// 
+/// Note: For On Input Continue, ensure to give at least 4 frames of buffer (@ 30 fps) to give timeline
+/// some buffer since it will not stop on the exact frame.
 /// </summary>
 
 [RequireComponent(typeof(TextMeshProUGUI))]
@@ -42,7 +45,7 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
         if (sequenceController != null)
         {
             PauseAction.SafeInvoke();
-            sequenceController.Pause();
+            sequenceController.Pause(sequenceController.Time);
         }
 
         // Hide all text preemptively because we must wait a frame to allow for text replacement.

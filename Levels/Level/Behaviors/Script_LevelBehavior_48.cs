@@ -136,36 +136,20 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         // If all three ice blocks have been destroyed, start the Awakening scene.
         if (IsAllIceBlocksCracked())
         {
-            AwakeningCutscene();
-        }
-        else
-        {
-            game.ChangeStateInteract();
-        }
-        
-        void AwakeningCutscene()
-        {
-            // Start heavy glitch effect if was third ice stat.
-            glitchManager.SetHigh();
-            glitchManager.BlendTo(1f, 5f, () => Script_TransitionManager.Control.FadeInCoroutine(
-                Script_TransitionManager.FadeTimeSlow,
-                () => FadeInStartTimeline()
-            ));
-
-            void FadeInStartTimeline()
-            {
-                glitchManager.SetDefault();
-                glitchManager.SetBlend(0f);
-                
+            var PRCSManager = Script_PRCSManager.Control;
+            
+            PRCSManager.TalkingSelfSequence(() => {
                 // Show Awakening canvas immediately (fader transition will handle fading).
-                Script_PRCSManager.Control.SetAwakeningActive(true);
-
-                Script_TransitionManager.Control.FadeOutCoroutine(Script_TransitionManager.FadeTimeSlow);
+                PRCSManager.SetAwakeningActive(true);
                 
                 // Awakening Timeline's TimelineTeletypeReveal's UnityEvents will enable/disable
                 // Eye's animator during Pause/Play states (Timeline loses control when paused).
                 timelineController.PlayableDirectorPlayFromTimelines(1, 1);
-            }
+            });
+        }
+        else
+        {
+            game.ChangeStateInteract();
         }
     }
 
@@ -201,17 +185,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     private void EquipLastElevatorMaskBackground()
     {
-        // Unequip all Prepped Masks.
-        game.UnequipAll();
-
-        // Give Last Elevator mask in background.
-        game.AddItemById(lastElevatorMask.id);
-
-        // Set as Prepped Mask in background.
-        game.AddEquippedItemInSlotById(lastElevatorMask.id, targetEquipmentSlot);
-
-        // Set as active in background.
-        game.GetPlayer().ForceStickerSwitchBackground(targetEquipmentSlot);
+        game.EquipLastElevatorMaskBackground(true);
     }
     
     // ------------------------------------------------------------------
