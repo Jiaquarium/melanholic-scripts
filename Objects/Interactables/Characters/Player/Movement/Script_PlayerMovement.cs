@@ -614,7 +614,7 @@ public class Script_PlayerMovement : MonoBehaviour
         player.location = transform.position;
     }
 
-    public virtual bool HandleExitTile(Directions dir)
+    protected virtual bool HandleExitTile(Directions dir)
     {
         Tilemap entrancesTileMap = game.EntranceTileMap;
         Tilemap[] exitsTileMaps = game.ExitTileMaps;
@@ -630,11 +630,14 @@ public class Script_PlayerMovement : MonoBehaviour
 
         if (exitsTileMaps != null && exitsTileMaps.Length > 0)
         {
-            foreach(Tilemap tm in exitsTileMaps)
+            foreach (Tilemap tm in exitsTileMaps)
             {
                 if (tm.HasTile(tileLocation) && tm.gameObject.activeSelf)
                 {
                     Script_TileMapExitEntrance exitInfo = tm.GetComponent<Script_TileMapExitEntrance>();
+
+                    if (exitInfo.IsDisabled)
+                        return false;
                     
                     if (exitInfo.Type == Script_Exits.ExitType.StairsUp)
                     {
@@ -667,6 +670,9 @@ public class Script_PlayerMovement : MonoBehaviour
         if (entrancesTileMap != null && entrancesTileMap.HasTile(tileLocation) && entrancesTileMap.gameObject.activeSelf)
         {
             Script_TileMapExitEntrance entranceInfo = entrancesTileMap.GetComponent<Script_TileMapExitEntrance>();
+            
+            if (entranceInfo.IsDisabled)
+                return false;
             
             if (entranceInfo.Type == Script_Exits.ExitType.StairsUp)
             {
