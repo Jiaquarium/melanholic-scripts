@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-01 12:49:25
+// Last created by Dialogue Exporter at 2021-11-02 17:21:22
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3727,7 +3727,60 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
-// Peche & Melba
+// Melba
+{
+    "urselks-saloon_melba_default",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                @"��!",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_melba_psychic_blocking",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                @"Ba-ha! You want to get inside?| No chance, kid.",
+                @"We're dealing with an infestation. It's a crisis! If we don't figure it out, we might all be out of work pretty soon here.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_melba_psychic_blocking1",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                @"What're you still doing here, ba-ha!",
+                @"We ain't open for business! We got an issue inside, you got that?",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_melba_psychic_not-blocking",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                @"Huh, what was I saying? Ba-ha!",
+                @"Oh yeah that's right, we don't have time for dilly-dallying, kid!",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Peche
 {
     "urselks-saloon_peche_default",
     new Model_Languages

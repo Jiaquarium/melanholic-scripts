@@ -13,7 +13,7 @@ using UnityEditor;
 /// this controller will check to ensure the required objects are present.
 /// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
-public class Script_MeetupPuzzleController : Script_PuzzleController
+public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
 {
     private enum PuzzleOuterStates
     {
@@ -33,7 +33,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     public List<Script_Player> playersOnTrigger;
     
     [SerializeField] private List<Script_Player> targetPlayersOnTrigger;
-    [SerializeField] private bool isDone;
 
 
     [SerializeField] private Script_Puppet Latte;
@@ -44,42 +43,21 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
     [SerializeField] private Script_VCamera puppeteerVCam;
     
     [SerializeField] private Script_LevelBehavior_46 LB46;
-    
-    [SerializeField] private Script_Game game;
 
-    private Script_TimelineController timelineController;
     private bool isWallsMoving;
-    
-    public bool IsDone
-    {
-        get => isDone;
-        set => isDone = value;
-    }
     
     protected override void OnEnable()
     {
         base.OnEnable();
 
         InitialState();
-
-        Script_PlayerEventsManager.OnPuppeteerActivate      += OnPuppeteerActivate;
-        Script_PlayerEventsManager.OnPuppeteerDeactivate    += OnPuppeteerDeactivate;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-
-        Script_PlayerEventsManager.OnPuppeteerActivate      -= OnPuppeteerActivate;
-        Script_PlayerEventsManager.OnPuppeteerDeactivate    -= OnPuppeteerDeactivate;
     }
 
-    void Awake()
-    {
-        timelineController = GetComponent<Script_TimelineController>();
-    }
-
-    
     void Update()
     {
         if (CheckMatchingPlayersOnTrigger())
@@ -94,25 +72,6 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         Script_PuzzlesEventsManager.PuzzleSuccess(PuzzleId);
         
         IsDone = true;
-    }
-
-    // Timeline to call OnPuppeteerActivateTimelineDone
-    private void OnPuppeteerActivate()
-    {
-        if (!IsDone)
-        {
-            game.ChangeStateCutScene();
-            timelineController.PlayableDirectorPlayFromTimelines(0, 4);
-        }
-    }
-
-    private void OnPuppeteerDeactivate()
-    {
-        if (!IsDone)
-        {
-            game.ChangeStateCutScene();
-            timelineController.PlayableDirectorPlayFromTimelines(0, 5);
-        }
     }
 
     // ------------------------------------------------------------------
@@ -219,23 +178,12 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         }
     }
 
-    public void PuppeteerActivateTimelinePlayerBuff()
-    {
-        Script_Game.Game.GetPlayer().SetBuffEffectActive(true);
-    }
-
     public void SetPuppeteerVCam()
     {
         Script_VCamManager.VCamMain.SetNewVCam(puppeteerVCam);
     }
-    
-    public void OnPuppeteerActivateTimelineDone()
-    {
-        game.ChangeStateInteract();
-        Script_Game.Game.GetPlayer().SetBuffEffectActive(false);
-    }
 
-    public void PuppeteerDeactivateTimelinePuppetBuffs()
+    public override void PuppeteerDeactivateTimelinePuppetBuffs()
     {
         Latte.SetBuffEffectActive(true);
         Kaffe.SetBuffEffectActive(true);
@@ -246,7 +194,7 @@ public class Script_MeetupPuzzleController : Script_PuzzleController
         Script_VCamManager.VCamMain.SwitchToMainVCam(puppeteerVCam);
     }
 
-    public void OnPuppeteerDeactivateTimelineDone()
+    public override void OnPuppeteerDeactivateTimelineDone()
     {
         game.ChangeStateInteract();
         Latte.SetBuffEffectActive(false);

@@ -31,11 +31,10 @@ public static class Const_Dev
     public readonly static bool IsTrueEnding                = false;            // false
     public readonly static bool IsGoodEnding                = false;            // false
     
-    // True for release builds.
-    // Forces spawn in hotel.
-    public readonly static bool IsProd                      = true;             // true
+    // Forces dev custom spawn defined in inspector.
+    public readonly static bool IsDevSpawn                  = false;            // false
     
-    public readonly static bool IsLoggerAvailable           = true;            // false
+    public readonly static bool IsLoggerAvailable           = false;            // false
     
     public readonly static string Lang                      = "EN";             // "EN"
 

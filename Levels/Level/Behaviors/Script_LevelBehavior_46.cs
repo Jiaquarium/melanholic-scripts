@@ -402,11 +402,13 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
 
+    // Success nodes.
     public void KaffeCloseUp()
     {
         Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followKaffeCloseupVCam);
     }
 
+    // Success nodes.
     public void LatteCloseUp()
     {
         Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followLatteCloseupVCam);

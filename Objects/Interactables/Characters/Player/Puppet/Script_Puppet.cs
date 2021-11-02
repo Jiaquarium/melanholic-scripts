@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,6 +22,9 @@ public class Script_Puppet : Script_PlayerCopy
     [SerializeField] private RuntimeAnimatorController activatedAnimatorController;
     
     [SerializeField] private RuntimeAnimatorController inactiveAnimatorController;
+
+    [SerializeField] private UnityEvent onPuppeteerActivate;
+    [SerializeField] private UnityEvent onPuppeteerDeactivate;
 
     protected override void OnEnable()
     {
@@ -114,6 +118,8 @@ public class Script_Puppet : Script_PlayerCopy
             puppetState = PuppetStates.Active;
             
             SetAnimatorControllerActive(true);
+
+            onPuppeteerActivate.SafeInvoke();
         }
     }
 
@@ -121,6 +127,8 @@ public class Script_Puppet : Script_PlayerCopy
     {
         puppetState = PuppetStates.Inactive;
         SetAnimatorControllerActive(false);
+
+        onPuppeteerDeactivate.SafeInvoke();
     }
 }
 

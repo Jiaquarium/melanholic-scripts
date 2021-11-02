@@ -143,6 +143,40 @@ public class Script_Player : Script_Character
         get => playerMovementHandler.LastMove;
     }
 
+    public bool SpriteXFlip
+    {
+        get
+        {
+            var spriteRenderer = graphics as SpriteRenderer;
+            if (spriteRenderer != null)
+                return spriteRenderer.flipX;
+            
+            return false;
+        }
+    }
+
+    public bool SpriteYFlip
+    {
+        get
+        {
+            var spriteRenderer = graphics as SpriteRenderer;
+            if (spriteRenderer != null)
+                return spriteRenderer.flipY;
+            
+            return false;
+        }
+    }
+
+    public void FlipSprite(bool flipX, bool flipY)
+    {
+        var spriteRenderer = graphics as SpriteRenderer;
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = flipX;
+            spriteRenderer.flipY = flipY;
+        }
+    }
+
     protected virtual void OnEnable()
     {
 

@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-10-31 23:02:25
+// Last created by UI Exporter at 2021-11-02 01:45:10
 
 using System.Collections;
 using System.Collections.Generic;
@@ -144,6 +144,92 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I saved {18}."
+    }
+},
+// ------------------------------------------------------------------
+// Cut Scenes
+{
+    "eileens-mind_narrator_dramatic",
+    new Model_LanguagesUI
+    {
+        EN = @"* Maybe I can I mean"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic1",
+    new Model_LanguagesUI
+    {
+        EN = @"* Actually chances aren't too great"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic2",
+    new Model_LanguagesUI
+    {
+        EN = @"* I'm not too sure about this anymore"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic3",
+    new Model_LanguagesUI
+    {
+        EN = @"* Hmm you know what? Yeah maybe today's not the day"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic4",
+    new Model_LanguagesUI
+    {
+        EN = @"* Hey there's always tomorrow right!"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic5",
+    new Model_LanguagesUI
+    {
+        EN = @"* Ehhhhhh -_-”"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic6",
+    new Model_LanguagesUI
+    {
+        EN = @"* How did I get mixed up in all this?"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic7",
+    new Model_LanguagesUI
+    {
+        EN = @"* What was I thinking, this isn't a good idea!"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic8",
+    new Model_LanguagesUI
+    {
+        EN = @"* Why does it always end up like this?"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic9",
+    new Model_LanguagesUI
+    {
+        EN = @"* Okay deep breaths, deep breaths"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic10",
+    new Model_LanguagesUI
+    {
+        EN = @"* Wait how do you breathe again?!? *gasp*"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic11",
+    new Model_LanguagesUI
+    {
+        EN = @"* OH NO OH NO OH NO"
     }
 },
 // ------------------------------------------------------------------
@@ -336,6 +422,30 @@ See you on the other side."
     {
         EN = @"Bye,
 {11}"
+    }
+},
+// ------------------------------------------------------------------
+// Last Well Map
+{
+    "notes_last-well-map_hint",
+    new Model_LanguagesUI
+    {
+        EN = @"The only truth I know,
+seasons always go in order."
+    }
+},
+{
+    "notes_last-well-map_hint1",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>Start in Spring</b> as your soul quietly thaws,"
+    }
+},
+{
+    "notes_last-well-map_hint2",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>End in Winter</b> before it freezes again."
     }
 },
 // ------------------------------------------------------------------
