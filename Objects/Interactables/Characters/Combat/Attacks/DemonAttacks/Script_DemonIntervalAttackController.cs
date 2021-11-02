@@ -19,7 +19,7 @@ public class Script_DemonIntervalAttackController : MonoBehaviour
 
     private void AttackTimer()
     {
-        timer -= Time.smoothDeltaTime;
+        timer -= Time.deltaTime;
 
         if (timer <= 0)
         {

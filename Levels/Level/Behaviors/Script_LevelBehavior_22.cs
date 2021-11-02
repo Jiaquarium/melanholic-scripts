@@ -88,6 +88,12 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         Script_Names.UpdateUrsie();
     }
 
+    // Peche dialogue PsychicNode2 Before Action
+    public void UpdateMelba()
+    {
+        Script_Names.UpdateMelba();
+    }
+
     // ------------------------------------------------------------------
     // Full Art Actions
 

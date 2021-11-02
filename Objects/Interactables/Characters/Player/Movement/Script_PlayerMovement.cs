@@ -475,7 +475,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (progress < 1f)
         {
-            progress += WalkSpeed * Time.smoothDeltaTime;
+            progress += WalkSpeed * Time.deltaTime;
             
             if (progress > 1f)
                 progress = 1f;

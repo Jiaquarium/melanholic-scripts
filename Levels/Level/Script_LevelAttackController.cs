@@ -31,7 +31,7 @@ public class Script_LevelAttackController : MonoBehaviour
             timer = attackInterval;
 
         // Match Player Movement deltaTime.
-        timer -= Time.smoothDeltaTime;
+        timer -= Time.deltaTime;
 
         if (timer <= 0)
         {

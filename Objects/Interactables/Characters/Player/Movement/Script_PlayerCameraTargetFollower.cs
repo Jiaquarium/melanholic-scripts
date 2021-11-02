@@ -53,7 +53,7 @@ public class Script_PlayerCameraTargetFollower : MonoBehaviour
         Vector3 playerPosition = player.FocalPoint.position;
         Vector3 myPosition = transform.position;
 
-        Vector3 newPosition = myPosition.FrameRateAwareDamp(playerPosition, weight, Time.smoothDeltaTime);
+        Vector3 newPosition = myPosition.FrameRateAwareDamp(playerPosition, weight, Time.deltaTime);
 
         transform.position = newPosition;
     }

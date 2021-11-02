@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-02 17:21:22
+// Last created by Dialogue Exporter at 2021-11-02 19:43:51
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3779,6 +3779,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         
     }
 },
+{
+    "urselks-saloon_melba_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
 // ------------------------------------------------------------------
 // Peche
 {
@@ -3788,19 +3800,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"��...",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_default_a-melba",
-    new Model_Languages
-    {
-        speaker = "{62}",
-        EN = new string[]
-        {
-                @"��!",
+                @"���!",
         },
         
     }
@@ -3812,67 +3812,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"It’s hard work working for {33}.",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic_a-melba",
-    new Model_Languages
-    {
-        speaker = "{62}",
-        EN = new string[]
-        {
-                @"Yep.",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic_a-melba_a-peche",
-    new Model_Languages
-    {
-        speaker = "{61}",
-        EN = new string[]
-        {
-                @"Of course we have dreams!",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic_a-melba_a-peche_a-melba",
-    new Model_Languages
-    {
-        speaker = "{62}",
-        EN = new string[]
-        {
-                @"Uh huh.",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic_a-melba_a-peche_a-melba_a-peche",
-    new Model_Languages
-    {
-        speaker = "{61}",
-        EN = new string[]
-        {
-                @"We gotta prove ourselves here first though!",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic_a-melba_a-peche_a-melba_a-peche_a-melba",
-    new Model_Languages
-    {
-        speaker = "{62}",
-        EN = new string[]
-        {
-                @"Mhmm!",
+                @"Hey, bud, are you here to help us out or what?",
+                @"Ha! I've never heard of an <b>outsider</b> be of any use to an {6} before!",
         },
         
     }
@@ -3884,67 +3825,35 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"Those strange growths are really killing our business...",
+                @"You know why our <b>Saloon</b> is the best?",
+                @"It's because we stick to our roots, you got that, bud?",
+                @"Our menu's been the same for centuries! Keep it simple and potent, that's our motto!",
         },
         
     }
 },
 {
-    "urselks-saloon_peche_psychic1_a-melba",
-    new Model_Languages
-    {
-        speaker = "{62}",
-        EN = new string[]
-        {
-                @"Yep yep.",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic1_a-melba_a-peche",
+    "urselks-saloon_peche_psychic2",
     new Model_Languages
     {
         speaker = "{61}",
         EN = new string[]
         {
-                @"No business means no tips...",
+                @"{39} and I have known each other since I can remember! Can't imagine doing anything without him.",
+                @"Ah, I talk about {39} too much.",
+                @"Hey buzz off already! {33} and I have business to discuss!",
         },
         
     }
 },
 {
-    "urselks-saloon_peche_psychic1_a-melba_a-peche_a-melba",
-    new Model_Languages
-    {
-        speaker = "{62}",
-        EN = new string[]
-        {
-                @"You can say that again...",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic1_a-melba_a-peche_a-melba_a-peche",
+    "urselks-saloon_peche_eat-reaction",
     new Model_Languages
     {
         speaker = "{61}",
         EN = new string[]
         {
-                @"That’s why we gotta go through with the {22}, you hear?!",
-        },
-        
-    }
-},
-{
-    "urselks-saloon_peche_psychic1_a-melba_a-peche_a-melba_a-peche_a-melba",
-    new Model_Languages
-    {
-        speaker = "{62}",
-        EN = new string[]
-        {
-                @"Yup! So intruders don’t destroy our livelihoods like this!",
+                @"(. ﾟーﾟ)",
         },
         
     }

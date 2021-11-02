@@ -18,10 +18,14 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
     [SerializeField] private Script_TileMapExitEntrance KTVLobbyDoor;
     [SerializeField] private Script_Marker sideOfRoomMarker;
+
+    [SerializeField] private Script_DialogueNode[] blockingPsychicNodes;
+    [SerializeField] private Script_DialogueNode[] notBlockingPsychicNodes;
     
     // Needed to initialize "Player" copy.
     [SerializeField] private Script_LevelGrid levelGrid;
     
+    private Script_DemonNPC MelbaDemonNPC;
     private bool isInitialized = false;
 
     private bool LeftSideOfRoom
@@ -34,6 +38,27 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         base.OnEnable();
 
         HandleMelbaFlipX();
+    }
+
+    protected override void OnDisable() {
+        base.OnDisable();
+    }
+
+    void Awake()
+    {
+        MelbaDemonNPC = puppetMaster.GetComponent<Script_DemonNPC>();
+
+        if (MelbaDemonNPC == null)
+            Debug.LogWarning($"PuppetMaster <{puppetMaster}> does not have DemonNPC component");
+    }
+
+    // Only switch if they are different nodes. Maintain the talking state.
+    private void HandleMelbaDialogueNodes()
+    {
+        if (KTVLobbyDoor.IsDisabled && MelbaDemonNPC.PsychicNodes != blockingPsychicNodes)
+            MelbaDemonNPC.SwitchPsychicNodes(blockingPsychicNodes);
+        else if (!KTVLobbyDoor.IsDisabled && MelbaDemonNPC.PsychicNodes != notBlockingPsychicNodes)
+            MelbaDemonNPC.SwitchPsychicNodes(notBlockingPsychicNodes);
     }
     
     // ------------------------------------------------------------------
@@ -55,10 +80,18 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         puppetMaster.FaceDirection(LeftSideOfRoom ? Directions.Right : Directions.Left);
     }
     
-    // Trigger.
-    public void HandleDoorState(bool isOpen)
+    // Trigger
+    public void OnTriggerEnter()
     {
-        KTVLobbyDoor.IsDisabled = !isOpen;
+        KTVLobbyDoor.IsDisabled = true;
+        HandleMelbaDialogueNodes();
+    }
+
+    // Trigger
+    public void OnTriggerExit()
+    {
+        KTVLobbyDoor.IsDisabled = false;
+        HandleMelbaDialogueNodes();
     }
 
     // ------------------------------------------------------------------
@@ -68,6 +101,10 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         if (!isInitialized)
         {
             InitializePuppets();
+            KTVLobbyDoor.IsDisabled = true;
+            isInitialized = true;
+
+            HandleMelbaDialogueNodes();
         }
 
         void InitializePuppets()
@@ -81,8 +118,6 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
             
             puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState);
             puppetMaster.InitializeOnLevel(puppetMasterStartState, levelGrid.transform);
-            
-            isInitialized = true;
         }
     }
 }

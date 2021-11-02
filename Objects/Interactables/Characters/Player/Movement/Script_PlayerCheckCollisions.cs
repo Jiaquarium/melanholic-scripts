@@ -60,50 +60,14 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
             // are relatively in the same world space.
             Vector3Int tileLoc = worldTile.TileMap.WorldToCell(tileWorldLocation);
             
-            if (!IsOutOfBounds(worldTile.TileMap, tileLoc))
-                return true;
-            
-            return false;
+            return !IsOutOfBounds(worldTile.TileMap, tileLoc);
         });
     }
     
     private bool IsOutOfBounds(Tilemap tileMap, Vector3Int tileLocation)
     {
-        Tilemap entrancesTileMap                = Script_Game.Game.EntranceTileMap;
-        Tilemap[] exitsTileMaps                 = Script_Game.Game.ExitTileMaps;
-        
         // tiles map from (xyz) to (xz)
-        if (!tileMap.HasTile(tileLocation))
-        {
-            // tile may not be in current tilemap but could still be in an entrance tilemap
-            if (
-                entrancesTileMap != null
-                && entrancesTileMap.HasTile(tileLocation)
-                && !entrancesTileMap.GetComponent<Script_TileMapExitEntrance>().IsDisabled
-                && entrancesTileMap.gameObject.activeSelf
-            )
-            {
-                return false;
-            }
-            
-            foreach(Tilemap tm in exitsTileMaps)
-            {
-                // tile may not be in current tilemap but could still be in an exit tilemap
-                if (
-                    tm != null
-                    && tm.HasTile(tileLocation)
-                    && !tm.GetComponent<Script_TileMapExitEntrance>().IsDisabled
-                    && tm.gameObject.activeSelf
-                )
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
+        return !tileMap.HasTile(tileLocation);
     }
 
     protected override bool ModifyElevation(Vector3 loc, Directions dir, ref Vector3 desiredMove)

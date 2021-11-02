@@ -50,7 +50,7 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
             game.ChangeStateCutScene();
             
             // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
-            timelineController.PlayableDirectorPlayFromTimelines(0, 4);
+            timelineController.PlayableDirectorPlayFromTimelines(0, 0);
         }
     }
 
@@ -61,7 +61,7 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
             game.ChangeStateCutScene();
             
             // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
-            timelineController.PlayableDirectorPlayFromTimelines(0, 5);
+            timelineController.PlayableDirectorPlayFromTimelines(0, 1);
         }   
     }
 

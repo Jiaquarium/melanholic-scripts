@@ -74,6 +74,28 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
         IsDone = true;
     }
 
+    protected override void OnPuppeteerActivate()
+    {
+        if (!IsDone)
+        {
+            game.ChangeStateCutScene();
+            
+            // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
+            timelineController.PlayableDirectorPlayFromTimelines(0, 4);
+        }
+    }
+
+    protected override void OnPuppeteerDeactivate()
+    {
+        if (!IsDone)
+        {
+            game.ChangeStateCutScene();
+            
+            // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
+            timelineController.PlayableDirectorPlayFromTimelines(0, 5);
+        }   
+    }
+
     // ------------------------------------------------------------------
     // Trigger Unity Events
     public void FloorSwitchDown()
