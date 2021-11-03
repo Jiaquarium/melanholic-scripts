@@ -152,6 +152,13 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
     public override void Setup()
     {
+        if (game.KTVRoom2Behavior.IsCurrentPuzzleComplete)
+        {
+            puppetMaster.gameObject.SetActive(false);
+            KTVLobbyDoor.IsDisabled = false;
+            return;
+        }
+        
         // Re-initialize level when coming back from XXX World to avoid edge case
         // where Melba is placed in front of the Exit and Player enters on top.
         if (!isInitialized || game.LastLevelBehavior != game.SaloonBehavior)
