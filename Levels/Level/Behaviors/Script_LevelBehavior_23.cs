@@ -13,6 +13,9 @@ using UnityEditor;
 public class Script_LevelBehavior_23 : Script_LevelBehavior
 {
     [SerializeField] private Script_LevelBehavior_24 LB24;
+    
+    [SerializeField] private Light directionalLight;
+    
     [SerializeField] private Transform triggerParent;
     [SerializeField] private Transform pillarParent;
     [SerializeField] private Transform pushablesParent;
@@ -40,6 +43,8 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         
         SetPillarsVisibility(false);
         ActivateTriggersAndPillars(true);
+
+        HandleLanternReactions(game.GetPlayer().IsLightOn);
     }
 
     protected override void OnDisable() {
@@ -52,6 +57,26 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         ActivateTriggersAndPillars(false);
         SetPillarsVisibility(true);
     }   
+
+    private void Awake()
+    {
+        triggers    = triggerParent.GetChildren<Script_PushableTriggerStay>();
+        pillars     = pillarParent.GetChildren<Script_Tracker>();
+        pushables   = pushablesParent.GetChildren<Script_Pushable>();
+
+        /// LB24 will call CompletedState as well
+        /// call LB24's PuzzleFinishedState to set the pillars and in turn the trackables
+        /// will set position based on them
+        /// player enters on a reload
+        if (LB24.IsCurrentPuzzleComplete)  LB24.PuzzleFinishedState();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        HandleLanternReactions(game.GetPlayer().IsLightOn);
+    }
 
     private void OnPuzzleProgress()
     {
@@ -120,17 +145,9 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         }
     }
 
-    private void Awake()
+    private void HandleLanternReactions(bool isLightOn)
     {
-        triggers    = triggerParent.GetChildren<Script_PushableTriggerStay>();
-        pillars     = pillarParent.GetChildren<Script_Tracker>();
-        pushables   = pushablesParent.GetChildren<Script_Pushable>();
-
-        /// LB24 will call CompletedState as well
-        /// call LB24's PuzzleFinishedState to set the pillars and in turn the trackables
-        /// will set position based on them
-        /// player enters on a reload
-        if (LB24.IsCurrentPuzzleComplete)  LB24.PuzzleFinishedState();
+        directionalLight.gameObject.SetActive(isLightOn);
     }
 
     public override void Setup()

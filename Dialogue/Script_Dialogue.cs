@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-03 00:18:01
+// Last created by Dialogue Exporter at 2021-11-03 00:55:07
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3865,8 +3865,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"{39} and I have known each other since I can remember! Can't imagine doing anything without him.",
-                @"Ah, I talk about {39} too much.",
+                @"{62} and I have known each other since I can remember! Can't imagine doing anything without him.",
+                @"Ah, I talk about {62} too much.",
                 @"Hey buzz off already!",
         },
         
