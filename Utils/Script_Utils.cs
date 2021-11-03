@@ -732,10 +732,15 @@ public static class Script_Utils
         return false;
     }
 
-    public static void SafeInvoke(this UnityEvent unityEvent)
+    public static bool SafeInvoke(this UnityEvent unityEvent)
     {
         if (unityEvent.CheckUnityEventAction())
+        {
             unityEvent.Invoke();
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>

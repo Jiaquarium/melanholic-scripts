@@ -70,6 +70,10 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_48 grandMirrorRoomBehavior;
     
     // ------------------------------------------------------------------
+    // Level Behavior Exits
+    [SerializeField] private Script_ExitMetadataObject XXXWorldSaloonExit;
+
+    // ------------------------------------------------------------------
     // Managers
     
     [SerializeField] private Script_SystemSettings systemSettings;
@@ -1985,6 +1989,23 @@ public class Script_Game : MonoBehaviour
             isSilent,
             followUp
         );
+    }
+
+    private void Teleport(Script_ExitMetadata exit)
+    {
+        Exit(
+            exit.data.level,
+            exit.data.playerSpawn,
+            exit.data.facingDirection,
+            isExit: true,
+            isSilent: false,
+            exitType: Script_Exits.ExitType.Default
+        );
+    }
+
+    public void TeleportToXXXWorldSaloonExit()
+    {
+        Teleport(XXXWorldSaloonExit);
     }
 
     public void HandleExitCutSceneLevelBehavior()

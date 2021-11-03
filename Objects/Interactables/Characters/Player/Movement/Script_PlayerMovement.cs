@@ -376,6 +376,7 @@ public class Script_PlayerMovement : MonoBehaviour
         lastMoveInput = dir;
         
         // Handle Exits (once per tile)
+        // If the exit has a Disabled Reaction, return and give control to the Action.
         if (!didTryExit && TryExit(dir))
             return;
         else
@@ -394,7 +395,10 @@ public class Script_PlayerMovement : MonoBehaviour
         HandleNorthWindAdjustment(dir, ref desiredMove);
 
         if (CheckCollisions(player.location, dir, ref desiredMove))
+        {
+            didTryExit = false;    
             return;
+        }
 
         // DDR mode, only changing directions to look like dancing.
         if (game.state == Const_States_Game.DDR)
@@ -637,7 +641,12 @@ public class Script_PlayerMovement : MonoBehaviour
                     Script_TileMapExitEntrance exitInfo = tm.GetComponent<Script_TileMapExitEntrance>();
 
                     if (exitInfo.IsDisabled)
-                        return false;
+                    {
+                        // To avoid flicker when approaching a disabled reaction
+                        // that turns state to non-moving.
+                        OnExitAnimations(dir);
+                        return exitInfo.HandleDisabledReaction();
+                    }
                     
                     if (exitInfo.Type == Script_Exits.ExitType.StairsUp)
                     {
@@ -672,7 +681,12 @@ public class Script_PlayerMovement : MonoBehaviour
             Script_TileMapExitEntrance entranceInfo = entrancesTileMap.GetComponent<Script_TileMapExitEntrance>();
             
             if (entranceInfo.IsDisabled)
-                return false;
+            {
+                // To avoid flicker when approaching a disabled reaction
+                // that turns state to non-moving.
+                OnExitAnimations(dir);
+                return entranceInfo.HandleDisabledReaction();
+            }
             
             if (entranceInfo.Type == Script_Exits.ExitType.StairsUp)
             {

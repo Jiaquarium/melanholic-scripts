@@ -21,6 +21,10 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
     [SerializeField] private Script_DialogueNode[] blockingPsychicNodes;
     [SerializeField] private Script_DialogueNode[] notBlockingPsychicNodes;
+
+    [SerializeField] private Script_DialogueNode exitReactionDefault;
+    [SerializeField] private Script_DialogueNode exitReactionPsychic;
+    [SerializeField] private float waitBeforeExitReactionTime;
     
     // Needed to initialize "Player" copy.
     [SerializeField] private Script_LevelGrid levelGrid;
@@ -92,6 +96,34 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
     {
         KTVLobbyDoor.IsDisabled = false;
         HandleMelbaDialogueNodes();
+    }
+
+    // KTV Door Disabled Reaction
+    public void OnTryExit()
+    {
+        game.ChangeStateCutScene();
+
+        StartCoroutine(WaitBeforeExitReaction());
+
+        IEnumerator WaitBeforeExitReaction()
+        {
+            yield return new WaitForSeconds(waitBeforeExitReactionTime);
+            
+            var node = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId)
+                ? exitReactionPsychic
+                : exitReactionDefault;
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(exitReactionDefault);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Next Node Actions
+
+    public void SendPlayerBackToXXXWorld()
+    {
+        game.ChangeStateInteract();
+        game.TeleportToXXXWorldSaloonExit();
     }
 
     // ------------------------------------------------------------------

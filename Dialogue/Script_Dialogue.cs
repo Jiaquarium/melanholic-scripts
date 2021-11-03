@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-02 19:43:51
+// Last created by Dialogue Exporter at 2021-11-02 22:10:28
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3791,6 +3791,32 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         
     }
 },
+{
+    "urselks-saloon_melba_default_disabled-exit-reaction",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                @"<size=16>���� ���!</size>",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_melba_psychic_disabled-exit-reaction",
+    new Model_Languages
+    {
+        speaker = "{62}",
+        EN = new string[]
+        {
+                @"<size=16>Hey stop right there!</size>",
+                @"What's your deal, kid? We're dealing with a major crisis inside!",
+                @"We have an infestation! We're in no position to serve anyone, especially not an <b>outsider</b>, ba-ha!",
+        },
+        
+    }
+},
 // ------------------------------------------------------------------
 // Peche
 {
@@ -3825,7 +3851,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"You know why our <b>Saloon</b> is the best?",
+                @"You know why our <b>saloon</b> is the best?",
                 @"It's because we stick to our roots, you got that, bud?",
                 @"Our menu's been the same for centuries! Keep it simple and potent, that's our motto!",
         },
@@ -3841,7 +3867,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"{39} and I have known each other since I can remember! Can't imagine doing anything without him.",
                 @"Ah, I talk about {39} too much.",
-                @"Hey buzz off already! {33} and I have business to discuss!",
+                @"Hey buzz off already!",
         },
         
     }

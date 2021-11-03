@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(TilemapRenderer))]
 public class Script_TileMapExitEntrance : MonoBehaviour
@@ -16,6 +17,8 @@ public class Script_TileMapExitEntrance : MonoBehaviour
     [SerializeField] private Script_Exits.ExitType _type;
     [SerializeField] private bool isDisabled;
     [SerializeField] private bool _isSilent;
+
+    [SerializeField] private UnityEvent disabledReaction;
 
     public int Level
     {
@@ -84,5 +87,9 @@ public class Script_TileMapExitEntrance : MonoBehaviour
         if (!Debug.isDebugBuild || !Const_Dev.IsDevMode)
             GetComponent<TilemapRenderer>().enabled = false;
     }
-    
+
+    public bool HandleDisabledReaction()
+    {
+        return disabledReaction.SafeInvoke();
+    }
 }
