@@ -11,10 +11,23 @@ using UnityEditor;
 [RequireComponent(typeof(Script_MeshFadeInOut))]
 public class Script_MeshFadeController : MonoBehaviour
 {
+    // Reference a Marker Util to specify simple automatic fading behavior.
+    [SerializeField] private Transform target;
+    [SerializeField] private bool isCompareX;
+    [SerializeField] private bool isCompareZ;
+    [Tooltip("True to show when meeting Target, default is to hide when reaching Target")]
+    [SerializeField] private bool isShowOnTargetReached;
+    
     private const float DefaultFadeTime = 0.5f;
     
     [SerializeField] private float maxAlpha = 1f;
     [SerializeField] private float minAlpha = 0f;
+
+    [SerializeField] private float compareTime = 0.1f;
+    [SerializeField] private float timer;
+
+    [SerializeField] private Vector3 playerLoc;
+    [SerializeField] private Vector3 targetLoc;
     
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
@@ -42,6 +55,24 @@ public class Script_MeshFadeController : MonoBehaviour
     void Awake()
     {
         fader = GetComponent<Script_MeshFadeInOut>();        
+    }
+
+    void LateUpdate()
+    {
+        if (target == null)
+            return;
+        
+        timer -= Time.deltaTime;
+        
+        if (timer <= 0f)
+        {
+            timer = compareTime;
+            
+            if (CheckShouldFadeIn())
+                FadeIn();
+            else
+                FadeOut();
+        }
     }
     
     public virtual void FadeIn(float t = DefaultFadeTime, Action a = null)
@@ -78,6 +109,34 @@ public class Script_MeshFadeController : MonoBehaviour
             if (a != null) a();
             isFadedOut = true;
         }, t, minAlpha));
+    }
+
+    /// <summary>
+    /// Check target vs. player location.
+    /// </summary>
+    /// <returns>True, to fade in (default); False to fade out</returns>
+    private bool CheckShouldFadeIn()
+    {
+        var player = Script_Game.Game.GetPlayer();
+
+        if (player == null)
+            return true;
+
+        playerLoc = player.transform.position;
+        targetLoc = target.transform.position;
+
+        bool ZShow = isShowOnTargetReached ? playerLoc.z >= targetLoc.z : playerLoc.z < targetLoc.z;
+        bool XShow = isShowOnTargetReached ? playerLoc.x >= targetLoc.x : playerLoc.x < targetLoc.x;
+
+        if (isCompareX && isCompareZ)
+            return XShow && ZShow;
+        else if (isCompareX)
+            return XShow;
+        else if (isCompareZ)
+            return ZShow;
+        // If no comparison is checked, always show.
+        else
+            return true;
     }
 }
 

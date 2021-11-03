@@ -15,6 +15,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
     [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
     [SerializeField] private Script_ExitMetadataObject DiningEntrance;
+    [SerializeField] private Script_ExitMetadataObject HallwayWithSecretEntrance;
     [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject ElleniasRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
@@ -77,6 +78,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToDining()
     {
         Teleport(DiningEntrance);
+    }
+    
+    public void ExitToHallWithSecret()
+    {
+        Teleport(HallwayWithSecretEntrance);
     }
     
     public void ExitToIdsRoom()
@@ -324,6 +330,11 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Go To: Dining"))
                 {
                     t.ExitToDining();
+                }
+                
+                if (GUILayout.Button("Go To: Hallway with Secret"))
+                {
+                    t.ExitToHallWithSecret();
                 }
                 
                 if (GUILayout.Button("Go To: Ids Room"))
