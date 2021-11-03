@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-02 22:10:28
+// Last created by Dialogue Exporter at 2021-11-03 00:18:01
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3773,7 +3773,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{62}",
         EN = new string[]
         {
-                @"Huh, what was I saying? Ba-ha!",
+                @"Huh, what was I saying? Uguh, my head is throbbing!",
                 @"Oh yeah that's right, we don't have time for dilly-dallying, kid!",
         },
         

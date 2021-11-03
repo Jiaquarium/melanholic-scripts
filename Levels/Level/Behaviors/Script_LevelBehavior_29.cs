@@ -128,29 +128,34 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
     
+    private void InitializePuppets()
+    {
+        Model_PlayerState puppetMasterStartState = new Model_PlayerState(
+            (int)puppetMasterSpawn.transform.position.x,
+            (int)puppetMasterSpawn.transform.position.y,
+            (int)puppetMasterSpawn.transform.position.z,
+            puppetMasterSpawn.Direction
+        );
+        
+        puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState);
+        puppetMaster.InitializeOnLevel(puppetMasterStartState, levelGrid.transform);
+    }
+
+    public override void InitialState()
+    {
+        InitializePuppets();
+        KTVLobbyDoor.IsDisabled = true;
+        isInitialized = true;
+
+        HandleMelbaDialogueNodes();
+    }
+
     public override void Setup()
     {
-        if (!isInitialized)
-        {
-            InitializePuppets();
-            KTVLobbyDoor.IsDisabled = true;
-            isInitialized = true;
-
-            HandleMelbaDialogueNodes();
-        }
-
-        void InitializePuppets()
-        {
-            Model_PlayerState puppetMasterStartState = new Model_PlayerState(
-                (int)puppetMasterSpawn.transform.position.x,
-                (int)puppetMasterSpawn.transform.position.y,
-                (int)puppetMasterSpawn.transform.position.z,
-                puppetMasterSpawn.Direction
-            );
-            
-            puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState);
-            puppetMaster.InitializeOnLevel(puppetMasterStartState, levelGrid.transform);
-        }
+        // Re-initialize level when coming back from XXX World to avoid edge case
+        // where Melba is placed in front of the Exit and Player enters on top.
+        if (!isInitialized || game.LastLevelBehavior != game.SaloonBehavior)
+            InitialState();
     }
 }
 

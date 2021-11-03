@@ -262,8 +262,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         if (!audio.isPlaying) audio.UnPause();
         
         // Handle coming from Eileen Mind painting
-        Debug.Log($"LB21: Last LB is {game.lastLevelBehavior}");
-        if (game.lastLevelBehavior == LB26)
+        Debug.Log($"LB21: Last LB is {game.LastLevelBehavior}");
+        if (game.LastLevelBehavior == LB26)
         {
             Debug.Log("Player coming from LB26_EileensMind");
             PlayerEntranceFromEileenMind();

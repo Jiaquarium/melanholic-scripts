@@ -60,6 +60,7 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_10 IdsRoomBehavior;
     public Script_LevelBehavior_20 BallroomBehavior;
     public Script_LevelBehavior_21 EileensRoomBehavior;
+    public Script_LevelBehavior_22 SaloonBehavior;
     public Script_LevelBehavior_24 KTVRoom2Behavior;
     public Script_LevelBehavior_25 ElleniasRoomBehavior;
     public Script_LevelBehavior_26 EileensMindBehavior;
@@ -167,7 +168,6 @@ public class Script_Game : MonoBehaviour
     public Script_BgThemePlayer npcBgThemePlayer;
     
     public Script_LevelBehavior levelBehavior { get; private set; }
-    public Script_LevelBehavior lastLevelBehavior { get; private set; }
     
     public string lastState;
     public CinemachineBrain cinemachineBrain;
@@ -262,6 +262,8 @@ public class Script_Game : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Level Properties
+    public Script_LevelBehavior LastLevelBehavior { get; private set; }
+
     public List<Script_ExitMetadataObject> PianoSpawns
     {
         get => pianoSpawns;
@@ -683,7 +685,7 @@ public class Script_Game : MonoBehaviour
 
     private void SetLevelBehavior()
     {
-        lastLevelBehavior = levelBehavior;
+        LastLevelBehavior = levelBehavior;
         levelBehavior = Levels.levelsData[level].behavior;
     }
 
@@ -692,7 +694,7 @@ public class Script_Game : MonoBehaviour
         persistentDropsContainer.ActivatePersistentDropsForLevel(level);
         
         if (levelBehavior == null)  return;
-        print($"level: {level}; levelBehavior: {levelBehavior}... lastLevelBehavior: {lastLevelBehavior}");
+        print($"level: {level}; levelBehavior: {levelBehavior}... LastLevelBehavior: {LastLevelBehavior}");
         levelBehavior.Setup();
     }
 
