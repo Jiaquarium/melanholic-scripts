@@ -16,5 +16,5 @@ public class Script_Crackable : Script_InteractableObject
     {
         if (textObject != null)
             textObject.HandleAction(Const_KeyCodes.Action1);
-    } 
+    }
 }

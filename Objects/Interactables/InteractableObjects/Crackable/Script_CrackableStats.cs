@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Script_CrackableStats : Script_CharacterStats
 {
     [SerializeField] private UnityEvent<Script_CrackableStats> crackedAction;
-    [Tooltip("Does not Die on crack. All behavior will be specified by crackedAction.")]
-    [SerializeField] private bool isHandleDieExplicit;    
     
+    [SerializeField] private float defaultHideRemainsTime;
+
     [SerializeField] private Sprite defaultImage;
     [SerializeField] private Sprite lowHealthImage;
     [SerializeField] private int lowHealthThreshold;
@@ -19,10 +23,24 @@ public class Script_CrackableStats : Script_CharacterStats
     [SerializeField] private PlayableDirector crackingDirector;
 
     [SerializeField] private List<GameObject> visibleChildren;
+
+    [SerializeField] private Script_Shatter shatter;
+
+    private Coroutine hideIceCoroutine;
     
     protected UnityEvent<Script_CrackableStats> CrackedAction
     {
         get => crackedAction;
+    }
+
+    void OnDisable()
+    {
+        if (hideIceCoroutine != null)
+        {
+            StopCoroutine(hideIceCoroutine);
+            hideIceCoroutine = null;
+            HideIce();
+        }
     }
     
     public override int Hurt(int dmg, Script_HitBox hitBox)
@@ -39,11 +57,17 @@ public class Script_CrackableStats : Script_CharacterStats
         {
             CrackedAction.SafeInvokeDynamic(this);
 
+            // If there is a Timeline for the Cracking, play that instead.
+            // Default is shattering immediately.
             if (crackingDirector != null)
+            {
+                Script_Game.Game.ChangeStateCutScene();
                 crackingDirector.Play();
-            
-            if (!isHandleDieExplicit)
+            }
+            else
+            {
                 Die(Script_GameOverController.DeathTypes.Default);
+            }
         }
         else
         {
@@ -56,7 +80,26 @@ public class Script_CrackableStats : Script_CharacterStats
     
     protected override void Die(Script_GameOverController.DeathTypes deathType)
     {
-        Debug.Log("**** CRACKABLE DIE() ****");
+        Shatter();
+        WaitToHideAfterShatter();
+    }
+
+    private void WaitToHideAfterShatter()
+    {
+        hideIceCoroutine = StartCoroutine(WaitToHide());
+        
+        IEnumerator WaitToHide()
+        {
+            yield return new WaitForSeconds(defaultHideRemainsTime);
+
+            hideIceCoroutine = null;
+            HideIce();
+        }
+    }
+
+    private void HideIce()
+    {
+        Debug.Log($"{name} HideIce");
         gameObject.SetActive(false);
     }
 
@@ -77,16 +120,62 @@ public class Script_CrackableStats : Script_CharacterStats
             child.SetActive(false);
     }
 
+    // Called from Diagonal Cut Shatter Timeline so player can move around before the ice fully vanishes.
+    public void AllowPlayerInteract()
+    {
+        Script_Game.Game.ChangeStateInteract();   
+    }
+    
+    // Default to be called at end of Timeline Shatter.
+    public void OnIceBlockDiagonalCutShatterTimelineDone(Script_CrackableStats ice)
+    {
+        Debug.Log($"OnIceBlockCrackingTimelineDone ice <{ice}>");
+        
+        Script_InteractableObjectEventsManager.IceCrackingTimelineDone(this);
+
+        // Hide Ice Remains.
+        HideIce();
+    }
+    
+    // TBD: Change Name
     public void OnIceBlockCrackingTimelineDone(Script_CrackableStats ice)
     {
         Debug.Log($"OnIceBlockCrackingTimelineDone ice <{ice}>");
         
         Script_InteractableObjectEventsManager.IceCrackingTimelineDone(this);
 
-        gameObject.SetActive(false);
+        HideIce();
         
         // Revert children state from DieTimeline().
         foreach (var child in visibleChildren)
             child.SetActive(true);
     }
+
+    public void DiagonalCut()
+    {
+        shatter?.DiagonalCut();
+    }
+
+    public void Shatter()
+    {
+        shatter?.Shatter();
+    }
+    
+    // ------------------------------------------------------------------
+
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_CrackableStats))]
+    public class Script_CrackableStatsTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_CrackableStats t = (Script_CrackableStats)target;
+            if (GUILayout.Button("Shatter"))
+            {
+                t.Shatter();
+            }
+        }
+    }
+    #endif
 }
