@@ -353,7 +353,7 @@ public class Script_InventoryManager : MonoBehaviour
         else if (Script_ActiveStickerManager.Control.ActiveSticker == stickerToRemove)
             ErrorUnableSFX();
         else
-            UnstickSticker(stickerToRemove, equipment, inventory, stickerSlotId, true);
+            UnstickSticker(stickerToRemove, equipment, inventory, stickerSlotId, false);
     }
 
     // Note, this will not remove ones past the point of a full equipment.

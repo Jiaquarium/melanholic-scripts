@@ -13,10 +13,6 @@ public class Script_EquipmentSlot : Script_Slot
     {
         print($"{name} Enter is clicked on me");
         
-        // TODO: TEST FOR IF ITEM IS PRESENT
-        
         inventoryManager.HandleEquipmentSlotOnEnter(Id);
-
-        // Script_Game.Game.SetActiveItem(Id);
     }
 }
