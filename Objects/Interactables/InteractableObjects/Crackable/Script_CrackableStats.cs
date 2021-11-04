@@ -27,6 +27,7 @@ public class Script_CrackableStats : Script_CharacterStats
     [SerializeField] private Script_Shatter shatter;
 
     private Coroutine hideIceCoroutine;
+    private bool isHideOnDisable;
     
     protected UnityEvent<Script_CrackableStats> CrackedAction
     {
@@ -40,6 +41,12 @@ public class Script_CrackableStats : Script_CharacterStats
             StopCoroutine(hideIceCoroutine);
             hideIceCoroutine = null;
             HideIce();
+        }
+
+        if (isHideOnDisable)
+        {
+            HideIce();
+            isHideOnDisable = false;
         }
     }
     
@@ -84,7 +91,7 @@ public class Script_CrackableStats : Script_CharacterStats
         WaitToHideAfterShatter();
     }
 
-    private void WaitToHideAfterShatter()
+    protected void WaitToHideAfterShatter()
     {
         hideIceCoroutine = StartCoroutine(WaitToHide());
         
@@ -137,18 +144,16 @@ public class Script_CrackableStats : Script_CharacterStats
         HideIce();
     }
     
-    // TBD: Change Name
-    public void OnIceBlockCrackingTimelineDone(Script_CrackableStats ice)
+    // Called from Myne Lair Ice Variant.
+    // This will signal Level Behavior to move onto the next 
+    public void OnMynesLairShatterTimelineDone(Script_CrackableStats ice)
     {
         Debug.Log($"OnIceBlockCrackingTimelineDone ice <{ice}>");
         
         Script_InteractableObjectEventsManager.IceCrackingTimelineDone(this);
 
-        HideIce();
-        
-        // Revert children state from DieTimeline().
-        foreach (var child in visibleChildren)
-            child.SetActive(true);
+        // Leave ice remains for as long as Timeline is active.
+        isHideOnDisable = true;
     }
 
     public void DiagonalCut()

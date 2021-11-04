@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Script_HurtBox : MonoBehaviour
 {
+    [Tooltip("Only used to draw gizmos")]
     public BoxCollider myCollider;
     [SerializeField] Script_CharacterStats stats;
     [SerializeField] private Color inactiveColor;

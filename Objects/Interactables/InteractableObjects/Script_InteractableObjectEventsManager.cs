@@ -28,9 +28,9 @@ public class Script_InteractableObjectEventsManager : MonoBehaviour
             OnWellInteraction(well);
     }
 
-    public delegate void FrozenWellDieDelegate(Script_CrackableIceStats iceStats);
+    public delegate void FrozenWellDieDelegate(Script_FrozenWellCrackableStats iceStats);
     public static event FrozenWellDieDelegate OnFrozenWellDie;
-    public static void FrozenWellDie(Script_CrackableIceStats iceStats)
+    public static void FrozenWellDie(Script_FrozenWellCrackableStats iceStats)
     {
         if (OnFrozenWellDie != null)
             OnFrozenWellDie(iceStats);

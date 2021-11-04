@@ -143,7 +143,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     /// When Player destroys one Well, they should all be destroyed so all the World
     /// Tiles can remain in sync.
     /// </summary>
-    public void OnFrozenWellDie(Script_CrackableIceStats iceStats)
+    public void OnFrozenWellDie(Script_FrozenWellCrackableStats iceStats)
     {
         Script_FrozenWell destroyedFrozenWell = iceStats.GetComponent<Script_FrozenWell>();
 
@@ -378,7 +378,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
             if (GUILayout.Button("Destroy Frozen Wells"))
             {
-                t.OnFrozenWellDie(t.frozenWells[0].GetComponent<Script_CrackableIceStats>());
+                t.OnFrozenWellDie(t.frozenWells[0].GetComponent<Script_FrozenWellCrackableStats>());
             }
 
             GUILayout.Space(12);
