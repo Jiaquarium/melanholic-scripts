@@ -194,8 +194,6 @@ public class Script_Player : Script_Character
         HandleIsMoving();
         // ------------------------------------------------------------------
         
-        playerMovementHandler.HandleMoveTransform();
-
         if (game.state == Const_States_Game.Interact)
         {
             playerActionHandler.HandleActionInput(FacingDirection, location);
@@ -220,6 +218,8 @@ public class Script_Player : Script_Character
                 StopMoving();
             }
         }
+
+        playerMovementHandler.HandleMoveTransform();
     }
 
     public void ClearLevelState()

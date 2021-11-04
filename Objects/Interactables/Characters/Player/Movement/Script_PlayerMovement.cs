@@ -40,6 +40,7 @@ public class Script_PlayerMovement : MonoBehaviour
     [SerializeField] private float defaultSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float devRunSpeed;
+    [SerializeField] private float IceSpikeSpeedMultiplier;
     
     public int exitUpStairsOrderLayer;
     
@@ -112,31 +113,6 @@ public class Script_PlayerMovement : MonoBehaviour
     public Directions FacingDirection
     {
         get => player.FacingDirection;
-    }
-    
-    public float WalkSpeed
-    {
-        get
-        {
-            float speed;
-            switch (walkSpeed)
-            {
-                case (Speeds.Default):
-                    speed = defaultSpeed;
-                    break;
-                case (Speeds.Run):
-                    speed = runSpeed;
-                    break;
-                case (Speeds.Dev):
-                    speed = devRunSpeed;
-                    break;
-                default:
-                    speed = defaultSpeed;    
-                    break;
-            }
-
-            return isNorthWind ? speed * windAdjustment : speed;
-        }
     }
 
     public bool IsMoving
@@ -460,26 +436,33 @@ public class Script_PlayerMovement : MonoBehaviour
         }
     }
 
-    private bool TryExit(Directions dir)
+    private float WalkSpeed(string maskId)
     {
-        // Handle Exits, if in the desired Direction there is an exit,
-        // do not move, instead Player turns and exits.
-        if (
-            HandleExitTile(dir)
-            || HandleExitObject(dir)
-        )
+        float speed = walkSpeed switch
         {
-            return true;
-        }
+            Speeds.Default => defaultSpeed,
+            Speeds.Run => runSpeed,
+            Speeds.Dev => devRunSpeed,
+            _ => defaultSpeed
+        };
 
-        return false;
+        float maskMultiplier = maskId switch
+        {
+            Const_Items.IceSpikeId => IceSpikeSpeedMultiplier,
+            _ => 1f
+        };
+
+        speed *= maskMultiplier;
+        return isNorthWind ? speed * windAdjustment : speed;
     }
+
+    private bool TryExit(Directions dir) => HandleExitTile(dir) || HandleExitObject(dir);
 
     public void HandleMoveTransform()
     {
         if (progress < 1f)
         {
-            progress += WalkSpeed * Time.deltaTime;
+            progress += WalkSpeed(Script_ActiveStickerManager.Control.ActiveSticker?.id) * Time.deltaTime;
             
             if (progress > 1f)
                 progress = 1f;
@@ -496,14 +479,10 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private void HandleWalkSpeed()
     {
-        /// TBD Check active sticker for speedwalk 
         bool isSpeedwalkStickerActive = Script_ActiveStickerManager.Control.IsActiveSticker("speedwalk-sticker");
         bool isDev = Debug.isDebugBuild || Const_Dev.IsDevMode;
 
-        if (
-            Input.GetButton(Const_KeyCodes.Action3)
-            && (isSpeedwalkStickerActive || isDev)
-        )
+        if (Input.GetButton(Const_KeyCodes.Action3) && isDev)
         {
             if (isDev)  walkSpeed = Speeds.Dev;
             else        walkSpeed = Speeds.Run;
