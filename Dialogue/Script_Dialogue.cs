@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-03 00:55:07
+// Last created by Dialogue Exporter at 2021-11-04 23:38:03
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2170,7 +2170,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"A snake. Or to be more exact, a cobra.",
+                @"A woman in front of a spiral?",
+                @"No, it's a maze I mean.",
         },
         
     }
@@ -2182,7 +2183,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I can’t imagine what it must feel like to get slashed by these.",
+                @"A man in front of a spiral?",
+                @"No, it's a maze I mean.",
         },
         
     }
@@ -2209,7 +2211,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Whoa you can talk to me?| You’re obviously not a {13} and definitely not an {6}.",
-                @"Wait,| have you not heard of me?! Jeez... outsiders can be pretty uncultured these days...",
+                @"Wait,| have you not heard of me?! Jeez... <b>outsiders</b> can be pretty uncultured these days...",
         },
         
     }
@@ -4103,9 +4105,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"*shiver*",
                 @"This painting... it's not done.",
-                @"There’s also a doormat in front of it, strange.",
+                @"Why is it done in such a different style?",
+                @"There’s also a doormat in front of it, strange...",
         },
         
     }
@@ -4117,7 +4119,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You know that feeling when you can’t get warm no matter how much you shiver?",
+                @"It's done now.| It makes me feel something.",
+                @"You know that feeling when you can’t get warm no matter what?",
+                @"*shiver*",
         },
         
     }

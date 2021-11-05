@@ -116,6 +116,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip Dawn;
     [Range(0f, 1f)] public float DawnVol;
 
+    public AudioClip IceShatter;
+    [Range(0f, 1f)] public float IceShatterVol;
+
     [Header("---- UI SFX ----")]
 
     public AudioClip UIErrorSFX;
@@ -211,6 +214,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayDawn()
     {
         SFXSource.PlayOneShot(Dawn, DawnVol);    
+    }
+
+    public void PlayIceShatter()
+    {
+        SFXSource.PlayOneShot(IceShatter, IceShatterVol);    
     }
     
     public void Setup()

@@ -26,8 +26,13 @@ public class Script_CrackableStats : Script_CharacterStats
 
     [SerializeField] private Script_Shatter shatter;
 
+    [SerializeField] private float shakeTime; 
+    [SerializeField] private float shakeAmp; 
+    [SerializeField] private float shakeFreq;
+
     private Coroutine hideIceCoroutine;
     private bool isHideOnDisable;
+    private bool isScreenShakeShatter;
     
     protected UnityEvent<Script_CrackableStats> CrackedAction
     {
@@ -36,6 +41,8 @@ public class Script_CrackableStats : Script_CharacterStats
 
     void OnDisable()
     {
+        isScreenShakeShatter = false;
+        
         if (hideIceCoroutine != null)
         {
             StopCoroutine(hideIceCoroutine);
@@ -159,11 +166,30 @@ public class Script_CrackableStats : Script_CharacterStats
     public void DiagonalCut()
     {
         shatter?.DiagonalCut();
+        
+        // DiagonalCut should always be followed by a Shatter,
+        // which will shake screen. If immediate Shatter, IceSpikeEffect
+        // will handle screen shake.
+        isScreenShakeShatter = true;
     }
 
     public void Shatter()
     {
         shatter?.Shatter();
+        
+        if (isScreenShakeShatter)
+        {
+            Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
+                shakeTime,
+                shakeAmp,
+                shakeFreq,
+                null
+            );
+            isScreenShakeShatter = false;
+        }
+
+        // Note: This SFX is playing at the same time as Spike SFX.
+        Script_SFXManager.SFX.PlayIceShatter();
     }
     
     // ------------------------------------------------------------------
