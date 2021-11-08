@@ -60,7 +60,6 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
             IEnumerator coroutine = Script_DialogueManager.TeletypeRevealLine(
                 textUI.text,
                 textUI,
-                Script_DialogueManager.charPauseDefault,
                 OnTypingDone
             );
             StartCoroutine(coroutine);

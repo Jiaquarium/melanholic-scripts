@@ -21,9 +21,7 @@ using UnityEngine.Events;
 /// </summary>
 public class Script_DialogueManager : MonoBehaviour
 {
-    public const float charPauseDefault = 0.018f;
     public const float pauseLength = 0.475f;
-    private const float charPauseFast = 0.0025f;
     
     public enum States
     {
@@ -97,8 +95,6 @@ public class Script_DialogueManager : MonoBehaviour
     [SerializeField] private Script_InputManager inputManager;
     [SerializeField] private Script_FullArtManager fullArtManager;
     [SerializeField] private Script_DialogueManagerCanvasHandler canvasHandler;
-    
-    [SerializeField] private float charPauseLength = 0.018f;
 
     public bool isRenderingDialogueSection = false;
     public int lineCount = 0;
@@ -399,13 +395,8 @@ public class Script_DialogueManager : MonoBehaviour
         return isRenderingDialogueSection && !dialogueSection.isUnskippable;
     }
 
-    void SetupTypingSpeed()
-    {
-        if (currentNode.data.typingSpeed == DialogueTypingSpeed.Fast)
-            charPauseLength = charPauseFast;
-        else
-            charPauseLength = charPauseDefault;
-    }
+    // Handle nodes with typingSpeed DialogueTypingSpeed.Fast
+    void SetupTypingSpeed() {}
 
     bool CheckNodeChildren()
     {
@@ -566,7 +557,6 @@ public class Script_DialogueManager : MonoBehaviour
         coroutine = TeletypeRevealLine(
             formattedLine,
             activeCanvasText,
-            charPauseLength,
             OnTeletypeRevealLineDone
         );
         StartCoroutine(coroutine);
@@ -581,7 +571,6 @@ public class Script_DialogueManager : MonoBehaviour
     public static IEnumerator TeletypeRevealLine(
         string sentence,
         TextMeshProUGUI textUI,
-        float defaultCharPause,
         Action cb,
         bool silenceOverride = false
     )
@@ -605,8 +594,6 @@ public class Script_DialogueManager : MonoBehaviour
         Debug.Log($"FormattedSentence <{formattedSentence}>");
         Debug.Log($"characterCount <{textUI.textInfo.characterCount}> maxVisibleCharacters <{textUI.maxVisibleCharacters}>");
         
-        float charPauseTime;
-
         // Must wait a frame so TMP can update for new hidden text.
         yield return null;
 
@@ -624,11 +611,9 @@ public class Script_DialogueManager : MonoBehaviour
             char nextVisibleChar = charInfo.character;
             
             if (nextVisibleChar == PauseTextCommand)
-                charPauseTime = pauseLength;
+                yield return new WaitForSeconds(pauseLength);
             else
-                charPauseTime = defaultCharPause;
-
-            yield return new WaitForSeconds(charPauseTime);
+                yield return null;
             
             visibleCount++;
         }
