@@ -68,7 +68,7 @@ public class Script_SavedGameTitle : MonoBehaviour
         /// Empty means we are initializing a run, use default headline
         headlineText.text       = String.IsNullOrEmpty(headline) ? headlineText.text : headline;
         
-        dateText.text           = dateTime.FormatDateTime();
+        dateText.text           = dateTime.FormatLastPlayedDateTime();
         playTimeText.text       = playTime.FormatTotalPlayTime();
         
         savedState.gameObject.SetActive(true);

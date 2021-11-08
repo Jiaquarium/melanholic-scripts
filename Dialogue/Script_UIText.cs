@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-02 01:45:10
+// Last created by UI Exporter at 2021-11-08 13:47:53
 
 using System.Collections;
 using System.Collections.Generic;
@@ -19,52 +19,73 @@ public class Script_UIText
 // ------------------------------------------------------------------
 // Intro
 {
+    "intro_authors_by",
+    new Model_LanguagesUI
+    {
+        EN = @"By luoboa"
+    }
+},
+{
+    "intro_authors_music",
+    new Model_LanguagesUI
+    {
+        EN = @"Music Composed by Sal Moreno"
+    }
+},
+{
     "intro_narrator_hotel",
     new Model_LanguagesUI
     {
-        EN = @"I work at the front desk of a seaside hotel| about a two hour drive from my hometown."
+        EN = @"I work at the front desk of a hotel right by the sea."
     }
 },
 {
     "intro_narrator_hotel1",
     new Model_LanguagesUI
     {
-        EN = @"It's fine though.| I can use one of the empty rooms if I don't want to make the trip home."
+        EN = @"It's usually pretty slow in the winter season, so the hotel owner and I worked out a pretty neat deal,"
     }
 },
 {
     "intro_narrator_hotel2",
     new Model_LanguagesUI
     {
-        EN = @"There's always a few empty rooms,| since it's pretty slow this winter season."
+        EN = @"I can just use one of the unoccupied rooms whenever I'm off."
     }
 },
 {
     "intro_narrator_hotel3",
     new Model_LanguagesUI
     {
-        EN = @"Actually now that I think about it..."
+        EN = @"But actually now that I think about it..."
     }
 },
 {
     "intro_narrator_hotel4",
     new Model_LanguagesUI
     {
-        EN = @"I'm not quite sure how long it's been since I've been home."
+        EN = @"I'm not quite sure how long it's been since I've left here."
     }
 },
 {
     "intro_narrator_hotel5",
     new Model_LanguagesUI
     {
-        EN = @"And oh..."
+        EN = @"Hm, what else do you want to know?"
     }
 },
 {
     "intro_narrator_hotel6",
     new Model_LanguagesUI
     {
-        EN = @"I work the night shift."
+        EN = @"What it's like working the night shift?"
+    }
+},
+{
+    "intro_loading_title",
+    new Model_LanguagesUI
+    {
+        EN = @"Loading..."
     }
 },
 // ------------------------------------------------------------------
@@ -144,92 +165,6 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I saved {18}."
-    }
-},
-// ------------------------------------------------------------------
-// Cut Scenes
-{
-    "eileens-mind_narrator_dramatic",
-    new Model_LanguagesUI
-    {
-        EN = @"* Maybe I can I mean"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic1",
-    new Model_LanguagesUI
-    {
-        EN = @"* Actually chances aren't too great"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic2",
-    new Model_LanguagesUI
-    {
-        EN = @"* I'm not too sure about this anymore"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic3",
-    new Model_LanguagesUI
-    {
-        EN = @"* Hmm you know what? Yeah maybe today's not the day"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic4",
-    new Model_LanguagesUI
-    {
-        EN = @"* Hey there's always tomorrow right!"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic5",
-    new Model_LanguagesUI
-    {
-        EN = @"* Ehhhhhh -_-”"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic6",
-    new Model_LanguagesUI
-    {
-        EN = @"* How did I get mixed up in all this?"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic7",
-    new Model_LanguagesUI
-    {
-        EN = @"* What was I thinking, this isn't a good idea!"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic8",
-    new Model_LanguagesUI
-    {
-        EN = @"* Why does it always end up like this?"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic9",
-    new Model_LanguagesUI
-    {
-        EN = @"* Okay deep breaths, deep breaths"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic10",
-    new Model_LanguagesUI
-    {
-        EN = @"* Wait how do you breathe again?!? *gasp*"
-    }
-},
-{
-    "eileens-mind_narrator_dramatic11",
-    new Model_LanguagesUI
-    {
-        EN = @"* OH NO OH NO OH NO"
     }
 },
 // ------------------------------------------------------------------
@@ -797,6 +732,104 @@ SAVING GAME... Please do not turn off power."
     new Model_LanguagesUI
     {
         EN = @"You will pay for this, mark my words!"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic_title",
+    new Model_LanguagesUI
+    {
+        EN = @"I CAN DO IT"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic_title1",
+    new Model_LanguagesUI
+    {
+        EN = @"《 IF I BELIEVE 》"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic",
+    new Model_LanguagesUI
+    {
+        EN = @"* Maybe I can I mean"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic1",
+    new Model_LanguagesUI
+    {
+        EN = @"* Actually chances aren't too great"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic2",
+    new Model_LanguagesUI
+    {
+        EN = @"* I'm not too sure about this anymore"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic3",
+    new Model_LanguagesUI
+    {
+        EN = @"* Hmm you know what? Yeah maybe today's not the day"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic4",
+    new Model_LanguagesUI
+    {
+        EN = @"* Hey there's always tomorrow right!"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic5",
+    new Model_LanguagesUI
+    {
+        EN = @"* Ehhhhhh -_-”"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic6",
+    new Model_LanguagesUI
+    {
+        EN = @"* How did I get mixed up in all this?"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic7",
+    new Model_LanguagesUI
+    {
+        EN = @"* What was I thinking, this isn't a good idea!"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic8",
+    new Model_LanguagesUI
+    {
+        EN = @"* Why does it always end up like this?"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic9",
+    new Model_LanguagesUI
+    {
+        EN = @"* Okay deep breaths, deep breaths"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic10",
+    new Model_LanguagesUI
+    {
+        EN = @"* Wait how do you breathe again?!? *gasp*"
+    }
+},
+{
+    "eileens-mind_narrator_dramatic11",
+    new Model_LanguagesUI
+    {
+        EN = @"* OH NO OH NO OH NO"
     }
 },
 // ------------------------------------------------------------------

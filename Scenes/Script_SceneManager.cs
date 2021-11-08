@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using UnityEngine.EventSystems;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -60,6 +62,8 @@ public class Script_SceneManager : MonoBehaviour
 
     private static IEnumerator LoadSceneAsync(string scene)
     {
+        EventSystem.current.sendNavigationEvents = false;
+        
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
 
         SM.LoadingScreen.gameObject.SetActive(true);

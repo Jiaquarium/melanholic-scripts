@@ -520,9 +520,9 @@ public static class Script_Utils
         int sec = tRemainder;
 
         string timeDisplay = isClose
-            ? $"『 {hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)} a.m. 』"
+            ? $"{hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)}am".AddBrackets()
             // : $"『 {hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)} a.m. 』"; // testing
-            : $"『 {hours.ToString(fmt)}:{min.ToString(fmt)} a.m. 』";
+            : $"{hours.ToString(fmt)}:{min.ToString(fmt)}am".AddBrackets();
         
         return hideColons
             ? timeDisplay.Replace(":", " ")
@@ -531,7 +531,16 @@ public static class Script_Utils
 
     public static string FormatDateTime(this DateTime date)
     {
-        return date.ToString("MMMM dd, yyyy hh:mm tt").ToLower();
+        var s = date.ToString("MMMM");
+        var monthTitleCase = char.ToUpper(s[0]) + s.Substring(1);
+        var d = date.ToString("dd, yyyy");
+        
+        return $"{monthTitleCase} {d}";
+    }
+
+    public static string FormatLastPlayedDateTime(this DateTime date)
+    {
+        return $"Last played: {date.FormatDateTime()}";
     }
 
     public static string FormatRun(this string run)
