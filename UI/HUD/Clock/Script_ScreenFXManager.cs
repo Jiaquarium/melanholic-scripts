@@ -37,7 +37,9 @@ public class Script_ScreenFXManager : MonoBehaviour
     {
         UpdateScreenFX();
         
-        if (game.IsInHotel())   return;
+        if (game.IsScreenFXDisabled())
+            return;
+        
         if (
             clockManager.ClockTimeState == Script_Clock.TimeStates.None
             || clockManager.ClockState == Script_Clock.States.Done

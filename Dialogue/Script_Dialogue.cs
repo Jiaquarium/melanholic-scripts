@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-04 23:38:03
+// Last created by Dialogue Exporter at 2021-11-08 16:07:00
 
 using System.Collections;
 using System.Collections.Generic;
@@ -79,7 +79,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Why do I feel half asleep... what day is it today anyways?",
+                @"Why do I feel everything has been a haze...| what day is it today anyways?",
         },
         
     }

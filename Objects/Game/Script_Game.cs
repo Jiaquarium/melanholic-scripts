@@ -837,10 +837,16 @@ public class Script_Game : MonoBehaviour
         
         foreach (Script_LevelBehavior lb in HotelLevelBehaviors)
         {
-            if (levelBehavior == lb)    return true;
+            if (levelBehavior == lb)
+                return true;
         }
 
         return false;
+    }
+
+    public bool IsScreenFXDisabled()
+    {
+        return IsInHotel() || IsInGrandMirrorRoom();
     }
 
     public bool IsInGrandMirrorRoom()
