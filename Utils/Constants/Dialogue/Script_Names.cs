@@ -292,6 +292,7 @@ public class Script_Names: MonoBehaviour
         Peche                   = names.Peche; 
         Melba                   = names.Melba;
         Moose                   = names.Moose;
+        Flan                    = names.Flan;
     }
 
     public void Setup()

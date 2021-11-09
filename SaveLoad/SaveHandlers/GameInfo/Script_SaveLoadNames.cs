@@ -21,7 +21,8 @@ public class Script_SaveLoadNames : MonoBehaviour
             _Suzette:                   Script_Names.Suzette,
             _Peche:                     Script_Names.Peche,
             _Melba:                     Script_Names.Melba,
-            _Moose:                     Script_Names.Moose
+            _Moose:                     Script_Names.Moose,
+            _Flan:                      Script_Names.Flan
         );
         data.namesData = names;
     }
@@ -49,7 +50,8 @@ public class Script_SaveLoadNames : MonoBehaviour
             _Suzette:                   data.namesData.Suzette,
             _Peche:                     data.namesData.Peche,
             _Melba:                     data.namesData.Melba,
-            _Moose:                     data.namesData.Moose
+            _Moose:                     data.namesData.Moose,
+            _Flan:                      data.namesData.Flan
         );
 
         Script_Names.LoadNames(names);
