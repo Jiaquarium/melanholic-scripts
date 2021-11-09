@@ -810,6 +810,9 @@ public class Script_PlayerMovement : MonoBehaviour
     /// because animator controller may have changed based on Mask.
     /// 
     /// Ensure to call StopForceMoveAnimation at the end of Timeline.
+    /// 
+    /// Elevator
+    /// Fireplace Retreat
     /// </summary>
     public void ForceMoveAnimation(int i)
     {

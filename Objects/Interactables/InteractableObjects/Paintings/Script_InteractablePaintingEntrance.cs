@@ -42,7 +42,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         
         base.OnEnable();
     }
-    
+
     // Painting Entrance have option to allow text interaction.
     public override void HandleAction(string action)
     {
@@ -157,6 +157,8 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
             case (States.Active):
                 if (paintingGraphics != null && activeSprite != null)
                 {
+                    Debug.Log($"{name} Setting to States.Active");
+                    
                     paintingGraphics.sprite = activeSprite;
                     if (myAnimator != null)
                         myAnimator.SetBool(IsActive, true);
@@ -166,6 +168,8 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
             case (States.Disabled):
                 if (paintingGraphics != null && disabledSprite != null)
                 {
+                    Debug.Log($"{name} Setting to States.Disabled");
+                    
                     paintingGraphics.sprite = disabledSprite;
                     if (myAnimator != null)
                         myAnimator.SetBool(IsActive, false);

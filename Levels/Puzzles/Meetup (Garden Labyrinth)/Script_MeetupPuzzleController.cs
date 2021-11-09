@@ -128,6 +128,10 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
     
     public void FloorSwitchUp(bool isInitialize = false)
     {
+        // Avoid calling this On Disable for ReliableStayTriggers.
+        if (!gameObject.activeInHierarchy)
+            return;
+        
         if (IsDone || isWallsMoving)
             return;
         
@@ -138,11 +142,18 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
         
         Script_PuzzlesEventsManager.ClearDoorways();
 
-        StartCoroutine(WaitToPuzzleTransformTimeline(1, isInitialize));
+        if (isInitialize)
+            FastForwardTransform(1);
+        else
+            StartCoroutine(WaitToPuzzleTransformTimeline(1));
     }
 
     public void FloorSwitch2Up(bool isInitialize = false)
     {
+        // Avoid calling this On Disable for ReliableStayTriggers.
+        if (!gameObject.activeInHierarchy)
+            return;
+        
         if (IsDone || isWallsMoving)
             return;
         
@@ -153,28 +164,33 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
         
         Script_PuzzlesEventsManager.ClearDoorways();
 
-        StartCoroutine(WaitToPuzzleTransformTimeline(3, isInitialize));
+        if (isInitialize)
+            FastForwardTransform(3);
+        else
+            StartCoroutine(WaitToPuzzleTransformTimeline(3));
     }
 
-    private IEnumerator WaitToPuzzleTransformTimeline(int timelineIdx, bool isInitialize = false)
+    private IEnumerator WaitToPuzzleTransformTimeline(int timelineIdx)
     {
         yield return new WaitForSeconds(WaitToPuzzleTransformTime);
         
+        timelineController.PlayableDirectorPlayFromTimelines(0, 3);
+    }
+
+    private void FastForwardTransform(int timelineIdx)
+    {
         var director = timelineController.PlayableDirectorPlayFromTimelines(0, timelineIdx);
 
         // On Initialization, don't actually play the timeline animation. Only need the ending
         // state, so fast forward to it.
-        if (isInitialize)
-        {
-            var playableAsset = (PlayableAsset)timelineController.timelines[timelineIdx];
-            director.time = playableAsset.duration;
-            director.Evaluate();
-            director.Stop();
+        var playableAsset = (PlayableAsset)timelineController.timelines[timelineIdx];
+        director.time = playableAsset.duration;
+        director.Evaluate();
+        director.Stop();
 
-            // Timeline ending signal function (OnPuzzleTransformDone) is not called on manual Evaluate.
-            // https://forum.unity.com/threads/timeline-notifications-arent-sent-in-playabledirector-manual-mode.711494/
-            OnPuzzleTransformDone(isInitialize: true);
-        }
+        // Timeline ending signal function (OnPuzzleTransformDone) is not called on manual Evaluate.
+        // https://forum.unity.com/threads/timeline-notifications-arent-sent-in-playabledirector-manual-mode.711494/
+        OnPuzzleTransformDone(isInitialize: true);
     }
 
     // ------------------------------------------------------------------

@@ -29,17 +29,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     public bool didPickUpMasterKey;
     public bool didUnlockMasterLock;
     /* ======================================================================= */
-    
-    [SerializeField] Script_SeasonsTree[] ManTrees;
-    [SerializeField] Script_SeasonsTree[] WomanTrees;
-    
-    [SerializeField] private Script_VCamera vCamMid;
-    [SerializeField] private Script_VCamera vCamEntrance;
-    
-    [SerializeField] private float waitToChangeCameraTime; // 1s
-    [SerializeField] private float waitToChangeSeasonTime; // 1.5s camera + .5s pause
-    [SerializeField] private float seasonChangeWaitTime; //  1.25s slow season fade + .75s pause
-    [SerializeField] private float revertCameraWaitTime; //  1.5s
+
+    [SerializeField] private int isGlitchedBGM;
     
     [SerializeField] private float timelineFaderFadeInTime;
     [SerializeField] private Script_Marker KingIntroPlayerSpawn;
@@ -66,6 +57,21 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_InteractablePaintingEntrance XXXWorldPaintingEntrance;
     [SerializeField] private Script_InteractableObjectText blankCanvasesText;
 
+    // -------------------------------------------------------------------------------------
+    // Deprecated
+    
+    [SerializeField] Script_SeasonsTree[] ManTrees;
+    [SerializeField] Script_SeasonsTree[] WomanTrees;
+    
+    [SerializeField] private Script_VCamera vCamMid;
+    [SerializeField] private Script_VCamera vCamEntrance;
+    
+    [SerializeField] private float waitToChangeCameraTime; // 1s
+    [SerializeField] private float waitToChangeSeasonTime; // 1.5s camera + .5s pause
+    [SerializeField] private float seasonChangeWaitTime; //  1.25s slow season fade + .75s pause
+    [SerializeField] private float revertCameraWaitTime; //  1.5s
+
+    // -------------------------------------------------------------------------------------
     private Script_TimelineController timelineController;
 
     private bool didMapNotification;
@@ -100,6 +106,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         {
             Script_GlitchFXManager.Control.SetBlend(1f);
             isGlitched = true;
+            Script_BackgroundMusicManager.Control.Play(isGlitchedBGM);
         }
     }
 

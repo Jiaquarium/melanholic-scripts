@@ -31,7 +31,7 @@ public class Script_CrackableStats : Script_CharacterStats
     [SerializeField] private float shakeFreq;
 
     private Coroutine hideIceCoroutine;
-    private bool isHideOnDisable;
+    protected bool isHideOnDisable;
     private bool isScreenShakeShatter;
     
     protected UnityEvent<Script_CrackableStats> CrackedAction
@@ -111,7 +111,7 @@ public class Script_CrackableStats : Script_CharacterStats
         }
     }
 
-    private void HideIce()
+    protected virtual void HideIce()
     {
         Debug.Log($"{name} HideIce");
         gameObject.SetActive(false);

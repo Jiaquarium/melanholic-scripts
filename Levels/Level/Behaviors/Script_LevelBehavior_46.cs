@@ -64,6 +64,9 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     [SerializeField] private Script_ScarletCipherPiece scarletCipherPiece;
 
+    // Dev
+    [SerializeField] private Script_Marker topFloorSwitchLocation;
+
     private Script_VCamera preOpeningVCam;
     private Script_VCamera puppeteerVCam;
     private Script_VCamera preSuccessVCam;
@@ -509,6 +512,11 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             if (GUILayout.Button("Snap Kaffe VCam"))
             {
                 t.SnapCloseUpVCams();
+            }
+
+            if (GUILayout.Button("Teleport Latte to Top FloorSwitch"))
+            {
+                t.puppet.Teleport(t.topFloorSwitchLocation.Position);
             }
         }
     }

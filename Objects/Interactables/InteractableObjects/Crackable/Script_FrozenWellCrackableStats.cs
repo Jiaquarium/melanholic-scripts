@@ -41,12 +41,20 @@ public class Script_FrozenWellCrackableStats : Script_CrackableStats
     public void HideWell()
     {
         wellObjects.ForEach(obj => obj.SetActive(false));
+        
+        // Hide Ice on disable in case player exits before the Shattering Timeline completes.
+        // (OnFrozenWellShatterTimelineDone's HideIce will not be called in this case).
+        isHideOnDisable = true;
     }
 
     // This signal will inactivate all the Frozen Wells.
     public void OnFrozenWellShatterTimelineDone(Script_CrackableStats ice)
     {
         Script_InteractableObjectEventsManager.FrozenWellDie(this);
+        Script_InteractableObjectEventsManager.IceCrackingTimelineDone(this);
+        
+        // Hide Ice Remains.
+        HideIce();
     }
 
     // ------------------------------------------------------------------

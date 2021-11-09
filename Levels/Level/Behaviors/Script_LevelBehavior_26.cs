@@ -49,8 +49,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private float musicFadeOutSpeed;
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     
-    [SerializeField] private Script_LightsController lightsToVictoryController;
-
     [SerializeField] private float beforePaintingDoneCutSceneWaitTime;
 
     

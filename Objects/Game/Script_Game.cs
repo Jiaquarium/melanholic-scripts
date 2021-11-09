@@ -671,7 +671,9 @@ public class Script_Game : MonoBehaviour
         weatherFXManager.SnowDayEffect();
         StartBgMusic();
         SetTileMaps();
-        grid.SetActive(true);    /// Unity startup lifeCycle events are called here
+        
+        // Unity startup lifeCycle events
+        grid.SetActive(true);
         
         SetupPlayerOnLevel();
 
@@ -679,7 +681,7 @@ public class Script_Game : MonoBehaviour
         SetupThoughtManager();
         InitializeHintManager();
 
-        // must occur last to have references set
+        // Level Behavior Setups (must occur last for references to be set)
         InitLevelBehavior();
     }
 
@@ -693,7 +695,9 @@ public class Script_Game : MonoBehaviour
     {
         persistentDropsContainer.ActivatePersistentDropsForLevel(level);
         
-        if (levelBehavior == null)  return;
+        if (levelBehavior == null)
+            return;
+        
         print($"level: {level}; levelBehavior: {levelBehavior}... LastLevelBehavior: {LastLevelBehavior}");
         levelBehavior.Setup();
     }

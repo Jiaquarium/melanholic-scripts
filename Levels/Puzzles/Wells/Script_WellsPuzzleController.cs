@@ -116,7 +116,7 @@ public class Script_WellsPuzzleControllerTester : Editor
         DrawDefaultInspector();
 
         Script_WellsPuzzleController t = (Script_WellsPuzzleController)target;
-        if (GUILayout.Button("Complete"))
+        if (GUILayout.Button("Complete Wells Puzzle & Freeze Wells"))
         {
             t.CompleteState();
         }
