@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-08 13:47:53
+// Last created by UI Exporter at 2021-11-08 18:05:19
 
 using System.Collections;
 using System.Collections.Generic;
@@ -43,14 +43,14 @@ public class Script_UIText
     "intro_narrator_hotel1",
     new Model_LanguagesUI
     {
-        EN = @"It's usually pretty slow in the winter season, so the hotel owner and I worked out a pretty neat deal,"
+        EN = @"It’s usually pretty slow in the winter season, so the hotel owner and I worked out a pretty neat deal,"
     }
 },
 {
     "intro_narrator_hotel2",
     new Model_LanguagesUI
     {
-        EN = @"I can just use one of the unoccupied rooms whenever I'm off."
+        EN = @"I can just use one of the unoccupied rooms whenever I’m off."
     }
 },
 {
@@ -64,7 +64,7 @@ public class Script_UIText
     "intro_narrator_hotel4",
     new Model_LanguagesUI
     {
-        EN = @"I'm not quite sure how long it's been since I've left here."
+        EN = @"I’m not quite sure how long it’s been since I’ve left here."
     }
 },
 {
@@ -78,7 +78,7 @@ public class Script_UIText
     "intro_narrator_hotel6",
     new Model_LanguagesUI
     {
-        EN = @"What it's like working the night shift?"
+        EN = @"What it’s like working the night shift?"
     }
 },
 {
@@ -122,7 +122,7 @@ public class Script_UIText
     "good-ending_narrator_monologue4",
     new Model_LanguagesUI
     {
-        EN = @"I'd like to think my time inside there was worth it."
+        EN = @"I’d like to think my time inside there was worth it."
     }
 },
 {
@@ -143,21 +143,21 @@ public class Script_UIText
     "true-ending_narrator_monologue2",
     new Model_LanguagesUI
     {
-        EN = @"It's been a few years now..."
+        EN = @"It’s been a few years now..."
     }
 },
 {
     "true-ending_narrator_monologue3",
     new Model_LanguagesUI
     {
-        EN = @"But I know I'll never forget what I saw there."
+        EN = @"But I know I’ll never forget what I saw there."
     }
 },
 {
     "true-ending_narrator_monologue4",
     new Model_LanguagesUI
     {
-        EN = @"I'm confident that now I can say..."
+        EN = @"I’m confident that now I can say..."
     }
 },
 {
@@ -173,9 +173,7 @@ public class Script_UIText
     "item-object-UI_sticker_psychic-duck",
     new Model_LanguagesUI
     {
-        EN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. Go to your {32} to try it out!
-
-Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to engage with {19} in conversation."
+        EN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. Go to your {32} to try it out!<br><br>Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to engage with {19} in conversation."
     }
 },
 {
@@ -203,7 +201,7 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
     "sticker_ice-spike",
     new Model_LanguagesUI
     {
-        EN = @"Summon a spike so powerful, it'll crack open just about anything."
+        EN = @"Summon a spike so powerful, it’ll crack open just about anything."
     }
 },
 {
@@ -265,8 +263,7 @@ Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to eng
     "notes_mirror-hall-2_hint",
     new Model_LanguagesUI
     {
-        EN = @"Some in shadow, some in light,
-Choose the switches left and right."
+        EN = @"Some in shadow, some in light,<br>Choose the switches left and right."
     }
 },
 // ------------------------------------------------------------------
@@ -275,11 +272,7 @@ Choose the switches left and right."
     "notes_ids_not-home",
     new Model_LanguagesUI
     {
-        EN = @"Hiya!
-
-If you’re reading this that means I'm out dancin'. You know what they say, a dance move a day keeps the {42} away.
-
-Please don’t miss me too much!"
+        EN = @"Hiya!<br><br>If you’re reading this that means I’m out dancin’. You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!"
     }
 },
 {
@@ -295,35 +288,21 @@ Please don’t miss me too much!"
     "notes_ursie_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"Howdy {0},
-
-I've come to my senses;
-I’m confident in my abilities now.
-Proving myself inside these
-{18} walls means nothing.
-
-{61}, {62} and I have hit the
-dusty trail. There’s bigger fish out
-there for us to fry."
+        EN = @"Howdy {0},<br><br>I’ve come to my senses;<br>I’m confident in my abilities now.<br>Proving myself inside these<br>{18} walls means nothing.<br><br>{61}, {62} and I have hit the<br>dusty trail. There’s bigger fish out<br>there for us to fry."
     }
 },
 {
     "notes_ursie_thank-you1",
     new Model_LanguagesUI
     {
-        EN = @"Thank you for assisting us even at
-such lows.
-
-I’m not sure how I’ll repay you,
-how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
+        EN = @"Thank you for assisting us even at<br>such lows.<br><br>I’m not sure how I’ll repay you,<br>how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
     }
 },
 {
     "notes_ursie_thank-you_name",
     new Model_LanguagesUI
     {
-        EN = @"Sincerely,
-{33}"
+        EN = @"Sincerely,<br>{33}"
     }
 },
 // ------------------------------------------------------------------
@@ -332,31 +311,21 @@ how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
     "notes_eileen_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"Dear {0},
-
-It seems the spikes have stopped
-for a bit.
-
-My mind is a bit clearer now.
-I've decided to finally leave this place."
+        EN = @"Dear {0},<br><br>It seems the spikes have stopped<br>for a bit.<br><br>My mind is a bit clearer now.<br>I’ve decided to finally leave this place."
     }
 },
 {
     "notes_eileen_thank-you1",
     new Model_LanguagesUI
     {
-        EN = @"Things seem to look brighter
-after meeting you.
-
-See you on the other side."
+        EN = @"Things seem to look brighter<br>after meeting you.<br><br>See you on the other side."
     }
 },
 {
     "notes_eileen_thank-you_name",
     new Model_LanguagesUI
     {
-        EN = @"Bye,
-{11}"
+        EN = @"Bye,<br>{11}"
     }
 },
 // ------------------------------------------------------------------
@@ -365,8 +334,7 @@ See you on the other side."
     "notes_last-well-map_hint",
     new Model_LanguagesUI
     {
-        EN = @"The only truth I know,
-seasons always go in order."
+        EN = @"The only truth I know,<br>seasons always go in order."
     }
 },
 {
@@ -516,9 +484,7 @@ seasons always go in order."
     "saving_to-weekend",
     new Model_LanguagesUI
     {
-        EN = @"You are given the responsibility of the {71}. {53} is your first day.
-
-SAVING GAME... Please do not turn off power."
+        EN = @"You are given the responsibility of the {71}. {53} is your first day.<br><br>SAVING GAME... Please do not turn off power."
     }
 },
 {
@@ -710,7 +676,7 @@ SAVING GAME... Please do not turn off power."
     "eileens-mind_myne_challenge_passive",
     new Model_LanguagesUI
     {
-        EN = @"Stop! There is no chance you will make it in time! It's for your own good."
+        EN = @"Stop! There is no chance you will make it in time! It’s for your own good."
     }
 },
 {
@@ -759,28 +725,28 @@ SAVING GAME... Please do not turn off power."
     "eileens-mind_narrator_dramatic1",
     new Model_LanguagesUI
     {
-        EN = @"* Actually chances aren't too great"
+        EN = @"* Actually chances aren’t too great"
     }
 },
 {
     "eileens-mind_narrator_dramatic2",
     new Model_LanguagesUI
     {
-        EN = @"* I'm not too sure about this anymore"
+        EN = @"* I’m not too sure about this anymore"
     }
 },
 {
     "eileens-mind_narrator_dramatic3",
     new Model_LanguagesUI
     {
-        EN = @"* Hmm you know what? Yeah maybe today's not the day"
+        EN = @"* Hmm you know what? Yeah maybe today’s not the day"
     }
 },
 {
     "eileens-mind_narrator_dramatic4",
     new Model_LanguagesUI
     {
-        EN = @"* Hey there's always tomorrow right!"
+        EN = @"* Hey there’s always tomorrow right!"
     }
 },
 {
@@ -801,7 +767,7 @@ SAVING GAME... Please do not turn off power."
     "eileens-mind_narrator_dramatic7",
     new Model_LanguagesUI
     {
-        EN = @"* What was I thinking, this isn't a good idea!"
+        EN = @"* What was I thinking, this isn’t a good idea!"
     }
 },
 {
@@ -845,7 +811,7 @@ SAVING GAME... Please do not turn off power."
     "grand-mirror-room_player_welling-up1",
     new Model_LanguagesUI
     {
-        EN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance – that's what I felt."
+        EN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance – that’s what I felt."
     }
 },
 {
