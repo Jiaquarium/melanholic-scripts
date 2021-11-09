@@ -113,7 +113,7 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
                 ? exitReactionPsychic
                 : exitReactionDefault;
 
-            Script_DialogueManager.DialogueManager.StartDialogueNode(exitReactionDefault);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(node);
         }
     }
 

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-08 23:06:47
+// Last created by Dialogue Exporter at 2021-11-09 12:32:41
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3907,7 +3907,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Martini... 2 oz gin, 1/2 oz dry vermouth, shaken.",
+                @"Martini... gin, dry vermouth.",
         },
         
     }
@@ -3919,7 +3919,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Margarita... 2 oz tequila, 1 oz triple sec, 1 oz lime juice, shaken.",
+                @"Margarita... tequila, cointreau, lime juice.",
         },
         
     }
@@ -3932,6 +3932,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Empty glasses... a sign that the time has passed.",
+        },
+        
+    }
+},
+{
+    "urselks-saloon_bar_thought3",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Tom Collins... gin, simple syrup, lemon juice, club soda.",
         },
         
     }
