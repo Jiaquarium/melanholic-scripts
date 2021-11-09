@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-08 18:05:19
+// Last created by UI Exporter at 2021-11-09 16:23:51
 
 using System.Collections;
 using System.Collections.Generic;
@@ -165,6 +165,204 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I saved {18}."
+    }
+},
+// ------------------------------------------------------------------
+// Credits
+{
+    "credits_main-staff_role0",
+    new Model_LanguagesUI
+    {
+        EN = @"WRITING, ART, PROGRAMMING"
+    }
+},
+{
+    "credits_main-staff_name0",
+    new Model_LanguagesUI
+    {
+        EN = @"luoboa"
+    }
+},
+{
+    "credits_main-staff_role1",
+    new Model_LanguagesUI
+    {
+        EN = @"MUSIC"
+    }
+},
+{
+    "credits_main-staff_name1",
+    new Model_LanguagesUI
+    {
+        EN = @"Sal Moreno"
+    }
+},
+{
+    "credits_main-staff_role2",
+    new Model_LanguagesUI
+    {
+        EN = @"CG BACKGROUND ART"
+    }
+},
+{
+    "credits_main-staff_name2",
+    new Model_LanguagesUI
+    {
+        EN = @"Estella"
+    }
+},
+{
+    "credits_playtesters_thank-you",
+    new Model_LanguagesUI
+    {
+        EN = @"Special thanks to all the playtesters that made this possible."
+    }
+},
+{
+    "credits_playtesters_role0",
+    new Model_LanguagesUI
+    {
+        EN = @"PLAYTESTERS"
+    }
+},
+{
+    "credits_playtesters_name0",
+    new Model_LanguagesUI
+    {
+        EN = @"Ada"
+    }
+},
+{
+    "credits_playtesters_name1",
+    new Model_LanguagesUI
+    {
+        EN = @"Alice"
+    }
+},
+{
+    "credits_playtesters_name2",
+    new Model_LanguagesUI
+    {
+        EN = @"Arden"
+    }
+},
+{
+    "credits_playtesters_name3",
+    new Model_LanguagesUI
+    {
+        EN = @"Ash"
+    }
+},
+{
+    "credits_playtesters_role1",
+    new Model_LanguagesUI
+    {
+        EN = @"PLAYTESTERS"
+    }
+},
+{
+    "credits_playtesters_name4",
+    new Model_LanguagesUI
+    {
+        EN = @"Daniel"
+    }
+},
+{
+    "credits_playtesters_name5",
+    new Model_LanguagesUI
+    {
+        EN = @"David"
+    }
+},
+{
+    "credits_playtesters_name6",
+    new Model_LanguagesUI
+    {
+        EN = @"Leanna"
+    }
+},
+{
+    "credits_playtesters_name7",
+    new Model_LanguagesUI
+    {
+        EN = @"Moe"
+    }
+},
+{
+    "credits_playtesters_role2",
+    new Model_LanguagesUI
+    {
+        EN = @"PLAYTESTERS"
+    }
+},
+{
+    "credits_playtesters_name8",
+    new Model_LanguagesUI
+    {
+        EN = @"Nathan"
+    }
+},
+{
+    "credits_playtesters_name9",
+    new Model_LanguagesUI
+    {
+        EN = @"Randy"
+    }
+},
+{
+    "credits_playtesters_name10",
+    new Model_LanguagesUI
+    {
+        EN = @"Stephen"
+    }
+},
+{
+    "credits_playtesters_name11",
+    new Model_LanguagesUI
+    {
+        EN = @"Steven"
+    }
+},
+{
+    "credits_playtesters_role3",
+    new Model_LanguagesUI
+    {
+        EN = @"PLAYTESTERS"
+    }
+},
+{
+    "credits_playtesters_name12",
+    new Model_LanguagesUI
+    {
+        EN = @"Tedmund"
+    }
+},
+{
+    "credits_playtesters_name13",
+    new Model_LanguagesUI
+    {
+        EN = @"Tim"
+    }
+},
+{
+    "credits_thank-you_title",
+    new Model_LanguagesUI
+    {
+        EN = @"THANK YOU FOR PLAYING"
+    }
+},
+{
+    "credits_thank-you_text",
+    new Model_LanguagesUI
+    {
+        EN = @"See you on the other side."
+    }
+},
+{
+    "credits_thank-you_text1",
+    new Model_LanguagesUI
+    {
+        EN = @"P.S. There’s a shiteater in all of us."
     }
 },
 // ------------------------------------------------------------------
