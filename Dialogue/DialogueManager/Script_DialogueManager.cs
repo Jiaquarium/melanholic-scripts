@@ -239,7 +239,9 @@ public class Script_DialogueManager : MonoBehaviour
     {
         Debug.Log($"Starting dialogue node. isInputDisabled: {isInputDisabled}");
         
-        if (isInputDisabled)    return;
+        if (isInputDisabled)
+            return;
+        
         currentNode = node;
         activeInteractable = talkingInteractive;
 

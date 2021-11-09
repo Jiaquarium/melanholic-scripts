@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-08 17:54:44
+// Last created by Dialogue Exporter at 2021-11-08 23:06:47
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2740,6 +2740,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 },
                 null,
         }
+    }
+},
+{
+    "eileens-mind_repeat-drama_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Just|.|.|.| breathe|.|.|.",
+        },
+        
     }
 },
 // ------------------------------------------------------------------

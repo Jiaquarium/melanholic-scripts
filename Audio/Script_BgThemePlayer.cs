@@ -31,6 +31,22 @@ public class Script_BgThemePlayer : Script_Speaker
 
     private AudioSource source;
 
+    public bool IsPlaying
+    {
+        get => Source.isPlaying;
+    }
+    
+    private AudioSource Source
+    {
+        get
+        {
+            if (source == null)
+                source = GetComponent<AudioSource>();
+            
+            return source;
+        }
+    }
+
     void OnEnable()
     {
         if (isUntrackedSource)
@@ -39,16 +55,11 @@ public class Script_BgThemePlayer : Script_Speaker
         Script_Game.Game.npcBgThemePlayer = this;
     }
 
-    void Awake()
-    {
-        source = GetComponent<AudioSource>();
-    }
-
     public void SoftStop()
     {
-        source.volume = 0f;
-        source.Stop();
-        source.volume = 1f;
+        Source.volume = 0f;
+        Source.Stop();
+        Source.volume = 1f;
         this.gameObject.SetActive(false);
     }
 
@@ -68,9 +79,9 @@ public class Script_BgThemePlayer : Script_Speaker
         EndCurrentCoroutines();
         
         // Then we know this is an initialization.
-        if (!source.isPlaying)
+        if (!Source.isPlaying)
         {
-            source.volume = fadeOutTargetVol;
+            Source.volume = fadeOutTargetVol;
             this.gameObject.SetActive(true);
         }
         
@@ -92,16 +103,16 @@ public class Script_BgThemePlayer : Script_Speaker
     private IEnumerator FadeCo(float targetVol, Action cb)
     {
         float fadeOutTime = Script_AudioEffectsManager.GetFadeTime(fadeSpeed);
-        float newVol = source.volume;
+        float newVol = Source.volume;
         float volumeDiff = newVol - targetVol;
         
-        while (source.volume != targetVol)
+        while (Source.volume != targetVol)
         {
             newVol -= volumeDiff * (Time.deltaTime / fadeOutTime);
 
             newVol = Mathf.Clamp(newVol, fadeOutTargetVol, fadeInTargetVol);
 
-            source.volume = newVol;
+            Source.volume = newVol;
 
             yield return null;
         }
@@ -113,7 +124,7 @@ public class Script_BgThemePlayer : Script_Speaker
     public void Play()
     {
         gameObject.SetActive(true);
-        source.Play();
+        Source.Play();
     }
 
     private void EndCurrentCoroutines()

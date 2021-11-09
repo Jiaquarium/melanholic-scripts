@@ -40,11 +40,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     [SerializeField] private Script_LevelAttackController attackController;
     
-    [SerializeField] private float dramaActuallyCompleteWaitTime;
     [SerializeField] private Script_Switch puzzleSwitch;
-    
-    [SerializeField] Script_TriggerEnterOnce dramaticThoughtsCutSceneTrigger;
-    [SerializeField] Script_TriggerEnterOnce dramaDoneTrigger;
     
     [SerializeField] Script_StickerObject iceSpike;
     [SerializeField] Transform spikeCage;
@@ -59,20 +55,26 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     
     [Header("Myne's Challenge Settings")]
-    [SerializeField] private Script_DialogueNode[] mynesStopDialogue; 
+    [SerializeField] private Script_DialogueNode[] mynesStopDialogue;
+    [SerializeField] private Script_DialogueNode dramaDoneRepeatDialogue;
+
+    // Dev Only
+    [SerializeField] private Script_Marker devHalfTriggerHalfSpikesLocation;
     
     private Script_LBSwitchHandler switchHandler;
     private bool isPauseSpikes;
 
-    private bool isDramaActuallyDone;
+    private bool isDramaDoneTriggerOff = false;
+    private bool isDramaCutSceneActivated = false;
     
     private bool didMapNotification;
-    
+
     private Coroutine fadingOutMusicCoroutine;
 
-    private bool isInitialize = true;
     private bool isTimelineControlled = false;
     
+    private bool isInitialize = true;
+
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete        += OnLevelInitCompleteEvent;
@@ -104,15 +106,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     {
         switchHandler = GetComponent<Script_LBSwitchHandler>();
         switchHandler.Setup(game);
-
-        if (didActivateDramaticThoughts)
-        {
-            dramaticThoughtsCutSceneTrigger.gameObject.SetActive(false);
-        }
-        else
-        {
-            dramaticThoughtsCutSceneTrigger.gameObject.SetActive(true);
-        }
 
         if (isCurrentPuzzleComplete)    spikeCage.gameObject.SetActive(false);
         else                            spikeCage.gameObject.SetActive(true);
@@ -170,26 +163,31 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     public override bool ActivateTrigger(string Id)
     {
-        if (Id == DramaticThoughts)
+        if (
+            Id == DramaticThoughts
+            && !isDramaCutSceneActivated
+            && game.state != Const_States_Game.CutScene
+        )
         {
             game.ChangeStateCutScene();
+            
+            // This will trigger the cut scene.
             isPauseSpikes = true;
-            return true;
+            
+            // Leave trigger active, isDramaCutSceneActivated flag to control state.
+            return false;
         }
-        // On DramaDone trigger, give extra time before
-        // actually turning off Drama music because Player may have activated
-        // trigger at same time as being struck by Needle HitBox.
-        // isDramaActuallyDone is reset (via OnPlayerRestartHandleBgm)
-        // when player is hit by Spike.
+        // On DramaDone trigger, never inactivate the trigger.
+        // Allow it to continue to detect collisions, handle its state here.
         else if (Id == DramaDone)
         {
-            if (!isCurrentPuzzleComplete)
+            if (!isCurrentPuzzleComplete && !isDramaDoneTriggerOff)
             {
-                isDramaActuallyDone = true;
-                StartCoroutine(WaitCheckDramaActuallyComplete());
+                isDramaDoneTriggerOff = true;
+                FadeOutDramaticMusic();
             }
 
-            return true;
+            return false;
         }
         else if (Id == MyneChallenge0)
         {
@@ -243,18 +241,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_DialogueManager.DialogueManager.StartDialogueNode(mynesStopDialogue[i]);
     }
 
-    private IEnumerator WaitCheckDramaActuallyComplete()
-    {
-        yield return new WaitForSeconds(dramaActuallyCompleteWaitTime);
-
-        if (isDramaActuallyDone)
-        {
-            Debug.Log("Drama is actually done");
-
-            FadeOutDramaticMusic();
-        }
-    }
-
     // Only need to handle Bgm after activating the "drama done" Trigger.
     // If the player gets hit when checking for drama done, stop checking
     // and reset the Enter Once Trigger.
@@ -268,25 +254,18 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             return;
         }
 
-        if (!isDramaActuallyDone)
-        {
-            Debug.Log($"{name} Ignore trying to restart BGM on Hurt because not checking for drama done");
-            return;
-        }
-        
         Debug.Log($"OnPlayerRestartHandleBgm() hurtbox tag: {tag}, hitBox tag: {hitBox.tag}");
         
         if (tag == Const_Tags.Player)
         {
-            Debug.Log($"Resetting drama done timer & trigger");
-            isDramaActuallyDone = false;
-            dramaDoneTrigger.Reactivate();
-
-            // If FadeOutDramaticMusic was previously called to stop
-            // the dramatic music, restart the Bgm speaker.
+            // Allow drama cut scene to be played On Trigger again.
+            isDramaCutSceneActivated = false;
+            isDramaDoneTriggerOff = false;
+            
+            // If BgThemePlayer was fading / done fading but player hits a spike.
             if (!bgThemePlayer.gameObject.activeSelf || fadingOutMusicCoroutine != null)
             {
-                // Meaning we were in process of fading out Bgm but were hit.
+                // During fading out music.
                 if (fadingOutMusicCoroutine != null)
                 {
                     StopCoroutine(fadingOutMusicCoroutine);
@@ -294,7 +273,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                 }
 
                 Script_BackgroundMusicManager.Control.SetVolume(1f, BGMParam);
-                bgThemePlayer.Play();
+                
+                // If Done fading out music.
+                if (!bgThemePlayer.IsPlaying)
+                    bgThemePlayer.Play();
             }
         }
     }
@@ -312,23 +294,29 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                     bgThemePlayer.gameObject.SetActive(false);
                     Script_BackgroundMusicManager.Control.SetVolume(1f, BGMParam);
                     
-                    TurnOffDramaticLights();
-
                     fadingOutMusicCoroutine = null;
                 }
             )
         );
     }
 
-    private void TurnOffDramaticLights()
-    {
-        Debug.Log("Fading out lights to victory after music has faded out!!!");
-        lightsToVictoryController.ShouldUpdate = true;
-    }
-
     private void HandleDramaticThoughtsCutScene()
     {
-        if (isPauseSpikes && attackController.Timer == 0 && !didActivateDramaticThoughts)
+        var isDramaticThoughts = isPauseSpikes
+            && attackController.Timer == 0
+            && !isDramaCutSceneActivated;
+        
+        if (isDramaticThoughts)
+        {
+            isDramaCutSceneActivated = true;
+            
+            if (!didActivateDramaticThoughts)
+                FullCutScene();
+            else
+                RepeatCutScene();
+        }
+
+        void FullCutScene()
         {
             didActivateDramaticThoughts = true;
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
@@ -344,6 +332,11 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             );
 
             Script_TeletypeNotificationManager.Control.InitialState();
+        }
+
+        void RepeatCutScene()
+        {
+            Script_DialogueManager.DialogueManager.StartDialogueNode(dramaDoneRepeatDialogue);
         }
     }
 
@@ -373,7 +366,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     // ----------------------------------------------------------------------
     // Timeline Signals
 
-    // Called after dramatic thoughts timeline.
+    // 1) Dramatic Thoughts Timeline
+    // 2) Repeat Drama Node Action
     public void OnDramaticThoughtsCutsceneDone()
     {
         GetComponent<AudioSource>().PlayOneShot(Script_SFXManager.SFX.ThoughtsDone, Script_SFXManager.SFX.ThoughtsDoneVol);
@@ -444,30 +438,35 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         isInitialize = false;
     }
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_26))]
-public class Script_LevelBehavior_26Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    [CustomEditor(typeof(Script_LevelBehavior_26))]
+    public class Script_LevelBehavior_26Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_LevelBehavior_26 t = (Script_LevelBehavior_26)target;
-        if (GUILayout.Button("Puzzle Success"))
-        {
-            t.PuzzleSuccess();
-        }
+            Script_LevelBehavior_26 t = (Script_LevelBehavior_26)target;
+            if (GUILayout.Button("Puzzle Success"))
+            {
+                t.PuzzleSuccess();
+            }
 
-        if (GUILayout.Button("Hide Player"))
-        {
-            t.HidePlayer();
-        }
+            if (GUILayout.Button("Hide Player"))
+            {
+                t.HidePlayer();
+            }
 
-        if (GUILayout.Button("Unhide Player"))
-        {
-            t.UnhidePlayer();
+            if (GUILayout.Button("Unhide Player"))
+            {
+                t.UnhidePlayer();
+            }
+
+            if (GUILayout.Button("Move Player 1/2 Spikes 1/2 Trigger"))
+            {
+                Script_Game.Game.GetPlayer().Teleport(t.devHalfTriggerHalfSpikesLocation.Position);
+            }
         }
     }
-}
 #endif
+}
