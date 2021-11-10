@@ -28,7 +28,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_WellsPuzzleController wellsPuzzleController;
     
     [SerializeField] private Script_FrozenWell[] frozenWells;
-    [SerializeField] private Script_DoorExitFireplace fireplaceExit;
     
     [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;
     [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
@@ -47,7 +46,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_ScarletCipherPiece[] scarletCipherPieces;
 
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
-    [SerializeField] private Script_Snow[] heavySnows;
+    [SerializeField] private List<Script_WellsWorldBehavior> wellsWorldBehaviors;
 
     private bool didMapNotification;
 
@@ -75,6 +74,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  -= OnFrozenWellDie;
     }
 
+    void Awake()
+    {
+        if (weatherFXManager.IsSnowDay)
+            SetSmallSnowActive(true);
+        else
+            SetSmallSnowActive(false);
+    }
+    
     private void OnLevelInitCompleteEvent()
     {
         if (!didMapNotification)
@@ -124,19 +131,38 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void SetFireplaceExitActive(bool isActive)
     {
-        fireplaceExit.SetInteractionActive(isActive);   
+        wellsWorldBehaviors.ForEach(
+            behavior => behavior.FireplaceExit.SetInteractionActive(isActive)
+        );
     }
 
+    // Will also open Fireplace Exit.
     public void StartHeavySnow()
     {
-        foreach (var heavySnow in heavySnows)
-            heavySnow.gameObject.SetActive(true);
+        wellsWorldBehaviors.ForEach(
+            behavior => behavior.HeavySnow.gameObject.SetActive(true)
+        );
+
+        SetFireplaceExitActive(true);
     }
 
     public void StopHeavySnow()
     {
-        foreach (var heavySnow in heavySnows)
-            heavySnow.gameObject.SetActive(false);
+        wellsWorldBehaviors.ForEach(
+            behavior => behavior.HeavySnow.gameObject.SetActive(false)
+        );
+
+        SetFireplaceExitActive(false);
+    }
+
+    // Will also affect Fireplace Exit state.
+    public void SetSmallSnowActive(bool isActive)
+    {
+        wellsWorldBehaviors.ForEach(
+            behavior => behavior.SmallSnow.gameObject.SetActive(isActive)
+        );
+
+        SetFireplaceExitActive(isActive);
     }
 
     /// <summary>
@@ -321,12 +347,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public override void Setup()
     {
         wellsPuzzleController.InitialState();
-
-        // On Snow Day, the Fireplace Exit is open.
-        if (weatherFXManager.IsSnowDay)
-            fireplaceExit.SetInteractionActive(true);
-        else
-            fireplaceExit.SetInteractionActive(false);
 
         // Only Spawn Last Well Map if Player has not picked it up.
         if (didPickUpLastWellMap)

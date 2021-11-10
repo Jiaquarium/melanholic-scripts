@@ -261,7 +261,14 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             isDramaDoneTriggerOff = false;
             
             // If BgThemePlayer was fading / done fading but player hits a spike.
-            if (!bgThemePlayer.gameObject.activeSelf || fadingOutMusicCoroutine != null)
+            // And also we're in the didActivateDramaticThoughts phase.
+            if (
+                didActivateDramaticThoughts
+                && (
+                    !bgThemePlayer.gameObject.activeSelf
+                    || fadingOutMusicCoroutine != null
+                )
+            )
             {
                 // During fading out music.
                 if (fadingOutMusicCoroutine != null)
