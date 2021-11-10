@@ -138,6 +138,11 @@ public class Script_MeshFadeController : MonoBehaviour
         else
             return true;
     }
+
+    public void SetVisibility(bool isVisible)
+    {
+        fader.SetVisibility(isVisible, maxAlpha, minAlpha);
+    }
 }
 
 #if UNITY_EDITOR

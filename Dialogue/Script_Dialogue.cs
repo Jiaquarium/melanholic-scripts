@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-09 18:14:43
+// Last created by Dialogue Exporter at 2021-11-09 22:27:34
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3564,6 +3564,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_puppet_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Hm, a hand puppet.",
         },
         
     }

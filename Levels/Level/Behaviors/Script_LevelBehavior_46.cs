@@ -64,6 +64,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     [SerializeField] private Script_ScarletCipherPiece scarletCipherPiece;
 
+    [SerializeField] private Script_MeshFadeController gazeboFader;
+
     // Dev
     [SerializeField] private Script_Marker topFloorSwitchLocation;
 
@@ -145,6 +147,9 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
                 // so Puppeteer is in default non-Effect when timeline starts.
                 player.AnimatorEffectHold = false;
             }
+
+            // Fade in Gazebo completely.
+            gazeboFader.SetVisibility(true);
             
             // Turn off SFX Volume, so won't hear Floor Switches go back up if standing on one
             Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedSFXVolume);

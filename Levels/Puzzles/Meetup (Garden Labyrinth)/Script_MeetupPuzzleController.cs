@@ -15,18 +15,6 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
 {
-    private enum PuzzleOuterStates
-    {
-        Closed          = 0,
-        Open            = 1,
-    }
-
-    private enum PuzzleCourtyardStates
-    {
-        Closed          = 0,
-        Open            = 1,
-    }
-
     [SerializeField] private float WaitToPuzzleTransformTime;
     
     // MeetupTriggerReliableStay will add players to this List.
@@ -174,7 +162,7 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
     {
         yield return new WaitForSeconds(WaitToPuzzleTransformTime);
         
-        timelineController.PlayableDirectorPlayFromTimelines(0, 3);
+        timelineController.PlayableDirectorPlayFromTimelines(0, timelineIdx);
     }
 
     private void FastForwardTransform(int timelineIdx)
