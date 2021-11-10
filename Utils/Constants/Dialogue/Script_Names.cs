@@ -198,6 +198,7 @@ public class Script_Names: MonoBehaviour
     public const string SwitchActiveSticker             = "<b>Wear Mask</b>";                   // {80}
     public const string Prep                            = "<b>Prep</b>";                        // {81}
     public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
+    public const string Elder                           = "<b>Elder</b>";                       // {83}
 
 
 

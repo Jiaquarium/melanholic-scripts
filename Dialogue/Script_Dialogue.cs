@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-09 12:32:41
+// Last created by Dialogue Exporter at 2021-11-09 18:14:43
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1127,7 +1127,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{33}",
         EN = new string[]
         {
-                @"To be frank,| some disturbing things have been happening at my <b>saloon</b>, so I’m here to speak to the <b>King</b> about it.",
+                @"To be frank,| some disturbing things have been happening at my <b>saloon</b>, so I’m here to speak to the {83} about it.",
         },
         
     }
@@ -1139,7 +1139,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{33}",
         EN = new string[]
         {
-                @"Hopefully the <b>King</b> takes action...| and fast.",
+                @"Hopefully the {83} takes action...| and fast.",
                 @"I got a business to run.| I’m <b>bleeding</b> sales as we speak, don’t you understand?",
         },
         
@@ -1481,7 +1481,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{57}",
         EN = new string[]
         {
-                @"Are you here to try and help?| Rest assured, I am the sacred elder of {18}, {57}. It is my sworn duty to protect our residents!",
+                @"Are you here to try and help?| Rest assured, I am the sacred {83} of {18}, {57}. It is my sworn duty to protect our residents!",
                 @"What is all this commotion about? We are in a dire situation.",
                 @"Intruders have invaded {37}...| The {42}.",
                 @"Rumor has it they even have the power to transform the innocent.",
@@ -1669,7 +1669,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{39}",
         EN = new string[]
         {
-                @"Yeah {38} gets really worked up sometimes. Oh of course, I don’t agree with the King’s decision either, but it’s reality, it’s going to happen. {49} on the dot.",
+                @"Yeah {38} gets really worked up sometimes. Oh of course, I don’t agree with the <b>{83}’s</b> decision either, but it’s reality, it’s going to happen. {49} on the dot.",
                 @"If he ends up leaving before the {22} to return to his family, I’d understand. It might be a sign rather. The way I look at it, it’s fate.",
         },
         

@@ -315,7 +315,8 @@ public static class Script_Utils
             Script_Names.ActiveStickerCommand,          // {79}
             Script_Names.SwitchActiveSticker,           // {80}
             Script_Names.Prep,                          // {81}
-            Script_Names.SwitchActiveStickerKeyCodes    // {82}
+            Script_Names.SwitchActiveStickerKeyCodes,   // {82}
+            Script_Names.Elder                          // {83}
         );
     }
 

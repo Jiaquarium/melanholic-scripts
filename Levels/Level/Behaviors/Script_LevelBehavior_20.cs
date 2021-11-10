@@ -102,11 +102,18 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
         SetupCycleConditions();
 
-        if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
+        if (
+            game.IsEileensMindQuestDone
+            && game.RunCycle == Script_RunsManager.Cycle.Weekday
+        )
         {
             Script_GlitchFXManager.Control.SetBlend(1f);
             isGlitched = true;
-            Script_BackgroundMusicManager.Control.Play(isGlitchedBGM);
+            
+            // Only change Bgm to "disturbing" when actually in this room, not from outside cut scene
+            // (e.g. Grand Mirror Cut Scene Timeline)
+            if (game.levelBehavior == this)
+                Script_BackgroundMusicManager.Control.Play(isGlitchedBGM);
         }
     }
 
