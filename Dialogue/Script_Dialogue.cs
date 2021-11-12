@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-11 20:26:56
+// Last created by Dialogue Exporter at 2021-11-11 20:48:04
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2591,7 +2591,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"It’s nothing really...",
+                @"It’s nothing really... sorry for taking up your time.",
         },
         
     }
@@ -2603,7 +2603,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"{12}, we know each other! Get a grip!",
+                @"Hey {12}! This isn't like you.",
         },
         
     }
@@ -2615,7 +2615,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"Sorry I really don’t mean to be a nuisance.",
+                @"Sorry, do I know you? I really don’t mean to be a nuisance.",
         },
         
     }
@@ -2655,7 +2655,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"(This is really strange. This isn’t like the {12} you know.)",
+                @"(You realize {12} can no longer paint with an injury like that.)",
         },
         
     }
@@ -2669,7 +2669,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
 
         },
-        choiceText = "It’s okay, I have time.",
+        choiceText = "It’s okay.",
         
     }
 },
@@ -2683,10 +2683,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Okay... well, I began having my doubts, in painting the {8}...",
                 @"So I went and found a job over at the {35} in {75}.",
                 @"You know how it is,| us {7} need to make a living in the end,| and| long story short...",
-                @"This happened.",
-                @"<b>My fate has been decided for me...</b>",
-                @"It’s time I face reality.",
-                @"I was never going to be a famous painter anyway. It really is actually all my own fault this happened.",
+                @"This happened.| It’s about time I face reality.",
+                @"It’s really my own fault this happened. I knew I wasn’t really good at anything...",
         },
         
     }
@@ -2700,7 +2698,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
 
         },
-        choiceText = "Alright suit yourself. I tried.",
+        choiceText = "I should leave.",
         
     }
 },
@@ -2711,8 +2709,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"Well good-bye stranger.",
-                @"I’ll be alright... alright.",
+                @"Well good-bye.",
+                @"I’ll be okay, don’t worry about me.",
         },
         
     }
