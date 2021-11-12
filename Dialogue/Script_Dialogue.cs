@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-11 20:08:12
+// Last created by Dialogue Exporter at 2021-11-11 20:26:56
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1338,7 +1338,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"Ha! Good riddance,| to tell you the truth I’m glad we’re going through with the {22}.| Isn’t that right, {62}?",
+                @"Ha! Good riddance,| I’m glad we’re going through with the {22}.| Isn’t that right, {62}?",
         },
         
     }
@@ -1350,7 +1350,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{62}",
         EN = new string[]
         {
-                @"Yeah, you tell’em, {61}!",
+                @"Yeah, you tell’em, {61}! Ba-ha!",
         },
         
     }
@@ -1362,7 +1362,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"We opened our doors and now look at us. You give a wolf your foot and it’ll come back in the winter for your hand!",
+                @"We opened our doors before and now look at the mess we’re in!",
         },
         
     }
@@ -1374,7 +1374,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{62}",
         EN = new string[]
         {
-                @"We’ll do just fine by ourselves in here. It’s how our ancestors lived, ain’t it?",
+                @"Yup! Lock our doors! That’s how our ancestors lived, ain’t it?",
         },
         
     }
@@ -1386,7 +1386,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{61}",
         EN = new string[]
         {
-                @"We here are {37} natives. Born and raised!| How can you call yourself an {6} when you can’t even toughen out through the {22}?!",
+                @"We here are {37} natives. Born and raised! The ones who already fled?| Ha! They don’t belong here to begin with!",
         },
         
     }
@@ -1398,7 +1398,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{62}",
         EN = new string[]
         {
-                @"Right! A true {6} never complains.| Head down and never frown!",
+                @"Right! A true {6} never complains.| We stick it out to the very end! Ba-ha!",
         },
         
     }
