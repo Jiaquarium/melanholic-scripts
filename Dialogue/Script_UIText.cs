@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-09 16:23:51
+// Last created by UI Exporter at 2021-11-10 14:17:19
 
 using System.Collections;
 using System.Collections.Generic;
@@ -682,7 +682,7 @@ public class Script_UIText
     "saving_to-weekend",
     new Model_LanguagesUI
     {
-        EN = @"You are given the responsibility of the {71}. {53} is your first day.<br><br>SAVING GAME... Please do not turn off power."
+        EN = @"SAVING GAME... Please do not turn off power."
     }
 },
 {

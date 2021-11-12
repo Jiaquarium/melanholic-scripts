@@ -16,7 +16,7 @@ public class Script_SavedGameInputManager : Script_ExitViewInputManager
 
     public override void HandleExitInput()
     {
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown(Const_KeyCodes.Cancel))
         {
             Debug.Log($"SavedGameInputManager: Cancel called, firing ExitFileActionsMode event");
             Script_StartEventsManager.ExitFileActions();

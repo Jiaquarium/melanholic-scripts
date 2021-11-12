@@ -22,7 +22,7 @@ public class Script_MemoriesViewInputManager : Script_ExitViewInputManager
         if (masterUIState != null && masterUIState.state == UIState.Disabled)
             return;
 
-        if (Input.GetButtonDown("Inventory") || Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown(Const_KeyCodes.Inventory) || Input.GetButtonDown(Const_KeyCodes.Cancel))
         {
             print("HandleExitInput()");
             Script_MenuEventsManager.ExitSubmenu();

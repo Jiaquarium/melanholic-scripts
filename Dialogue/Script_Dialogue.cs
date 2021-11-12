@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-09 22:27:34
+// Last created by Dialogue Exporter at 2021-11-11 20:08:12
 
 using System.Collections;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Strange, I can’t understand what they’re saying.",
+                @"Strange, you can’t understand what they’re saying.",
         },
         
     }
@@ -67,7 +67,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Time......| It seems to be frozen in here.",
-                @"I always get this feeling just before the sun is about to come up.",
+                @"You always get this feeling just before the sun is about to come up.",
         },
         
     }
@@ -79,7 +79,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Why do I feel everything has been a haze...| what day is it today anyways?",
+                @"Everything has been a haze...| what day is it today anyways?",
         },
         
     }
@@ -90,7 +90,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "pianos_narrator_piano_remembered",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"The chords of the piano complement the beating of your heart.",
@@ -123,7 +123,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"According to my calculations,| today {77} should be at {49}.",
+                @"According to your calculations,| today {77} should be at {49}.",
         },
         
     }
@@ -165,7 +165,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I really would like to leave, but no I can’t.",
+                @"You really would like to leave, but you can’t...",
         },
         
     }
@@ -177,7 +177,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I’m being watched.",
+                @"You’re being watched.",
         },
         
     }
@@ -189,7 +189,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I hate this feeling.",
+                @"You hate this feeling.",
         },
         
     }
@@ -201,7 +201,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"The day shift guy always forgets to rebrew the coffee when he gets off, so I always do it.",
+                @"The day shift guy always forgets to rebrew the coffee when he gets off, so you always do it.",
         },
         
     }
@@ -213,8 +213,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"It’s an old photo with Dad and my little sis.",
-                @"She’s working some job in finance now – honestly I don’t even really know what she does though.",
+                @"It’s an old photo with Dad and your little sis.",
+                @"She’s working some job in finance now – not quite sure what she really does though day to day.",
         },
         
     }
@@ -227,7 +227,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"A recipe book for French pastries. Bon appetit!",
-                @"I’ve read this a million times by now, sigh.",
+                @"You’ve read this a million times by now, sigh.",
         },
         
     }
@@ -240,7 +240,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"<b>Tangled Hair</b>, a book of poetry.",
-                @"I like poems and all, but if I had a choice, I’d rather be a novelist.",
+                @"Poems are great and all, but you prefer novels.",
         },
         
     }
@@ -253,7 +253,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"It’s a textbook, <b>The Art of Fractal Geometry</b>.",
-                @"Absolutely no clue why we have this here...| anyways, it’s interesting too.",
+                @"Absolutely no clue why this is here...| you find it interesting though.",
         },
         
     }
@@ -277,7 +277,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Hm I don’t ever remember us having a book like this.",
+                @"Hm you don’t ever remember having a book like this here.",
                 @"Wait a second, there’s something inside.",
         },
         
@@ -291,7 +291,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"A painting of the mogul who originally funded construction of the hotel. Not too much is known about him.",
-                @"It’s a strange painting. No matter how I look at it I can’t ever make out his face.",
+                @"It’s a strange painting. His face is smudged out, but still, it reminds you of someone from your past.",
         },
         
     }
@@ -304,7 +304,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Rumor is this wasn’t supposed to be a hotel.",
-                @"Eh, I don’t like thinking about this kind of stuff during my shift...",
+                @"You don’t like thinking about this kind of stuff during your shift...",
         },
         
     }
@@ -340,7 +340,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I should really get back to work.",
+                @"You should really get back to work.",
         },
         
     }
@@ -354,7 +354,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"It’s a mirror. Should I look into it?",
+                @"It’s a mirror. Look into it?",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -687,7 +687,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Only thing I hate about games is losing.",
+                @"Only thing you hate about games is losing.",
         },
         
     }
@@ -701,7 +701,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"It’s a painting... close up it’s a lot less flat than I thought. Whoever painted it used a lot of paint.",
+                @"It’s a painting... close up it’s a lot less flat. Whoever painted it used a lot of paint.",
         },
         
     }
@@ -819,7 +819,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "nightclub-line_sign_read",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"Estimated wait from this point: 0 minutes.",
@@ -970,7 +970,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"There’s just something so romantic about staring into complete blackness, while feeling our warm wool rubbing against one another...",
                 @".|.|.|.|.|.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -999,7 +1007,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Actually, there’s a bit more to my theory. But anyways...",
                 @"You should be the one to use this. So here...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                null,
+                null,
+        }
     }
 },
 {
@@ -1049,7 +1067,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Two certificates of some sort... I wonder why one is hung higher than the other...",
+                @"Two certificates of some sort... why is one hung higher than the other?",
         },
         
     }
@@ -1070,7 +1088,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "basement_n-room_wall-text_read",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
                 @"Anonymous. <i>You and I Forever</i>. 19XX. Oil on Linen.",
@@ -1082,13 +1100,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "basement_n-room_desk_read",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
-                @"...the answer to everything...",
-                @"...a fresh way to approach a dull thing...",
-                @"...a way of doing things...",
-                @"...S&M style...",
+                @"It’s a book about a tortoise with a soft shell…",
+                @"“The soft-shelled tortoise met countless journeyers throughout the days…”",
+                @"*flip* *flip* *flip*",
+                @"“At last, the tortoise laid down to rest with a shell now made of a patchwork of faces.”",
         },
         
     }
@@ -1759,7 +1777,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Blank canvases...| I took a portraiture painting class once. Bad memories.",
+                @"Blank canvases...| you took a portraiture painting class once. Bad memories.",
                 @"The hardest part is getting started, really.| That first mark.",
         },
         
@@ -1774,7 +1792,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"But after a few strokes, things got pretty <b>exciting</b>.",
                 @"From there you can really go anywhere.",
-                @"There was a certain kind of thrill building up this thing and knowing I could destroy it all at once.",
+                @"There was a certain kind of thrill building up this thing and knowing you could destroy it all at once.",
         },
         
     }
@@ -1786,7 +1804,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"And even if I royally mess up, I can just paint over it.",
+                @"And even if you royally mess up, you can just paint over it.",
                 @"And over and over and over and over.",
                 @"Then the hard part becomes knowing when to stop!",
         },
@@ -1802,7 +1820,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"A day in the life of a cat. I’ve always wondered what life would be like as a cat.",
+                @"A day in the life of a cat.",
+                @"You’ve always wondered what life would be like as a cat.",
         },
         
     }
@@ -1830,7 +1849,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"{64} here at your humble service.",
                 @"Oh, you are able to understand me?",
-                @"My mistake. go right along ahead, young one, I am here to serve.",
+                @"My mistake. Go right along ahead, young one, I am here to serve.",
         },
         
     }
@@ -1869,8 +1888,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"A cat jumping onto a bed! I actually quite enjoy cat paintings.",
-                @"Why is it hung so high though? I can’t really get a good look at it.",
+                @"A cat jumping onto a bed! You actually quite enjoy cat paintings.",
+                @"Why is it hung so high though? You can’t really get a good look at it.",
         },
         
     }
@@ -2105,10 +2124,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "ellenias-room_bookshelf_lore-book",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
-                @"{22}: On Love and Death Vol. 1... hmm should I skim through it?",
+                @"{22}: On Love and Death Vol. 1...| skim through it?",
         },
         
     }
@@ -2117,7 +2136,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "ellenias-room_bookshelf_lore-book_a_a",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
                 @"<i>“As a</i> {13}... <i>thou must at all costs seize thy chance to find Selfhood – and put an end to thee eternal cycle.”</i>",
@@ -2134,7 +2153,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Should I skim through this magazine purposefully shoved into the dark corner of this bookshelf?",
+                @"Skim through this magazine purposefully shoved into the dark corner of this bookshelf?",
         },
         
     }
@@ -2146,7 +2165,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I’m guessing I’m not supposed to see that...",
+                @"Maybe you weren’t supposed to see that...",
         },
         
     }
@@ -2171,7 +2190,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"A woman in front of a spiral?",
-                @"No, it’s a maze I mean.",
+                @"No...| you realize it’s a maze.",
         },
         
     }
@@ -2184,7 +2203,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"A man in front of a spiral?",
-                @"No, it’s a maze I mean.",
+                @"No...| you realize it’s a maze.",
         },
         
     }
@@ -2636,7 +2655,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"(This is really strange. This isn’t like the {12} I know.)",
+                @"(This is really strange. This isn’t like the {12} you know.)",
         },
         
     }
@@ -3296,7 +3315,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Hand puppets...| This room actually reminds me a bit of a theatre stage.",
+                @"Hand puppets...| This room actually reminds you a bit of a theatre stage.",
         },
         
     }
@@ -4004,7 +4023,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "painting-entrances_default_prompt",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"“I cannot believe in Western sincerity because it is invisible, but in feudal times we believed that sincerity resides in our entrails, and if we needed to show our sincerity, we had to cut our bellies and take out our visible sincerity.” – Yukio Mishima",
@@ -4016,7 +4035,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "painting-entrances_default_prompt1",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"Now would you like to enter me?",
@@ -4040,7 +4059,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "painting-entrances_default-short_prompt",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"Are you, am I?",
@@ -4052,7 +4071,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "painting-entrances_default-short_prompt1",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"Now would you like to enter me?",
@@ -4067,7 +4086,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"This reminds me of a certain romantic painting.",
+                @"This reminds you of a certain romantic painting.",
         },
         
     }
@@ -4076,7 +4095,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "painting-entrances_eileens-mind_prompt",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"Peering out over the raging seas!",
@@ -4088,7 +4107,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "painting-entrances_eileens-mind_prompt1",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"Now would you like to enter me?",
@@ -4103,7 +4122,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I’ve seen a painting like this somewhere.",
+                @"You’ve seen a painting like this somewhere.",
         },
         
     }
@@ -4155,7 +4174,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"It’s done now.| It makes me feel something.",
+                @"It’s done now.| It makes you feel something familiar.",
                 @"You know that feeling when you can’t get warm no matter what?",
                 @"*shiver*",
         },
@@ -4195,7 +4214,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I sometimes feel like I’m at the bottom of a well.",
+                @"You feel like you’re at the bottom of a well.",
         },
         
     }
@@ -4230,7 +4249,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_psychic-duck",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You got the @@PsychicDuck @@Sticker_Bold!|<br>The @@Sticker_Bold contains the sealed spirit of a {13}.",
@@ -4263,7 +4282,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_animal-within",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You got the @@AnimalWithin @@Sticker_Bold!|<br>Its original owner had a penchant for eating souls.",
@@ -4291,7 +4310,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_boar-needle",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You got the @@BoarNeedle @@Sticker_Bold!|<br>Its original owner desired to see what was invisible.",
@@ -4319,7 +4338,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_ice-spike",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You got the @@IceSpike @@Sticker_Bold!|<br>Its original owner was said to have been caught in a snowstorm.",
@@ -4347,7 +4366,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_melancholy-piano",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You got the @@MelancholyPiano @@Sticker_Bold!|<br>Its original owner played a melancholic tune.",
@@ -4375,7 +4394,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_last-elevator",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You returned to the conscious world wearing a mask.",
@@ -4408,7 +4427,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_let-there-be-light",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You got the @@LetThereBeLight @@Sticker_Bold!|<br>Its original owner constructed the lighting within {18}.",
@@ -4436,7 +4455,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_sticker_puppeteer",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You got the @@Puppeteer @@Sticker_Bold!|<br>Its original owner spent each waking moment trying to bring life to handmade puppets.",
@@ -4464,7 +4483,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_usable_super-small-key",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You found the @@SuperSmallKey!",
@@ -4487,7 +4506,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_collectible_last-well-map",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You found the @@LastWellMap!",
@@ -4510,7 +4529,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "item-object_collectible_last-spell-recipe-book",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "NA",
         EN = new string[]
         {
                 @"You found the @@LastSpellRecipeBook!",
