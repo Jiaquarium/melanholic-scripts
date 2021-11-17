@@ -55,6 +55,7 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip ScarletCipherPiecePickup;
     [Range(0f, 1f)] public float ScarletCipherPiecePickupVol;
+    public float ScarletCipherPiecePickupDuration = 3.0f;
     
     public AudioClip exitSFX;
     [Range(0f, 1f)] public float exitSFXVol;
@@ -103,12 +104,14 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip Secret;
     [Range(0f, 1f)] public float SecretVol;
+    public float SecretDuration = 1.5f;
 
     public AudioClip CorrectPartialProgress;
     [Range(0f, 1f)] public float CorrectPartialProgressVol;
     
     public AudioClip MainQuestDone;
     [Range(0f, 1f)] public float MainQuestDoneVol;
+    public float MainQuestDuration = 5.0f;
 
     public AudioClip Freeze;
     [Range(0f, 1f)] public float FreezeVol;
@@ -159,12 +162,9 @@ public class Script_SFXManager : MonoBehaviour
     
     public void PlayQuestProgress(Action cb = null)
     {
-        float SFXduration = 1.5f;
+        float SFXduration = SecretDuration;
         
-        SFXSource.PlayOneShot(
-            Script_SFXManager.SFX.Secret,
-            Script_SFXManager.SFX.SecretVol
-        );
+        SFXSource.PlayOneShot(Secret, SecretVol);
 
         if (cb != null) StartCoroutine(OnSFXDone());
         
@@ -177,12 +177,9 @@ public class Script_SFXManager : MonoBehaviour
     
     public void PlayMainQuestDone(Action cb = null)
     {
-        float SFXduration = 5.0f;
+        float SFXduration = MainQuestDuration;
         
-        SFXSource.PlayOneShot(
-            Script_SFXManager.SFX.MainQuestDone,
-            Script_SFXManager.SFX.MainQuestDoneVol
-        );
+        SFXSource.PlayOneShot(MainQuestDone, MainQuestDoneVol);
 
         if (cb != null) StartCoroutine(OnSFXDone());
         
@@ -195,12 +192,9 @@ public class Script_SFXManager : MonoBehaviour
 
     public void PlayScarletCipherPickupSFX(Action cb = null)
     {
-        float SFXduration = 1.5f;
+        float SFXduration = ScarletCipherPiecePickupDuration;
         
-        SFXSource.PlayOneShot(
-            Script_SFXManager.SFX.ScarletCipherPiecePickup,
-            Script_SFXManager.SFX.ScarletCipherPiecePickupVol
-        );
+        SFXSource.PlayOneShot(ScarletCipherPiecePickup, ScarletCipherPiecePickupVol);
 
         if (cb != null) StartCoroutine(OnSFXDone());
         

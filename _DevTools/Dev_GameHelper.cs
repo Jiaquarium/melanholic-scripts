@@ -28,6 +28,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
+    [SerializeField] private Script_ExitMetadataObject CelestialGardensEntrance;
     [SerializeField] private Script_ExitMetadataObject RockGardenEntrance;
     [SerializeField] private Script_ExitMetadataObject CatWalk2Entrance;
     [SerializeField] private Script_ExitMetadataObject FountainEntrance;
@@ -145,6 +146,11 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(GrandMirrorEntrance);
     }
 
+    public void ExitToCelestialGardens()
+    {
+        Teleport(CelestialGardensEntrance);
+    }
+    
     public void ExitToRockGarden()
     {
         Teleport(RockGardenEntrance);
@@ -404,6 +410,11 @@ public class Dev_GameHelper : MonoBehaviour
                 }
 
                 EditorGUILayout.LabelField("Celestial Gardens World", EditorStyles.miniLabel);
+                
+                if (GUILayout.Button("Go To: Celestial Gardens"))
+                {
+                    t.ExitToCelestialGardens();
+                }
                 
                 if (GUILayout.Button("Go To: Rock Garden"))
                 {

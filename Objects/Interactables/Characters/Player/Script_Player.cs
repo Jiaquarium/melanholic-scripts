@@ -536,6 +536,7 @@ public class Script_Player : Script_Character
     public void ScarletCipherPickUpSFX()
     {
         SetIsStandby();
+        
         playerEffect.ScarletCipherPickUpSFX(() => {
             SetIsInteract();
         }); 

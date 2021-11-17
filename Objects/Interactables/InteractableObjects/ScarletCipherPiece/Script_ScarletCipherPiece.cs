@@ -24,7 +24,7 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
     protected override void Start()
     {
         base.Start();
-        // Singletons hooked up in Awake() 
+        
         if (DidPickUp())
         {
             Hide();
@@ -34,9 +34,10 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
     protected override void ActionDefault()
     {
         Script_ScarletCipherManager.Control.RevealScarletCipherSlot(ScarletCipherId);
+        
         Hide();
 
-        // Use Singleton for debugging purposes.
+        // Player to emit SFX because this is set inactive immediately.
         Script_Game.Game.GetPlayer().ScarletCipherPickUpSFX();
 
         Script_ScarletCipherEventsManager.ScarletCipherPiecePickUp(ScarletCipherId);

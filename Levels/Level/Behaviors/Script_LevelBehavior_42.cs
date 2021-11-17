@@ -7,6 +7,9 @@ using System.Linq;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// When snowing, Player should react to it, hinting at the Fireplace exit.
+/// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
 [RequireComponent(typeof(Script_WorldTilesController))]
 [RequireComponent(typeof(AudioSource))]
@@ -39,6 +42,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode OnHasLastSpellRecipeBookNode;
     [SerializeField] private Script_DialogueNode OnMissingLastSpellRecipeBookNode;
     [SerializeField] private Script_DialogueNode OnMooseGiveItemDoneNode;
+    
+    [SerializeField] private Script_DialogueNode OnSnowReactionNode;
+    [SerializeField] private float beforeSnowReactionWaitTime;
+    [SerializeField] private Script_LevelBehavior_13 CatWalkBehavior;
 
     [SerializeField] private Script_Moose[] Mooses;
     [SerializeField] private Script_DemonNPC[] Suzettes;
@@ -49,6 +56,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private List<Script_WellsWorldBehavior> wellsWorldBehaviors;
 
     private bool didMapNotification;
+    private bool didSnowReaction;
 
     protected override void OnEnable()
     {
@@ -86,11 +94,38 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
+                if (weatherFXManager.IsSnowDay)
+                    HandleSnowReaction(beforeSnowReactionWaitTime);
+            });
             didMapNotification = true;
+        }
+        else
+        {
+            if (weatherFXManager.IsSnowDay)
+                HandleSnowReaction(beforeSnowReactionWaitTime);
         }
     }
     
+    private bool HandleSnowReaction(float pauseTime)
+    {
+        if (didSnowReaction || CatWalkBehavior.didPickUpLightSticker)
+            return false;
+        
+        game.ChangeStateCutScene();
+
+        StartCoroutine(WaitToReact());
+
+        didSnowReaction = true;
+        return true;
+
+        IEnumerator WaitToReact()
+        {
+            yield return new WaitForSeconds(pauseTime);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(OnSnowReactionNode);
+        }
+    }
+
     private void OnItemPickUp(string itemId)
     {
         if (itemId == lastWellMaps[0].Item.id)
@@ -195,6 +230,11 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     // ----------------------------------------------------------------------
     // Next Node Action START
 
+    public void SnowReactionDone()
+    {
+        game.ChangeStateInteract();
+    }
+    
     public void CheckPlayerHasLastSpellRecipeBook()
     {
         game.ChangeStateCutScene();
@@ -270,9 +310,13 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         );
     }
 
+    /// <summary>
+    /// If haven't played the Snow Reaction yet, play it first, and let it handle game state.
+    /// </summary>
     public void EndFreezeCutScene()
     {
-        game.ChangeStateInteract();
+        if (!HandleSnowReaction(beforeSnowReactionWaitTime))
+            game.ChangeStateInteract();
     }
 
     // Called after Moose checks Player has Last Spell Book.

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-11 20:48:04
+// Last created by Dialogue Exporter at 2021-11-17 16:24:52
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2898,6 +2898,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                     isUnskippable = true, 
                 },
         }
+    }
+},
+// ------------------------------------------------------------------
+// Player
+{
+    "wells-world_snow-reaction_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s beautiful – the snow – but it makes you feel even colder.",
+                @"You remember the warmth of the fireplace back at the hotel.",
+        },
+        
     }
 },
 // ------------------------------------------------------------------

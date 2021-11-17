@@ -43,6 +43,7 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         }
     }
 
+    // Hide all Scarlet Cipher pieces when any is picked up on a World Tile.
     private void OnScarletCipherPickUp(int scarletCipherId)
     {
         if (scarletCipherId == scarletCipherPieces[0].ScarletCipherId)
