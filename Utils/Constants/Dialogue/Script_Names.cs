@@ -199,6 +199,8 @@ public class Script_Names: MonoBehaviour
     public const string Prep                            = "<b>Prep</b>";                        // {81}
     public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
     public const string Elder                           = "<b>Elder</b>";                       // {83}
+    public const string WellsWorld                      = "<b>Wells World</b>";                 // {84}
+    public const string CelestialGardens                = "<b>Celestial Gardens World</b>";     // {85}
 
 
 

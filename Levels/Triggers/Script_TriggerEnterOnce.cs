@@ -13,6 +13,8 @@ public class Script_TriggerEnterOnce : Script_Trigger
     [SerializeField] private UnityEvent<Transform> refAction;
     [SerializeField] protected List<Const_Tags.Tags> specifiedUniqueTags;
 
+    [SerializeField] private bool isForceHide;
+
     void OnTriggerEnter(Collider other)
     {
         // If no tags are specified default to detecting Player.
@@ -46,6 +48,11 @@ public class Script_TriggerEnterOnce : Script_Trigger
         else if (game.ActivateTrigger(Id))
         {
             Debug.Log($"{name} Entered: <{other.gameObject.name}> Setting inactive");
+            this.gameObject.SetActive(false);
+        }
+        
+        if (isForceHide)
+        {
             this.gameObject.SetActive(false);
         }
     }

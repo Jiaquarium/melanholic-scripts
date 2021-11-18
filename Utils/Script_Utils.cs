@@ -316,7 +316,9 @@ public static class Script_Utils
             Script_Names.SwitchActiveSticker,           // {80}
             Script_Names.Prep,                          // {81}
             Script_Names.SwitchActiveStickerKeyCodes,   // {82}
-            Script_Names.Elder                          // {83}
+            Script_Names.Elder,                         // {83}
+            Script_Names.WellsWorld,                    // {84}
+            Script_Names.CelestialGardens               // {85}
         );
     }
 

@@ -39,6 +39,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform TueBooks;
     [SerializeField] private Transform WedBooks;
     [SerializeField] private Transform WeekendBooks;
+    [SerializeField] private Script_DialogueNode weekendNewBookTriggerNode;
 
     [SerializeField] private Transform WeekdayWalls;
     [SerializeField] private Transform WeekendWalls;
@@ -240,6 +241,29 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             default:
                 break;
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Trigger UnityEvents
+    
+    // New Book Trigger: hint player to interact with Coffee Table book.
+    // This should only happen once, upon entering the Weekend Cycle.
+    public void NoticeNewBook()
+    {
+        if (game.CycleCount != 0 || game.Run.dayId != Script_Run.DayId.thu)
+            return;
+
+        game.ChangeStateCutScene();
+        Script_DialogueManager.DialogueManager.StartDialogueNode(weekendNewBookTriggerNode);
+    }
+
+    // ------------------------------------------------------------------
+    // Next Node Actions
+    
+    // weekendNewBookTriggerNode
+    public void OnNoticeNewBookDone()
+    {
+        game.ChangeStateInteract();
     }
     
     // ------------------------------------------------------------------

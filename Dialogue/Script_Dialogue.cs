@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-17 20:01:21
+// Last created by Dialogue Exporter at 2021-11-17 21:17:03
 
 using System.Collections;
 using System.Collections.Generic;
@@ -277,8 +277,38 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Hm you don’t ever remember having a book like this here.",
+                @"An interesting compilation of short stories. Every time you read these, they make you feel a bit sad but strangely happy.",
                 @"Wait a second, there’s something inside.",
+        },
+        
+    }
+},
+{
+    "hotel-lobby_new-book-trigger_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The book on the <b>coffee table</b>… You don’t remember ever having a book like that here|.|.|.| You’re certain.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "hotel-lobby_new-book-interactable_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Someone left drawings inside arranged in a particular order.",
         },
         
     }

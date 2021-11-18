@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-17 17:16:12
+// Last created by UI Exporter at 2021-11-17 22:23:08
 
 using System.Collections;
 using System.Collections.Generic;
@@ -219,6 +219,34 @@ public class Script_UIText
     }
 },
 {
+    "credits_main-playtesters_role0",
+    new Model_LanguagesUI
+    {
+        EN = @"MAIN PLAYTESTERS"
+    }
+},
+{
+    "credits_main-playtesters_name0",
+    new Model_LanguagesUI
+    {
+        EN = @"Alice"
+    }
+},
+{
+    "credits_main-playtesters_name1",
+    new Model_LanguagesUI
+    {
+        EN = @"Daniel"
+    }
+},
+{
+    "credits_main-playtesters_name2",
+    new Model_LanguagesUI
+    {
+        EN = @"Estella"
+    }
+},
+{
     "credits_playtesters_role0",
     new Model_LanguagesUI
     {
@@ -236,21 +264,21 @@ public class Script_UIText
     "credits_playtesters_name1",
     new Model_LanguagesUI
     {
-        EN = @"Alice"
+        EN = @"Arden"
     }
 },
 {
     "credits_playtesters_name2",
     new Model_LanguagesUI
     {
-        EN = @"Arden"
+        EN = @"Ash"
     }
 },
 {
     "credits_playtesters_name3",
     new Model_LanguagesUI
     {
-        EN = @"Ash"
+        EN = @"David"
     }
 },
 {
@@ -264,28 +292,28 @@ public class Script_UIText
     "credits_playtesters_name4",
     new Model_LanguagesUI
     {
-        EN = @"Daniel"
+        EN = @"Leanna"
     }
 },
 {
     "credits_playtesters_name5",
     new Model_LanguagesUI
     {
-        EN = @"David"
+        EN = @"Moe"
     }
 },
 {
     "credits_playtesters_name6",
     new Model_LanguagesUI
     {
-        EN = @"Leanna"
+        EN = @"Nathan"
     }
 },
 {
     "credits_playtesters_name7",
     new Model_LanguagesUI
     {
-        EN = @"Moe"
+        EN = @"Randy"
     }
 },
 {
@@ -299,28 +327,28 @@ public class Script_UIText
     "credits_playtesters_name8",
     new Model_LanguagesUI
     {
-        EN = @"Nathan"
+        EN = @"Stephen"
     }
 },
 {
     "credits_playtesters_name9",
     new Model_LanguagesUI
     {
-        EN = @"Randy"
+        EN = @"Steven"
     }
 },
 {
     "credits_playtesters_name10",
     new Model_LanguagesUI
     {
-        EN = @"Stephen"
+        EN = @"Tedmund"
     }
 },
 {
     "credits_playtesters_name11",
     new Model_LanguagesUI
     {
-        EN = @"Steven"
+        EN = @"Tim"
     }
 },
 {
@@ -334,14 +362,14 @@ public class Script_UIText
     "credits_playtesters_name12",
     new Model_LanguagesUI
     {
-        EN = @"Tedmund"
+        EN = @"???"
     }
 },
 {
     "credits_playtesters_name13",
     new Model_LanguagesUI
     {
-        EN = @"Tim"
+        EN = @"???"
     }
 },
 {
@@ -453,6 +481,29 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Does there have to be a last one?"
+    }
+},
+// ------------------------------------------------------------------
+// Hotel
+{
+    "hotel-lobby_new-book-interactable_fullart_text",
+    new Model_LanguagesUI
+    {
+        EN = @"Chapter <size=40>1</size>: {84}"
+    }
+},
+{
+    "hotel-lobby_new-book-interactable_fullart_text1",
+    new Model_LanguagesUI
+    {
+        EN = @"Chapter <size=40>2</size>:<br>{85}"
+    }
+},
+{
+    "hotel-lobby_new-book-interactable_fullart_text2",
+    new Model_LanguagesUI
+    {
+        EN = @"Chapter <size=40>3</size>: {75}"
     }
 },
 // ------------------------------------------------------------------
