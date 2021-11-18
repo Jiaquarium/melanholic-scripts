@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-17 16:24:52
+// Last created by Dialogue Exporter at 2021-11-17 20:01:21
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2911,6 +2911,44 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It’s beautiful – the snow – but it makes you feel even colder.",
                 @"You remember the warmth of the fireplace back at the hotel.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Interactables
+{
+    "wells-world_flower_spring_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"A budding flower.",
+        },
+        
+    }
+},
+{
+    "wells-world_flower_summer_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"A sunflower. They say these always face the sun.",
+        },
+        
+    }
+},
+{
+    "wells-world_flower_fall_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"All that’s left of this is a dry branch.",
         },
         
     }

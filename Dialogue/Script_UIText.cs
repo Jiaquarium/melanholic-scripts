@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-10 14:17:19
+// Last created by UI Exporter at 2021-11-17 17:16:12
 
 using System.Collections;
 using System.Collections.Generic;
@@ -173,7 +173,7 @@ public class Script_UIText
     "credits_main-staff_role0",
     new Model_LanguagesUI
     {
-        EN = @"WRITING, ART, PROGRAMMING"
+        EN = @"ART, DESIGN, WRITING, PROGRAMMING"
     }
 },
 {
@@ -187,7 +187,7 @@ public class Script_UIText
     "credits_main-staff_role1",
     new Model_LanguagesUI
     {
-        EN = @"MUSIC"
+        EN = @"MUSIC & SOUND"
     }
 },
 {
@@ -201,7 +201,7 @@ public class Script_UIText
     "credits_main-staff_role2",
     new Model_LanguagesUI
     {
-        EN = @"CG BACKGROUND ART"
+        EN = @"CG ART, DESIGN"
     }
 },
 {
