@@ -37,7 +37,10 @@ public class Script_TileMapExitEntrance : MonoBehaviour
         get
         {
             if (exitEntranceMetadata != null)
+            {
+                exitEntranceMetadata.UpdatePosition();
                 return exitEntranceMetadata.data.playerSpawn;
+            }
             
             return playerNextSpawnPosition;
         }

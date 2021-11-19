@@ -27,6 +27,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject FireplacePuzzleEntrance;
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
+    [SerializeField] private Script_ExitMetadataObject UnderworldEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
     [SerializeField] private Script_ExitMetadataObject CelestialGardensEntrance;
     [SerializeField] private Script_ExitMetadataObject RockGardenEntrance;
@@ -139,6 +140,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToCatWalk()
     {
         Teleport(CatWalkEntrance);
+    }
+
+    public void ExitToUnderworld()
+    {
+        Teleport(UnderworldEntrance);
     }
 
     public void ExitToGrandMirror()
@@ -395,6 +401,11 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Go To: Catwalk"))
                 {
                     t.ExitToCatWalk();
+                }
+
+                if (GUILayout.Button("Go To: Underworld"))
+                {
+                    t.ExitToUnderworld();
                 }
                 
                 EditorGUILayout.LabelField("XXX World", EditorStyles.miniLabel);

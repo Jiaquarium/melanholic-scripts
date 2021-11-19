@@ -201,12 +201,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     }
 
     /// <summary>
-    /// When Player destroys one Well, they should all be destroyed so all the World
-    /// Tiles can remain in sync.
+    /// When Player destroys one Well, hide all others that are currently not visible,
+    /// so Tiles remain in sync. The current Well will be handled by its respective Timeline sequence.
     /// </summary>
     public void OnFrozenWellDie(Script_FrozenWellCrackableStats iceStats)
     {
         Script_FrozenWell destroyedFrozenWell = iceStats.GetComponent<Script_FrozenWell>();
+
+        Debug.Log($"Frozen Well destroyed: {destroyedFrozenWell}");
 
         if (destroyedFrozenWell == null)
             return;
@@ -217,10 +219,16 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             frozenWell => frozenWell == destroyedFrozenWell
         );
 
+        Debug.Log($"Matching Frozen Well destroyed: {matchingFrozenWell}");
+
         if (matchingFrozenWell != null)
         {
-            foreach (var frozenWell in frozenWells)
+            foreach (Script_FrozenWell frozenWell in frozenWells)
             {
+                // Skip the current Well which will be handled by its Timeline.
+                if (matchingFrozenWell == frozenWell)
+                    continue;
+
                 Debug.Log($"Setting frozenWell inactive: {frozenWell.gameObject.name}");
                 frozenWell.gameObject.SetActive(false);
             }

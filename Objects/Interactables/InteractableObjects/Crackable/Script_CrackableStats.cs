@@ -31,6 +31,11 @@ public class Script_CrackableStats : Script_CharacterStats
     [SerializeField] private float shakeFreq;
 
     private Coroutine hideIceCoroutine;
+    
+    /// <summary>
+    /// Flag if Player left scene before Timeline hides crackable,
+    /// just manually hide the ice.
+    /// </summary>
     protected bool isHideOnDisable;
     private bool isScreenShakeShatter;
     
