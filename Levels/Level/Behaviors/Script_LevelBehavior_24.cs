@@ -207,6 +207,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             yield return new WaitForSeconds(Script_VCamManager.defaultBlendTime);
 
             isTimelineControlled = true;
+            
             Script_TransitionManager.Control.OnCurrentQuestDone(() => {
                 isTimelineControlled = false;
                 

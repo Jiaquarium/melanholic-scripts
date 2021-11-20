@@ -5,6 +5,9 @@ using UnityEngine;
 /// <summary>
 /// For use on multiple sprites, define children sprites in Script_SpriteFadeOut
 /// Use innerBound flag and a fadeOutAxis to define where the follower fades out
+/// 
+/// Note: Do not adjust fading with Timeline or isFadedIn and isFadedOut flags will
+/// not be updated.
 /// </summary>
 public class Script_FollowPlayer : MonoBehaviour
 {

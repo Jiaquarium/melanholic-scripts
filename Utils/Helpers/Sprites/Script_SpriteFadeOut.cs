@@ -58,6 +58,7 @@ public class Script_SpriteFadeOut : MonoBehaviour
         sr.color = tmpColor;
         foreach (SpriteRenderer childSprite in childrenSprites)
             childSprite.color = tmpColor;
+        
         if (cb != null)    cb();
     }
 
@@ -89,6 +90,7 @@ public class Script_SpriteFadeOut : MonoBehaviour
         sr.color = tmpColor;
         foreach (SpriteRenderer childSprite in childrenSprites)
             childSprite.color = tmpColor;
+        
         if (cb != null)    cb();
     }
 

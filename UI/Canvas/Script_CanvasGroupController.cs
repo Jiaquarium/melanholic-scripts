@@ -21,8 +21,6 @@ public class Script_CanvasGroupController : MonoBehaviour
     private const float DefaultFadeTime = 0.5f;
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
-    private bool isFadedIn;
-    private bool isFadedOut;
 
     public bool IsFadingIn
     {
@@ -55,24 +53,26 @@ public class Script_CanvasGroupController : MonoBehaviour
     )
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
-        fader.gameObject.SetActive(true);
+        CanvasGroup c = GetComponent<CanvasGroup>();
         
         if (fader == null)
             return;
+        
+        fader.gameObject.SetActive(true);
 
         if (fadeOutCoroutine != null)
         {
             StopCoroutine(fadeOutCoroutine);
             fadeOutCoroutine = null;
         }
+
+        bool isFadedIn = c.alpha == 1;
         
         if (isFadedIn || fadeInCoroutine != null)
             return;
 
-        isFadedOut = false;
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
                 if (a != null) a();
-                isFadedIn = true;
                 fadeInCoroutine = null;
             },
             maxAlpha: 1f,
@@ -90,19 +90,24 @@ public class Script_CanvasGroupController : MonoBehaviour
     )
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
-        if (fader == null)  return;
-
+        CanvasGroup c = GetComponent<CanvasGroup>();
+        
+        if (fader == null)
+            return;
+        
         if (fadeInCoroutine != null)
         {
             StopCoroutine(fadeInCoroutine);
             fadeInCoroutine = null;
         }
-        if (isFadedOut || fadeOutCoroutine != null)     return;
+        
+        bool isFadedOut = c.alpha == 0;
 
-        isFadedIn = false;
+        if (isFadedOut || fadeOutCoroutine != null)
+            return;
+
         fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(t, () => {
                 if (a != null) a();
-                isFadedOut = true;
                 fader.gameObject.SetActive(false);
                 fadeOutCoroutine = null;
             },
@@ -115,9 +120,6 @@ public class Script_CanvasGroupController : MonoBehaviour
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         fader.Initialize();
 
-        isFadedIn = false;
-        isFadedOut = false;
-        
         if (fadeInCoroutine != null)
         {
             StopCoroutine(fadeInCoroutine);

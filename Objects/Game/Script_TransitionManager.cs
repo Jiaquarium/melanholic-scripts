@@ -231,7 +231,7 @@ public class Script_TransitionManager : MonoBehaviour
                     GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 7);
                     break;
                 case (FinalNotifications.Ellenia):
-                    // Same with Ellenia's room (Painting corresponding with Ei)
+                    // Same with Ellenia's room (Painting corresponding with Eileen's Mind Quest)
                     GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 8);
                     break;
                 default:

@@ -24,9 +24,6 @@ public class Script_SpriteVisibilityController : MonoBehaviour
 
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
-    private bool isFadedOut;
-    private bool isFadedIn;
-    
     
     void Awake() {
         if (spriteFader == null)    spriteFader = GetComponent<Script_SpriteFadeOut>();
@@ -47,14 +44,10 @@ public class Script_SpriteVisibilityController : MonoBehaviour
         if (CheckShouldFadeIn())
         {
             spriteFader.SetVisibility(true);
-            isFadedIn = true;
-            isFadedOut = false;
         }
         else
         {
             spriteFader.SetVisibility(false);
-            isFadedIn = false;
-            isFadedOut = true;
         }
     }
 
@@ -79,6 +72,8 @@ public class Script_SpriteVisibilityController : MonoBehaviour
     /// <summary>
     /// Ensures other coroutine stops running
     /// Check if we're already fading out
+    /// 
+    /// Note: This gameobject must be active to call this method (to run coroutine).
     /// </summary>
     public void FadeOut()
     {
@@ -87,19 +82,20 @@ public class Script_SpriteVisibilityController : MonoBehaviour
             StopCoroutine(fadeInCoroutine);
             fadeInCoroutine = null;
         }
-        if (isFadedOut || fadeOutCoroutine != null)     return;
+        if (fadeOutCoroutine != null)     return;
         
         Debug.Log("Fading out");
 
         float t = Script_Utils.GetFadeTime(fadeSpeed);
-        isFadedIn = false;
         fadeOutCoroutine = StartCoroutine(spriteFader.FadeOutCo(
-            () => {
-                isFadedOut = true;
-            }, t
+            null,
+            t
         ));
     }
 
+    /// <summary>
+    /// Note: This gameobject must be active to call this method (to run coroutine).
+    /// </summary>
     public void FadeIn()
     {
         // if is fully faded out, then upon fading in, match up with player position    
@@ -108,16 +104,14 @@ public class Script_SpriteVisibilityController : MonoBehaviour
             StopCoroutine(fadeOutCoroutine);
             fadeOutCoroutine = null;
         }
-        if (isFadedIn || fadeInCoroutine != null)       return;
+        if (fadeInCoroutine != null)       return;
         
         Debug.Log("Fading in");
 
         float t = Script_Utils.GetFadeTime(fadeSpeed);
-        isFadedOut = false;
         fadeInCoroutine = StartCoroutine(spriteFader.FadeInCo(
-            () => {
-                isFadedIn = true;
-            }, t
+            null,
+            t
         ));
     }
     

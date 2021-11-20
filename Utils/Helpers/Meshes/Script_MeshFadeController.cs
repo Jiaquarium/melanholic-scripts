@@ -7,7 +7,6 @@ using System;
 using UnityEditor;
 #endif
 
-
 [RequireComponent(typeof(Script_MeshFadeInOut))]
 public class Script_MeshFadeController : MonoBehaviour
 {
@@ -31,8 +30,6 @@ public class Script_MeshFadeController : MonoBehaviour
     
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
-    private bool isFadedIn;
-    private bool isFadedOut;
 
     private Script_MeshFadeInOut fader;
 
@@ -75,6 +72,9 @@ public class Script_MeshFadeController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Note: This gameobject must be active to call this method (to run coroutine).
+    /// </summary>
     public virtual void FadeIn(float t = DefaultFadeTime, Action a = null)
     {
         if (fader == null)  return;
@@ -84,15 +84,16 @@ public class Script_MeshFadeController : MonoBehaviour
             StopCoroutine(fadeOutCoroutine);
             fadeOutCoroutine = null;
         }
-        if (isFadedIn || fadeInCoroutine != null)     return;
+        if (fadeInCoroutine != null)     return;
 
-        isFadedOut = false;
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(() => {
             if (a != null) a();
-            isFadedIn = true;
         }, t, maxAlpha));
     }
 
+    /// <summary>
+    /// Note: This gameobject must be active to call this method (to run coroutine).
+    /// </summary>
     public virtual void FadeOut(float t = DefaultFadeTime, Action a = null)
     {
         if (fader == null)  return;
@@ -102,12 +103,10 @@ public class Script_MeshFadeController : MonoBehaviour
             StopCoroutine(fadeInCoroutine);
             fadeInCoroutine = null;
         }
-        if (isFadedOut || fadeOutCoroutine != null)     return;
+        if (fadeOutCoroutine != null)     return;
 
-        isFadedIn = false;
         fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(() => {
             if (a != null) a();
-            isFadedOut = true;
         }, t, minAlpha));
     }
 
