@@ -58,6 +58,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_InteractableObjectText blankCanvasesText;
 
     // -------------------------------------------------------------------------------------
+    // Elder's Intro
+    [SerializeField] private Script_BgThemePlayer eldersTragedyBgThemePlayer;
+    
+    // -------------------------------------------------------------------------------------
     // Deprecated
     
     [SerializeField] Script_SeasonsTree[] ManTrees;
@@ -209,6 +213,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
                 // King's Explanation of Sealing
                 timelineController.PlayableDirectorPlayFromTimelines(0, 0);
+
+                // Play Elder's Tragedy Song
+                game.PauseBgMusic();
+                eldersTragedyBgThemePlayer.Play();
+                Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
             });
         }
     }
@@ -240,6 +249,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     public void EndKingEclaireIntro()
     {
         isKingIntroCutSceneDone = true;
+        Script_BackgroundMusicManager bgm = Script_BackgroundMusicManager.Control;
         
         Script_ArtFrameManager.Control.Close(() => {
             game.ChangeStateInteract();
@@ -250,7 +260,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             KingEclaire.State = Script_StaticNPC.States.Interact;
         });
 
-        Script_BackgroundMusicManager.Control.FadeInMed(null, Const_AudioMixerParams.ExposedBGVolume);
+        eldersTragedyBgThemePlayer.FadeOutStop(() => {
+            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            bgm.PlayFadeIn(bgm.CurrentClipIndex, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        });
     }
 
     // Ids intro run away cut scene on initial tutorial run.

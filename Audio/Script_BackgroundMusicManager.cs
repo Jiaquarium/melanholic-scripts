@@ -21,6 +21,11 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     private Coroutine currentFadeCoroutine;
     private Coroutine currentWaiToPlayCoroutine;
 
+    public int CurrentClipIndex
+    {
+        get => currentClipIndex;
+    }
+
     public void Play(int i, bool forcePlay = false)
     {
         var source = GetComponent<AudioSource>();
@@ -49,7 +54,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public void PlayFadeIn(
         int i,
-        Action cb,
+        Action cb = null,
         bool forcePlay = true,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedMasterVolume
@@ -65,7 +70,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         {
             yield return null;
             
-            Play(i);
+            Play(i, forcePlay);
         }
     }
 
@@ -79,6 +84,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public void Pause()
     {
+        Debug.Log("~~~~ Pausing BGM ~~~~");
+        
         AudioSource source = GetComponent<AudioSource>();
         float lastVol = source.volume;
         source.volume = 0f; // to avoid any ripping noise
@@ -188,6 +195,11 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         FadeIn(cb, Script_AudioEffectsManager.fadeSlowTime, outputMixer);
     }
 
+    public void FadeInXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        FadeIn(cb, Script_AudioEffectsManager.fadeXXSlowTime, outputMixer);
+    }
+
     public void FadeOutXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
@@ -252,29 +264,37 @@ public class Script_BackgroundMusicManagerTester : Editor
         DrawDefaultInspector();
 
         Script_BackgroundMusicManager t = (Script_BackgroundMusicManager)target;
-        if (GUILayout.Button("FadeOutFast()"))
+        if (GUILayout.Button("Fade Out Fast"))
         {
-            t.FadeOutFast(null);
+            t.FadeOutFast(null, Const_AudioMixerParams.ExposedBGVolume);
         }
-        if (GUILayout.Button("FadeInFast()"))
+        if (GUILayout.Button("Fade In Fast"))
         {
-            t.FadeInFast(null);
+            t.FadeInFast(null, Const_AudioMixerParams.ExposedBGVolume);
         }
-        if (GUILayout.Button("FadeOutMed()"))
+        if (GUILayout.Button("Fade Out Med"))
         {
-            t.FadeOutMed(null);
+            t.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
         }
-        if (GUILayout.Button("FadeInMed()"))
+        if (GUILayout.Button("Fade In Med"))
         {
-            t.FadeInMed(null);
+            t.FadeInMed(null, Const_AudioMixerParams.ExposedBGVolume);
         }
-        if (GUILayout.Button("FadeOutSlow()"))
+        if (GUILayout.Button("Fade Out Slow"))
         {
-            t.FadeOutSlow(null);
+            t.FadeOutSlow(null, Const_AudioMixerParams.ExposedBGVolume);
         }
-        if (GUILayout.Button("FadeInSlow()"))
+        if (GUILayout.Button("Fade In Slow"))
         {
-            t.FadeInSlow(null);
+            t.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+        }
+        if (GUILayout.Button("Fade In XXSlow"))
+        {
+            t.FadeInXXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+        }
+        if (GUILayout.Button("Set BG Volume 0f"))
+        {
+            t.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
         }
     }
 }

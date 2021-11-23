@@ -160,6 +160,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip CrunchUp;
     [Range(0f, 1f)] public float CrunchUpVol;
     
+    public AudioClip TheDrop;
+    [Range(0f, 1f)] public float TheDropVol;
+    
     public void PlayQuestProgress(Action cb = null)
     {
         float SFXduration = SecretDuration;

@@ -25,6 +25,9 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Eileen;
     [SerializeField] private Script_DemonNPC EileenElleniaHurt;
     
+    /// <summary>
+    /// This room uses a global BgThemePlayer to not be too repetitive when entering / exiting.
+    /// </summary>
     [SerializeField] private Script_BgThemePlayer EileenThemePlayer;
     
     [SerializeField] private Script_InteractableObjectTextParent textParent;

@@ -702,6 +702,9 @@ public class Script_Game : MonoBehaviour
         levelBehavior.Setup();
     }
 
+    /// <summary>
+    /// Tearing down Level after a an Exit.
+    /// </summary>
     public void DestroyLevel()
     {
         levelBehavior.Cleanup();
@@ -717,6 +720,8 @@ public class Script_Game : MonoBehaviour
         ClearDrops();
         
         StopMovingNPCThemes();
+        BGMManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
+        BGMManager.SetDefault(Const_AudioMixerParams.ExposedSFXVolume);
     }
 
     public void OnSaveTasks()

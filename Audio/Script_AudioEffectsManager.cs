@@ -11,25 +11,15 @@ public class Script_AudioEffectsManager : MonoBehaviour
     public const float fadeMedTime      = 1.0f;
     public const float fadeSlowTime     = 1.5f;
     public const float fadeXSlowTime    = 2.0f;
+    public const float fadeXXSlowTime   = 5.0f;
 
-    public static float GetFadeTime(FadeSpeeds fadeSpeed)
+    public static float GetFadeTime(FadeSpeeds fadeSpeed) => fadeSpeed switch
     {
-        float fadeTime;
-        switch (fadeSpeed)
-        {
-            case FadeSpeeds.Fast:
-                fadeTime = fadeFastTime;
-                break;
-            case FadeSpeeds.Med:
-                fadeTime = fadeMedTime;
-                break;
-            case FadeSpeeds.Slow:
-                fadeTime = fadeSlowTime;
-                break;
-            default:
-                fadeTime = 0f;
-                break;
-        }
-        return fadeTime;
-    }
+            FadeSpeeds.Fast => fadeFastTime,
+            FadeSpeeds.Med => fadeMedTime,
+            FadeSpeeds.Slow => fadeSlowTime,
+            FadeSpeeds.XSlow => fadeXSlowTime,
+            FadeSpeeds.XXSlow => fadeXXSlowTime,
+            _ => 0f,
+    };
 }
