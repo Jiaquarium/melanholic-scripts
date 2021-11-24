@@ -26,7 +26,7 @@ public class Script_Attack : MonoBehaviour, IHitBoxResponder
         activeHitBox.StartCheckingCollision();
     }
 
-    Script_HitBox GetHitBoxDirection(Directions dir)
+    protected Script_HitBox GetHitBoxDirection(Directions dir)
     {
         if (dir == Directions.Up)            return hitBoxN;
         else if (dir == Directions.Right)    return hitBoxE;

@@ -26,6 +26,7 @@ public class Script_PlayerAttackEat : Script_Attack
         player.AnimatorEffectHold = true;
 
         didHit = false;
+        
         base.Attack(direction);
         eatingCoroutine = StartCoroutine(EndEating());
     }
@@ -49,14 +50,17 @@ public class Script_PlayerAttackEat : Script_Attack
             activeHitBox.StopCheckingCollision();
             return;
         }
+        
         Script_HurtBox hurtBox = collider.GetComponent<Script_HurtBox>();
+        
         if (hurtBox != null)
         {
             int dmg = GetAttackStat().GetVal();
             print($"CollisionedWith with {hurtBox.gameObject.name} inflicting dmg: {dmg}");
 
             int dmgActuallyGiven = hurtBox.Hurt(dmg, hitBox);
-            if (dmgActuallyGiven > 0)    HitSFX();
+            if (dmgActuallyGiven > 0) 
+                HitSFX();
 
             didHit = true;
         }

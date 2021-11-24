@@ -94,7 +94,8 @@ public class Script_EnergySpikeAttack : Script_Attack
                 didHit = true;
             }
 
-            if (hitBoxBehavior != null)     hitBoxBehavior.Hit(collider);
+            if (hitBoxBehavior != null)
+                hitBoxBehavior.Hit(collider);
         }
     }
 

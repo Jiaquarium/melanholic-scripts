@@ -7,6 +7,7 @@ using UnityEditor;
 #endif
 
 /// <summary>
+/// Player Spike Attack
 /// spikes [0, 1, 2, 3] => [N, E, S, W] depending on how it's laid out in Inspector
 /// </summary>
 public class Script_IceSpikeAttack : Script_EnergySpikeAttack
@@ -27,6 +28,8 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
     {
         player.SetIsEffect();
         didHit = false;
+
+        activeHitBox = GetHitBoxDirection(dir);
         
         switch (dir)
         {
@@ -47,6 +50,33 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
         SpikeSequence();
     }
 
+    // Compare with PlayerAttackEat.
+    public override void CollisionedWith(Collider collider, Script_HitBox hitBox)
+    {
+        if (didHit)
+        {
+            activeHitBox.StopCheckingCollision();
+            return;
+        }
+        
+        Script_HurtBox hurtBox = collider.GetComponent<Script_HurtBox>();
+        
+        if (hurtBox != null)
+        {
+            int dmg = GetAttackStat().GetVal();
+            print($"CollisionedWith with {hurtBox} inflicting dmg: {dmg}");
+            
+            int dmgActuallyGiven = hurtBox.Hurt(dmg, hitBox);
+            if (dmgActuallyGiven > 0)
+                HitSFX();
+            
+            didHit = true;
+
+            if (hitBoxBehavior != null)
+                hitBoxBehavior.Hit(collider);
+        }
+    }
+
     /// <summary>
     /// Uses the Ice Spike timeline to call when to end spike instead of by coroutine and timer
     /// which is inexact, which is fine for enemies but not the player
@@ -61,7 +91,8 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
 
     private void HideSpikes()
     {
-        foreach (Transform spike in spikes) spike.gameObject.SetActive(false);
+        foreach (Transform spike in spikes)
+            spike.gameObject.SetActive(false);
     }
 
     // ------------------------------------------------------------------------------------
@@ -74,6 +105,8 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
         isInUse = false;
 
         player.SetIsInteract();
+
+        base.EndAttack();
     }
     // Timeline Signals End
     // ------------------------------------------------------------------------------------

@@ -66,7 +66,8 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
                 didHit = true;
             }
 
-            if (hitBoxBehavior != null)     hitBoxBehavior.Hit(collider);
+            if (hitBoxBehavior != null)
+                hitBoxBehavior.Hit(collider);
         }
     }
 }
