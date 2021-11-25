@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-17 22:23:08
+// Last created by UI Exporter at 2021-11-24 18:33:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -94,35 +94,56 @@ public class Script_UIText
     "good-ending_narrator_monologue",
     new Model_LanguagesUI
     {
-        EN = @"After that day, I never saw {37} ever again."
+        EN = @"After that day, I quit my job at the seaside hotel."
     }
 },
 {
     "good-ending_narrator_monologue1",
     new Model_LanguagesUI
     {
-        EN = @"I often still think back about what happened there."
+        EN = @"Needless to say, I never saw {37} ever again."
     }
 },
 {
     "good-ending_narrator_monologue2",
     new Model_LanguagesUI
     {
-        EN = @"But with each passing moment..."
+        EN = @"With each passing moment, the memory fades a bit more."
     }
 },
 {
     "good-ending_narrator_monologue3",
     new Model_LanguagesUI
     {
-        EN = @"The memory fades a bit more."
+        EN = @"I’d like to think my time there was worth it."
     }
 },
 {
     "good-ending_narrator_monologue4",
     new Model_LanguagesUI
     {
-        EN = @"I’d like to think my time inside there was worth it."
+        EN = @"Finally I can sleep now."
+    }
+},
+{
+    "good-ending_the-end_title",
+    new Model_LanguagesUI
+    {
+        EN = @"The End"
+    }
+},
+{
+    "good-ending_the-end_type",
+    new Model_LanguagesUI
+    {
+        EN = @"『 GOOD ENDING 』"
+    }
+},
+{
+    "good-ending_the-end_label",
+    new Model_LanguagesUI
+    {
+        EN = @"Everything Returns to Zero"
     }
 },
 {

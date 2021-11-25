@@ -104,10 +104,11 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip Secret;
     [Range(0f, 1f)] public float SecretVol;
-    public float SecretDuration = 1.5f;
+    public float SecretDuration = 3.0f;
 
     public AudioClip CorrectPartialProgress;
     [Range(0f, 1f)] public float CorrectPartialProgressVol;
+    public float CorrectPartialProgressDuration = 2.0f;
     
     public AudioClip MainQuestDone;
     [Range(0f, 1f)] public float MainQuestDoneVol;
@@ -165,11 +166,28 @@ public class Script_SFXManager : MonoBehaviour
     
     public void PlayQuestProgress(Action cb = null)
     {
+        float SFXduration = CorrectPartialProgressDuration;
+        
+        SFXSource.PlayOneShot(CorrectPartialProgress, CorrectPartialProgressVol);
+
+        if (cb != null)
+            StartCoroutine(OnSFXDone());
+        
+        IEnumerator OnSFXDone()
+        {
+            yield return new WaitForSeconds(SFXduration);
+            cb();
+        }
+    }
+    
+    public void PlayQuestComplete(Action cb = null)
+    {
         float SFXduration = SecretDuration;
         
         SFXSource.PlayOneShot(Secret, SecretVol);
 
-        if (cb != null) StartCoroutine(OnSFXDone());
+        if (cb != null)
+            StartCoroutine(OnSFXDone());
         
         IEnumerator OnSFXDone()
         {

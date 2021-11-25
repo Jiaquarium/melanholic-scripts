@@ -40,7 +40,8 @@ public class Script_InteractableObjectInput : Script_InteractableObject
         EndInput();
 
         bool isUnityAction = successAction.CheckUnityEventAction();
-        if (isUnityAction)      successAction.Invoke();
+        if (isUnityAction)
+            successAction.Invoke();
     }
 
     // Called from Level Behavior

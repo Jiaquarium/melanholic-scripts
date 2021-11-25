@@ -145,7 +145,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             CCTVAdminComputer.OnSubmitSuccess();
 
             game.ActiveEnding = Script_TransitionManager.Endings.Good;
-            HandleEndingExitState(true);
+            
+            DisableSurveillanceSequence();
         }
         else
         {
@@ -277,8 +278,33 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         game.ChangeStateInteract();
     }
+
+    public void OnDisableSurveillanceWhiteScreen()
+    {
+        HandleEndingExitState(true);
+    }
+
+    public void OnDisableSurveillanceDone()
+    {
+        game.ChangeStateInteract();
+    }
+    
     // ------------------------------------------------------------------
 
+    private void DisableSurveillanceSequence()
+    {
+        game.ChangeStateCutScene();
+        
+        // Quest Complete SFX
+        Script_SFXManager.SFX.PlayQuestComplete(() => {
+            // Camera Pan to Surveillance Cam
+            // Electricity Effect
+            // Explosion
+            // Fade to White
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
+        });
+    }
+    
     private void HandleEndingExitState(bool isOpen)
     {
         hotelFrontDoor.gameObject.SetActive(!isOpen);
@@ -365,36 +391,43 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             HandleEndingExitState(true);
         }
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_32))]
-public class Script_LevelBehavior_32Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_LevelBehavior_32))]
+    public class Script_LevelBehavior_32Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_LevelBehavior_32 t = (Script_LevelBehavior_32)target;
-        if (GUILayout.Button("Check CCTV Code"))
-        {
-            bool result = t.CheckCCTVCode(t.DEVELOPMENT_CCTVCodeInput);
+            Script_LevelBehavior_32 t = (Script_LevelBehavior_32)target;
+            if (GUILayout.Button("Check CCTV Code"))
+            {
+                bool result = t.CheckCCTVCode(t.DEVELOPMENT_CCTVCodeInput);
 
-            Debug.Log($"------------ Result: {result} ------------");
-        }
+                Debug.Log($"------------ Result: {result} ------------");
+            }
 
-        GUILayout.Space(8);
+            GUILayout.Space(8);
+            EditorGUILayout.LabelField("Endings", EditorStyles.miniLabel);
 
-        if (GUILayout.Button("Good Ending"))
-        {
-            Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.Good;
-            t.EndingCutScene();
-        }
+            if (GUILayout.Button("Disable Surveillance"))
+            {
+                Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.Good;
+                t.DisableSurveillanceSequence();
+            }
+            
+            if (GUILayout.Button("Good Ending"))
+            {
+                Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.Good;
+                t.EndingCutScene();
+            }
 
-        if (GUILayout.Button("True Ending"))
-        {
-            Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.True;
-            t.EndingCutScene();
+            if (GUILayout.Button("True Ending"))
+            {
+                Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.True;
+                t.EndingCutScene();
+            }
         }
     }
+    #endif
 }
-#endif

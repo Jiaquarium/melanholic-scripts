@@ -114,7 +114,7 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
             shakeDurationLong,
             Const_Camera.Shake.AmplitudeMed,
             Const_Camera.Shake.FrequencyMed, 
-            () => Script_SFXManager.SFX.PlayQuestProgress(() => game.ChangeStateInteract())
+            () => Script_SFXManager.SFX.PlayQuestComplete(() => game.ChangeStateInteract())
         );
     }
 
