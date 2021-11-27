@@ -44,7 +44,8 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private float toTitleWaitTime;
     
     public Script_CanvasGroupFadeInOut fader;
-    [SerializeField] private Script_CanvasGroupController timelineFader;
+    [SerializeField] private Script_CanvasGroupController timelineFaderOver;
+    [SerializeField] private Script_CanvasGroupController timelineFaderUnder;
     
     [SerializeField] private Script_CanvasGroupController underDialogueController;
     [SerializeField] private Script_Game game;
@@ -57,10 +58,14 @@ public class Script_TransitionManager : MonoBehaviour
     
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
-    public const float FadeTimeDefault = 0.5f;
     public const float FadeTimeSlow = 2.0f;
     public const float UnderDialogueFadeTime = 1.5f;
     public Script_CanvasGroupController restartPrompt;
+
+    [Header("Endings")]
+    [SerializeField] private FadeSpeeds fadeOutEndingScreenSpeed;
+    [SerializeField] private int endingTheme;
+    [SerializeField] private int endingOceanTheme;
 
     private Action onAllPuzzlesDoneCutsceneDone;
     private Script_GameOverController.DeathTypes deathType;
@@ -117,20 +122,32 @@ public class Script_TransitionManager : MonoBehaviour
         underDialogueController.FadeOut(t, action);
     }
 
-    public void TimelineBlackScreen()
+    public void TimelineBlackScreen(bool isOver = false)
     {
-        timelineFader.Open();
+        var canvasGroupController = isOver ? timelineFaderOver : timelineFaderUnder;
+
+        canvasGroupController.Open();
     }
 
-    // Fader that will show under Art Frame.
-    public void TimelineFadeIn(float t, Action action)
+    public void TimelineRemoveBlackScreen(bool isOver = false)
     {
-        timelineFader.FadeIn(t, action);
+        var canvasGroupController = isOver ? timelineFaderOver : timelineFaderUnder;
+
+        canvasGroupController.Close();
     }
 
-    public void TimelineFadeOut(float t, Action action)
+    public void TimelineFadeIn(float t, Action action, bool isOver = false)
     {
-        timelineFader.FadeOut(t, action);
+        var canvasGroupController = isOver ? timelineFaderOver : timelineFaderUnder;
+        
+        canvasGroupController.FadeIn(t, action);
+    }
+
+    public void TimelineFadeOut(float t, Action action, bool isOver = false)
+    {
+        var canvasGroupController = isOver ? timelineFaderOver : timelineFaderUnder;
+        
+        canvasGroupController.FadeOut(t, action);
     }
 
     public void DieEffects(Script_GameOverController.DeathTypes _deathType)
@@ -206,7 +223,8 @@ public class Script_TransitionManager : MonoBehaviour
 
         game.ChangeStateCutScene();
         
-        Script_BackgroundMusicManager.Control.FadeOutSlow();
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOutSlow(bgm.Stop);
 
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
     }
@@ -315,12 +333,26 @@ public class Script_TransitionManager : MonoBehaviour
         }
     }
     
+    // After Realization Text is done.
+    public void OnStartTheEndScreen()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.Play(endingOceanTheme);
+    }
+    
     // After screen has faded to Black play the proper timeline.
     public void PlayEndingCutScene()
     {
+        var bgm = Script_BackgroundMusicManager.Control;
+        
+        bgm.Stop();
+        bgm.SetVolume(1f);
+        
         switch (game.ActiveEnding)
         {
             case (Endings.Good):
+                bgm.Play(endingTheme);
+                
                 GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
                 break;
             case (Endings.True):
@@ -334,12 +366,23 @@ public class Script_TransitionManager : MonoBehaviour
     // After played proper ending cut scene.
     public void RollCredits()
     {
-        StartCoroutine(NextFrameCredits());
+        // Fade in Black
+        var fadeTimeScreen = fadeOutEndingScreenSpeed.GetFadeTime();
+        var bgm = Script_BackgroundMusicManager.Control;
+        
+        // Fade out BGM (1.5s)
+        bgm.FadeOutSlow(null);
+        
+        // XSlow (2.0s)
+        TimelineFadeIn(fadeTimeScreen, () => {
+            StartCoroutine(NextFrameCredits());
+        }, isOver: true);
         
         IEnumerator NextFrameCredits()
         {
             yield return null;
             
+            TimelineRemoveBlackScreen(isOver: true);
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
         }
     }
@@ -392,7 +435,8 @@ public class Script_TransitionManager : MonoBehaviour
     public void InitialState()
     {
         fader.GetComponent<Script_CanvasGroupController>().InitialState();
-        timelineFader.InitialState();
+        timelineFaderUnder.InitialState();
+        timelineFaderOver.InitialState();
     }
     
     public void Setup()

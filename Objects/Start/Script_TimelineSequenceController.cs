@@ -5,6 +5,11 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Linq;
 
+/// <summary>
+/// Because Pausing timeline at Playhead doesn't gurantee a precise frame,
+/// give 8 frames of buffer after a Pause (in the Timeline) to ensure the Timeline
+/// doesn't scrub into the next event.
+/// </summary>
 public class Script_TimelineSequenceController : MonoBehaviour, INotificationReceiver
 {
     [SerializeField] protected PlayableDirector director;

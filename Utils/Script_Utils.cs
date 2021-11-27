@@ -837,29 +837,21 @@ public static class Script_Utils
         }
     }
 
-    public static float GetFadeTime(FadeSpeeds fadeSpeed)
+    public static float GetFadeTime(this FadeSpeeds fadeSpeed)
     {
         const float fadeFastTime = 0.25f;
         const float fadeMedTime = 0.75f;
         const float fadeSlowTime = 1.25f;
+        const float fadeXSlowTime = 2.0f;
         
-        float fadeTime;
-        switch (fadeSpeed)
+        return fadeSpeed switch
         {
-            case FadeSpeeds.Fast:
-                fadeTime = fadeFastTime;
-                break;
-            case FadeSpeeds.Med:
-                fadeTime = fadeMedTime;
-                break;
-            case FadeSpeeds.Slow:
-                fadeTime = fadeSlowTime;
-                break;
-            default:
-                fadeTime = 0f;
-                break;
-        }
-        return fadeTime;
+            FadeSpeeds.Fast => fadeFastTime,
+            FadeSpeeds.Med => fadeMedTime,
+            FadeSpeeds.Slow => fadeSlowTime,
+            FadeSpeeds.XSlow => fadeXSlowTime,
+            _ => 0f,
+        };
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-24 18:33:25
+// Last created by UI Exporter at 2021-11-26 15:33:59
 
 using System.Collections;
 using System.Collections.Generic;
@@ -108,18 +108,123 @@ public class Script_UIText
     "good-ending_narrator_monologue2",
     new Model_LanguagesUI
     {
-        EN = @"With each passing moment, the memory fades a bit more."
+        EN = @"It’s strange to think now,"
     }
 },
 {
     "good-ending_narrator_monologue3",
     new Model_LanguagesUI
     {
-        EN = @"I’d like to think my time there was worth it."
+        EN = @"That my life revolved around that place for so long."
     }
 },
 {
     "good-ending_narrator_monologue4",
+    new Model_LanguagesUI
+    {
+        EN = @"And now, it’ll just be another fading memory."
+    }
+},
+{
+    "good-ending_narrator_monologue5",
+    new Model_LanguagesUI
+    {
+        EN = @"How do you keep something from fading away entirely anyways?"
+    }
+},
+{
+    "good-ending_narrator_monologue6",
+    new Model_LanguagesUI
+    {
+        EN = @"......"
+    }
+},
+{
+    "good-ending_narrator_monologue7",
+    new Model_LanguagesUI
+    {
+        EN = @"I wonder what became of Ids, Ellenia, Eileen, Ursie, and the rest of them?"
+    }
+},
+{
+    "good-ending_narrator_monologue8",
+    new Model_LanguagesUI
+    {
+        EN = @"Are they still down there?"
+    }
+},
+{
+    "good-ending_narrator_monologue9",
+    new Model_LanguagesUI
+    {
+        EN = @"Maybe I wasn’t really helping anyone but myself."
+    }
+},
+{
+    "good-ending_narrator_monologue10",
+    new Model_LanguagesUI
+    {
+        EN = @"Maybe <i>I really was the intruder.</i>"
+    }
+},
+{
+    "good-ending_narrator_monologue11",
+    new Model_LanguagesUI
+    {
+        EN = @"I guess I’ll never know."
+    }
+},
+{
+    "good-ending_narrator_monologue12",
+    new Model_LanguagesUI
+    {
+        EN = @"The most important thing though,"
+    }
+},
+{
+    "good-ending_narrator_monologue13",
+    new Model_LanguagesUI
+    {
+        EN = @"Is that I have closure."
+    }
+},
+{
+    "good-ending_narrator_monologue14",
+    new Model_LanguagesUI
+    {
+        EN = @"I’m putting an end to this chapter of my life."
+    }
+},
+{
+    "good-ending_narrator_monologue15",
+    new Model_LanguagesUI
+    {
+        EN = @"I had been living in a haze for too long now."
+    }
+},
+{
+    "good-ending_narrator_monologue16",
+    new Model_LanguagesUI
+    {
+        EN = @"Look,"
+    }
+},
+{
+    "good-ending_narrator_monologue17",
+    new Model_LanguagesUI
+    {
+        EN = @"The sun is coming up."
+    }
+},
+{
+    "good-ending_narrator_monologue18",
+    new Model_LanguagesUI
+    {
+        EN = @"......"
+    }
+},
+{
+    "good-ending_narrator_monologue19",
     new Model_LanguagesUI
     {
         EN = @"Finally I can sleep now."
