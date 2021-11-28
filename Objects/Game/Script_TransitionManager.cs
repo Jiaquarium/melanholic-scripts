@@ -232,7 +232,11 @@ public class Script_TransitionManager : MonoBehaviour
     /// <summary>
     /// Checks whether or not to play the final cut scene
     /// </summary>
-    public bool OnCurrentQuestDone(Action cb = null, FinalNotifications type = FinalNotifications.Default)
+    public bool OnCurrentQuestDone(
+        Action allQuestsDoneCb = null,
+        Action defaultCb = null,
+        FinalNotifications type = FinalNotifications.Default
+    )
     {
         Debug.Log($"{name} Check for All Puzzles Done Cut Scene");
         
@@ -257,18 +261,29 @@ public class Script_TransitionManager : MonoBehaviour
                     break;
             }
 
-            if (cb != null)
-                onAllPuzzlesDoneCutsceneDone = cb;
+            if (allQuestsDoneCb != null)
+                onAllPuzzlesDoneCutsceneDone = allQuestsDoneCb;
             
             didPlayAllPuzzlesDoneCutScene = true;
 
             return true;
         }
 
-        if (cb != null)
-            cb();
+        if (defaultCb != null)
+            defaultCb();
         
         return false;
+    }
+
+    public void FinalCutSceneAwakening()
+    {
+        var PRCSManager = Script_PRCSManager.Control;
+
+        PRCSManager.TalkingSelfSequence(() => {
+            // Set the Final Awakening Canvas active
+
+            // Play the Final Awakening Timeline
+        });
     }
 
     // ------------------------------------------------------------------

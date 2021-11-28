@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -346,24 +347,38 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
                 isPuzzleComplete        = true;
                 isCurrentPuzzleComplete = true;
 
-                Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-                    if (!didPlayFaceOff)
+                Script_TransitionManager.Control.OnCurrentQuestDone(
+                    allQuestsDoneCb: () =>
                     {
-                        var PRCSManager = Script_PRCSManager.Control;
-
-                        PRCSManager.TalkingSelfSequence(() => {
-                            PRCSManager.PlayFaceOffTimeline(() => {
-                                game.ChangeStateInteract();
-                                didPlayFaceOff = true;
-                            });
-                        });
-                    }
-                    else
+                        // Final Cut Scene Sequence
+                    
+                    }, 
+                    defaultCb: () =>
                     {
-                        game.ChangeStateInteract();
+                        HandlePlayFaceOff(game.ChangeStateInteract);
                     }
-                });                
+                );
             }));
+        }
+
+        // Face Off is not played if Final Cut Scene Sequence should play.
+        void HandlePlayFaceOff(Action cb)
+        {
+            if (!didPlayFaceOff)
+            {
+                var PRCSManager = Script_PRCSManager.Control;
+
+                PRCSManager.TalkingSelfSequence(() => {
+                    PRCSManager.PlayFaceOffTimeline(() => {
+                        cb();
+                        didPlayFaceOff = true;
+                    });
+                });
+            }
+            else
+            {
+                cb();
+            }
         }
     }
     

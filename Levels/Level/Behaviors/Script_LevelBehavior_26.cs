@@ -393,10 +393,21 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public void OnEileensMindPaintingTimelineDone()
     {
         isTimelineControlled = true;
-        Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-            game.ChangeStateInteract();
-            isTimelineControlled = false;
-        });
+        
+        Script_TransitionManager.Control.OnCurrentQuestDone(
+            allQuestsDoneCb: () =>
+            {
+                isTimelineControlled = false;
+                
+                // Final Cut Scene Sequence
+            
+            }, 
+            defaultCb: () =>
+            {
+                isTimelineControlled = false;
+                game.ChangeStateInteract();
+            }
+        );
     }
 
     public void HidePlayer()

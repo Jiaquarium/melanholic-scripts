@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Audio;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -545,14 +546,29 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         game.UnPauseBgMusic();
         easleYellAtPlayerIOText.gameObject.SetActive(false);
 
-        Script_TransitionManager.Control.OnCurrentQuestDone(() =>
+        Script_TransitionManager.Control.OnCurrentQuestDone(
+            allQuestsDoneCb: () =>
+            {
+                HandleFadeInBgm(() => {
+                    // Final Cut Scene
+
+                });
+            }, 
+            defaultCb: () =>
+            {
+                HandleFadeInBgm(game.ChangeStateInteract);
+            },
+            Script_TransitionManager.FinalNotifications.Ellenia
+        );
+
+        void HandleFadeInBgm(Action cb)
         {
             Script_BackgroundMusicManager.Control.FadeInXSlow(() =>
             {
-                game.ChangeStateInteract();
                 easleFullArt.gameObject.SetActive(true);
+                cb();
             }, BGMParam);
-        }, Script_TransitionManager.FinalNotifications.Ellenia);
+        }
     }
 
     // ----------------------------------------------------------------------

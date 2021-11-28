@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -354,24 +355,37 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void OnWellsWorldPaintingQuestDone()
     {
-        Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-            // Play TalkingSelf Timeline if haven't played yet.
+        Script_TransitionManager.Control.OnCurrentQuestDone(
+            allQuestsDoneCb: () =>
+            {
+                // Final Cut Scene Sequence
+            
+            }, 
+            defaultCb: () =>
+            {
+                HandlePlayFaceOff(game.ChangeStateInteract);
+            }
+        );
+
+        // Face Off is not played if Final Cut Scene Sequence should play.
+        void HandlePlayFaceOff(Action cb)
+        {
             if (!didPlayFaceOff)
             {
                 var PRCSManager = Script_PRCSManager.Control;
 
                 PRCSManager.TalkingSelfSequence(() => {
                     PRCSManager.PlayFaceOffTimeline(() => {
-                        game.ChangeStateInteract();
+                        cb();
                         didPlayFaceOff = true;
                     });
                 });
             }
             else
             {
-                game.ChangeStateInteract();
+                cb();
             }
-        });
+        }
     }
     // ----------------------------------------------------------------------
 

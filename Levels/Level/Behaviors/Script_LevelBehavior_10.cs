@@ -363,10 +363,22 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         isCurrentPuzzleComplete = true;
         
         isTimelineControlled = true;
-        Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-            game.ChangeStateInteract();
-            isTimelineControlled = false;
-        }, Script_TransitionManager.FinalNotifications.Ids);
+
+        Script_TransitionManager.Control.OnCurrentQuestDone(
+            allQuestsDoneCb: () =>
+            {
+                isTimelineControlled = false;
+                
+                // Final Cut Scene Sequence
+            
+            }, 
+            defaultCb: () =>
+            {
+                isTimelineControlled = false;
+                game.ChangeStateInteract();
+            },
+            Script_TransitionManager.FinalNotifications.Ids
+        );
     }
     
     // Called from PlayIdsDeadPRCS Timeline.

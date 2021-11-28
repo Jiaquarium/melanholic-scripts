@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -208,25 +209,40 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
 
             isTimelineControlled = true;
             
-            Script_TransitionManager.Control.OnCurrentQuestDone(() => {
-                isTimelineControlled = false;
+            Script_TransitionManager.Control.OnCurrentQuestDone(
+                allQuestsDoneCb: () =>
+                {
+                    isTimelineControlled = false;
+                    
+                    // Final Cut Scene Sequence
                 
-                if (!didPlayFaceOff)
+                }, 
+                defaultCb: () =>
                 {
-                    var PRCSManager = Script_PRCSManager.Control;
+                    isTimelineControlled = false;
+                    HandlePlayFaceOff(game.ChangeStateInteract);
+                }
+            );
+        }
 
-                    PRCSManager.TalkingSelfSequence(() => {
-                        PRCSManager.PlayFaceOffTimeline(() => {
-                            game.ChangeStateInteract();
-                            didPlayFaceOff = true;
-                        });
+        // Face Off is not played if Final Cut Scene Sequence should play.
+        void HandlePlayFaceOff(Action cb)
+        {
+            if (!didPlayFaceOff)
+            {
+                var PRCSManager = Script_PRCSManager.Control;
+
+                PRCSManager.TalkingSelfSequence(() => {
+                    PRCSManager.PlayFaceOffTimeline(() => {
+                        cb();
+                        didPlayFaceOff = true;
                     });
-                }
-                else
-                {
-                    game.ChangeStateInteract();
-                }
-            });
+                });
+            }
+            else
+            {
+                cb();
+            }
         }
     }
 
