@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-26 15:33:59
+// Last created by UI Exporter at 2021-11-29 20:34:14
 
 using System.Collections;
 using System.Collections.Generic;
@@ -582,6 +582,13 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Gain control of {73}. Your control will not be perfect though."
+    }
+},
+{
+    "sticker_my-mask",
+    new Model_LanguagesUI
+    {
+        EN = @"A mysterious @@Sticker_Bold birthed from spirits inside and outside of {37}. It emanates a powerful aura, a feeling only its original owner can harness."
     }
 },
 // ------------------------------------------------------------------
@@ -1361,6 +1368,57 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I need things to stay how they are."
+    }
+},
+// ------------------------------------------------------------------
+// Finale
+{
+    "faceoff_rin-myne_finale_block0_0",
+    new Model_LanguagesUI
+    {
+        EN = @"I’m beginning to understand."
+    }
+},
+{
+    "faceoff_rin-myne_finale_block0_1",
+    new Model_LanguagesUI
+    {
+        EN = @"These paintings."
+    }
+},
+{
+    "faceoff_rin-myne_finale_block0_2",
+    new Model_LanguagesUI
+    {
+        EN = @"This mansion."
+    }
+},
+{
+    "faceoff_rin-myne_finale_block0_3",
+    new Model_LanguagesUI
+    {
+        EN = @"You and I."
+    }
+},
+{
+    "faceoff_rin-myne_finale_block1_0",
+    new Model_LanguagesUI
+    {
+        EN = @"This is what they mean when people change."
+    }
+},
+{
+    "faceoff_rin-myne_finale_block2_0",
+    new Model_LanguagesUI
+    {
+        EN = @"I’m in control."
+    }
+},
+{
+    "faceoff_rin-myne_finale_block3_0",
+    new Model_LanguagesUI
+    {
+        EN = @"If I’m a threat, so be it!"
     }
 },
 

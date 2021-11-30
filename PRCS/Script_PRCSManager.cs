@@ -24,6 +24,7 @@ public class Script_PRCSManager : MonoBehaviour
     [UnityEngine.Serialization.FormerlySerializedAs("TimelinePRCSCanvasGroup")]
     [SerializeField] private Script_CanvasGroupController KingsIntroCanvasGroup;
     [SerializeField] private Script_AwakeningCanvasGroupController AwakeningCanvasGroup;
+    [SerializeField] private Script_AwakeningCanvasGroupController AwakeningFinalCanvasGroup;
     [SerializeField] private Script_FaceOffCanvasGroupController[] FaceOffCanvasGroups;
     [SerializeField] private float glitchFadeInTime = 5f;
     [SerializeField] private float glitchFadeOutTime = 2f;
@@ -39,8 +40,9 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_GlitchFXManager glitchManager;
 
     [SerializeField] private Script_TimelineController faceOffTimelineController;
-    [SerializeField] private int targetEquipmentSlot;
+    [SerializeField] private Script_TimelineController awakeningFinalTimelineController;
     [SerializeField] private float waitTimeAfterFaceOff;
+    [SerializeField] private float waitTimeAfterAwakeningFinal;
 
     [SerializeField] private Script_Game game;
 
@@ -211,8 +213,19 @@ public class Script_PRCSManager : MonoBehaviour
             AwakeningCanvasGroup.Close();
     }
 
+    public void SetAwakeningFinalActive(bool isActive)
+    {
+        if (isActive)
+            AwakeningFinalCanvasGroup.Open();
+        else
+            AwakeningFinalCanvasGroup.Close();
+    }
+
     public void SetFaceOffActive(int i, bool isActive)
     {
+        if (i > FaceOffCanvasGroups.Length - 1)
+            return;
+        
         if (isActive)
             FaceOffCanvasGroups[i].Open();
         else
@@ -244,11 +257,21 @@ public class Script_PRCSManager : MonoBehaviour
     public void PlayFaceOffTimeline(Action onTimelineDoneAction)
     {
         onFaceOffTimelineDoneAction = onTimelineDoneAction;
+
+        if (FaceOffCounter > faceOffTimelineController.timelines.Count - 1)
+        {
+            if (onTimelineDoneAction != null)
+                onTimelineDoneAction();
+            return;
+        }
         
         SetFaceOffActive(FaceOffCounter, true);
-        
-        var clampedCounter = Mathf.Clamp(FaceOffCounter, 0, faceOffTimelineController.timelines.Count - 1);
-        faceOffTimelineController.PlayableDirectorPlayFromTimelines(0, clampedCounter);
+        faceOffTimelineController.PlayableDirectorPlayFromTimelines(0, FaceOffCounter);
+    }
+
+    public void PlayAwakeningFinalTimeline()
+    {
+        awakeningFinalTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
     }
 
     private void SwitchLastElevatorMaskBackground()
@@ -298,6 +321,40 @@ public class Script_PRCSManager : MonoBehaviour
         }
     }
 
+    public void OnAwakeningFinalTimelineDone()
+    {
+        game.ChangeStateCutScene();
+        
+        Script_TransitionManager.Control.TimelineBlackScreen();
+        SetAwakeningFinalActive(false);
+        
+        game.TeleportToGrandMirrorBackground();
+        
+        game.AddMyMaskBackground();
+
+        glitchManager.SetLow();
+        glitchManager.SetBlend(1f);
+
+        StartCoroutine(WaitToFadeOut());
+
+        IEnumerator WaitToFadeOut()
+        {
+            yield return new WaitForSeconds(waitTimeAfterAwakeningFinal);
+
+            Script_TransitionManager.Control.TimelineFadeOut(
+                Script_TransitionManager.FadeTimeSlow,
+                () => {
+                    // Blend out glitch effect and set to Interact
+                    glitchManager.BlendTo(
+                        0f,
+                        glitchFadeOutTime,
+                        game.ChangeStateInteract
+                    );
+                }
+            );
+        }
+    }
+
     // ----------------------------------------------------------------------
 
     public void Initialize()
@@ -322,6 +379,9 @@ public class Script_PRCSManager : MonoBehaviour
 
         AwakeningCanvasGroup.InitialState();
         AwakeningCanvasGroup.gameObject.SetActive(false);
+
+        AwakeningFinalCanvasGroup.InitialState();
+        AwakeningFinalCanvasGroup.gameObject.SetActive(false);
 
         foreach (var canvasGroup in FaceOffCanvasGroups)
         {
@@ -358,6 +418,11 @@ public class Script_PRCSManager : MonoBehaviour
             if (GUILayout.Button("Switch to Last Elevator Background"))
             {
                 t.SwitchLastElevatorMaskBackground();
+            }
+
+            if (GUILayout.Button("On Awakening Final Timeline Done"))
+            {
+                t.OnAwakeningFinalTimelineDone();
             }
         }
     }

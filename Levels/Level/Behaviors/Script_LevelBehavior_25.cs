@@ -546,12 +546,12 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         game.UnPauseBgMusic();
         easleYellAtPlayerIOText.gameObject.SetActive(false);
 
-        Script_TransitionManager.Control.OnCurrentQuestDone(
+        var transitionManager = Script_TransitionManager.Control;
+        transitionManager.OnCurrentQuestDone(
             allQuestsDoneCb: () =>
             {
                 HandleFadeInBgm(() => {
-                    // Final Cut Scene
-
+                    transitionManager.FinalCutSceneAwakening();
                 });
             }, 
             defaultCb: () =>

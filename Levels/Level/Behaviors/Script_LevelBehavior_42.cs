@@ -355,11 +355,11 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void OnWellsWorldPaintingQuestDone()
     {
-        Script_TransitionManager.Control.OnCurrentQuestDone(
+        var transitionManager = Script_TransitionManager.Control;
+        transitionManager.OnCurrentQuestDone(
             allQuestsDoneCb: () =>
             {
-                // Final Cut Scene Sequence
-            
+                transitionManager.FinalCutSceneAwakening();
             }, 
             defaultCb: () =>
             {

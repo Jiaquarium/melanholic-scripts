@@ -121,6 +121,11 @@ public class Dev_InventoryTester : MonoBehaviour
         Script_Game.Game.AddItemById(Const_Items.PuppeteerId);
     }
 
+    public void AddMyMask()
+    {
+        Script_Game.Game.AddItemById(Const_Items.MyMaskId);
+    }
+
     // ------------------------------------------------------------------------
     //  Usables
     public void AddMasterKey()
@@ -232,6 +237,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Puppeteer"))
         {
             t.AddPuppeteer();
+        }
+
+        if (GUILayout.Button("Add: MyMask"))
+        {
+            t.AddMyMask();
         }
 
         GUILayout.Space(8);

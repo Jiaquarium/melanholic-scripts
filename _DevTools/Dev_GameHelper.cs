@@ -24,6 +24,8 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject XXXWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject UrselksSaloonHallwayEntrance;
+    [SerializeField] private Script_ExitMetadataObject UrselksSaloonEntrance;
+    [SerializeField] private Script_ExitMetadataObject KTV2Entrance;
     [SerializeField] private Script_ExitMetadataObject FireplacePuzzleEntrance;
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
@@ -125,6 +127,16 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToUrselksSaloonHallway()
     {
         Teleport(UrselksSaloonHallwayEntrance);
+    }
+
+    public void ExitToUrselksSaloon()
+    {
+        Teleport(UrselksSaloonEntrance);
+    }
+
+    public void ExitToKTV2()
+    {
+        Teleport(KTV2Entrance);
     }
 
     public void ExitToFireplaceTraining1()
@@ -418,6 +430,16 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Go To: Urselks Saloon Hallway"))
                 {
                     t.ExitToUrselksSaloonHallway();
+                }
+
+                if (GUILayout.Button("Go To: Urselks Saloon"))
+                {
+                    t.ExitToUrselksSaloon();
+                }
+
+                if (GUILayout.Button("Go To: KTV2"))
+                {
+                    t.ExitToKTV2();
                 }
 
                 EditorGUILayout.LabelField("Celestial Gardens World", EditorStyles.miniLabel);

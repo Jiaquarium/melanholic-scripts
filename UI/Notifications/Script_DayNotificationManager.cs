@@ -39,6 +39,17 @@ public class Script_DayNotificationManager : MonoBehaviour
 
     // ----------------------------------------------------------------------
     // Timeline Signals
+
+    public void PlayDawnSFX()
+    {
+        var SFXManager = Script_SFXManager.SFX;
+        var isWeekend = game.RunCycle == Script_RunsManager.Cycle.Weekend;
+        
+        if (isWeekend)
+            SFXManager.PlayDawnWeekend();
+        else
+            SFXManager.PlayDawn();
+    }
     
     public void OnDayNotificationDone()
     {

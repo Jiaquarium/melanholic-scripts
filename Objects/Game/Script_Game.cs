@@ -71,8 +71,9 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_48 grandMirrorRoomBehavior;
     
     // ------------------------------------------------------------------
-    // Level Behavior Exits
+    // Level Behavior Exits & Entrances
     [SerializeField] private Script_ExitMetadataObject XXXWorldSaloonExit;
+    [SerializeField] private Script_ExitMetadataObject grandMirrorRoomEntrance;
 
     // ------------------------------------------------------------------
     // Managers
@@ -1202,6 +1203,11 @@ public class Script_Game : MonoBehaviour
         GetPlayer().ForceStickerSwitchBackground(0);
     }
 
+    public void AddMyMaskBackground()
+    {
+        AddItemById(Const_Items.MyMaskId);
+    }
+
     public bool StickStickerBackground(string stickerId)
     {
         return menuController.StickStickerBackground(stickerId);
@@ -2020,6 +2026,18 @@ public class Script_Game : MonoBehaviour
         );
     }
 
+    private void TeleportBackground(Script_ExitMetadata exit)
+    {
+        exitsHandler.Exit(
+            exit.data.level,
+            exit.data.playerSpawn,
+            exit.data.facingDirection,
+            isExit: true,
+            isSilent: true,
+            followUp: Script_Exits.FollowUp.CutSceneNoFade
+        );
+    }
+
     public void TeleportToXXXWorldSaloonExit()
     {
         Teleport(XXXWorldSaloonExit);
@@ -2028,6 +2046,11 @@ public class Script_Game : MonoBehaviour
     public void HandleExitCutSceneLevelBehavior()
     {
         levelBehavior.HandleExitCutScene();
+    }
+
+    public void TeleportToGrandMirrorBackground()
+    {
+        TeleportBackground(grandMirrorRoomEntrance);
     }
 
     public void SetBayV1ToSaveState(Script_LevelBehavior_33.State saveState)

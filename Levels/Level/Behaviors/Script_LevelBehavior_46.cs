@@ -347,11 +347,11 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
                 isPuzzleComplete        = true;
                 isCurrentPuzzleComplete = true;
 
-                Script_TransitionManager.Control.OnCurrentQuestDone(
+                var transitionManager = Script_TransitionManager.Control;
+                transitionManager.OnCurrentQuestDone(
                     allQuestsDoneCb: () =>
                     {
-                        // Final Cut Scene Sequence
-                    
+                        transitionManager.FinalCutSceneAwakening();
                     }, 
                     defaultCb: () =>
                     {

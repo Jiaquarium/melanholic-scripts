@@ -244,6 +244,12 @@ public class Script_TransitionManager : MonoBehaviour
         {
             // Final Cut Scene
             game.ChangeStateCutScene();
+            
+            var bgm = Script_BackgroundMusicManager.Control;
+            bgm.FadeOutMed(() => {
+                bgm.Pause();
+                bgm.SetVolume(1f);
+            });
 
             switch (type)
             {
@@ -280,9 +286,8 @@ public class Script_TransitionManager : MonoBehaviour
         var PRCSManager = Script_PRCSManager.Control;
 
         PRCSManager.TalkingSelfSequence(() => {
-            // Set the Final Awakening Canvas active
-
-            // Play the Final Awakening Timeline
+            PRCSManager.SetAwakeningFinalActive(true);
+            PRCSManager.PlayAwakeningFinalTimeline();
         });
     }
 

@@ -394,17 +394,18 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     {
         isTimelineControlled = true;
         
-        Script_TransitionManager.Control.OnCurrentQuestDone(
+        var transitionManager = Script_TransitionManager.Control;
+        transitionManager.OnCurrentQuestDone(
             allQuestsDoneCb: () =>
             {
                 isTimelineControlled = false;
                 
-                // Final Cut Scene Sequence
-            
+                transitionManager.FinalCutSceneAwakening();
             }, 
             defaultCb: () =>
             {
                 isTimelineControlled = false;
+                
                 game.ChangeStateInteract();
             }
         );

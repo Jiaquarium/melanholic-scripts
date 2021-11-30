@@ -21,6 +21,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     [SerializeField] private Script_LastElevatorEffect lastElevatorEffect;
     [SerializeField] private Script_LetThereBeLightEffect letThereBeLightEffect;
     [SerializeField] private Script_PuppeteerEffect puppeteerEffect;
+    [SerializeField] private Script_MyMaskEffect myMaskEffect;
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     [SerializeField] private float coolDown;
@@ -167,6 +168,10 @@ public class Script_StickerEffectsController : MonoBehaviour
                 Debug.Log($"{activeSticker} Effect Activated");
                 puppeteerEffect.Effect();
                 break;
+            case Const_Items.MyMaskId:
+                Debug.Log($"{activeSticker} Effect Activated");
+                myMaskEffect.Effect();
+                break;
         }
 
         // On Successful Active Sticker Use, Show Animation
@@ -208,6 +213,10 @@ public class Script_StickerEffectsController : MonoBehaviour
             case Const_Items.PuppeteerId:
                 Debug.Log($"{sticker} equipType {equipType} Effect");
                 puppeteerEffect.EquipEffect(equipType);
+                break;
+            case Const_Items.MyMaskId:
+                Debug.Log($"{sticker} equipType {equipType} Effect");
+                myMaskEffect.EquipEffect(equipType);
                 break;
         }
     }
