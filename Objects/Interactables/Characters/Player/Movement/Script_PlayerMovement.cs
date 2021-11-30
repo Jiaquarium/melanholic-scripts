@@ -88,6 +88,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private bool isForceMoveAnimation;
     private bool isNoInputMoveByWind;
+    
     private Script_WindManager windManager;
 
     public Animator MyAnimator
@@ -130,6 +131,15 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         get => lastMoveInput;
     }
+
+    public AudioClip PassiveNotificationSFX { get; set; }
+
+    /// <summary>
+    /// Disable input but still maintain Player in moving state.
+    /// E.g. Need Player to be affected by wind movement but do not
+    /// move on input.
+    /// </summary>
+    public bool IsPassive { get; set; }
     
     void Awake()
     {
@@ -146,7 +156,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         HandleWalkSpeed();
         HandleAnimations();
-
+        
         // ------------------------------------------------------------------
         // Input Buffer
         
@@ -154,6 +164,22 @@ public class Script_PlayerMovement : MonoBehaviour
         if (progress < 1f)
         {
             BufferInput();
+            return;
+        }
+        
+        // Checking for passiveness must occur after progress check;
+        // otherwise, the SFX will occur while Player is still making
+        // the current move (forward).
+        if (IsPassive)
+        {
+            HandlePassive();
+            
+            if (PassiveNotificationSFX != null)
+            {
+                Script_SFXManager.SFX.Play(PassiveNotificationSFX);
+                PassiveNotificationSFX = null;
+            }
+            
             return;
         }
 
@@ -253,12 +279,7 @@ public class Script_PlayerMovement : MonoBehaviour
         // No input
         else
         {
-            if (IsNorthWind)
-            {
-                Move(Directions.Down, _isNoInputMoveByWind: true);
-                ClearInputBuffer();
-                StopMovingAnimations();
-            }
+            HandlePassive();
         }
 
         if (isReversed)     HandleMoveReversed();
@@ -316,6 +337,16 @@ public class Script_PlayerMovement : MonoBehaviour
             xWeight = -1f;
             yWeight = 0f;
             dirVector = new Vector2(xWeight, yWeight);
+        }
+
+        void HandlePassive()
+        {
+            if (IsNorthWind)
+            {
+                Move(Directions.Down, _isNoInputMoveByWind: true);
+                ClearInputBuffer();
+                StopMovingAnimations();
+            }
         }
     }
 

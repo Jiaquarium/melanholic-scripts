@@ -167,6 +167,18 @@ public class Script_Player : Script_Character
         }
     }
 
+    public bool IsPassive
+    {
+        get => playerMovementHandler.IsPassive;
+        set => playerMovementHandler.IsPassive = value;
+    }
+
+    public AudioClip PassiveNotificationSFX
+    {
+        get => playerMovementHandler.PassiveNotificationSFX;
+        set => playerMovementHandler.PassiveNotificationSFX = value;
+    }
+
     public void FlipSprite(bool flipX, bool flipY)
     {
         var spriteRenderer = graphics as SpriteRenderer;

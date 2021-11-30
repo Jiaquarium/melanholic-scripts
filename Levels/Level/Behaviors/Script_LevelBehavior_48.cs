@@ -59,11 +59,15 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
 
+    [Header("R2")]
+
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
-    private float currentTargetBlend;
     private Script_GlitchFXManager glitchManager;
     private Script_WindManager windManager;
+
+    private float currentTargetBlend;
+
 
     public bool IsDone
     {
@@ -291,7 +295,56 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             glitchManager.SetBlend(currentTargetBlend);
         else
             glitchManager.BlendTo(currentTargetBlend);
+    }
+
+    /// <summary>
+    /// Wind pushes player back to the beginning of the Wind Zone.
+    /// This signals to Player they must do something else rather than
+    /// wasting time brute forcing through the wind.
+    /// </summary>
+    public void WindPushBackEnter()
+    {
+        HandleWindPushBack();
+    }
+
+    /// <summary>
+    /// Wind Zone Trigger Stay Action (not Wind Push Back)
+    /// If Player switches to My Mask, they should be able to move again immediately.
+    /// </summary>
+    public void WindZoneStayHandleMove()
+    {
+        var player = game.GetPlayer();
+        var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+        var isWearingMyMask = activeMaskId == Const_Items.MyMaskId;
+        
+        if (player.IsPassive && isWearingMyMask)
+        {
+            player.IsPassive = false;
         }
+    }
+
+    /// <summary>
+    /// Wind Push Back Trigger Stay Action (not Wind Zone)
+    /// If Player switches off from My Mask anywhere inside the Push Trigger,
+    /// should push Player back.
+    /// </summary>
+    public void WindPushBackStayHandlePush()
+    {
+        HandleWindPushBack();        
+    }
+
+    /// <summary>
+    /// Done Triggers, should ensure exitting of Passive state.
+    /// </summary>
+    public void WindPushBackDone()
+    {
+        var player = game.GetPlayer();
+        
+        if (player.IsPassive)
+        {
+            player.IsPassive = false;
+        }
+    }
 
     // ------------------------------------------------------------------
     // Next Node Actions
@@ -303,6 +356,19 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
 
+    private void HandleWindPushBack()
+    {
+        var player = game.GetPlayer();
+        var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+        var isWearingMyMask = activeMaskId == Const_Items.MyMaskId;
+        
+        if (!player.IsPassive && !isWearingMyMask)
+        {
+            player.IsPassive = true;
+            player.PassiveNotificationSFX = Script_SFXManager.SFX.WindPushBack;
+        }
+    }
+    
     private bool IsAllIceBlocksCracked()
     {
         return isIceBlockLeftCracked && isIceBlockMidCracked && isIceBlockRightCracked;

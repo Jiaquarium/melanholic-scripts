@@ -20,6 +20,7 @@ public class Script_TriggerReliableStay : Script_Trigger
 
     [SerializeField] private UnityEvent onTriggerEnterAction;
     [SerializeField] private UnityEvent onTriggerExitAction;
+    [SerializeField] private UnityEvent onTriggerStayAction;
 
     public bool IsPressed
     {
@@ -76,6 +77,14 @@ public class Script_TriggerReliableStay : Script_Trigger
             OnExit(other);
 
             SetIsPressed(false);
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (detectTags.CheckInTags(other.tag))
+        {   
+            onTriggerStayAction.SafeInvoke();
         }
     }
 

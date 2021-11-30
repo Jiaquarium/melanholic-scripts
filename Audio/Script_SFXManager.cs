@@ -126,6 +126,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip IceShatter;
     [Range(0f, 1f)] public float IceShatterVol;
 
+    public AudioClip WindPushBack;
+    [Range(0f, 1f)] public float WindPushBackVol;
+
     [Header("---- UI SFX ----")]
 
     public AudioClip UIErrorSFX;
@@ -242,6 +245,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayIceShatter()
     {
         SFXSource.PlayOneShot(IceShatter, IceShatterVol);    
+    }
+
+    public void Play(AudioClip sfx, float vol = 1f)
+    {
+        SFXSource.PlayOneShot(sfx, vol);
     }
     
     public void Setup()
