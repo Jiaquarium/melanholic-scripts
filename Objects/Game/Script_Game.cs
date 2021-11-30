@@ -2048,8 +2048,9 @@ public class Script_Game : MonoBehaviour
         levelBehavior.HandleExitCutScene();
     }
 
-    public void TeleportToGrandMirrorBackground()
+    public void TeleportToGrandMirrorBackgroundR2()
     {
+        grandMirrorRoomBehavior.IsFinalRound = true;
         TeleportBackground(grandMirrorRoomEntrance);
     }
 

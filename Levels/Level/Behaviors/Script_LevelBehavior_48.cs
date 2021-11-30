@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using Cinemachine;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,6 +23,10 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private bool isDone;
     // ==================================================================
 
+    [SerializeField] private bool isFinalRound;
+    [SerializeField] private List<GameObject> R1Objects;
+    [SerializeField] private List<GameObject> R2Objects;
+    
     [SerializeField] private int glitchZoneSteps;
     [SerializeField] private float waitTimeAfterAwakening;
     
@@ -58,11 +63,18 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     private Script_CrackableStats currentIceBlockStats;
     private float currentTargetBlend;
     private Script_GlitchFXManager glitchManager;
+    private Script_WindManager windManager;
 
     public bool IsDone
     {
         get => isDone;
         set => isDone = value;
+    }
+
+    public bool IsFinalRound
+    {
+        get => isFinalRound;
+        set => isFinalRound = value;
     }
 
     protected override void OnEnable()
@@ -82,11 +94,14 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone -= PlayRevealNewWorldTimeline;
 
         glitchManager.InitialState();
+        windManager.InitialState();
+        isFinalRound = false;
     }
     
     void Awake()
     {
         glitchManager = Script_GlitchFXManager.Control;
+        windManager = Script_WindManager.Control;
         
         timelineController = GetComponent<Script_TimelineController>();
         
@@ -291,6 +306,15 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     private bool IsAllIceBlocksCracked()
     {
         return isIceBlockLeftCracked && isIceBlockMidCracked && isIceBlockRightCracked;
+    }
+
+    public override void Setup()
+    {
+        base.Setup();
+
+        R2Objects.ForEach(obj => obj.SetActive(IsFinalRound));
+        R1Objects.ForEach(obj => obj.SetActive(!IsFinalRound));
+        windManager.IsFinalRound = IsFinalRound;
     }
 
 #if UNITY_EDITOR

@@ -328,7 +328,7 @@ public class Script_PRCSManager : MonoBehaviour
         Script_TransitionManager.Control.TimelineBlackScreen();
         SetAwakeningFinalActive(false);
         
-        game.TeleportToGrandMirrorBackground();
+        game.TeleportToGrandMirrorBackgroundR2();
         
         game.AddMyMaskBackground();
 

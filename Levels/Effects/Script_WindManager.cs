@@ -11,6 +11,9 @@ public class Script_WindManager : MonoBehaviour
 
     [Header("Mask Specific Wind Adjustment Factors")]
     [SerializeField] private WindFactors snowWomanFactors;
+    [SerializeField] private WindFactors myMaskFactors;
+
+    [SerializeField] private bool isFinalRound;
 
 
     [System.Serializable]
@@ -34,41 +37,144 @@ public class Script_WindManager : MonoBehaviour
         get => noEffectFactor;
     }
 
-    public float Lateral(string id) => id switch
+    public bool IsFinalRound
     {
-        Const_Items.IceSpikeId => snowWomanFactors.lateral,
-        _ => defaultFactors.lateral,
-    };
+        get => isFinalRound;
+        set => isFinalRound = value;
+    }
 
-    public float Diagonal(string id) => id switch
+    public float Lateral(string id)
     {
-        Const_Items.IceSpikeId => snowWomanFactors.diagonal,
-        _ => defaultFactors.diagonal,
-    };
+        float wind;
+        
+        if (IsFinalRound)
+        {
+            wind = id switch
+            {
+                Const_Items.MyMaskId => myMaskFactors.lateral,
+                _ => defaultFactors.lateral,
+            };
+        }
+        else
+        {
+            wind = id switch
+            {
+                Const_Items.IceSpikeId => snowWomanFactors.lateral,
+                _ => defaultFactors.lateral,
+            };
+        }
 
-    public float Headwind(string id) => id switch
+        return wind;
+    }
+
+    public float Diagonal(string id)
     {
-        Const_Items.IceSpikeId => snowWomanFactors.headwind,
-        _ => defaultFactors.headwind,
-    };
+        float wind;
 
-    public float Tailwind(string id) => id switch
+        if (IsFinalRound)
+        {
+            wind = id switch
+            {
+                Const_Items.MyMaskId => myMaskFactors.diagonal,
+                _ => defaultFactors.diagonal,
+            };
+        }
+        else
+        {
+            wind = id switch
+            {
+                Const_Items.IceSpikeId => snowWomanFactors.diagonal,
+                _ => defaultFactors.diagonal,
+            };
+        }
+        
+        return wind;
+    }
+
+    public float Headwind(string id)
     {
-        Const_Items.IceSpikeId => snowWomanFactors.tailwind,
-        _ => defaultFactors.tailwind,
-    };
+        float wind;
 
-    public float Passive(string id) => id switch
+        if (IsFinalRound)
+        {
+            wind = id switch
+            {
+                Const_Items.MyMaskId => myMaskFactors.headwind,
+                _ => defaultFactors.headwind,
+            };
+        }
+        else
+        {
+            wind = id switch
+            {
+                Const_Items.IceSpikeId => snowWomanFactors.headwind,
+                _ => defaultFactors.headwind,
+            };
+        }
+
+        return wind;
+    }
+
+    public float Tailwind(string id)
     {
-        Const_Items.IceSpikeId => snowWomanFactors.passive,
-        _ => defaultFactors.passive,
-    };
+        float wind;
 
+        if (IsFinalRound)
+        {
+            wind = id switch
+            {
+                Const_Items.MyMaskId => myMaskFactors.tailwind,
+                _ => defaultFactors.tailwind,
+            };
+        }
+        else
+        {
+            wind = id switch
+            {
+                Const_Items.IceSpikeId => snowWomanFactors.tailwind,
+                _ => defaultFactors.tailwind,
+            };
+        }
+        
+        return wind;
+    }
+
+    public float Passive(string id)
+    {
+        float wind;
+
+        if (IsFinalRound)
+        {
+            wind = id switch
+            {
+                Const_Items.MyMaskId => myMaskFactors.passive,
+                _ => defaultFactors.passive,
+            };
+        }
+        else
+        {
+            wind = id switch
+            {
+                Const_Items.IceSpikeId => snowWomanFactors.passive,
+                _ => defaultFactors.passive,
+            };
+        }
+
+        return wind;        
+    }
+
+    public void InitialState()
+    {
+        IsFinalRound = false;
+    }
+    
     public void Setup()
     {
         if (Control == null)
             Control = this;
         else if (Control != this)
             Destroy(this.gameObject);
+        
+        InitialState();
     }
 }
