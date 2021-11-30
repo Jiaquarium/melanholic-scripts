@@ -65,11 +65,11 @@ public class Script_LetThereBeLightEffect : Script_StickerEffect
     private void LanternOnController()
     {
         // Save the current animation state so we can start the new controller at the same frame.
-        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Script_PlayerMovement.Layer);
 
         playerMovement.MyAnimator.runtimeAnimatorController = lanternOnAnimatorController;
 
-        SyncAnimatorState(animatorStateInfo);
+        playerMovement.SyncAnimatorState(animatorStateInfo);
         
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,6 +13,9 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_StickerEffectsController : MonoBehaviour
 {
+    [SerializeField] private Script_Player player;
+    [SerializeField] private Script_PlayerMovement playerMovement;
+    
     [SerializeField] private Script_PsychicDuckEffect psychicDuckEffect;
     [SerializeField] private Script_GiantBoarNeedleEffect boarNeedleEffect;
     [SerializeField] private Script_PlayerAttackEat eatAttack; // TBD combine into Effect
@@ -22,11 +26,16 @@ public class Script_StickerEffectsController : MonoBehaviour
     [SerializeField] private Script_LetThereBeLightEffect letThereBeLightEffect;
     [SerializeField] private Script_PuppeteerEffect puppeteerEffect;
     [SerializeField] private Script_MyMaskEffect myMaskEffect;
+
+    [SerializeField] private List<Script_StickerEffect> effects;
+    
     [SerializeField][Range(0f, 1f)] private float errorVol;
 
     [SerializeField] private float coolDown;
+    [SerializeField] private float mutationTime;
 
     private float coolDownTimer;
+    private float mutationTimer;
 
     public bool IsLanternLightOn
     {
@@ -38,9 +47,31 @@ public class Script_StickerEffectsController : MonoBehaviour
         get => puppeteerEffect.IsEffectHoldActive;
     }
 
+    void OnEnable()
+    {
+        InitialState();
+    }
+    
     void Update()
     {
         coolDownTimer = Mathf.Max(0, coolDownTimer - Time.deltaTime);
+
+        if (player.IsFinalRound)
+        {
+            if (Script_ActiveStickerManager.Control.ActiveSticker?.id == Const_Items.MyMaskId)
+            {
+                mutationTimer = 0f;
+                return;
+            }
+            
+            mutationTimer = Mathf.Max(0, mutationTimer - Time.deltaTime);
+            
+            if (mutationTimer <= 0f)
+            {
+                Mutate();
+                mutationTimer = mutationTime;
+            }
+        }
     }
     
     /// <summary>
@@ -128,7 +159,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     public void Effect(Directions dir)
     {
         Script_Sticker activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;
-        if (activeSticker == null)
+        if (activeSticker == null || player.IsFinalRound)
         {
             NullSFX();
             return;
@@ -178,8 +209,16 @@ public class Script_StickerEffectsController : MonoBehaviour
         Script_ActiveStickerManager.Control.AnimateActiveStickerSlot();
     }
 
-    public void EquipEffect(Script_Sticker sticker, Script_StickerEffect.EquipType equipType)
+    private void EquipEffect(Script_Sticker sticker, Script_StickerEffect.EquipType equipType)
     {
+        if (
+            player.IsFinalRound
+            && Script_ActiveStickerManager.Control.ActiveSticker?.id != Const_Items.MyMaskId
+        )
+        {
+            return;
+        }   
+        
         switch (sticker.id)
         {
             case Const_Items.PsychicDuckId:
@@ -221,33 +260,66 @@ public class Script_StickerEffectsController : MonoBehaviour
         }
     }
 
-    void NullSFX()
+    // ------------------------------------------------------------------
+    // Final Round
+    
+    /// <summary>
+    /// Rotates the player's controller.
+    /// </summary>
+    private void Mutate()
+    {
+        var randomEffectIdx = Random.Range(0, effects.Count);
+        var currentEffect = effects[randomEffectIdx];
+        RuntimeAnimatorController animatorController = currentEffect.StickerAnimatorController;
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Script_PlayerMovement.Layer);
+
+        playerMovement.MyAnimator.runtimeAnimatorController = animatorController;
+        playerMovement.SyncAnimatorState(animatorStateInfo);
+
+        playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+    }
+    
+    // ------------------------------------------------------------------
+    // SFX
+
+    private void NullSFX()
     {
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.empty, Script_SFXManager.SFX.emptyVol
         );
     }
 
-    void SwitchSFX()
+    private void SwitchSFX()
     {
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.PlayerStashItem, Script_SFXManager.SFX.PlayerStashItemVol
         );
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_StickerEffectsController))]
-public class Script_StickerEffectsControllerTester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    private void InitialState()
+    {
+        mutationTimer = 0f;
+    }
 
-        Script_StickerEffectsController t = (Script_StickerEffectsController)target;
-        if (GUILayout.Button("Default State No Effect"))
-        {
-            t.DefaultStateNoEffect();
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_StickerEffectsController))]
+    public class Script_StickerEffectsControllerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_StickerEffectsController t = (Script_StickerEffectsController)target;
+            if (GUILayout.Button("Default State No Effect"))
+            {
+                t.DefaultStateNoEffect();
+            }
+
+            if (GUILayout.Button("Mutate"))
+            {
+                t.Mutate();
+            }
         }
     }
+    #endif
 }
-#endif
+

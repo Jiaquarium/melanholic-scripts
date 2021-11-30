@@ -31,7 +31,7 @@ public class Script_MatchPlayerAnimator : MonoBehaviour
 
     private void MatchPlayerAnimator(Script_Sticker sticker)
     {
-        int Layer = Script_StickerEffect.Layer;
+        int Layer = Script_PlayerMovement.Layer;
         
         RuntimeAnimatorController playerAnimatorController = game.GetPlayer().MyAnimator.runtimeAnimatorController;
         

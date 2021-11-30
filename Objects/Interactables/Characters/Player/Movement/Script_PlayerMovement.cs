@@ -25,6 +25,8 @@ public class Script_PlayerMovement : MonoBehaviour
         Dev         = 999
     }
     
+    public const int Layer = 0;
+    
     // ------------------------------------------------------------------
     // PlayerMovement Animator Controller Params
     public const string PlayerMovingAnimatorParam   = "PlayerMoving";
@@ -580,6 +582,11 @@ public class Script_PlayerMovement : MonoBehaviour
             animator.SetFloat(Script_PlayerMovement.MoveXAnimatorParam,     1f);
             animator.SetFloat(Script_PlayerMovement.MoveZAnimatorParam,     0f);
         }
+    }
+
+    public void SyncAnimatorState(AnimatorStateInfo animatorStateInfo)
+    {
+        MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);
     }
 
     private bool CheckCollisions(Vector3 location, Directions dir, ref Vector3 desiredMove)

@@ -97,9 +97,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone -= PlayRevealNewWorldTimeline;
 
-        glitchManager.InitialState();
-        windManager.InitialState();
-        isFinalRound = false;
+        InitialState();
     }
     
     void Awake()
@@ -374,6 +372,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         return isIceBlockLeftCracked && isIceBlockMidCracked && isIceBlockRightCracked;
     }
 
+    public override void InitialState()
+    {
+        base.InitialState();
+
+        glitchManager.InitialState();
+        windManager.InitialState();
+        isFinalRound = false;
+        game.GetPlayer().IsFinalRound = false;
+    }
+    
     public override void Setup()
     {
         base.Setup();
@@ -381,6 +389,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         R2Objects.ForEach(obj => obj.SetActive(IsFinalRound));
         R1Objects.ForEach(obj => obj.SetActive(!IsFinalRound));
         windManager.IsFinalRound = IsFinalRound;
+        game.GetPlayer().IsFinalRound = IsFinalRound;
     }
 
 #if UNITY_EDITOR

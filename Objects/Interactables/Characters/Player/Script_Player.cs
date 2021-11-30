@@ -38,6 +38,7 @@ public class Script_Player : Script_Character
     
     [SerializeField] private bool _isInvincible;
     [SerializeField] private bool _isInvisible;
+    [SerializeField] private bool isFinalRound;
     
     [SerializeField] private Transform focalPoint;
     
@@ -177,6 +178,12 @@ public class Script_Player : Script_Character
     {
         get => playerMovementHandler.PassiveNotificationSFX;
         set => playerMovementHandler.PassiveNotificationSFX = value;
+    }
+
+    public bool IsFinalRound
+    {
+        get => isFinalRound;
+        set => isFinalRound = value;
     }
 
     public void FlipSprite(bool flipX, bool flipY)

@@ -18,15 +18,19 @@ public abstract class Script_StickerEffect : MonoBehaviour
         UnequipState        = 3,
     }
     
-    public const int Layer = 0;
-    
     [SerializeField] protected Script_Player player;
     [SerializeField] protected Script_PlayerMovement playerMovement;
     [SerializeField] protected RuntimeAnimatorController stickerAnimatorController;
 
     [SerializeField] protected Script_Sticker sticker;
+
+    public RuntimeAnimatorController StickerAnimatorController
+    {
+        get => stickerAnimatorController;
+    }
     
     public abstract void Effect();
+    
 
     public virtual void EquipEffect(EquipType type)
     {
@@ -50,7 +54,6 @@ public abstract class Script_StickerEffect : MonoBehaviour
     protected virtual void OnEquip()
     {
         Debug.Log($"{name} OnEquip()");
-        
     }
 
     protected virtual void OnUnequip()
@@ -80,11 +83,11 @@ public abstract class Script_StickerEffect : MonoBehaviour
     protected void OnEquipControllerSynced()
     {
         // Save the current animation state so we can start the new controller at the same frame.
-        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Script_PlayerMovement.Layer);
 
         playerMovement.MyAnimator.runtimeAnimatorController = stickerAnimatorController;
 
-        SyncAnimatorState(animatorStateInfo);
+        playerMovement.SyncAnimatorState(animatorStateInfo);
         
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
 
@@ -94,20 +97,14 @@ public abstract class Script_StickerEffect : MonoBehaviour
     // Handle unequipping the active sticker to return to the default controller.
     protected void OnUnequipControllerSynced()
     {
-        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Layer);
+        AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Script_PlayerMovement.Layer);
 
         playerMovement.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
 
-        SyncAnimatorState(animatorStateInfo);
+        playerMovement.SyncAnimatorState(animatorStateInfo);
 
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
 
         Script_StickerEffectEventsManager.Unequip(sticker);
-    }
-
-    // Play the new controller at the saved state time.
-    protected void SyncAnimatorState(AnimatorStateInfo animatorStateInfo)
-    {
-        playerMovement.MyAnimator.Play(animatorStateInfo.fullPathHash, Layer, animatorStateInfo.normalizedTime);
     }
 }
