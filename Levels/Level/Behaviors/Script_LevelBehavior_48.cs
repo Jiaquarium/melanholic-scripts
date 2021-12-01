@@ -60,6 +60,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
 
     [Header("R2")]
+    [SerializeField] private Transform playerReflectionMyne;
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
@@ -390,6 +391,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         R1Objects.ForEach(obj => obj.SetActive(!IsFinalRound));
         windManager.IsFinalRound = IsFinalRound;
         game.GetPlayer().IsFinalRound = IsFinalRound;
+
+        if (isFinalRound)
+        {
+            game.SetupPlayerReflection(playerReflectionMyne);
+        }
     }
 
 #if UNITY_EDITOR

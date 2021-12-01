@@ -10,6 +10,9 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
     [SerializeField] protected Animator animator;
     [SerializeField] private float xOffset;
     [SerializeField] private float zOffset;
+
+    [SerializeField] private bool isUnsyncX;
+    
     protected Script_Player player;
     private Script_PlayerReflection playerReflection;
     private Vector3 axis;
@@ -49,7 +52,9 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
     {
         // TODO: currently only works for reflection to be on top and to the right
         float reflectedZ = axis.z + Mathf.Abs(axis.z - loc.z) + zOffset;
-        float reflectedX = axis.x + Mathf.Abs(axis.x - loc.x) + xOffset;
+        float reflectedX = isUnsyncX
+            ? axis.x + Mathf.Abs(axis.x - loc.x) + xOffset
+            : loc.x + xOffset;
 
         return new Vector3(reflectedX, loc.y, reflectedZ);
     }

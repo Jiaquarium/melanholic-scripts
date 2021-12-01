@@ -8,9 +8,12 @@ public class Script_PlayerReflection : MonoBehaviour
     public Vector3 axis;
     [Tooltip("Sets the reflection axis based on object; preferred as the object will move along with its parents")]
     public Transform axisObject;
+    
+    [SerializeField] Transform graphics;
+    
     private Script_PlayerReflectionMovement reflectionMovement;
     private Script_Player player;
-    [SerializeField] Transform graphics;
+    
     
     void Update()
     {
@@ -23,6 +26,11 @@ public class Script_PlayerReflection : MonoBehaviour
         else if (desiredDir == Directions.Left)      return Directions.Left;
         else if (desiredDir == Directions.Up)        return Directions.Down;
         else                                         return Directions.Up;
+    }
+
+    public void SetVisible(bool isVisible)
+    {
+        graphics.gameObject.SetActive(isVisible);
     }
 
     public void Setup(

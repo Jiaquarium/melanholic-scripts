@@ -19,6 +19,7 @@ public static class Const_Tags
         UniqueBlockingPuppet            = 10,
         PlayerInteractionBox            = 11,
         DoorExit                        = 12,
+        PlayerReflection                = 13,
         Everything                      = 99,
     }
 
@@ -37,6 +38,7 @@ public static class Const_Tags
         { Tags.UniqueBlockingPuppet,            UniqueBlockingPuppet },
         { Tags.PlayerInteractionBox,            PlayerInteractionBox },
         { Tags.DoorExit,                        DoorExit },
+        { Tags.PlayerReflection,                PlayerReflection },
     };
     
     public const string PlayerAnimator          = "tag_player-animator";
@@ -52,4 +54,5 @@ public static class Const_Tags
     public const string Puppet                  = "tag_puppet";
     public const string UniqueBlockingPuppet    = "tag_unique-blocking_puppet";
     public const string PlayerInteractionBox    = "tag_player-interaction-box";
+    public const string PlayerReflection        = "tag_player-reflection";
 }
