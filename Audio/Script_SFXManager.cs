@@ -129,6 +129,10 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip WindPushBack;
     [Range(0f, 1f)] public float WindPushBackVol;
 
+    public AudioClip SheepBleat;
+    [Range(0f, 1f)] public float SheepBleatVol;
+
+    
     [Header("---- UI SFX ----")]
 
     public AudioClip UIErrorSFX;

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-11-17 21:17:03
+// Last created by Dialogue Exporter at 2021-12-01 00:39:38
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2928,6 +2928,30 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                     isUnskippable = true, 
                 },
         }
+    }
+},
+{
+    "grand-mirror-room_ids_baa",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Baaa! You don’t need me anymore, kiddo.",
+        },
+        
+    }
+},
+{
+    "grand-mirror-room_ids_baa1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Baaaaaa! Baa!",
+        },
+        
     }
 },
 // ------------------------------------------------------------------

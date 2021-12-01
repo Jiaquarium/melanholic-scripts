@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Can be attached to a Music Speaker or on a SFX player (isSFXSpeaker flag). 
 /// </summary>
@@ -17,6 +21,18 @@ public class Script_ProximitySpeaker : Script_Speaker
 
     [SerializeField] private float currentDistance; // for Dev
 
+    public float MaxDistance
+    {
+        get => maxDistance;
+        set => maxDistance = value;
+    }
+
+    public float MaxVol
+    {
+        get => maxVol;
+        set => maxVol = value;
+    }
+    
     protected virtual void OnDisable()
     {
         // SFX speakers only need volume to be adjusted.
@@ -64,4 +80,19 @@ public class Script_ProximitySpeaker : Script_Speaker
             audioSource.volume = maxVol - (maxVol * v);
         }
     }
+
+    protected void PlaySFX(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        var position = transform.position;
+        Handles.color = Color.yellow;
+        
+        Handles.DrawWireDisc(position, new Vector3(0, 1, 0), maxDistance);
+    }
+#endif
 }

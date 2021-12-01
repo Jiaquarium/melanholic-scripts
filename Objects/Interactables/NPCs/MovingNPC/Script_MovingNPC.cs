@@ -279,7 +279,8 @@ public class Script_MovingNPC : Script_StaticNPC
     {
         AnimatorSetDirection(direction);
 
-        if (direction != Directions.None)   lastFacingDirection = direction;
+        if (direction != Directions.None)
+            lastFacingDirection = direction;
     }
 
     /// Face the last set direction by FaceDirection()
