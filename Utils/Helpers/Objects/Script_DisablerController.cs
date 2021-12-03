@@ -29,6 +29,9 @@ public class Script_DisablerController : MonoBehaviour
                 break;
         }
 
+        if (box == null)
+            return false;
+        
         box.ExposeBox();
 
         foreach (Collider col in box.Colliders)

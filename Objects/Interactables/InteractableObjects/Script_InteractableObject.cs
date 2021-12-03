@@ -86,6 +86,12 @@ public class Script_InteractableObject : Script_Interactable
     
     protected virtual void ActionDefault()
     {
+        if (CheckDisabled())
+        {
+            Debug.Log($"{name} is disabled");
+            return;
+        }
+
         Debug.Log($"{name} Action default called in InteractableObject");
         MyAction.SafeInvoke();
     }

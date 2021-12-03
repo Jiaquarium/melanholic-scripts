@@ -345,12 +345,36 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         }
     }
 
+    // From interaction with Myne
+    public void PlayMaskRevealTimeline()
+    {
+        var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+        var isWearingMyMask = activeMaskId == Const_Items.MyMaskId;
+
+        if (!isWearingMyMask)
+        {
+            Debug.Log("Not wearing My Mask, cannot interact.");
+            return;
+        }
+        
+        Debug.Log("Playing Mask Reveal Timeline!!!");
+        
+        game.ChangeStateCutScene();
+        timelineController.PlayableDirectorPlayFromTimelines(2, 2);
+    }
+
     // ------------------------------------------------------------------
     // Next Node Actions
 
     public void OnLastElevatorDialogueDone()
     {
         game.ChangeStateInteract();
+    }
+
+    // R2 Mask Reveal Timeline when Rin says "No"
+    public void OnRinNo()
+    {
+        Script_BackgroundMusicManager.Control.FadeOutFast();
     }
 
     // ------------------------------------------------------------------
