@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-11-29 20:34:14
+// Last created by UI Exporter at 2021-12-03 14:51:57
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1411,14 +1411,14 @@ public class Script_UIText
     "faceoff_rin-myne_finale_block2_0",
     new Model_LanguagesUI
     {
-        EN = @"I’m in control."
+        EN = @"If I’m a threat, so be it!"
     }
 },
 {
     "faceoff_rin-myne_finale_block3_0",
     new Model_LanguagesUI
     {
-        EN = @"If I’m a threat, so be it!"
+        EN = @"I’m in control."
     }
 },
 

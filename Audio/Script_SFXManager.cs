@@ -173,6 +173,9 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip TheDrop;
     [Range(0f, 1f)] public float TheDropVol;
+
+    public AudioClip RhythmicXBeat;
+    [Range(0f, 1f)] public float RhythmicXBeatVol;
     
     public void PlayQuestProgress(Action cb = null)
     {

@@ -61,6 +61,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [Header("R2")]
     [SerializeField] private Transform playerReflectionMyne;
+    [SerializeField] private Script_BgThemePlayer drumBuildUpBgPlayer;
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
@@ -363,6 +364,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         timelineController.PlayableDirectorPlayFromTimelines(2, 2);
     }
 
+    // R2 On Myne Mask Reveal 2
+    public void StopDrumBuildUp()
+    {
+        drumBuildUpBgPlayer.SoftStop();
+    }
+
     // ------------------------------------------------------------------
     // Next Node Actions
 
@@ -374,7 +381,22 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // R2 Mask Reveal Timeline when Rin says "No"
     public void OnRinNo()
     {
-        Script_BackgroundMusicManager.Control.FadeOutFast();
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOutFast(bgm.Pause, Const_AudioMixerParams.ExposedBGVolume);
+    }
+
+    // R2 Mask Reveal Timeline when Rin says "ME"
+    public void OnRinMe()
+    {
+        var sfx = Script_SFXManager.SFX;
+        sfx.Play(sfx.RhythmicXBeat, sfx.RhythmicXBeatVol);
+    }
+
+    // R2 Next Node after Rin says "ME"
+    public void PlayDrumBuildUp()
+    {
+        Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+        drumBuildUpBgPlayer.Play();
     }
 
     // ------------------------------------------------------------------

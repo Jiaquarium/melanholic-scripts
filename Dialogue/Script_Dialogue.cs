@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-12-03 02:23:55
+// Last created by Dialogue Exporter at 2021-12-03 17:38:33
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2961,16 +2961,56 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{10}",
         EN = new string[]
         {
-                @"So|.|.|.| you came to seek me out, my dear?",
-                @"You know, this is what I wanted the whole time.",
+                @"So|.|.|.| <b>you expelled the last of my residents?</b>",
+                @"You know, this is <b>exactly</b> what I wanted, my dear.",
+                @"I needed someone to put them out of their misery.",
+                @"He-he...",
                 @"...",
-                @"I was testing you, dear...",
-                @"...and you have proven yourself.",
+                @"The only problem was...",
+                @"I needed someone on the <b>other side.</b>",
+                @"...",
+                @"Now with them <b>deleted...</b>",
+                @"<b>I can finally create my new world</b>.",
+                @"Solely in my own vision.",
+                @"So I must thank you, my dear.",
+                @"...",
+                @"All along, couldn’t you see? I was testing you...",
                 @"The truth is...",
-                @"...",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -3009,14 +3049,24 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{10}",
         EN = new string[]
         {
-                @"One day you will become...",
-                @"<i><b>Me</b></i>.",
-                @"...",
-                @"Come now, dear, join me on the other side.",
-                @"<b>Let us become one again.</b>",
+                @"One day you will become|.|.|.",
+                @"<size=14><b>||M|e|</b></i></size>.",
+                @"|.|.|.|",
+                @"Come now, dear.",
+                @"<b>Join me on the other side.</b>",
+                @"<b>We will create my new world together.</b>",
+                @"<b>Let us become one!</b>",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -3044,10 +3094,53 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "grand-mirror-room_player_lead_thought",
     new Model_Languages
     {
-        speaker = "",
+        speaker = "{0}",
         EN = new string[]
         {
-                @"No|.|.|.| I’m the lead this time.",
+                @"No|.|.|.|",
+                @".|.|.|",
+                @"You’re wrong.",
+                @"The truth about this place.",
+                @"|.|.|.|",
+                @"<size=14><b>This|| mansion|| is|.|.|.</b></size>",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_player_lead_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"<size=24><b>ME.</b></size>",
         },
         metadata = new Model_Languages.Metadata[]
         {
