@@ -249,7 +249,9 @@ public class Dev_GameHelper : MonoBehaviour
     // Set current save state to the Weekend Cycle.
     public void WeekendCycle()
     {
-        if (didSetWeekend)  return;
+        if (didSetWeekend)
+            return;
+        
         didSetWeekend = true;
         
         // Set Items for Weekend Cycle.
@@ -261,6 +263,11 @@ public class Dev_GameHelper : MonoBehaviour
 
         // Set Run and Cycle data to Weekend Thursday.
         Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
+    }
+
+    public void StartSundayCycle()
+    {
+        Script_Game.Game.StartSundayCycleSaveInitialize();
     }
 
     // Set to Last Elevator to go to Grand Mirror Room as if just completed Eileen's Mind Quest. 
@@ -516,6 +523,13 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Ellenia Comfortable State"))
                 {
                     t.ElleniaComfortableState();
+                }
+
+                EditorGUILayout.LabelField("Sunday (Stateless)", EditorStyles.miniLabel);
+
+                if (GUILayout.Button("Start Sunday Cycle"))
+                {
+                    t.StartSundayCycle();
                 }
             }
 

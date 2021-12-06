@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-12-03 17:38:33
+// Last created by Dialogue Exporter at 2021-12-05 17:31:50
 
 using System.Collections;
 using System.Collections.Generic;
@@ -371,6 +371,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"You should really get back to work.",
+        },
+        
+    }
+},
+{
+    "hotel-bay-v1_elevator_sunday_disabled_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You don’t feel like taking the elevator anymore.",
         },
         
     }

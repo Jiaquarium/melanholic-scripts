@@ -524,7 +524,6 @@ public static class Script_Utils
 
         string timeDisplay = isClose
             ? $"{hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)}am".AddBrackets()
-            // : $"『 {hours.ToString(fmt)}:{min.ToString(fmt)}:{sec.ToString(fmt)} a.m. 』"; // testing
             : $"{hours.ToString(fmt)}:{min.ToString(fmt)}am".AddBrackets();
         
         return hideColons

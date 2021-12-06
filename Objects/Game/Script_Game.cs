@@ -198,7 +198,13 @@ public class Script_Game : MonoBehaviour
     // State Properties
     public Script_TransitionManager.Endings ActiveEnding
     {
-        get => activeEnding;
+        get
+        {
+            if (IsRunDay(Script_Run.DayId.sun))
+                activeEnding = Script_TransitionManager.Endings.True;
+            
+            return activeEnding;
+        }
         set => activeEnding = value;
     }
     
@@ -2130,6 +2136,16 @@ public class Script_Game : MonoBehaviour
         SaveWaitRestart(isLobbySpawn);
     }
 
+    public void StartSundayCycleSaveInitialize(bool isLobbySpawn = true)
+    {
+        SetActiveEnding();
+        
+        runsManager.StartSundayCycle();
+        CleanRun();
+
+        SaveWaitRestart(isLobbySpawn);
+    }
+
     /// <summary>
     /// Setting the Active Ending will trigger the final cut scene.
     /// </summary>
@@ -2141,10 +2157,6 @@ public class Script_Game : MonoBehaviour
         {
             activeEnding = Script_TransitionManager.Endings.True;
         }
-        // else if (scarletCipherManager.CheckAllMirrorsSolved())
-        // {
-        //     activeEnding = Script_TransitionManager.Endings.Dream;
-        // }
         
         Debug.Log($"@@@@@@@@@@@@@@@ ACTIVE ENDING CHANGED TO {activeEnding} @@@@@@@@@@@@@@@");
     }

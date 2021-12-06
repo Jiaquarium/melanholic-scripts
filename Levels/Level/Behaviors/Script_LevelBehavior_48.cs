@@ -208,7 +208,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     }
     
     // ------------------------------------------------------------------
-    // Unity Events
+    // Unity Events & Timeline Signals
 
     public void OnIceBlockCracked(Script_CrackableStats ice)
     {
@@ -368,6 +368,13 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     public void StopDrumBuildUp()
     {
         drumBuildUpBgPlayer.SoftStop();
+    }
+
+    public void OnMaskRevealDone()
+    {
+        // Save Game and start on Sunday.
+        game.ShowSaveAndRestartMessageDefault();
+        game.StartSundayCycleSaveInitialize();
     }
 
     // ------------------------------------------------------------------

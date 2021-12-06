@@ -16,18 +16,20 @@ public class Script_RunsManager : MonoBehaviour
     {
         Weekend = 0,
         Weekday = 1,
+        Sunday = 2
     }
     
     [SerializeField] private Script_Run.DayId _startDay;
     [SerializeField] private Script_Run.DayId _weekendStartDay;
+    [SerializeField] private Script_Run.DayId _sundayStartDay;
     
     [Tooltip("Current run index")] [SerializeField] private int _runIdx;
     [SerializeField] private int cycleCount;
     
     [SerializeField] private Cycle _runCycle;
-    [SerializeField] private Cycle _nextRunCycle;
     [SerializeField] private Script_Run[] weekdayCycle;
     [SerializeField] private Script_Run[] weekendCycle;
+    [SerializeField] private Script_Run[] sunCycle;
     [SerializeField] private Script_Run[] all;
 
     [Space]
@@ -60,10 +62,12 @@ public class Script_RunsManager : MonoBehaviour
         private set => _runCycle = value;
     }
 
-    public Script_Run[] Days
+    public Script_Run[] Days => RunCycle switch
     {
-        get => RunCycle == Cycle.Weekday ? weekdayCycle : weekendCycle;
-    }
+        Cycle.Weekday => weekdayCycle,
+        Cycle.Weekend => weekendCycle,
+        _ => sunCycle,
+    };
 
     public int CycleCount
     {
@@ -80,6 +84,11 @@ public class Script_RunsManager : MonoBehaviour
     {
         get => _weekendStartDay;
     }
+
+    private Script_Run.DayId SundayStartDay
+    {
+        get => _sundayStartDay;
+    }
     
     public Script_Run GetRunByIdx(int i)
     {
@@ -92,7 +101,8 @@ public class Script_RunsManager : MonoBehaviour
         
         for (int i = 0; i < all.Length; i++)
         {
-            if (all[i].dayId == dayId) idx = i;
+            if (all[i].dayId == dayId)
+                idx = i;
         }
 
         return idx;
@@ -105,8 +115,11 @@ public class Script_RunsManager : MonoBehaviour
             case (Cycle.Weekend):
                 RunIdx = IncrementRunIdxInCycle(RunIdx, weekendCycle);
                 break;
-            default: // (Cycle.Weekday)
+            case (Cycle.Weekday):
                 RunIdx = IncrementRunIdxInCycle(RunIdx, weekdayCycle);
+                break;
+            default:
+                RunIdx = IncrementRunIdxInCycle(RunIdx, sunCycle);
                 break;
         }
 
@@ -154,6 +167,16 @@ public class Script_RunsManager : MonoBehaviour
         return newRunIdx;
     }
 
+    public void StartWeekdayCycle()
+    {
+        RunCycle = Cycle.Weekday;
+        RunIdx = 0;
+
+        StartDay = GetRunByIdx(RunIdx).dayId;
+
+        cycleCount = 0;
+    }
+
     public void StartWeekendCycle()
     {
         RunCycle = Cycle.Weekend;
@@ -164,12 +187,12 @@ public class Script_RunsManager : MonoBehaviour
         cycleCount = 0;
     }
 
-    public void StartWeekdayCycle()
+    public void StartSundayCycle()
     {
-        RunCycle = Cycle.Weekday;
-        RunIdx = 0;
+        RunCycle = Cycle.Sunday;
+        RunIdx = GetRunIdxByDayId(SundayStartDay);
 
-        StartDay = GetRunByIdx(RunIdx).dayId;
+        StartDay = SundayStartDay;
 
         cycleCount = 0;
     }
@@ -185,10 +208,17 @@ public class Script_RunsManager : MonoBehaviour
 
         foreach (Script_Run weekdayRun in weekdayCycle)
         {
-            if (weekdayRun == run)  return Cycle.Weekday;
+            if (weekdayRun == run)
+                return Cycle.Weekday;
         }
 
-        return Cycle.Weekend;
+        foreach (Script_Run weekendRun in weekendCycle)
+        {
+            if (weekendRun == run)
+                return Cycle.Weekend;
+        }
+
+        return Cycle.Sunday;
     }
 
     // ------------------------------------------------------------------
@@ -213,7 +243,6 @@ public class Script_RunsManager : MonoBehaviour
 
     public void Initialize()
     {
-        // RunCycle = Cycle.Weekday;
         RunIdx = GetRunIdxByDayId(StartDay);
     }
     

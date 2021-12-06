@@ -21,6 +21,7 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
     [SerializeField] private State _behavior;  // Use an elevator Effect to change this
     [SerializeField] private Script_TileMapExitEntrance exitToLobby;
     [SerializeField] private Script_InteractableObjectText elevatorDisabledText;
+    [SerializeField] private Script_InteractableObjectText elevatorSundayDisabledText;
 
     private bool isInit = true;
 
@@ -48,7 +49,7 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
                 break;
             default:
                 exitToLobby.Type = Script_Exits.ExitType.Default;
-                elevator.State = Script_InteractableObject.States.Active;
+                HandleElevatorStateDefault();
                 break;
         }
 
@@ -61,11 +62,24 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         exitToLobby.Type = Script_Exits.ExitType.Default;
     }
 
+    private void HandleElevatorStateDefault()
+    {
+        var isSunday = game.IsRunDay(Script_Run.DayId.sun);
+        
+        if (isSunday)
+            elevator.State = Script_InteractableObject.States.Disabled;
+        else
+            elevator.State = Script_InteractableObject.States.Active;
+    }
+
     private void HandleElevatorDisabledState(Script_Elevator elevator)
     {
         if (elevator.State == Script_InteractableObject.States.Disabled)
         {
-            elevatorDisabledText.gameObject.SetActive(true);
+            bool isSunday = game.IsRunDay(Script_Run.DayId.sun);
+            
+            elevatorSundayDisabledText.gameObject.SetActive(isSunday);
+            elevatorDisabledText.gameObject.SetActive(!isSunday);
         }
         else
         {
