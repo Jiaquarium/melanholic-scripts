@@ -47,7 +47,11 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
     {
         if (!IsDone)
         {
+            Debug.Log($"{name} OnPuppeteerActivate");
+            
             game.ChangeStateCutScene();
+            
+            Script_SFXManager.SFX.PlayPuppeteerEffect();
             
             // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
             timelineController.PlayableDirectorPlayFromTimelines(0, 0);
@@ -58,7 +62,11 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
     {
         if (!IsDone)
         {
+            Debug.Log($"{name} OnPuppeteerDeactivate");
+            
             game.ChangeStateCutScene();
+            
+            Script_SFXManager.SFX.PlayPuppeteerEffect();
             
             // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
             timelineController.PlayableDirectorPlayFromTimelines(0, 1);

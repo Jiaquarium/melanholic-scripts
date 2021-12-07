@@ -136,7 +136,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             Script_AudioMixerFader.Fade(
                 audioMixer,
                 outputMixer,
-                0.5f,
+                fadeTime,
                 0f,
                 () => {
                     if (cb != null)     cb();

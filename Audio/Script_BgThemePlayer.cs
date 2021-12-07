@@ -25,6 +25,10 @@ public class Script_BgThemePlayer : Script_Speaker
     [Range(0f, 1f)]
     [SerializeField] private float fadeInTargetVol = 1f;
     [SerializeField] private FadeSpeeds fadeSpeed;
+    [SerializeField] private float fadeInTimeOverride = 0f;
+    [SerializeField] private float fadeOutTimeOverride = 0f;
+
+    [SerializeField] private bool isFadeInOnEnable;
 
     private Coroutine currentFadeCoroutine;    
     private Coroutine currentWaiToPlayCoroutine;
@@ -53,6 +57,13 @@ public class Script_BgThemePlayer : Script_Speaker
             return;
         
         Script_Game.Game.npcBgThemePlayer = this;
+
+        if (isFadeInOnEnable)
+        {
+            Source.playOnAwake = false;
+            Source.volume = 0f;
+            FadeInPlay();
+        }
     }
 
     public void SoftStop()
@@ -63,19 +74,23 @@ public class Script_BgThemePlayer : Script_Speaker
         this.gameObject.SetActive(false);
     }
 
-    public void FadeOutStop(Action cb = null)
+    public void FadeOutStop(Action cb = null, float fadeTime = 0f)
     {
+        float _fadeOutTimeOverride = fadeTime > 0f ? fadeTime : fadeOutTimeOverride;
+        
         EndCurrentCoroutines();
         
         currentFadeCoroutine = StartCoroutine(FadeCo(fadeOutTargetVol, () => {
             SoftStop();
             if (cb != null)
                 cb();
-        }));
+        }, _fadeOutTimeOverride));
     }
 
-    public void FadeInPlay(Action cb = null)
+    public void FadeInPlay(Action cb = null, float fadeTime = 0f)
     {
+        float _fadeInTimeOverride = fadeTime > 0f ? fadeTime : fadeInTimeOverride;
+        
         EndCurrentCoroutines();
         
         // Then we know this is an initialization.
@@ -88,7 +103,7 @@ public class Script_BgThemePlayer : Script_Speaker
         currentFadeCoroutine = StartCoroutine(FadeCo(fadeInTargetVol, () => {
             if (cb != null)
                 cb();
-        }));   
+        }, _fadeInTimeOverride));   
 
         currentWaiToPlayCoroutine = StartCoroutine(WaitNextFramePlay());
         
@@ -100,9 +115,11 @@ public class Script_BgThemePlayer : Script_Speaker
         }
     }
 
-    private IEnumerator FadeCo(float targetVol, Action cb)
+    private IEnumerator FadeCo(float targetVol, Action cb, float fadeTime = 0f)
     {
-        float fadeOutTime = Script_AudioEffectsManager.GetFadeTime(fadeSpeed);
+        float fadeOutTime = fadeTime > 0f
+            ? fadeTime
+            : Script_AudioEffectsManager.GetFadeTime(fadeSpeed);
         float newVol = Source.volume;
         float volumeDiff = newVol - targetVol;
         

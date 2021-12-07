@@ -63,9 +63,15 @@ public class Script_TransitionManager : MonoBehaviour
     public Script_CanvasGroupController restartPrompt;
 
     [Header("Endings")]
-    [SerializeField] private FadeSpeeds fadeOutEndingScreenSpeed;
     [SerializeField] private int endingTheme;
-    [SerializeField] private int endingOceanTheme;
+    [SerializeField] private Script_BgThemePlayer oceanBgThemePlayer;
+    
+    // Should completely fade out by the Ending Label (4.5s)
+    [SerializeField] private float fadeOutMainMelodyTime;
+    [SerializeField] private float fadeOutEndingTime;
+    [SerializeField] private Script_CanvasGroupController endingsCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController goodEndingCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController trueEndingCanvasGroup;
 
     private Action onAllPuzzlesDoneCutsceneDone;
     private Script_GameOverController.DeathTypes deathType;
@@ -356,8 +362,7 @@ public class Script_TransitionManager : MonoBehaviour
     // After Realization Text is done.
     public void OnStartTheEndScreen()
     {
-        var bgm = Script_BackgroundMusicManager.Control;
-        bgm.Play(endingOceanTheme);
+        
     }
     
     // After screen has faded to Black play the proper timeline.
@@ -367,12 +372,12 @@ public class Script_TransitionManager : MonoBehaviour
         
         bgm.Stop();
         bgm.SetVolume(1f);
+
+        endingsCanvasGroup.Open();
         
         switch (game.ActiveEnding)
         {
             case (Endings.Good):
-                bgm.Play(endingTheme);
-                
                 GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
                 break;
             case (Endings.True):
@@ -383,23 +388,48 @@ public class Script_TransitionManager : MonoBehaviour
         }
     }
 
+    // Endings Timelines (at start) to play Ending Theme + Ocean Vibes SFX
+    public void EndingBgm()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        
+        bgm.Play(endingTheme);
+        oceanBgThemePlayer.gameObject.SetActive(true);
+    }
+
+    // Called from Ending Timeline, so the The End screen just has Ocean Vibes.
+    public void FadeOutEndingMelody()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOut(bgm.Stop, fadeOutMainMelodyTime, Const_AudioMixerParams.ExposedBGVolume);
+    }
+
     // After played proper ending cut scene.
     public void RollCredits()
     {
-        // Fade in Black
-        var fadeTimeScreen = fadeOutEndingScreenSpeed.GetFadeTime();
         var bgm = Script_BackgroundMusicManager.Control;
         
-        // Fade out BGM (1.5s)
-        bgm.FadeOutSlow(null);
-        
-        // XSlow (2.0s)
-        TimelineFadeIn(fadeTimeScreen, () => {
+        // Fade out Ocean SFX
+        if (oceanBgThemePlayer?.gameObject.activeInHierarchy ?? false)
+            oceanBgThemePlayer.FadeOutStop(null, fadeOutEndingTime);
+
+        // Ensure BGM is Stopped
+        bgm.Stop();        
+
+        // Fade Out to black
+        TimelineFadeIn(fadeOutEndingTime, () => {
+            goodEndingCanvasGroup.gameObject.SetActive(false);
+            trueEndingCanvasGroup.gameObject.SetActive(false);
+            
             StartCoroutine(NextFrameCredits());
         }, isOver: true);
         
         IEnumerator NextFrameCredits()
         {
+            bgm.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+            bgm.SetVolume(1f, Const_AudioMixerParams.ExposedSFXVolume);
+            bgm.SetVolume(1f, Const_AudioMixerParams.ExposedMasterVolume);
+            
             yield return null;
             
             TimelineRemoveBlackScreen(isOver: true);
@@ -457,6 +487,8 @@ public class Script_TransitionManager : MonoBehaviour
         fader.GetComponent<Script_CanvasGroupController>().InitialState();
         timelineFaderUnder.InitialState();
         timelineFaderOver.InitialState();
+
+
     }
     
     public void Setup()
@@ -472,6 +504,10 @@ public class Script_TransitionManager : MonoBehaviour
         
         fader.gameObject.SetActive(true);
         restartPrompt.Close();
+
+        endingsCanvasGroup.gameObject.SetActive(false);
+        goodEndingCanvasGroup.gameObject.SetActive(false);
+        trueEndingCanvasGroup.gameObject.SetActive(false);
     }
 }
 

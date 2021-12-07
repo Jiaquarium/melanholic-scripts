@@ -132,6 +132,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip SheepBleat;
     [Range(0f, 1f)] public float SheepBleatVol;
 
+    public AudioClip PuppeteerEffect;
+    [Range(0f, 1f)] public float PuppeteerEffectVol;
+
     
     [Header("---- UI SFX ----")]
 
@@ -252,6 +255,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayIceShatter()
     {
         SFXSource.PlayOneShot(IceShatter, IceShatterVol);    
+    }
+
+    public void PlayPuppeteerEffect()
+    {
+        SFXSource.PlayOneShot(PuppeteerEffect, PuppeteerEffectVol);
     }
 
     public void Play(AudioClip sfx, float vol = 1f)

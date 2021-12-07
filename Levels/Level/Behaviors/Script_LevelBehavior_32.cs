@@ -85,17 +85,17 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         else if (isFirstLoad)
         {
             // On First Load of subsequent days, play the Day Notification only once.
-                Script_DayNotificationManager.Control.PlayDayNotification(() =>
-                    {
-                        Script_BackgroundMusicManager.Control.UnPause();
-                        Script_BackgroundMusicManager.Control.FadeInSlow(() => {
-                            game.ChangeStateInteract();
-                        }, BGMParam);
-                    },
-                    _isInteractAfter: false
-                );
+            Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                {
+                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.FadeInSlow(() => {
+                        game.ChangeStateInteract();
+                    }, BGMParam);
+                },
+                _isInteractAfter: false
+            );
 
-                StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
             
             // If not first load, we do not need to play the Day Notification and
             // will not have take down the UnderDialogue Canvas bc did not set it up.

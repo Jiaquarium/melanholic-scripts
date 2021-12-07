@@ -40,6 +40,7 @@ public class Script_DayNotificationManager : MonoBehaviour
     // ----------------------------------------------------------------------
     // Timeline Signals
 
+    // From Day Notification Timeline.
     public void PlayDawnSFX()
     {
         var SFXManager = Script_SFXManager.SFX;
