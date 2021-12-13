@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-12-05 17:31:50
+// Last created by Dialogue Exporter at 2021-12-13 15:46:04
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3113,8 +3113,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @".|.|.|",
                 @"You’re wrong.",
                 @"The truth about this place.",
-                @"|.|.|.|",
-                @"<size=14><b>This|| mansion|| is|.|.|.</b></size>",
+                @"<b>Its residents... its paintings...</b>",
+                @"<b>|None| of| it| is| yours.</b>",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -3152,10 +3152,69 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"<size=24><b>ME.</b></size>",
+                @"<b>You’re hiding.</b>",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_player_lead_thought2",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"<b>There is no other side. This is it, can’t you see?</b>",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_player_lead_thought3",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"<b>Why have you been hiding for so long?</b>",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_myne_reaction",
+    new Model_Languages
+    {
+        speaker = "{10}",
+        EN = new string[]
+        {
+                @"Dear.",
+                @"What exactly is it you are trying to do?",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 

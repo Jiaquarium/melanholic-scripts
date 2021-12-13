@@ -26,6 +26,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private bool isFinalRound;
     [SerializeField] private List<GameObject> R1Objects;
     [SerializeField] private List<GameObject> R2Objects;
+
+    // Default mirror theme to play on "softer" mood cut scenes.
+    [SerializeField] private int mynesMirrorBgm;
     
     [SerializeField] private int glitchZoneSteps;
     [SerializeField] private float waitTimeAfterAwakening;
@@ -60,6 +63,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
 
     [Header("R2")]
+    [SerializeField] private float fadeToBlackTime;
     [SerializeField] private Transform playerReflectionMyne;
     [SerializeField] private Script_BgThemePlayer drumBuildUpBgPlayer;
 
@@ -364,6 +368,23 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         timelineController.PlayableDirectorPlayFromTimelines(2, 2);
     }
 
+    // On Play of Mask Reveal Timeline
+    // Note: Ensure this matches the length of Timeline fade to Black.
+    public void FadeOutMyneLairExaggTheme()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOut(null, fadeTime: fadeToBlackTime, Const_AudioMixerParams.ExposedBGVolume);
+    }
+
+    // After Fading out Exagg Theme when Myne Standing appears
+    public void PlayMyneMirrorTheme()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+
+        bgm.Play(mynesMirrorBgm, forcePlay: true);
+    }
+
     // R2 On Myne Mask Reveal 2
     public void StopDrumBuildUp()
     {
@@ -392,8 +413,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         bgm.FadeOutFast(bgm.Pause, Const_AudioMixerParams.ExposedBGVolume);
     }
 
-    // R2 Mask Reveal Timeline when Rin says "ME"
-    public void OnRinMe()
+    // R2 Mask Reveal Timeline SFX on Rin Last Dialogue
+    public void OnRinLastDialogue()
     {
         var sfx = Script_SFXManager.SFX;
         sfx.Play(sfx.RhythmicXBeat, sfx.RhythmicXBeatVol);

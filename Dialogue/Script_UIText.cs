@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-12-06 23:18:25
+// Last created by UI Exporter at 2021-12-07 13:14:00
 
 using System.Collections;
 using System.Collections.Generic;
@@ -318,56 +318,49 @@ public class Script_UIText
     "true-ending_narrator_monologue3_0",
     new Model_LanguagesUI
     {
-        EN = @"Ellenia, Eileen, Ursie, and the rest of them will forever be in my memory,"
-    }
-},
-{
-    "true-ending_narrator_monologue3_1",
-    new Model_LanguagesUI
-    {
-        EN = @"And I know they’re one step closer to what they really wanted."
+        EN = @"......"
     }
 },
 {
     "true-ending_narrator_monologue4_0",
     new Model_LanguagesUI
     {
-        EN = @"The most important thing though,"
+        EN = @"I guess over time, I really did get used to it,"
     }
 },
 {
     "true-ending_narrator_monologue4_1",
     new Model_LanguagesUI
     {
-        EN = @"Is that I’m not running anymore."
+        EN = @"Spending so many nights in a hotel,"
     }
 },
 {
     "true-ending_narrator_monologue4_2",
     new Model_LanguagesUI
     {
-        EN = @"No, I’m done."
+        EN = @"Becoming accustomed to the hellos and goodbyes,"
     }
 },
 {
     "true-ending_narrator_monologue4_3",
     new Model_LanguagesUI
     {
-        EN = @"I’m finished."
+        EN = @"Everyone was transient."
     }
 },
 {
     "true-ending_narrator_monologue5_0",
     new Model_LanguagesUI
     {
-        EN = @"Hey, Ids, look,"
+        EN = @"But something tells me, they’ll always be with me,"
     }
 },
 {
     "true-ending_narrator_monologue5_1",
     new Model_LanguagesUI
     {
-        EN = @"The sun is coming up."
+        EN = @"Ellenia, Eileen, Ursie, and the rest."
     }
 },
 {
@@ -379,6 +372,76 @@ public class Script_UIText
 },
 {
     "true-ending_narrator_monologue7_0",
+    new Model_LanguagesUI
+    {
+        EN = @"The most important thing though is that"
+    }
+},
+{
+    "true-ending_narrator_monologue7_1",
+    new Model_LanguagesUI
+    {
+        EN = @"I made my own choice."
+    }
+},
+{
+    "true-ending_narrator_monologue7_2",
+    new Model_LanguagesUI
+    {
+        EN = @"No matter what the outcome,"
+    }
+},
+{
+    "true-ending_narrator_monologue7_3",
+    new Model_LanguagesUI
+    {
+        EN = @"At least I know it’s perfectly mine."
+    }
+},
+{
+    "true-ending_narrator_monologue8_0",
+    new Model_LanguagesUI
+    {
+        EN = @"I’m not running anymore."
+    }
+},
+{
+    "true-ending_narrator_monologue8_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Nope, I’m done."
+    }
+},
+{
+    "true-ending_narrator_monologue8_2",
+    new Model_LanguagesUI
+    {
+        EN = @"I’m finished."
+    }
+},
+{
+    "true-ending_narrator_monologue9_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Hey, Ids, look,"
+    }
+},
+{
+    "true-ending_narrator_monologue9_1",
+    new Model_LanguagesUI
+    {
+        EN = @"The sun is coming up."
+    }
+},
+{
+    "true-ending_narrator_monologue10_0",
+    new Model_LanguagesUI
+    {
+        EN = @"......"
+    }
+},
+{
+    "true-ending_narrator_monologue11_0",
     new Model_LanguagesUI
     {
         EN = @"Finally, I don’t feel like sleeping anymore."

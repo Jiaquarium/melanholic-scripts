@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Linq;
+using UnityEngine.Events;
 
 /// <summary>
 /// Because Pausing timeline at Playhead doesn't gurantee a precise frame,
@@ -16,11 +17,16 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
     [SerializeField] private TimelineAsset timeline;
     
     [SerializeField] private List<double> pauseTimes;
+
+    [SerializeField] private List<UnityEvent> pauseActions;
+    [SerializeField] private List<UnityEvent> resumeActions;
     
     private bool isListening;
     
     private double originalDuration;
     private DirectorWrapMode originalWrapMode;
+
+    private int markerActionIndex;
 
     public double Time
     {
@@ -74,6 +80,13 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
         {
             Debug.Log($"{name} Playing timeline on input");
 
+            if (markerActionIndex > -1)
+            {
+                Debug.Log("Invoking Resume Acton.");
+                resumeActions[markerActionIndex].SafeInvoke();
+                markerActionIndex = -1;
+            }
+
             Play();
 
             isListening = false;
@@ -85,12 +98,20 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
     {
         Script_TimelineControlMarker tm = notification as Script_TimelineControlMarker;
 
+        markerActionIndex = -1;
+
         if (tm != null)
         {
             if (tm.isPauseTimelineWaitForInput)
             {
                 Debug.Log($"{name} Pausing timeline at TimelineControlMarker");
                 
+                if (tm.pauseActionIndex > -1 && tm.isAction)
+                {
+                    markerActionIndex = tm.pauseActionIndex;
+                    pauseActions[markerActionIndex].SafeInvoke();
+                }
+
                 Pause(tm.time);
                 
                 StartCoroutine(ListenOnNextFrame());

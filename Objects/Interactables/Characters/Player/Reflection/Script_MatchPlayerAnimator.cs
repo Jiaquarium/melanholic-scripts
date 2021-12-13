@@ -33,7 +33,10 @@ public class Script_MatchPlayerAnimator : MonoBehaviour
     {
         int Layer = Script_PlayerMovement.Layer;
         
-        RuntimeAnimatorController playerAnimatorController = game.GetPlayer().MyAnimator.runtimeAnimatorController;
+        RuntimeAnimatorController playerAnimatorController = game?.GetPlayer()?.MyAnimator.runtimeAnimatorController;
+        
+        if (playerAnimatorController == null)
+            return;
         
         animator.runtimeAnimatorController = playerAnimatorController;
 
