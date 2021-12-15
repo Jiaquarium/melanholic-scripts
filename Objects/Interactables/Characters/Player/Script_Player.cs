@@ -500,6 +500,11 @@ public class Script_Player : Script_Character
         playerMovementHandler.OnExitAnimations(dir);
     }
 
+    public void SyncAnimatorState(AnimatorStateInfo animatorStateInfo)
+    {
+        playerMovementHandler.SyncAnimatorState(animatorStateInfo);
+    }
+
     // ------------------------------------------------------------------
     // Interactions
 

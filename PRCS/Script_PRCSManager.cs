@@ -17,6 +17,19 @@ using UnityEditor;
 /// </summary>
 public class Script_PRCSManager : MonoBehaviour
 {
+    /// <summary>
+    /// More specific canvases for special behavior
+    /// </summary>
+    public enum CustomTypes
+    {
+        None,
+        MynesMirror,
+        MynesMirrorMidConvo,
+        ElleniasHand,
+        ToWeekend,
+        IdsDead,
+    }
+    
     public static Script_PRCSManager Control;
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
@@ -53,18 +66,10 @@ public class Script_PRCSManager : MonoBehaviour
         get => game.faceOffCounter;
         set => game.faceOffCounter = value;
     }
-    
-    /// <summary>
-    /// More specific canvases for special behavior
-    /// </summary>
-    public enum CustomTypes
+
+    public float GlitchFadeInTime
     {
-        None,
-        MynesMirror,
-        MynesMirrorMidConvo,
-        ElleniasHand,
-        ToWeekend,
-        IdsDead,
+        get => glitchFadeInTime;
     }
 
     void OnValidate()
@@ -232,13 +237,24 @@ public class Script_PRCSManager : MonoBehaviour
             FaceOffCanvasGroups[i].Close();
     }
 
-    public void TalkingSelfSequence(Action cb)
+    // Gives option to either use callback at beginning of fading out
+    // or when fading is completely done.
+    public void TalkingSelfSequence(Action cb, Action doneFadingCb = null)
     {
         glitchManager.SetHigh();
-        glitchManager.BlendTo(1f, glitchFadeInTime, () => Script_TransitionManager.Control.FadeInCoroutine(
-            Script_TransitionManager.FadeTimeSlow,
-            () => FadeInStartTimeline()
-        ));
+        
+        // 5 sec of glitch
+        glitchManager.BlendTo(
+            1f,
+            glitchFadeInTime,
+            () => {
+                // 2 sec to Fade In Black
+                Script_TransitionManager.Control.FadeInCoroutine(
+                    Script_TransitionManager.FadeTimeSlow,
+                    () => FadeInStartTimeline()
+                );
+            }
+        );
 
         void FadeInStartTimeline()
         {
@@ -246,8 +262,14 @@ public class Script_PRCSManager : MonoBehaviour
             glitchManager.SetDefault();
             glitchManager.SetBlend(0f);
             
-            Script_TransitionManager.Control.FadeOutCoroutine(Script_TransitionManager.FadeTimeSlow);
+            // Fade out Black for 2 sec
+            Script_TransitionManager.Control.FadeOutCoroutine(
+                Script_TransitionManager.FadeTimeSlow,
+                // Optional callback when fading is done
+                doneFadingCb    
+            );
             
+            // Optional callback when fading starts
             if (cb != null)
                 cb();
         }

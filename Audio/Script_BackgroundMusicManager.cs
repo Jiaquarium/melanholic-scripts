@@ -26,7 +26,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         get => currentClipIndex;
     }
 
-    public void Play(int i, bool forcePlay = false)
+    public void Play(int i, bool forcePlay = false, float startTime = 0f)
     {
         var source = GetComponent<AudioSource>();
         
@@ -47,6 +47,10 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         }
 
         source.clip = AudioClips[i];
+        
+        if (startTime > 0f)
+            source.time = startTime;
+        
         source.Play();
 
         currentClipIndex = i;
@@ -57,7 +61,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Action cb = null,
         bool forcePlay = true,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
-        string outputMixer = Const_AudioMixerParams.ExposedMasterVolume
+        string outputMixer = Const_AudioMixerParams.ExposedMasterVolume,
+        float startTime = 0f
     )
     {
         // SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
@@ -70,7 +75,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         {
             yield return null;
             
-            Play(i, forcePlay);
+            Play(i, forcePlay, startTime);
         }
     }
 

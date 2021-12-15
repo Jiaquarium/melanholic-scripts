@@ -41,6 +41,10 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private Script_MynesGrandMirror mynesGrandMirror;
     
+    [Header("R1 Only")]
+    [SerializeField] private float fadeInMynesMirrorVibesTime;
+    [SerializeField] private float mynesMirrorBgmStartTime;
+    
     [SerializeField] private Script_CrackableStats iceBlockStatsLeft;
     [SerializeField] private Script_CrackableStats iceBlockStatsMid;
     [SerializeField] private Script_CrackableStats iceBlockStatsRight;
@@ -57,12 +61,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private Script_LevelBehavior_20 ballroomBehavior;
 
-    [SerializeField] private Script_Sticker lastElevatorMask;
-    [SerializeField] private int targetEquipmentSlot;
-
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
-
-    [Header("R2")]
+    
+    [Header("R2 Only")]
     [SerializeField] private float fadeToBlackTime;
     [SerializeField] private Transform playerReflectionMyne;
     [SerializeField] private Script_BgThemePlayer drumBuildUpBgPlayer;
@@ -160,6 +161,10 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         if (IsAllIceBlocksCracked())
         {
             var PRCSManager = Script_PRCSManager.Control;
+
+            // Fade Out Bgm
+            var bgm = Script_BackgroundMusicManager.Control;
+            bgm.FadeOut(null, fadeTime: PRCSManager.GlitchFadeInTime, Const_AudioMixerParams.ExposedBGVolume);
             
             PRCSManager.TalkingSelfSequence(() => {
                 // Show Awakening canvas immediately (fader transition will handle fading).
@@ -168,11 +173,27 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
                 // Awakening Timeline's TimelineTeletypeReveal's UnityEvents will enable/disable
                 // Eye's animator during Pause/Play states (Timeline loses control when paused).
                 timelineController.PlayableDirectorPlayFromTimelines(1, 1);
+
+                PlayMynesMirrorAtTime(0f);
             });
         }
         else
         {
             game.ChangeStateInteract();
+        }
+
+        void PlayMynesMirrorAtTime(float time)
+        {
+            var bgm = Script_BackgroundMusicManager.Control;
+
+            bgm.PlayFadeIn(
+                mynesMirrorBgm,
+                cb: null,
+                forcePlay: true,
+                fadeInMynesMirrorVibesTime,
+                Const_AudioMixerParams.ExposedBGVolume,
+                mynesMirrorBgmStartTime
+            );
         }
     }
 
@@ -370,14 +391,14 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     // On Play of Mask Reveal Timeline
     // Note: Ensure this matches the length of Timeline fade to Black.
-    public void FadeOutMyneLairExaggTheme()
+    public void FadeOutMynesLairExaggTheme()
     {
         var bgm = Script_BackgroundMusicManager.Control;
         bgm.FadeOut(null, fadeTime: fadeToBlackTime, Const_AudioMixerParams.ExposedBGVolume);
     }
 
     // After Fading out Exagg Theme when Myne Standing appears
-    public void PlayMyneMirrorTheme()
+    public void PlayMynesMirrorTheme()
     {
         var bgm = Script_BackgroundMusicManager.Control;
         bgm.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
@@ -480,6 +501,14 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             DrawDefaultInspector();
 
             Script_LevelBehavior_48 t = (Script_LevelBehavior_48)target;
+            
+            if (GUILayout.Button("Awakening Timeline"))
+            {
+                t.isIceBlockLeftCracked = true;
+                t.isIceBlockMidCracked = true;
+                t.isIceBlockRightCracked = true;
+                t.OnNewWorldRevealPaintingDone();
+            }
             
             if (GUILayout.Button("Switch to Last Elevator Background"))
             {
