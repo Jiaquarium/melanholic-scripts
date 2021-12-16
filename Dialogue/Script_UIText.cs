@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-12-07 13:14:00
+// Last created by UI Exporter at 2021-12-16 02:03:30
 
 using System.Collections;
 using System.Collections.Generic;
@@ -79,13 +79,6 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"What it’s like working the night shift?"
-    }
-},
-{
-    "intro_loading_title",
-    new Model_LanguagesUI
-    {
-        EN = @"Loading..."
     }
 },
 // ------------------------------------------------------------------
@@ -1142,6 +1135,27 @@ public class Script_UIText
     }
 },
 {
+    "save-files_banner_copy",
+    new Model_LanguagesUI
+    {
+        EN = @"Select a file to copy."
+    }
+},
+{
+    "save-files_banner_paste",
+    new Model_LanguagesUI
+    {
+        EN = @"Copy to which slot?"
+    }
+},
+{
+    "save-files_banner_delete",
+    new Model_LanguagesUI
+    {
+        EN = @"Select a file to delete."
+    }
+},
+{
     "save-files_submenu_continue_message",
     new Model_LanguagesUI
     {
@@ -1174,6 +1188,13 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"『 Empty 』"
+    }
+},
+{
+    "intro_loading_title",
+    new Model_LanguagesUI
+    {
+        EN = @"Loading..."
     }
 },
 // ------------------------------------------------------------------

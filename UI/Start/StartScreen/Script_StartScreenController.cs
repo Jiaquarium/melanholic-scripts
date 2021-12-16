@@ -45,7 +45,7 @@ public class Script_StartScreenController : MonoBehaviour
         // {
         //     mainController.InitializeIntro();
         // }
-        
+
         GetComponent<Script_StartScreenInputManager>().HandleEnterInput();
     }
 

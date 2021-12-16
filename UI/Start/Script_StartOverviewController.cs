@@ -28,6 +28,7 @@ public class Script_StartOverviewController : Script_UIState
     // Match Title Fade In Time (~2s)
     [SerializeField] private float defaultInputDisabledTime;
     [SerializeField] private float waitBeforeFadeInCTATime;
+    [SerializeField] private float buttonFadeInTime;
     
     [SerializeField] private Script_IntroController introController;
     [SerializeField] private Script_StartScreenController startScreenController;
@@ -165,14 +166,21 @@ public class Script_StartOverviewController : Script_UIState
     }
 
     // Will be called whenever a confirm key is pressed on Start Options (via Start Screen Controller).
-    public void StartOptionsOpen()
+    public void StartOptionsOpen(bool isInitial = false)
     {
         startScreenCTA.Close();
-        
-        startOptionsCanvasGroup.Open();
-        
         settingsCanvasGroup.Close();
         controlsCanvasGroup.Close();
+        
+        if (isInitial)
+        {
+            startOptionsCanvasGroup.Close();
+            startOptionsCanvasGroup.FadeIn(buttonFadeInTime);
+        }
+        else
+        {
+            startOptionsCanvasGroup.Open();
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -750,6 +758,23 @@ public class Script_StartOverviewController : Script_UIState
         }
     }
 
+    // Also called from Menu button click handlers.
+    public void EnterMenuSFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.OpenCloseBook,
+            Script_SFXManager.SFX.OpenCloseBookVol
+        );
+    }
+
+    public void ExitMenuSFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.OpenCloseBookReverse,
+            Script_SFXManager.SFX.OpenCloseBookReverseVol
+        );
+    }
+    
     private void EnterSubmenuSFX()
     {
         GetComponent<AudioSource>().PlayOneShot(
