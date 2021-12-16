@@ -11,8 +11,8 @@ public class Script_SavedGameTitleControl : MonoBehaviour
     public Model_SavedGameTitleData Load(int saveSlotId)
     {
         string path = Script_SaveGameControl.path;
-        string fileName = Script_SaveGameControl.savedGameTitleDataFileName;
-        string filePath = $"{path}/{fileName}_{saveSlotId}.dat";
+        string fileName = Script_Utils.SaveTitleDataFile(saveSlotId);
+        string filePath = $"{path}/{fileName}";
         
         try 
         {

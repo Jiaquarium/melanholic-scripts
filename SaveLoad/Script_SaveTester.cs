@@ -32,8 +32,7 @@ public class Script_SaveTester : Editor
 
         if (GUILayout.Button("Copy Slot 0 to 1"))
         {
-            Script_SaveGameControl.saveSlotId = 0;
-            Script_SaveGameControl.Copy(1);
+            Script_SaveGameControl.Copy(0, 1);
         }
     }
 }

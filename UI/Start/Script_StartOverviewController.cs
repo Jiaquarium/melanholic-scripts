@@ -6,6 +6,10 @@ using UnityEngine.UI;
 using UnityEngine.Playables;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Main controller for Start Screen UI States
 /// </summary>
@@ -53,9 +57,12 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private Script_SavedGameSubmenuInputChoice[] newGameChoices;
     [SerializeField] private Script_SavedGameSubmenuInputChoice[] deleteGameChoices;
     [SerializeField] private Script_SavedGameSubmenuInputChoice[] pasteGameChoices;
+    
+    [SerializeField] private CanvasGroup fileActionBannersCanvasGroup;
     [SerializeField] private Transform deleteBanner;
     [SerializeField] private Transform copyBanner;
     [SerializeField] private Transform pasteBanner;
+    
     [SerializeField] private Button[] fileActionButtons;
     [SerializeField] private Button copyBtn;
     [SerializeField] private Script_InventoryAudioSettings audioSettings;
@@ -280,6 +287,7 @@ public class Script_StartOverviewController : Script_UIState
             // Switch when teeth are opening
             startScreenCanvasGroup.gameObject.SetActive(false);
             savedGameCanvasGroup.gameObject.SetActive(true);
+
 
             InitializeSavedGamesState();
 
@@ -540,6 +548,7 @@ public class Script_StartOverviewController : Script_UIState
     
     private void ActivateViewState()
     {
+        fileActionBannersCanvasGroup.gameObject.SetActive(true);
         deleteBanner.gameObject.SetActive(false);
         copyBanner.gameObject.SetActive(false);
         pasteBanner.gameObject.SetActive(false);
@@ -653,15 +662,14 @@ public class Script_StartOverviewController : Script_UIState
 
     public void EnterPasteFileChoices(Script_SavedGameTitle savedGame)
     {
-        int slotId = savedGame.GetComponent<Script_Slot>().Id;
+        int targetSlotId = savedGame.GetComponent<Script_Slot>().Id;
 
-        // also check if it's the same slot we're copying from
-        if (slotId != copiedSlotId)
+        // Check if it's the same slot we're copying from
+        if (targetSlotId != copiedSlotId)
         {
             pasteBanner.gameObject.SetActive(false);
 
             /// Only show submenu if overwriting a file
-
             if (savedGame.isRendered)
             {
                 choices = pasteGameChoices;
@@ -670,7 +678,7 @@ public class Script_StartOverviewController : Script_UIState
                 /// Set slot Id in submenu
                 foreach (Script_SavedGameSubmenuInputChoice choice in choices)
                 {
-                    choice.Id = slotId;
+                    choice.Id = targetSlotId;
                 }
                 
                 EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
@@ -680,7 +688,7 @@ public class Script_StartOverviewController : Script_UIState
             }
             else
             {
-                CopyGame(slotId);
+                CopyGame(targetSlotId);
             }
         }
         else
@@ -689,15 +697,17 @@ public class Script_StartOverviewController : Script_UIState
         }
     }
 
-    public void CopyGame(int i)
+    public void CopyGame(int targetSlotId)
     {
+        Debug.Log("Trying to Copy");
+        
         Script_SaveGameControl.saveSlotId = copiedSlotId;
         
-        if (Script_SaveGameControl.Copy(i))
+        if (Script_SaveGameControl.Copy(copiedSlotId, targetSlotId))
         {
             // update that slot
             savedGameController
-                .GetSlotTransform(i)
+                .GetSlotTransform(targetSlotId)
                 .GetComponent<Script_SavedGameTitle>()
                 .InitializeState();
         }
@@ -782,4 +792,23 @@ public class Script_StartOverviewController : Script_UIState
         settingsCanvasGroup.Close();
         controlsCanvasGroup.Close();   
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_StartOverviewController))]
+    public class Script_StartOverviewControllerTester : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+
+            Script_StartOverviewController t = (Script_StartOverviewController)target;
+
+            if (GUILayout.Button("Copy Slot 0 to 1"))
+            {
+                t.copiedSlotId = 0;
+                t.CopyGame(1);
+            }
+        }
+    }
+#endif
 }

@@ -886,4 +886,9 @@ public static class Script_Utils
 
         return false;
     }
+
+    // -------------------------------------------------------------------------------------
+    // File Path Helpers
+    public static string SaveFile(int slot) => $"saveData{Application.version}_{slot}.dat";
+    public static string SaveTitleDataFile(int slot) => $"savedGameTitleData{Application.version}_{slot}.dat";
 }

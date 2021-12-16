@@ -23,9 +23,7 @@ public class Script_SaveGameControl : MonoBehaviour
     public static string path;
     public static int saveSlotId;
     public static string saveFileName;
-    public static string saveInitializeFileName;
     public static string saveFilePath;
-    public static string saveInitializeFilePath;
     public static string savedGameTitleDataFileName;
     public static string savedGameTitleDataPath;
     
@@ -48,15 +46,13 @@ public class Script_SaveGameControl : MonoBehaviour
 
     public static void SetPath()
     {
-        saveFileName                = $"saveData{Application.version}";
-        saveInitializeFileName      = $"saveDataInitialize{Application.version}";
-        savedGameTitleDataFileName  = $"savedGameTitleData{Application.version}";
+        saveFileName                = Script_Utils.SaveFile(saveSlotId);
+        savedGameTitleDataFileName  = Script_Utils.SaveTitleDataFile(saveSlotId);
         
         path                        = Application.persistentDataPath;
 
-        saveFilePath                = $"{path}/{saveFileName}_{saveSlotId}.dat";
-        saveInitializeFilePath      = $"{path}/{saveInitializeFileName}_{saveSlotId}.dat";
-        savedGameTitleDataPath      = $"{path}/{savedGameTitleDataFileName}_{saveSlotId}.dat";
+        saveFilePath                = $"{path}/{saveFileName}";
+        savedGameTitleDataPath      = $"{path}/{savedGameTitleDataFileName}";
 
         Debug.Log($"Persistent path is: {Application.persistentDataPath}");
         Debug.Log($"Currently using path: {path}");
@@ -76,7 +72,7 @@ public class Script_SaveGameControl : MonoBehaviour
             /// Update total play time
             game.OnSaveTasks();
             
-            BinaryFormatter bf  = new BinaryFormatter();
+            BinaryFormatter bf = new BinaryFormatter();
 
             /// Main data to pass around and modify
             Model_SaveData saveData = new Model_SaveData();
@@ -87,7 +83,7 @@ public class Script_SaveGameControl : MonoBehaviour
             WriteSaveDataFile(bf, saveFilePath, saveData);
 
             /// Create SavedGameTitleData
-            FileStream titleFile    = File.Create(savedGameTitleDataPath);            
+            FileStream titleFile = File.Create(savedGameTitleDataPath);            
             Model_SavedGameTitleData savedGameTitleData = savedGameTitleDataHandler.Create();
             bf.Serialize(titleFile, savedGameTitleData);
             titleFile.Close();
@@ -212,24 +208,40 @@ public class Script_SaveGameControl : MonoBehaviour
         }
     }
 
-    public static bool Copy(int newSlotId)
+    public static bool Copy(int fromSlot, int newSlotId)
     {
         SetPath();
 
         try
         {
             // copy saveData
-            if (File.Exists(saveFilePath))
+            var fromFileName = Script_Utils.SaveFile(fromSlot);
+            var fromTitleDataFileName = Script_Utils.SaveTitleDataFile(fromSlot);
+
+            var newFileName = Script_Utils.SaveFile(newSlotId);
+            var newTitleDataFileName = Script_Utils.SaveTitleDataFile(newSlotId);
+
+            var fromFilePath = $"{path}/{fromFileName}";
+            var fromTitleDataFilePath = $"{path}/{fromTitleDataFileName}";
+
+            var newFilePath = $"{path}/{newFileName}";
+            var newTitleDataFilePath = $"{path}/{newTitleDataFileName}";
+
+            Debug.Log($"From File Path: {fromFilePath}");
+            Debug.Log($"To File Path: {newFilePath}");
+
+            Debug.Log($"From Title Data File Path: {fromTitleDataFilePath}");
+            Debug.Log($"To Title Data File Path: {newTitleDataFilePath}");
+
+            if (File.Exists(fromFilePath))
             {
-                string newSaveFilePath                = $"{path}{saveFileName}{newSlotId}.dat";
-                File.Copy(saveFilePath, newSaveFilePath, true);
+                File.Copy(fromFilePath, newFilePath, true);
             }
 
             // copy titleData
-            if (File.Exists(savedGameTitleDataPath))
+            if (File.Exists(fromTitleDataFilePath))
             {
-                string newSavedGameTitleDataPath      = $"{path}{savedGameTitleDataFileName}{newSlotId}.dat";
-                File.Copy(savedGameTitleDataPath, newSavedGameTitleDataPath, true);
+                File.Copy(fromTitleDataFilePath, newTitleDataFilePath, true);
             }
 
             return true;

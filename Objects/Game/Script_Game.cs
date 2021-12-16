@@ -513,7 +513,8 @@ public class Script_Game : MonoBehaviour
         {
             isLoadedGame = Script_SaveGameControl.control.Load();
 
-            if (isLoadedGame)   OnDidLoad();
+            if (isLoadedGame)
+                OnDidLoad();
         }
         
         // TBD TODO: REMOVE (only for dev)
