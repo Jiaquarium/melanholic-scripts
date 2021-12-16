@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-12-16 02:03:30
+// Last created by UI Exporter at 2021-12-16 13:04:54
 
 using System.Collections;
 using System.Collections.Generic;
@@ -82,7 +82,7 @@ public class Script_UIText
     }
 },
 // ------------------------------------------------------------------
-// Endings
+// Good Ending
 {
     "good-ending_narrator_monologue",
     new Model_LanguagesUI
@@ -244,6 +244,8 @@ public class Script_UIText
         EN = @"Everything Returns to Zero"
     }
 },
+// ------------------------------------------------------------------
+// True Ending
 {
     "true-ending_narrator_monologue0_0",
     new Model_LanguagesUI
@@ -452,6 +454,57 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"No More Is No More"
+    }
+},
+// ------------------------------------------------------------------
+// Bad Ending
+{
+    "bad-ending_narrator_the-sealing",
+    new Model_LanguagesUI
+    {
+        EN = @"As legend has it, at exactly {49} the {22} commenced."
+    }
+},
+{
+    "bad-ending_narrator_the-sealing1",
+    new Model_LanguagesUI
+    {
+        EN = @"{37} along with all those inside were locked away, permanently losing touch with the outside world."
+    }
+},
+{
+    "bad-ending_the-end_type",
+    new Model_LanguagesUI
+    {
+        EN = @"『 BAD ENDING 』"
+    }
+},
+{
+    "bad-ending_the-end_label",
+    new Model_LanguagesUI
+    {
+        EN = @"The Sealing"
+    }
+},
+{
+    "game-over_message",
+    new Model_LanguagesUI
+    {
+        EN = @"What to do, what to do..."
+    }
+},
+{
+    "game-over_choice_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Start your @@Run over."
+    }
+},
+{
+    "game-over_choice_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Go to main menu."
     }
 },
 // ------------------------------------------------------------------
@@ -1028,27 +1081,6 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"SAVING GAME... Please do not turn off power."
-    }
-},
-{
-    "game-over_message",
-    new Model_LanguagesUI
-    {
-        EN = @"What to do, what to do..."
-    }
-},
-{
-    "game-over_choice_0",
-    new Model_LanguagesUI
-    {
-        EN = @"Start your @@Run over."
-    }
-},
-{
-    "game-over_choice_1",
-    new Model_LanguagesUI
-    {
-        EN = @"Go to main menu."
     }
 },
 // ------------------------------------------------------------------

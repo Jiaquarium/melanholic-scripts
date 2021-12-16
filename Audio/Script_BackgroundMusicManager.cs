@@ -248,6 +248,13 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         SetVolume(1f, outputMixer);
     }
 
+    // ------------------------------------------------------------------
+    // Bgm Handlers
+    public void PlayElderTragedy()
+    {
+        Play(26, forcePlay: true);
+    }
+
     public void Setup()
     {
         if (Control == null)

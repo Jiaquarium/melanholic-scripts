@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using System;
+using UnityEngine.EventSystems;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -38,9 +39,9 @@ public class Script_TransitionManager : MonoBehaviour
     // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
     // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
     [SerializeField] private float restartGameTimeOnSave;
-    // Time to wait to restart game after Bad Ending cut scene.
+    [Tooltip("Wait time after clicking Restart... UI choice on Bad Ending The Sealing cut scene.")]
     [SerializeField] private float restartGameTimeOnBadEnding;
-    // Time to wait to before starting restart game timeline.
+    [Tooltip("Wait time after clicking To Main Menu UI choice on Bad Ending The Sealing cut scene.")]
     [SerializeField] private float toTitleWaitTime;
     
     public Script_CanvasGroupFadeInOut fader;
@@ -51,18 +52,13 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_TimeManager timeManager;
 
-    [SerializeField] private float dieTimeScale;
-    [SerializeField] private float timeScaleEaseInDuration;
-    private float timeScaleTimer;
-    private Coroutine timeScaleCoroutine;
-    
     public const float RestartPlayerFadeInTime = 0.25f;
     public const float RestartPlayerFadeOutTime = 1f;
     public const float FadeTimeSlow = 2.0f;
     public const float UnderDialogueFadeTime = 1.5f;
     public Script_CanvasGroupController restartPrompt;
 
-    [Header("Endings")]
+    [Header("Good Endings")]
     [SerializeField] private int endingTheme;
     [SerializeField] private Script_BgThemePlayer oceanBgThemePlayer;
     
@@ -72,6 +68,17 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController endingsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController goodEndingCanvasGroup;
     [SerializeField] private Script_CanvasGroupController trueEndingCanvasGroup;
+
+    [Header("Bad Ending")]
+    [SerializeField] private float dieTimeScale;
+    [SerializeField] private float timeScaleEaseInDuration;
+    [SerializeField] private float onRestartSelectBgmFadeTime;
+    [SerializeField] private Script_CanvasGroupController elevatorCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController KelsingorCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController SealingCanvasGroup;
+    
+    private float timeScaleTimer;
+    private Coroutine timeScaleCoroutine;
 
     private Action onAllPuzzlesDoneCutsceneDone;
     private Script_GameOverController.DeathTypes deathType;
@@ -197,8 +204,15 @@ public class Script_TransitionManager : MonoBehaviour
         EaseToPausedTimeScale();
         
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+        SetupTheSealingCanvasGroup();
 
         // Timeline will call Game.LevelsInactivate.
+
+        void SetupTheSealingCanvasGroup()
+        {
+            elevatorCanvasGroup.Open();
+            KelsingorCanvasGroup.Close();
+        }
     }
 
     private void EaseToPausedTimeScale()
@@ -437,6 +451,13 @@ public class Script_TransitionManager : MonoBehaviour
         }
     }
 
+    public void PlayTheSealingBgm()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
+        bgm.PlayElderTragedy();
+    }
+
     // ------------------------------------------------------------------
 
     public void FadeInRestartPrompt()
@@ -460,11 +481,21 @@ public class Script_TransitionManager : MonoBehaviour
     // Restarting
     public void PlayRestartGameTimeline()
     {
+        // Fade out BGM as Timeline fades screen out.
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOut(null, onRestartSelectBgmFadeTime, Const_AudioMixerParams.ExposedBGVolume);
+        
+        // 1 sec long fade out
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 9);
     }
 
     public void PlayToTitleTimeline()
     {
+        // Fade out BGM as Timeline fades screen out.
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOut(null, onRestartSelectBgmFadeTime, Const_AudioMixerParams.ExposedBGVolume);
+        
+        // 1 sec long fade out
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 10);
     }
 
@@ -472,23 +503,41 @@ public class Script_TransitionManager : MonoBehaviour
     // Restarting: Unity Events called Restart UI Choices
     public void ToTitleScreen()
     {
+        // Disable event system to avoid being able to interact with UI after making selection.
+        var eventSystem = EventSystem.current;
+        if (eventSystem != null)
+            eventSystem.sendNavigationEvents = false;
+        
         game.ToTitle();
     }
 
     public void Restart()
     {
+        // Disable event system to avoid being able to interact with UI after making selection.
+        var eventSystem = EventSystem.current;
+        if (eventSystem != null)
+            eventSystem.sendNavigationEvents = false;
+        
         game.Restart();
     }
 
     // ------------------------------------------------------------
+    // Audio
+    
+    // Restart UI OnClick
+    public void EnterMenuSFX()
+    {
+        var sfx = Script_SFXManager.SFX;
+        sfx.Play(sfx.OpenCloseBook, sfx.OpenCloseBookVol);
+    }
+
+    // ------------------------------------
 
     public void InitialState()
     {
         fader.GetComponent<Script_CanvasGroupController>().InitialState();
         timelineFaderUnder.InitialState();
         timelineFaderOver.InitialState();
-
-
     }
     
     public void Setup()
@@ -508,6 +557,7 @@ public class Script_TransitionManager : MonoBehaviour
         endingsCanvasGroup.gameObject.SetActive(false);
         goodEndingCanvasGroup.gameObject.SetActive(false);
         trueEndingCanvasGroup.gameObject.SetActive(false);
+        SealingCanvasGroup.gameObject.SetActive(false);
     }
 }
 
@@ -519,11 +569,6 @@ public class Script_TransitionManagerTester : Editor
         DrawDefaultInspector();
 
         Script_TransitionManager t = (Script_TransitionManager)target;
-        if (GUILayout.Button("TimesUpEffects()"))
-        {
-            t.TimesUpEffects();
-        }
-
         if (GUILayout.Button("OnTimesUpPlayableDone()"))
         {
             t.OnTimesUpPlayableDone();
@@ -537,6 +582,11 @@ public class Script_TransitionManagerTester : Editor
         if (GUILayout.Button("FadeOutRestartPrompt()"))
         {
             t.FadeOutRestartPrompt();
+        }
+
+        if (GUILayout.Button("Bad Ending"))
+        {
+            t.TimesUpEffects();
         }
 
         if (GUILayout.Button("Good Ending"))
