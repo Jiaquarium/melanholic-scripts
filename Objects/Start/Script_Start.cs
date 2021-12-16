@@ -68,7 +68,7 @@ public class Script_Start : MonoBehaviour
 
             default:
                 Debug.Log("Default Start Screeen");
-                mainController.InitializeIntro();
+                mainController.InitializeIntroSimple();
                 break;
         }
     }

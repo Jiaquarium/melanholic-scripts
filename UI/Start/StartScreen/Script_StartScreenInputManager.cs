@@ -19,7 +19,10 @@ public class Script_StartScreenInputManager : MonoBehaviour
     {
         if (Input.GetButtonDown(Const_KeyCodes.Submit))
         {
-            mainController.StartOptionsOpen(true);
+            mainController.StartOptionsOpen();
+
+            var sfx = Script_SFXManager.SFX;
+            sfx.Play(sfx.OpenCloseBook, sfx.OpenCloseBookVol);
         }
     }
 }

@@ -17,6 +17,8 @@ public class Script_CanvasGroupController : MonoBehaviour
 {
     // Can define the first button to select if an Event System needs this.
     public Button firstToSelect;
+
+    [SerializeField] Script_CanvasGroupFadeInterval intervalFader;
     
     private const float DefaultFadeTime = 0.5f;
     private Coroutine fadeOutCoroutine;
@@ -30,6 +32,16 @@ public class Script_CanvasGroupController : MonoBehaviour
     public bool IsFadingOut
     {
         get => fadeOutCoroutine != null;
+    }
+
+    public bool IsFadeIntervalEnabled
+    {
+        get => intervalFader != null ? intervalFader.enabled : false;
+        set
+        {
+            if (intervalFader != null)
+                intervalFader.enabled = value;
+        }
     }
     
     public virtual void Open()
@@ -113,6 +125,19 @@ public class Script_CanvasGroupController : MonoBehaviour
             },
             isUnscaledTime: isUnscaledTime
         ));
+    }
+
+    // Use this in conjuntion with isManualStart set to true on interval fader
+    // to specify when to start intervaling.
+    public void StartIntervalFader(bool isFadeIn)
+    {
+        if (intervalFader == null)
+            return;
+        
+        if (isFadeIn)
+            intervalFader.FadeIn();
+        else
+            intervalFader.FadeOut();
     }
 
     public virtual void InitialState()

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Playables;
+using System;
 
 /// <summary>
 /// Main controller for Start Screen UI States
@@ -17,6 +18,12 @@ public class Script_StartOverviewController : Script_UIState
     
     [SerializeField] private SavedGameState savedGameState;
     [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
+    
+    [Header("Simple Intro Settings")]
+    [SerializeField] private Script_IntroControllerSimple introControllerSimple;
+    // Match Title Fade In Time (~2s)
+    [SerializeField] private float defaultInputDisabledTime;
+    [SerializeField] private float waitBeforeFadeInCTATime;
     
     [SerializeField] private Script_IntroController introController;
     [SerializeField] private Script_StartScreenController startScreenController;
@@ -64,6 +71,8 @@ public class Script_StartOverviewController : Script_UIState
     private int copiedSlotId;
 
     private bool isCrunchActive;
+
+    private bool isInitedSimpled;
     
     void OnEnable()
     {
@@ -81,6 +90,37 @@ public class Script_StartOverviewController : Script_UIState
         crunchDirector.stopped -= OnCrunchPlayableDone;
     }
 
+    // ----------------------------------------------------------------------
+    // Simple Intro Sequence
+    public void InitializeIntroSimple()
+    {
+        startScreenCanvasGroup.gameObject.SetActive(false);
+        savedGameCanvasGroup.gameObject.SetActive(false);
+        gameOverCanvasGroup.gameObject.SetActive(false);
+        
+        settingsCanvasGroup.Close();
+        controlsCanvasGroup.Close();
+        
+        savedGameEventSystem.InitializeState();
+
+        introController.gameObject.SetActive(false);
+        startScreenController.gameObject.SetActive(false);
+        
+        introCanvasGroup.gameObject.SetActive(false);
+
+        bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
+
+        if (isInitedSimpled)
+            FadeInTitleScreen(withCTA: false);
+        else
+            introControllerSimple.Play();
+
+        isInitedSimpled = true;
+    }
+    
+    // ----------------------------------------------------------------------
+    // For long Intro Sequence
+    
     // Starts Intro Sequence.
     // Intro Timeline, Full Playthrough > StartScreenStart() via Signal > ActivateStartScreenController() via Signal
     // Intro Timeline, Skip Intro > StartScreenStart() via call > ActivateStartScreenController() via Signal
@@ -118,26 +158,27 @@ public class Script_StartOverviewController : Script_UIState
     }
 
     // Will be called whenever a confirm key is pressed on Start Options (via Start Screen Controller).
-    public void StartOptionsOpen(bool isOpen)
+    public void StartOptionsOpen()
     {
-        if (isOpen)
-        {
-            startOptionsCanvasGroup.Open();
-            startScreenCTA.Close();
-
-            Debug.Log("Closing settings and controls canvases");
-            settingsCanvasGroup.Close();
-            controlsCanvasGroup.Close();
-        }
-        else
-        {
-            startOptionsCanvasGroup.Close();
-            startScreenCTA.Open();
-        }
+        startScreenCTA.Close();
+        
+        startOptionsCanvasGroup.Open();
+        
+        settingsCanvasGroup.Close();
+        controlsCanvasGroup.Close();
     }
 
     // ----------------------------------------------------------------------
     // Timeline Signals
+    
+    // For Simple Intro, called at end.
+    // StartScreenStart will activate input.
+    public void FadeInTitleScreen(bool withCTA)
+    {
+        Debug.Log("Fade in Title Screen");
+        
+        StartScreenStart(!withCTA);
+    }
     
     // Signals the Start screen is up. Start Screen Controller should be disabled here.
     // Called from timeline as the starting point upon skipping intro.
@@ -159,25 +200,51 @@ public class Script_StartOverviewController : Script_UIState
         void HandleEntryPoint()
         {
             // If coming from Saved Games > Back, have start options immediately available.
-            StartOptionsOpen(isFromBack);
-
             if (isFromBack)
             {
-                startScreenCTA.Close();
+                StartOptionsOpen();
+                WaitForAction(defaultInputDisabledTime, () => {
+                    Debug.Log($"Setting start screen controller active, isFromBack {isFromBack}");
+                    startScreenController.gameObject.SetActive(true);
+                });
             }
             else
             {
-                // Start song if coming from Intro Bgm.
-                bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
-                bgmManager.PlayFadeIn(
-                    startScreenBgm,
-                    null,
-                    true,
-                    Script_AudioEffectsManager.fadeMedTime,
-                    Const_AudioMixerParams.ExposedBGVolume
-                );
+                startScreenCTA.Close();
+                
+                PlayBgm();
+                
+                // Give Player some time to look at Title before showing CTA.
+                WaitForAction(waitBeforeFadeInCTATime, () => {
+                    Debug.Log($"Fading in CTA, isFromBack {isFromBack}");
+                    
+                    startScreenCTA.gameObject.SetActive(true);
+                    startScreenCTA.StartIntervalFader(isFadeIn: true);
+                    
+                    startScreenController.gameObject.SetActive(true);
+                });
             }
         }
+
+        void WaitForAction(float time, Action action)
+        {
+            StartCoroutine(WaitToAction());
+            
+            IEnumerator WaitToAction()
+            {
+                yield return new WaitForSeconds(time);
+
+                action();
+            }
+        }
+    }
+
+    private void PlayBgm()
+    {
+        Debug.Log("Playing BGM");
+        
+        bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
+        bgmManager.Play(startScreenBgm);   
     }
 
     // Stops the intro timeline at the Start Screen.
@@ -238,8 +305,8 @@ public class Script_StartOverviewController : Script_UIState
         {
             yield return new WaitForSeconds(crunchTimeDown);
 
-            // switch when teeth are opening
-            InitializeIntro(isSkipIntro);
+            // Switch when teeth are opening
+            InitializeIntroSimple();
 
             isCrunchActive = false;
         }

@@ -39,12 +39,12 @@ public class Script_StartScreenController : MonoBehaviour
     
     void Update()
     {
-        timer -= Time.deltaTime;
+        // timer -= Time.deltaTime;
 
-        if (timer <= 0)
-        {
-            mainController.InitializeIntro();
-        }
+        // if (timer <= 0)
+        // {
+        //     mainController.InitializeIntro();
+        // }
         
         GetComponent<Script_StartScreenInputManager>().HandleEnterInput();
     }
