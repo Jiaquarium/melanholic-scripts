@@ -94,6 +94,7 @@ public class Script_DDRManager : MonoBehaviour
             timer += Time.deltaTime;
             timerText.text = timer.ToString();
         }
+        
         HandleLeftArrowSpawn();
         HandleDownArrowSpawn();
         HandleUpArrowSpawn();

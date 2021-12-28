@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Script_PlayerCameraTargetFollower : MonoBehaviour
 {
-    private static float DefaultDamping = 0.0005f;
-
     [Range(0, 1)]
     [SerializeField] private float weight;
     

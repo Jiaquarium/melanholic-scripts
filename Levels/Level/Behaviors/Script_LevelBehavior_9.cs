@@ -15,8 +15,10 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
 {
     public Script_ProximitySpeaker speaker; // to be set by code
     [Space]
+    [SerializeField] private float speakerDistance;
     [SerializeField] private Script_ProximitySpeaker speakerPrefab;
     [SerializeField] private Script_Marker speakerLoc;
+
     [SerializeField] private Script_InteractableFullArt IdsNote;
     [SerializeField] private Script_TileMapExitEntrance exitToIdsRoom;
     
@@ -36,6 +38,7 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
                 Quaternion.identity
             );
             speaker.transform.SetParent(game.bgThemeSpeakersContainer, false);
+            speaker.MaxDistance = speakerDistance;
         }
     }
     

@@ -13,7 +13,7 @@ using UnityEditor;
 public class Script_ProximitySpeaker : Script_Speaker
 {
     public AudioSource audioSource;
-    public float maxDistance;
+    [SerializeField] protected float maxDistance;
     public float maxVol;
     
     [SerializeField] private Transform speakerLocationOverride;
