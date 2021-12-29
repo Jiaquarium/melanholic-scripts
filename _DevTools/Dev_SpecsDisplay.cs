@@ -36,7 +36,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
  
 		GUIStyle style = new GUIStyle();
  
-		int fontSize = h * 1 / 100;
+		int fontSize = h * 1 / 75;
 		Rect rect = new Rect(0, 0, w, fontSize * 2);
 		style.alignment = TextAnchor.UpperRight;
 		style.fontSize = fontSize;
@@ -78,10 +78,19 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	private string Resolution()
 	{
 		float screenWidth = Screen.currentResolution.width;
-        float screenHeight = Screen.currentResolution.height;
-        string screenWidthText = string.Format("{0}", screenWidth);
-        string screenHeightText = string.Format("{0}", screenHeight);
-		string resText = $"{screenWidthText}X{screenHeightText}";
+		float screenHeight = Screen.currentResolution.height;
+		string screenWidthText = string.Format("{0}", screenWidth);
+		string screenHeightText = string.Format("{0}", screenHeight);
+
+		float screenPixelWidth = cam.pixelWidth;
+		float screenPixelHeight = cam.pixelHeight;
+		string screenPixelWidthText = string.Format("{0}", screenPixelWidth);
+		string screenPixelHeightText = string.Format("{0}", screenPixelHeight);
+		
+		
+		string resText = $"VP: {screenPixelWidthText}X{screenPixelHeightText} | Screen: {screenWidthText}X{screenHeightText}";
+
+
 
 		return resText;
 	}
@@ -106,21 +115,22 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		if (graphics == null)
 			return string.Empty;
 		
-		int UIScale = graphics.UIDefaultScaleFactor;
-		int calcedPixelRatio = graphics.PixelRatio;
-		
+		int UIScale;
+		int calcedPixelRatio;
 		int PPCamRatio;
+		string pixelPerfectData = string.Empty;
 		
 		try
 		{
+			UIScale = graphics.UIDefaultScaleFactor;
+			calcedPixelRatio = graphics.PixelRatio;
 			PPCamRatio = pixelPerfectCamera.pixelRatio;
+			pixelPerfectData = $"pixel ratios (PPCam): {calcedPixelRatio}x ({PPCamRatio}x)\nUI scale: {UIScale}x";
 		}
 		catch
 		{
 			PPCamRatio = 0;
 		}
-		
-		string pixelPerfectData = $"pixel ratios (PPCam): {calcedPixelRatio}x ({PPCamRatio}x)\nUI scale: {UIScale}x";
 
 		return pixelPerfectData;
 	}
