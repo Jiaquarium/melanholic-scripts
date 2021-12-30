@@ -10,7 +10,9 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
         TopLeft,
         TopRight,
         BottomLeft,
-        BottomRight
+        BottomRight,
+        Top,
+        Bottom
     }
 
     [SerializeField] private Vector3 position;
@@ -18,6 +20,10 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
     [SerializeField] private UIPosition _UIPosition;
     [SerializeField] private CanvasScaler canvasScaler;
     [SerializeField] private Camera cam;
+    [SerializeField] private Script_GraphicsManager graphics;
+
+    [SerializeField] private Script_CanvasAdjuster canvasAdjuster;
+    
     private RectTransform rect;
     
     void Awake()
@@ -31,27 +37,37 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
         float topBorderHeight = cam.rect.y * (float)Screen.height;
         float sideBorderWidth = cam.rect.x * (float)Screen.width;
 
+        position.y = topBorderHeight / canvasScaler.scaleFactor;
+        position.x = sideBorderWidth / canvasScaler.scaleFactor;
+
         switch (_UIPosition)
         {
             case (UIPosition.TopLeft):
-                topBorderHeight *= -1;
+                position.y *= -1;
                 break;
             case (UIPosition.TopRight):
-                topBorderHeight *= -1;
-                sideBorderWidth *= -1;
+                position.y *= -1;
+                position.x *= -1;
                 break;
             case (UIPosition.BottomLeft):
                 break;
             case (UIPosition.BottomRight):
-                sideBorderWidth *= -1;
+                position.x *= -1;
+                break;
+            case (UIPosition.Top):
+                position.y *= -1;
+                position.x = 0f;
+                break;
+            case (UIPosition.Bottom):
+                position.x = 0f;
                 break;
             default:
                 break;
         }
-
-        position.y = topBorderHeight / canvasScaler.scaleFactor;
-        position.x = sideBorderWidth / canvasScaler.scaleFactor;
         
         rect.anchoredPosition = position + (offset / canvasScaler.scaleFactor);
+
+        if (canvasAdjuster != null)
+            canvasAdjuster.AdjustPosition(Mathf.RoundToInt(canvasScaler.scaleFactor), graphics.PixelScreenSize.y);
     }
 }

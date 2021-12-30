@@ -154,6 +154,7 @@ public class Script_Game : MonoBehaviour
     private Tilemap[] exitsTileMaps;
     private Tilemap entrancesTileMap;
     [SerializeField] private Tilemap pushableTileMap;
+    [SerializeField] private Script_UIAspectRatioEnforcerFrame UIAspectRatioEnforcerFrame;
 
     // ------------------------------------------------------------------
     // Levels
@@ -470,6 +471,7 @@ public class Script_Game : MonoBehaviour
         transitionManager.Setup();
         cutSceneManager.Setup();
         canvasGroupsParent.Setup();
+        UIAspectRatioEnforcerFrame.gameObject.SetActive(true);
         elevatorManager.Setup();
         stickerHolsterManager.Setup();
         activeStickerManager.Setup();

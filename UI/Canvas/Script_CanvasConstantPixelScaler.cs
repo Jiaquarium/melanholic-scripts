@@ -21,14 +21,24 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     /// Use Pixel Ratio that will always fit canvases to smaller than screen size.
     /// </summary>
     [SerializeField] private bool isOnlyUpscaled;
+    [SerializeField] private bool isCustomScaling;
     
     [SerializeField] private Script_GraphicsManager graphics;
     
     [SerializeField] private int targetScaleFactor;
     [SerializeField] private int hiddenScaleFactor;
 
+    [Header("Custom Scaling Bounds")]
+    [SerializeField] private Script_ScalingBounds bounds;
+    [SerializeField] private Script_CanvasAdjuster[] canvasAdjusters;
+
     private bool isScaling;
 
+    
+    void Awake()
+    {
+        SetupCanvasAdjusters();
+    }
     
     void OnEnable()
     {
@@ -138,18 +148,65 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         try
         {
             targetScaleFactor = isOnlyUpscaled
-                ? graphics.UpscaledRTPixelRatio
+                ? graphics.Zoom
                 : graphics.UIDefaultScaleFactor;
+            
+            if (isCustomScaling)
+                targetScaleFactor = GetScaleFactorByViewportHeight(graphics.PixelScreenSize.y);
             
             // Will result in the canvas being hidden from view.
             hiddenScaleFactor = targetScaleFactor + 1;
             
-            GetComponent<CanvasScaler>().scaleFactor = Mathf.Max(targetScaleFactor, 1);
+            int scaleFactor = Mathf.Max(targetScaleFactor, 1);
+            GetComponent<CanvasScaler>().scaleFactor = scaleFactor;
+
+            foreach (var canvasAdjuster in canvasAdjusters)
+            {
+                // UI Aspect Ratio Enforcer will Call Adjust Position after it sets its position first.
+                var UIAspectRatioEnforcer = canvasAdjuster.GetComponent<Script_UIAspectRatioEnforcer>();
+                if (UIAspectRatioEnforcer == null)
+                    canvasAdjuster.AdjustPosition(scaleFactor, graphics.PixelScreenSize.y);
+            }
         }
         catch (System.Exception error)
         {
             Debug.LogWarning(error);
         }
+    }
+
+    private int GetScaleFactorByViewportHeight(int height)
+    {
+        if (bounds == null)
+            return targetScaleFactor;
+        
+        if (height < bounds.Bound1 && bounds.Bound1 > 0)
+        {
+            return 1;
+        }
+        else if (
+            (height >= bounds.Bound1 && bounds.Bound1 > 0)
+            && (height < bounds.Bound2 && bounds.Bound2 > 0)
+        )
+        {
+            return 2;
+        }
+        else if (
+            (height >= bounds.Bound2 && bounds.Bound2 > 0)
+            && (height < bounds.Bound3 && bounds.Bound3 > 0)
+        )
+        {
+            return 3;
+        }
+        else
+        {
+            return targetScaleFactor;
+        }
+    }
+
+    private void SetupCanvasAdjusters()
+    {
+        foreach (var canvasAdjuster in canvasAdjusters)
+            canvasAdjuster.Setup();
     }
 }
 
