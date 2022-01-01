@@ -17,6 +17,32 @@ public class Script_FullArt : MonoBehaviour
     public FadeSpeeds nextFadeSpeed; /// used for Examine
     public Script_FullArtManager.Bgs bg;
     [SerializeField] private Animator animator;
+
+    [Tooltip("Option to specify a custom bounds for this UI object. Can be Set by parent with FullArtBoundsParent.")]
+    [SerializeField] private Script_ScalingBounds customBounds;
+    private Script_CanvasConstantPixelScaler canvasScaler;
+    
+    public Script_ScalingBounds CustomBounds
+    {
+        get => customBounds;
+        set => customBounds = value;
+    }
+    
+    void Awake()
+    {
+        canvasScaler = GetComponentInParent<Script_CanvasConstantPixelScaler>();
+    }
+    
+    void OnEnable()
+    {
+        if (canvasScaler != null)
+        {
+            if (CustomBounds != null)
+                canvasScaler.Bounds = CustomBounds;
+            else
+                canvasScaler.SetDefaultBounds();
+        }
+    }
     
     /// <summary>
     /// Show without fade and no callbacks

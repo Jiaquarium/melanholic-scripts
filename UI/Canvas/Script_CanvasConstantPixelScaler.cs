@@ -32,12 +32,19 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     [SerializeField] private Script_ScalingBounds bounds;
     [SerializeField] private Script_CanvasAdjuster[] canvasAdjusters;
 
+    private Script_ScalingBounds defaultBounds;
     private bool isScaling;
 
-    
+    public Script_ScalingBounds Bounds
+    {
+        get => bounds;
+        set => bounds = value;
+    }
+
     void Awake()
     {
         SetupCanvasAdjusters();
+        defaultBounds = bounds;
     }
     
     void OnEnable()
@@ -56,6 +63,11 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     {
         if (!isScaling)
             SetScaleFactor();
+    }
+
+    public void SetDefaultBounds()
+    {
+        Bounds = defaultBounds;
     }
 
     // Animate frame to appear by moving from a scale factor that is outside the viewport to one that is inside.
@@ -162,6 +174,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 
             foreach (var canvasAdjuster in canvasAdjusters)
             {
+                // If UI Aspect Ratio Enforcer is present on adjuster, don't call its AdjustPosition here,
                 // UI Aspect Ratio Enforcer will Call Adjust Position after it sets its position first.
                 var UIAspectRatioEnforcer = canvasAdjuster.GetComponent<Script_UIAspectRatioEnforcer>();
                 if (UIAspectRatioEnforcer == null)
