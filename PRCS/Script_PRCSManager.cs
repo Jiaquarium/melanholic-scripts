@@ -45,6 +45,8 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Transform customCanvasesParent;
     [SerializeField] private Canvas[] customCanvases;
     
+    [SerializeField] private Script_CanvasGroupController MynesMirrorCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController MynesMirrorBg;
     [SerializeField] private Script_PRCS MynesMirrorPRCS;
     [SerializeField] private Script_PRCS ElleniasHandPRCS;
     [SerializeField] private Script_PRCS toWeekendPRCS;
@@ -137,10 +139,13 @@ public class Script_PRCSManager : MonoBehaviour
                 PRCSCanvasGroup.alpha = 1f;
                 PRCSCanvasGroup.gameObject.SetActive(true);
                 
+                MynesMirrorBg.Close();
+                MynesMirrorCanvasGroup.Open();
+                
                 MynesMirrorPRCS.Setup();
                 MynesMirrorPRCS.Open();
                 MynesMirrorPRCS.PlayTimeline(0);
-                // MynesMirror Timeline controls Fade
+                // MynesMirror Timeline controls Fading in Bg
                 break;
                 
             case CustomTypes.MynesMirrorMidConvo:
@@ -190,7 +195,8 @@ public class Script_PRCSManager : MonoBehaviour
         switch (type)
         {
             case CustomTypes.MynesMirror:
-                HidePRCS(MynesMirrorPRCS, FadeSpeeds.Slow, cb);
+                MynesMirrorCanvasGroup.FadeOut(FadeSpeeds.Slow.ToFadeTime(), cb);
+                
                 break;
             
             case CustomTypes.ElleniasHand:
@@ -394,6 +400,12 @@ public class Script_PRCSManager : MonoBehaviour
         {
             prcs.gameObject.SetActive(false);
         }
+
+        MynesMirrorCanvasGroup.InitialState();
+        MynesMirrorCanvasGroup.gameObject.SetActive(false);
+        
+        MynesMirrorBg.InitialState();
+        MynesMirrorBg.gameObject.SetActive(false);
 
         // Initialize purely customized PRCS
         KingsIntroCanvasGroup.InitialState();

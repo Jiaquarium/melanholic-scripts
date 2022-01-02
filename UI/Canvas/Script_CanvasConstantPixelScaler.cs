@@ -34,6 +34,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 
     private Script_ScalingBounds defaultBounds;
     private bool isScaling;
+    private CanvasScaler canvasScaler;
 
     public Script_ScalingBounds Bounds
     {
@@ -45,6 +46,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     {
         SetupCanvasAdjusters();
         defaultBounds = bounds;
+        canvasScaler = GetComponent<CanvasScaler>();
     }
     
     void OnEnable()
@@ -75,7 +77,6 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     {
         SetScaleFactor();
         
-        CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
         float scaleDecrease = hiddenScaleFactor - targetScaleFactor;
         
         gameObject.SetActive(true);
@@ -118,7 +119,6 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     {
         SetScaleFactor();
         
-        CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
         float scaleIncrease = hiddenScaleFactor - targetScaleFactor;
 
         gameObject.SetActive(true);
@@ -170,12 +170,13 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
             hiddenScaleFactor = targetScaleFactor + 1;
             
             int scaleFactor = Mathf.Max(targetScaleFactor, 1);
-            GetComponent<CanvasScaler>().scaleFactor = scaleFactor;
+            canvasScaler.scaleFactor = scaleFactor;
 
             foreach (var canvasAdjuster in canvasAdjusters)
             {
                 // If UI Aspect Ratio Enforcer is present on adjuster, don't call its AdjustPosition here,
                 // UI Aspect Ratio Enforcer will Call Adjust Position after it sets its position first.
+                // Otherwise, it will never be adjusted because UI Aspect Ratio Enforcer will override it.
                 var UIAspectRatioEnforcer = canvasAdjuster.GetComponent<Script_UIAspectRatioEnforcer>();
                 if (UIAspectRatioEnforcer == null)
                     canvasAdjuster.AdjustPosition(scaleFactor, graphics.PixelScreenSize.y);

@@ -36,6 +36,8 @@ public class Script_CanvasAdjuster : MonoBehaviour
             adjustment.y = positionDelta.y;
         }
 
+        // Adjustment is scale independent because the adjustment
+        // only applies to a predefined scale factor.
         rect.anchoredPosition = originalPosition + adjustment;
     }
 

@@ -47,6 +47,11 @@ public class Script_GraphicsManager : MonoBehaviour
     {
         get => pixelPerfectCamera.pixelScreenSize;
     }
+
+    public float TargetAspect
+    {
+        get => pixelPerfectCamera.targetAspect;
+    }
     
     void OnEnable()
     {
