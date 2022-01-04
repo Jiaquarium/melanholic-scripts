@@ -19,6 +19,12 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
 {
+    public enum Framing
+    {
+        Default = 0,
+        MaskReveal = 1
+    }
+    
     public static Script_UIAspectRatioEnforcerFrame Control;
     
     [SerializeField] private RectTransform topRect;
@@ -34,8 +40,11 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     [SerializeField] private Vector2Int refResolution;
     [SerializeField] private Script_GraphicsManager graphics;
     [SerializeField] private Script_CanvasConstantPixelScaler endingsCanvasScaler;
-    [Tooltip("Border height as a percent of Rect")]
+    [SerializeField] private Script_CanvasConstantPixelScaler maskRevealCanvasScaler;
+    [Tooltip("Border heights as a percent of Rect")]
     [SerializeField] private float minBorderHeight;
+    [SerializeField] private float minBorderHeightDefault;
+    [SerializeField] private float minBorderHeightMaskReveal;
     [SerializeField] private float letterBoxTime;
 
     private Vector2 cameraRect = Vector2.zero;
@@ -75,16 +84,35 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         bool isOpen,
         Action cb = null,
         float t = 0f,
-        bool isUnscaledTime = false
+        bool isUnscaledTime = false,
+        Framing framing = 0
     )
     {
         if (t <= 0f)
             t = letterBoxTime;
         
+        Script_CanvasConstantPixelScaler canvasScaler;
+        
+        switch (framing)
+        {
+            case (Framing.Default):
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = endingsCanvasScaler;
+                break;
+            case (Framing.MaskReveal):
+                minBorderHeight = minBorderHeightMaskReveal;
+                canvasScaler = maskRevealCanvasScaler;
+                break;
+            default:
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = endingsCanvasScaler;
+                break;
+        }
+        
         if (isOpen)
-            StartCoroutine(OpenLetterBoxCo(endingsCanvasScaler, t, cb, isUnscaledTime));
+            StartCoroutine(OpenLetterBoxCo(canvasScaler, t, cb, isUnscaledTime));
         else
-            StartCoroutine(CloseLetterBoxCo(endingsCanvasScaler, t, cb, isUnscaledTime));
+            StartCoroutine(CloseLetterBoxCo(canvasScaler, t, cb, isUnscaledTime));
     }
 
     public void MatchBorders()

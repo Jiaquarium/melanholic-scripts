@@ -386,7 +386,13 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         Debug.Log("Playing Mask Reveal Timeline!!!");
         
         game.ChangeStateCutScene();
-        timelineController.PlayableDirectorPlayFromTimelines(2, 2);
+
+        // Animate in Frame
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            cb: () => { timelineController.PlayableDirectorPlayFromTimelines(2, 2); },
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.MaskReveal
+        );
     }
 
     // On Play of Mask Reveal Timeline
@@ -410,6 +416,15 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     public void StopDrumBuildUp()
     {
         drumBuildUpBgPlayer.SoftStop();
+    }
+
+    /// <summary>
+    /// Set Borders back to default
+    /// End of Rin Shocked Timeline
+    /// </summary>
+    public void RemoveUIFraming()
+    {
+        Script_UIAspectRatioEnforcerFrame.Control.MatchBorders();
     }
 
     public void OnMaskRevealDone()
