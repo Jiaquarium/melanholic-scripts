@@ -47,7 +47,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     [SerializeField] private float minBorderHeightMaskReveal;
     [SerializeField] private float letterBoxTime;
 
-    private Vector2 cameraRect = Vector2.zero;
+    private Vector2 screenSize;
     private Script_CanvasConstantPixelScaler currentCanvasScaler;
 
     // Editor only
@@ -68,16 +68,17 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         if (isAnimatingLetterBox)
             return;
         
-        Vector2 _cameraRect = new Vector2(cam.pixelRect.x, cam.pixelRect.y);
-        if (_cameraRect != cameraRect)
+        Vector2 _screenSize = new Vector2(graphics.PixelScreenSize.x, graphics.PixelScreenSize.y);
+        
+        if (_screenSize != screenSize)
         {
             if (isCutSceneLetterBox)
                 CutSceneLetterBox(currentCanvasScaler);
             else
                 MatchBorders();
-            
-            cameraRect = _cameraRect;   
         }
+
+        screenSize = _screenSize;
     }
 
     public void EndingsLetterBox(
@@ -160,6 +161,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     {
         
         Vector2 letterBox = GetLetterBox(canvasScaler);
+        
         SetBorders(0f, letterBox.y);
     }
 
