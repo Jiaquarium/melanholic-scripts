@@ -20,11 +20,15 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
         BottomLeft,
         BottomRight,
         Top,
-        Bottom
+        Bottom,
+        Left,
+        Right
     }
 
     [SerializeField] private Vector3 position;
     [SerializeField] private Vector3 offset;
+    [Tooltip("Offset that scales with scaleFactor. Based on scaling factor of 1")]
+    [SerializeField] private Vector3 refResScalingOffset;
     [SerializeField] private UIPosition _UIPosition;
     [SerializeField] private CanvasScaler canvasScaler;
     [SerializeField] private Camera cam;
@@ -35,6 +39,11 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
     [Header("Viewport Overlap - Center Aligned UI")]
     [Tooltip("Set to true for center aligned UI to always at least reach bottom of viewport")]
     [SerializeField] private bool isCenterImageAtBottom;
+
+    [Header("Pre-Rendered Cut Scenes")]
+    [Tooltip("Use UI Aspect Ratio Enforcer Frame instead of Rect to stick to")]
+    [SerializeField] private bool isStickToUIFrame;
+    [SerializeField] private Script_UIAspectRatioEnforcerFrame UIAspectRatioEnforcerFrame;
     
     private Vector2 canvasBottomWorldPoint = new Vector2();
     private RectTransform rect;
@@ -43,6 +52,10 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
     void Awake()
     {
         rect = GetComponent<RectTransform>();
+
+        Canvas canvas = canvasScaler.GetComponent<Canvas>();
+        if (canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            Debug.LogError($"{name}'s Canvas Scaler needs to be Screen Space Overlay for UI Enforcer to work properly");
     }
 
     void OnEnable()
@@ -63,10 +76,23 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
 
     private void StickImageToBorder()
     {
-        // Get Y based on Target Aspect Ratio
-        float topBorderHeight = cam.rect.y * (float)Screen.height;
-        float sideBorderWidth = cam.rect.x * (float)Screen.width;
+        float topBorderHeight;
+        float sideBorderWidth;
+        Vector3 _offset;
+        
+        if (isStickToUIFrame)
+        {
+            // Set border height and width based on UI Frame
+            topBorderHeight = UIAspectRatioEnforcerFrame.BorderHeight;
+            sideBorderWidth = UIAspectRatioEnforcerFrame.BorderWidth;
+        }
+        else
+        {
+            topBorderHeight = cam.rect.y * (float)Screen.height;
+            sideBorderWidth = cam.rect.x * (float)Screen.width;
+        }
 
+        _offset = offset / canvasScaler.scaleFactor + refResScalingOffset;
         position.y = topBorderHeight / canvasScaler.scaleFactor;
         position.x = sideBorderWidth / canvasScaler.scaleFactor;
 
@@ -91,11 +117,18 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
             case (UIPosition.Bottom):
                 position.x = 0f;
                 break;
+            case (UIPosition.Left):
+                position.y = 0f;
+                break;
+            case (UIPosition.Right):
+                position.y = 0f;
+                position.x *= -1;
+                break;
             default:
                 break;
         }
         
-        rect.anchoredPosition = position + (offset / canvasScaler.scaleFactor);
+        rect.anchoredPosition = position + _offset;
 
         if (canvasAdjuster != null)
             canvasAdjuster.AdjustPosition(Mathf.RoundToInt(canvasScaler.scaleFactor), graphics.PixelScreenSize.y);

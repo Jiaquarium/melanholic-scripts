@@ -471,7 +471,7 @@ public class Script_Game : MonoBehaviour
         transitionManager.Setup();
         cutSceneManager.Setup();
         canvasGroupsParent.Setup();
-        UIAspectRatioEnforcerFrame.gameObject.SetActive(true);
+        UIAspectRatioEnforcerFrame.Setup();
         elevatorManager.Setup();
         stickerHolsterManager.Setup();
         activeStickerManager.Setup();

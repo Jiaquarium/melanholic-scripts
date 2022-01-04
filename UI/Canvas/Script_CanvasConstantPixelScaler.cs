@@ -34,19 +34,39 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 
     private Script_ScalingBounds defaultBounds;
     private bool isScaling;
-    private CanvasScaler canvasScaler;
+    private CanvasScaler myCanvasScaler;
 
+    public CanvasScaler MyCanvasScaler
+    {
+        get 
+        {
+            if (myCanvasScaler == null)
+                myCanvasScaler = GetComponent<CanvasScaler>();
+        
+            return myCanvasScaler;
+        }
+    }
+    
     public Script_ScalingBounds Bounds
     {
         get => bounds;
         set => bounds = value;
     }
 
+    public float ScaleFactor
+    {
+        get
+        {
+            SetScaleFactor();
+            
+            return MyCanvasScaler.scaleFactor;
+        }
+    }
+
     void Awake()
     {
         SetupCanvasAdjusters();
         defaultBounds = bounds;
-        canvasScaler = GetComponent<CanvasScaler>();
     }
     
     void OnEnable()
@@ -88,19 +108,19 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         IEnumerator ScaleDown()
         {
             // Start out hiding canvas.
-            canvasScaler.scaleFactor = hiddenScaleFactor;
+            MyCanvasScaler.scaleFactor = hiddenScaleFactor;
             
-            while (canvasScaler.scaleFactor > targetScaleFactor)
+            while (MyCanvasScaler.scaleFactor > targetScaleFactor)
             {
                 yield return null;
 
-                float scaleFactor = canvasScaler.scaleFactor;
+                float scaleFactor = MyCanvasScaler.scaleFactor;
                 scaleFactor -= (Time.deltaTime / scaleAnimateTime) * scaleDecrease;
                 
                 if (scaleFactor < targetScaleFactor)
                     scaleFactor = targetScaleFactor;
                 
-                canvasScaler.scaleFactor = scaleFactor;
+                MyCanvasScaler.scaleFactor = scaleFactor;
             }
 
             isScaling = false;
@@ -130,19 +150,19 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         IEnumerator ScaleUp()
         {
             // Start out showing canvas.
-            canvasScaler.scaleFactor = targetScaleFactor;
+            MyCanvasScaler.scaleFactor = targetScaleFactor;
 
-            while (canvasScaler.scaleFactor < hiddenScaleFactor)
+            while (MyCanvasScaler.scaleFactor < hiddenScaleFactor)
             {
                 yield return null;
                 
-                float scaleFactor = canvasScaler.scaleFactor;
+                float scaleFactor = MyCanvasScaler.scaleFactor;
                 scaleFactor += (Time.deltaTime / scaleAnimateTime) * scaleIncrease;
                 
                 if (scaleFactor > hiddenScaleFactor)
                     scaleFactor = hiddenScaleFactor;
                 
-                canvasScaler.scaleFactor = scaleFactor;
+                MyCanvasScaler.scaleFactor = scaleFactor;
             }
 
             isScaling = false;
@@ -154,7 +174,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         }
     }
     
-    private void SetScaleFactor()
+    public void SetScaleFactor()
     {
         // Catch when Singletons aren't set yet.
         try
@@ -170,7 +190,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
             hiddenScaleFactor = targetScaleFactor + 1;
             
             int scaleFactor = Mathf.Max(targetScaleFactor, 1);
-            canvasScaler.scaleFactor = scaleFactor;
+            MyCanvasScaler.scaleFactor = scaleFactor;
 
             foreach (var canvasAdjuster in canvasAdjusters)
             {

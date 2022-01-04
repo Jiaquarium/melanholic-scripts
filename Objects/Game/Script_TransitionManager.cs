@@ -68,6 +68,7 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController endingsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController goodEndingCanvasGroup;
     [SerializeField] private Script_CanvasGroupController trueEndingCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController endingsBgCanvasGroup;
 
     [Header("Bad Ending")]
     [SerializeField] private float dieTimeScale;
@@ -242,11 +243,13 @@ public class Script_TransitionManager : MonoBehaviour
         if (endingOverride != Endings.None)     game.ActiveEnding = endingOverride;
 
         game.ChangeStateCutScene();
-        
-        var bgm = Script_BackgroundMusicManager.Control;
-        bgm.FadeOutSlow(bgm.Stop);
 
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(true, () => {
+            var bgm = Script_BackgroundMusicManager.Control;
+            bgm.FadeOutSlow(bgm.Stop);
+
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+        });
     }
 
     /// <summary>
@@ -434,6 +437,12 @@ public class Script_TransitionManager : MonoBehaviour
         TimelineFadeIn(fadeOutEndingTime, () => {
             goodEndingCanvasGroup.gameObject.SetActive(false);
             trueEndingCanvasGroup.gameObject.SetActive(false);
+
+            // Set Borders back to Default
+            Script_UIAspectRatioEnforcerFrame.Control.MatchBorders();
+
+            // Remove BgCanvasGroup from EndingsFadeToBlackTimeline
+            endingsBgCanvasGroup.gameObject.SetActive(false);
             
             StartCoroutine(NextFrameCredits());
         }, isOver: true);
@@ -558,6 +567,7 @@ public class Script_TransitionManager : MonoBehaviour
         goodEndingCanvasGroup.gameObject.SetActive(false);
         trueEndingCanvasGroup.gameObject.SetActive(false);
         SealingCanvasGroup.gameObject.SetActive(false);
+        endingsBgCanvasGroup.gameObject.SetActive(false);
     }
 }
 
