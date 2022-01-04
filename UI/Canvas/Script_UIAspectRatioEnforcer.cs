@@ -131,7 +131,14 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
         rect.anchoredPosition = position + _offset;
 
         if (canvasAdjuster != null)
-            canvasAdjuster.AdjustPosition(Mathf.RoundToInt(canvasScaler.scaleFactor), graphics.PixelScreenSize.y);
+        {
+            canvasAdjuster.AdjustPosition(
+                Mathf.RoundToInt(canvasScaler.scaleFactor),
+                graphics.PixelScreenSize.y,
+                Vector3.zero,
+                false
+            );
+        }
     }
 
     /// <summary>
@@ -153,6 +160,15 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
         // Check viewport (Screen Space) contains the overlay canvas point.
         if (cam.pixelRect.Contains(canvasBottomWorldPoint))
             SetCenterCanvasToBottom();
+        
+        // Make any final adjustments to canvas.
+        if (canvasAdjuster != null)
+            canvasAdjuster.AdjustPosition(
+                Mathf.RoundToInt(canvasScaler.scaleFactor),
+                graphics.PixelScreenSize.y,
+                rect.anchoredPosition,
+                true
+            );
 
         void SetCenterCanvasToBottom()
         {
@@ -166,7 +182,7 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
             
             position = new Vector3(
                 rect.anchoredPosition.x,
-                newYPosition,
+                Mathf.FloorToInt(newYPosition),
                 0f
             );
             

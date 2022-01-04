@@ -199,7 +199,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
                 // Otherwise, it will never be adjusted because UI Aspect Ratio Enforcer will override it.
                 var UIAspectRatioEnforcer = canvasAdjuster.GetComponent<Script_UIAspectRatioEnforcer>();
                 if (UIAspectRatioEnforcer == null)
-                    canvasAdjuster.AdjustPosition(scaleFactor, graphics.PixelScreenSize.y);
+                    canvasAdjuster.AdjustPosition(scaleFactor, graphics.PixelScreenSize.y, Vector3.zero, false);
             }
         }
         catch (System.Exception error)

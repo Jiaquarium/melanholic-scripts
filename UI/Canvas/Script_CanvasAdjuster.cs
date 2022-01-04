@@ -15,8 +15,20 @@ public class Script_CanvasAdjuster : MonoBehaviour
 
     private Vector3 originalPosition;
 
-    public void AdjustPosition(int scaleFactor, int height)
+    public void AdjustPosition(
+        int scaleFactor,
+        int height,
+        Vector3 positionOverride,
+        bool usePositionOverride
+    )
     {
+        Vector3 position;
+        
+        if (usePositionOverride)
+            position = positionOverride;
+        else
+            position = originalPosition;
+        
         // Scale Factor determines which adjustment to use.
         int scaleIndex = scaleFactor - 1;
         Vector4 positionDelta = Vector4.zero;
@@ -38,7 +50,7 @@ public class Script_CanvasAdjuster : MonoBehaviour
 
         // Adjustment is scale independent because the adjustment
         // only applies to a predefined scale factor.
-        rect.anchoredPosition = originalPosition + adjustment;
+        rect.anchoredPosition = position + adjustment;
     }
 
     public void Setup()
