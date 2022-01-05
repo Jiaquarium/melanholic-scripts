@@ -228,7 +228,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     // Called from KingsIntro after Black Screen fades out.
     public void OpenArtFrame()
     {
-        Script_ArtFrameManager.Control.Open(null);
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ElderIntro
+        );
     }
 
     // Set King's Position to center of Stage frame
@@ -251,19 +254,26 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         isKingIntroCutSceneDone = true;
         Script_BackgroundMusicManager bgm = Script_BackgroundMusicManager.Control;
         
-        Script_ArtFrameManager.Control.Close(() => {
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ElderIntro,
+            cb: OnRemoveLetterBoxDone
+        );
+
+        eldersTragedyBgThemePlayer.FadeOutStop(() => {
+            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            bgm.PlayFadeIn(bgm.CurrentClipIndex, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        });
+
+        void OnRemoveLetterBoxDone()
+        {
             game.ChangeStateInteract();
             game.CanvasesInitialState();
             
             // Face King in the proper direction upon timeline restarting.
             KingEclaire.FaceDirection(Directions.Left);
             KingEclaire.State = Script_StaticNPC.States.Interact;
-        });
-
-        eldersTragedyBgThemePlayer.FadeOutStop(() => {
-            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
-            bgm.PlayFadeIn(bgm.CurrentClipIndex, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
-        });
+        }
     }
 
     // Ids intro run away cut scene on initial tutorial run.

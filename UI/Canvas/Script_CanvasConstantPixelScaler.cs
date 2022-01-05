@@ -53,6 +53,12 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         set => bounds = value;
     }
 
+    public bool IsCustomScaling
+    {
+        get => isCustomScaling;
+        set => isCustomScaling = value;
+    }
+
     public float ScaleFactor
     {
         get
@@ -61,6 +67,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
             
             return MyCanvasScaler.scaleFactor;
         }
+        set => MyCanvasScaler.scaleFactor = value;
     }
 
     void Awake()
@@ -183,7 +190,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
                 ? graphics.Zoom
                 : graphics.UIDefaultScaleFactor;
             
-            if (isCustomScaling)
+            if (IsCustomScaling)
                 targetScaleFactor = GetScaleFactorByViewportHeight(graphics.PixelScreenSize.y);
             
             // Will result in the canvas being hidden from view.

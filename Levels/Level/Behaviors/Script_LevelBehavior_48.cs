@@ -390,8 +390,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         // Animate in Frame
         Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
             isOpen: true,
-            cb: () => { timelineController.PlayableDirectorPlayFromTimelines(2, 2); },
-            framing: Script_UIAspectRatioEnforcerFrame.Framing.MaskReveal
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.MaskReveal,
+            cb: () => { timelineController.PlayableDirectorPlayFromTimelines(2, 2); }
         );
     }
 

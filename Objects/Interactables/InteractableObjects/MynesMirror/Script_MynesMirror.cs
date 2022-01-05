@@ -164,9 +164,13 @@ public class Script_MynesMirror : Script_InteractableObjectText
     {
         game.ChangeStateCutScene();
         
-        Script_ArtFrameManager.Control.Open(OnArtFrameAnimationDone);
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: OnFramingAnimationDone
+        );
         
-        void OnArtFrameAnimationDone()
+        void OnFramingAnimationDone()
         {
             Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror);
 
@@ -197,9 +201,11 @@ public class Script_MynesMirror : Script_InteractableObjectText
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
             Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId] = true;
             
-            Script_ArtFrameManager.Control.Close(() => {
-                game.ChangeStateInteract();
-            });
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: false,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                cb: game.ChangeStateInteract
+            );
         });
 
         HandleIsActivatedGraphics(true);

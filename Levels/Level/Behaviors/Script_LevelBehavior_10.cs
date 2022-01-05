@@ -177,18 +177,22 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         game.ChangeStateCutScene();
         
-        Script_ArtFrameManager.Control.Open(() => {
-            namePlatePRCSPlayer.Play();
-        });
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: () => namePlatePRCSPlayer.Play()
+        );
     }
     
     public void OnNameplateDone()
     {
         namePlatePRCSPlayer.Stop();
 
-        Script_ArtFrameManager.Control.Close(() => {
-            dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false);
-        });
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: () => dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false)
+        );
     }
 
     public void IdsWalkToERoom()
@@ -263,9 +267,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         game.ChangeStateCutScene();
         
-        Script_ArtFrameManager.Control.Open(OnArtFrameAnimationDone);
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.IdsDead,
+            cb: OnFramingAnimationDone
+        );
         
-        void OnArtFrameAnimationDone()
+        void OnFramingAnimationDone()
         {
             Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.IdsDead);
 
@@ -395,9 +403,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.IdsDead, () => {
             isIdsDeadPRCSDone = true;
             
-            Script_ArtFrameManager.Control.Close(() => {
-                game.ChangeStateInteract();
-            });
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: false,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.IdsDead,
+                cb: game.ChangeStateInteract
+            );
         });    
     }
 

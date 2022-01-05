@@ -123,6 +123,8 @@ public class Script_EventCycleManager : MonoBehaviour
     // If it's Day 3 and you didn't talk on previous day, then Ellenia will be hurt.
     public bool IsElleniaHurt()
     {
+        Debug.Log($"didTalkToElleniaCountdown {didTalkToElleniaCountdown}");
+        
         return game.IsRunDay(Script_Run.DayId.sat) && didTalkToElleniaCountdown == 0;
     }
 

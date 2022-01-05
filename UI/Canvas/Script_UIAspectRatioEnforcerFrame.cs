@@ -21,8 +21,12 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
 {
     public enum Framing
     {
-        Default = 0,
-        MaskReveal = 1
+        Ending = 0,
+        MaskReveal = 1,
+        ElderIntro = 2,
+        ElleniasHand = 3,
+        IdsDead = 4,
+        ConstantThin = 5,
     }
     
     public static Script_UIAspectRatioEnforcerFrame Control;
@@ -39,16 +43,21 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     [Tooltip("Reference resolution of the art asset")]
     [SerializeField] private Vector2Int refResolution;
     [SerializeField] private Script_GraphicsManager graphics;
+    
     [SerializeField] private Script_CanvasConstantPixelScaler endingsCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler maskRevealCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler elderIntroCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler ElleniasHandCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler IdsDeadCanvasScaler;
+    
     [Tooltip("Border heights as a percent of Rect")]
     [SerializeField] private float minBorderHeight;
     [SerializeField] private float minBorderHeightDefault;
-    [SerializeField] private float minBorderHeightMaskReveal;
+    [UnityEngine.Serialization.FormerlySerializedAs("minBorderHeightMaskReveal")]
+    [SerializeField] private float minBorderHeightThin;
     [SerializeField] private float letterBoxTime;
 
-    private Vector2 screenSize;
-    private Script_CanvasConstantPixelScaler currentCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler currentCanvasScaler;
 
     // Editor only
     [SerializeField] private Color devColor = new Color(0f, .47f, 0f);
@@ -68,25 +77,18 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         if (isAnimatingLetterBox)
             return;
         
-        Vector2 _screenSize = new Vector2(graphics.PixelScreenSize.x, graphics.PixelScreenSize.y);
-        
-        if (_screenSize != screenSize)
-        {
-            if (isCutSceneLetterBox)
-                CutSceneLetterBox(currentCanvasScaler);
-            else
-                MatchBorders();
-        }
-
-        screenSize = _screenSize;
+        if (isCutSceneLetterBox)
+            CutSceneLetterBox(currentCanvasScaler);
+        else
+            MatchBorders();
     }
 
     public void EndingsLetterBox(
         bool isOpen,
+        Framing framing,
         Action cb = null,
         float t = 0f,
-        bool isUnscaledTime = false,
-        Framing framing = 0
+        bool isUnscaledTime = false
     )
     {
         if (t <= 0f)
@@ -96,14 +98,33 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         
         switch (framing)
         {
-            case (Framing.Default):
+            case (Framing.Ending):
                 minBorderHeight = minBorderHeightDefault;
                 canvasScaler = endingsCanvasScaler;
                 break;
             case (Framing.MaskReveal):
-                minBorderHeight = minBorderHeightMaskReveal;
+                minBorderHeight = minBorderHeightThin;
                 canvasScaler = maskRevealCanvasScaler;
                 break;
+            case (Framing.ElderIntro):
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = elderIntroCanvasScaler;
+                break;
+            case (Framing.ElleniasHand):
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = ElleniasHandCanvasScaler;
+                break;
+            case (Framing.IdsDead):
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = IdsDeadCanvasScaler;
+                break;
+            
+            // No dynamic sizing needed for framing
+            case (Framing.ConstantThin):
+                minBorderHeight = minBorderHeightThin;
+                canvasScaler = null;
+                break;
+
             default:
                 minBorderHeight = minBorderHeightDefault;
                 canvasScaler = endingsCanvasScaler;
@@ -116,6 +137,9 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
             StartCoroutine(CloseLetterBoxCo(canvasScaler, t, cb, isUnscaledTime));
     }
 
+    /// <summary>
+    /// Match the Camera Rect
+    /// </summary>
     public void MatchBorders()
     {
         isAnimatingLetterBox = false;
@@ -243,14 +267,19 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     {
         currentCanvasScaler = canvasScaler;
 
-        float imageSizeY = refResolution.y * canvasScaler.ScaleFactor;
-        float verticalSpace = Mathf.Max((graphics.PixelScreenSize.y - imageSizeY) / 2, 0f);
-
+        float letterBoxBorderHeight;
         float minHeight = minBorderHeight * graphics.PixelScreenSize.y;
-
-        float letterBoxBorderHeight = Application.isPlaying
-            ? Mathf.CeilToInt(Mathf.Max(minHeight, verticalSpace))
-            : minHeight;
+        
+        if (canvasScaler == null)
+            letterBoxBorderHeight = minHeight;
+        else
+        {
+            float imageSizeY = refResolution.y * canvasScaler.ScaleFactor;
+            float verticalSpace = Mathf.Max((graphics.PixelScreenSize.y - imageSizeY) / 2, 0f);
+            letterBoxBorderHeight = Application.isPlaying
+                ? Mathf.CeilToInt(Mathf.Max(minHeight, verticalSpace))
+                : minHeight;
+        }
 
         return new Vector2(0f, letterBoxBorderHeight);
     }
@@ -296,25 +325,50 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
                 t.ChangeBordersColor(isProd: false);
             }
 
-            if (GUILayout.Button("Cut Scene Letter Box"))
+            GUILayout.Label("Dynamic Framing Size", EditorStyles.boldLabel);
+
+            if (GUILayout.Button("Letter Box (Endings Canvas)"))
             {
                 t.CutSceneLetterBox(t.endingsCanvasScaler);
             }
 
-            if (GUILayout.Button("Open Endings Letter Box"))
+            if (GUILayout.Button("Open Letter Box (Endings Canvas)"))
             {
                 if (!Application.isPlaying)
                     return;
                 
-                t.EndingsLetterBox(true);
+                t.EndingsLetterBox(true, framing: Framing.Ending);
             }
 
-            if (GUILayout.Button("Close Endings Letter Box"))
+            if (GUILayout.Button("Close Letter Box (Endings Canvas)"))
             {
                 if (!Application.isPlaying)
                     return;
                 
-                t.EndingsLetterBox(false);
+                t.EndingsLetterBox(false, framing: Framing.Ending);
+            }
+
+            GUILayout.Label("Constant Framing Size", EditorStyles.boldLabel);
+
+            if (GUILayout.Button("Letter Box (Null)"))
+            {
+                t.CutSceneLetterBox(null);
+            }
+
+            if (GUILayout.Button("Open Letter Box (Constant Thin)"))
+            {
+                if (!Application.isPlaying)
+                    return;
+                
+                t.EndingsLetterBox(true, framing: Framing.ConstantThin);
+            }
+
+            if (GUILayout.Button("Close Letter Box (Constant Thin)"))
+            {
+                if (!Application.isPlaying)
+                    return;
+                
+                t.EndingsLetterBox(false, framing: Framing.ConstantThin);
             }
         }
     }

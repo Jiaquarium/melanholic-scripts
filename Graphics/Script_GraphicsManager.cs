@@ -43,6 +43,9 @@ public class Script_GraphicsManager : MonoBehaviour
         get => Mathf.Max(PixelRatio, Zoom);
     }
 
+    /// <summary>
+    /// Screen size in pixels based on the Camera Rect (after Aspect Ratio adjustments are made)
+    /// </summary>
     public Vector2Int PixelScreenSize
     {
         get => pixelPerfectCamera.pixelScreenSize;

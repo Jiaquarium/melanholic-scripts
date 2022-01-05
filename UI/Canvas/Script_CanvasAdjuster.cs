@@ -41,7 +41,7 @@ public class Script_CanvasAdjuster : MonoBehaviour
         // current Scale Factor.
         if (
             positionDelta != null
-            && (height >= positionDelta.z && height < positionDelta.w)
+            && (height >= positionDelta.z && height <= positionDelta.w)
         )
         {
             adjustment.x = positionDelta.x;

@@ -67,7 +67,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private Script_InteractableFullArt dirtyMagazine;
 
     [SerializeField] private Script_PRCSPlayer ElleniasHandPRCSPlayer;
-    [SerializeField] private Script_DialogueNode onEntranceElleniaHurtNode;
     [SerializeField] private Script_DialogueNode onElleniasPRCSDoneNode;
     [SerializeField] private Script_VCamera followElleniaHurtVCam;
     [SerializeField] private float onStartElleniaHurtCutSceneWaitTime;
@@ -82,6 +81,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
     
+    private bool isElleniaHurtToday;
     private bool isElleniaComfortableCurrentRun;
     private bool isElleniaHurtCutSceneActivated;
     private bool isCheckingPsychicDuckElleniaHurtCutScene;
@@ -283,9 +283,24 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             yield return new WaitForSeconds(elleniaHurtCutSceneWaitToFadeInTime);
 
             StartCoroutine(game.TransitionFadeOut(cutSceneFadeInTime, () => {
-                // This Dialogue will call the PRCS Player.
-                Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceElleniaHurtNode, SFXOn: false);
+                PlayElleniasHandPRCS();
             }));
+        }
+
+        void PlayElleniasHandPRCS()
+        {
+            game.ChangeStateCutScene();
+            
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
+                cb: OnFramingAnimationDone
+            );
+
+            void OnFramingAnimationDone()
+            {
+                ElleniasHandPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
+            }
         }
     }
 
@@ -295,9 +310,11 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         {
             // Remove ElleniasHandPRCS
             ElleniasHandPRCSPlayer.CloseCustom(Script_PRCSManager.CustomTypes.ElleniasHand, () => {
-                Script_ArtFrameManager.Control.Close(() => {
-                    Script_DialogueManager.DialogueManager.StartDialogueNode(onElleniasPRCSDoneNode);
-                });
+                Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                    isOpen: false,
+                    framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
+                    cb: () => Script_DialogueManager.DialogueManager.StartDialogueNode(onElleniasPRCSDoneNode)
+                );
             });
         }
     }
@@ -490,19 +507,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         Script_EventCycleManager.Control.SetElleniaDidTalkCountdownMax();
     }
 
-    // Called from OnEntranceElleniaHurtNode
-    public void PlayElleniasHandPRCS()
-    {
-        game.ChangeStateCutScene();
-        
-        Script_ArtFrameManager.Control.Open(OnArtFrameAnimationDone);
-
-        void OnArtFrameAnimationDone()
-        {
-            ElleniasHandPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
-        }
-    }
-
     public void SwitchVCamElleniaHurt()
     {
         Script_VCamManager.VCamMain.SetNewVCam(followElleniaHurtVCam);
@@ -579,7 +583,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         // and to skip the giving Animal Within dialogue.
         game.SetupMovingNPC(Ellenia, isInitialization);
         
-        if (Script_EventCycleManager.Control.IsElleniaHurt())
+        if (isElleniaHurtToday || Script_EventCycleManager.Control.IsElleniaHurt())
         {
             paintingEntranceMid.State = Script_InteractableObject.States.Disabled;
             
@@ -589,6 +593,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             easle.gameObject.SetActive(false);
             easleYellAtPlayerIOText.gameObject.SetActive(false);
             easleFullArt.gameObject.SetActive(false);
+
+            isElleniaHurtToday = true;
         }
         else
         {

@@ -244,12 +244,16 @@ public class Script_TransitionManager : MonoBehaviour
 
         game.ChangeStateCutScene();
 
-        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(true, () => {
-            var bgm = Script_BackgroundMusicManager.Control;
-            bgm.FadeOutSlow(bgm.Stop);
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.Ending,
+            cb: () => {
+                var bgm = Script_BackgroundMusicManager.Control;
+                bgm.FadeOutSlow(bgm.Stop);
 
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
-        });
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+            }
+        );
     }
 
     /// <summary>
