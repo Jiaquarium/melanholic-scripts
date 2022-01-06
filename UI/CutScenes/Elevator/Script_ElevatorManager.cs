@@ -19,6 +19,9 @@ public class Script_ElevatorManager : MonoBehaviour
 
     [SerializeField] private Script_ExitMetadataObject grandMirrorEntrance;
 
+    [SerializeField] private CanvasGroup countdownCanvasGroup;
+    [SerializeField] private CanvasGroup lastElevatorMessageCanvasGroup;
+
     
     /// <summary>
     /// UI Closes Elevator Doors
@@ -144,6 +147,11 @@ public class Script_ElevatorManager : MonoBehaviour
 
     public void Setup()
     {
-        elevatorCanvasGroupController.Close();   
+        elevatorCanvasGroupController.Close();
+
+        // Do not set alpha because they will only be controlled
+        // via Timeline Activation without animating the alpha.
+        countdownCanvasGroup.gameObject.SetActive(false);
+        lastElevatorMessageCanvasGroup.gameObject.SetActive(false);
     }
 }

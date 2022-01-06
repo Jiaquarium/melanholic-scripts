@@ -25,10 +25,10 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
         Right
     }
 
-    [SerializeField] private Vector3 position;
-    [SerializeField] private Vector3 offset;
     [Tooltip("Offset that scales with scaleFactor. Based on scaling factor of 1")]
     [SerializeField] private Vector3 refResScalingOffset;
+    [UnityEngine.Serialization.FormerlySerializedAs("offset")]
+    [SerializeField] private Vector3 constantPixelSizeOffset;
     [SerializeField] private UIPosition _UIPosition;
     [SerializeField] private CanvasScaler canvasScaler;
     [SerializeField] private Camera cam;
@@ -45,6 +45,7 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
     [SerializeField] private bool isStickToUIFrame;
     [SerializeField] private Script_UIAspectRatioEnforcerFrame UIAspectRatioEnforcerFrame;
     
+    private Vector3 position;
     private Vector2 canvasBottomWorldPoint = new Vector2();
     private RectTransform rect;
     private Vector3[] worldCorners;
@@ -54,6 +55,7 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
         rect = GetComponent<RectTransform>();
 
         Canvas canvas = canvasScaler.GetComponent<Canvas>();
+        
         if (canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             Debug.LogError($"{name}'s Canvas Scaler needs to be Screen Space Overlay for UI Enforcer to work properly");
     }
@@ -92,10 +94,28 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
             sideBorderWidth = cam.rect.x * (float)Screen.width;
         }
 
-        _offset = offset / canvasScaler.scaleFactor + refResScalingOffset;
-        position.y = topBorderHeight / canvasScaler.scaleFactor;
-        position.x = sideBorderWidth / canvasScaler.scaleFactor;
-
+        switch (canvasScaler.uiScaleMode)
+        {
+            case CanvasScaler.ScaleMode.ConstantPixelSize:
+                _offset = constantPixelSizeOffset / canvasScaler.scaleFactor + refResScalingOffset;
+                position.y = topBorderHeight / canvasScaler.scaleFactor;
+                position.x = sideBorderWidth / canvasScaler.scaleFactor;
+                break;
+            case CanvasScaler.ScaleMode.ScaleWithScreenSize:
+                float scaleFactor = graphics.PixelScreenSize.y / canvasScaler.referenceResolution.y;
+                
+                _offset = constantPixelSizeOffset / scaleFactor + refResScalingOffset;
+                position.y = topBorderHeight / scaleFactor;
+                position.x = sideBorderWidth / scaleFactor;
+                break;
+            default:
+                Debug.LogWarning($"Canvas Scaler set to an unsupported UI Scale Mode: {canvasScaler.uiScaleMode}");
+                _offset = refResScalingOffset;
+                position.y = topBorderHeight;
+                position.x = sideBorderWidth;
+                break;
+        }
+        
         switch (_UIPosition)
         {
             case (UIPosition.TopLeft):
@@ -142,8 +162,8 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
     }
 
     /// <summary>
-    /// Make a center aligned canvas touch the bottom of viewport. (e.g. Fullart that needs
-    /// to be grounded always)
+    /// Make a center aligned canvas AT LEAST touch the bottom of viewport (e.g. Fullart that needs
+    /// to be grounded always). If it doesn't need to be grounded it will be unaffected.
     /// </summary>
     private void StickCenterImageToBottom()
     {
@@ -191,7 +211,7 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
 
         void SetDefaultPosition()
         {
-            position = Vector3.zero + (offset / canvasScaler.scaleFactor);
+            position = Vector3.zero + (constantPixelSizeOffset / canvasScaler.scaleFactor) + refResScalingOffset;
             rect.anchoredPosition = position;
             rect.ForceUpdateRectTransforms();
         }

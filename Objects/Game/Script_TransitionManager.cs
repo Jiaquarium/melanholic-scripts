@@ -464,11 +464,22 @@ public class Script_TransitionManager : MonoBehaviour
         }
     }
 
+    // Sealing Timeline
     public void PlayTheSealingBgm()
     {
         var bgm = Script_BackgroundMusicManager.Control;
         bgm.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
         bgm.PlayElderTragedy();
+    }
+
+    // Sealing Timeline
+    public void FramingOpen()
+    {
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.TheSealing,
+            isNoAnimation: true
+        );
     }
 
     // ------------------------------------------------------------------
