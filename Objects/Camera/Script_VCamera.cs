@@ -40,14 +40,14 @@ public class Script_VCamera : MonoBehaviour
         if (isFollowPlayer)
         {
             Debug.Log($"{name} Set to follow Player");
-            FollowCameraTargetFollower();
+            SetFollow();
             transform.position = OffsetTargetPosition;
         }
     }
 
-    public void FollowCameraTargetFollower()
+    public void SetFollow()
     {
-        Follow = Script_Game.Game?.CameraTargetFollower.transform;
+        Follow = Script_Game.Game?.GetPlayer().FocalPoint;
     }
 
     public void SetPriority(int priority)

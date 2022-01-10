@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Script_AllCanvasGroupsParent : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup wordsEffectsCanvasGroup;
+    [SerializeField] private Script_WordsEffects wordsEffects;
 
     public void Setup()
     {
         gameObject.SetActive(true);
-        wordsEffectsCanvasGroup.gameObject.SetActive(true);
+        wordsEffects.Setup();
     }
 }

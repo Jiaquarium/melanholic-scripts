@@ -942,11 +942,11 @@ public class Script_Game : MonoBehaviour
         );
         player.transform.SetParent(playerContainer, false);
         
-        CameraTargetFollower.MatchPlayer();
-        CameraTargetFollower.IsFollowing = true;
+        // CameraTargetFollower.MatchPlayer();
+        // CameraTargetFollower.IsFollowing = true;
         
-        VCam.FollowCameraTargetFollower();
-        VCamDramaticZoom.FollowCameraTargetFollower();
+        VCam.SetFollow();
+        VCamDramaticZoom.SetFollow();
     }
 
     public void SetupPlayerOnLevel()
