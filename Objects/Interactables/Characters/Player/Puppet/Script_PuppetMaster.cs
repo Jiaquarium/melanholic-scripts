@@ -10,15 +10,8 @@ using UnityEngine;
 /// </summary>
 public class Script_PuppetMaster : Script_Puppet
 {
-    protected override void Update()
+    protected override void HandleAction()
     {
-        // ------------------------------------------------------------------
-        // Visuals
-        HandleIsMoving();
-        // ------------------------------------------------------------------
-
-        playerMovementHandler.HandleMoveTransform();
-        
         if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)
         {
             // Puppet Masters have their specified action override.

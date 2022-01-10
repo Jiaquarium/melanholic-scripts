@@ -74,11 +74,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
     [SerializeField] private Directions lastMoveInput;
 
-    [SerializeField] private Script_LimitedQueue<Directions> inputBuffer = new Script_LimitedQueue<Directions>(4);
-    
-    // TBD TODO: Remove, Only for Dev
-    [Tooltip("Only to show what is happening in the underlying Queue")]
-    [SerializeField] private List<Directions> inputBufferDisplay = new List<Directions>(4);
+    [SerializeField] private Script_LimitedQueue<Directions> inputButtonDownBuffer = new Script_LimitedQueue<Directions>(4);
 
     public float xWeight;
     public float yWeight;
@@ -148,16 +144,14 @@ public class Script_PlayerMovement : MonoBehaviour
         playerCheckCollisions = GetComponent<Script_PlayerCheckCollisions>();
     }
 
-    void LateUpdate()
-    {
-        if (Const_Dev.IsDevMode)
-            inputBufferDisplay = inputBuffer.ToList();
-    }
-    
     public void HandleMoveInput(bool isReversed = false)
     {
         HandleWalkSpeed();
         HandleAnimations();
+        
+        Vector2 dirVector = new Vector2(
+            Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
+        );
         
         // ------------------------------------------------------------------
         // Input Buffer
@@ -165,7 +159,7 @@ public class Script_PlayerMovement : MonoBehaviour
         // Fill buffer with any inputs caught during buffer time.
         if (progress < 1f)
         {
-            BufferInput();
+            BufferInput(dirVector);
             return;
         }
         
@@ -185,36 +179,34 @@ public class Script_PlayerMovement : MonoBehaviour
             return;
         }
 
-        Directions bufferedInput = Directions.None;
-        if (inputBuffer.Count > 0)
-            bufferedInput = inputBuffer.Peek();
-        
-        // ------------------------------------------------------------------
-
-        Vector2 dirVector = new Vector2(
-            Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
-        );
-
         // ------------------------------------------------------------------
         // Buffered Moves
         // Buffer new button presses if we're in the middle of a move.
         // Buffered moves always take priority.
+        Directions bufferedInput = Directions.None;
+        if (inputButtonDownBuffer.Count > 0)
+        {
+            bufferedInput = inputButtonDownBuffer.Peek();
+            
+            // If buffered a move, then set Animator.
+            HandleBufferedMoveAnimations(bufferedInput);
+        }
         
         if (bufferedInput == Directions.Up)
         {
-            UpWeights();
+            UpWeights(ref dirVector);
         }
         else if (bufferedInput == Directions.Down)
         {
-            DownWeights();
+            DownWeights(ref dirVector);
         }
         else if (bufferedInput == Directions.Right)
         {
-            RightWeights();
+            RightWeights(ref dirVector);
         }
         else if (bufferedInput == Directions.Left)
         {
-            LeftWeights();
+            LeftWeights(ref dirVector);
         }
         
         // ------------------------------------------------------------------
@@ -223,19 +215,19 @@ public class Script_PlayerMovement : MonoBehaviour
         // Only relevant for Keyboard.
         else if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
-            UpWeights();
+            UpWeights(ref dirVector);
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Down))
         {
-            DownWeights();
+            DownWeights(ref dirVector);
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Right))
         {
-            RightWeights();
+            RightWeights(ref dirVector);
         }
         else if (Input.GetButtonDown(Const_KeyCodes.Left))
         {
-            LeftWeights();
+            LeftWeights(ref dirVector);
         }
 
         // ------------------------------------------------------------------
@@ -261,19 +253,19 @@ public class Script_PlayerMovement : MonoBehaviour
             {
                 if (dirVector.y > 0)
                 {
-                    UpWeights();
+                    UpWeights(ref dirVector);
                 }
                 else if (dirVector.y < 0)
                 {
-                    DownWeights();
+                    DownWeights(ref dirVector);
                 }
                 else if (dirVector.x > 0)
                 {
-                    RightWeights();
+                    RightWeights(ref dirVector);
                 }
                 else if (dirVector.x < 0)
                 {
-                    LeftWeights();
+                    LeftWeights(ref dirVector);
                 }
             }
         }
@@ -284,6 +276,54 @@ public class Script_PlayerMovement : MonoBehaviour
             HandlePassive();
         }
 
+        // if (bufferedInput != Directions.None)
+        //     Debug.Log($"<color=cyan>UPDATE: EXECUTING BUFFERED BUTTONDOWN MOVE x: {dirVector.x} y: {dirVector.y}</color>");
+        // else
+        //     Debug.Log($"<color=green>UPDATE: EXECUTING NEW MOVE x: {dirVector.x} y: {dirVector.y}</color>");
+        
+        ExecuteMove(dirVector, isReversed);
+
+        void HandlePassive()
+        {
+            if (IsNorthWind)
+            {
+                Move(Directions.Down, _isNoInputMoveByWind: true);
+                ClearInputBuffer();
+                StopMovingAnimations();
+            }
+        }
+    }
+
+    void UpWeights(ref Vector2 dirVector)
+    {
+        xWeight = 0f;
+        yWeight = 1f;
+        dirVector = new Vector2(xWeight, yWeight);
+    }
+
+    void DownWeights(ref Vector2 dirVector)
+    {
+        xWeight = 0f;
+        yWeight = -1f;
+        dirVector = new Vector2(xWeight, yWeight);
+    }
+
+    void RightWeights(ref Vector2 dirVector)
+    {
+        xWeight = 1f;
+        yWeight = 0f;
+        dirVector = new Vector2(xWeight, yWeight);
+    }
+
+    void LeftWeights(ref Vector2 dirVector)
+    {
+        xWeight = -1f;
+        yWeight = 0f;
+        dirVector = new Vector2(xWeight, yWeight);
+    }
+    
+    private void ExecuteMove(Vector2 dirVector, bool isReversed)
+    {
         if (isReversed)     HandleMoveReversed();
         else                HandleMoveDefault();
 
@@ -312,70 +352,27 @@ public class Script_PlayerMovement : MonoBehaviour
             else if (dirVector.x < 0)
                 Move(Directions.Right);
         }
-
-        void UpWeights()
-        {
-            xWeight = 0f;
-            yWeight = 1f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
-        void DownWeights()
-        {
-            xWeight = 0f;
-            yWeight = -1f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
-        void RightWeights()
-        {
-            xWeight = 1f;
-            yWeight = 0f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
-        void LeftWeights()
-        {
-            xWeight = -1f;
-            yWeight = 0f;
-            dirVector = new Vector2(xWeight, yWeight);
-        }
-
-        void HandlePassive()
-        {
-            if (IsNorthWind)
-            {
-                Move(Directions.Down, _isNoInputMoveByWind: true);
-                ClearInputBuffer();
-                StopMovingAnimations();
-            }
-        }
     }
 
-    // Buffer new button presses during buffer timer.
-    private void BufferInput()
+    // Buffer input during buffer timer when Player is in motion.
+    private void BufferInput(Vector2 dirVector)
     {
+        Debug.Log($"<color=blue>Buffering Input... x: {dirVector.x} y: {dirVector.y}</color>)");
+        
+        // Buffer new button presses
         if (Input.GetButtonDown(Const_KeyCodes.Up))
-        {
-            inputBuffer.Enqueue(Const_KeyCodes.Up.KeyCodeToDirections());
-        }
+            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Up.KeyCodeToDirections());
         else if (Input.GetButtonDown(Const_KeyCodes.Down))
-        {
-            inputBuffer.Enqueue(Const_KeyCodes.Down.KeyCodeToDirections());
-        }
+            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Down.KeyCodeToDirections());
         else if (Input.GetButtonDown(Const_KeyCodes.Right))
-        {
-            inputBuffer.Enqueue(Const_KeyCodes.Right.KeyCodeToDirections());
-        }
+            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Right.KeyCodeToDirections());
         else if (Input.GetButtonDown(Const_KeyCodes.Left))
-        {
-            inputBuffer.Enqueue(Const_KeyCodes.Left.KeyCodeToDirections());
-        }
+            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Left.KeyCodeToDirections());
     }
 
     public void ClearInputBuffer()
     {
-        inputBuffer.Clear();
+        inputButtonDownBuffer.Clear();
     }
 
     public void Move(Directions dir, bool _isNoInputMoveByWind = false)
@@ -491,11 +488,45 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private bool TryExit(Directions dir) => HandleExitTile(dir) || HandleExitObject(dir);
 
-    public void HandleMoveTransform()
+    public void HandleMoveTransform(bool isReversed = false)
     {
         if (progress < 1f)
         {
-            progress += WalkSpeed(Script_ActiveStickerManager.Control.ActiveSticker?.id) * Time.deltaTime;
+            MoveTransform();   
+        }
+        // Make button holds smooth.
+        // If we're already at progress == 1f and waiting for the Update clock,
+        // execute the Move() call here (which is called on FixedUpdate clock),
+        // allowing for smooth movement.
+        else if (progress == 1f && isMoving)
+        {
+            Vector2 dirVector = new Vector2(
+                Input.GetAxis(Const_KeyCodes.Horizontal),
+                Input.GetAxis(Const_KeyCodes.Vertical)
+            );
+            // Get any bufferedInput from buffered Button Downs or currently Held button.
+            Directions bufferedInput = GetBufferedButtonDownOrHold(dirVector);
+            if (bufferedInput != Directions.None)
+            {
+                if (bufferedInput == Directions.Up)
+                    UpWeights(ref dirVector);
+                else if (bufferedInput == Directions.Down)
+                    DownWeights(ref dirVector);
+                else if (bufferedInput == Directions.Right)
+                    RightWeights(ref dirVector);
+                else if (bufferedInput == Directions.Left)
+                    LeftWeights(ref dirVector);
+
+                Debug.Log($"<color=orange>Executing buffered {bufferedInput}, dirVector {dirVector}</color>");
+
+                ExecuteMove(dirVector, isReversed);
+                MoveTransform();    
+            }
+        }
+
+        void MoveTransform()
+        {
+            progress += WalkSpeed(Script_ActiveStickerManager.Control.ActiveSticker?.id) * Time.fixedDeltaTime;
             
             if (progress > 1f)
                 progress = 1f;
@@ -507,6 +538,34 @@ public class Script_PlayerMovement : MonoBehaviour
             );    
             transform.position = newPosition;
             isMoving = true;
+        }
+
+        Directions GetBufferedButtonDownOrHold(Vector2 dirVector)
+        {
+            Directions bufferedInput = Directions.None;
+
+            // Check for buffered ButtonDowns
+            if (inputButtonDownBuffer.Count > 0)
+            {
+                bufferedInput = inputButtonDownBuffer.Peek();
+                Debug.Log($"<color=orange>USING BUFFERED DOWN INPUT {bufferedInput}</color>");
+            }
+            // If no button down presses buffered, check current axis being held down.
+            else if (dirVector != Vector2.zero)
+            {
+                if (dirVector.y > 0)
+                    bufferedInput = Directions.Up;
+                else if (dirVector.y < 0)
+                    bufferedInput = Directions.Down;
+                else if (dirVector.x > 0)
+                    bufferedInput = Directions.Right;
+                else if (dirVector.x < 0)
+                    bufferedInput = Directions.Left;
+                
+                Debug.Log($"<color=yellow>USING BUFFERED HOLD INPUT dirVector {dirVector}</color>");
+            }
+            
+            return bufferedInput;
         }
     }
 
@@ -547,6 +606,11 @@ public class Script_PlayerMovement : MonoBehaviour
         );
         
         animator.SetBool(PlayerMovingAnimatorParam, isMovingAnimation);
+    }
+
+    private void HandleBufferedMoveAnimations(Directions bufferedMove)
+    {
+        animator.SetBool(PlayerMovingAnimatorParam, bufferedMove != Directions.None);
     }
 
     public void AnimatorSetDirection(Directions dir)

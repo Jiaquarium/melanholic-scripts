@@ -64,8 +64,16 @@ public class Script_Puppet : Script_PlayerCopy
         HandleIsMoving();
         // ------------------------------------------------------------------
 
-        playerMovementHandler.HandleMoveTransform();
-        
+        HandleAction();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
+    protected override void HandleAction()
+    {
         if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)
         {
             // Puppets do not take action inputs.
@@ -82,7 +90,7 @@ public class Script_Puppet : Script_PlayerCopy
         else
         {
             StopMoving();
-        }
+        }        
     }
 
     // Swaps the animator controller for specified one when active as a puppet.
