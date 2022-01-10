@@ -275,11 +275,6 @@ public class Script_PlayerMovement : MonoBehaviour
         {
             HandlePassive();
         }
-
-        // if (bufferedInput != Directions.None)
-        //     Debug.Log($"<color=cyan>UPDATE: EXECUTING BUFFERED BUTTONDOWN MOVE x: {dirVector.x} y: {dirVector.y}</color>");
-        // else
-        //     Debug.Log($"<color=green>UPDATE: EXECUTING NEW MOVE x: {dirVector.x} y: {dirVector.y}</color>");
         
         ExecuteMove(dirVector, isReversed);
 
@@ -357,8 +352,6 @@ public class Script_PlayerMovement : MonoBehaviour
     // Buffer input during buffer timer when Player is in motion.
     private void BufferInput(Vector2 dirVector)
     {
-        Debug.Log($"<color=blue>Buffering Input... x: {dirVector.x} y: {dirVector.y}</color>)");
-        
         // Buffer new button presses
         if (Input.GetButtonDown(Const_KeyCodes.Up))
             inputButtonDownBuffer.Enqueue(Const_KeyCodes.Up.KeyCodeToDirections());
@@ -517,8 +510,6 @@ public class Script_PlayerMovement : MonoBehaviour
                 else if (bufferedInput == Directions.Left)
                     LeftWeights(ref dirVector);
 
-                Debug.Log($"<color=orange>Executing buffered {bufferedInput}, dirVector {dirVector}</color>");
-
                 ExecuteMove(dirVector, isReversed);
                 MoveTransform();    
             }
@@ -548,7 +539,6 @@ public class Script_PlayerMovement : MonoBehaviour
             if (inputButtonDownBuffer.Count > 0)
             {
                 bufferedInput = inputButtonDownBuffer.Peek();
-                Debug.Log($"<color=orange>USING BUFFERED DOWN INPUT {bufferedInput}</color>");
             }
             // If no button down presses buffered, check current axis being held down.
             else if (dirVector != Vector2.zero)
@@ -561,8 +551,6 @@ public class Script_PlayerMovement : MonoBehaviour
                     bufferedInput = Directions.Right;
                 else if (dirVector.x < 0)
                     bufferedInput = Directions.Left;
-                
-                Debug.Log($"<color=yellow>USING BUFFERED HOLD INPUT dirVector {dirVector}</color>");
             }
             
             return bufferedInput;

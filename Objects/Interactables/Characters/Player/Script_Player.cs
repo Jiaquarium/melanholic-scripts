@@ -52,9 +52,6 @@ public class Script_Player : Script_Character
     private Script_PlayerReflection reflection;
     private const string PlayerGlitch = "Base Layer.Player_Glitch";
     private Dictionary<Directions, Vector3> directionsToVector;
-    
-    private Vector3 lastPositionUpdateDev = Vector3.zero;
-    private Vector3 lastPositionFixedUpdateDev = Vector3.zero;
 
     public string State
     {
@@ -217,22 +214,11 @@ public class Script_Player : Script_Character
         // ------------------------------------------------------------------
         
         HandleAction();
-
-        var diff = transform.position.x - lastPositionUpdateDev.x;
-        lastPositionUpdateDev = transform.position;
     }
 
     protected virtual void FixedUpdate()
     {
         playerMovementHandler.HandleMoveTransform();
-
-        var diff = transform.position.x - lastPositionFixedUpdateDev.x;
-        lastPositionFixedUpdateDev = transform.position;
-        
-        if (diff != 0f)
-            Debug.Log($"{diff} (progress: {playerMovementHandler.Progress} x: {Input.GetAxis(Const_KeyCodes.Horizontal)} y: {Input.GetAxis(Const_KeyCodes.Vertical)})");
-        else
-            Debug.Log($"<color=red>{diff} (progress: {playerMovementHandler.Progress} x: {Input.GetAxis(Const_KeyCodes.Horizontal)} y: {Input.GetAxis(Const_KeyCodes.Vertical)})</color>");
     }
 
     protected virtual void HandleAction()
