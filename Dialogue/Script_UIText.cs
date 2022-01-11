@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2021-12-16 13:04:54
+// Last created by UI Exporter at 2022-01-10 18:33:10
 
 using System.Collections;
 using System.Collections.Generic;
@@ -767,7 +767,7 @@ public class Script_UIText
     "sticker_ice-spike",
     new Model_LanguagesUI
     {
-        EN = @"Summon a spike so powerful, it’ll crack open just about anything."
+        EN = @"Summon a spike from the dark spirits of the underworld. Useful for cracking brittle objects that haunted one’s past."
     }
 },
 {
@@ -868,7 +868,7 @@ public class Script_UIText
     "notes_ids_not-home",
     new Model_LanguagesUI
     {
-        EN = @"Hiya!<br><br>If you’re reading this that means I’m out dancin’. You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!"
+        EN = @"Hiya!<br><br>If you’re reading this that means I’m out dancin’ <b>today</b>. You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!"
     }
 },
 {

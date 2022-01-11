@@ -168,7 +168,13 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public void SetFireplaceExitActive(bool isActive)
     {
         wellsWorldBehaviors.ForEach(
-            behavior => behavior.FireplaceExit.SetInteractionActive(isActive)
+            behavior => {
+                behavior.FireplaceExit.SetInteractionActive(isActive);
+                
+                // If the Exit is enabled, then there is no fire, so
+                // the text commenting on the fire should be hidden.
+                behavior.FireText.gameObject.SetActive(!isActive);
+            }
         );
     }
 

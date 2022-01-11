@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2021-12-13 15:46:04
+// Last created by Dialogue Exporter at 2022-01-10 14:59:28
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3271,6 +3271,30 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"All that’s left of this is a dry branch.",
+        },
+        
+    }
+},
+{
+    "wells-world_fireplace_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"What’s a fireplace doing in a place like this?",
+        },
+        
+    }
+},
+{
+    "wells-world_fireplace_fire_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The fire is burning steadily.",
         },
         
     }

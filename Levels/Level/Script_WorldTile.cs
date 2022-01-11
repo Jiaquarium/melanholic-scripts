@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+
+/// <summary>
+/// NOTE It's assumed the Player will always respawn at the Origin Tile, so loading directly onto a
+/// non-Origin tile will make tile shifting break.
+/// </summary>
 public class Script_WorldTile : MonoBehaviour
 {
     [SerializeField] private Tilemap tileMap;

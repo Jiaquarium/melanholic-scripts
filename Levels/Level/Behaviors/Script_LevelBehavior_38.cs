@@ -21,16 +21,12 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     protected override void OnEnable() {
         base.OnEnable();
         
-        // Disable Pixel Perfect for now, because it's causing really bad shaking with the Screen Space
-        // bg Canvas not set to World Space. We want it to be screen space so it gives a different effect.
-        game.PixelPerfectEnable(false);
-        
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
     }
 
     protected override void OnDisable() {
         base.OnDisable();
-        game.PixelPerfectEnable(true);
+        
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
     }    
     
