@@ -171,7 +171,11 @@ public class Script_Player : Script_Character
     public bool IsPassive
     {
         get => playerMovementHandler.IsPassive;
-        set => playerMovementHandler.IsPassive = value;
+        set
+        {
+            Debug.Log($"Setting IsPassive: {IsPassive}");
+            playerMovementHandler.IsPassive = value;
+        }
     }
 
     public AudioClip PassiveNotificationSFX
@@ -213,7 +217,11 @@ public class Script_Player : Script_Character
         HandleIsMoving();
         // ------------------------------------------------------------------
         
-        HandleAction();
+        HandleAction(
+            () => playerActionHandler.HandleActionInput(FacingDirection, location),
+            () => playerMovementHandler.HandleMoveInput(),
+            StopMoving
+        );
     }
 
     protected virtual void FixedUpdate()
@@ -221,23 +229,40 @@ public class Script_Player : Script_Character
         playerMovementHandler.HandleMoveTransform();
     }
 
-    protected virtual void HandleAction()
+    public virtual void HandleAction(
+        Action actionHandler,
+        Action moveHandler,
+        Action stopMovingHandler
+    )
     {
         if (game.state == Const_States_Game.Interact)
         {
-            playerActionHandler.HandleActionInput(FacingDirection, location);
+            if (actionHandler != null)
+                actionHandler();
             
             if (IsNotMovingState())
-                StopMoving();
+            {
+                if (stopMovingHandler != null)
+                    stopMovingHandler();
+            }
             else
-                playerMovementHandler.HandleMoveInput();
+            {
+                if (moveHandler != null)
+                    moveHandler();
+            }
         }
         else
         {
             if (game.state == Const_States_Game.DDR)
-                playerMovementHandler.HandleMoveInput();   
+            {
+                if (moveHandler != null)
+                    moveHandler();
+            }
             else
-                StopMoving();
+            {
+                if (stopMovingHandler != null)
+                    stopMovingHandler();
+            }
         }
     }
 

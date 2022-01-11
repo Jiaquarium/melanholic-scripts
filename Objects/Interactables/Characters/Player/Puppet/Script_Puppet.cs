@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -30,16 +31,18 @@ public class Script_Puppet : Script_PlayerCopy
     {
         base.OnEnable();
         
-        Script_PlayerEventsManager.OnPuppeteerActivate      += OnPuppeteerActivate;
-        Script_PlayerEventsManager.OnPuppeteerDeactivate    += OnPuppeteerDeactivate;
+        Script_PlayerEventsManager.OnPuppeteerActivate          += OnPuppeteerActivate;
+        Script_PlayerEventsManager.OnPuppeteerDeactivate        += OnPuppeteerDeactivate;
+        Script_GameEventsManager.OnLevelBeforeDestroy           += OnPuppeteerDeactivate;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
         
-        Script_PlayerEventsManager.OnPuppeteerActivate      -= OnPuppeteerActivate;
-        Script_PlayerEventsManager.OnPuppeteerDeactivate    -= OnPuppeteerDeactivate;
+        Script_PlayerEventsManager.OnPuppeteerActivate          -= OnPuppeteerActivate;
+        Script_PlayerEventsManager.OnPuppeteerDeactivate        -= OnPuppeteerDeactivate;
+        Script_GameEventsManager.OnLevelBeforeDestroy           -= OnPuppeteerDeactivate;
     }
 
     protected override void Awake()
@@ -64,32 +67,45 @@ public class Script_Puppet : Script_PlayerCopy
         HandleIsMoving();
         // ------------------------------------------------------------------
 
-        HandleAction();
+        HandleAction(
+            // Puppets do not take action inputs
+            null,
+            () => playerMovementHandler.HandleMoveInput(isReversed),
+            StopMoving
+        );
     }
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
+        playerMovementHandler.HandleMoveTransform(isReversed);
     }
 
-    protected override void HandleAction()
+    public override void HandleAction(
+        Action actionHandler,
+        Action moveHandler,
+        Action stopMovingHandler    
+    )
     {
         if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)
         {
-            // Puppets do not take action inputs.
+            if (actionHandler != null)
+                actionHandler();
             
             if (IsNotMovingState())
             {
-                StopMoving();
+                if (stopMovingHandler != null)
+                    stopMovingHandler();
             }
             else
             {
-                playerMovementHandler.HandleMoveInput(isReversed);
+                if (moveHandler != null)
+                    moveHandler();
             }
         }
         else
         {
-            StopMoving();
+            if (stopMovingHandler != null)
+                stopMovingHandler();
         }        
     }
 

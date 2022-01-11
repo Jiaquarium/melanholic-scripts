@@ -8,20 +8,23 @@ public class Script_PlayerEventsManager : MonoBehaviour
     public static event OnEnteredElevatorDelegate OnEnteredElevator;
     public static void EnteredElevator()
     {
-        if (OnEnteredElevator != null)   OnEnteredElevator();
+        if (OnEnteredElevator != null)
+            OnEnteredElevator();
     }
 
     public delegate void OnPuppeteerActivateDelegate();
     public static event OnPuppeteerActivateDelegate OnPuppeteerActivate;
     public static void PuppeteerActivate()
     {
-        if (OnPuppeteerActivate != null)    OnPuppeteerActivate();
+        if (OnPuppeteerActivate != null)
+            OnPuppeteerActivate();
     }
 
     public delegate void OnPuppeteerDeactivateDelegate();
     public static event OnPuppeteerDeactivateDelegate OnPuppeteerDeactivate;
     public static void PuppeteerDeactivate()
     {
-        if (OnPuppeteerDeactivate != null)    OnPuppeteerDeactivate();
+        if (OnPuppeteerDeactivate != null)
+            OnPuppeteerDeactivate();
     }
 }

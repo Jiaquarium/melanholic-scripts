@@ -15,6 +15,16 @@ public class Script_PuppeteerEffect : Script_StickerEffect
         private set => isEffectHoldActive = value;
     }
 
+    void OnEnable()
+    {
+        Script_GameEventsManager.OnLevelBeforeDestroy += ForceStopEffectHold;
+    }
+
+    void OnDisable()
+    {
+        Script_GameEventsManager.OnLevelBeforeDestroy -= ForceStopEffectHold;
+    }
+
     public override void Effect()
     {
         if (!IsEffectHoldActive)
@@ -24,6 +34,20 @@ public class Script_PuppeteerEffect : Script_StickerEffect
         else
         {
             StopEffectHold();
+        }
+    }
+
+    /// <summary>
+    /// On level tear down event, remove the Puppeteer effect if it's active. Ideally, this won't
+    /// be called, but in the case it does, this will prevent the game from breaking.
+    /// </summary>
+    public void ForceStopEffectHold()
+    {
+        if (IsEffectHoldActive)
+        {
+            SetToInteract();
+            isEffectHoldActive = false;
+            Script_Game.Game.GetPlayer().SetBuffEffectActive(false);
         }
     }
 
@@ -74,11 +98,11 @@ public class Script_PuppeteerEffect : Script_StickerEffect
 
             SetToInteract();
         }
+    }
 
-        void SetToInteract()
-        {
-            player.AnimatorEffectHold = false;
-            player.SetIsInteract();
-        }
+    private void SetToInteract()
+    {
+        player.AnimatorEffectHold = false;
+        player.SetIsInteract();
     }
 }

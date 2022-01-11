@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-01-10 18:33:10
+// Last created by UI Exporter at 2022-01-11 13:34:27
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1271,6 +1271,27 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"{79}"
+    }
+},
+{
+    "controls_title_shortcuts",
+    new Model_LanguagesUI
+    {
+        EN = @"《 Inventory Shortcuts 》"
+    }
+},
+{
+    "controls_explanation_shortcuts",
+    new Model_LanguagesUI
+    {
+        EN = @"〈 Press key while hovering over Mask inside Inventory 〉"
+    }
+},
+{
+    "controls_prep_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Prep / Unprep Mask"
     }
 },
 // ------------------------------------------------------------------

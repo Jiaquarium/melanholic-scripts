@@ -10,26 +10,19 @@ using UnityEngine;
 /// </summary>
 public class Script_PuppetMaster : Script_Puppet
 {
-    protected override void HandleAction()
+    protected override void Update()
     {
-        if (game.state == Const_States_Game.Interact && puppetState == PuppetStates.Active)
-        {
-            // Puppet Masters have their specified action override.
-            playerActionHandler.HandleActionInput(FacingDirection, location);
-            
-            if (IsNotMovingState())
-            {
-                StopMoving();
-            }
-            else
-            {
-                playerMovementHandler.HandleMoveInput(isReversed);
-            }
-        }
-        else
-        {
-            StopMoving();
-        }
+        // ------------------------------------------------------------------
+        // Visuals
+        HandleIsMoving();
+        // ------------------------------------------------------------------
+
+        HandleAction(
+            // Puppet Masters have their specified action overrides
+            () => playerActionHandler.HandleActionInput(FacingDirection, location),
+            () => playerMovementHandler.HandleMoveInput(isReversed),
+            StopMoving
+        );
     }
 
     protected override void OnPuppeteerActivate()

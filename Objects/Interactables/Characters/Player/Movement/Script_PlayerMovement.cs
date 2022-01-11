@@ -493,6 +493,22 @@ public class Script_PlayerMovement : MonoBehaviour
         // allowing for smooth movement.
         else if (progress == 1f && isMoving)
         {
+            // Check for Player Moving State to stop moving if State
+            // was modified mid-transform (e.g. Changing Mask to a non-moving one).
+            bool isStopMoving = false;
+            player.HandleAction(null, null, () => {
+                Debug.Log($"Player is not in moving state, stopping Fixed Move Transform");
+                isStopMoving = true;
+            });
+            
+            if (isStopMoving || IsPassive)
+            {
+                StopMovingAnimations();
+                ClearInputBuffer();
+                isMoving = false;
+                return;
+            }
+            
             Vector2 dirVector = new Vector2(
                 Input.GetAxis(Const_KeyCodes.Horizontal),
                 Input.GetAxis(Const_KeyCodes.Vertical)
@@ -510,8 +526,10 @@ public class Script_PlayerMovement : MonoBehaviour
                 else if (bufferedInput == Directions.Left)
                     LeftWeights(ref dirVector);
 
+                Debug.Log($"Player using Fixed Buffered Move: {bufferedInput}");
+                
                 ExecuteMove(dirVector, isReversed);
-                MoveTransform();    
+                MoveTransform();
             }
         }
 
