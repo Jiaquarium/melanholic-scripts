@@ -36,6 +36,60 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         }
     }
 
+    public bool HotKeyStickUnstick(
+        Script_Equipment equipment,
+        Script_Inventory inventory,
+        int inventorySlot,
+        int equipmentSlot,
+        bool isBackground = false
+    )
+    {
+        try
+        {
+            // Cache and remove the sticker in specified inventory slot.
+            Script_Sticker inventorySticker = inventory.GetItemInSlot(inventorySlot) as Script_Sticker;
+            inventory.RemoveItemInSlot(inventorySlot);
+            
+            // Cache and remove the sticker in specified equipment slot.
+            Script_Sticker equipmentSticker = equipment.GetStickerInSlot(equipmentSlot);
+            equipment.RemoveStickerInSlot(equipmentSlot);
+
+            if (inventorySticker != null)
+                equipment.AddStickerInSlot(inventorySticker, equipmentSlot);
+            
+            if (equipmentSticker != null)
+                inventory.AddItemInSlot(equipmentSticker, inventorySlot);
+            
+            // Error SFX if trying to hotkey switch when both designated slots are empty. 
+            if (inventorySticker == null && equipmentSticker == null)
+                return OnError();
+            
+            if (!isBackground)
+            {
+                // If we only removed from equipment and added to inventory,
+                // it's an unequip event.
+                if (inventorySticker == null && equipmentSticker != null)
+                    StickerOffSFX();
+                else
+                    StickerOnSFX();
+            }
+                
+            return true;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed HotKeyStickUnstick with Error:\n{e}");
+            
+            return OnError();
+        }
+
+        bool OnError()
+        {
+            GetComponent<Script_InventoryManager>().ErrorDullSFX();
+            return false;
+        }
+    }
+
     public bool UnstickSticker(
         Script_Sticker sticker,
         Script_Equipment equipment,

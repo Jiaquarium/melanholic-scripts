@@ -16,6 +16,5 @@ MonoBehaviour:
   focusedSprite: {fileID: -6618134905481563395, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: -6734734834790175173, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: a spike so powerful, it'll crack open just about anything.
   isDroppable: 0
   _isSpecial: 0

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(Script_StickersInventoryHandler))]
 [RequireComponent(typeof(Script_UsablesInventoryHandler))]
 [RequireComponent(typeof(Script_CollectiblesInventoryHandler))]
@@ -38,6 +42,7 @@ public class Script_InventoryManager : MonoBehaviour
     [SerializeField] private Script_InventoryAudioSettings settings;
     
     [SerializeField] private Script_ItemChoicesInputManager stickersChoicesInputManager;
+    
     [SerializeField] private Script_ItemChoicesInputManager itemsChoicesInputManager;
     
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
@@ -342,6 +347,30 @@ public class Script_InventoryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// In the current build the only Sticker Option is to Prep (Stick),
+    /// this handles that flow, bypassing Item Choices.
+    /// </summary>
+    public bool HandleOnEnterStick(int slotId)
+    {
+        var sticker = inventory.GetItemInSlot(slotId) as Script_Sticker;
+
+        if (sticker == null)
+        {
+            ErrorDullSFX();
+            return false;
+        }
+        
+        if (stickersHandler.StickSticker(sticker, equipment, inventory, slotId))
+        {
+            EnterInventory();
+            return true;
+        }
+
+        ErrorDullSFX();
+        return false;   
+    }
+
     public void HandleEquipmentSlotOnEnter(int stickerSlotId)
     {
         var stickerToRemove = equipment.GetStickerInSlot(stickerSlotId) as Script_Sticker;
@@ -354,6 +383,21 @@ public class Script_InventoryManager : MonoBehaviour
             ErrorUnableSFX();
         else
             UnstickSticker(stickerToRemove, equipment, inventory, stickerSlotId, false);
+    }
+
+    /// <summary>
+    /// Equipping and unequipping via hot key. Switch the Masks in either slot.
+    /// Error SFX if neither slot has a Mask.
+    /// </summary>
+    public bool HandleHotkeyStickUnstick(int stickerSlotId, int equipmentSlotId)
+    {
+        return stickersHandler.HotKeyStickUnstick(
+            equipment,
+            inventory,
+            stickerSlotId,
+            equipmentSlotId,
+            isBackground: false
+        );
     }
 
     // Note, this will not remove ones past the point of a full equipment.
@@ -398,7 +442,7 @@ public class Script_InventoryManager : MonoBehaviour
         return stickersHandler.StickSticker(sticker, equipment, inventory, itemSlot, isBackground: true);
     }
 
-    void Drop(Script_Item item, int itemSlotId)
+    private void Drop(Script_Item item, int itemSlotId)
     {
         Debug.Log($"Dropping item {item.id}");
         HideItemChoices();
@@ -584,4 +628,26 @@ public class Script_InventoryManager : MonoBehaviour
         stickersChoicesInputManager.gameObject.SetActive(false);
         itemsChoicesInputManager.gameObject.SetActive(false);
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_InventoryManager))]
+    public class Script_InventoryManagerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_InventoryManager t = (Script_InventoryManager)target;
+            
+            if (GUILayout.Button("Slot 0, Hotkey 1 (Equipment Slot 0)"))
+            {
+                t.HandleHotkeyStickUnstick(0, 0);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 0"))
+            {
+                t.inventory.RemoveItemInSlot(0);
+            }
+        }
+    }
+#endif   
 }

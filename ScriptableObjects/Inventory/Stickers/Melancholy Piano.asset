@@ -16,6 +16,5 @@ MonoBehaviour:
   focusedSprite: {fileID: 2451324180514708912, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: -3571245019227250870, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: follow the chords of your heart.
   isDroppable: 0
   _isSpecial: 0

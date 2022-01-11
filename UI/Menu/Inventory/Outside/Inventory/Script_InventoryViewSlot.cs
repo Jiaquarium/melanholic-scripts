@@ -18,12 +18,36 @@ public class Script_InventoryViewSlot : Script_Slot
     /// </summary>
     public void OnEnter()
     {
-        // keep button highlighted ONLY if going to show choices
+        switch (type)
+        {
+            case (Script_InventoryManager.Types.Stickers):
+                OnEnterSticker();        
+                break;
+            case (Script_InventoryManager.Types.Items):
+                OnEnterItem();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Immediately "Prep" the Mask OnEnter.
+    /// </summary>
+    private void OnEnterSticker()
+    {
+        inventoryManager.HandleOnEnterStick(Id);
+    }
+
+    private void OnEnterItem()
+    {
+        // Keep button highlighted ONLY if going to show choices
         if (inventoryManager.ShowItemChoices(Id, type))
         {
             Script_ItemSlotButtonHighlighter h = GetComponent<Script_ItemSlotButtonHighlighter>();
             h.isEnterPressed = true;
-            /// To maintain highlight when we enter into itemChoices
+            
+            // To maintain highlight when we enter into itemChoices
             h.ForceHighlightItemChoices();
         }
     }
