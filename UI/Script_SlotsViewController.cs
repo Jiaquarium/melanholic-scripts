@@ -28,7 +28,6 @@ public class Script_SlotsViewController : MonoBehaviour
         UpdateSlots();    
     }
     
-    // Update is called once per frame
     protected virtual void Update()
     {
         if (HandleNavigatedOut())   return;

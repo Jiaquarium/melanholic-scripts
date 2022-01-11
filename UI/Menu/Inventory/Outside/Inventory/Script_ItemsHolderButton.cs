@@ -25,7 +25,8 @@ public class Script_ItemsHolderButton : MonoBehaviour, ISelectHandler
     /// </summary>
     public void OnEnter()
     {
-        if (isAutoEnter)    return;
+        if (isAutoEnter)
+            return;
         
         inventoryController.EnterInventoryView();
     }
