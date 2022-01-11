@@ -476,7 +476,14 @@ public class Script_PlayerMovement : MonoBehaviour
         };
 
         speed *= maskMultiplier;
-        return isNorthWind ? speed * windAdjustment : speed;
+        var adjustedSpeed = isNorthWind ? speed * windAdjustment : speed;
+        
+        float framesPerMove = 1f / (Time.fixedDeltaTime * adjustedSpeed);
+        float roundedFramesPerMove = Mathf.RoundToInt(framesPerMove);
+        if (!Mathf.Approximately(roundedFramesPerMove, framesPerMove))
+            Debug.LogWarning($"Motion not smooth; frames per move {framesPerMove} floored {roundedFramesPerMove}");
+        
+        return adjustedSpeed;
     }
 
     private bool TryExit(Directions dir) => HandleExitTile(dir) || HandleExitObject(dir);
