@@ -22,6 +22,12 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private CanvasGroup countdownCanvasGroup;
     [SerializeField] private CanvasGroup lastElevatorMessageCanvasGroup;
 
+    [SerializeField] private FadeSpeeds lastElevatorPromptFadeInTime;
+    [SerializeField] private float waitToRevealLastElevatorChoicesTime;
+    [SerializeField] private Script_CanvasGroupController lastElevatorPromptController;
+    [SerializeField] private Script_CanvasGroupController lastElevatorPromptChoicesController;
+
+
     
     /// <summary>
     /// UI Closes Elevator Doors
@@ -39,7 +45,9 @@ public class Script_ElevatorManager : MonoBehaviour
     {
         // For Last Elevator Sticker.
         currentExitData = exitOverrideData ?? exit?.data;
-        if (exitTypeOverride != null)   exitType = (Script_Exits.ExitType)exitTypeOverride;
+        
+        if (exitTypeOverride != null)
+            exitType = (Script_Exits.ExitType)exitTypeOverride;
         
         currentExitBehavior = exitBehavior;
         elevatorCanvasGroupController.Open();
@@ -58,10 +66,15 @@ public class Script_ElevatorManager : MonoBehaviour
                 
                 elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 2);
                 break;
+            case (Script_Elevator.Types.Effect):
+                elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 3);
+                break;
         }
     }
 
-    /// Signal Reactions START ========================================================================
+    // ------------------------------------------------------------------
+    // Timeline Signals
+    
     /// <summary>
     /// Called when elevator UI canvas done closing
     /// Calls any exit behaviors right after Game.Exit() is called
@@ -143,11 +156,77 @@ public class Script_ElevatorManager : MonoBehaviour
         Script_BackgroundMusicManager.Control.FadeInMed();
     }
 
-    /// Signal Reactions END ========================================================================
+    // LastElevatorCanvasTimeline
+    public void OpenLastElevatorPrompt()
+    {
+        lastElevatorPromptController.FadeIn(lastElevatorPromptFadeInTime.ToFadeTime());
+    }
+
+    // LastElevatorCanvasTimeline_No
+    public void OnLastElevatorCanceledTimelineDone()
+    {
+        Script_Game.Game.ChangeStateInteract();
+    }
+
+    // ------------------------------------------------------------------
+    // Unity Events
+    
+    // LastElevatorPrompt UI Text OnTypingDone Event
+    public void OpenLastElevatorPromptChoices()
+    {
+        // Wait before showing choices
+        StartCoroutine(WaitToRevealChoices());        
+
+        IEnumerator WaitToRevealChoices()
+        {
+            yield return new WaitForSeconds(waitToRevealLastElevatorChoicesTime);
+
+            lastElevatorPromptChoicesController.FadeIn(lastElevatorPromptFadeInTime.ToFadeTime());
+        }
+    }
+    
+    // LastElevatorPrompt UI Yes
+    public void LastElevatorConfirmedTimeline()
+    {
+        // Fade Screen to Black
+        Script_TransitionManager.Control.TimelineFadeIn(FadeSpeeds.Med.GetFadeTime(), () => {
+            // Remove prompt
+            lastElevatorPromptController.Close();
+            lastElevatorPromptChoicesController.Close();
+
+            // Remove Fader
+            Script_TransitionManager.Control.TimelineFadeOut(FadeSpeeds.Fast.GetFadeTime(), null, isOver: true);
+            
+            // Note: Fader takes 0.25 seconds to fade out, ensure Timeline has at least this much
+            // of a pause before showing an event.
+            // Play Yes Timeline
+            elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 4);
+        }, isOver: true);
+    }
+
+    // LastElevatorPrompt UI No
+    public void LastElevatorCanceledTimeline()
+    {
+        Script_TransitionManager.Control.TimelineFadeIn(FadeSpeeds.Med.GetFadeTime(), () => {
+            // Remove prompt
+            lastElevatorPromptController.Close();
+            lastElevatorPromptChoicesController.Close();
+
+            // Remove Fader
+            Script_TransitionManager.Control.TimelineFadeOut(FadeSpeeds.Fast.GetFadeTime(), null, isOver: true);
+            
+            // Note: Fader takes 0.25 seconds to fade out, ensure Timeline has at least this much
+            // of a pause before showing an event.
+            // Play No Timeline
+            elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 5);
+        }, isOver: true);
+    }
 
     public void Setup()
     {
         elevatorCanvasGroupController.Close();
+        lastElevatorPromptController.Close();
+        lastElevatorPromptChoicesController.Close();
 
         // Do not set alpha because they will only be controlled
         // via Timeline Activation without animating the alpha.

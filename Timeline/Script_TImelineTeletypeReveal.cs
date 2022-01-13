@@ -24,6 +24,7 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
 
     [SerializeField] private UnityEvent pauseAction;
     [SerializeField] private UnityEvent resumeAction;
+    [SerializeField] private UnityEvent onTypingDoneAction;
 
     private bool isListening;
 
@@ -82,6 +83,8 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
     private void OnTypingDone()
     {
         Debug.Log("Notify timeline to start next action");
+        
+        onTypingDoneAction.SafeInvoke();
         
         if (isOnInputContinue)
         {

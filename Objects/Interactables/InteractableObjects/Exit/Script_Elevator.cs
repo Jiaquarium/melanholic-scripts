@@ -12,6 +12,7 @@ public class Script_Elevator : Script_InteractableObjectExit
         Default     = 0,
         Last        = 1,
         GrandMirror = 2,
+        Effect  = 3,
     }
     public static string IsClosed                   = "IsClosed";
     public static string CloseTrigger               = "Close";

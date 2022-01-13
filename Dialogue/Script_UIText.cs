@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-01-11 13:34:27
+// Last created by UI Exporter at 2022-01-13 02:22:02
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1081,6 +1081,15 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"SAVING GAME... Please do not turn off power."
+    }
+},
+// ------------------------------------------------------------------
+// Last Elevator Prompt
+{
+    "last-elevator-prompt_text",
+    new Model_LanguagesUI
+    {
+        EN = @"『 Take the Last Elevator? 』"
     }
 },
 // ------------------------------------------------------------------
