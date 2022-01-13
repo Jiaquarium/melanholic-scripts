@@ -44,6 +44,8 @@ public class Script_Exits : MonoBehaviour
         SaveAndRestartOnLevel       = 6,
     }
     
+    [SerializeField] private float waitToFadeInLevelTime;
+    
     public CanvasGroup canvas;
     [SerializeField] private Script_ExitToWeekendCutScene exitToWeekendCutScene;
 
@@ -191,6 +193,7 @@ public class Script_Exits : MonoBehaviour
     // FOR CHANGING OUT LEVELS: START
     void ChangeLevelFade()
     {
+        // Start Fading in Black Fader
         canvas.alpha += fadeSpeed * Time.deltaTime;
 
         if (canvas.alpha >= 1f)
@@ -229,13 +232,26 @@ public class Script_Exits : MonoBehaviour
                 }
                 default:
                 {
-                    ChangeLevel();
-                    isFadeIn = true; // OnDoneExitingTransition will be called after fadeIn is complete
+                    // Wait a frame before changing level
+                    // and wait before triggering the FadeInLevel sequence,
+                    // keeping screen black for a moment
+                    StartCoroutine(WaitBeforeFadeInLevelSequence());
                     break;
                 }
             }
 
-            /// OnDoneExitingTransition() to be called in FadeInLevel()
+            // OnDoneExitingTransition() to be called in FadeInLevel()
+        }
+
+        IEnumerator WaitBeforeFadeInLevelSequence()
+        {
+            yield return null;
+            
+            ChangeLevel();
+            
+            yield return new WaitForSeconds(waitToFadeInLevelTime);
+
+            isFadeIn = true; // OnDoneExitingTransition will be called after fadeIn is complete
         }
     }
 
