@@ -46,13 +46,20 @@ public class Script_StickersInventoryHandler : MonoBehaviour
     {
         try
         {
+            // Cache and remove the sticker if it is not Active Sticker
+            Script_Sticker equipmentSticker = equipment.GetStickerInSlot(equipmentSlot);
+            var activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;
+            
+            // If there is an Active Sticker, warn Player if it's the equipment sticker trying
+            // to be switched out.
+            if (activeSticker != null && activeSticker == equipmentSticker)
+                return OnIsActiveEquippedError();
+
+            equipment.RemoveStickerInSlot(equipmentSlot);
+            
             // Cache and remove the sticker in specified inventory slot.
             Script_Sticker inventorySticker = inventory.GetItemInSlot(inventorySlot) as Script_Sticker;
             inventory.RemoveItemInSlot(inventorySlot);
-            
-            // Cache and remove the sticker in specified equipment slot.
-            Script_Sticker equipmentSticker = equipment.GetStickerInSlot(equipmentSlot);
-            equipment.RemoveStickerInSlot(equipmentSlot);
 
             if (inventorySticker != null)
                 equipment.AddStickerInSlot(inventorySticker, equipmentSlot);
@@ -83,6 +90,12 @@ public class Script_StickersInventoryHandler : MonoBehaviour
             return OnError();
         }
 
+        bool OnIsActiveEquippedError()
+        {
+            GetComponent<Script_InventoryManager>().ErrorUnableSFX();
+            return false;
+        }
+        
         bool OnError()
         {
             GetComponent<Script_InventoryManager>().ErrorDullSFX();
