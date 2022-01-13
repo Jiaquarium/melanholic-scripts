@@ -532,8 +532,6 @@ public class Script_PlayerMovement : MonoBehaviour
                     RightWeights(ref dirVector);
                 else if (bufferedInput == Directions.Left)
                     LeftWeights(ref dirVector);
-
-                Debug.Log($"Player using Fixed Buffered Move: {bufferedInput}");
                 
                 ExecuteMove(dirVector, isReversed);
                 MoveTransform();
@@ -564,18 +562,22 @@ public class Script_PlayerMovement : MonoBehaviour
             if (inputButtonDownBuffer.Count > 0)
             {
                 bufferedInput = inputButtonDownBuffer.Peek();
+
+                Debug.Log($"Player using Fixed Buffered PRESS Move: {bufferedInput}");
             }
             // If no button down presses buffered, check current axis being held down.
             else if (dirVector != Vector2.zero)
             {
-                if (dirVector.y > 0)
+                if (dirVector.y > 0f)
                     bufferedInput = Directions.Up;
-                else if (dirVector.y < 0)
+                else if (dirVector.y < 0f)
                     bufferedInput = Directions.Down;
-                else if (dirVector.x > 0)
+                else if (dirVector.x > 0f)
                     bufferedInput = Directions.Right;
-                else if (dirVector.x < 0)
+                else if (dirVector.x < 0f)
                     bufferedInput = Directions.Left;
+                
+                Debug.Log($"Player using Fixed Buffered HOLD Move: {bufferedInput}; dirVector {dirVector}");
             }
             
             return bufferedInput;

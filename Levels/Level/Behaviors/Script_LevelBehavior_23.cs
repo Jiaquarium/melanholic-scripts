@@ -20,6 +20,9 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     [SerializeField] private Transform pillarParent;
     [SerializeField] private Transform pushablesParent;
     [SerializeField] private float shakeDuration;
+    [SerializeField] private float waitBeforeShakingTime;
+    [SerializeField] private float progress1WaitAfterShakeTime;
+    [SerializeField] private float progress2WaitAfterShakeTime;
     [SerializeField] private float shakeDurationLong;
     [SerializeField] private Script_PushableTriggerStay[] triggers;
     [SerializeField] private Script_Tracker[] pillars;
@@ -83,16 +86,41 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         print("puzzle progress");
 
         game.ChangeStateCutScene();
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.PillarPuzzleProgress,
-            Script_SFXManager.SFX.PillarPuzzleProgressVol
-        );
-        Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
-            shakeDuration,
-            Const_Camera.Shake.AmplitudeMed,
-            Const_Camera.Shake.FrequencyMed, 
-            () => game.ChangeStateInteract()
-        );
+        
+        StartCoroutine(WaitBeforeShaking());
+
+        IEnumerator WaitBeforeShaking()
+        {
+            yield return new WaitForSeconds(waitBeforeShakingTime);
+
+            // Rumble SFX
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.PillarPuzzleProgress1,
+                Script_SFXManager.SFX.PillarPuzzleProgress1Vol
+            );
+            
+            Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
+                shakeDuration,
+                Const_Camera.Shake.AmplitudeDefault,
+                Const_Camera.Shake.FrequencyDefault, 
+                () => StartCoroutine(WaitForPartialProgressSFX())
+            );
+        }
+
+        IEnumerator WaitForPartialProgressSFX()
+        {
+            yield return new WaitForSeconds(progress1WaitAfterShakeTime);
+
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.CorrectPartialProgress,
+                Script_SFXManager.SFX.CorrectPartialProgressVol
+            );
+
+            // Wait during Partial Progress
+            yield return new WaitForSeconds(Script_SFXManager.SFX.CorrectPartialProgressDuration);
+
+            game.ChangeStateInteract();
+        }
     }
     /// <summary>
     /// show reaction to completing the puzzle
@@ -104,18 +132,41 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         print("puzzle progress 2!!! all triggers have pillars on top now!");
         
         game.ChangeStateCutScene();
-        
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.PillarPuzzleProgress2,
-            Script_SFXManager.SFX.PillarPuzzleProgress2Vol
-        );
 
-        Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
-            shakeDurationLong,
-            Const_Camera.Shake.AmplitudeMed,
-            Const_Camera.Shake.FrequencyMed, 
-            () => Script_SFXManager.SFX.PlayQuestComplete(() => game.ChangeStateInteract())
-        );
+        StartCoroutine(WaitBeforeShaking());
+
+        IEnumerator WaitBeforeShaking()
+        {
+            yield return new WaitForSeconds(waitBeforeShakingTime);
+
+            // Rumble SFX
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.PillarPuzzleProgress2,
+                Script_SFXManager.SFX.PillarPuzzleProgress2Vol
+            );
+            
+            Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
+                shakeDurationLong,
+                Const_Camera.Shake.AmplitudeMed,
+                Const_Camera.Shake.FrequencyMed, 
+                () => StartCoroutine(WaitForQuestCompleteSFX())
+            );
+        }
+
+        IEnumerator WaitForQuestCompleteSFX()
+        {
+            yield return new WaitForSeconds(progress2WaitAfterShakeTime);
+
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.Secret,
+                Script_SFXManager.SFX.SecretVol
+            );
+
+            // Wait during Quest Complete
+            yield return new WaitForSeconds(Script_SFXManager.SFX.SecretDuration);
+
+            game.ChangeStateInteract();
+        }
     }
 
     private void ActivateTriggersAndPillars(bool isActive)

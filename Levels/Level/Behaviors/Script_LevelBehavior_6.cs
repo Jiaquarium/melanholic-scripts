@@ -13,8 +13,8 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
     public bool[] switchesStates;
     public bool isPuzzleCompleted;
     
-    public AudioClip puzzleCompleteSFX;
-    public AudioSource audioSource;
+    [SerializeField] private AudioClip puzzleCompleteSFX;
+    [SerializeField] private AudioSource audioSource;
     public GameObject mirrorReflection;
     public float mirrorRevealWaitTime;
     public float cameraMoveTime;
@@ -92,6 +92,10 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
     IEnumerator WaitToForMirrorReveal()
     {
         yield return new WaitForSeconds(mirrorRevealWaitTime);
+
+        var SFX = Script_SFXManager.SFX;
+        audioSource.PlayOneShot(SFX.Secret, SFX.SecretVol);
+        yield return new WaitForSeconds(Script_SFXManager.SFX.SecretDuration);
         
         Script_VCamManager.VCamMain.SetNewVCam(VCamLB6);
         
@@ -99,6 +103,7 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
         
         // play puzzle complete SFX and fade in grid
         audioSource.PlayOneShot(puzzleCompleteSFX, volumeScale);
+
         StartCoroutine(
             completionGround.GetComponent<Script_TileMapFadeIn>().FadeInCo(
                 () => {

@@ -23,14 +23,11 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip Rumble254ms;
     [Range(0f, 1f)] public float Rumble254msVol;
     
-    public AudioClip PillarPuzzleProgress;
-    [Range(0f, 1f)] public float PillarPuzzleProgressVol;
+    public AudioClip PillarPuzzleProgress1;
+    [Range(0f, 1f)] public float PillarPuzzleProgress1Vol;
     
     public AudioClip PillarPuzzleProgress2;
     [Range(0f, 1f)] public float PillarPuzzleProgress2Vol;
-    
-    public AudioClip SeasonsPuzzleProgress;
-    [Range(0f, 1f)] public float SeasonsPuzzleProgressVol;
     
     public AudioClip EnergySpikeAttack;
     [Range(0f, 1f)] public float EnergySpikeAttackVol;
@@ -102,6 +99,7 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip FloorSwitchUp;
     [Range(0f, 1f)] public float FloorSwitchUpVol;
     
+    [Tooltip("Quest Complete")]
     public AudioClip Secret;
     [Range(0f, 1f)] public float SecretVol;
     public float SecretDuration = 3.0f;

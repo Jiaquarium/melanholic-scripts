@@ -36,7 +36,8 @@ public class Script_Tracker : Script_Interactable
 
     public void SetVisibility(bool isOn)
     {
-        graphics.enabled = isOn;
+        if (graphics != null)
+            graphics.enabled = isOn;
     }
 
     public void Done()
