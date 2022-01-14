@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-01-13 02:22:02
+// Last created by UI Exporter at 2022-01-14 03:08:08
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1150,6 +1150,20 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Back"
+    }
+},
+{
+    "settings_main-menu",
+    new Model_LanguagesUI
+    {
+        EN = @"Quit to Main Menu"
+    }
+},
+{
+    "settings_prompt_main-menu",
+    new Model_LanguagesUI
+    {
+        EN = @"Are you sure? You’ll lose all progress of the current day."
     }
 },
 // ------------------------------------------------------------------

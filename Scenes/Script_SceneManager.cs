@@ -42,9 +42,13 @@ public class Script_SceneManager : MonoBehaviour
         SceneManager.LoadScene(GameScene);
     }
     
+    /// <summary>
+    /// Go from Game to Title Scene.
+    /// Change start state so Intro will not be played.
+    /// </summary>
     public static void ToTitleScene()
     {
-        Script_Start.startState = Script_Start.StartStates.Start;
+        Script_Start.startState = Script_Start.StartStates.BackToMainMenu;
         SceneManager.LoadScene(TitleScene);
     }
 

@@ -80,7 +80,7 @@ public class Script_StartOverviewController : Script_UIState
 
     private bool isCrunchActive;
 
-    private bool isInitedSimpled;
+    private bool isInitedSimple;
     
     void OnEnable()
     {
@@ -100,8 +100,11 @@ public class Script_StartOverviewController : Script_UIState
 
     // ----------------------------------------------------------------------
     // Simple Intro Sequence
-    public void InitializeIntroSimple()
+    public void InitializeIntroSimple(bool isForceInitedSimple = false)
     {
+        if (isForceInitedSimple)
+            isInitedSimple = true;
+        
         startScreenCanvasGroup.gameObject.SetActive(false);
         savedGameCanvasGroup.gameObject.SetActive(false);
         gameOverCanvasGroup.gameObject.SetActive(false);
@@ -118,12 +121,12 @@ public class Script_StartOverviewController : Script_UIState
 
         bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
 
-        if (isInitedSimpled)
+        if (isInitedSimple)
             FadeInTitleScreen(withCTA: false);
         else
             introControllerSimple.Play();
 
-        isInitedSimpled = true;
+        isInitedSimple = true;
     }
     
     // ----------------------------------------------------------------------
@@ -214,10 +217,18 @@ public class Script_StartOverviewController : Script_UIState
         
         void HandleEntryPoint()
         {
-            // If coming from Saved Games > Back, have start options immediately available.
+            // If coming from Saved Games > Back or Quit to Main Menu, have start options immediately available.
             if (isFromBack)
             {
                 StartOptionsOpen();
+                
+                // If coming from Game, we'll need to play BGM
+                if (!bgmManager.IsPlaying)
+                {
+                    Debug.Log("BGM was not playing, playing now!");
+                    PlayBgm();
+                }
+
                 WaitForAction(defaultInputDisabledTime, () => {
                     Debug.Log($"Setting start screen controller active, isFromBack {isFromBack}");
                     startScreenController.gameObject.SetActive(true);
@@ -259,7 +270,7 @@ public class Script_StartOverviewController : Script_UIState
         Debug.Log("Playing BGM");
         
         bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
-        bgmManager.Play(startScreenBgm);   
+        bgmManager.Play(startScreenBgm);
     }
 
     // Stops the intro timeline at the Start Screen.

@@ -18,7 +18,8 @@ public class Script_Start : MonoBehaviour
     public enum StartStates
     {
         Start,
-        GameOver
+        GameOver,
+        BackToMainMenu
     }
     [SerializeField] private Script_SavedGameTitleControl savedGameTitleControl;
     [SerializeField] private Script_SceneManager sceneManager;
@@ -36,6 +37,8 @@ public class Script_Start : MonoBehaviour
     private void Awake()
     {
         PlayerPrefs.DeleteAll();
+
+        Time.timeScale = 1f;
         
         if (Main == null)
         {
@@ -66,6 +69,11 @@ public class Script_Start : MonoBehaviour
                 Debug.Log("Script_Start in Start() loading Game Over");
                 mainController.InitializeGameOverState();
                 mainController.ToGameOver(deathType);
+                break;
+
+            case(StartStates.BackToMainMenu):
+                Debug.Log("Coming back from Game, No Intro Start Screen");
+                mainController.InitializeIntroSimple(isForceInitedSimple: true);
                 break;
 
             default:

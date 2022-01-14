@@ -26,6 +26,11 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         get => currentClipIndex;
     }
 
+    public bool IsPlaying
+    {
+        get => GetComponent<AudioSource>()?.isPlaying ?? false;
+    }
+
     public void Play(int i, bool forcePlay = false, float startTime = 0f)
     {
         var source = GetComponent<AudioSource>();

@@ -95,6 +95,10 @@ public class Script_SettingsController : MonoBehaviour
             bgCanvasGroup.Close();
     }
 
+    // ------------------------------------------------------------
+    // Unity Events
+    
+    // UI Controls Button
     public void ToControls()
     {
         overviewCanvasGroup.Close();
@@ -138,7 +142,15 @@ public class Script_SettingsController : MonoBehaviour
         }
     }
 
-    private void EnterMenuSFX()
+    public void ToTitleScreen()
+    {
+        Script_TransitionManager.Control.ToTitleScreen();
+        Script_TransitionManager.Control.EnterMenuSFX();
+    }
+    
+    // ------------------------------------------------------------
+
+    protected void EnterMenuSFX()
     {
         audioSource.PlayOneShot(
             Script_SFXManager.SFX.OpenCloseBook,
@@ -146,7 +158,7 @@ public class Script_SettingsController : MonoBehaviour
         );
     }
 
-    private void ExitMenuSFX()
+    protected void ExitMenuSFX()
     {
         audioSource.PlayOneShot(
             Script_SFXManager.SFX.OpenCloseBookReverse,
@@ -154,7 +166,7 @@ public class Script_SettingsController : MonoBehaviour
         );
     }
 
-    private void EnterSubmenuSFX()
+    protected void EnterSubmenuSFX()
     {
         audioSource.PlayOneShot(
             Script_SFXManager.SFX.OpenCloseBookHeavy,
@@ -172,7 +184,7 @@ public class Script_SettingsController : MonoBehaviour
         isThrottledInGame = true;
     }
 
-    public void Setup()
+    public virtual void Setup()
     {
         gameObject.SetActive(true);
         audioSource.gameObject.SetActive(true);
