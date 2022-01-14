@@ -25,7 +25,9 @@ public class Script_CanvasGroupFadeInOut : MonoBehaviour
             var deltaTime = isUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
             
             alpha += (deltaTime / t) * maxAlpha;
-            if (alpha > maxAlpha)   alpha = maxAlpha;
+            
+            if (alpha > maxAlpha)
+                alpha = maxAlpha;
 
             cg.alpha = alpha;
 
@@ -50,7 +52,9 @@ public class Script_CanvasGroupFadeInOut : MonoBehaviour
             var deltaTime = isUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
             
             alpha -= deltaTime / t;
-            if (alpha > 1f)   alpha = 1f;
+            
+            if (alpha < 0f)
+                alpha = 0f;
 
             cg.alpha = alpha;
 

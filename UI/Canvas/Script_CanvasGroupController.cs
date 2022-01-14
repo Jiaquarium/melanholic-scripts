@@ -20,6 +20,10 @@ public class Script_CanvasGroupController : MonoBehaviour
 
     [SerializeField] Script_CanvasGroupFadeInterval intervalFader;
     
+    [Tooltip("Enable using a maximum alpha")]
+    [SerializeField] bool isUseMaxAlpha;
+    [SerializeField] float maxAlpha;
+    
     private const float DefaultFadeTime = 0.5f;
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
@@ -56,6 +60,8 @@ public class Script_CanvasGroupController : MonoBehaviour
         CanvasGroup c = GetComponent<CanvasGroup>();
         c.alpha = 0f;
         c.gameObject.SetActive(false);
+
+        StopCoroutines();
     }
 
     public virtual void FadeIn(
@@ -78,16 +84,19 @@ public class Script_CanvasGroupController : MonoBehaviour
             fadeOutCoroutine = null;
         }
 
-        bool isFadedIn = c.alpha == 1;
+        bool isFadedToMaxAlpha = isUseMaxAlpha && c.alpha >= maxAlpha;
+        bool isFadedIn = c.alpha == 1 || isFadedToMaxAlpha;
         
         if (isFadedIn || fadeInCoroutine != null)
+        {
             return;
+        }
 
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
                 if (a != null) a();
                 fadeInCoroutine = null;
             },
-            maxAlpha: 1f,
+            maxAlpha: isUseMaxAlpha ? maxAlpha : 1f,
             isUnscaledTime: isUnscaledTime
         ));
     }
@@ -145,14 +154,23 @@ public class Script_CanvasGroupController : MonoBehaviour
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
         fader.Initialize();
 
+        StopCoroutines();
+    }
+
+    private void StopCoroutines()
+    {
         if (fadeInCoroutine != null)
         {
+            Debug.Log($"Stopping fadeInCoroutine {fadeInCoroutine}");
+            
             StopCoroutine(fadeInCoroutine);
             fadeInCoroutine = null;
         }
 
         if (fadeOutCoroutine != null)
         {
+            Debug.Log($"Stopping fadeOutCoroutine {fadeOutCoroutine}");
+            
             StopCoroutine(fadeOutCoroutine);
             fadeOutCoroutine = null;
         }
