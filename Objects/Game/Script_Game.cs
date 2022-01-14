@@ -156,6 +156,8 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Tilemap pushableTileMap;
     [SerializeField] private Script_UIAspectRatioEnforcerFrame UIAspectRatioEnforcerFrame;
 
+    [SerializeField] private Script_SettingsController settingsController;
+
     // ------------------------------------------------------------------
     // Levels
     public List<Script_StaticNPC> NPCs = new List<Script_StaticNPC>();
@@ -208,6 +210,8 @@ public class Script_Game : MonoBehaviour
         }
         set => activeEnding = value;
     }
+
+    public bool IsSettingsOpen { get; set; }
     
     // ------------------------------------------------------------------
     // Run Properties
@@ -479,6 +483,8 @@ public class Script_Game : MonoBehaviour
         HUDManager.Setup();
         saveManager.Setup();
         pianoManager.Setup();
+
+        settingsController.Setup();
     }
 
     // Load Save Data and Initiate level
@@ -1275,6 +1281,26 @@ public class Script_Game : MonoBehaviour
         menuController.Organize();
     }
 
+    /* =======================================================================
+        _SETTINGS_
+    ======================================================================= */
+
+    public void OpenSettings()
+    {
+        if (settingsController.IsThrottledInGame)
+            return;
+        
+        settingsController.OpenOverview(0);
+        Time.timeScale = 0f;
+        IsSettingsOpen = true;
+    }
+
+    public void BackToGame()
+    {
+        Time.timeScale = 1f;
+        IsSettingsOpen = false;
+    }
+    
     /* =======================================================================
         _CANVASES_CUTSCENES_THEATRICS
     ======================================================================= */

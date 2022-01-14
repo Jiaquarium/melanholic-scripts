@@ -212,6 +212,9 @@ public class Script_Player : Script_Character
     
     protected virtual void Update()
     {   
+        if (game.IsSettingsOpen)
+            return;
+        
         // ------------------------------------------------------------------
         // Visuals
         HandleIsMoving();

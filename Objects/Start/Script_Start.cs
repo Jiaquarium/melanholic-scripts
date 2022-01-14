@@ -26,6 +26,7 @@ public class Script_Start : MonoBehaviour
 
     [SerializeField] private Script_SFXManager SFXManager;
     [SerializeField] private Script_SystemSettings systemSettings;
+    [SerializeField] private Script_SettingsController settingsController;
     
     void OnApplicationQuit()
     {
@@ -48,6 +49,7 @@ public class Script_Start : MonoBehaviour
         savedGameTitleControl.Setup();
         sceneManager.Setup();
         SFXManager.Setup();
+        settingsController.Setup();
         
         Script_SystemSettings.DisableMouse();
         systemSettings.TargetFrameRate();

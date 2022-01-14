@@ -27,7 +27,7 @@ public class Script_StartScreenInputManager : MonoBehaviour
 
         if (Input.GetButtonDown(Const_KeyCodes.Submit))
         {
-            mainController.StartOptionsOpen(isInitial: true);
+            mainController.StartOptionsOpen(isFadeIn: true);
             
             mainController.EnterMenuSFX();
 

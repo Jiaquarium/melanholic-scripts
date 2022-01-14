@@ -6,6 +6,17 @@ using UnityEngine;
 public class Script_IntroControllerSimple : MonoBehaviour
 {
     private Script_TimelineController timelineController;
+
+    private Script_TimelineController TimelineController
+    {
+        get
+        {
+            if (timelineController == null)
+                timelineController = GetComponent<Script_TimelineController>();
+
+            return timelineController;        
+        }
+    }
     
     void Awake()
     {
@@ -14,6 +25,7 @@ public class Script_IntroControllerSimple : MonoBehaviour
     
     public void Play()
     {
-        timelineController.PlayableDirectorPlayFromTimelines(0, 0);
+        gameObject.SetActive(true);
+        TimelineController.PlayableDirectorPlayFromTimelines(0, 0);
     }   
 }

@@ -23,6 +23,7 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private SavedGameState savedGameState;
     [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
     
+    
     [Header("Simple Intro Settings")]
     [SerializeField] private Script_IntroControllerSimple introControllerSimple;
     // Match Title Fade In Time (~2s)
@@ -42,9 +43,8 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private Script_CanvasGroupController startOptionsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController startScreenTitle;
     [SerializeField] private Script_CanvasGroupController startScreenCTA;
-    [SerializeField] private Script_CanvasGroupController settingsCanvasGroup;
+    [SerializeField] private Script_SettingsController settingsController;
     [SerializeField] private Script_CanvasGroupController controlsCanvasGroup;
-    [SerializeField] private Button[] settingsButtons;
     
     [SerializeField] private CanvasGroup gameOverCanvasGroup;
     
@@ -106,7 +106,7 @@ public class Script_StartOverviewController : Script_UIState
         savedGameCanvasGroup.gameObject.SetActive(false);
         gameOverCanvasGroup.gameObject.SetActive(false);
         
-        settingsCanvasGroup.Close();
+        settingsController.Close();
         controlsCanvasGroup.Close();
         
         savedGameEventSystem.InitializeState();
@@ -139,7 +139,7 @@ public class Script_StartOverviewController : Script_UIState
         savedGameCanvasGroup.gameObject.SetActive(false);
         gameOverCanvasGroup.gameObject.SetActive(false);
         
-        settingsCanvasGroup.Close();
+        settingsController.Close();
         controlsCanvasGroup.Close();
         
         savedGameEventSystem.InitializeState();
@@ -166,13 +166,13 @@ public class Script_StartOverviewController : Script_UIState
     }
 
     // Will be called whenever a confirm key is pressed on Start Options (via Start Screen Controller).
-    public void StartOptionsOpen(bool isInitial = false)
+    public void StartOptionsOpen(bool isFadeIn = false)
     {
         startScreenCTA.Close();
-        settingsCanvasGroup.Close();
+        settingsController.Close();
         controlsCanvasGroup.Close();
         
-        if (isInitial)
+        if (isFadeIn)
         {
             startOptionsCanvasGroup.Close();
             startOptionsCanvasGroup.FadeIn(buttonFadeInTime);
@@ -328,46 +328,30 @@ public class Script_StartOverviewController : Script_UIState
         }
     }
 
+    // From Settings Button
     public void ToSettings(int buttonIdx)
     {
         // Stop detect keypresses.
         // Also prevents restarting intro sequence from Settings and its child views.
         startScreenController.gameObject.SetActive(false);
         
-        startScreenTitle.Close();
+        // Disable start screen EventSystem
+        startScreenEventSystem.gameObject.SetActive(false);
         startOptionsCanvasGroup.Close();
-        controlsCanvasGroup.Close();
 
         Debug.Log($"{name} Opening settings canvasGroup");
-        settingsCanvasGroup.Open();
-
-        EventSystem.current.SetSelectedGameObject(settingsButtons[buttonIdx].gameObject);
+        
+        settingsController.OpenOverview(buttonIdx);
     }
 
-    public void ToControls()
-    {
-        startScreenController.gameObject.SetActive(false);
-        
-        startScreenTitle.Close();
-        startOptionsCanvasGroup.Close();
-        settingsCanvasGroup.Close();
-
-        controlsCanvasGroup.Open();
-        
-        EventSystem.current.SetSelectedGameObject(controlsCanvasGroup.firstToSelect.gameObject);
-    }
-
+    // From Settings Controller Back => Close() => onCloseEvent
     public void BackToStartOptions()
     {
-        Debug.Log("BackToStartOptions() Closing settings and controls");
-        settingsCanvasGroup.Close();
-        controlsCanvasGroup.Close();
-        
-        Debug.Log($"startScreenTitle.IsFadingIn: {startScreenTitle.IsFadingIn}");
-        startScreenController.FadeInTitle();
-        
         startScreenCTA.Close();
-        startOptionsCanvasGroup.Open();
+        StartOptionsOpen(isFadeIn: true);
+        
+        // Reenable start screen EventSystem
+        startScreenEventSystem.gameObject.SetActive(true);
         
         EventSystem.current.SetSelectedGameObject(startOptionsCanvasGroup.firstToSelect.gameObject);
         
@@ -814,7 +798,7 @@ public class Script_StartOverviewController : Script_UIState
         gameOverCanvasGroup.gameObject.SetActive(false);
         introCanvasGroup.gameObject.SetActive(false);
         
-        settingsCanvasGroup.Close();
+        settingsController.Close();
         controlsCanvasGroup.Close();   
     }
 

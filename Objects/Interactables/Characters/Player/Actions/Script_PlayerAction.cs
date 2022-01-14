@@ -80,6 +80,10 @@ public class Script_PlayerAction : MonoBehaviour
         {
             OpenInventory();
         }
+        else if (Input.GetButtonDown(Const_KeyCodes.Cancel))
+        {
+            OpenSettings();
+        }
         else
         {
             HandleStickerSwitch(facingDirection, location);
@@ -350,13 +354,13 @@ public class Script_PlayerAction : MonoBehaviour
         return null;
     }
 
-    void OpenInventory()
+    private void OpenInventory()
     {
         game.OpenInventory();
         player.SetIsInventory();
     }
 
-    void StashItem(Script_Item item)
+    private void StashItem(Script_Item item)
     {
         Script_ItemsEventsManager.ItemStash(item.id);
         
@@ -377,6 +381,11 @@ public class Script_PlayerAction : MonoBehaviour
     public void PuppetMasterEffect(Directions dir)
     {
         stickerEffectsController.Effect(dir);
+    }
+
+    private void OpenSettings()
+    {
+        game.OpenSettings();
     }
 
     public void Setup(Script_Game _game)
