@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-01-14 13:22:00
+// Last created by Dialogue Exporter at 2022-01-15 00:56:19
 
 using System.Collections;
 using System.Collections.Generic;
@@ -80,6 +80,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Everything has been a haze...| what day is it today anyways?",
+        },
+        
+    }
+},
+{
+    "hotel-lobby_player-internal_hotel-lessons",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s best to keep interpersonal relationships with hotel guests at a minimum.",
+                @"Once their trip is over, you’ll have to say goodbye, and this happens over and over, again and again and again.",
+                @"So better to keep things nice and dry.",
+                @"You’ve become a master at this skill.",
         },
         
     }
@@ -842,7 +857,47 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
-// Mirror Halls
+// Halls
+{
+    "mirror-halls_paintings_transformations_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"They used to tell you,",
+                @"That when you draw yourself accurately, your true self-portrait,",
+                @"Then you’d transform on the spot.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_transformations_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You figured it was just a dumb saying to make you practice more.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_transformations_thought2",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You’ve always refused to draw yourself.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Mirror & Lights Puzzle Room
 {
     "mirror-hall-2_hint_thought",
     new Model_Languages
@@ -851,6 +906,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"A very poetic self-reminder...",
+        },
+        
+    }
+},
+{
+    "mirror-halls_mirror-lights-puzzle-room_mirror_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s you.",
+                @"You look at yourself very closely and carefully.",
+                @"Even mirrors sometimes betray you.",
         },
         
     }
@@ -1819,7 +1888,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Blank canvases...| you took a portraiture painting class once. Bad memories.",
+                @"Blank canvases...| you remember you took portraiture painting classes when you were still very young. Bad memories.",
                 @"The hardest part is getting started, really.| That first mark.",
         },
         
@@ -2814,7 +2883,23 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
-// Grand Mirror Room
+// Interactables
+{
+    "grand-mirror-room_go-table_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You won’t go down without a fight.",
+                @"There’s always a move you can make.",
+                @"Something like a blizzard whirls inside of you.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Cut Scenes
 {
     "grand-mirror-room_grand-mirror_responsibility",
     new Model_Languages
@@ -4767,7 +4852,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"You got the @@MelancholyPiano @@Sticker_Bold!|<br>Its original owner played a melancholic tune.",
-                @"Use the @@MelancholyPiano @@Sticker_Bold to follow the chords of your heart to the next piano.",
+                @"Use the @@MelancholyPiano @@Sticker_Bold to follow the chords of your heart to any previously <b>remembered piano</b>.",
                 @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]

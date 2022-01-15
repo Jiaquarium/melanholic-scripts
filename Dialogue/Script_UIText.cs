@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-01-14 18:13:46
+// Last created by UI Exporter at 2022-01-15 00:56:21
 
 using System.Collections;
 using System.Collections.Generic;
@@ -320,7 +320,7 @@ public class Script_UIText
     "true-ending_narrator_monologue4_0",
     new Model_LanguagesUI
     {
-        EN = @"I guess over time, I really did get used to it,"
+        EN = @"I guess over time, it really did begin to change me,"
     }
 },
 {
@@ -334,28 +334,28 @@ public class Script_UIText
     "true-ending_narrator_monologue4_2",
     new Model_LanguagesUI
     {
-        EN = @"Becoming accustomed to the hellos and goodbyes,"
+        EN = @"Becoming numb to the hellos and goodbyes,"
     }
 },
 {
     "true-ending_narrator_monologue4_3",
     new Model_LanguagesUI
     {
-        EN = @"Everyone was transient."
+        EN = @"I had to protect myself from that feeling."
     }
 },
 {
     "true-ending_narrator_monologue5_0",
     new Model_LanguagesUI
     {
-        EN = @"But something tells me, they’ll always be with me,"
+        EN = @"Ellenia, Eileen, Ursie, and the rest, where are you now?"
     }
 },
 {
     "true-ending_narrator_monologue5_1",
     new Model_LanguagesUI
     {
-        EN = @"Ellenia, Eileen, Ursie, and the rest."
+        EN = @"Did we all get what we wanted?"
     }
 },
 {
@@ -369,28 +369,28 @@ public class Script_UIText
     "true-ending_narrator_monologue7_0",
     new Model_LanguagesUI
     {
-        EN = @"The most important thing though is that"
+        EN = @"Looking at the sea now, it’s becoming a bit more clear."
     }
 },
 {
     "true-ending_narrator_monologue7_1",
     new Model_LanguagesUI
     {
-        EN = @"I made my own choice."
+        EN = @"All along I’d been dragging along dead feelings."
     }
 },
 {
     "true-ending_narrator_monologue7_2",
     new Model_LanguagesUI
     {
-        EN = @"No matter what the outcome,"
+        EN = @"If I’m being honest, I can see parts of them in me."
     }
 },
 {
     "true-ending_narrator_monologue7_3",
     new Model_LanguagesUI
     {
-        EN = @"At least I know it’s perfectly mine."
+        EN = @"And parts of myself in them."
     }
 },
 {
@@ -774,7 +774,7 @@ public class Script_UIText
     "sticker_melancholy-piano",
     new Model_LanguagesUI
     {
-        EN = @"Follow the chords of your heart to any previously remembered piano."
+        EN = @"Follow the chords of your heart to any previously <b>remembered piano</b>."
     }
 },
 {

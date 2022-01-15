@@ -23,6 +23,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private float beforeInternalThoughtWaitTime;
     [SerializeField] private Script_DialogueNode frozenTimeThoughtNode;
 
+    [SerializeField] private Script_DialogueNode wedR1Node;
     [SerializeField] private Script_DialogueNode monR2Node;
     
     [SerializeField] private Script_DialogueNode[] frontDoorNodes;
@@ -63,7 +64,28 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             );
         }
 
-        // Mon R2 Ren directs attention towards repeating cycle
+        // Wed R1 Rin speaks about "Hardening"
+        else if (
+            game.CycleCount == 0
+            && game.Run.dayId == Script_Run.DayId.wed
+            && isFirstLoad
+        )
+        {
+            Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                {
+                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.FadeInSlow(
+                        () => StartOpeningDialogue(wedR1Node),
+                        BGMParam
+                    );
+                },
+                _isInteractAfter: false
+            );
+
+            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+        }
+        
+        // Mon R2 Rin directs attention towards repeating cycle
         else if (
             game.CycleCount == 1
             && game.Run.dayId == Script_Run.DayId.mon
@@ -73,7 +95,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             Script_DayNotificationManager.Control.PlayDayNotification(() =>
                 {
                     Script_BackgroundMusicManager.Control.UnPause();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(StartMonR2Sequence, BGMParam);
+                    Script_BackgroundMusicManager.Control.FadeInSlow(
+                        () => StartOpeningDialogue(monR2Node),
+                        BGMParam
+                    );
                 },
                 _isInteractAfter: false
             );
@@ -118,7 +143,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             didStartThought = true;
         }
 
-        void StartMonR2Sequence()
+        void StartOpeningDialogue(Script_DialogueNode dialogueNode)
         {
             game.ChangeStateCutScene();
 
@@ -128,7 +153,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             {
                 yield return new WaitForSeconds(beforeInternalThoughtWaitTime);
 
-                Script_DialogueManager.DialogueManager.StartDialogueNode(monR2Node);
+                Script_DialogueManager.DialogueManager.StartDialogueNode(dialogueNode);
             }
         }
     }
