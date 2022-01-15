@@ -156,10 +156,10 @@ public class Script_PlayerMovement : MonoBehaviour
         // ------------------------------------------------------------------
         // Input Buffer
         
-        // Fill buffer with any inputs caught during buffer time.
+        // Fill buffer with any new Button Presses caught during buffer time.
         if (progress < 1f)
         {
-            BufferInput(dirVector);
+            BufferInput();
             return;
         }
         
@@ -181,7 +181,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
         // ------------------------------------------------------------------
         // Buffered Moves
-        // Buffer new button presses if we're in the middle of a move.
+        
         // Buffered moves always take priority.
         Directions bufferedInput = Directions.None;
         if (inputButtonDownBuffer.Count > 0)
@@ -190,45 +190,21 @@ public class Script_PlayerMovement : MonoBehaviour
             
             // If buffered a move, then set Animator.
             HandleBufferedMoveAnimations(bufferedInput);
-        }
-        
-        if (bufferedInput == Directions.Up)
-        {
-            UpWeights(ref dirVector);
-        }
-        else if (bufferedInput == Directions.Down)
-        {
-            DownWeights(ref dirVector);
-        }
-        else if (bufferedInput == Directions.Right)
-        {
-            RightWeights(ref dirVector);
-        }
-        else if (bufferedInput == Directions.Left)
-        {
-            LeftWeights(ref dirVector);
+            ExecuteMove(bufferedInput, isReversed);
+            return;
         }
         
         // ------------------------------------------------------------------
         // New Button Presses
         
-        // Only relevant for Keyboard.
-        else if (Input.GetButtonDown(Const_KeyCodes.Up))
-        {
-            UpWeights(ref dirVector);
-        }
+        if (Input.GetButtonDown(Const_KeyCodes.Up))
+            ExecuteMove(Directions.Up, isReversed);
         else if (Input.GetButtonDown(Const_KeyCodes.Down))
-        {
-            DownWeights(ref dirVector);
-        }
+            ExecuteMove(Directions.Down, isReversed);
         else if (Input.GetButtonDown(Const_KeyCodes.Right))
-        {
-            RightWeights(ref dirVector);
-        }
+            ExecuteMove(Directions.Right, isReversed);
         else if (Input.GetButtonDown(Const_KeyCodes.Left))
-        {
-            LeftWeights(ref dirVector);
-        }
+            ExecuteMove(Directions.Left, isReversed);
 
         // ------------------------------------------------------------------
         // Button Holds
@@ -240,43 +216,36 @@ public class Script_PlayerMovement : MonoBehaviour
             || Input.GetButton(Const_KeyCodes.Left)
         )
         {
-            // If coming from a moving state, use the last weights if lastMoveInput is still being held down.
-            // (Note: isMoving is reset at every level initialization)
+            // Handle coming from moving state, use the last move if it's still being held down.
+            // (e.g. holding down Left continuously)
+            // Note: isMoving is reset at every level initialization
             if (isMoving && Input.GetButton(lastMoveInput.DirectionToKeyCode()))
-            {
-                dirVector = new Vector2(xWeight, yWeight);
-            }
+                ExecuteMove(lastMoveInput, isReversed);
             
-            // If coming from a nonmoving state, must define new weights based on input axis,
-            // giving priority Up, Down, Left, then Right.
-            else
+            // If coming from a nonmoving state, define the new direction, giving priority
+            // to Up, Down, Left, then Right.
+            // (e.g. Game State was cut-scene when Button Press event happened so was missed,
+            // and still holding that direction)
+            if (!isMoving)
             {
-                if (dirVector.y > 0)
-                {
-                    UpWeights(ref dirVector);
-                }
-                else if (dirVector.y < 0)
-                {
-                    DownWeights(ref dirVector);
-                }
-                else if (dirVector.x > 0)
-                {
-                    RightWeights(ref dirVector);
-                }
-                else if (dirVector.x < 0)
-                {
-                    LeftWeights(ref dirVector);
-                }
+                if (Input.GetButton(Const_KeyCodes.Up))
+                    ExecuteMove(Directions.Up, isReversed);
+                else if (Input.GetButton(Const_KeyCodes.Down))
+                    ExecuteMove(Directions.Down, isReversed);
+                else if (Input.GetButton(Const_KeyCodes.Right))
+                    ExecuteMove(Directions.Right, isReversed);
+                else if (Input.GetButton(Const_KeyCodes.Left))
+                    ExecuteMove(Directions.Left, isReversed);
             }
         }
         
+        // ------------------------------------------------------------------
         // No input
         else
         {
             HandlePassive();
+            return;
         }
-        
-        ExecuteMove(dirVector, isReversed);
 
         void HandlePassive()
         {
@@ -288,69 +257,32 @@ public class Script_PlayerMovement : MonoBehaviour
             }
         }
     }
-
-    void UpWeights(ref Vector2 dirVector)
-    {
-        xWeight = 0f;
-        yWeight = 1f;
-        dirVector = new Vector2(xWeight, yWeight);
-    }
-
-    void DownWeights(ref Vector2 dirVector)
-    {
-        xWeight = 0f;
-        yWeight = -1f;
-        dirVector = new Vector2(xWeight, yWeight);
-    }
-
-    void RightWeights(ref Vector2 dirVector)
-    {
-        xWeight = 1f;
-        yWeight = 0f;
-        dirVector = new Vector2(xWeight, yWeight);
-    }
-
-    void LeftWeights(ref Vector2 dirVector)
-    {
-        xWeight = -1f;
-        yWeight = 0f;
-        dirVector = new Vector2(xWeight, yWeight);
-    }
     
-    private void ExecuteMove(Vector2 dirVector, bool isReversed)
+    private Directions ExecuteMove(Directions dir, bool isReversed)
     {
-        if (isReversed)     HandleMoveReversed();
-        else                HandleMoveDefault();
+        var desiredDir = dir;
+
+        if (isReversed)
+        {
+            desiredDir = dir switch
+            {
+                Directions.Up => Directions.Down,
+                Directions.Down => Directions.Up,
+                Directions.Right => Directions.Left,
+                Directions.Left => Directions.Right,
+                _ => Directions.None
+            };
+        }
+
+        Move(desiredDir);
 
         ClearInputBuffer();
 
-        void HandleMoveDefault()
-        {
-            if (dirVector.y > 0)
-                Move(Directions.Up);
-            else if (dirVector.y < 0)
-                Move(Directions.Down);
-            else if (dirVector.x > 0)    
-                Move(Directions.Right);
-            else if (dirVector.x < 0)
-                Move(Directions.Left);
-        }
-
-        void HandleMoveReversed()
-        {
-            if (dirVector.y > 0)
-                Move(Directions.Down);
-            else if (dirVector.y < 0)
-                Move(Directions.Up);
-            else if (dirVector.x > 0)    
-                Move(Directions.Left);
-            else if (dirVector.x < 0)
-                Move(Directions.Right);
-        }
+        return dir;
     }
 
     // Buffer input during buffer timer when Player is in motion.
-    private void BufferInput(Vector2 dirVector)
+    private void BufferInput()
     {
         // Buffer new button presses
         if (Input.GetButtonDown(Const_KeyCodes.Up))
@@ -531,16 +463,7 @@ public class Script_PlayerMovement : MonoBehaviour
             Directions bufferedInput = GetBufferedButtonDownOrHold(dirVector);
             if (bufferedInput != Directions.None)
             {
-                if (bufferedInput == Directions.Up)
-                    UpWeights(ref dirVector);
-                else if (bufferedInput == Directions.Down)
-                    DownWeights(ref dirVector);
-                else if (bufferedInput == Directions.Right)
-                    RightWeights(ref dirVector);
-                else if (bufferedInput == Directions.Left)
-                    LeftWeights(ref dirVector);
-                
-                ExecuteMove(dirVector, isReversed);
+                ExecuteMove(bufferedInput, isReversed);
                 MoveTransform();
             }
         }
