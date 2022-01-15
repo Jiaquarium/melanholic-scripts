@@ -10,6 +10,8 @@ public class Script_WellsWorldBehavior : Script_WorldTileBehavior
     [SerializeField] private Script_Snow heavySnow;
     [SerializeField] private Script_DoorExitFireplace fireplaceExit;
     [SerializeField] private Script_InteractableObjectText fireText;
+    [SerializeField] private Script_CollectibleObject lastWellMap;
+    [SerializeField] private Script_CollectibleObject speedSeal;
 
     public CinemachineVirtualCamera VirtualCamera { get => virtualCamera; }
 
@@ -20,4 +22,7 @@ public class Script_WellsWorldBehavior : Script_WorldTileBehavior
     public Script_DoorExitFireplace FireplaceExit { get => fireplaceExit; }
 
     public Script_InteractableObjectText FireText { get => fireText; }
+
+    public Script_CollectibleObject LastWellMap { get => lastWellMap; }
+    public Script_CollectibleObject SpeedSeal { get => speedSeal; }
 }

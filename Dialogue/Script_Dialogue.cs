@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-01-10 14:59:28
+// Last created by Dialogue Exporter at 2022-01-14 13:22:00
 
 using System.Collections;
 using System.Collections.Generic;
@@ -4931,6 +4931,29 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You found the @@LastSpellRecipeBook!",
                 @"Does there have to be a last one?",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "item-object_collectible_speed-seal",
+    new Model_Languages
+    {
+        speaker = "NA",
+        EN = new string[]
+        {
+                @"You found the @@SpeedSeal!",
+                @"The spirits within this seal give you haste.",
         },
         metadata = new Model_Languages.Metadata[]
         {

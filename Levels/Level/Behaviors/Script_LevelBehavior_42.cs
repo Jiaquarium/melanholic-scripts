@@ -21,6 +21,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     // ==================================================================
     // State Data
     public bool didPickUpLastWellMap;
+    public bool didPickUpSpeedSeal;
     public bool isMooseQuestDone;
     public bool didPlayFaceOff;
     // ==================================================================
@@ -35,8 +36,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;
     [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
-    
-    [SerializeField] private Script_CollectibleObject[] lastWellMaps;
     
     [SerializeField] private Script_Item lastSpellRecipeBookItem;
     
@@ -129,10 +128,16 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     private void OnItemPickUp(string itemId)
     {
-        if (itemId == lastWellMaps[0].Item.id)
+        if (itemId == wellsWorldBehaviors[0].LastWellMap.Item.id)
         {
             didPickUpLastWellMap = true;
             SetMapsActive(false);
+        }
+
+        if (itemId == wellsWorldBehaviors[0].SpeedSeal.Item.id)
+        {
+            didPickUpSpeedSeal = true;
+            SetSpeedSealActive(false);
         }
     }
 
@@ -397,11 +402,18 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     private void SetMapsActive(bool isActive)
     {
-        for (int i = 0; i < lastWellMaps.Length; i++)
-        {
-            if (lastWellMaps[i] != null)
-                lastWellMaps[i].gameObject.SetActive(isActive);
-        }
+        wellsWorldBehaviors.ForEach((behavior) => {
+            if (behavior.LastWellMap != null)
+                behavior.LastWellMap.gameObject.SetActive(isActive);
+        });
+    }
+
+    private void SetSpeedSealActive(bool isActive)
+    {
+        wellsWorldBehaviors.ForEach((behavior) => {
+            if (behavior.SpeedSeal != null)
+                behavior.SpeedSeal.gameObject.SetActive(isActive);
+        });
     }
 
     private void SetMoosesActive(bool isActive)
@@ -425,6 +437,11 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             SetMapsActive(false);
         else
             SetMapsActive(true);
+        
+        if (didPickUpSpeedSeal)
+            SetSpeedSealActive(false);
+        else
+            SetSpeedSealActive(true);
 
         if (isCurrentMooseQuestComplete)
         {

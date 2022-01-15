@@ -265,7 +265,7 @@ public class Script_MenuController : Script_UIState
     }
 
     /// <summary>
-    /// Note: Excludes equipped items.
+    /// Search only Items (not Stickers)
     /// </summary>
     public Script_Item GetItemsInventoryItem(string itemId, out int slot)
     {

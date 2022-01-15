@@ -417,7 +417,8 @@ public class Script_PlayerMovement : MonoBehaviour
         {
             if (IsNorthWind)
             {
-                var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+                string activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+                bool isRunning = walkSpeed == Speeds.Run || walkSpeed == Speeds.Dev;
                 
                 // On LR moves, move also 1 down.
                 if (dir == Directions.Left || dir == Directions.Right)
@@ -432,24 +433,24 @@ public class Script_PlayerMovement : MonoBehaviour
                         || (dir == Directions.Right && diagonalInteractionBoxes[1].GetInteractablesBlocking().Count > 0)
                     )
                     {
-                        windAdjustment = windManager.Lateral(activeMaskId);
+                        windAdjustment = windManager.Lateral(activeMaskId, isRunning);
                     }
                     else
                     {
-                        windAdjustment = windManager.Diagonal(activeMaskId);
+                        windAdjustment = windManager.Diagonal(activeMaskId, isRunning);
                         desiredMove.z -= 1;
                     }
                 }
                 else if (dir == Directions.Up)
                 {
-                    windAdjustment = windManager.Headwind(activeMaskId);
+                    windAdjustment = windManager.Headwind(activeMaskId, isRunning);
                 }
                 else if (dir == Directions.Down)
                 {
                     if (isNoInputMoveByWind)
-                        windAdjustment = windManager.Passive(activeMaskId);
+                        windAdjustment = windManager.Passive(activeMaskId, isRunning);
                     else
-                        windAdjustment = windManager.Tailwind(activeMaskId);
+                        windAdjustment = windManager.Tailwind(activeMaskId, isRunning);
                 }
             }
             else
@@ -475,8 +476,14 @@ public class Script_PlayerMovement : MonoBehaviour
             _ => 1f
         };
 
-        speed *= maskMultiplier;
-        var adjustedSpeed = isNorthWind ? speed * windAdjustment : speed;
+        // Apply wind adjustments if wind is blowing, ignoring any Mask Multiplier adjustments.
+        // Run speed is applied via its own WindFactors. Run speed will never be affected by
+        // Mask Multiplier because you can only Run when in Former Self.
+        float adjustedSpeed;
+        if (isNorthWind)
+            adjustedSpeed = speed * windAdjustment;
+        else
+            adjustedSpeed = speed * maskMultiplier;
         
         float framesPerMove = 1f / (Time.fixedDeltaTime * adjustedSpeed);
         float roundedFramesPerMove = Mathf.RoundToInt(framesPerMove);
@@ -586,18 +593,18 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private void HandleWalkSpeed()
     {
-        bool isSpeedwalkStickerActive = Script_ActiveStickerManager.Control.IsActiveSticker("speedwalk-sticker");
+        int slot = 0;
+        bool hasSpeedSealAndIsFormerSelf = game.GetItemsInventoryItem(Const_Items.SpeedSeal, out slot)
+            && Script_ActiveStickerManager.Control.ActiveSticker == null;
+        
         bool isDev = Debug.isDebugBuild || Const_Dev.IsDevMode;
 
-        if (Input.GetButton(Const_KeyCodes.Action3) && isDev)
-        {
-            if (isDev)  walkSpeed = Speeds.Dev;
-            else        walkSpeed = Speeds.Run;
-        }
+        if (Input.GetButton(Const_KeyCodes.Dev) && isDev)
+            walkSpeed = Speeds.Dev;
+        else if (Input.GetButton(Const_KeyCodes.Action3) && hasSpeedSealAndIsFormerSelf)
+            walkSpeed = Speeds.Run;
         else
-        {
             walkSpeed = Speeds.Default;
-        }
     }
 
     public void StopMovingAnimations()

@@ -10,6 +10,7 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
     {
         Model_LevelBehavior_42 lvlModel = new Model_LevelBehavior_42(
             _didPickUpLastWellMap           : LB42.didPickUpLastWellMap,
+            _didPickUpSpeedSeal             : LB42.didPickUpSpeedSeal,            
             _isMooseQuestDone               : LB42.isMooseQuestDone,
             _didPlayFaceOff                 : LB42.didPlayFaceOff
         );
@@ -22,6 +23,7 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_42 lvlModel         = data.levelsData.LB42;
         
         LB42.didPickUpLastWellMap               = lvlModel.didPickUpLastWellMap;
+        LB42.didPickUpSpeedSeal                 = lvlModel.didPickUpSpeedSeal;
         LB42.isMooseQuestDone                   = lvlModel.isMooseQuestDone;
         LB42.didPlayFaceOff                     = lvlModel.didPlayFaceOff;
 

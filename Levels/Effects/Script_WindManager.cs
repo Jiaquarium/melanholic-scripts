@@ -8,6 +8,7 @@ public class Script_WindManager : MonoBehaviour
 
     [SerializeField] private float noEffectFactor = 1f;
     [SerializeField] private WindFactors defaultFactors;
+    [SerializeField] private WindFactors defaultRunFactors;
 
     [Header("Mask Specific Wind Adjustment Factors")]
     [SerializeField] private WindFactors snowWomanFactors;
@@ -43,7 +44,7 @@ public class Script_WindManager : MonoBehaviour
         set => isFinalRound = value;
     }
 
-    public float Lateral(string id)
+    public float Lateral(string id, bool isRunning)
     {
         float wind;
         
@@ -52,7 +53,7 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.MyMaskId => myMaskFactors.lateral,
-                _ => defaultFactors.lateral,
+                _ => isRunning ? defaultRunFactors.lateral : defaultFactors.lateral,
             };
         }
         else
@@ -60,14 +61,14 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.IceSpikeId => snowWomanFactors.lateral,
-                _ => defaultFactors.lateral,
+                _ => isRunning ? defaultRunFactors.lateral : defaultFactors.lateral,
             };
         }
 
         return wind;
     }
 
-    public float Diagonal(string id)
+    public float Diagonal(string id, bool isRunning)
     {
         float wind;
 
@@ -76,7 +77,7 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.MyMaskId => myMaskFactors.diagonal,
-                _ => defaultFactors.diagonal,
+                _ => isRunning ? defaultRunFactors.diagonal : defaultFactors.diagonal,
             };
         }
         else
@@ -84,14 +85,14 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.IceSpikeId => snowWomanFactors.diagonal,
-                _ => defaultFactors.diagonal,
+                _ => isRunning ? defaultRunFactors.diagonal : defaultFactors.diagonal,
             };
         }
         
         return wind;
     }
 
-    public float Headwind(string id)
+    public float Headwind(string id, bool isRunning)
     {
         float wind;
 
@@ -100,7 +101,7 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.MyMaskId => myMaskFactors.headwind,
-                _ => defaultFactors.headwind,
+                _ => isRunning ? defaultRunFactors.headwind : defaultFactors.headwind,
             };
         }
         else
@@ -108,14 +109,14 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.IceSpikeId => snowWomanFactors.headwind,
-                _ => defaultFactors.headwind,
+                _ => isRunning ? defaultRunFactors.headwind : defaultFactors.headwind,
             };
         }
 
         return wind;
     }
 
-    public float Tailwind(string id)
+    public float Tailwind(string id, bool isRunning)
     {
         float wind;
 
@@ -124,7 +125,7 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.MyMaskId => myMaskFactors.tailwind,
-                _ => defaultFactors.tailwind,
+                _ => isRunning ? defaultRunFactors.tailwind : defaultFactors.tailwind,
             };
         }
         else
@@ -132,14 +133,14 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.IceSpikeId => snowWomanFactors.tailwind,
-                _ => defaultFactors.tailwind,
+                _ => isRunning ? defaultRunFactors.tailwind : defaultFactors.tailwind,
             };
         }
         
         return wind;
     }
 
-    public float Passive(string id)
+    public float Passive(string id, bool isRunning)
     {
         float wind;
 
@@ -148,7 +149,7 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.MyMaskId => myMaskFactors.passive,
-                _ => defaultFactors.passive,
+                _ => isRunning ? defaultRunFactors.passive : defaultFactors.passive,
             };
         }
         else
@@ -156,7 +157,7 @@ public class Script_WindManager : MonoBehaviour
             wind = id switch
             {
                 Const_Items.IceSpikeId => snowWomanFactors.passive,
-                _ => defaultFactors.passive,
+                _ => isRunning ? defaultRunFactors.passive : defaultFactors.passive,
             };
         }
 

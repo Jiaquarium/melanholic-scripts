@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-01-14 03:08:08
+// Last created by UI Exporter at 2022-01-14 18:13:46
 
 using System.Collections;
 using System.Collections.Generic;
@@ -828,6 +828,13 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Does there have to be a last one?"
+    }
+},
+{
+    "collectible_speed-seal",
+    new Model_LanguagesUI
+    {
+        EN = @"The spirits within this seal give you haste. Hold {25} to run when you are your former self."
     }
 },
 // ------------------------------------------------------------------

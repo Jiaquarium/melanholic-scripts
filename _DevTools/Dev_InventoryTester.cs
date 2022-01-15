@@ -170,6 +170,11 @@ public class Dev_InventoryTester : MonoBehaviour
     {
         Script_Game.Game.AddItemById(Const_Items.LastSpellRecipeBookId);
     }
+
+    public void AddSpeedSeal()
+    {
+        Script_Game.Game.AddItemById(Const_Items.SpeedSeal);
+    }
 }
 
 #if UNITY_EDITOR
@@ -265,6 +270,11 @@ public class Dev_InventoryTesterTester : Editor
         if (GUILayout.Button("Add: Last Spell Recipe Book"))
         {
             t.AddLastSpellRecipeBook();
+        }
+
+        if (GUILayout.Button("Add: Speed Seal"))
+        {
+            t.AddSpeedSeal();
         }
     }
 }

@@ -47,5 +47,6 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@SpringStone",             "<b>Spring Stone</b>");
         Params.Add("@@LastWellMap",             "<b>Last Well Map</b>");
         Params.Add("@@LastSpellRecipeBook",     "<b>Last Spell Recipe Book</b>");
+        Params.Add("@@SpeedSeal",               "<b>Speed Seal</b>");
     }
 }
