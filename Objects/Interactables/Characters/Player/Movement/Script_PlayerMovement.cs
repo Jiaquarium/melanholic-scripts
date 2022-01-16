@@ -439,33 +439,20 @@ public class Script_PlayerMovement : MonoBehaviour
         // allowing for smooth movement.
         else if (progress == 1f && isMoving)
         {
-            // Check for Player Moving State to stop moving if State
-            // was modified mid-transform (e.g. Changing Mask to a non-moving one).
-            bool isStopMoving = false;
-            player.HandleAction(null, null, () => {
-                Debug.Log($"Player is not in moving state, stopping Fixed Move Transform");
-                isStopMoving = true;
-            });
-            
-            if (isStopMoving || IsPassive)
+            if (IsPassive)
             {
-                StopMovingAnimations();
-                ClearInputBuffer();
-                isMoving = false;
+                StopMovingOnFixedClock();
                 return;
             }
             
-            Vector2 dirVector = new Vector2(
-                Input.GetAxis(Const_KeyCodes.Horizontal),
-                Input.GetAxis(Const_KeyCodes.Vertical)
+            player.HandleAction(
+                null,
+                HandleBufferedMoveOnFixedClock,
+                () => {
+                    StopMovingOnFixedClock();
+                    isMoving = false;
+                }
             );
-            // Get any bufferedInput from buffered Button Downs or currently Held button.
-            Directions bufferedInput = GetBufferedButtonDownOrHold(dirVector);
-            if (bufferedInput != Directions.None)
-            {
-                ExecuteMove(bufferedInput, isReversed);
-                MoveTransform();
-            }
         }
 
         void MoveTransform()
@@ -484,7 +471,7 @@ public class Script_PlayerMovement : MonoBehaviour
             isMoving = true;
         }
 
-        Directions GetBufferedButtonDownOrHold(Vector2 dirVector)
+        void HandleBufferedMoveOnFixedClock()
         {
             Directions bufferedInput = Directions.None;
 
@@ -496,21 +483,39 @@ public class Script_PlayerMovement : MonoBehaviour
                 Debug.Log($"Player using Fixed Buffered PRESS Move: {bufferedInput}");
             }
             // If no button down presses buffered, check current axis being held down.
-            else if (dirVector != Vector2.zero)
+            else
             {
-                if (dirVector.y > 0f)
-                    bufferedInput = Directions.Up;
-                else if (dirVector.y < 0f)
-                    bufferedInput = Directions.Down;
-                else if (dirVector.x > 0f)
-                    bufferedInput = Directions.Right;
-                else if (dirVector.x < 0f)
-                    bufferedInput = Directions.Left;
-                
-                Debug.Log($"Player using Fixed Buffered HOLD Move: {bufferedInput}; dirVector {dirVector}");
+                Vector2 dirVector = new Vector2(
+                    Input.GetAxis(Const_KeyCodes.Horizontal),
+                    Input.GetAxis(Const_KeyCodes.Vertical)
+                );
+
+                if (dirVector != Vector2.zero)
+                {
+                    if (dirVector.y > 0f)
+                        bufferedInput = Directions.Up;
+                    else if (dirVector.y < 0f)
+                        bufferedInput = Directions.Down;
+                    else if (dirVector.x > 0f)
+                        bufferedInput = Directions.Right;
+                    else if (dirVector.x < 0f)
+                        bufferedInput = Directions.Left;
+                    
+                    Debug.Log($"Player using Fixed Buffered HOLD Move: {bufferedInput}; dirVector {dirVector}");
+                }
             }
             
-            return bufferedInput;
+            if (bufferedInput != Directions.None)
+            {
+                ExecuteMove(bufferedInput, isReversed);
+                MoveTransform();
+            }
+        }
+
+        void StopMovingOnFixedClock()
+        {
+            StopMovingAnimations();
+            ClearInputBuffer();
         }
     }
 
@@ -628,8 +633,8 @@ public class Script_PlayerMovement : MonoBehaviour
             Vector2 dirVector = new Vector2(
                 Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
             );
-            
-            if (dirVector == Vector2.zero)
+
+            if (dirVector == Vector2.zero && inputButtonDownBuffer.Count == 0)
             {
                 isMoving = false;
             }
