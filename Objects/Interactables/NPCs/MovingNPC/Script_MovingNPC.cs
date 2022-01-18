@@ -40,6 +40,9 @@ public class Script_MovingNPC : Script_StaticNPC
     [SerializeField] private float runSpeed;
     [SerializeField] private float walkSpeed;
 
+    [Tooltip("Specify an adjuster if different facing Directions need to change position of Graphics")]
+    [SerializeField] private Script_AnimatorPositionAdjuster positionAdjuster;
+
     private Animator animator;
     
     public PlayableDirector MyDirector { get => myDirector; }
@@ -273,6 +276,9 @@ public class Script_MovingNPC : Script_StaticNPC
         animator.SetFloat(LastMoveZ, z);
         animator.SetFloat(MoveX, x);
         animator.SetFloat(MoveZ, z);
+
+        if (positionAdjuster != null)
+            positionAdjuster.Adjust(dir);
     }
 
     public void FaceDirection(Directions direction)
