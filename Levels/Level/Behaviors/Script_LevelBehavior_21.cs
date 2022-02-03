@@ -33,7 +33,6 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     [SerializeField] private Script_InteractableObjectTextParent textParent;
     [SerializeField] private Transform fullArtParent;
     [SerializeField] private Script_InteractableFullArt noteFullArt;
-    [SerializeField] private Script_InteractableFullArt drawingFullArt;
     
     [SerializeField] private TimelineAsset playerDropTimeline;
     
@@ -201,8 +200,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     private void BaseSetup()
     {
         EileenElleniaHurt.gameObject.SetActive(false);
-        // Interactable FullArt on bookshelf.
-        drawingFullArt.gameObject.SetActive(true);
+        
         game.SetupInteractableFullArt(fullArtParent, isInitialize);
         
         // Handle Eileen leaving the room after you "fix" her mind

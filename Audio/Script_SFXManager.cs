@@ -133,6 +133,8 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip PuppeteerEffect;
     [Range(0f, 1f)] public float PuppeteerEffectVol;
 
+    public AudioClip Unlock;
+    [Range(0f, 1f)] public float UnlockVol;
     
     [Header("---- UI SFX ----")]
 

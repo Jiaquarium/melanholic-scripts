@@ -22,6 +22,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     
     [SerializeField] private float beforeInternalThoughtWaitTime;
     [SerializeField] private Script_DialogueNode frozenTimeThoughtNode;
+    [SerializeField] private float cameraPanDoneWaitTime;
+    [SerializeField] private float faceDirectionDoneWaitTime;
 
     [SerializeField] private Script_DialogueNode wedR1Node;
     [SerializeField] private Script_DialogueNode monR2Node;
@@ -296,12 +298,23 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // Timeline Signals START
     public void OnHotelCameraPan()
     {
-        game.GetPlayer().FaceDirection(Directions.Right);
+        // game.GetPlayer().FaceDirection(Directions.Right);
     }
 
     public void OnHotelCameraPanDone()
     {
-        game.ChangeStateInteract();
+        StartCoroutine(WaitToInteract());
+
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSeconds(cameraPanDoneWaitTime);
+
+            game.GetPlayer().FaceDirection(Directions.Down);
+            
+            yield return new WaitForSeconds(faceDirectionDoneWaitTime);
+
+            game.ChangeStateInteract();
+        }
     }
 
     public void OnDisableSurveillanceWhiteScreen()

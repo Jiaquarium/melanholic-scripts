@@ -260,7 +260,10 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
             }
             
             Kaffe.Teleport(KaffeSpawn.transform.position);
+            Kaffe.FaceDirection(Directions.Right);
+            
             Latte.Teleport(LatteSpawn.transform.position);
+            Latte.FaceDirection(Directions.Down);
         }
     }
 }

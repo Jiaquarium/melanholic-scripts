@@ -35,6 +35,8 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
 
     [SerializeField] private float OnUnlockDoneWaitTimeForDialogue;
 
+    [SerializeField] private AudioSource SFXAudioSource;
+
     private bool spokenWithUrsie;
 
     private void Awake()
@@ -107,6 +109,14 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     // ------------------------------------------------------------------
     // Timeline Signals
 
+    // UrsieUnlockKTVRoomTimeline
+    // Play this SFX > wait > actual Unlock + remove Caution Tape anim
+    public void UnlockDoorSFX()
+    {
+        var sfx = Script_SFXManager.SFX;
+        SFXAudioSource.PlayOneShot(sfx.Unlock, sfx.UnlockVol);
+    }
+    
     public void UnlockKTVRoom()
     {
         KTVRoomDoorCage.Unlock();
