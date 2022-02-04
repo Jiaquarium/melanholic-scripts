@@ -32,6 +32,9 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
     [SerializeField] private Script_VCamera VCamLB6;
     [SerializeField] private Transform fullArtParent;
 
+    [SerializeField] private Script_MeshFadeController mirrorGlassFader;
+    [SerializeField] private float fadeOutMirrorTime;
+
     private Script_LBSwitchHandler switchHandler;
     
     private bool isInit = true;
@@ -101,7 +104,8 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
         
         yield return new WaitForSeconds(cameraMoveTime);
         
-        // play puzzle complete SFX and fade in grid
+        // Play Puzzle Completion SFX, Fade In extra Grid and Fade Out Glass Mesh
+        // Reflection Sprite
         audioSource.PlayOneShot(puzzleCompleteSFX, volumeScale);
 
         StartCoroutine(
@@ -111,8 +115,10 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
                 })
         );
         StartCoroutine(
-            mirrorReflection.GetComponent<Script_SpriteFadeOut>().FadeOutCo(null)
+            mirrorReflection.GetComponent<Script_SpriteFadeOut>().FadeOutCo(null, t: fadeOutMirrorTime)
         );
+        mirrorGlassFader.FadeOut(fadeOutMirrorTime);
+        
         completionGrid.SetActive(true);
         game.SetNewTileMapGround(completionGround);
         game.RemovePlayerReflection();

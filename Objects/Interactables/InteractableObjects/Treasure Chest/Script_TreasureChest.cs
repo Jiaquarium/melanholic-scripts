@@ -16,13 +16,17 @@ public class Script_TreasureChest : Script_InteractableObject
     [SerializeField] private Sprite openSprite;
     [SerializeField] private Sprite closedSprite;
 
+    [SerializeField] private bool useMesh;
+    [SerializeField] private Script_Interactable openMesh;
+    [SerializeField] private Script_Interactable closedMesh;
+
     public bool IsOpen
     {
         get => _isOpen;
         set
         {
             _isOpen = value;
-            ChangeSprite(_isOpen ? openSprite : closedSprite);
+            HandleGraphics(_isOpen);
         }
     }
 
@@ -43,7 +47,7 @@ public class Script_TreasureChest : Script_InteractableObject
     protected override void Start()
     {
         base.Start();
-        ChangeSprite(IsOpen ? openSprite : closedSprite);
+        HandleGraphics(IsOpen);
     }
 
     protected override void ActionDefault()
@@ -71,8 +75,17 @@ public class Script_TreasureChest : Script_InteractableObject
         }
     }
 
-    private void ChangeSprite(Sprite img)
+    private void HandleGraphics(bool isOpen)
     {
-        rendererChild.GetComponent<SpriteRenderer>().sprite = img;
+        if (useMesh)
+        {
+            openMesh.gameObject.SetActive(isOpen);
+            closedMesh.gameObject.SetActive(!isOpen);
+        }
+        else
+        {
+            var sprite = isOpen ? openSprite : closedSprite;
+            rendererChild.GetComponent<SpriteRenderer>().sprite = sprite;
+        }
     }
 }

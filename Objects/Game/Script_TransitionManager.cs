@@ -59,7 +59,8 @@ public class Script_TransitionManager : MonoBehaviour
     public Script_CanvasGroupController restartPrompt;
 
     [Header("Good Endings")]
-    [SerializeField] private int endingTheme;
+    [SerializeField] private int endingThemeTrue;
+    [SerializeField] private int endingThemeGood;
     [SerializeField] private Script_BgThemePlayer oceanBgThemePlayer;
     
     // Should completely fade out by the Ending Label (4.5s)
@@ -409,9 +410,11 @@ public class Script_TransitionManager : MonoBehaviour
         }
     }
 
+    // GoodEndingTimeline, TrueEndingTimeline
     // Endings Timelines (at start) to play Ending Theme + Ocean Vibes SFX
-    public void EndingBgm()
+    public void EndingBgm(bool isTrueEnding)
     {
+        var endingTheme = isTrueEnding ? endingThemeTrue : endingThemeGood; 
         var bgm = Script_BackgroundMusicManager.Control;
         
         bgm.Play(endingTheme);
