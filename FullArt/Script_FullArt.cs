@@ -22,26 +22,9 @@ public class Script_FullArt : MonoBehaviour
     [SerializeField] private Script_ScalingBounds customBounds;
     private Script_CanvasConstantPixelScaler canvasScaler;
     
-    public Script_ScalingBounds CustomBounds
-    {
-        get => customBounds;
-        set => customBounds = value;
-    }
-    
     void Awake()
     {
         canvasScaler = GetComponentInParent<Script_CanvasConstantPixelScaler>();
-    }
-    
-    void OnEnable()
-    {
-        if (canvasScaler != null)
-        {
-            if (CustomBounds != null)
-                canvasScaler.Bounds = CustomBounds;
-            else
-                canvasScaler.SetDefaultBounds();
-        }
     }
     
     /// <summary>
