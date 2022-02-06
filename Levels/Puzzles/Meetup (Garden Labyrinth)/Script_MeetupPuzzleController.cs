@@ -68,7 +68,7 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
         {
             game.ChangeStateCutScene();
 
-            Script_SFXManager.SFX.PlayPuppeteerEffect();
+            Script_SFXManager.SFX.PlayPuppeteerEffectOn();
             
             // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
             timelineController.PlayableDirectorPlayFromTimelines(0, 4);
@@ -81,7 +81,7 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
         {
             game.ChangeStateCutScene();
 
-            Script_SFXManager.SFX.PlayPuppeteerEffect();
+            Script_SFXManager.SFX.PlayPuppeteerEffectOff();
             
             // This Timeline is also shared with Urselks Saloon Hallway Puppet Puzzle.
             timelineController.PlayableDirectorPlayFromTimelines(0, 5);
