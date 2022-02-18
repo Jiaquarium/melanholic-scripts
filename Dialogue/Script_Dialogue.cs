@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-01-15 00:56:19
+// Last created by Dialogue Exporter at 2022-02-17 22:43:41
 
 using System.Collections;
 using System.Collections.Generic;
@@ -896,6 +896,107 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         
     }
 },
+{
+    "mirror-halls_bao-zi_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It smells a little sweet.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Mirror Hall
+{
+    "mirror-halls_paintings_family-portrait_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s a portrait of a happy family. Well actually they’re not smiling.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_picnic_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"A child and mother having a picnic.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_dead-mom_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Is this light broken?| This painting is impossible to make out...",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_lovers_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Lovers enjoying the sunrise.",
+                @"It reminds you of your research of {77}, where the distinction between sea and sky becomes clear.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_drill_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You can’t really see this painting clearly.",
+                @"Why hide something that took so long to make?",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_go_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Go. A pastime enjoyable by all generations.",
+                @"Who painted all these...",
+        },
+        
+    }
+},
+{
+    "mirror-halls_shattered-mirror_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It's completely shattered.",
+        },
+        
+    }
+},
 // ------------------------------------------------------------------
 // Mirror & Lights Puzzle Room
 {
@@ -920,6 +1021,82 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It’s you.",
                 @"You look at yourself very closely and carefully.",
                 @"Even mirrors sometimes betray you.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_family-portrait_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s the portrait of the family again.",
+                @"Doing the same painting twice is a hard thing to do mentally.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_picnic_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Another picnic. There’s something that pops up when you recall picnics...",
+                @"Gingham.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_dead-mom_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Her ribs are exposed. It’s hard to imagine painting such gore.",
+                @"You’ve always had an aversion towards needles and the sight of internal organs.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_lovers_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Before {77}, when looking out into the ocean like this, it’s just a black void.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_drill_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"When seeing disturbing imagery, you’ve decided it’s best to stay as objective as possible.",
+                @"Look, it’s a surgical drill.",
+        },
+        
+    }
+},
+{
+    "mirror-halls_paintings_go_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Go. A game with simple rules but endless possibilities.",
         },
         
     }
@@ -1190,7 +1367,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"The figures in the painting are dancing. Looks fun.",
+                @"An isolated mansion with architecture of Eastern and Western influence.",
+                @"You can’t help but get a sense of dread when looking at this painting.",
         },
         
     }
@@ -1218,6 +1396,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"“The soft-shelled tortoise met countless journeyers throughout the days…”",
                 @"*flip* *flip* *flip*",
                 @"“At last, the tortoise laid down to rest with a shell now made of a patchwork of faces.”",
+        },
+        
+    }
+},
+{
+    "mysterious-room_painting_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Pangs of dread fill you.",
+                @"This painting has a doormat.",
         },
         
     }
@@ -1347,7 +1538,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{58}",
         EN = new string[]
         {
-                @"There all just a bunch of {60}.",
+                @"They’re all just a bunch of {60}.",
         },
         
     }
@@ -1744,10 +1935,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{38}",
         EN = new string[]
         {
-                @"This is not the answer, for God’s sake! We need to get to the root of the problem.",
-                @"Find those damn intruders. Figure out where they’re coming from and attack them first! Not lock ourselves away!",
-                @"My whole family is outside of {18}. What do they expect me to do?!",
-                @"Of course I want to stay here with {39}, but the closer it gets to {49}..",
+                @"The {22}? Yes, some are worried...| They say we might lose touch with the outside world for eternity.",
+                @"But I have faith in the {83}. Don’t you?",
+                @"It’s best we stay. My family has been living here for generations. I met {39} here, we grew up together, a lot of ups and downs, just got engaged not too long ago, everything all inside here.",
+                @"The most important thing? Of course it’s that I’m with {39}.",
         },
         
     }
@@ -1759,8 +1950,22 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{38}",
         EN = new string[]
         {
-                @"I was born outside the {37} walls, I don’t think I can stay here forever like the true {7} will.",
-                @"But I know I won’t be able to find anyone else like {39}.",
+                @"Outside? We can’t leave home, no. In the end, we have to stick with what we know.",
+                @"We need to stay here and believe. We should wait until the {22} at {49}, and everything will be solved then.",
+                @"Please have faith in the {83}!",
+        },
+        
+    }
+},
+{
+    "ballroom_kaffe_psychic2",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"Things are good between us. The plan is to get married in here too.",
+                @"We just have to believe in the {83} to get us through these times.",
         },
         
     }
@@ -1798,8 +2003,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{39}",
         EN = new string[]
         {
-                @"Yeah {38} gets really worked up sometimes. Oh of course, I don’t agree with the <b>{83}’s</b> decision either, but it’s reality, it’s going to happen. {49} on the dot.",
-                @"If he ends up leaving before the {22} to return to his family, I’d understand. It might be a sign rather. The way I look at it, it’s fate.",
+                @"Everyone always calls {38} “Iced {38}” because he’s soo calm. I don’t think he’d be so calm if he saw <b><i>them</i></b> with his own two eyes...",
+                @"Yes, I saw <b><i>them</i></b>... It’s really scary actually, you know?",
         },
         
     }
@@ -1811,7 +2016,23 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{39}",
         EN = new string[]
         {
-                @"Oh but please don’t tell him I said any of this. Like I said, he gets really worked up over nothing.",
+                @"I’m worried. Look, <b><i>they</i></b> are in here too right? And we’re going to do the {22} and lock ourselves away with them inside?",
+                @"Maybe I’m overthinking it...",
+                @"I grew up here and the {83} has never let us down before, so let’s just go through with this, okay?",
+        },
+        
+    }
+},
+{
+    "ballroom_latte_psychic2",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"Hey let’s take our mind off things. Do you like puzzles? I really like them because they let you focus on something else.",
+                @"I especially like mazes. It’s so simple really. Just one destination to reach, and you just gotta figure out how to get there.",
+                @"Don’t you wish life was like that?",
         },
         
     }
@@ -2225,6 +2446,57 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "eileens-room_painting_snow-woman_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Legend has it, there was once a woman living in a mountain village whose husband goes missing in a snowstorm.",
+                @"She tirelessly searches the mountainside for him through the ongoing blizzard.",
+        },
+        
+    }
+},
+{
+    "eileens-room_painting_snow-woman_thought1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"On the edge of collapsing, she makes it to a clearing to see a cabin in the distance.",
+                @"Through a window, cast from the warm glow of a fireplace, she sees two shadowy figures passionately making love.",
+        },
+        
+    }
+},
+{
+    "eileens-room_painting_snow-woman_thought2",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"With her last breath, she makes out one of the shadows. She can make no mistake,",
+                @"That one of the silhouettes is her partner.",
+        },
+        
+    }
+},
+{
+    "eileens-room_painting_snow-woman_thought3",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The story then goes, she becomes a spirit of the snowstorm who spares the good and passes judgement upon the wicked.",
         },
         
     }
@@ -3384,6 +3656,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         
     }
 },
+{
+    "wells-world_tombstone_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The air becomes still.",
+                @"The words are blurred.",
+        },
+        
+    }
+},
 // ------------------------------------------------------------------
 // Moose
 {
@@ -3809,10 +4094,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{39}",
         EN = new string[]
         {
-                @"We would always meet at the courtyard in the <b>center</b> of this garden...",
-                @"Usually I know which turns to take, but it’s completely left my memory ever since <i><b>they</b></i> started coming in here.",
-                @"Honestly, I’m ready to leave this place for good...| but I can’t leave without {38}, no.",
-                @"I really miss {38}.",
+                @"We would always meet at the courtyard in the <b>center</b> of this garden ever since we were little.",
+                @"Ugh, usually I know which turns to take, but it’s completely left my memory ever since <i><b>they</b></i> started coming in here.",
+                @"Honestly, I’m ready to leave this place for good...| but I can’t leave without {38}, no...",
         },
         
     }
@@ -3825,8 +4109,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"“Meet me under the <b>garden gazebo</b>.” That’s what {39} would always tell me.",
-                @"But somehow I’ve managed to lose her.| I’m not sure how much longer I can go on without {39}.",
-                @"This was never this much of a maze before! It didn’t used to be like this...",
+                @"How could I have lost my way like this?| I’m not sure how much longer I can go on without {39}.",
+                @"This was never this much of a maze before! My mind is a haze... but I know. I must have faith... Calm down, you can do this.",
         },
         
     }
@@ -3866,7 +4150,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"<size=16>{39}!</size>",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -3876,10 +4166,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{39}",
         EN = new string[]
         {
-                @"<size=16>My</size> <size=16>{38}!</size>",
-                @"Oh I’ve finally found you.",
+                @"<size=16>{38} you’re here!</size>",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -3889,9 +4184,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{38}",
         EN = new string[]
         {
-                @"We can finally leave here.| It’s finally over.",
+                @"It’s the one place I knew we’d find each other! I was worried sick, what happened to us?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -3901,9 +4202,94 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{39}",
         EN = new string[]
         {
-                @"A new life. Let’s start a new life.| On the other side.",
+                @"You know, it’s just as dangerous in here as it is out there.",
+                @"Do you remember when we were little, what I said my dream was?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "garden-labyrinth_kaffe_success_a_a_a_a",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"Of course I do!",
+                @"You said you wanted a life one day where you could wake up at dawn, look out, and see an ocean full of possibilities.",
+                @"|.|.|.|",
+                @"Okay!| Then it’s settled.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "garden-labyrinth_latte_success_a_a_a_a_a",
+    new Model_Languages
+    {
+        speaker = "{39}",
+        EN = new string[]
+        {
+                @"Wait, what do you mean|.|.|.| You’re totally fine with... Do you really mean it?",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "garden-labyrinth_kaffe_success_a_a_a_a_a_a",
+    new Model_Languages
+    {
+        speaker = "{38}",
+        EN = new string[]
+        {
+                @"Yes, I do.| You’re right, it’s time for us to truly start a new life. On the other side.",
+                @"We have to leave quick, {39}. Let’s go.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -3926,7 +4312,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"“Meet me under the <b>garden gazebo</b>.” Yes, that was her favorite spot.",
-                @"It was in the <b>center</b> of all this mess, but I’ve lost my way. I’ll never find my way there at this rate.",
+                @"It was in the <b>center</b> of all this mess, but I’ve lost my way. I’ll never find {39} at this rate.",
         },
         
     }
@@ -3938,8 +4324,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{38}",
         EN = new string[]
         {
-                @"I can’t leave this wretched place alone.",
-                @"What’s the point of it all without {39}?",
+                @"What’s the point of it all without {39}.",
         },
         
     }
