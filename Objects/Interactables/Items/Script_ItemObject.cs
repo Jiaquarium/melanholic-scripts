@@ -9,11 +9,24 @@ public class Script_ItemObject : Script_Interactable
     [SerializeField] private Script_Item item;
     public bool initialDescription;
     public bool showTyping;
+    
     [SerializeField] private SpriteRenderer graphics;
+    [SerializeField] private Animator animator;
+
+    [Tooltip("Specify if this Item Object is encased in a Crackable. If so, modify its animator accordingly.")]
+    [SerializeField] private Script_CrackableStats myCrackableStats;
+
 
     public Script_Item Item
     {
         get => item;
+    }
+
+    void Update()
+    {
+        // Items encased in a Crackable should be "frozen" until the Crackable is removed.
+        if (myCrackableStats != null)
+            animator.enabled = !myCrackableStats.gameObject.activeInHierarchy || myCrackableStats.IsCracked;
     }
 
     /// <summary>

@@ -68,6 +68,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            += OnScarletCipherPickUp;
 
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  += OnFrozenWellDie;
+
+        Script_InteractableObjectEventsManager.OnShatter                        += OnShatter;
     }
 
     protected override void OnDisable()
@@ -80,6 +82,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            -= OnScarletCipherPickUp;
 
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  -= OnFrozenWellDie;
+
+        Script_InteractableObjectEventsManager.OnShatter                        -= OnShatter;
     }
 
     void Awake()
@@ -245,6 +249,30 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
                 frozenWell.gameObject.SetActive(false);
             }
         }
+    }
+
+    // When an ice block shatters, check which one it is, hide all the rest of them.
+    public void OnShatter(Script_CrackableStats crackableStats)
+    {
+        wellsWorldBehaviors.ForEach(behavior => {
+            if (behavior.SpeedSealIceBlock == crackableStats)
+            {
+                wellsWorldBehaviors.ForEach(_behavior => {
+                    if (_behavior.SpeedSealIceBlock != crackableStats)
+                        _behavior.SpeedSealIceBlock.gameObject.SetActive(false);
+                });
+            }
+        });
+
+        wellsWorldBehaviors.ForEach(behavior => {
+            if (behavior.LastWellMapIceBlock == crackableStats)
+            {
+                wellsWorldBehaviors.ForEach(_behavior => {
+                    if (_behavior.LastWellMapIceBlock != crackableStats)
+                        _behavior.LastWellMapIceBlock.gameObject.SetActive(false);
+                });
+            }
+        });
     }
 
     // ----------------------------------------------------------------------

@@ -30,6 +30,8 @@ public class Script_CrackableStats : Script_CharacterStats
     [SerializeField] private float shakeAmp; 
     [SerializeField] private float shakeFreq;
 
+    public bool IsCracked { get => currentHp <= 0; }
+
     private Coroutine hideIceCoroutine;
     
     /// <summary>
@@ -180,6 +182,8 @@ public class Script_CrackableStats : Script_CharacterStats
 
     public void Shatter()
     {
+        Script_InteractableObjectEventsManager.Shatter(this);
+        
         shatter?.Shatter();
         
         if (isScreenShakeShatter)

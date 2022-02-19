@@ -12,6 +12,8 @@ public class Script_WellsWorldBehavior : Script_WorldTileBehavior
     [SerializeField] private Script_InteractableObjectText fireText;
     [SerializeField] private Script_CollectibleObject lastWellMap;
     [SerializeField] private Script_CollectibleObject speedSeal;
+    [SerializeField] private Script_CrackableStats speedSealIceBlock;
+    [SerializeField] private Script_CrackableStats lastWellMapIceBlock;
 
     public CinemachineVirtualCamera VirtualCamera { get => virtualCamera; }
 
@@ -25,4 +27,7 @@ public class Script_WellsWorldBehavior : Script_WorldTileBehavior
 
     public Script_CollectibleObject LastWellMap { get => lastWellMap; }
     public Script_CollectibleObject SpeedSeal { get => speedSeal; }
+
+    public Script_CrackableStats SpeedSealIceBlock { get => speedSealIceBlock; }
+    public Script_CrackableStats LastWellMapIceBlock { get => lastWellMapIceBlock; }
 }
