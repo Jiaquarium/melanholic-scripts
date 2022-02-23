@@ -33,6 +33,12 @@ public class Script_MeshFadeController : MonoBehaviour
 
     private Script_MeshFadeInOut fader;
 
+    public float MaxAlpha
+    {
+        get => maxAlpha;
+        set => maxAlpha = value;
+    }
+    
     void OnDisable()
     {
         // Handle finishing fade if Player exits before fade completes.

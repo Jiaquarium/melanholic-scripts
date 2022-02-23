@@ -69,7 +69,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         game.ChangeStateCutScene();
 
         // Remove Ursie's Bar interaction boxes so they aren't blocking the KTV Door.
-        Ursie.RemoveExtraInteractableBoxes();
+        Ursie.SetExtraInteractableBoxes(false);
 
         // The drinks in front of Ursie are now interactable.
         barMid1Text.gameObject.SetActive(true);

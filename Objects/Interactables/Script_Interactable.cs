@@ -20,6 +20,9 @@ public class Script_Interactable : MonoBehaviour
     [SerializeField] private Script_DisablerController disablerController;
 
     [SerializeField] private Script_InteractableBox[] extraInteractableBoxes;
+    
+    [Tooltip("Explicit colliders to hide and/or reveal.")]
+    [SerializeField] private Collider[] targetColliders;
 
     protected bool DisableL {
         get => _disableL;
@@ -117,12 +120,18 @@ public class Script_Interactable : MonoBehaviour
     }
 
     // Useful if we need to change the size of interactable area (e.g. after a dialogue).
-    public void RemoveExtraInteractableBoxes()
+    public void SetExtraInteractableBoxes(bool isActive)
     {
         foreach (var box in extraInteractableBoxes)
         {
-            box.gameObject.SetActive(false);
+            box.gameObject.SetActive(isActive);
         }
+    }
+
+    public void SetTargetColliders(bool isActive)
+    {
+        foreach (var collider in targetColliders)
+            collider.gameObject.SetActive(isActive);
     }
 
     protected virtual bool CheckDisabled()
