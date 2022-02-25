@@ -62,6 +62,10 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private bool CelestialGardensPuzzleDone;
     [SerializeField] private bool XXXWorldPuzzleDone;
 
+    // ----------------------------------------------------------------------
+    // Level Grids
+    [SerializeField] private List<Grid> bakedLightingGrids;
+
     private bool didSetWeekend;
 
     public void DefaultPlayerSpawnPos()
@@ -329,7 +333,15 @@ public class Dev_GameHelper : MonoBehaviour
         
         Script_EventCycleManager.Control.SetElleniaDidTalkCountdownMax();
         Script_EventCycleManager.Control.DidTalkToEllenia--;
-    }    
+    }
+
+    // ----------------------------------------------------------------------
+    // Lighting
+
+    public void SetBakedLightingGridsActive(bool isActive)
+    {
+        bakedLightingGrids.ForEach(grid => grid.gameObject.SetActive(isActive));
+    }
 
     // ----------------------------------------------------------------------
 
@@ -341,6 +353,7 @@ public class Dev_GameHelper : MonoBehaviour
         private static bool showPaintingQuests;
         private static bool showStates;
         private static bool showBuildSettings;
+        private static bool showLightSettings;
         
         public override void OnInspectorGUI() {
             DrawDefaultInspector();
@@ -541,6 +554,20 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Start Sunday Cycle"))
                 {
                     t.StartSundayCycle();
+                }
+            }
+
+            showLightSettings = EditorGUILayout.Foldout(showLightSettings, "Lighting Settings", style);
+            if (showLightSettings)
+            {
+                if (GUILayout.Button("Set Baked Grids Active"))
+                {
+                    t.SetBakedLightingGridsActive(true);
+                }
+
+                if (GUILayout.Button("Set Baked Grids Inactive"))
+                {
+                    t.SetBakedLightingGridsActive(false);
                 }
             }
 
