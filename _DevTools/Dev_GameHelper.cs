@@ -13,7 +13,7 @@ public class Dev_GameHelper : MonoBehaviour
     public Directions facingDirection;
     
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
-    [SerializeField] private Script_ExitMetadataObject playerTeleportPos;
+    [SerializeField] private Script_ExitMetadataObject woodsEntrance;
     [SerializeField] private Script_ExitMetadataObject DiningEntrance;
     [SerializeField] private Script_ExitMetadataObject HallwayWithSecretEntrance;
     [SerializeField] private Script_ExitMetadataObject MirrorHallsPuzzleEntrance;
@@ -70,20 +70,14 @@ public class Dev_GameHelper : MonoBehaviour
 
     public void DefaultPlayerSpawnPos()
     {
-        playerSpawn = new Vector3Int(
-            (int)playerDefaultSpawn.data.playerSpawn.x,
-            (int)playerDefaultSpawn.data.playerSpawn.y,
-            (int)playerDefaultSpawn.data.playerSpawn.z
-        );
-        level           = playerDefaultSpawn.data.level;
-        facingDirection = playerDefaultSpawn.data.facingDirection;
+        Teleport(playerDefaultSpawn);
     }
 
-    public void ExitToLevel()
+    public void ExitToWoods()
     {
-        Teleport(playerTeleportPos);
+        Teleport(woodsEntrance);
     }
-
+    
     public void ExitToDining()
     {
         Teleport(DiningEntrance);
@@ -365,17 +359,17 @@ public class Dev_GameHelper : MonoBehaviour
             showSpawns = EditorGUILayout.Foldout(showSpawns, "Spawns", style);
             if (showSpawns)
             {
-                if (GUILayout.Button("DefaultPlayerSpawnPos()"))
+                if (GUILayout.Button("Go To: Hotel Lobby"))
                 {
                     t.DefaultPlayerSpawnPos();
                 }
                 
-                if (GUILayout.Button("Go To: <playerTeleportPos>"))
-                {
-                    t.ExitToLevel();
-                }
-
                 EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);
+                
+                if (GUILayout.Button("Go To: Woods"))
+                {
+                    t.ExitToWoods();
+                }
                 
                 if (GUILayout.Button("Go To: Dining"))
                 {
