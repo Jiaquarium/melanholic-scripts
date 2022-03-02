@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-02-17 22:43:41
+// Last created by Dialogue Exporter at 2022-03-01 18:14:43
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2167,7 +2167,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{64}",
         EN = new string[]
         {
-                @"����.",
+                @"<size=18>����!!!</size>",
         },
         
     }

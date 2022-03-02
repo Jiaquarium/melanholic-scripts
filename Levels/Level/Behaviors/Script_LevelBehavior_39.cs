@@ -18,7 +18,10 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     
     [SerializeField] private Script_DemonNPC Flan;
     [SerializeField] private Script_Interactable barrier;
-    [SerializeField] private Script_Trigger trigger;
+    [SerializeField] private Script_Trigger onEnterTrigger;
+
+    [SerializeField] private Script_Trigger stayTrigger;
+    [SerializeField] private Directions checkDirection;
 
     private bool didGuardConfirm;
     private bool didMapNotification;
@@ -108,6 +111,18 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
 
         didGuardConfirm = true;
     }
+
+    // Called from OnStayTrigger
+    // If player is trying to continue to move right, then react with
+    // Flan's dialogue.
+    public void CheckPlayerMoveDirection()
+    {
+        if (Input.GetButtonDown(checkDirection.DirectionToKeyCode()))
+        {
+            StartGuardDialogue();
+        }
+    }
+
     // ----------------------------------------------------------------------
 
     public override void Setup()
@@ -116,7 +131,8 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         {
             Flan.gameObject.SetActive(false);
             barrier.gameObject.SetActive(false);
-            trigger.gameObject.SetActive(false);
+            onEnterTrigger.gameObject.SetActive(false);
+            stayTrigger.gameObject.SetActive(false);
         }
     }        
 }
