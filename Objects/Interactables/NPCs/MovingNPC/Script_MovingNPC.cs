@@ -12,7 +12,7 @@ public class Script_MovingNPC : Script_StaticNPC
     public static string LastMoveZ  = "LastMoveZ";
     public static string MoveX      = "MoveX";
     public static string MoveZ      = "MoveZ";
-
+    public static string NPCMoving  = "NPCMoving";
 
     public int MovingNPCId;
     public Vector3 startLocation;
@@ -61,7 +61,8 @@ public class Script_MovingNPC : Script_StaticNPC
             ActuallyMove();
         }
 
-        if (myDirector != null)     HandleTimelineAutoMove();
+        if (myDirector != null)
+            HandleTimelineAutoMove();
     }
 
     protected override void TriggerDialogue()
@@ -125,16 +126,26 @@ public class Script_MovingNPC : Script_StaticNPC
             if (myDirector.playableGraph.IsPlaying())
             {
                 myDirector.Pause();
+                animator.SetBool(NPCMoving, false);
                 
-                if (!disableFacingPlayerOnDialogue) FacePlayer();
+                if (!disableFacingPlayerOnDialogue)
+                    FacePlayer();
             }
         }
         else if (State == States.Interact)
         {
             if (HandleBlocking(facingDirection))
+            {
                 myDirector.Pause();
+                animator.SetBool(NPCMoving, false);
+            }
             else if (!myDirector.playableGraph.IsPlaying())
+            {
                 myDirector.Play();
+                animator.SetBool(NPCMoving, true);
+            }
+            else if (myDirector.playableGraph.IsPlaying())
+                animator.SetBool(NPCMoving, true);
         }
 
         bool HandleBlocking(Directions dir)
@@ -183,7 +194,7 @@ public class Script_MovingNPC : Script_StaticNPC
         progress = 0f;
 
         AnimatorSetDirection(desiredDir);
-        animator.SetBool("NPCMoving", true);
+        animator.SetBool(NPCMoving, true);
     }
 
     public void ActuallyMove()
@@ -202,7 +213,7 @@ public class Script_MovingNPC : Script_StaticNPC
             
             if (currentMoves.Count == 0) {
                 localState = "interact";
-                animator.SetBool("NPCMoving", false);
+                animator.SetBool(NPCMoving, false);
                 
                 NPCEndCommands endCommand = moveSets[moveSetIndex].NPCEndCommand;
                 Directions endFaceDirection = moveSets[moveSetIndex].endFaceDirection;
@@ -444,7 +455,7 @@ public class Script_MovingNPC : Script_StaticNPC
         base.Setup();
 
         animator = rendererChild.GetComponent<Animator>();
-        animator.SetBool("NPCMoving", false);
+        animator.SetBool(NPCMoving, false);
         
         progress = 1f;
         location = transform.position;
