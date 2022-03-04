@@ -43,6 +43,10 @@ public class Script_MovingNPC : Script_StaticNPC
     [Tooltip("Specify an adjuster if different facing Directions need to change position of Graphics")]
     [SerializeField] private Script_AnimatorPositionAdjuster positionAdjuster;
 
+    [Tooltip("Options to adjust the AutoMove Timeline playback speed")]
+    [SerializeField] private bool isSetAutoMoveTimelineSpeed;
+    [SerializeField] private float autoMoveTimelineSpeed = 1f;
+
     private Animator animator;
     
     public PlayableDirector MyDirector { get => myDirector; }
@@ -121,6 +125,10 @@ public class Script_MovingNPC : Script_StaticNPC
     /// </summary>
     private void HandleTimelineAutoMove()
     {
+        if (isSetAutoMoveTimelineSpeed)
+            MyDirector.playableGraph.GetRootPlayable(0).SetSpeed(autoMoveTimelineSpeed);
+
+        
         if (State == States.Dialogue)
         {
             if (myDirector.playableGraph.IsPlaying())
