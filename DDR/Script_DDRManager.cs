@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+/// <summary>
+/// Arrows move towards Outlines. On input, check the current direction
+/// and report its rating.
+/// </summary>
 public class Script_DDRManager : MonoBehaviour
 {
     public enum DDRState
@@ -13,16 +21,22 @@ public class Script_DDRManager : MonoBehaviour
     
     public Script_Game game;
     [SerializeField] private DDRState _state;
+    
+    [SerializeField] private float bpm;
+
     public CanvasGroup DDRCanvasGroup;
+    
     public Script_Arrow ArrowPrefabLeft;
     public Script_Arrow ArrowPrefabDown;
     public Script_Arrow ArrowPrefab;
     public Script_Arrow ArrowPrefabRight;
+    
     public Transform ArrowOutlineLeft;
     public Transform ArrowOutlineDown;
     public Transform ArrowOutline;
     public Transform ArrowOutlineRight;
     public Transform ArrowsContainer;
+    
     public Script_TierComment Tier1Comment;
     public Script_TierComment Tier2Comment;
     public Script_TierComment Tier3Comment;
@@ -35,7 +49,6 @@ public class Script_DDRManager : MonoBehaviour
     public float tier3Buffer;
     public float focusTimeLength;
     public float tierCommentActivationLength;
-    public float outlineLightUpTimeLength;
 
 
     public Script_Arrow[] activeLeftArrows      = new Script_Arrow[0];
@@ -52,9 +65,6 @@ public class Script_DDRManager : MonoBehaviour
     public int nextUpArrowIndex;
     public int nextRightArrowIndex;
 
-
-    private float timer;
-    private bool isTimerOn;
     private int leftMoveCount;
     private int upMoveCount;
     private int downMoveCount;
@@ -65,17 +75,16 @@ public class Script_DDRManager : MonoBehaviour
     private Script_ArrowOutline ScriptArrowOutlineRight;
     public int mistakes;
     public int mistakesAllowed;
-    [SerializeField] private Script_BgThemePlayer DDRBgThemePlayer;
 
 
     public float timeToRise;
     public bool didFail;
 
-    /*
-        for dev
-    */
-    public Text timerText;
-
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private Script_DDRConductor conductor;   
+    private Script_SFXManager sfxManager;
+    private int lastBeat;
     public DDRState State
     {
         get => _state;
@@ -84,16 +93,25 @@ public class Script_DDRManager : MonoBehaviour
 
     public bool IsPlaying
     {
-        get => DDRBgThemePlayer?.GetComponent<AudioSource>().isPlaying ?? false;
+        get => musicSource.isPlaying;
+    }
+    
+    void Awake()
+    {
+        ScriptArrowOutlineLeft      = ArrowOutlineLeft.GetComponent<Script_ArrowOutline>();
+        ScriptArrowOutlineDown      = ArrowOutlineDown.GetComponent<Script_ArrowOutline>();
+        ScriptArrowOutlineUp        = ArrowOutline.GetComponent<Script_ArrowOutline>();
+        ScriptArrowOutlineRight     = ArrowOutlineRight.GetComponent<Script_ArrowOutline>();
+    }
+    
+    void Start()
+    {
+        sfxManager = Script_SFXManager.SFX;
     }
     
     void Update()
     {
-        if (isTimerOn)
-        {
-            timer += Time.deltaTime;
-            timerText.text = timer.ToString();
-        }
+        HandleBpmPulse();
         
         HandleLeftArrowSpawn();
         HandleDownArrowSpawn();
@@ -169,16 +187,14 @@ public class Script_DDRManager : MonoBehaviour
         }
     }
 
-    void StartTimer()
-    {
-        isTimerOn = true;
-    }
-
     void HandleLeftArrowSpawn()
     {
-        if (leftMoveCount >= songMoves.leftMoveTimes.Length)    return;
+        if (leftMoveCount >= songMoves.leftMoveTimes.Length)
+            return;
+        
         float nextLeftMoveTime = songMoves.leftMoveTimes[leftMoveCount];
-        if (timer >= nextLeftMoveTime - timeToRise)
+        
+        if (conductor.SongPosition >= nextLeftMoveTime - timeToRise)
         {
             StartLeftArrow();
             leftMoveCount++;
@@ -187,10 +203,12 @@ public class Script_DDRManager : MonoBehaviour
     
     void HandleDownArrowSpawn()
     {
-        if (downMoveCount >= songMoves.downMoveTimes.Length)    return;
+        if (downMoveCount >= songMoves.downMoveTimes.Length)
+            return;
 
         float nextDownMoveTime = songMoves.downMoveTimes[downMoveCount];
-        if (timer >= nextDownMoveTime - timeToRise)
+        
+        if (conductor.SongPosition >= nextDownMoveTime - timeToRise)
         {
             StartDownArrow();
             downMoveCount++;
@@ -199,10 +217,12 @@ public class Script_DDRManager : MonoBehaviour
 
     void HandleUpArrowSpawn()
     {
-        if (upMoveCount >= songMoves.upMoveTimes.Length)    return;
+        if (upMoveCount >= songMoves.upMoveTimes.Length)
+            return;
 
         float nextUpMoveTime = songMoves.upMoveTimes[upMoveCount];
-        if (timer >= nextUpMoveTime - timeToRise)
+        
+        if (conductor.SongPosition >= nextUpMoveTime - timeToRise)
         {
             StartUpArrow();
             upMoveCount++;
@@ -211,10 +231,12 @@ public class Script_DDRManager : MonoBehaviour
 
     void HandleRightArrowSpawn()
     {
-        if (rightMoveCount >= songMoves.rightMoveTimes.Length)    return;
+        if (rightMoveCount >= songMoves.rightMoveTimes.Length)
+            return;
 
         float nextRightMoveTime = songMoves.rightMoveTimes[rightMoveCount];
-        if (timer >= nextRightMoveTime - timeToRise)
+        
+        if (conductor.SongPosition >= nextRightMoveTime - timeToRise)
         {
             StartRightArrow();
             rightMoveCount++;
@@ -266,7 +288,8 @@ public class Script_DDRManager : MonoBehaviour
             tier1Buffer,
             tier2Buffer,
             tier3Buffer,
-            this
+            this,
+            conductor
         );
         arrow.BeginRising();
     }
@@ -290,7 +313,7 @@ public class Script_DDRManager : MonoBehaviour
                 int tier = ReportArrowTier(activeLeftArrows[nextLeftArrowIndex]);
                 if (tier > 0)
                 {
-                    if (tier == 1)  ScriptArrowOutlineLeft.LightUp();
+                    HandleTierFlash(tier, Directions.Left);
                     nextLeftArrowIndex++;
                 }
             } 
@@ -298,6 +321,7 @@ public class Script_DDRManager : MonoBehaviour
         if (Input.GetButtonDown(Const_KeyCodes.Down))
         {
             ScriptArrowOutlineDown.Focus();
+            
             if (
                 nextDownArrowIndex < activeDownArrows.Length
                 && activeDownArrows[nextDownArrowIndex] != null
@@ -307,7 +331,7 @@ public class Script_DDRManager : MonoBehaviour
                 int tier = ReportArrowTier(activeDownArrows[nextDownArrowIndex]);
                 if (tier > 0)
                 {
-                    if (tier == 1)  ScriptArrowOutlineDown.LightUp();
+                    HandleTierFlash(tier, Directions.Down);
                     nextDownArrowIndex++;
                 }
             } 
@@ -315,6 +339,7 @@ public class Script_DDRManager : MonoBehaviour
         if (Input.GetButtonDown(Const_KeyCodes.Up))
         {
             ScriptArrowOutlineUp.Focus();
+            
             if (
                 nextUpArrowIndex < activeUpArrows.Length
                 && activeUpArrows[nextUpArrowIndex] != null
@@ -324,7 +349,7 @@ public class Script_DDRManager : MonoBehaviour
                 int tier = ReportArrowTier(activeUpArrows[nextUpArrowIndex]);
                 if (tier > 0)
                 {
-                    if (tier == 1)  ScriptArrowOutlineUp.LightUp();
+                    HandleTierFlash(tier, Directions.Up);
                     nextUpArrowIndex++;
                 }
             } 
@@ -332,6 +357,7 @@ public class Script_DDRManager : MonoBehaviour
         if (Input.GetButtonDown(Const_KeyCodes.Right))
         {
             ScriptArrowOutlineRight.Focus();
+            
             if (
                 nextRightArrowIndex < activeRightArrows.Length
                 && activeRightArrows[nextRightArrowIndex] != null
@@ -341,10 +367,52 @@ public class Script_DDRManager : MonoBehaviour
                 int tier = ReportArrowTier(activeRightArrows[nextRightArrowIndex]);
                 if (tier > 0)
                 {
-                    if (tier == 1)  ScriptArrowOutlineRight.LightUp();
+                    HandleTierFlash(tier, Directions.Right);
                     nextRightArrowIndex++;
                 }
             }
+        }
+    }
+
+    private void HandleTierFlash(int tier, Directions dir)
+    {
+        switch (tier)
+        {
+            case 1:
+                switch (dir)
+                {
+                    case Directions.Left:
+                        ScriptArrowOutlineLeft.FlashTier1();
+                        break;
+                    case Directions.Down:
+                        ScriptArrowOutlineDown.FlashTier1();
+                        break;
+                    case Directions.Up:
+                        ScriptArrowOutlineUp.FlashTier1();
+                        break;
+                    case Directions.Right:
+                        ScriptArrowOutlineRight.FlashTier1();
+                        break;
+                }
+                break;
+            
+            case 2:
+                switch (dir)
+                {
+                    case Directions.Left:
+                        ScriptArrowOutlineLeft.FlashTier2();
+                        break;
+                    case Directions.Down:
+                        ScriptArrowOutlineDown.FlashTier2();
+                        break;
+                    case Directions.Up:
+                        ScriptArrowOutlineUp.FlashTier2();
+                        break;
+                    case Directions.Right:
+                        ScriptArrowOutlineRight.FlashTier2();
+                        break;
+                }
+                break;
         }
     }
 
@@ -360,9 +428,10 @@ public class Script_DDRManager : MonoBehaviour
                 // report tier3 to game
                 arrow.isClicked = true;
                 game.HandleDDRArrowClick(3);
+                
                 Tier3Comment.Activate();
-
                 mistakes++;
+                MistakeSFX();
 
                 return 3;
             }
@@ -373,6 +442,7 @@ public class Script_DDRManager : MonoBehaviour
             game.HandleDDRArrowClick(1);
             
             Tier1Comment.Activate();
+            OnBeatEffect();
             
             return 1;
         }
@@ -380,10 +450,11 @@ public class Script_DDRManager : MonoBehaviour
         {
             // report tier2 to game
             arrow.isClicked = true;
+            arrow.DestroyArrow();
             game.HandleDDRArrowClick(2);
+            
             Tier2Comment.Activate();
-
-            mistakes++;
+            OnBeatEffect();
 
             return 2;
         }
@@ -392,9 +463,10 @@ public class Script_DDRManager : MonoBehaviour
             // report tier3 to game
             arrow.isClicked = true;
             game.HandleDDRArrowClick(3);
-            Tier3Comment.Activate();
             
+            Tier3Comment.Activate();
             mistakes++;
+            MistakeSFX();
 
             return 3;
         }
@@ -428,7 +500,6 @@ public class Script_DDRManager : MonoBehaviour
     {
         upMoveCount = 0;
         downMoveCount = 0;
-        timer = 0;
         mistakes = 0;
         didFail = false;
 
@@ -445,31 +516,63 @@ public class Script_DDRManager : MonoBehaviour
         activeUpArrows              = new Script_Arrow[songMoves.upMoveTimes.Length];
         activeRightArrows           = new Script_Arrow[songMoves.rightMoveTimes.Length];
         
-        ScriptArrowOutlineLeft      = ArrowOutlineLeft.GetComponent<Script_ArrowOutline>();
-        ScriptArrowOutlineDown      = ArrowOutlineDown.GetComponent<Script_ArrowOutline>();
-        ScriptArrowOutlineUp        = ArrowOutline.GetComponent<Script_ArrowOutline>();
-        ScriptArrowOutlineRight     = ArrowOutlineRight.GetComponent<Script_ArrowOutline>();
-        
-        ScriptArrowOutlineLeft.Setup(focusTimeLength, outlineLightUpTimeLength);
-        ScriptArrowOutlineDown.Setup(focusTimeLength, outlineLightUpTimeLength);
-        ScriptArrowOutlineUp.Setup(focusTimeLength, outlineLightUpTimeLength);
-        ScriptArrowOutlineRight.Setup(focusTimeLength, outlineLightUpTimeLength);
+        ScriptArrowOutlineLeft.Setup(focusTimeLength);
+        ScriptArrowOutlineDown.Setup(focusTimeLength);
+        ScriptArrowOutlineUp.Setup(focusTimeLength);
+        ScriptArrowOutlineRight.Setup(focusTimeLength);
 
         Tier1Comment.Setup(tierCommentActivationLength);
         Tier2Comment.Setup(tierCommentActivationLength);
         Tier3Comment.Setup(tierCommentActivationLength);
 
-        DDRBgThemePlayer = game.PlayNPCBgTheme(bgThemePlayer);
+        musicSource.time = 0f;
+        musicSource.Play();
+        
+        conductor.SetDspTimeStart();
+        lastBeat = 0;
+        Pulse();
 
         State = DDRState.Active;
-        StartTimer();
+    }
+
+    private void HandleBpmPulse()
+    {
+        if (!musicSource.isPlaying)
+            return;
+        
+        float secPerBeat = 60f / bpm;
+
+        int currentBeat = (int)(conductor.SongPosition / secPerBeat);
+
+        if (currentBeat > lastBeat)
+        {
+            Pulse();
+            lastBeat = currentBeat;
+        }
+    }
+    
+    private void Pulse()
+    {
+        ScriptArrowOutlineLeft.FlashBpm();
+        ScriptArrowOutlineDown.FlashBpm();
+        ScriptArrowOutlineUp.FlashBpm();
+        ScriptArrowOutlineRight.FlashBpm();
+    }
+
+    private void OnBeatEffect()
+    {
+        // sfxSource.PlayOneShot(sfxManager.DDRStep, sfxManager.DDRStepVol);
+    }
+
+    private void MistakeSFX()
+    {
+        sfxSource.PlayOneShot(sfxManager.DDRMistake, sfxManager.DDRMistakeVol);
     }
 
     private void InitialState()
     {
         State = DDRState.Inactive;
         game.StopMovingNPCThemes();
-        isTimerOn = false;
         ClearState();
 
         DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().Close();
@@ -479,4 +582,31 @@ public class Script_DDRManager : MonoBehaviour
     {
         InitialState();
     }
+
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_DDRManager))]
+    public class Script_DDRManagerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_DDRManager t = (Script_DDRManager)target;
+            if (GUILayout.Button("Flash Tier1"))
+            {
+                t.HandleTierFlash(1, Directions.Left);
+                t.HandleTierFlash(1, Directions.Down);
+                t.HandleTierFlash(1, Directions.Up);
+                t.HandleTierFlash(1, Directions.Right);
+            }
+
+            if (GUILayout.Button("Flash Tier2"))
+            {
+                t.HandleTierFlash(2, Directions.Left);
+                t.HandleTierFlash(2, Directions.Down);
+                t.HandleTierFlash(2, Directions.Up);
+                t.HandleTierFlash(2, Directions.Right);
+            }
+        }
+    }
+    #endif
 }

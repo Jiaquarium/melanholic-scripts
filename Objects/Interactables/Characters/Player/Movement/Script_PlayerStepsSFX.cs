@@ -26,8 +26,10 @@ public class Script_PlayerStepsSFX : MonoBehaviour
         // Don't play Step SFX for mutation, it's impossible to play SFX on intervals
         // with animators being chosen at random.
         if (
-            player.IsFinalRound
-            && Script_ActiveStickerManager.Control.ActiveSticker?.id != Const_Items.MyMaskId
+            (
+                player.IsFinalRound
+                && Script_ActiveStickerManager.Control.ActiveSticker?.id != Const_Items.MyMaskId
+            ) || Script_Game.Game.state == Const_States_Game.DDR
         )
         {
             return;

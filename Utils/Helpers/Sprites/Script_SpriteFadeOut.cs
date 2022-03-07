@@ -30,7 +30,6 @@ public class Script_SpriteFadeOut : MonoBehaviour
 
     public IEnumerator FadeOutCo(Action cb, float? t = null, float minAlpha = 0f)
     {
-        Debug.Log("FadeOutCo called");
         fadeOutTime = t ?? fadeOutTime;
         
         SpriteRenderer sr;
@@ -64,7 +63,6 @@ public class Script_SpriteFadeOut : MonoBehaviour
 
     public IEnumerator FadeInCo(Action cb, float? t = null, float maxAlpha = 1f)
     {
-        Debug.Log("FadeInCo called");
         fadeInTime = t ?? fadeInTime;
         SpriteRenderer sr;
         Color tmpColor;

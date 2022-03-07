@@ -5,16 +5,34 @@ using UnityEngine.UI;
 
 public class Script_ArrowOutline : MonoBehaviour
 {
+    private static string Flash = "flash";
+    
     public Sprite defaultSprite;
     public Sprite focusSprite;
-    public GameObject flash;
-
-
+    
+    [SerializeField] private Animator tier1Animator;
+    [SerializeField] private Animator tier2Animator;
+    [SerializeField] private Animator bpmAnimator;
+    
     private IEnumerator focusCo;
-    private IEnumerator lightUpCo;
     private float focusTimeLength;
     private float lightUpTimeLength;
 
+    public void FlashTier1()
+    {
+        tier1Animator.SetTrigger(Flash);
+    }
+
+    public void FlashTier2()
+    {
+        tier2Animator.SetTrigger(Flash);
+    }
+
+    public void FlashBpm()
+    {
+        bpmAnimator.SetTrigger(Flash);
+    }
+    
     public void Focus()
     {
         GetComponent<Image>().sprite = focusSprite;
@@ -28,42 +46,22 @@ public class Script_ArrowOutline : MonoBehaviour
         StartCoroutine(focusCo);
     }
 
-    IEnumerator WaitToUnfocus()
+    private IEnumerator WaitToUnfocus()
     {
         yield return new WaitForSeconds(focusTimeLength);
 
-        GetComponent<Image>().sprite = defaultSprite;     
+        Unfocus();
     }
 
-    public void LightUp()
+    private void Unfocus()
     {
-        flash.SetActive(true);
-
-        if (lightUpCo != null)
-        {
-            StopCoroutine(lightUpCo);
-        }
-
-        lightUpCo = WaitToLightDown();
-        StartCoroutine(lightUpCo);        
+        GetComponent<Image>().sprite = defaultSprite;
     }
 
-    IEnumerator WaitToLightDown()
-    {
-        yield return new WaitForSeconds(focusTimeLength);
-
-        LightDown();
-    }
-
-    public void LightDown()
-    {
-        flash.SetActive(false);
-    }
-
-    public void Setup(float _focusTimeLength, float _lightUpTimeLength)
+    public void Setup(float _focusTimeLength)
     {
         focusTimeLength = _focusTimeLength;
-        lightUpTimeLength = _lightUpTimeLength;
-        LightDown();
+
+        Unfocus();
     }
 }

@@ -99,8 +99,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_InteractableFullArt IdsLeaveMeBeNote;
     [SerializeField] private Script_InteractableObject DeadIds;
 
+    [SerializeField] private AudioSource audioSourceIdsDance;
+
     private bool isIdsDancing = false;
-    private float timer;
     private int leftMoveCount;
     private int downMoveCount;
     private int upMoveCount;
@@ -235,7 +236,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         crystalChandelier.GetComponent<Script_CrystalChandelier>()
             .StartSpinning();
         
-        // Triggers HandleDDRFinish
         game.ChangeStateDDR();
     }
 
@@ -353,8 +353,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         void IdsStartDancing()
         {
-            game.PlayNPCBgTheme(IdsCandyDanceShortThemePlayerPrefab);
+            audioSourceIdsDance.time = 0f;
+            audioSourceIdsDance.Play();
+            
             isIdsDancing = true;
+            
             crystalChandelier.GetComponent<Script_CrystalChandelier>()
                 .StartSpinning();
         }
@@ -533,15 +536,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         if (isIdsDancing)
         {
-            timer += Time.deltaTime;
-            
             HandleLeftMove();
             HandleDownMove();
             HandleUpMove();
             HandleRightMove();
 
             /// Once stops playing Ids song
-            if (!game.GetNPCThemeMusicIsPlaying())
+            if (!audioSourceIdsDance.isPlaying)
             {
                 crystalChandelier.GetComponent<Script_CrystalChandelier>()
                     .StopSpinning();
@@ -560,9 +561,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         void HandleLeftMove()
         {
-            if (leftMoveCount > IdsSongMoves.leftMoveTimes.Length - 1)    return;
+            if (leftMoveCount > IdsSongMoves.leftMoveTimes.Length - 1)
+                return;
 
-            if (timer >= IdsSongMoves.leftMoveTimes[leftMoveCount] && !leftMoveDone)
+            if (audioSourceIdsDance.time >= IdsSongMoves.leftMoveTimes[leftMoveCount] && !leftMoveDone)
             {
                 game.GetMovingNPC(0).FaceDirection(Directions.Left);
                 leftMoveCount++;
@@ -576,9 +578,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         void HandleDownMove()
         {
-            if (downMoveCount > IdsSongMoves.downMoveTimes.Length - 1)    return;
+            if (downMoveCount > IdsSongMoves.downMoveTimes.Length - 1)
+                return;
 
-            if (timer >= IdsSongMoves.downMoveTimes[downMoveCount] && !downMoveDone)
+            if (audioSourceIdsDance.time >= IdsSongMoves.downMoveTimes[downMoveCount] && !downMoveDone)
             {
                 game.GetMovingNPC(0).FaceDirection(Directions.Down);
                 downMoveCount++;
@@ -592,9 +595,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         void HandleUpMove()
         {
-            if (upMoveCount > IdsSongMoves.upMoveTimes.Length - 1)    return;
+            if (upMoveCount > IdsSongMoves.upMoveTimes.Length - 1) 
+                return;
 
-            if (timer >= IdsSongMoves.upMoveTimes[upMoveCount] && !upMoveDone)
+            if (audioSourceIdsDance.time >= IdsSongMoves.upMoveTimes[upMoveCount] && !upMoveDone)
             {
                 game.GetMovingNPC(0).FaceDirection(Directions.Up);
                 upMoveCount++;
@@ -608,9 +612,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         void HandleRightMove()
         {
-            if (rightMoveCount > IdsSongMoves.rightMoveTimes.Length - 1)    return;
+            if (rightMoveCount > IdsSongMoves.rightMoveTimes.Length - 1)
+                return;
 
-            if (timer >= IdsSongMoves.rightMoveTimes[rightMoveCount] && !rightMoveDone)
+            if (audioSourceIdsDance.time >= IdsSongMoves.rightMoveTimes[rightMoveCount] && !rightMoveDone)
             {
                 game.GetMovingNPC(0).FaceDirection(Directions.Right);
                 rightMoveCount++;
@@ -859,6 +864,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (GUILayout.Button("Nameplate Timeline"))
             {
                 t.NameplateTimeline();
+            }
+
+            if (GUILayout.Button("DDR"))
+            {
+                t.WaitToDDR();
             }
         }
     }

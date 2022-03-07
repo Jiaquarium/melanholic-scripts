@@ -16,6 +16,8 @@ public class Script_Arrow : MonoBehaviour
     
     
     private Script_DDRManager DDRManager;
+    private Script_DDRConductor conductor;
+    
     private float timeToReachEndLocation;
     private bool isMoving;
     private bool isPassingOutline;
@@ -46,7 +48,7 @@ public class Script_Arrow : MonoBehaviour
     
     void Rise()
     {
-        t += Time.deltaTime / timeToReachEndLocation;
+        t += conductor.DeltaDspTime / timeToReachEndLocation;
         GetComponent<RectTransform>().localPosition = Vector3.Lerp(
                 startLocation,
                 endLocation,
@@ -85,7 +87,7 @@ public class Script_Arrow : MonoBehaviour
     // to continue to move offscreen
     void SecondRise()
     {
-        t2 += Time.deltaTime / timeToReachEndLocation;
+        t2 += conductor.DeltaDspTime / timeToReachEndLocation;
         GetComponent<RectTransform>().localPosition = Vector3.Lerp(
                 startLocation,
                 secondEndLocation,
@@ -159,7 +161,8 @@ public class Script_Arrow : MonoBehaviour
         float _tier1Buffer,
         float _tier2Buffer,
         float _tier3Buffer,
-        Script_DDRManager _DDRManager
+        Script_DDRManager _DDRManager,
+        Script_DDRConductor _conductor
     )
     {
         tierNeg1Buffer          = _tierNeg1Buffer;
@@ -167,8 +170,9 @@ public class Script_Arrow : MonoBehaviour
         tier2Buffer             = _tier2Buffer;
         tier3Buffer             = _tier3Buffer;
         DDRManager              = _DDRManager;
+        conductor               = _conductor;
         t                       = 0;
-        startLocation           =  GetComponent<RectTransform>().localPosition;
+        startLocation           = GetComponent<RectTransform>().localPosition;
         timeToReachEndLocation  = time;
         endLocation             = target;
         secondEndLocation       = endLocation + (endLocation - startLocation);

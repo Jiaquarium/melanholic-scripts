@@ -138,7 +138,18 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip Unlock;
     [Range(0f, 1f)] public float UnlockVol;
+
+    public AudioClip HallwayScare;
+    [Range(0f, 1f)] public float HallwayScareVol;
     
+    public AudioClip DDRStep;
+    [Range(0f, 1f)] public float DDRStepVol;
+    
+    public AudioClip DDRMistake;
+    [Range(0f, 1f)] public float DDRMistakeVol;
+    
+    [Space]
+
     [Header("---- UI SFX ----")]
 
     public AudioClip UIErrorSFX;
@@ -271,6 +282,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayPuppeteerEffectOff()
     {
         SFXSource.PlayOneShot(PuppeteerEffectOff, PuppeteerEffectOffVol);
+    }
+
+    public void PlayHallwayScare()
+    {
+        SFXSource.PlayOneShot(HallwayScare, HallwayScareVol);
     }
 
     public void Play(AudioClip sfx, float vol = 1f)

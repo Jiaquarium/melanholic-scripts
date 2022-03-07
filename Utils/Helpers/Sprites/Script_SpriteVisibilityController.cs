@@ -82,10 +82,10 @@ public class Script_SpriteVisibilityController : MonoBehaviour
             StopCoroutine(fadeInCoroutine);
             fadeInCoroutine = null;
         }
-        if (fadeOutCoroutine != null)     return;
         
-        Debug.Log("Fading out");
-
+        if (fadeOutCoroutine != null)
+            return;
+        
         float t = Script_Utils.GetFadeTime(fadeSpeed);
         fadeOutCoroutine = StartCoroutine(spriteFader.FadeOutCo(
             null,
@@ -104,9 +104,9 @@ public class Script_SpriteVisibilityController : MonoBehaviour
             StopCoroutine(fadeOutCoroutine);
             fadeOutCoroutine = null;
         }
-        if (fadeInCoroutine != null)       return;
         
-        Debug.Log("Fading in");
+        if (fadeInCoroutine != null)
+            return;
 
         float t = Script_Utils.GetFadeTime(fadeSpeed);
         fadeInCoroutine = StartCoroutine(spriteFader.FadeInCo(
