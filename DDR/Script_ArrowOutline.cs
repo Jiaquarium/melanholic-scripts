@@ -8,16 +8,12 @@ public class Script_ArrowOutline : MonoBehaviour
     private static string Flash = "flash";
     
     public Sprite defaultSprite;
-    public Sprite focusSprite;
     
     [SerializeField] private Animator tier1Animator;
     [SerializeField] private Animator tier2Animator;
     [SerializeField] private Animator bpmAnimator;
+    [SerializeField] private Animator focusAnimator;
     
-    private IEnumerator focusCo;
-    private float focusTimeLength;
-    private float lightUpTimeLength;
-
     public void FlashTier1()
     {
         tier1Animator.SetTrigger(Flash);
@@ -35,33 +31,10 @@ public class Script_ArrowOutline : MonoBehaviour
     
     public void Focus()
     {
-        GetComponent<Image>().sprite = focusSprite;
-
-        if (focusCo != null)
-        {
-            StopCoroutine(focusCo);
-        }
-
-        focusCo = WaitToUnfocus();
-        StartCoroutine(focusCo);
+        focusAnimator.SetTrigger(Flash);
     }
 
-    private IEnumerator WaitToUnfocus()
+    public void Setup()
     {
-        yield return new WaitForSeconds(focusTimeLength);
-
-        Unfocus();
-    }
-
-    private void Unfocus()
-    {
-        GetComponent<Image>().sprite = defaultSprite;
-    }
-
-    public void Setup(float _focusTimeLength)
-    {
-        focusTimeLength = _focusTimeLength;
-
-        Unfocus();
     }
 }
