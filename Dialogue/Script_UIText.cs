@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-01-15 00:56:21
+// Last created by UI Exporter at 2022-03-07 21:02:41
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1691,6 +1691,38 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I’m in control."
+    }
+},
+// ------------------------------------------------------------------
+// Comments
+{
+    "ddr_comments_tier1",
+    new Model_LanguagesUI
+    {
+        EN = @"EXCELLENT"
+    }
+},
+{
+    "ddr_comments_tier2",
+    new Model_LanguagesUI
+    {
+        EN = @"DECENT"
+    }
+},
+{
+    "ddr_comments_tier3",
+    new Model_LanguagesUI
+    {
+        EN = @"Reconsider your life decisions..."
+    }
+},
+// ------------------------------------------------------------------
+// Mistakes HUD
+{
+    "ddr_mistakes_label",
+    new Model_LanguagesUI
+    {
+        EN = @"『 B.A.D. 』"
     }
 },
 

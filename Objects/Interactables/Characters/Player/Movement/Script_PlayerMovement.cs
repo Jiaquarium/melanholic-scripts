@@ -548,12 +548,14 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (isForceMoveAnimation)
             return;
-        
-        bool isMovingAnimation = !isNoInputMoveByWind && (
-            isMoving
-            || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
-            || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f
-        );
+
+        bool isMovingAnimation = !isNoInputMoveByWind
+            && game.state != Const_States_Game.DDR
+            && (
+                isMoving
+                || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
+                || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f
+            );
         
         animator.SetBool(PlayerMovingAnimatorParam, isMovingAnimation);
     }

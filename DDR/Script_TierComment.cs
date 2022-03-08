@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class Script_TierComment : MonoBehaviour
 {
-    public IEnumerator co;    
+    private static string Emphasize = "emphasize";
     
-
+    [SerializeField] private Animator TMProAnimator;
+    
+    private IEnumerator co;    
+    
     private float activateTimeLength;
 
     public void Activate()
     {
         this.gameObject.SetActive(true);
+        TMProAnimator.SetTrigger(Emphasize);
         
         if (co != null)
         {

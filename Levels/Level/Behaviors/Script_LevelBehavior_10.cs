@@ -49,11 +49,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public Script_DialogueManager dm;
     public Script_DDRManager DDRManager;
+    [SerializeField] private Script_DDRConductor DDRConductor;
+    
     public Script_LevelBehavior_9 lb9;
     public Script_BgThemePlayer IdsBgThemePlayerPrefab;
-    public Script_BgThemePlayer IdsCandyDanceShortThemePlayerPrefab;
-    public Script_BgThemePlayer PlayerCandyDanceThemePlayerPrefab;
-    
+
     [SerializeField] private Script_DialogueNode introNodeTalkedWithMyne;
     [SerializeField] private Script_DialogueNode introNodeNotTalkedWithMyne;
 
@@ -102,14 +102,17 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private AudioSource audioSourceIdsDance;
 
     private bool isIdsDancing = false;
+    private bool isIdsDancingWithPlayer = false;
+    
     private int leftMoveCount;
     private int downMoveCount;
     private int upMoveCount;
     private int rightMoveCount;
-    private bool leftMoveDone;
-    private bool downMoveDone;
-    private bool upMoveDone;
-    private bool rightMoveDone;
+    
+    private int lastLeftMove;
+    private int lastDownMove;
+    private int lastUpMove;
+    private int lastRightMove;
     
     private bool didMapNotification;
     private bool isTimelineControlled = false;
@@ -134,6 +137,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         IdsDirector.stopped                             += OnIdsMovesDone;    
         Script_DDREventsManager.OnDDRDone               += OnDDRDone;
+        Script_DDREventsManager.OnDDRMusicStart         += OnDDRStartPlayerDanceMusic;
         Script_ItemsEventsManager.OnItemStash           += OnItemStash;
     }
 
@@ -143,6 +147,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         IdsDirector.stopped                             -= OnIdsMovesDone;
         Script_DDREventsManager.OnDDRDone               -= OnDDRDone;
+        Script_DDREventsManager.OnDDRMusicStart         -= OnDDRStartPlayerDanceMusic;
         Script_ItemsEventsManager.OnItemStash           -= OnItemStash;
         
         if (!isTimelineControlled)
@@ -227,14 +232,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     public void WaitToDDR()
     {
-        DDRManager.Activate();
-        DDRManager.StartMusic(
+        DDRManager.Activate(
+            mistakesAllowed,
             playerSongMoves,
-            PlayerCandyDanceThemePlayerPrefab,
-            mistakesAllowed
+            () => {
+                DDRManager.StartMusic();
+                crystalChandelier.GetComponent<Script_CrystalChandelier>()
+                    .StartSpinning();
+            }
         );
-        crystalChandelier.GetComponent<Script_CrystalChandelier>()
-            .StartSpinning();
         
         game.ChangeStateDDR();
     }
@@ -290,6 +296,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void DanceSetup()
     {
         game.GetPlayer().Teleport(playerDancePosition.Position);
+        InitializeIdsDance();
         
         // Move moving lights up.
         foreach (var movingLight in movingLights)
@@ -532,16 +539,24 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
     }
 
-    void HandleIdsDanceScene()
+    // Turn flag on for Ids to start tracking Player Dance Moves
+    // This must occur after DSP time is set for SongPosition on Conductor.
+    private void OnDDRStartPlayerDanceMusic()
+    {
+        InitializeIdsDance();
+        isIdsDancingWithPlayer = true;
+    }
+    
+    private void HandleIdsDanceScene()
     {
         if (isIdsDancing)
         {
-            HandleLeftMove();
-            HandleDownMove();
-            HandleUpMove();
-            HandleRightMove();
+            HandleLeftMove(IdsSongMoves, audioSourceIdsDance.time);
+            HandleDownMove(IdsSongMoves, audioSourceIdsDance.time);
+            HandleUpMove(IdsSongMoves, audioSourceIdsDance.time);
+            HandleRightMove(IdsSongMoves, audioSourceIdsDance.time);
 
-            /// Once stops playing Ids song
+            // Once stops playing Ids song
             if (!audioSourceIdsDance.isPlaying)
             {
                 crystalChandelier.GetComponent<Script_CrystalChandelier>()
@@ -550,86 +565,102 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 StartCoroutine(WaitToTalkAfterIdsDance());
             }
         }
+        else if (isIdsDancingWithPlayer)
+        {
+            HandleLeftMove(playerSongMoves, DDRConductor.SongPosition);
+            HandleDownMove(playerSongMoves, DDRConductor.SongPosition);
+            HandleUpMove(playerSongMoves, DDRConductor.SongPosition);
+            HandleRightMove(playerSongMoves, DDRConductor.SongPosition);
+        }
 
         IEnumerator WaitToTalkAfterIdsDance()
         {
             yield return new WaitForSeconds(postIdsDanceWaitTime);
             
-            game.GetMovingNPC(0).FaceDirection(Directions.Left);
+            Ids.FaceDirection(Directions.Left);
             dm.StartDialogueNode(playerDanceIntroNode);
         }
 
-        void HandleLeftMove()
+        void HandleLeftMove(Model_SongMoves songMoves, float time)
         {
-            if (leftMoveCount > IdsSongMoves.leftMoveTimes.Length - 1)
+            if (leftMoveCount > songMoves.leftMoveTimes.Length - 1)
                 return;
 
-            if (audioSourceIdsDance.time >= IdsSongMoves.leftMoveTimes[leftMoveCount] && !leftMoveDone)
+            Debug.Log($"Time {time}");
+            Debug.Log($"songMoves.leftMoveTimes[leftMoveCount] {songMoves.leftMoveTimes[leftMoveCount]}");
+
+            if (
+                time >= songMoves.leftMoveTimes[leftMoveCount]
+                && leftMoveCount > lastLeftMove
+            )
             {
-                game.GetMovingNPC(0).FaceDirection(Directions.Left);
+                Debug.Log("IDS FACING LEFT");
+                
+                Ids.FaceDirection(Directions.Left);
+                lastLeftMove = leftMoveCount;
                 leftMoveCount++;
-                leftMoveDone = true;
-            }
-            else
-            {
-                leftMoveDone = false;
             }
         }
 
-        void HandleDownMove()
+        void HandleDownMove(Model_SongMoves songMoves, float time)
         {
-            if (downMoveCount > IdsSongMoves.downMoveTimes.Length - 1)
+            if (downMoveCount > songMoves.downMoveTimes.Length - 1)
                 return;
 
-            if (audioSourceIdsDance.time >= IdsSongMoves.downMoveTimes[downMoveCount] && !downMoveDone)
+            Debug.Log($"Time {time}");
+            Debug.Log($"songMoves.downMoveTimes[downMoveCount] {songMoves.downMoveTimes[downMoveCount]}");
+
+            if (
+                time >= songMoves.downMoveTimes[downMoveCount]
+                && downMoveCount > lastDownMove
+            )
             {
-                game.GetMovingNPC(0).FaceDirection(Directions.Down);
+                Debug.Log("IDS FACING RIGHT");
+                
+                Ids.FaceDirection(Directions.Down);
+                lastDownMove = downMoveCount;
                 downMoveCount++;
-                downMoveDone = true;
-            }
-            else
-            {
-                downMoveDone = false;
             }
         }
 
-        void HandleUpMove()
+        void HandleUpMove(Model_SongMoves songMoves, float time)
         {
-            if (upMoveCount > IdsSongMoves.upMoveTimes.Length - 1) 
+            if (upMoveCount > songMoves.upMoveTimes.Length - 1) 
                 return;
 
-            if (audioSourceIdsDance.time >= IdsSongMoves.upMoveTimes[upMoveCount] && !upMoveDone)
+            if (
+                time >= songMoves.upMoveTimes[upMoveCount]
+                && upMoveCount > lastUpMove
+            )
             {
-                game.GetMovingNPC(0).FaceDirection(Directions.Up);
+                Ids.FaceDirection(Directions.Up);
+                lastUpMove = upMoveCount;
                 upMoveCount++;
-                upMoveDone = true;
-            }
-            else
-            {
-                upMoveDone = false;
             }
         }
 
-        void HandleRightMove()
+        void HandleRightMove(Model_SongMoves songMoves, float time)
         {
-            if (rightMoveCount > IdsSongMoves.rightMoveTimes.Length - 1)
+            if (rightMoveCount > songMoves.rightMoveTimes.Length - 1)
                 return;
 
-            if (audioSourceIdsDance.time >= IdsSongMoves.rightMoveTimes[rightMoveCount] && !rightMoveDone)
+            if (
+                time >= songMoves.rightMoveTimes[rightMoveCount]
+                && rightMoveCount > lastRightMove
+            )
             {
                 game.GetMovingNPC(0).FaceDirection(Directions.Right);
+                lastRightMove = rightMoveCount;
                 rightMoveCount++;
-                rightMoveDone = true;
-            }
-            else
-            {
-                rightMoveDone = false;
             }
         }
     }
 
     void OnDDRDone()
     {
+        isIdsDancingWithPlayer = false;
+        Ids.FaceDirection(Directions.Left);
+        
         if (DDRManager.didFail)
         {
             Debug.Log($"**** OnDDRDone starting Bad Node ****");
@@ -704,6 +735,21 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     }
 
     public override void HandleDDRArrowClick(int tier) {}
+
+    void InitializeIdsDance()
+    {
+        leftMoveCount = 0;
+        lastLeftMove = -1;
+        
+        downMoveCount = 0;
+        lastDownMove = -1;
+        
+        upMoveCount = 0;
+        lastUpMove = -1;
+        
+        rightMoveCount = 0;
+        lastRightMove = -1;
+    }
 
     void HandleIdsInRoom()
     {

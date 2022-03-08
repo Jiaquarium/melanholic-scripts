@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -47,7 +49,6 @@ public class Script_DDRManager : MonoBehaviour
     public float tier1Buffer;
     public float tier2Buffer;
     public float tier3Buffer;
-    public float focusTimeLength;
     public float tierCommentActivationLength;
 
 
@@ -73,9 +74,12 @@ public class Script_DDRManager : MonoBehaviour
     private Script_ArrowOutline ScriptArrowOutlineDown;
     private Script_ArrowOutline ScriptArrowOutlineUp;
     private Script_ArrowOutline ScriptArrowOutlineRight;
+    
+    [SerializeField] private Script_CanvasGroupController mistakesCanvasGroup;
     public int mistakes;
     public int mistakesAllowed;
-
+    [SerializeField] private TextMeshProUGUI mistakesText;
+    [SerializeField] private TextMeshProUGUI mistakesAllowedText;
 
     public float timeToRise;
     public bool didFail;
@@ -83,8 +87,22 @@ public class Script_DDRManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private Script_DDRConductor conductor;   
+    
     private Script_SFXManager sfxManager;
     private int lastBeat;
+
+    private bool isHandledSuccess;
+    
+    public int Mistakes
+    {
+        get => mistakes;
+        set
+        {
+            mistakes = value;
+            mistakesText.text = (mistakesAllowed - mistakes).ToString();
+        }
+    }
+    
     public DDRState State
     {
         get => _state;
@@ -111,41 +129,85 @@ public class Script_DDRManager : MonoBehaviour
     
     void Update()
     {
-        HandleBpmPulse();
-        
-        HandleLeftArrowSpawn();
-        HandleDownArrowSpawn();
-        HandleUpArrowSpawn();
-        HandleRightArrowSpawn();
-        
         if (State == DDRState.Active)
         {
+            HandleBpmPulse();
+            
+            HandleLeftArrowSpawn();
+            HandleDownArrowSpawn();
+            HandleUpArrowSpawn();
+            HandleRightArrowSpawn();
+            
             HandleInput();
             HandleMistakes();
             HandleSongFinish();
         }
     }
     
-    public void Activate()
+    public void Activate(
+        int _mistakesAllowed,
+        Model_SongMoves _songMoves,
+        Action cb
+    )
     {
+        songMoves = _songMoves;
+        InitialState();
+
         this.gameObject.SetActive(true);
         game.ManagePlayerViews(Const_States_PlayerViews.DDR);
 
-        DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().Open();
-    }
+        HandleMistakesCanvasGroup();
 
-    public void Deactivate()
+        activeLeftArrows            = new Script_Arrow[songMoves.leftMoveTimes.Length];
+        activeDownArrows            = new Script_Arrow[songMoves.downMoveTimes.Length];
+        activeUpArrows              = new Script_Arrow[songMoves.upMoveTimes.Length];
+        activeRightArrows           = new Script_Arrow[songMoves.rightMoveTimes.Length];
+
+        DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().FadeIn(
+            FadeSpeeds.Fast.GetFadeTime(),
+            a: cb
+        );
+
+        void HandleMistakesCanvasGroup()
+        {
+            mistakesAllowed = _mistakesAllowed;
+            mistakesAllowedText.text = $"/{mistakesAllowed.ToString()}";
+            Mistakes = 0; 
+            mistakesCanvasGroup.Open();
+        }
+    }
+    
+    public void Deactivate(Action cb = null)
     {
-        if (State != DDRState.Active)   return;
+        if (State != DDRState.Active)
+            return;
 
-        InitialState();
-
-        this.gameObject.SetActive(false);
+        DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().FadeOut(
+            FadeSpeeds.Fast.GetFadeTime(),
+            a: () => {
+                if (cb != null)
+                    cb();
+                
+                this.gameObject.SetActive(false);
+                
+                /// Fire done event
+                Script_DDREventsManager.DDRDone();
+            }
+        );
+        
         game.ManagePlayerViews(Const_States_PlayerViews.Health);
-
-        /// Fire done event
-        Script_DDREventsManager.DDRDone();
     }
+    
+    // ------------------------------------------------------------------
+    // Timeline Signals
+    
+    // - DDR Success Timeline
+    public void OnDDRSuccessTimelineDone()
+    {
+        Deactivate();
+    }
+
+    // ------------------------------------------------------------------
 
     void ClearState()
     {
@@ -174,7 +236,8 @@ public class Script_DDRManager : MonoBehaviour
         nextUpArrowIndex        = 0;
         nextRightArrowIndex     = 0;
 
-        mistakes = 0;
+        mistakesCanvasGroup.Close();
+        didFail = false;
     }
 
     void DestroyArrows(Script_Arrow[] arrows)
@@ -430,7 +493,7 @@ public class Script_DDRManager : MonoBehaviour
                 game.HandleDDRArrowClick(3);
                 
                 Tier3Comment.Activate();
-                mistakes++;
+                Mistakes++;
                 MistakeSFX();
 
                 return 3;
@@ -465,7 +528,7 @@ public class Script_DDRManager : MonoBehaviour
             game.HandleDDRArrowClick(3);
             
             Tier3Comment.Activate();
-            mistakes++;
+            Mistakes++;
             MistakeSFX();
 
             return 3;
@@ -476,63 +539,43 @@ public class Script_DDRManager : MonoBehaviour
 
     private void HandleMistakes()
     {
-        if (mistakesAllowed != -1 && mistakes >= mistakesAllowed)
+        if (mistakesAllowed != -1 && Mistakes >= mistakesAllowed)
         {
             didFail = true;
             Deactivate();
         }
     }
 
-    private void HandleSongFinish()
+    private void HandleSongFinish(bool isForceFinish = false)
     {
-        if (!IsPlaying)
+        if (
+            (!IsPlaying && !isHandledSuccess)
+            || isForceFinish
+        )
         {
+            isHandledSuccess = true;
             didFail = false;
-            Deactivate();
+            
+            // Play Success Timeline which handles Deactivation afterwards
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
         }
     }
 
-    public void StartMusic(
-        Model_SongMoves _songMoves,
-        Script_BgThemePlayer bgThemePlayer,
-        int _mistakesAllowed // set to -1 to ignore mistakes
-    )
+    public void StartMusic()
     {
-        upMoveCount = 0;
-        downMoveCount = 0;
-        mistakes = 0;
-        didFail = false;
-
-        songMoves = _songMoves;
-        mistakesAllowed = _mistakesAllowed;
-
-        leftArrowsCounter = 0;
-        downArrowsCounter = 0;
-        upArrowsCounter = 0;
-        rightArrowsCounter = 0;
-        
-        activeLeftArrows            = new Script_Arrow[songMoves.leftMoveTimes.Length];
-        activeDownArrows            = new Script_Arrow[songMoves.downMoveTimes.Length];
-        activeUpArrows              = new Script_Arrow[songMoves.upMoveTimes.Length];
-        activeRightArrows           = new Script_Arrow[songMoves.rightMoveTimes.Length];
-        
-        ScriptArrowOutlineLeft.Setup(focusTimeLength);
-        ScriptArrowOutlineDown.Setup(focusTimeLength);
-        ScriptArrowOutlineUp.Setup(focusTimeLength);
-        ScriptArrowOutlineRight.Setup(focusTimeLength);
-
-        Tier1Comment.Setup(tierCommentActivationLength);
-        Tier2Comment.Setup(tierCommentActivationLength);
-        Tier3Comment.Setup(tierCommentActivationLength);
-
         musicSource.time = 0f;
         musicSource.Play();
         
         conductor.SetDspTimeStart();
         lastBeat = 0;
-        Pulse();
 
         State = DDRState.Active;
+
+        // Fire event
+        // - Level Behavior 10: Initializes Ids Dancing
+        Script_DDREventsManager.DDRMusicStart();
+        
+        Pulse();
     }
 
     private void HandleBpmPulse()
@@ -576,6 +619,22 @@ public class Script_DDRManager : MonoBehaviour
         ClearState();
 
         DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().Close();
+
+        leftArrowsCounter = 0;
+        downArrowsCounter = 0;
+        upArrowsCounter = 0;
+        rightArrowsCounter = 0;
+        
+        ScriptArrowOutlineLeft.Setup();
+        ScriptArrowOutlineDown.Setup();
+        ScriptArrowOutlineUp.Setup();
+        ScriptArrowOutlineRight.Setup();
+
+        Tier1Comment.Setup(tierCommentActivationLength);
+        Tier2Comment.Setup(tierCommentActivationLength);
+        Tier3Comment.Setup(tierCommentActivationLength);
+
+        isHandledSuccess = false;
     }
 
     public void Setup()
@@ -605,6 +664,19 @@ public class Script_DDRManager : MonoBehaviour
                 t.HandleTierFlash(2, Directions.Down);
                 t.HandleTierFlash(2, Directions.Up);
                 t.HandleTierFlash(2, Directions.Right);
+            }
+
+            if (GUILayout.Button("Focus"))
+            {
+                t.ScriptArrowOutlineLeft.Focus();
+                t.ScriptArrowOutlineDown.Focus();
+                t.ScriptArrowOutlineUp.Focus();
+                t.ScriptArrowOutlineRight.Focus();
+            }
+
+            if (GUILayout.Button("Song Finish"))
+            {
+                t.HandleSongFinish(true);
             }
         }
     }
