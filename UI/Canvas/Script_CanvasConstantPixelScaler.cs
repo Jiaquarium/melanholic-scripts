@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Experimental.Rendering.Universal;
 using System;
+using Cinemachine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,6 +17,9 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 {
     private static float scaleAnimateTime = 0.5f;
     private static float onScaleDonePauseTime = 0.25f;
+
+    [Tooltip("Set for UI to always scale by an implied camera with size of GraphicsManager.TargetOrthoSize")]
+    [SerializeField] private bool isOnlyUseDefaultVCamScaling;
 
     /// <summary>
     /// Use Pixel Ratio that will always fit canvases to smaller than screen size.
@@ -186,10 +190,15 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         // Catch when Singletons aren't set yet.
         try
         {
-            targetScaleFactor = isOnlyUpscaled
-                ? graphics.Zoom
-                : graphics.UIDefaultScaleFactor;
-            
+            if (isOnlyUpscaled)
+                targetScaleFactor = graphics.Zoom;
+            else
+            {
+                targetScaleFactor = isOnlyUseDefaultVCamScaling
+                    ? graphics.UIDefaultScaleFactorAdjustedZoomCam
+                    : graphics.UIDefaultScaleFactor;
+            }
+
             if (IsCustomScaling)
                 targetScaleFactor = GetScaleFactorByViewportHeight(graphics.PixelScreenSize.y);
             
@@ -243,7 +252,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
             return targetScaleFactor;
         }
     }
-
+    
     private void SetupCanvasAdjusters()
     {
         foreach (var canvasAdjuster in canvasAdjusters)

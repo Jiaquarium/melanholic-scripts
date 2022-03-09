@@ -12,14 +12,14 @@ public class Script_GraphicsManager : MonoBehaviour
 {
     public static Script_GraphicsManager Control;
     public const int AssetsPPU = 36;
+    
+    [SerializeField] private float TargetOrthoSize = 7.5f;
 
     [SerializeField] private PixelPerfectCamera pixelPerfectCamera;
     
     [Header("Calculated Camera Properties")]
     [Tooltip("An upscaled zoom that ensures the image scaled only so much that it will remain completely on screen.")]
     [SerializeField] private int zoom = 1;
-
-    [SerializeField] private CinemachineBrain cinemachineBrain;
 
     // The current zoom multiplier used after Cinemachine adjustment.
     public int PixelRatio
@@ -41,6 +41,51 @@ public class Script_GraphicsManager : MonoBehaviour
     public int UIDefaultScaleFactor
     {
         get => Mathf.Max(PixelRatio, Zoom);
+    }
+
+    /// <summary>
+    /// Scale factor that reflects the default Main VCam Ortho Size Setting.
+    /// For UI elements that need to always scale by the default zoom regardless of VCam Zoom.
+    /// This is the same as UIDefaultScaleFactor in that PixelRatio == cinemachineVCamZoom,
+    /// except here uses a constant Target Ortho Size.
+    /// </summary>
+    public int UIDefaultScaleFactorAdjustedZoomCam
+    {
+        get
+        {
+            float defaultOrthoSize = (PixelScreenSize.y * 0.5f) / (Zoom * AssetsPPU);
+            int cinemachineVCamZoom = Math.Max(1, Mathf.RoundToInt(Zoom * defaultOrthoSize / TargetOrthoSize));
+            
+            float correctedOrthoSize = Zoom * defaultOrthoSize / cinemachineVCamZoom;
+
+            // Ensure this matches the custom Bounds in
+            // Graphics/com.unity.render-pipelines.universal/Runtime/2D/PixelPerfectCameraInternal
+            switch (cinemachineVCamZoom)
+            {
+                case 1:
+                    if (correctedOrthoSize > 9.0f)
+                        cinemachineVCamZoom++;
+                    break;
+                case 2:
+                    if (correctedOrthoSize > 8.5f)
+                        cinemachineVCamZoom++;
+                    break;
+                case 3:
+                    if (correctedOrthoSize > 8f)
+                        cinemachineVCamZoom++;
+                    break;
+                case 4:
+                    if (correctedOrthoSize > 8f)
+                        cinemachineVCamZoom++;
+                    break;
+                default:
+                    if (correctedOrthoSize > 8f)
+                        cinemachineVCamZoom++;
+                    break;
+            }
+
+            return Mathf.Max(cinemachineVCamZoom, Zoom);
+        }
     }
 
     /// <summary>
