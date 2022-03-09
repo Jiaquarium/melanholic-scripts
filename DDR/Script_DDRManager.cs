@@ -361,9 +361,7 @@ public class Script_DDRManager : MonoBehaviour
     {
         // ask arrow where it is, and manager will post that event
         // for game -> level behavior to handle
-        if (
-            Input.GetButtonDown(Const_KeyCodes.Left)
-        )
+        if (Input.GetButtonDown(Const_KeyCodes.Left))
         {
             ScriptArrowOutlineLeft.Focus();
             

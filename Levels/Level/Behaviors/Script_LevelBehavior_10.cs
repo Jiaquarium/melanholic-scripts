@@ -84,7 +84,18 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     public Script_MovingNPC Ids;
     [SerializeField] private PlayableDirector IdsDirector;
+    
     [SerializeField] private Script_VCamera VCamLB10FollowIds;
+    [SerializeField] private Script_VCamera VCamLB10Dance;
+    
+    // After Dance, eases out to this cam which shows both Ids and Player.
+    [SerializeField] private Script_VCamera VCamLB10AfterDanceFailEase;
+    
+    // After Dance, eases out to this cam which shows both Ids and Player.
+    // Eases out FAST back to Main Cam right before Item Receive.
+    [SerializeField] private Script_VCamera VCamLB10AfterDanceSuccessEase;
+    
+    [SerializeField] private float VCamDanceSuccessToMainBlendTime;
     
     [SerializeField] private PlayableDirector danceSetupDirector;
     [SerializeField] private Script_Marker playerDancePosition;
@@ -212,7 +223,18 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void IdsGivesSmallKey()
     {
         game.ChangeStateCutScene();
-        game.HandleItemReceive(smallKey);
+        
+        Script_VCamManager.VCamMain.SwitchToMainVCam(VCamLB10AfterDanceSuccessEase);
+        
+        StartCoroutine(WaitToItemReceive());
+
+        // Wait until after the camera is blended (.5s blend, so wait .75s)
+        IEnumerator WaitToItemReceive()
+        {
+            yield return new WaitForSeconds(VCamDanceSuccessToMainBlendTime);
+
+            game.HandleItemReceive(smallKey);
+        }
     }
 
     public void DanceSetupCutScene()
@@ -221,7 +243,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         // Timeline Events:
         // 1. Fade Screen Out
-        // 2. Reposition Player
+        // 2. Reposition Player & change camera
         // 3. Fade Out Lights
         // 4. Drop Chandeleir
         // 5. Ids Dances
@@ -245,8 +267,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         game.ChangeStateDDR();
     }
 
+    // PsychicNode FailDDRNode
     public void OnDDRFailDialogueDone()
     {
+        Script_VCamManager.VCamMain.SwitchToMainVCam(VCamLB10AfterDanceFailEase);
         game.ChangeStateInteract();
     }
 
@@ -296,6 +320,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void DanceSetup()
     {
         game.GetPlayer().Teleport(playerDancePosition.Position);
+        
+        Script_VCamManager.VCamMain.SetNewVCam(VCamLB10Dance);
+        
         InitializeIdsDance();
         
         // Move moving lights up.
@@ -379,7 +406,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void OnQuestDone()
     {
         isCurrentPuzzleComplete = true;
-        
         isTimelineControlled = true;
 
         var transitionManager = Script_TransitionManager.Control;
@@ -426,8 +452,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // Happens after Pass DDR and after Ids gives Super Small Key.
     private void OnItemStash(string stashItemId)
     {
-        if (stashItemId == smallKey.Item.id)            IdsExits();
-        else if (stashItemId == boarNeedle.Item.id)     gotBoarNeedle = true;
+        if (stashItemId == smallKey.Item.id)
+            IdsExits();
+        else if (stashItemId == boarNeedle.Item.id)
+            gotBoarNeedle = true;
 
         void IdsExits()
         {
@@ -660,16 +688,22 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         isIdsDancingWithPlayer = false;
         Ids.FaceDirection(Directions.Left);
-        
+
+        // After DDR is done, zoom out camera to VCamLB10DanceConvo showing Ids and Player equally.
+        // Ensure to blend back to Main Cam on both Success and Fail cases.
         if (DDRManager.didFail)
         {
             Debug.Log($"**** OnDDRDone starting Bad Node ****");
             DDRFinish(badDanceOutroNode);
+            
+            SwitchFromDanceCamToAfterDanceCam(false);
         }
         else
         {
             Debug.Log($"**** OnDDRDone starting Good Node ****");
             DDRFinish(goodDanceOutroNode);
+
+            SwitchFromDanceCamToAfterDanceCam(true);
         }
     }
 
@@ -872,6 +906,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     }
 
     // ----------------------------------------------------------------------
+    
+    private void SwitchFromDanceCamToAfterDanceCam(bool isSuccess)
+    {
+        var cam = isSuccess
+            ? VCamLB10AfterDanceSuccessEase
+            : VCamLB10AfterDanceFailEase;
+        
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(VCamLB10Dance, cam);
+    }
 
     public override void Setup()
     {
