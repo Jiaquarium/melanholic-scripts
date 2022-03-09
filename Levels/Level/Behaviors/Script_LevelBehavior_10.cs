@@ -68,7 +68,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public GameObject crystalChandelier;
     public Script_LightFadeIn playerSpotLight;
     public Script_LightFadeIn IdsSpotLight;
+    
     [SerializeField] private Script_LightFadeIn levelDirectionalLight;
+    [SerializeField] private float directionalLightDanceIntensity;
+    
     [SerializeField] private Script_LightFadeIn[] additionalFadingLights;
     [SerializeField] private Script_MoveDirection[] movingLights;
     public Vector3 lightsUpOffset;
@@ -81,6 +84,17 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Model_SongMoves playerSongMoves;
     public Model_SongMoves IdsSongMoves;
     public int mistakesAllowed;
+
+    [SerializeField] private List<float> bgTransitionTimes;
+    [SerializeField] private Canvas StarryNightBg;
+    [SerializeField] private Script_TextureScroller StarryNightScroller;
+    [SerializeField] private Script_MeshFadeController BlackBgFader;
+    [SerializeField] private float blackBgFadeInTime;
+    [SerializeField] private float blackBgFadeOutTime;
+    [SerializeField] private float startStarryNightScrollSpeed;
+    [SerializeField] private float maxStarryNightScrollSpeed;
+    [SerializeField] private float starryNightMaxScrollSpeedTimeToReach;
+    
     
     public Script_MovingNPC Ids;
     [SerializeField] private PlayableDirector IdsDirector;
@@ -124,6 +138,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     private int lastDownMove;
     private int lastUpMove;
     private int lastRightMove;
+
+    private int bgTransitionIdx;
+    private float scrollSpeedDelta;
     
     private bool didMapNotification;
     private bool isTimelineControlled = false;
@@ -171,6 +188,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
 
         isTimelineControlled = false;
+    }
+    
+    void Awake()
+    {
+        BlackBgFader.gameObject.SetActive(false);
+        BlackBgFader.SetVisibility(false);
+        StarryNightBg.gameObject.SetActive(false);
     }
     
     protected override void Update()
@@ -248,12 +272,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         // 4. Drop Chandeleir
         // 5. Ids Dances
         Script_LightFXManager.Control.IsPaused = true;
+
         danceSetupDirector.GetComponent<Script_TimelineController>()
             .PlayableDirectorPlayFromTimelines(0, 0);
     }
     
     public void WaitToDDR()
     {
+        BgTransitionsInitialState();
+        
         DDRManager.Activate(
             mistakesAllowed,
             playerSongMoves,
@@ -265,6 +292,21 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         );
         
         game.ChangeStateDDR();
+
+        void BgTransitionsInitialState()
+        {
+            bgTransitionIdx = 0;
+
+            // Black faded out
+            BlackBgFader.SetVisibility(false);
+            BlackBgFader.gameObject.SetActive(false);
+
+            // StarryNight initialized
+            StarryNightScroller.ScrollSpeed = startStarryNightScrollSpeed;
+            StarryNightBg.gameObject.SetActive(false);
+            StarryNightBg.GetComponent<Script_MeshFadeController>().SetVisibility(true);
+            scrollSpeedDelta = maxStarryNightScrollSpeed - startStarryNightScrollSpeed;
+        }
     }
 
     // PsychicNode FailDDRNode
@@ -343,10 +385,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             game.GetNPC(0).GetComponent<Transform>(),
             null
         ));
-        StartCoroutine(levelDirectionalLight.FadeOutLight(
-            lightsFadeOutTime,
-            null
-        ));
+
+        levelDirectionalLight.GetComponent<Light>().intensity = directionalLightDanceIntensity;
         
         foreach (var fadingLight in additionalFadingLights)
         {
@@ -599,6 +639,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             HandleDownMove(playerSongMoves, DDRConductor.SongPosition);
             HandleUpMove(playerSongMoves, DDRConductor.SongPosition);
             HandleRightMove(playerSongMoves, DDRConductor.SongPosition);
+            HandleBgTransitions();
         }
 
         IEnumerator WaitToTalkAfterIdsDance()
@@ -684,7 +725,46 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
     }
 
-    void OnDDRDone()
+    private void HandleBgTransitions()
+    {
+        if (bgTransitionIdx > bgTransitionTimes.Count - 1)
+            return;
+        
+        if (DDRConductor.SongPosition >= bgTransitionTimes[bgTransitionIdx])
+        {
+            switch (bgTransitionIdx)
+            {
+                case 0:
+                    // Fade In Black & Activate StarryNight in the background
+                    BlackBgFader.gameObject.SetActive(true);
+                    BlackBgFader.FadeIn(blackBgFadeInTime, () => {
+                        StarryNightBg.gameObject.SetActive(true);
+                    });
+                    
+                    bgTransitionIdx++;
+                    break;
+                case 1:
+                    // Fade Out Black
+                    BlackBgFader.FadeOut(blackBgFadeOutTime);
+                    
+                    bgTransitionIdx++;
+                    break;
+                case 2:
+                    // Start increasing scroll speed, leave Idx pointer here.
+                    float scrollSpeedIncrease = (Time.deltaTime / starryNightMaxScrollSpeedTimeToReach)
+                        * scrollSpeedDelta;
+                    
+                    StarryNightScroller.ScrollSpeed = Mathf.Min(
+                        StarryNightScroller.ScrollSpeed + scrollSpeedIncrease,
+                        maxStarryNightScrollSpeed
+                    );
+
+                    break;
+            }
+        }
+    }
+
+    private void OnDDRDone()
     {
         isIdsDancingWithPlayer = false;
         Ids.FaceDirection(Directions.Left);
@@ -718,6 +798,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         Script_LightFXManager.Control.IsPaused = false;
         SwitchLightsInAnimation();
+        TearDownBgTransitions();
 
         dm.StartDialogueNode(node);
     }
@@ -766,6 +847,23 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 null
             ));
         }
+
+        // DanceTearDownTimeline
+        danceSetupDirector.GetComponent<Script_TimelineController>()
+            .PlayableDirectorPlayFromTimelines(0, 1);
+    }
+
+    private void TearDownBgTransitions()
+    {
+        // Fade out Black Bg & Stars in case reached these points in song.
+        BlackBgFader.FadeOut();
+        
+        // If StarryNight was showing, fade it out, otherwise need to
+        // cut it or it will flicker behind the fading BlackBg
+        if (bgTransitionIdx > 1)
+            StarryNightBg.GetComponent<Script_MeshFadeController>().FadeOut();
+        else
+            StarryNightBg.GetComponent<Script_MeshFadeController>().SetVisibility(false);
     }
 
     public override void HandleDDRArrowClick(int tier) {}

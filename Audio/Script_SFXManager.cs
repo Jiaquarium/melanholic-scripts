@@ -148,6 +148,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip DDRMistake;
     [Range(0f, 1f)] public float DDRMistakeVol;
     
+    public AudioClip Fireworks;
+    [Range(0f, 1f)] public float FireworksVol;
+    
     [Space]
 
     [Header("---- UI SFX ----")]

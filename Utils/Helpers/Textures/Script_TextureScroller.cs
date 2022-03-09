@@ -9,6 +9,12 @@ public class Script_TextureScroller : MonoBehaviour
 
     private Renderer graphics;
 
+    public float ScrollSpeed
+    {
+        get => scrollSpeed;
+        set => scrollSpeed = value;
+    }
+
     void Awake ()
     {
         graphics = GetComponent<Renderer>();

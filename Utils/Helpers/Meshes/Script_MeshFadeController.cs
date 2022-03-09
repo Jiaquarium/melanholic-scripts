@@ -28,10 +28,10 @@ public class Script_MeshFadeController : MonoBehaviour
     [SerializeField] private Vector3 playerLoc;
     [SerializeField] private Vector3 targetLoc;
     
+    [SerializeField] private Script_MeshFadeInOut fader;
+    
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
-
-    private Script_MeshFadeInOut fader;
 
     public float MaxAlpha
     {
