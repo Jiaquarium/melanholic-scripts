@@ -94,7 +94,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private float startStarryNightScrollSpeed;
     [SerializeField] private float maxStarryNightScrollSpeed;
     [SerializeField] private float starryNightMaxScrollSpeedTimeToReach;
-    
+
+    [SerializeField] private List<Script_Firework> fireworks;
     
     public Script_MovingNPC Ids;
     [SerializeField] private PlayableDirector IdsDirector;
@@ -986,6 +987,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         {
             treasureChest.IsOpen = true;
         }
+
+        fireworks.ForEach(firework => firework.gameObject.SetActive(false));
 
         isInitialized = true;
     }
