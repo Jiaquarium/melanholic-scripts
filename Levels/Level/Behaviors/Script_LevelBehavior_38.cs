@@ -16,6 +16,14 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     /* ======================================================================= */
     [SerializeField] private Script_DemonNPC Ids;
 
+    [SerializeField] private Script_VCamera scareZoomVCam;
+    [SerializeField] private float scareWaitTime;
+    [SerializeField] private float zoomOutCameraWaitTime;
+    [SerializeField] private bool isScareDay;
+
+    [SerializeField] private Script_HUDManager HUDManager;
+    [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
+
     private bool didIdsRun;
        
     protected override void OnEnable() {
@@ -30,9 +38,51 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
     }    
     
+    void Start()
+    {
+        // Always scare the very first time (Player must pass this on the first Monday)
+        // and then 1/3 chance to scare after that.
+        bool isFirstMonday = Script_Game.Game.CycleCount == 0
+            && Script_Game.Game.IsRunDay(Script_Run.DayId.mon);
+        bool isRandomDay = Random.Range(0, 3) == 0 ? true : false;
+        
+        isScareDay = isFirstMonday || isRandomDay;
+    }
+
     public void OnTriggerWallTransition()
     {
         Debug.Log("Change wall sprites");
+    }
+
+    public void ScareSFX()
+    {
+        if (isScareDay)
+        {
+            HUDManager.FadeSpeed = FadeSpeeds.None;
+            stickerHolsterManager.FadeSpeed = FadeSpeeds.None;
+            
+            game.ChangeStateCutScene();
+
+            Script_VCamManager.VCamMain.SetNewVCam(scareZoomVCam);
+            
+            Script_SFXManager.SFX.PlayHallwayScare();
+
+            StartCoroutine(WaitAfterScare());
+        }
+
+        IEnumerator WaitAfterScare()
+        {
+            yield return new WaitForSeconds(scareWaitTime);
+
+            Script_VCamManager.VCamMain.SwitchToMainVCam(scareZoomVCam);
+            
+            yield return new WaitForSeconds(zoomOutCameraWaitTime);
+
+            HUDManager.SetFadeSpeedDefault();
+            stickerHolsterManager.SetFadeSpeedDefault();            
+            
+            game.ChangeStateInteract();
+        }
     }
     
     public override void InitialState()
@@ -67,7 +117,7 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     {
         return !didIdsRun && Script_EventCycleManager.Control.IsLastElevatorTutorialRun();
     }
-    
+
     public override void Setup()
     {
         if (ShouldPlayIdsIntro())

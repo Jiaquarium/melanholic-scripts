@@ -21,12 +21,20 @@ public class Script_HUDManager : MonoBehaviour
     
     [SerializeField] private bool isPaused;
 
+    private FadeSpeeds defaultFadeSpeed;
+
     public bool IsTimesUp { get; set; }
 
     public bool IsPaused
     {
         get => isPaused;
         set => isPaused = value;
+    }
+
+    public FadeSpeeds FadeSpeed
+    {
+        get => fadeSpeed;
+        set => fadeSpeed = value;
     }
 
     void Update()
@@ -39,11 +47,11 @@ public class Script_HUDManager : MonoBehaviour
         
         if (IsClockShowing() || IsTimesUp)
         {
-            timeCanvasGroup.FadeIn(fadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
+            timeCanvasGroup.FadeIn(FadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
         }
         else
         {
-            timeCanvasGroup.FadeOut(fadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
+            timeCanvasGroup.FadeOut(FadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
         }
     }
 
@@ -62,6 +70,11 @@ public class Script_HUDManager : MonoBehaviour
             && game.RunCycle != Script_RunsManager.Cycle.Sunday;
     }
 
+    public void SetFadeSpeedDefault()
+    {
+        FadeSpeed = defaultFadeSpeed;
+    }
+
     public void Setup()
     {
         if (Control == null)
@@ -74,5 +87,7 @@ public class Script_HUDManager : MonoBehaviour
         }
         
         HUDCanvasGroup.gameObject.SetActive(true);
+
+        defaultFadeSpeed = FadeSpeed;
     }
 }

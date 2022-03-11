@@ -15,9 +15,17 @@ public class Script_StickerHolsterManager : MonoBehaviour
 
     [SerializeField] private Script_HUDManager HUDManager;
 
+    private FadeSpeeds defaultFadeSpeed;
+
     public Script_Sticker[] Stickers
     {
         get => stickerHolster.Stickers;
+    }
+
+    public FadeSpeeds FadeSpeed
+    {
+        get => fadeSpeed;
+        set => fadeSpeed = value;
     }
     
     private bool IsHolsterShowing
@@ -40,13 +48,13 @@ public class Script_StickerHolsterManager : MonoBehaviour
         if (IsHolsterShowing)
         {
             stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(
-                fadeSpeed.ToFadeTime(), null, isUnscaledTime: true
+                FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
             );
         }
         else
         {
             stickerHolster.GetComponent<Script_CanvasGroupController>().FadeOut(
-                fadeSpeed.ToFadeTime(), null, isUnscaledTime: true
+                FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
             );
         }
     }
@@ -75,6 +83,11 @@ public class Script_StickerHolsterManager : MonoBehaviour
     {
         stickerHolster.HighlightStickerInSlot(i, isHighlight);
     }
+
+    public void SetFadeSpeedDefault()
+    {
+        FadeSpeed = defaultFadeSpeed;
+    }
     
     public void Setup()
     {
@@ -86,5 +99,7 @@ public class Script_StickerHolsterManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        defaultFadeSpeed = FadeSpeed;
     }
 }
