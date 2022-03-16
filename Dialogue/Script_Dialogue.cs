@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-01 18:14:43
+// Last created by Dialogue Exporter at 2022-03-16 13:50:38
 
 using System.Collections;
 using System.Collections.Generic;
@@ -125,6 +125,82 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Cold.",
                 @"It’s ice...",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Woods
+{
+    "woods_cursed-HMS-bent_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"���.",
+        },
+        
+    }
+},
+{
+    "woods_cursed-HMS-bent_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"Don’t worry, dear, he-he, go ahead and come in.",
+                @"You and I, we’re not like the rest of them, he-he.",
+        },
+        
+    }
+},
+{
+    "woods_cursed-HMS-bent_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "woods_cursed-female_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"���.",
+        },
+        
+    }
+},
+{
+    "woods_cursed-female_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"Why don’t you come inside, dear?",
+                @"There’s no place like home, he-he-he.",
+        },
+        
+    }
+},
+{
+    "woods_cursed-female_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
         },
         
     }
@@ -2194,7 +2270,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"I’m terribly sorry to inform you that {52} is the sisters’ rest day.",
-                @"Come back another time, I am here to serve.",
+                @"Please come back another day, I am here to serve.",
         },
         
     }
@@ -2365,7 +2441,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Won’t ever be able to paint the {8} like that.",
+                @"Won’t ever be able to paint the {86} like that.",
                 @"I always tell her,| it needs more|| <b><i>{14}</b></i>.",
                 @"Won’t listen to me though.",
         },
@@ -2403,7 +2479,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Why’re you still here?",
-                @"Even if she wanted to paint the {8}...",
+                @"Even if she wanted to paint the {86}...",
                 @"...she’ll be missing a vital part if she can’t visualize...",
                 @"...<b><i>{14}</b></i>.",
         },
@@ -4525,7 +4601,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{33}",
         EN = new string[]
         {
-                @"Terrific! Recently <b>strange growths have infested</b> one of my KTV rooms.",
+                @"Terrific! Recently <b>strange growths</b> have infested my main <b>dance floor</b>.",
                 @"And now all my regulars are scared out of their wits.",
                 @"My clients come for the karaoke and <i>company</i>. Although, they stay for the drinks.| And that’s where we profit, cha-ching!",
                 @"How is the {35} going to be the best watering well around if I’m bleeding this much business?",
@@ -4620,7 +4696,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{33}",
         EN = new string[]
         {
-                @"If only I could get my KTV room back to operational again, maybe then the {35} could be the crown jewel of {37}.",
+                @"If only I could get that <b>dance floor</b> back to operational again, maybe then the {35} could be the crown jewel of {37}.",
         },
         
     }

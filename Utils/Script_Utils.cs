@@ -318,7 +318,8 @@ public static class Script_Utils
             Script_Names.SwitchActiveStickerKeyCodes,   // {82}
             Script_Names.Elder,                         // {83}
             Script_Names.WellsWorld,                    // {84}
-            Script_Names.CelestialGardens               // {85}
+            Script_Names.CelestialGardens,              // {85}
+            Script_Names.OwnerPlain                     // {86}
         );
     }
 
