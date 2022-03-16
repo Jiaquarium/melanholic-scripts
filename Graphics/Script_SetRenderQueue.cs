@@ -24,8 +24,13 @@ public class Script_SetRenderQueue : MonoBehaviour {
     {
         Material[] materials = GetComponent<Renderer>()?.sharedMaterials;
 		
-        for (int i = 0; i < materials.Length; i++) {
-            materials[i].renderQueue = queue;
+        if (materials == null)
+            return;
+        
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if (materials[i] != null)
+                materials[i].renderQueue = queue;
 		}
     }
 }

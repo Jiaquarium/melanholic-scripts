@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-16 13:50:38
+// Last created by Dialogue Exporter at 2022-03-16 14:31:02
 
 using System.Collections;
 using System.Collections.Generic;
@@ -138,7 +138,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{74}",
         EN = new string[]
         {
-                @"���.",
+                @"��� ���� ����.",
         },
         
     }
@@ -175,7 +175,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{74}",
         EN = new string[]
         {
-                @"���.",
+                @"��� �� ���� ���.",
         },
         
     }
@@ -4501,7 +4501,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{74}",
         EN = new string[]
         {
-                @"���.",
+                @"��� �� ���� ���.",
         },
         
     }
@@ -4538,6 +4538,267 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Hm, a hand puppet.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-myne_long-trail_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"��� ���� ����.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-myne_long-trail_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"It’s a long path to where I’m going.",
+                @"Will you join me?",
+                @"I’m sure you’ll end up joining me, you’ll see, heh.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-myne_long-trail_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-HMS_ruins-NW_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"��� ���� ����.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-HMS_ruins-NW_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"Careless traveler... It’s only ruins at this point.",
+                @"You know, dear, you remind me of myself in my youth, he-he-he.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-HMS_ruins-NW_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_ruins-NE_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"�� ���� ��� �� ��.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_ruins-NE_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"These ruins once were a grand place for gatherings.",
+                @"It’ll return to that way soon. You’ll be there with me for that, right? He-he.",
+                @"Of course you will.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_ruins-NE_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_hz-trail_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"�� ���� ��� �� ��.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_hz-trail_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"Why is it you’re trying so hard not to be like me, dear?",
+                @"Can’t you see we’re the same? He-he.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_hz-trail_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-HMS_totem-SW_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"��� ���� ����.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-HMS_totem-SW_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"He-he. I know you’ve been hiding something.",
+                @"You can’t hide from yourself though! He-he!",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-HMS_totem-SW_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_totem-SE_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"���� �� ��.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_totem-SE_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"Are you lost?",
+                @"I’m lost too...",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-female_totem-SE_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-myne_totem-N_default",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"���� ����.",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-myne_totem-N_psychic",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"My fate was decided the second I laid foot on these desert sands.",
+                @"As was yours, foolish traveler!",
+        },
+        
+    }
+},
+{
+    "xxx-world_cursed-myne_totem-N_eat-reaction",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"(. ﾟーﾟ)",
         },
         
     }
