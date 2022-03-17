@@ -612,6 +612,11 @@ public class Script_TransitionManagerTester : Editor
             t.FadeOutRestartPrompt();
         }
 
+        if (GUILayout.Button("Final Cut Scene Awakening"))
+        {
+            t.FinalCutSceneAwakening();
+        }
+        
         if (GUILayout.Button("Bad Ending"))
         {
             t.TimesUpEffects();
