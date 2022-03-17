@@ -67,6 +67,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private float fadeToBlackTime;
     [SerializeField] private Transform playerReflectionMyne;
     [SerializeField] private Script_BgThemePlayer drumBuildUpBgPlayer;
+    
+    [SerializeField] private float awakeningR2EntranceExtraWaitTime;
+    [SerializeField] private Script_DialogueNode onEntranceR2Node;
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
@@ -92,6 +95,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     {
         base.OnEnable();
 
+        Script_GameEventsManager.OnLevelInitComplete += OnLevelInitCompleteEvent;
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone += PlayRevealNewWorldTimeline;
 
         currentTargetBlend = 0f;
@@ -102,6 +106,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     {
         base.OnDisable();
 
+        Script_GameEventsManager.OnLevelInitComplete -= OnLevelInitCompleteEvent;
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone -= PlayRevealNewWorldTimeline;
 
         InitialState();
@@ -437,6 +442,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // ------------------------------------------------------------------
     // Next Node Actions
 
+    // LastElevatorNode
     public void OnLastElevatorDialogueDone()
     {
         game.ChangeStateInteract();
@@ -463,6 +469,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         drumBuildUpBgPlayer.Play();
     }
 
+    // onEntranceR2Node
+    public void onEntranceR2DialogueDone()
+    {
+        game.ChangeStateInteract();
+    }
+
     // ------------------------------------------------------------------
 
     private void HandleWindPushBack()
@@ -481,6 +493,29 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     private bool IsAllIceBlocksCracked()
     {
         return isIceBlockLeftCracked && isIceBlockMidCracked && isIceBlockRightCracked;
+    }
+
+    private void OnLevelInitCompleteEvent()
+    {
+        // Start in cut scene in R2
+        if (IsFinalRound)
+        {
+            game.ChangeStateCutScene();
+
+            StartCoroutine(WaitOnEntranceR2Dialogue());
+        }
+
+        IEnumerator WaitOnEntranceR2Dialogue()
+        {
+            // Wait >3s (time after teleport waiting for total black screen fade out time)
+            var waitTime = Script_PRCSManager.Control.WaitTimeAfterMyMaskTeleport
+                + Script_TransitionManager.FadeTimeSlow
+                + awakeningR2EntranceExtraWaitTime;
+            
+            yield return new WaitForSeconds(waitTime);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceR2Node);
+        }
     }
 
     public override void InitialState()

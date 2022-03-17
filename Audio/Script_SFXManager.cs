@@ -292,6 +292,11 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(HallwayScare, HallwayScareVol);
     }
 
+    public void PlayItemPickUp()
+    {
+        SFXSource.PlayOneShot(ItemPickUp, ItemPickUpVol);
+    }
+
     public void Play(AudioClip sfx, float vol = 1f)
     {
         SFXSource.PlayOneShot(sfx, vol);

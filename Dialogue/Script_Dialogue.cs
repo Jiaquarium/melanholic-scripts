@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-16 16:42:42
+// Last created by Dialogue Exporter at 2022-03-17 15:06:23
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3246,6 +3246,22 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
+// Grand Mirror Room
+{
+    "grand-mirror-room_finale_entrance_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Everything seems mixed up.",
+                @"It seems impossible to stop it, the switching.",
+                @"Is there something you can do to regain your sense of <b>Self</b>?",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
 // Interactables
 {
     "grand-mirror-room_go-table_thought",
@@ -5679,6 +5695,52 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@Puppeteer @@Sticker_Bold!|<br>Its original owner spent each waking moment trying to bring life to handmade puppets.",
                 @"Use the @@Puppeteer @@Sticker_Bold to control {73}.",
+                @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "item-object_sticker_my-mask",
+    new Model_Languages
+    {
+        speaker = "NA",
+        EN = new string[]
+        {
+                @"Mysterious forces well up inside you.|<br>A strange @@Sticker_Bold materializes.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "item-object_sticker_my-mask1",
+    new Model_Languages
+    {
+        speaker = "NA",
+        EN = new string[]
+        {
+                @"You got the @@MyMask @@Sticker_Bold!|<br>It has been longing for its original owner.",
+                @"The @@MyMask @@Sticker_Bold emanates a powerful aura but its uses are unknown.",
                 @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]

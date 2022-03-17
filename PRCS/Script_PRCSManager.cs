@@ -58,6 +58,10 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_TimelineController awakeningFinalTimelineController;
     [SerializeField] private float waitTimeAfterFaceOff;
     [SerializeField] private float waitTimeAfterAwakeningFinal;
+    
+    [SerializeField] private Script_DialogueNode myMaskReceiveNode;
+    [SerializeField] private float waitTimeAfterMyMaskReceive;
+    [SerializeField] private float waitTimeAfterMyMaskTeleport;
 
     [SerializeField] private Script_Game game;
 
@@ -72,6 +76,11 @@ public class Script_PRCSManager : MonoBehaviour
     public float GlitchFadeInTime
     {
         get => glitchFadeInTime;
+    }
+
+    public float WaitTimeAfterMyMaskTeleport
+    {
+        get => waitTimeAfterMyMaskTeleport;
     }
 
     void OnValidate()
@@ -356,28 +365,47 @@ public class Script_PRCSManager : MonoBehaviour
         Script_TransitionManager.Control.TimelineBlackScreen();
         SetAwakeningFinalActive(false);
         
-        game.TeleportToGrandMirrorBackgroundR2();
-        
+        StartCoroutine(WaitMyMaskReceiveDialogue());
+
+        IEnumerator WaitMyMaskReceiveDialogue()
+        {
+            yield return new WaitForSeconds(waitTimeAfterAwakeningFinal);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(myMaskReceiveNode);
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Unity Events
+    
+    // myMaskReceiveNode
+    public void MyMaskReceiveSFX()
+    {
+        Script_SFXManager.SFX.PlayItemPickUp();
+    }
+    
+    // myMaskReceiveNode1
+    public void OnMyMaskReceiveDone()
+    {
         game.AddMyMaskBackground();
 
         glitchManager.SetLow();
         glitchManager.SetBlend(1f);
-
+        
         StartCoroutine(WaitToFadeOut());
 
         IEnumerator WaitToFadeOut()
         {
-            yield return new WaitForSeconds(waitTimeAfterAwakeningFinal);
+            yield return new WaitForSeconds(waitTimeAfterMyMaskReceive);
+            
+            game.TeleportToGrandMirrorBackgroundR2();
+
+            yield return new WaitForSeconds(waitTimeAfterMyMaskTeleport);
 
             Script_TransitionManager.Control.TimelineFadeOut(
                 Script_TransitionManager.FadeTimeSlow,
                 () => {
-                    // Blend out glitch effect and set to Interact
-                    glitchManager.BlendTo(
-                        0f,
-                        glitchFadeOutTime,
-                        game.ChangeStateInteract
-                    );
+                    glitchManager.BlendTo(0f, glitchFadeOutTime);
                 }
             );
         }

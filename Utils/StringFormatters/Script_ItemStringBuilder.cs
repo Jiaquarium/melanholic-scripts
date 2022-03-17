@@ -37,6 +37,7 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@LastElevator",            "<b>Last Elevator</b>");
         Params.Add("@@LetThereBeLight",         "<b>Lantern</b>");
         Params.Add("@@Puppeteer",               "<b>Puppeteer</b>");
+        Params.Add("@@MyMask",                  "<b>Ancient Summoner</b>");
         
         Params.Add("@@MasterKey",               "<b>Master Key</b>");
         Params.Add("@@SuperSmallKey",           "<b>Super Small Key</b>");
