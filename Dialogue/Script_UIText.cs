@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-03-07 21:02:41
+// Last created by UI Exporter at 2022-03-16 19:04:22
 
 using System.Collections;
 using System.Collections.Generic;
@@ -87,14 +87,14 @@ public class Script_UIText
     "good-ending_narrator_monologue",
     new Model_LanguagesUI
     {
-        EN = @"After that day, I quit my job at the seaside hotel."
+        EN = @"This was my last day at the seaside hotel."
     }
 },
 {
     "good-ending_narrator_monologue1",
     new Model_LanguagesUI
     {
-        EN = @"Needless to say, I never saw {37} ever again."
+        EN = @"Needless to say, I’ll never see {37} ever again."
     }
 },
 {
@@ -122,7 +122,7 @@ public class Script_UIText
     "good-ending_narrator_monologue5",
     new Model_LanguagesUI
     {
-        EN = @"How do you keep something from fading away entirely anyways?"
+        EN = @"Soon it’ll be tough to even tell if it happened or not."
     }
 },
 {
@@ -136,63 +136,63 @@ public class Script_UIText
     "good-ending_narrator_monologue7",
     new Model_LanguagesUI
     {
-        EN = @"I wonder what became of Ids, Ellenia, Eileen, Ursie, and the rest of them?"
+        EN = @"Maybe I wasn’t really helping anyone, not even myself."
     }
 },
 {
     "good-ending_narrator_monologue8",
     new Model_LanguagesUI
     {
-        EN = @"Are they still down there?"
+        EN = @"Maybe <i>I</i> really was the <i>intruder</i>."
     }
 },
 {
     "good-ending_narrator_monologue9",
     new Model_LanguagesUI
     {
-        EN = @"Maybe I wasn’t really helping anyone but myself."
+        EN = @"In the end, am I really just like <i>him</i>?"
     }
 },
 {
     "good-ending_narrator_monologue10",
     new Model_LanguagesUI
     {
-        EN = @"Maybe <i>I really was the intruder.</i>"
+        EN = @"Maybe some questions will never be answered."
     }
 },
 {
     "good-ending_narrator_monologue11",
     new Model_LanguagesUI
     {
-        EN = @"I guess I’ll never know."
+        EN = @"The most important thing though,"
     }
 },
 {
     "good-ending_narrator_monologue12",
     new Model_LanguagesUI
     {
-        EN = @"The most important thing though,"
+        EN = @"Is that I finally have an end to this chapter of my life."
     }
 },
 {
     "good-ending_narrator_monologue13",
     new Model_LanguagesUI
     {
-        EN = @"Is that I have closure."
+        EN = @"There’s really no point in staying at the bottom of a well for so long."
     }
 },
 {
     "good-ending_narrator_monologue14",
     new Model_LanguagesUI
     {
-        EN = @"I’m putting an end to this chapter of my life."
+        EN = @"I had been living in a haze day to day."
     }
 },
 {
     "good-ending_narrator_monologue15",
     new Model_LanguagesUI
     {
-        EN = @"I had been living in a haze for too long now."
+        EN = @"<b>I’m ready to start again at zero.</b>"
     }
 },
 {
@@ -292,151 +292,144 @@ public class Script_UIText
     "true-ending_narrator_monologue2_0",
     new Model_LanguagesUI
     {
-        EN = @"But if you asked, if I wish all this had never happened?"
-    }
-},
-{
-    "true-ending_narrator_monologue2_1",
-    new Model_LanguagesUI
-    {
-        EN = @"I can say with honesty now, I don’t,"
-    }
-},
-{
-    "true-ending_narrator_monologue2_2",
-    new Model_LanguagesUI
-    {
-        EN = @"I’m glad I had the chance to meet that version of myself."
+        EN = @"......"
     }
 },
 {
     "true-ending_narrator_monologue3_0",
     new Model_LanguagesUI
     {
-        EN = @"......"
+        EN = @"I guess over time, it really did begin to change me,"
+    }
+},
+{
+    "true-ending_narrator_monologue3_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Spending so many nights in there,"
+    }
+},
+{
+    "true-ending_narrator_monologue3_2",
+    new Model_LanguagesUI
+    {
+        EN = @"The only thing I could do really was to numb myself to it all."
+    }
+},
+{
+    "true-ending_narrator_monologue3_3",
+    new Model_LanguagesUI
+    {
+        EN = @"It felt like I was watching myself in third person."
     }
 },
 {
     "true-ending_narrator_monologue4_0",
     new Model_LanguagesUI
     {
-        EN = @"I guess over time, it really did begin to change me,"
-    }
-},
-{
-    "true-ending_narrator_monologue4_1",
-    new Model_LanguagesUI
-    {
-        EN = @"Spending so many nights in a hotel,"
-    }
-},
-{
-    "true-ending_narrator_monologue4_2",
-    new Model_LanguagesUI
-    {
-        EN = @"Becoming numb to the hellos and goodbyes,"
-    }
-},
-{
-    "true-ending_narrator_monologue4_3",
-    new Model_LanguagesUI
-    {
-        EN = @"I had to protect myself from that feeling."
+        EN = @"......"
     }
 },
 {
     "true-ending_narrator_monologue5_0",
     new Model_LanguagesUI
     {
-        EN = @"Ellenia, Eileen, Ursie, and the rest, where are you now?"
+        EN = @"Looking at the sea now, it’s becoming a bit clearer."
     }
 },
 {
     "true-ending_narrator_monologue5_1",
     new Model_LanguagesUI
     {
-        EN = @"Did we all get what we wanted?"
+        EN = @"All the dead feelings dragging me around."
     }
 },
 {
-    "true-ending_narrator_monologue6_0",
-    new Model_LanguagesUI
-    {
-        EN = @"......"
-    }
-},
-{
-    "true-ending_narrator_monologue7_0",
-    new Model_LanguagesUI
-    {
-        EN = @"Looking at the sea now, it’s becoming a bit more clear."
-    }
-},
-{
-    "true-ending_narrator_monologue7_1",
-    new Model_LanguagesUI
-    {
-        EN = @"All along I’d been dragging along dead feelings."
-    }
-},
-{
-    "true-ending_narrator_monologue7_2",
+    "true-ending_narrator_monologue5_2",
     new Model_LanguagesUI
     {
         EN = @"If I’m being honest, I can see parts of them in me."
     }
 },
 {
-    "true-ending_narrator_monologue7_3",
+    "true-ending_narrator_monologue5_3",
     new Model_LanguagesUI
     {
-        EN = @"And parts of myself in them."
+        EN = @"Parts of myself in them."
     }
 },
 {
-    "true-ending_narrator_monologue8_0",
+    "true-ending_narrator_monologue6_0",
+    new Model_LanguagesUI
+    {
+        EN = @"I’ve always feared becoming stuck in <i>only them</i>."
+    }
+},
+{
+    "true-ending_narrator_monologue6_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Seasons I’d cycle through like shades of winter."
+    }
+},
+{
+    "true-ending_narrator_monologue6_2",
+    new Model_LanguagesUI
+    {
+        EN = @"I was doing it to myself."
+    }
+},
+{
+    "true-ending_narrator_monologue6_3",
+    new Model_LanguagesUI
+    {
+        EN = @"But I’m not them."
+    }
+},
+{
+    "true-ending_narrator_monologue7_0",
     new Model_LanguagesUI
     {
         EN = @"I’m not running anymore."
     }
 },
 {
-    "true-ending_narrator_monologue8_1",
+    "true-ending_narrator_monologue7_1",
     new Model_LanguagesUI
     {
-        EN = @"Nope, I’m done."
+        EN = @"I’m ready for what’s next."
     }
 },
 {
-    "true-ending_narrator_monologue8_2",
+    "true-ending_narrator_monologue7_2",
     new Model_LanguagesUI
     {
-        EN = @"I’m finished."
+        EN = @"I hope you’ll understand."
     }
 },
 {
-    "true-ending_narrator_monologue9_0",
+    "true-ending_narrator_monologue8_0",
     new Model_LanguagesUI
     {
         EN = @"Hey, Ids, look,"
     }
 },
 {
-    "true-ending_narrator_monologue9_1",
+    "true-ending_narrator_monologue8_1",
     new Model_LanguagesUI
     {
         EN = @"The sun is coming up."
     }
 },
 {
-    "true-ending_narrator_monologue10_0",
+    "true-ending_narrator_monologue9_0",
     new Model_LanguagesUI
     {
         EN = @"......"
     }
 },
 {
-    "true-ending_narrator_monologue11_0",
+    "true-ending_narrator_monologue10_0",
     new Model_LanguagesUI
     {
         EN = @"Finally, I don’t feel like sleeping anymore."

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-16 14:31:02
+// Last created by Dialogue Exporter at 2022-03-16 16:42:42
 
 using System.Collections;
 using System.Collections.Generic;
@@ -66,8 +66,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Time......| It seems to be frozen in here.",
-                @"You always get this feeling just before the sun is about to come up.",
+                @"You and the <b>hotel</b> {8} previously discussed your last day would be {56}.",
+                @"If you can just make it until then.",
+                @"Everything will be okay after that.",
+                @"You’re sure of it.",
         },
         
     }
@@ -95,6 +97,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Once their trip is over, you’ll have to say goodbye, and this happens over and over, again and again and again.",
                 @"So better to keep things nice and dry.",
                 @"You’ve become a master at this skill.",
+        },
+        
+    }
+},
+{
+    "hotel-lobby_player-internal_disabled-surveillance",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"There’s really no reason to stay at this point...",
+                @"Is there?",
         },
         
     }

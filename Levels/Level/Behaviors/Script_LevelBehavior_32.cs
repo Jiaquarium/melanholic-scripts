@@ -21,7 +21,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode startNode;
     
     [SerializeField] private float beforeInternalThoughtWaitTime;
-    [SerializeField] private Script_DialogueNode frozenTimeThoughtNode;
+    
+    [SerializeField] private Script_DialogueNode newGameNode;
+    [SerializeField] private Script_DialogueNode onDisabledSurveillanceNode;
+    
     [SerializeField] private float cameraPanDoneWaitTime;
     [SerializeField] private float faceDirectionDoneWaitTime;
 
@@ -210,11 +213,12 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         {
             yield return new WaitForSeconds(beforeInternalThoughtWaitTime);
 
-            Script_DialogueManager.DialogueManager.StartDialogueNode(frozenTimeThoughtNode);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(newGameNode);
         }
     }
 
-    // Called from frozenTimeThoughtNode
+    // newGameNode
+    // onDisabledSurveillanceNode
     public void GameInteract()
     {
         game.ChangeStateInteract();
@@ -324,7 +328,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public void OnDisableSurveillanceDone()
     {
-        game.ChangeStateInteract();
+        Script_DialogueManager.DialogueManager.StartDialogueNode(onDisabledSurveillanceNode);
     }
     
     // ------------------------------------------------------------------
