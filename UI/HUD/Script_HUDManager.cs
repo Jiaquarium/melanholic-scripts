@@ -67,7 +67,8 @@ public class Script_HUDManager : MonoBehaviour
                 || game.GetPlayer().State == Const_States_Player.MelancholyPiano
             )
             // Don't show HUD on Sunday.
-            && game.RunCycle != Script_RunsManager.Cycle.Sunday;
+            && game.RunCycle != Script_RunsManager.Cycle.Sunday
+            && !game.IsHideHUD;
     }
 
     public void SetFadeSpeedDefault()

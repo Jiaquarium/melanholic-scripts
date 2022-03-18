@@ -169,6 +169,19 @@ public class Script_Game : MonoBehaviour
     public List<Script_Demon> demons = new List<Script_Demon>();
     public List<Script_AudioOneShotSource> audioOneShotSources = new List<Script_AudioOneShotSource>();
     
+    [SerializeField] private int tutorialEndLevel;
+    [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
+    [SerializeField] private Script_LevelBehavior[] disabledPianoLevels;
+    
+    // ------------------------------------------------------------------
+    // Spawn points
+    [SerializeField] private Transform newGameSpawnDestination;
+    [SerializeField] private Script_ExitMetadataObject playerSpawn;
+    [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
+    [SerializeField] private Script_ExitMetadataObject lastElevatorExit;
+    
+    // ------------------------------------------------------------------
+    // Instance Data
     public Script_BgThemePlayer npcBgThemePlayer;
     
     public Script_LevelBehavior levelBehavior { get; private set; }
@@ -186,16 +199,7 @@ public class Script_Game : MonoBehaviour
 
     [SerializeField] private Script_SavePoint savePoint; // max 1 per Level
 
-    [SerializeField] private int tutorialEndLevel;
-    [SerializeField] private Transform newGameSpawnDestination;
-    [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
-    [SerializeField] private Script_LevelBehavior[] disabledPianoLevels;
-    
-    // ------------------------------------------------------------------
-    // Spawn points
-    [SerializeField] private Script_ExitMetadataObject playerSpawn;
-    [SerializeField] private List<Script_ExitMetadataObject> pianoSpawns;
-    [SerializeField] private Script_ExitMetadataObject lastElevatorExit;
+    [SerializeField] private bool isHideHUD;
     
     // ------------------------------------------------------------------
     // State Properties
@@ -340,6 +344,15 @@ public class Script_Game : MonoBehaviour
     public bool IsMelancholyPianoDisabled
     {
         get => disabledPianoLevels.FirstOrDefault(lvl => lvl == levelBehavior) != null;
+    }
+
+    /// <summary>
+    /// Force stickers and clock to be disabled as if were in Hotel.
+    /// </summary>
+    public bool IsHideHUD
+    {
+        get => isHideHUD;
+        set => isHideHUD = value;
     }
 
     // ------------------------------------------------------------------

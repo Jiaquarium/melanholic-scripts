@@ -51,7 +51,8 @@ public class Script_LightFXManager : MonoBehaviour
     
     void Update()
     {
-        if (game.IsInHotel())   return;
+        if (game.IsInHotel() || game.IsHideHUD)
+            return;
         
         timer -= Time.deltaTime;
 

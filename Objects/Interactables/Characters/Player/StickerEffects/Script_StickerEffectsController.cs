@@ -82,15 +82,16 @@ public class Script_StickerEffectsController : MonoBehaviour
     public void Switch(int i, bool isBackground = false)
     {
         /// Disable for when in Hotel
-        if (Script_Game.Game.IsInHotel())
+        var game = Script_Game.Game;
+        
+        if (game.IsInHotel() || game.IsHideHUD)
         {
+            NullSFX();    
             return;
         }
 
         if (coolDownTimer > 0f)
-        {
             return;
-        }
         
         Script_Sticker stickerToSwitch = Script_StickerHolsterManager.Control.GetSticker(i);
         Script_Sticker activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;

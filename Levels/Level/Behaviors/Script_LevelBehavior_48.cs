@@ -448,25 +448,28 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
 
-    // R2 Mask Reveal Timeline when Rin says "No"
+    // R2 Mask Reveal Timeline when Pauses on Rin Closeup after Myne talks
     public void OnRinNo()
     {
         var bgm = Script_BackgroundMusicManager.Control;
-        bgm.FadeOutFast(bgm.Pause, Const_AudioMixerParams.ExposedBGVolume);
+        bgm.FadeOutFast(() => {
+            bgm.Pause();
+            PlayDrumBuildUp();
+        }, Const_AudioMixerParams.ExposedBGVolume);
     }
 
-    // R2 Mask Reveal Timeline SFX on Rin Last Dialogue
-    public void OnRinLastDialogue()
-    {
-        var sfx = Script_SFXManager.SFX;
-        sfx.Play(sfx.RhythmicXBeat, sfx.RhythmicXBeatVol);
-    }
-
-    // R2 Next Node after Rin says "ME"
+    // R2 Mask Reveal Timeline when Pauses on Rin Closeup after Myne talks
     public void PlayDrumBuildUp()
     {
         Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
         drumBuildUpBgPlayer.Play();
+    }
+
+    // Unused
+    public void OnRinLastDialogue()
+    {
+        var sfx = Script_SFXManager.SFX;
+        sfx.Play(sfx.RhythmicXBeat, sfx.RhythmicXBeatVol);
     }
 
     // onEntranceR2Node
