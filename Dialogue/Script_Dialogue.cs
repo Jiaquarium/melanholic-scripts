@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-17 15:06:23
+// Last created by Dialogue Exporter at 2022-03-17 17:09:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3441,28 +3441,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You know, this is <b>exactly</b> what I wanted, my dear.",
                 @"I needed someone to put them out of their misery.",
                 @"He-he...",
-                @"...",
                 @"The only problem was...",
-                @"I needed someone on the <b>other side.</b>",
-                @"...",
-                @"Now with them <b>deleted...</b>",
-                @"<b>I can finally create my new world</b>.",
-                @"Solely in my own vision.",
+                @"I needed someone like you on the <b>other side</b>.",
+                @"Now with them <b>deleted</b>...",
+                @"<b>I can finally create my new world!</b>",
+                @"Solely in my own vision!",
                 @"So I must thank you, my dear.",
                 @"...",
-                @"All along, couldn’t you see? I was testing you...",
+                @"All along, couldn’t you see? I was preparing you...",
                 @"The truth is...",
         },
         metadata = new Model_Languages.Metadata[]
         {
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -3527,18 +3517,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"One day you will become|.|.|.",
                 @"<size=14><b>||M|e|</b></i></size>.",
-                @"|.|.|.|",
-                @"Come now, dear.",
-                @"<b>Join me on the other side.</b>",
-                @"<b>We will create my new world together.</b>",
-                @"<b>Let us become one!</b>",
+                @"Come now, dear!",
+                @"<size=14><b>Join me on the other side.</b></size>",
+                @"<size=14><b>We will create my new world together!</b></size>",
+                @"<size=14><b>Let us become one!</b></size>",
         },
         metadata = new Model_Languages.Metadata[]
         {
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
