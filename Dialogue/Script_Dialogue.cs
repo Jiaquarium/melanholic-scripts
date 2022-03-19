@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-17 17:09:25
+// Last created by Dialogue Exporter at 2022-03-18 10:17:13
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3254,9 +3254,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Everything seems mixed up.",
-                @"It seems impossible to stop it, the switching.",
-                @"Is there something you can do to regain your sense of <b>Self</b>?",
+                @"Everything is mixed up.",
+                @"You seem to be unable to stop switching between your past selves.",
         },
         
     }

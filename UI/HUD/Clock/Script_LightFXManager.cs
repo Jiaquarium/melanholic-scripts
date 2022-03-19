@@ -64,11 +64,26 @@ public class Script_LightFXManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Force a light intensity (only works when LightFXManager is paused)
+    /// </summary>
+    public void SetDirectionalLightsIntensity(float intensity)
+    {
+        foreach (Light l in directionalLights)
+        {
+            if (l.type != LightType.Directional)
+                return;
+
+            l.intensity = intensity;
+        }
+    }
+
     private void UpdateDirectionalLights()
     {
         foreach (Light l in directionalLights)
         {
-            if (l.type != LightType.Directional)    return;
+            if (l.type != LightType.Directional)
+                return;
 
             float lightCurvePercent = lightCurve.Evaluate(clockManager.PercentTimeElapsed);
             float intensityDelta = endingIntensity - defaultIntensity;

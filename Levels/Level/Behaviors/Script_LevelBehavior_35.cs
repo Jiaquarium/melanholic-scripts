@@ -18,6 +18,9 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
 
     [SerializeField] private Script_DemonNPC Ids;
 
+    [SerializeField] private Transform MynesMirror;
+    [SerializeField] private Transform MynesFinalPainting;
+
     private bool didMapNotification;
     private bool didIdsRun;
 
@@ -104,6 +107,9 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         if (ShouldPlayIdsIntro())
             Ids.gameObject.SetActive(true);
         else
-            Ids.gameObject.SetActive(false);        
+            Ids.gameObject.SetActive(false);
+        
+        MynesMirror.gameObject.SetActive(true);
+        MynesFinalPainting.gameObject.SetActive(false);
     }        
 }

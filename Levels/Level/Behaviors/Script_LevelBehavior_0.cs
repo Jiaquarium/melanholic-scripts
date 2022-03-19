@@ -24,7 +24,10 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     [SerializeField] private Script_Hint hint; 
     
     [SerializeField] private Script_PRCS wellJustOpened; 
-    [SerializeField] private Script_DemonNPC Ids; 
+    [SerializeField] private Script_DemonNPC Ids;
+
+    [SerializeField] private Transform defaultTrees;
+    [SerializeField] private Transform finalTrees;
 
     private bool didIdsRun;
 
@@ -128,5 +131,8 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
             Ids.gameObject.SetActive(true);
         else
             Ids.gameObject.SetActive(false);
+        
+        defaultTrees.gameObject.SetActive(true);
+        finalTrees.gameObject.SetActive(false);
     }
 }

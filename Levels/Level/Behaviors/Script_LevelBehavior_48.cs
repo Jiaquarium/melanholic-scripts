@@ -71,6 +71,15 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private float awakeningR2EntranceExtraWaitTime;
     [SerializeField] private Script_DialogueNode onEntranceR2Node;
 
+    [SerializeField] private Script_LevelBehavior_45 Underworld;
+
+    [SerializeField] private float finaleLightsIntensity;
+
+    // ------------------------------------------------------------------
+    // DEV
+    [SerializeField] private Script_LevelBehavior_0 Woods;
+    // ------------------------------------------------------------------
+
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
     private Script_GlitchFXManager glitchManager;
@@ -392,6 +401,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         
         game.ChangeStateCutScene();
 
+        // Force Lights Intensity for panning cut scenes.
+        var lightsManager = Script_LightFXManager.Control;
+        lightsManager.IsPaused = true;
+        lightsManager.SetDirectionalLightsIntensity(finaleLightsIntensity);
+
         // Animate in Frame
         Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
             isOpen: true,
@@ -399,6 +413,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             cb: () => { timelineController.PlayableDirectorPlayFromTimelines(2, 2); }
         );
     }
+
+    // ------------------------------------------------------------------
+    // Mask Reveal Timeline Signals
 
     // On Play of Mask Reveal Timeline
     // Note: Ensure this matches the length of Timeline fade to Black.
@@ -437,6 +454,13 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         // Save Game and start on Sunday.
         game.ShowSaveAndRestartMessageDefault();
         game.StartSundayCycleSaveInitialize();
+    }
+    
+    // True Ending Mask Reveal Timeline: True Ending Underworld Pan Timeline
+    public void SetUnderworldFinalTrueEndingTimeline()
+    {
+        Debug.Log($"Setting Underworld.IsFinalTrueEndingTimeline {Underworld.IsFinalTrueEndingTimeline} to true");
+        Underworld.IsFinalTrueEndingTimeline = true;
     }
 
     // ------------------------------------------------------------------
@@ -571,6 +595,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             if (GUILayout.Button("On Awakening Timeline Done"))
             {
                 t.OnAwakeningTimelineDone();
+            }
+
+            if (GUILayout.Button("Set Woods Well PRCS Done"))
+            {
+                t.Woods.didStartThought = true;
             }
         }
     }

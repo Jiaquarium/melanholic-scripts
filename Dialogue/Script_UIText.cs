@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-03-16 21:19:09
+// Last created by UI Exporter at 2022-03-19 00:12:32
 
 using System.Collections;
 using System.Collections.Generic;
@@ -250,14 +250,14 @@ public class Script_UIText
     "true-ending_narrator_monologue0_0",
     new Model_LanguagesUI
     {
-        EN = @"After that day, I quit my job at the seaside hotel."
+        EN = @"This was my last day at the seaside hotel."
     }
 },
 {
     "true-ending_narrator_monologue0_1",
     new Model_LanguagesUI
     {
-        EN = @"Needless to say, I never saw {37} ever again."
+        EN = @"Needless to say, I’ll never see {37} ever again."
     }
 },
 {
