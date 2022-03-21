@@ -15,6 +15,8 @@ public class Script_GraphicsManager : MonoBehaviour
     
     [SerializeField] private float TargetOrthoSize = 7.5f;
 
+    [SerializeField] private float minOrthoSizeCameraConfinement = 5.67f;
+
     [SerializeField] private PixelPerfectCamera pixelPerfectCamera;
     
     [Header("Calculated Camera Properties")]
@@ -99,6 +101,11 @@ public class Script_GraphicsManager : MonoBehaviour
     public float TargetAspect
     {
         get => pixelPerfectCamera.targetAspect;
+    }
+
+    public float MinOrthoSizeCameraConfinement
+    {
+        get => minOrthoSizeCameraConfinement;
     }
     
     void OnEnable()

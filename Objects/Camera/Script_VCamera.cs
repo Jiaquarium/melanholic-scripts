@@ -59,5 +59,25 @@ public class Script_VCamera : MonoBehaviour
     {
         GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize = size;
     }
+
+    public void InvalidateConfinerCache()
+    {
+        GetComponent<CinemachineConfiner>()?.InvalidatePathCache();
+    }
     
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_VCamera))]
+    public class Script_VCameraTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_VCamera t = (Script_VCamera)target;
+            if (GUILayout.Button("Invalidate Confiner Cache"))
+            {
+                t.InvalidateConfinerCache();
+            }
+        }
+    }
+    #endif
 }

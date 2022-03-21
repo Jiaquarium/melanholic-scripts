@@ -24,6 +24,11 @@ public class Script_VCamManager : MonoBehaviour
     public static Script_VCamManager VCamMain;
     public static readonly float defaultBlendTime = 2f;
 
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Script_GraphicsManager graphics;
+
+    [SerializeField] private CinemachineConfiner cinemachineConfiner;
+
     public static Script_VCamera ActiveVCamera
     {
         get {
@@ -38,6 +43,17 @@ public class Script_VCamManager : MonoBehaviour
         get => GetComponent<Script_VCamera>();
     }
 
+    public Collider2D BoundingVolume
+    {
+        get => GetComponent<CinemachineConfiner>().m_BoundingShape2D;
+        set => GetComponent<CinemachineConfiner>().m_BoundingShape2D = value;
+    }
+
+    void LateUpdate()
+    {
+        HandleConfineCamera();
+    }
+    
     public static void SetActiveCameraOrthoSize(float size)
     {
         Script_VCamera VCam = ActiveVCamera;
@@ -115,6 +131,15 @@ public class Script_VCamManager : MonoBehaviour
                 Debug.Log($"{vCam.name} != {i}; priority: {vCam.Priority} ");
             }
         }
+    }
+
+    /// <summary>
+    /// Should only confine camera above a threshold, currently ~5.6x ortho size because trying
+    /// to handle all ortho sizes doesn't look great, and ranges below ~6x are rarer / not our target.
+    /// </summary>
+    private void HandleConfineCamera()
+    {
+        cinemachineConfiner.enabled = mainCamera.orthographicSize >= graphics.MinOrthoSizeCameraConfinement;
     }
 
     public void Setup()

@@ -338,6 +338,14 @@ public class Dev_GameHelper : MonoBehaviour
     }
 
     // ----------------------------------------------------------------------
+    // UI
+
+    public void SetUIActive(bool isActive)
+    {
+        Script_Game.Game.IsHideHUD = !isActive;
+    }
+
+    // ----------------------------------------------------------------------
 
     #if UNITY_EDITOR
     [CustomEditor(typeof(Dev_GameHelper))]
@@ -348,6 +356,7 @@ public class Dev_GameHelper : MonoBehaviour
         private static bool showStates;
         private static bool showBuildSettings;
         private static bool showLightSettings;
+        private static bool showUISettings;
         
         public override void OnInspectorGUI() {
             DrawDefaultInspector();
@@ -576,6 +585,20 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Build Dev Explore Setup"))
                 {
                     t.BuildDevExploreSetup();
+                }
+            }
+
+            showUISettings = EditorGUILayout.Foldout(showUISettings, "UI Settings", style);
+            if (showUISettings)
+            {
+                if (GUILayout.Button("Hide UI / Pause Clock"))
+                {
+                    t.SetUIActive(false);
+                }
+
+                if (GUILayout.Button("Unhide UI / Unpause Clock"))
+                {
+                    t.SetUIActive(true);
                 }
             }
         }

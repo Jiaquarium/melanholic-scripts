@@ -13,9 +13,16 @@ public class Script_LevelBehavior : MonoBehaviour
     [SerializeField] private Script_Snow snowEffect;
     [SerializeField] private Script_VCamera levelVCam;
 
+    [SerializeField] private Collider2D boundingVolume;
+
     public Script_VCamera LevelVCam
     {
         get => levelVCam;
+    }
+
+    public Collider2D BoundingVolume
+    {
+        get => boundingVolume;
     }
 
     // Update is called once per frame

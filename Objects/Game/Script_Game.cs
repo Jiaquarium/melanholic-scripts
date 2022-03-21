@@ -729,6 +729,10 @@ public class Script_Game : MonoBehaviour
         
         print($"level: {level}; levelBehavior: {levelBehavior}... LastLevelBehavior: {LastLevelBehavior}");
         levelBehavior.Setup();
+
+        // Set BoundingVolume
+        VCamManager.BoundingVolume = levelBehavior.BoundingVolume;
+        VCamManager.VCamera.InvalidateConfinerCache();
     }
 
     /// <summary>
