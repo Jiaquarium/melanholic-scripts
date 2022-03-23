@@ -43,10 +43,10 @@ public class Script_VCamManager : MonoBehaviour
         get => GetComponent<Script_VCamera>();
     }
 
-    public Collider2D BoundingVolume
+    public Collider BoundingVolume
     {
-        get => GetComponent<CinemachineConfiner>().m_BoundingShape2D;
-        set => GetComponent<CinemachineConfiner>().m_BoundingShape2D = value;
+        get => GetComponent<CinemachineConfiner>().m_BoundingVolume;
+        set => GetComponent<CinemachineConfiner>().m_BoundingVolume = value;
     }
 
     void LateUpdate()

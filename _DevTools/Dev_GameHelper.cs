@@ -8,6 +8,8 @@ using UnityEditor;
 
 public class Dev_GameHelper : MonoBehaviour
 {
+    [SerializeField] private bool isDisableHUD;
+    
     public Vector3Int playerSpawn;
     public int level;
     public Directions facingDirection;
@@ -68,6 +70,12 @@ public class Dev_GameHelper : MonoBehaviour
 
     private bool didSetWeekend;
 
+    void Start()
+    {
+        if (isDisableHUD && Debug.isDebugBuild)
+            SetUIActive(false);
+    }
+    
     public void DefaultPlayerSpawnPos()
     {
         Teleport(playerDefaultSpawn);

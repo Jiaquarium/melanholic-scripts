@@ -55,10 +55,9 @@ public class Script_GraphicsManager : MonoBehaviour
     {
         get
         {
-            float defaultOrthoSize = (PixelScreenSize.y * 0.5f) / (Zoom * AssetsPPU);
-            int cinemachineVCamZoom = Math.Max(1, Mathf.RoundToInt(Zoom * defaultOrthoSize / TargetOrthoSize));
+            int cinemachineVCamZoom = Math.Max(1, Mathf.RoundToInt(Zoom * DefaultOrthoSize / TargetOrthoSize));
             
-            float correctedOrthoSize = Zoom * defaultOrthoSize / cinemachineVCamZoom;
+            float correctedOrthoSize = Zoom * DefaultOrthoSize / cinemachineVCamZoom;
 
             // Ensure this matches the custom Bounds in
             // Graphics/com.unity.render-pipelines.universal/Runtime/2D/PixelPerfectCameraInternal
@@ -106,6 +105,14 @@ public class Script_GraphicsManager : MonoBehaviour
     public float MinOrthoSizeCameraConfinement
     {
         get => minOrthoSizeCameraConfinement;
+    }
+
+    /// <summary>
+    /// The implied ortho target for pixel perfectness with current zoom.
+    /// </summary>
+    public float DefaultOrthoSize
+    {
+        get => (PixelScreenSize.y * 0.5f) / (Zoom * AssetsPPU);
     }
     
     void OnEnable()
