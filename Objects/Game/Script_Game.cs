@@ -731,7 +731,11 @@ public class Script_Game : MonoBehaviour
         levelBehavior.Setup();
 
         // Set BoundingVolume
-        VCamManager.BoundingVolume = levelBehavior.BoundingVolume;
+        VCamManager.BoundingVolume = levelBehavior.BoundingVolume?.BoundingVolumeCollider;
+        
+        VCamManager.ConfineScreenEdges = VCamManager.BoundingVolume != null
+            && levelBehavior.BoundingVolume.ConfineScreenEdges;
+
         VCamManager.VCamera.InvalidateConfinerCache();
     }
 

@@ -15,11 +15,16 @@ public class Dev_GameHelper : MonoBehaviour
     public Directions facingDirection;
     
     [SerializeField] private Script_ExitMetadataObject playerDefaultSpawn;
+    [SerializeField] private Script_ExitMetadataObject elevatorBayV2Entrance;
+    
     [SerializeField] private Script_ExitMetadataObject woodsEntrance;
     [SerializeField] private Script_ExitMetadataObject DiningEntrance;
     [SerializeField] private Script_ExitMetadataObject HallwayWithSecretEntrance;
     [SerializeField] private Script_ExitMetadataObject MirrorHallsPuzzleEntrance;
+    [SerializeField] private Script_ExitMetadataObject HallwayToBasementEntrance;
     [SerializeField] private Script_ExitMetadataObject IdsRoomEntrance;
+    [SerializeField] private Script_ExitMetadataObject DarkCorridorEntrance;
+    [SerializeField] private Script_ExitMetadataObject EileensRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject ElleniasRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
@@ -31,6 +36,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject KTV2Entrance;
     [SerializeField] private Script_ExitMetadataObject FireplacePuzzleEntrance;
     [SerializeField] private Script_ExitMetadataObject FireplaceTraining1Entrance;
+    [SerializeField] private Script_ExitMetadataObject FireplaceTraining2Entrance;
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject UnderworldEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
@@ -81,6 +87,11 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(playerDefaultSpawn);
     }
 
+    public void ExitToElevatorBayV2()
+    {
+        Teleport(elevatorBayV2Entrance);
+    }
+
     public void ExitToWoods()
     {
         Teleport(woodsEntrance);
@@ -101,11 +112,26 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(MirrorHallsPuzzleEntrance);
     }
     
+    public void ExitToHallwayToBasement()
+    {
+        Teleport(HallwayToBasementEntrance);
+    }
+    
     public void ExitToIdsRoom()
     {
         Teleport(IdsRoomEntrance);
     }
 
+    public void ExitToDarkCorridor()
+    {
+        Teleport(DarkCorridorEntrance);
+    }
+
+    public void ExitToEileensRoom()
+    {
+        Teleport(EileensRoomEntrance);
+    }
+    
     public void ExitToElleniasRoom()
     {
         Teleport(ElleniasRoomEntrance);
@@ -156,6 +182,11 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(FireplaceTraining1Entrance);
     }
 
+    public void ExitToFireplaceTraining2()
+    {
+        Teleport(FireplaceTraining2Entrance);
+    }
+
     public void ExitToFireplacePuzzle()
     {
         Teleport(FireplacePuzzleEntrance);
@@ -170,7 +201,7 @@ public class Dev_GameHelper : MonoBehaviour
     {
         Teleport(UnderworldEntrance);
     }
-
+    
     public void ExitToGrandMirror()
     {
         Teleport(GrandMirrorEntrance);
@@ -376,9 +407,26 @@ public class Dev_GameHelper : MonoBehaviour
             showSpawns = EditorGUILayout.Foldout(showSpawns, "Spawns", style);
             if (showSpawns)
             {
+                EditorGUILayout.LabelField("Hotel", EditorStyles.miniLabel);
+                
                 if (GUILayout.Button("Go To: Hotel Lobby"))
                 {
                     t.DefaultPlayerSpawnPos();
+                }
+
+                if (GUILayout.Button("Go To: Bay V2"))
+                {
+                    t.ExitToElevatorBayV2();
+                }
+
+                if (GUILayout.Button("Go To: Last Elevator"))
+                {
+                    t.ExitToLastElevator();
+                }
+                
+                if (GUILayout.Button("Go To: Grand Mirror"))
+                {
+                    t.ExitToGrandMirror();
                 }
                 
                 EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);
@@ -403,19 +451,29 @@ public class Dev_GameHelper : MonoBehaviour
                     t.ExitToMirrorHallsPuzzle();
                 }
                 
+                if (GUILayout.Button("Go To: Hallway to Basement"))
+                {
+                    t.ExitToHallwayToBasement();
+                }
+                
                 if (GUILayout.Button("Go To: Ids Room"))
                 {
                     t.ExitToIdsRoom();
                 }
 
+                if (GUILayout.Button("Go To: Dark Corridor"))
+                {
+                    t.ExitToDarkCorridor();
+                }
+
+                if (GUILayout.Button("Go To: Eileen's Room"))
+                {
+                    t.ExitToEileensRoom();
+                }
+                
                 if (GUILayout.Button("Go To: Ellenia's Room"))
                 {
                     t.ExitToElleniasRoom();
-                }
-
-                if (GUILayout.Button("Go To: Last Elevator"))
-                {
-                    t.ExitToLastElevator();
                 }
 
                 if (GUILayout.Button("Go To: Ballroom (HMS Hall Entrance)"))
@@ -428,13 +486,6 @@ public class Dev_GameHelper : MonoBehaviour
                     t.ExitToEileensMind();
                 }
 
-                EditorGUILayout.LabelField("Myne's Lair", EditorStyles.miniLabel);
-
-                if (GUILayout.Button("Go To: Grand Mirror"))
-                {
-                    t.ExitToGrandMirror();
-                }
-
                 EditorGUILayout.LabelField("Wells World", EditorStyles.miniLabel);
                 
                 if (GUILayout.Button("Go To: Wells World"))
@@ -445,6 +496,11 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Go To: Fireplace Training 1"))
                 {
                     t.ExitToFireplaceTraining1();
+                }
+
+                if (GUILayout.Button("Go To: Fireplace Training 2"))
+                {
+                    t.ExitToFireplaceTraining2();
                 }
 
                 if (GUILayout.Button("Go To: Fireplace Puzzle"))

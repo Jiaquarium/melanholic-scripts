@@ -13,14 +13,14 @@ public class Script_LevelBehavior : MonoBehaviour
     [SerializeField] private Script_Snow snowEffect;
     [SerializeField] private Script_VCamera levelVCam;
 
-    [SerializeField] private Collider boundingVolume;
+    [SerializeField] private Script_BoundingVolume boundingVolume;
 
     public Script_VCamera LevelVCam
     {
         get => levelVCam;
     }
 
-    public Collider BoundingVolume
+    public Script_BoundingVolume BoundingVolume
     {
         get => boundingVolume;
     }

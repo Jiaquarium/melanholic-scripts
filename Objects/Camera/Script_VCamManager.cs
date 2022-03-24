@@ -49,6 +49,12 @@ public class Script_VCamManager : MonoBehaviour
         set => GetComponent<CinemachineConfiner>().m_BoundingVolume = value;
     }
 
+    public bool ConfineScreenEdges
+    {
+        get => GetComponent<CinemachineConfiner>().m_ConfineScreenEdges;
+        set => GetComponent<CinemachineConfiner>().m_ConfineScreenEdges = value;
+    }
+
     void LateUpdate()
     {
         HandleConfineCamera();

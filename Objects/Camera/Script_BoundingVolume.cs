@@ -6,17 +6,27 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(Collider))]
 public class Script_BoundingVolume : MonoBehaviour
 {
     private static float OrthoUpperBound = 9f;
-
-    [Tooltip("Use to decrease size of Bounding Volume by a larger rate")]
-    [SerializeField] private float scaleMultiplier = 1f;
+    
+    [SerializeField] private bool confineScreenEdges;
     
     [SerializeField] private Script_GraphicsManager graphicsManager;
     [SerializeField] private Camera mainCamera;
     
     private Vector3 defaultScale;
+
+    public bool ConfineScreenEdges
+    {
+        get => confineScreenEdges;
+    }
+
+    public Collider BoundingVolumeCollider
+    {
+        get => GetComponent<Collider>();
+    }
     
     void Awake()
     {
@@ -28,39 +38,12 @@ public class Script_BoundingVolume : MonoBehaviour
         HideRenderer();
     }
 
-    void Update()
-    {
-        Resize();
-    }
-
     private void HideRenderer()
     {
         var r = GetComponent<Renderer>();
 
         if (r != null)
             r.enabled = false;
-    } 
-
-    /// <summary>
-    /// Resize the Bounding Volume based on the current Default Ortho Size with the minimum ortho.
-    /// The larger Default Ortho Size the more the screen is showing and thus we can decrease the
-    /// scale of our Bounding Volume.
-    /// </summary>
-    private void Resize()
-    {
-        // In case of unexpected ortho sizes, ignore resizing.
-        if (
-            mainCamera.orthographicSize > OrthoUpperBound
-            || mainCamera.orthographicSize < graphicsManager.MinOrthoSizeCameraConfinement
-        )
-        {
-            transform.localScale = defaultScale;
-            return;
-        }
-        
-        // Find ratio of DefaultOrthoSize compared with current
-        var scaleFactor = mainCamera.orthographicSize / graphicsManager.MinOrthoSizeCameraConfinement;
-        transform.localScale = defaultScale / (scaleFactor * scaleMultiplier);
     }
 
 
