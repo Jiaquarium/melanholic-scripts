@@ -192,9 +192,10 @@ public class Script_UIAspectRatioEnforcer : MonoBehaviour
 
         void SetCenterCanvasToBottom()
         {
-            float windowAspect = (float)Screen.width / (float)Screen.height;
-            float scaleHeight = windowAspect / graphics.TargetAspect;
-            float newYPosition = scaleHeight >= 1.0f
+            double windowAspect = (double)Screen.width / (double)Screen.height;
+            
+            double scaleHeight = windowAspect / graphics.TargetAspect;
+            float newYPosition = scaleHeight >= 1.0d
                 // Pillarbox, adjust y position by the full amount.
                 ? rect.anchoredPosition.y - (canvasBottomWorldPoint.y / canvasScaler.scaleFactor)
                 // Letterbox, adjust y position less the pixels of letterbox border.

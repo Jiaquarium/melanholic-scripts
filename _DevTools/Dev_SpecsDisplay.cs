@@ -77,20 +77,12 @@ public class Dev_SpecsDisplay : MonoBehaviour
 
 	private string Resolution()
 	{
-		float screenWidth = Screen.currentResolution.width;
-		float screenHeight = Screen.currentResolution.height;
-		string screenWidthText = string.Format("{0}", screenWidth);
-		string screenHeightText = string.Format("{0}", screenHeight);
-
 		float screenPixelWidth = cam.pixelWidth;
 		float screenPixelHeight = cam.pixelHeight;
 		string screenPixelWidthText = string.Format("{0}", screenPixelWidth);
 		string screenPixelHeightText = string.Format("{0}", screenPixelHeight);
 		
-		
-		string resText = $"VP: {screenPixelWidthText}X{screenPixelHeightText} | Screen: {screenWidthText}X{screenHeightText}";
-
-
+		string resText = $"VP: {screenPixelWidthText}X{screenPixelHeightText} | Screen: {Screen.currentResolution.ToString()}";
 
 		return resText;
 	}

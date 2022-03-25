@@ -9,8 +9,6 @@ using UnityEditor;
 [RequireComponent(typeof(Collider))]
 public class Script_BoundingVolume : MonoBehaviour
 {
-    private static float OrthoUpperBound = 9f;
-    
     [SerializeField] private bool confineScreenEdges;
     
     [SerializeField] private Script_GraphicsManager graphicsManager;

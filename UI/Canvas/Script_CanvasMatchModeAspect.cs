@@ -30,11 +30,11 @@ public class Script_CanvasMatchModeAspect : MonoBehaviour
     private void SetMatchModeFromAspect()
     {
         // Get current screen Aspect Ratio
-        float screenAspect = (float)Screen.width / (float)Screen.height;
-        float scaleHeight = screenAspect / pixelPerfectCamera.targetAspect;
+        double screenAspect = (double)Screen.width / (double)Screen.height;
+        double scaleHeight = screenAspect / pixelPerfectCamera.TargetAspect;
 
         // Letterboxed, set to match width
-        if (scaleHeight < 1.0f)
+        if (scaleHeight < 1.0d)
         {
             canvasScaler.matchWidthOrHeight = 0f;
         }

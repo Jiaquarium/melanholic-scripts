@@ -97,9 +97,9 @@ public class Script_GraphicsManager : MonoBehaviour
         get => pixelPerfectCamera.pixelScreenSize;
     }
 
-    public float TargetAspect
+    public double TargetAspect
     {
-        get => pixelPerfectCamera.targetAspect;
+        get => pixelPerfectCamera.TargetAspect;
     }
 
     public float MinOrthoSizeCameraConfinement
