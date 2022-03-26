@@ -172,7 +172,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             movingLabyrinth.gameObject.SetActive(false);
 
             // Switch to Success VCam
-            preSuccessVCam = Script_VCamManager.ActiveVCamera;
+            preSuccessVCam = Script_VCamManager.VCamMain.ActiveVCamera;
             Script_VCamManager.VCamMain.SwitchBetweenVCams(preSuccessVCam, successCutSceneVCam);
             
             yield return new WaitForSeconds(successBlackScreenTime);
@@ -228,7 +228,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         
         game.ChangeStateCutScene();
 
-        preOpeningVCam = Script_VCamManager.ActiveVCamera;
+        preOpeningVCam = Script_VCamManager.VCamMain.ActiveVCamera;
         Script_VCamManager.VCamMain.SwitchBetweenVCams(preOpeningVCam, followLatteOpeningVCam);
         
         StartCoroutine(WaitForCameraBlend());
@@ -258,7 +258,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         
         Script_DialogueManager.DialogueManager.StartDialogueNode(LatteBlockedNode);
         
-        puppeteerVCam = Script_VCamManager.ActiveVCamera;
+        puppeteerVCam = Script_VCamManager.VCamMain.ActiveVCamera;
         Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followLatteVCam);
         
         LatteBlockedTrigger.gameObject.SetActive(false);
@@ -273,7 +273,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         
         Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeBlockedNode);
         
-        puppeteerVCam = Script_VCamManager.ActiveVCamera;
+        puppeteerVCam = Script_VCamManager.VCamMain.ActiveVCamera;
         Script_VCamManager.VCamMain.SwitchBetweenVCams(puppeteerVCam, followKaffeVCam);
         
         KaffeBlockedTrigger.gameObject.SetActive(false);
@@ -288,7 +288,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         puppet.SetAnimatorControllerActive(true);
         puppetMaster.SetAnimatorControllerActive(true);
 
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, puppeteerVCam);
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, puppeteerVCam);
         puppeteerVCam = null;
 
         IsUniqueBlockedCutScene = false;
@@ -296,12 +296,12 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     private void LatteOpeningCloseUp()
     {
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followLatteOpeningVCam);
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, followLatteOpeningVCam);
     }
 
     private void KaffeOpeningCloseUp()
     {
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followKaffeOpeningVCam);
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, followKaffeOpeningVCam);
     }
 
     // ------------------------------------------------------------------
@@ -335,7 +335,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         IEnumerator WaitToSetupDoneState()
         {
             // Switch to Main VCam.
-            preSuccessVCam = Script_VCamManager.ActiveVCamera;
+            preSuccessVCam = Script_VCamManager.VCamMain.ActiveVCamera;
             Script_VCamManager.VCamMain.SwitchToMainVCam(preSuccessVCam);
             
             yield return new WaitForSeconds(successBlackScreenTime);
@@ -395,7 +395,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     // After Latte's Opening node
     public void SlowPanCameraToKaffeOpening()
     {
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followKaffeOpeningVCam);
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, followKaffeOpeningVCam);
         
         StartCoroutine(WaitForCameraBlend());
 
@@ -409,7 +409,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     public void OnOpeningCutSceneDone()
     {
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, preOpeningVCam);
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, preOpeningVCam);
         preOpeningVCam = null;
 
         StartCoroutine(WaitForCameraBlend());
@@ -435,13 +435,13 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     // Success nodes.
     public void KaffeCloseUp()
     {
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followKaffeCloseupVCam);
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, followKaffeCloseupVCam);
     }
 
     // Success nodes.
     public void LatteCloseUp()
     {
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.ActiveVCamera, followLatteCloseupVCam);
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, followLatteCloseupVCam);
     }
 
     // Called:

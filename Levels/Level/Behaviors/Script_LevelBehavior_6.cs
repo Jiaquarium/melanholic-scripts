@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+/// <summary>
+/// Note: the Completion tile map REPLACES the original Ground tilemap, so any changes made to
+/// the original Ground Tilemap, ensure to make to completion tilemap.
+/// </summary>
 public class Script_LevelBehavior_6 : Script_LevelBehavior
 {
     /* =======================================================================
@@ -70,14 +78,17 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
         void HandleLightupPaintingsPuzzle()
         {
             // check switchesStates with winState
-            if (switchesStates == null)    return;
+            if (switchesStates == null)
+                return;
 
             for (int i = 0; i < puzzleCompleteSwitchesStates.Length; i++)
             {
-                if (switchesStates[i] != puzzleCompleteSwitchesStates[i])   return;
+                if (switchesStates[i] != puzzleCompleteSwitchesStates[i])
+                    return;
             }
 
-            if (!isPuzzleCompleted)    OnPuzzleCompletion();
+            if (!isPuzzleCompleted)
+                OnPuzzleCompletion();
         }
     }
 
@@ -177,4 +188,20 @@ public class Script_LevelBehavior_6 : Script_LevelBehavior
         
         isInit = false;
     }
+
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_LevelBehavior_6))]
+    public class Script_LevelBehavior_6Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_LevelBehavior_6 t = (Script_LevelBehavior_6)target;
+            if (GUILayout.Button("Complete Puzzle"))
+            {
+                t.OnPuzzleCompletion();
+            }
+        }
+    }
+    #endif
 }

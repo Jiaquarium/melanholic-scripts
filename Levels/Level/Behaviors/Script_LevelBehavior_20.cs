@@ -201,6 +201,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
             game.ChangeStateCutScene();
 
+            KingEclaire.State = Script_StaticNPC.States.Dialogue;
+
             Script_BackgroundMusicManager.Control.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
 
             Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {

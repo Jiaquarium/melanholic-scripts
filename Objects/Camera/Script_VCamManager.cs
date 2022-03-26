@@ -24,23 +24,29 @@ public class Script_VCamManager : MonoBehaviour
     public static Script_VCamManager VCamMain;
     public static readonly float defaultBlendTime = 2f;
 
+    [SerializeField] private CinemachineBrain brain;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Script_GraphicsManager graphics;
+    [SerializeField] private Script_VCamera vCamera;
 
     [SerializeField] private CinemachineConfiner cinemachineConfiner;
 
-    public static Script_VCamera ActiveVCamera
+    public CinemachineBrain Brain
+    {
+        get => brain;
+    }
+    
+    public Script_VCamera ActiveVCamera
     {
         get {
-            CinemachineVirtualCamera CVCam = Script_Game.Game.GetComponent<CinemachineBrain>()
-                .ActiveVirtualCamera as CinemachineVirtualCamera;
+            CinemachineVirtualCamera CVCam = Brain.ActiveVirtualCamera as CinemachineVirtualCamera;
             return CVCam.GetComponent<Script_VCamera>();
         }
     }
 
     public Script_VCamera VCamera
     {
-        get => GetComponent<Script_VCamera>();
+        get => vCamera;
     }
 
     public Collider BoundingVolume
@@ -60,7 +66,7 @@ public class Script_VCamManager : MonoBehaviour
         HandleConfineCamera();
     }
     
-    public static void SetActiveCameraOrthoSize(float size)
+    public void SetActiveCameraOrthoSize(float size)
     {
         Script_VCamera VCam = ActiveVCamera;
         VCam.SetOrthoSize(size);
@@ -145,7 +151,9 @@ public class Script_VCamManager : MonoBehaviour
     /// </summary>
     private void HandleConfineCamera()
     {
-        cinemachineConfiner.enabled = mainCamera.orthographicSize >= graphics.MinOrthoSizeCameraConfinement;
+        // Maintain confinement state if we're using another VCam.
+        if (ActiveVCamera == VCamera && !Brain.IsBlending)
+            cinemachineConfiner.enabled = mainCamera.orthographicSize >= graphics.MinOrthoSizeCameraConfinement;
     }
 
     public void Setup()

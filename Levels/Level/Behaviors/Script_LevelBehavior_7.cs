@@ -178,7 +178,7 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
         Script_StaticNPC npc = cutSceneNPC;
         
         Script_VCamManager.VCamMain.SwitchBetweenVCams(
-            Script_VCamManager.ActiveVCamera, VCamLB7Zoomed
+            Script_VCamManager.VCamMain.ActiveVCamera, VCamLB7Zoomed
         );
 
         // wait for lerp and zoom smooth times
@@ -211,7 +211,7 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
         game.StopMovingNPCThemes();
         game.UnPauseBgMusic();
 
-        Script_VCamManager.VCamMain.SwitchToMainVCam(Script_VCamManager.ActiveVCamera);
+        Script_VCamManager.VCamMain.SwitchToMainVCam(Script_VCamManager.VCamMain.ActiveVCamera);
         
         isDone = true;
         cutSceneNPC.gameObject.SetActive(false);

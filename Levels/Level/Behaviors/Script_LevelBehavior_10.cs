@@ -240,7 +240,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void IdsWalkToERoom()
     {
         game.ChangeStateCutScene();
-        Script_VCamManager.VCamMain.SwitchToMainVCam(Script_VCamManager.ActiveVCamera);
+        Script_VCamManager.VCamMain.SwitchToMainVCam(Script_VCamManager.VCamMain.ActiveVCamera);
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
     }
 
