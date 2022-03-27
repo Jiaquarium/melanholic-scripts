@@ -10,7 +10,7 @@ public class Script_WordsEffects : MonoBehaviour
     public void Setup()
     {
         gameObject.SetActive(true);
-        EileensMindDoubt.gameObject.SetActive(false);
+        EileensMindDoubt.gameObject.SetActive(true);
         FireplaceInstantRegret.gameObject.SetActive(false);
     }
 }

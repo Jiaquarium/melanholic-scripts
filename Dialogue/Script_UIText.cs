@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-03-19 00:12:32
+// Last created by UI Exporter at 2022-03-25 21:14:19
 
 using System.Collections;
 using System.Collections.Generic;
@@ -22,14 +22,14 @@ public class Script_UIText
     "intro_authors_by",
     new Model_LanguagesUI
     {
-        EN = @"By luoboa"
+        EN = @"By Jiaquarium"
     }
 },
 {
     "intro_authors_music",
     new Model_LanguagesUI
     {
-        EN = @"Music Composed by Sal Moreno"
+        EN = @"Music Composed by s3z"
     }
 },
 {
@@ -513,7 +513,7 @@ public class Script_UIText
     "credits_main-staff_name0",
     new Model_LanguagesUI
     {
-        EN = @"luoboa"
+        EN = @"Jiaquarium"
     }
 },
 {
@@ -527,7 +527,7 @@ public class Script_UIText
     "credits_main-staff_name1",
     new Model_LanguagesUI
     {
-        EN = @"Sal Moreno"
+        EN = @"s3z"
     }
 },
 {

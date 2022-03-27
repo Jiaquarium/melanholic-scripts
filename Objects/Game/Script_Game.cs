@@ -974,6 +974,7 @@ public class Script_Game : MonoBehaviour
         
         VCam.SetFollow();
         VCamDramaticZoom.SetFollow();
+        VCamDramaticZoom.gameObject.SetActive(true);
     }
 
     public void SetupPlayerOnLevel()
