@@ -22,6 +22,7 @@ public class Script_Elevator : Script_InteractableObjectExit
     [SerializeField] private bool isClosed          = true;
     [SerializeField] private Animator doorsAnimator;
     [SerializeField] private Script_ElevatorBehavior elevatorExitBehavior;
+    [SerializeField] private Script_ElevatorManager elevatorManager;
 
     public Types Type
     {
@@ -62,9 +63,10 @@ public class Script_Elevator : Script_InteractableObjectExit
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
             SetClosedState(false);
 
-            Script_BackgroundMusicManager.Control.FadeOutMed();
+            Script_BackgroundMusicManager.Control.FadeOutMed(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+            elevatorManager.IsBgmOn = false;
         }
-    }
+    }   
 
     /// <summary>
     /// Using Timeline

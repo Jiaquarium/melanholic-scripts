@@ -698,7 +698,11 @@ public class Script_Game : MonoBehaviour
     {
         SetLevelBehavior();
         weatherFXManager.SnowDayEffect();
+        
+        // Note: StartBgMusic should be before Grid Activation and Level Setup, because BGM changes
+        // on Awake/OnEnable/Start or Setup should override this default BGM Player.
         StartBgMusic();
+        
         SetTileMaps();
         
         // Unity startup lifeCycle events
@@ -1820,12 +1824,18 @@ public class Script_Game : MonoBehaviour
         _MUSIC_
     ========================================================================= */
 
-    void StartBgMusic()
+    public void StartBgMusic()
     {
         // TODO: make this a general theme player, not just for Ero
         if (npcBgThemePlayer != null && GetNPCThemeMusicIsPlaying())   return;
         
         int i = Levels.levelsData[level].bgMusicAudioClipIndex;
+
+        if (Levels.levelsData[level].isBgmPaused)
+        {
+            Debug.Log($"Level {Levels.levelsData[level]} starting with PAUSED Bgm");
+            i = -1;
+        }
         
         BGMManager.Play(i);
     }

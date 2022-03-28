@@ -23,6 +23,8 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
     [SerializeField] private Script_InteractableObjectText elevatorDisabledText;
     [SerializeField] private Script_InteractableObjectText elevatorSundayDisabledText;
 
+    [SerializeField] private Script_ElevatorManager elevatorManager;
+
     private bool isInit = true;
 
     public State Behavior
@@ -39,11 +41,15 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         {
             case (State.Save):
                 PlayerDefaultState();
+                // Give Bgm control to ElevatorManager when coming from Last Elevator.
+                PauseBgm();
                 exitToLobby.Type = Script_Exits.ExitType.SaveAndRestart;
                 elevator.State = Script_InteractableObject.States.Disabled;
                 break;
             case (State.SaveAndStartWeekendCycle):
                 PlayerDefaultState();
+                // Give Bgm control to ElevatorManager when coming from Last Elevator.
+                PauseBgm();
                 exitToLobby.Type = Script_Exits.ExitType.SaveAndStartWeekendCycle;
                 elevator.State = Script_InteractableObject.States.Disabled;
                 break;
@@ -90,6 +96,14 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
     private void PlayerDefaultState()
     {
         game.GetPlayer().DefaultStickerState();
+    }
+
+    private void PauseBgm()
+    {
+        // Only stop Bgm if the elevator manager hasn't already restarted it.
+        // This happens on same frame but after Bgm Start on InitLevel.
+        if (!elevatorManager.IsBgmOn)
+            Script_BackgroundMusicManager.Control.Stop();
     }
     
     public override void Setup()

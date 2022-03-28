@@ -37,7 +37,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         
         if (i == -1)
         {
-            source.Stop();
+            Stop();
             return;
         }
         

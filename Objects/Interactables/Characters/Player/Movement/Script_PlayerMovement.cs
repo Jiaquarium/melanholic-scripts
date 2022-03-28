@@ -837,8 +837,6 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public void EnterElevator()
     {
-        director.Play(enterElevatorTimeline);
-
         // Need to bind Player Ghost to timeline.
         List<GameObject> playerObjsToBind = new List<GameObject>();
 

@@ -27,7 +27,10 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController lastElevatorPromptController;
     [SerializeField] private Script_CanvasGroupController lastElevatorPromptChoicesController;
 
+    [SerializeField] private Script_Game game;
+    [SerializeField] private Script_BackgroundMusicManager bgm;
 
+    public bool IsBgmOn { get; set; }
     
     /// <summary>
     /// UI Closes Elevator Doors
@@ -150,10 +153,17 @@ public class Script_ElevatorManager : MonoBehaviour
         {
             Debug.Log($"{name} There is no current World Elevator, changing state to interact");
             
-            Script_Game.Game.ChangeStateInteract();
+            game.ChangeStateInteract();
         }
 
-        Script_BackgroundMusicManager.Control.FadeInMed();
+        
+        bgm.FadeInMed(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        
+        // When entering Bay v1 from Last Elevator, the BGM will be paused via Behavior.
+        if (!bgm.IsPlaying)
+            game.StartBgMusic();
+        
+        IsBgmOn = true;
     }
 
     // LastElevatorCanvasTimeline
