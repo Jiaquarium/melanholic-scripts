@@ -428,6 +428,11 @@ public class Dev_GameHelper : MonoBehaviour
                 {
                     t.ExitToGrandMirror();
                 }
+
+                if (GUILayout.Button("Go To: Grand Mirror R2"))
+                {
+                    Script_Game.Game.TeleportToGrandMirrorBackgroundR2();
+                }
                 
                 EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);
                 

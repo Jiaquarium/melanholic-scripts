@@ -27,6 +27,9 @@ public class Script_EnergySpikeAttack : Script_Attack
     [SerializeField] private bool noSFXWhenTalking;
     [SerializeField] protected bool isInUse;
 
+    [Tooltip("Specify an alternate speaker to play Hit SFX (e.g. spike SFX is proximity effected but Hit SFX is not")]
+    [SerializeField] private AudioSource hitSpeaker;
+
     private Grid attackGrid;
     protected bool didHit;
     
@@ -149,7 +152,14 @@ public class Script_EnergySpikeAttack : Script_Attack
 
     protected override void HitSFX()
     {
-        GetComponent<AudioSource>().PlayOneShot(
+        AudioSource hitAudioSource;
+
+        if (hitSpeaker != null)
+            hitAudioSource = hitSpeaker;
+        else
+            hitAudioSource = GetComponent<AudioSource>();
+        
+        hitAudioSource.PlayOneShot(
             Script_SFXManager.SFX.EnergySpikeHurt,
             Script_SFXManager.SFX.EnergySpikeHurtVol
         );

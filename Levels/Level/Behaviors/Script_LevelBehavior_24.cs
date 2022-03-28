@@ -188,6 +188,8 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     // Do not reveal if the puzzle has previously been completed.
     public void HandleScarletCipherReveal()
     {
+        // Transforming rock's alpha is adjusted to 0.
+
         // Only spawn Scarlet Cipher Piece if it hasn't been picked up already.
         if (!scarletCipherPiece.DidPickUp())
         {

@@ -13,6 +13,9 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
 
     [SerializeField] private bool isUnsyncX;
     
+    [Tooltip("Specify an adjuster if different facing Directions need to change position of Graphics")]
+    [SerializeField] private Script_AnimatorPositionAdjuster positionAdjuster;
+
     protected Script_Player player;
     private Script_PlayerReflection playerReflection;
     private Vector3 axis;
@@ -36,6 +39,9 @@ public class Script_PlayerReflectionMovement : MonoBehaviour
         bool isMoving = Script_Game.Game.GetPlayer().MyAnimator.GetBool(PlayerMovingBool);
         
         SetIsMoving(isMoving);
+
+        if (positionAdjuster != null)
+            positionAdjuster.Adjust(myFaceDirection);
     }
 
     protected virtual void SetIsMoving(bool isMoving)

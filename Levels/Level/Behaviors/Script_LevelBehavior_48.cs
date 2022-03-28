@@ -75,6 +75,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private float finaleLightsIntensity;
 
+    [SerializeField] private Script_ElevatorManager elevatorManager;
+
     // ------------------------------------------------------------------
     // DEV
     [SerializeField] private Script_LevelBehavior_0 Woods;
@@ -109,6 +111,10 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         currentTargetBlend = 0f;
         glitchManager.InitialState();
+
+        // Only R1 has the entrance from the Last Elevator.
+        if (!isFinalRound)
+            PauseBgmForElevator();
     }
 
     protected override void OnDisable()
@@ -520,6 +526,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     private bool IsAllIceBlocksCracked()
     {
         return isIceBlockLeftCracked && isIceBlockMidCracked && isIceBlockRightCracked;
+    }
+
+    private void PauseBgmForElevator()
+    {
+        Debug.Log($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
+
+        // Only stop Bgm if the elevator manager hasn't already restarted it.
+        // This happens on same frame but after Bgm Start on InitLevel.
+        if (!elevatorManager.IsBgmOn)
+            Script_BackgroundMusicManager.Control.Stop();
     }
 
     private void OnLevelInitCompleteEvent()

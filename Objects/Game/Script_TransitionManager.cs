@@ -272,6 +272,9 @@ public class Script_TransitionManager : MonoBehaviour
         {
             // Final Cut Scene
             game.ChangeStateCutScene();
+
+            // Hide King
+            game.BallroomBehavior.SetKingEclaireActive(false);
             
             var bgm = Script_BackgroundMusicManager.Control;
             bgm.FadeOutMed(() => {

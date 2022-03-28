@@ -30,7 +30,13 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_BackgroundMusicManager bgm;
 
-    public bool IsBgmOn { get; set; }
+    [SerializeField] private bool isBgmOn = true;
+
+    public bool IsBgmOn
+    {
+        get => isBgmOn;
+        set => isBgmOn = value;
+    }
     
     /// <summary>
     /// UI Closes Elevator Doors

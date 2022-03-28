@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-18 10:17:13
+// Last created by Dialogue Exporter at 2022-03-28 04:49:18
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2270,9 +2270,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{64}",
         EN = new string[]
         {
-                @"{64} here at your humble service.",
-                @"Oh, you are able to understand me?",
-                @"My mistake. Go right along ahead, young one, I am here to serve.",
+                @"{64} here at your humble service, no <b>outsiders</b> past this point.",
+                @"Oh, you are able to understand me! Forgive me, turns out you can be trusted.",
+                @"The older one’s room is just <b>down this hall</b>, and the younger one’s is through this <b>north door<b>.",
+                @"Be careful and safe travels, young one. I am here to serve.",
         },
         
     }
@@ -2678,6 +2679,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"A man in front of a spiral?",
                 @"No...| you realize it’s a maze.",
+        },
+        
+    }
+},
+{
+    "ellenias-room_bookshelf_textbook",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"A textbook about ghosts.",
+                @"You’d like to read through this actually, but decide not to.",
+                @"You often lose track of time when getting into something you find interesting.",
         },
         
     }
@@ -4879,7 +4894,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Terrific! Recently <b>strange growths</b> have infested my main <b>dance floor</b>.",
                 @"And now all my regulars are scared out of their wits.",
-                @"My clients come for the karaoke and <i>company</i>. Although, they stay for the drinks.| And that’s where we profit, cha-ching!",
+                @"My clients come for the dancing and our incredible <i>atmosphere</i>! And our drinks keep them goin’ all night.| That’s where we profit, cha-ching!",
                 @"How is the {35} going to be the best watering well around if I’m bleeding this much business?",
                 @"What did you say your name was again, youngin’?",
                 @"{0}... interesting, hey I like that name. It has a nice ring to it, seems familiar, not quite sure why.",

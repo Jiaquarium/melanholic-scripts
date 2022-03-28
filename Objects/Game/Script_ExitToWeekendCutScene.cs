@@ -11,7 +11,6 @@ public class Script_ExitToWeekendCutScene : MonoBehaviour
     // Show Cut Scene
     public void Play()
     {
-        // toWeekendPRCS.PlayMyTimeline();
         PRCSManager.OpenPRCSCustom(Script_PRCSManager.CustomTypes.ToWeekend);
     }
 

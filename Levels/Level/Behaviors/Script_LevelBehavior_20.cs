@@ -173,6 +173,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
     }
 
+    public void SetKingEclaireActive(bool isActive)
+    {
+        KingEclaire.gameObject.SetActive(isActive);
+    }
+
     /// <summary> ==============================================================================
     /// NextNodeAction(s) Start 
     /// </summary> =============================================================================
