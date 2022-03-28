@@ -126,9 +126,9 @@ public class Script_DialogueManager : MonoBehaviour
     // ------------------------------------------------------------------
     // Player Feedback to First Psychic Node Interaction
     [SerializeField] private Script_DialogueNode cantUnderstandReactionNode;
-    private bool shouldCantUnderstandReaction;
-    private bool didCantUnderstandReactionDone;
     [SerializeField] private float beforeCantUnderstandReactionWaitTime;
+    [SerializeField] private bool shouldCantUnderstandReaction;
+    private bool didCantUnderstandReactionDone;
     
     // ------------------------------------------------------------------
     // Sticker Reactions
@@ -176,8 +176,6 @@ public class Script_DialogueManager : MonoBehaviour
         // Manually prevent HUD from fading back in.
         Script_HUDManager.Control.IsPaused = true;
         
-        yield return null;
-
         if (
             // Ensure we didn't enter a new cut scene.
             Script_Game.Game.state == Const_States_Game.Interact
@@ -186,11 +184,14 @@ public class Script_DialogueManager : MonoBehaviour
             && currentNode == prevNode
         )
         {
+            Debug.Log("WaitToTryCantUnderstandDialogue: Set game to Cut Scene.");
+            isInputDisabled = true;
             Script_Game.Game.GetPlayer().SetIsTalking();
             game.ChangeStateCutScene();
-            
+
             yield return new WaitForSeconds(beforeCantUnderstandReactionWaitTime);
 
+            isInputDisabled = false;
             StartDialogueNode(cantUnderstandReactionNode, SFXOn: false);
             didCantUnderstandReactionDone = true;
         }
@@ -292,11 +293,11 @@ public class Script_DialogueManager : MonoBehaviour
             || !IsActive()
         )
         {   
-            print(
+            Debug.Log(
                 $"could not continue dialogue " +
                 $"isRenderingDialogueSection: {isRenderingDialogueSection} " +
                 $"isInputMode: {isInputMode} " +
-                $"isInputDisabled: {isInputDisabled}"
+                $"isInputDisabled: {isInputDisabled} "
             );
             return null;
         }
@@ -927,6 +928,7 @@ public class Script_DialogueManager : MonoBehaviour
         {
             yield return null;
             
+            Debug.Log("OnCantUnderstandDialogueDone: Set game to Interact");
             game.ChangeStateInteract();
         }
     }

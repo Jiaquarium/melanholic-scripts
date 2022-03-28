@@ -88,6 +88,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         /// Reinstate barrier
         barrier.gameObject.SetActive(true);
         
+        Debug.Log("OnEndGuardDialogueBlock: Set game to Interact.");
         game.ChangeStateInteract();
 
         // must set back to nonconfirm state to force Guard to speak up next time
@@ -117,9 +118,14 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     // Flan's dialogue.
     public void CheckPlayerMoveDirection()
     {
-        if (Input.GetButtonDown(checkDirection.DirectionToKeyCode()))
+        if (
+            Input.GetButtonDown(checkDirection.DirectionToKeyCode())
+        )
         {
-            StartGuardDialogue();
+            if (game.GetPlayer().State == Const_States_Player.Interact)
+                StartGuardDialogue();
+            else
+                Debug.Log("Trying to trigger Flan Dialogue but Player not in Interact");
         }
     }
 

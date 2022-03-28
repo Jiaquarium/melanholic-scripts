@@ -24,8 +24,9 @@ public class Script_DialogueContinuationIcon : MonoBehaviour
     
     void Update() {
         if (dm.currentNode.data.children.Length == 0 && dm.dialogueSections.Count == 0)
-                isLastDialogueSection = true;
-        else    isLastDialogueSection = false;
+            isLastDialogueSection = true;
+        else    
+            isLastDialogueSection = false;
         
         if (
             !dm.isRenderingDialogueSection
