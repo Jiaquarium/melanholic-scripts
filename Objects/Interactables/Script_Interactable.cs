@@ -24,20 +24,24 @@ public class Script_Interactable : MonoBehaviour
     [Tooltip("Explicit colliders to hide and/or reveal.")]
     [SerializeField] private Collider[] targetColliders;
 
-    protected bool DisableL {
+    public bool DisableL {
         get => _disableL;
+        set => _disableL = value;
     }
 
-    protected bool DisableR {
+    public bool DisableR {
         get => _disableR;
+        set => _disableR = value;
     }
 
-    protected bool DisableU {
+    public bool DisableU {
         get => _disableU;
+        set => _disableU = value;
     }
 
-    protected bool DisableD {
+    public bool DisableD {
         get => _disableD;
+        set => _disableD = value;
     }
 
     protected virtual void OnDisable()

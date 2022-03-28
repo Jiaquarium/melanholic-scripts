@@ -12,7 +12,8 @@ public class Script_InteractableObjectExit : Script_InteractableObject
     {
         Debug.Log("Exit Object Interaction!");
         
-        if (CheckDisabledDirections())  return;
+        if (CheckDisabledDirections())
+            return;
         
         Exit();
     }

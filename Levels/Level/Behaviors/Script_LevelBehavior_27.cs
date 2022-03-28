@@ -22,7 +22,9 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     [SerializeField] private Script_StickerObject PsychicDuck;
     
     [SerializeField] private Script_TimelineController IdsTimelineController;
-    [SerializeField] private Transform Ids;
+    [SerializeField] private Script_DemonNPC Ids;
+
+    [SerializeField] private Script_Marker moveSetDestination;
     
     private bool isGlitched;
     
@@ -43,6 +45,8 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
             Script_GlitchFXManager.Control.SetBlend(1f);
             isGlitched = true;
         }
+
+        Script_NPCEventsManager.OnNPCMovesSetsDone += OnMoveSetDone;
     }
     
     protected override void OnDisable()
@@ -54,6 +58,8 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
             Script_GlitchFXManager.Control.SetBlend(0f);
             isGlitched = false;
         }
+
+        Script_NPCEventsManager.OnNPCMovesSetsDone -= OnMoveSetDone;
     }
     
     private void HandleGrandMirrorPaintingEntrance()
@@ -87,15 +93,29 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         game.ChangeStateCutScene();
 
         /// Ids moves to door and blocks it
-        IdsTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
+        Ids.SetMovingNPCMatchPlayer(false);
+        
+        Ids.ApproachTarget(moveSetDestination.transform.position, Vector3.zero, Directions.Down, NPCEndCommands.None);
     }
     
     public void OnIdsMoveToBlockEntranceDone()
     {
+        elevator.State = Script_InteractableObject.States.Active;
+        Ids.SetExtraInteractableBoxes(true);
+        
+        // Allow Player to interact with Ids from the side after cut scene.
+        Ids.DisableL = false;
+        Ids.DisableR = false;
         game.ChangeStateInteract();
     }
+    
     // Timeline Signals END
     // ----------------------------------------------------------------------
+
+    private void OnMoveSetDone()
+    {
+        IdsTimelineController.PlayableDirectorPlayFromTimelines(0, 0);
+    }
 
     public override void Setup()
     {
@@ -104,7 +124,11 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
 
         /// Setup Ids intro on Run 0
         if (!GotPsychicDuck && Script_EventCycleManager.Control.IsIdsGivePsychicDuckDay())
+        {
             Ids.gameObject.SetActive(true);
+            Ids.SetExtraInteractableBoxes(false);
+            elevator.State = Script_InteractableObject.States.Disabled;
+        }
         else
             Ids.gameObject.SetActive(false);
         

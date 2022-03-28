@@ -40,7 +40,7 @@ public class Script_VCamManager : MonoBehaviour
     {
         get {
             CinemachineVirtualCamera CVCam = Brain.ActiveVirtualCamera as CinemachineVirtualCamera;
-            return CVCam.GetComponent<Script_VCamera>();
+            return CVCam?.GetComponent<Script_VCamera>();
         }
     }
 
@@ -152,7 +152,10 @@ public class Script_VCamManager : MonoBehaviour
     private void HandleConfineCamera()
     {
         // Maintain confinement state if we're using another VCam.
-        if (ActiveVCamera == VCamera && !Brain.IsBlending)
+        if (
+            ActiveVCamera != null && ActiveVCamera == VCamera
+            && !Brain.IsBlending
+        )
             cinemachineConfiner.enabled = mainCamera.orthographicSize >= graphics.MinOrthoSizeCameraConfinement;
     }
 

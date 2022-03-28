@@ -14,6 +14,9 @@ public class Script_MovingNPC : Script_StaticNPC
     public static string MoveZ      = "MoveZ";
     public static string NPCMoving  = "NPCMoving";
 
+    private static string LocalStateInteract = "interact";
+    private static string LocalStateMove = "move";
+
     public int MovingNPCId;
     public Vector3 startLocation;
     public Vector3 location;
@@ -21,6 +24,7 @@ public class Script_MovingNPC : Script_StaticNPC
     public float progress;
     public string localState;
     public bool shouldExit = true;
+    [SerializeField] private bool canUseMoveSets;
     public int moveSetIndex;
     [Tooltip("Maintain direction after talking with.")]
     [SerializeField] private bool defaultFacingDirectionDisabled;
@@ -46,10 +50,15 @@ public class Script_MovingNPC : Script_StaticNPC
     [Tooltip("Options to adjust the AutoMove Timeline playback speed")]
     [SerializeField] private bool isSetAutoMoveTimelineSpeed;
     [SerializeField] private float autoMoveTimelineSpeed = 1f;
+    [SerializeField] private AudioSource moveStartAudio;
+
+    [SerializeField] private AudioClip moveSetStartSFXClip;
 
     private Animator animator;
     
     public PlayableDirector MyDirector { get => myDirector; }
+    public Animator MyAnimator { get => animator; }
+    public Script_MovingNPCMatchPlayer MovingNPCMatchPlayer { get => GetComponent<Script_MovingNPCMatchPlayer>(); }
     
     private Script_InteractionBoxController interactionBoxController { get; set; }
 
@@ -60,7 +69,7 @@ public class Script_MovingNPC : Script_StaticNPC
     // Update is called once per frame
     protected virtual void Update()
     {   
-        if (Script_Game.Game.state == "cut-scene_npc-moving" && localState == "move")
+        if (canUseMoveSets && localState == LocalStateMove)
         {
             ActuallyMove();
         }
@@ -94,6 +103,11 @@ public class Script_MovingNPC : Script_StaticNPC
         }
         
         return didContinue;
+    }
+
+    public void SetMovingNPCMatchPlayer(bool isActive)
+    {
+        MovingNPCMatchPlayer.enabled = isActive;
     }
 
     void HandleReturnToDefaultDirection(bool? didContinue)
@@ -197,7 +211,7 @@ public class Script_MovingNPC : Script_StaticNPC
 
         startLocation = location;
         location += desiredVector;
-        localState = "move";
+        localState = LocalStateMove;
 
         progress = 0f;
 
@@ -220,7 +234,7 @@ public class Script_MovingNPC : Script_StaticNPC
             transform.position = location;
             
             if (currentMoves.Count == 0) {
-                localState = "interact";
+                localState = LocalStateInteract;
                 animator.SetBool(NPCMoving, false);
                 
                 NPCEndCommands endCommand = moveSets[moveSetIndex].NPCEndCommand;
@@ -247,6 +261,9 @@ public class Script_MovingNPC : Script_StaticNPC
                     {
                         Exit();
                     }
+
+                    Script_NPCEventsManager.NPCMoveSetsDone();
+                    StopForceMoveSFX();
                     
                     return;
                 }
@@ -350,6 +367,8 @@ public class Script_MovingNPC : Script_StaticNPC
         {
             isApproachingTarget = true;
             Move();
+
+            PlayForceMoveStartSFX();
         }
     }
 
@@ -360,6 +379,7 @@ public class Script_MovingNPC : Script_StaticNPC
         NPCEndCommands endCommand
     )
     {
+        UpdateLocation();
         Vector3 toMove = (target + adjustment) - location;
         Directions xMove;
         Directions zMove;
@@ -433,6 +453,24 @@ public class Script_MovingNPC : Script_StaticNPC
     
     /// Timeline Signal Functions END =============================================================
 
+    // At beginning of the force moves sequence (for dynamic moves)
+    private void PlayForceMoveStartSFX()
+    {
+        if (moveStartAudio != null && moveSetStartSFXClip != null)
+            moveStartAudio.PlayOneShot(moveSetStartSFXClip);
+    }
+
+    // At the end of force move sequence (in case the SFX is very long)
+    private void StopForceMoveSFX()
+    {
+        if (moveStartAudio != null)
+        {
+            moveStartAudio.volume = 0f;
+            moveStartAudio.Stop();
+            moveStartAudio.volume = 1f;
+        }
+    }
+    
     protected override void AutoSetup()
     {
         base.AutoSetup();
