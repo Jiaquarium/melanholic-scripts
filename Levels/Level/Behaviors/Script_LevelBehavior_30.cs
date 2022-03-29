@@ -19,6 +19,9 @@ public class Script_LevelBehavior_30 : Script_LevelBehavior
     [SerializeField] private Transform fireplaceBlockingBox;
     [SerializeField] private Transform fullArtParent;
 
+    // Shared with FireplaceTraining2
+    public float waitActivateExitTime;
+
     private bool isInit = true;
 
     protected override void OnEnable()
@@ -35,7 +38,7 @@ public class Script_LevelBehavior_30 : Script_LevelBehavior
     {
         isDone = true;
 
-        PuzzleDoneSetup();
+        PuzzleDoneSetup(isWaitActivateExits: true);
     }
 
     /// <summary>
@@ -51,23 +54,31 @@ public class Script_LevelBehavior_30 : Script_LevelBehavior
         proximityCracklingFire.gameObject.SetActive(true);
     }
 
-    private void PuzzleDoneSetup()
+    private void PuzzleDoneSetup(bool isWaitActivateExits = false)
     {
         puzzleTriggerController.isComplete = true;
         pushablesParent.gameObject.SetActive(false);
-        game.DisableExits(false, 0);
         
         proximityCracklingFire.gameObject.SetActive(false);
-        fireplaceBlockingBox.gameObject.SetActive(false);
 
         fireplacePlayer.Disable();
         fireplaceMirror.Disable();
+
+        if (isWaitActivateExits)
+            StartCoroutine(WaitActivateExit());
+        else
+            game.DisableExits(false, 0);
+
+        IEnumerator WaitActivateExit()
+        {
+            yield return new WaitForSeconds(waitActivateExitTime);
+            game.DisableExits(false, 0);
+        }
     }
 
     private void PuzzleSetup()
     {
         proximityCracklingFire.gameObject.SetActive(true);
-        fireplaceBlockingBox.gameObject.SetActive(true);
         
         game.DisableExits(true, 0);
     }
@@ -76,6 +87,7 @@ public class Script_LevelBehavior_30 : Script_LevelBehavior
     {
         game.SetupPlayerReflection(playerReflectionIds);
         game.SetupInteractableFullArt(fullArtParent, isInit);
+        fireplaceBlockingBox.gameObject.SetActive(true);
         
         if (isDone)
         {
