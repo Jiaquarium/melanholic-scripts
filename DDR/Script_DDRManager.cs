@@ -259,6 +259,8 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextLeftMoveTime - timeToRise)
         {
+            Debug.Log($"Start Left Arrow: Time {conductor.SongPosition}");
+
             StartLeftArrow();
             leftMoveCount++;
         }
@@ -273,6 +275,8 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextDownMoveTime - timeToRise)
         {
+            Debug.Log($"Start Down Arrow: Time {conductor.SongPosition}");
+            
             StartDownArrow();
             downMoveCount++;
         }
@@ -287,6 +291,8 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextUpMoveTime - timeToRise)
         {
+            Debug.Log($"Start Up Arrow: Time {conductor.SongPosition}");
+            
             StartUpArrow();
             upMoveCount++;
         }
@@ -301,6 +307,8 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextRightMoveTime - timeToRise)
         {
+            Debug.Log($"Start Right Arrow: Time {conductor.SongPosition}");
+            
             StartRightArrow();
             rightMoveCount++;
         }

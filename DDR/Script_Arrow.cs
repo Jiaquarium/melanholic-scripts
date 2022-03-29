@@ -63,6 +63,8 @@ public class Script_Arrow : MonoBehaviour
         // continue to move arrow off screen when done lerping
         if (t >= 1f)
         {
+            Debug.Log($"{this} {type} arrow reached end");
+            
             isPassingOutline = true;
             startLocation = GetComponent<RectTransform>().localPosition;
         }

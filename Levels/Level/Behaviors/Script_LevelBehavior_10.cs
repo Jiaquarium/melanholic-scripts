@@ -134,11 +134,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     private int downMoveCount;
     private int upMoveCount;
     private int rightMoveCount;
-    
-    private int lastLeftMove;
-    private int lastDownMove;
-    private int lastUpMove;
-    private int lastRightMove;
 
     private int bgTransitionIdx;
     private float scrollSpeedDelta;
@@ -656,18 +651,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (leftMoveCount > songMoves.leftMoveTimes.Length - 1)
                 return;
 
-            Debug.Log($"Time {time}");
-            Debug.Log($"songMoves.leftMoveTimes[leftMoveCount] {songMoves.leftMoveTimes[leftMoveCount]}");
-
-            if (
-                time >= songMoves.leftMoveTimes[leftMoveCount]
-                && leftMoveCount > lastLeftMove
-            )
+            if (time >= songMoves.leftMoveTimes[leftMoveCount])
             {
-                Debug.Log("IDS FACING LEFT");
+                Debug.Log($"IDS FACING LEFT: Time {time}");
+                Debug.Log($"Time {time}");
+                Debug.Log($"songMoves.leftMoveTimes[leftMoveCount] {songMoves.leftMoveTimes[leftMoveCount]}");
                 
                 Ids.FaceDirection(Directions.Left);
-                lastLeftMove = leftMoveCount;
                 leftMoveCount++;
             }
         }
@@ -677,18 +667,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (downMoveCount > songMoves.downMoveTimes.Length - 1)
                 return;
 
-            Debug.Log($"Time {time}");
-            Debug.Log($"songMoves.downMoveTimes[downMoveCount] {songMoves.downMoveTimes[downMoveCount]}");
-
-            if (
-                time >= songMoves.downMoveTimes[downMoveCount]
-                && downMoveCount > lastDownMove
-            )
+            if (time >= songMoves.downMoveTimes[downMoveCount])
             {
-                Debug.Log("IDS FACING RIGHT");
+                Debug.Log($"IDS FACING DOWN: Time {time}");
+                Debug.Log($"Time {time}");
+                Debug.Log($"songMoves.downMoveTimes[downMoveCount] {songMoves.downMoveTimes[downMoveCount]}");
                 
                 Ids.FaceDirection(Directions.Down);
-                lastDownMove = downMoveCount;
                 downMoveCount++;
             }
         }
@@ -698,13 +683,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (upMoveCount > songMoves.upMoveTimes.Length - 1) 
                 return;
 
-            if (
-                time >= songMoves.upMoveTimes[upMoveCount]
-                && upMoveCount > lastUpMove
-            )
+            if (time >= songMoves.upMoveTimes[upMoveCount])
             {
+                Debug.Log($"IDS FACING UP: Time {time}");
+                Debug.Log($"songMoves.upMoveTimes[upMoveCount] {songMoves.upMoveTimes[upMoveCount]}");
+                
                 Ids.FaceDirection(Directions.Up);
-                lastUpMove = upMoveCount;
                 upMoveCount++;
             }
         }
@@ -714,13 +698,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (rightMoveCount > songMoves.rightMoveTimes.Length - 1)
                 return;
 
-            if (
-                time >= songMoves.rightMoveTimes[rightMoveCount]
-                && rightMoveCount > lastRightMove
-            )
+            if (time >= songMoves.rightMoveTimes[rightMoveCount])
             {
-                game.GetMovingNPC(0).FaceDirection(Directions.Right);
-                lastRightMove = rightMoveCount;
+                Debug.Log($"IDS FACING RIGHT: Time {time}");
+                Debug.Log($"songMoves.rightMoveTimes[rightMoveCount] {songMoves.rightMoveTimes[rightMoveCount]}");
+                
+                Ids.FaceDirection(Directions.Right);
                 rightMoveCount++;
             }
         }
@@ -872,16 +855,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     void InitializeIdsDance()
     {
         leftMoveCount = 0;
-        lastLeftMove = -1;
-        
         downMoveCount = 0;
-        lastDownMove = -1;
-        
         upMoveCount = 0;
-        lastUpMove = -1;
-        
         rightMoveCount = 0;
-        lastRightMove = -1;
     }
 
     void HandleIdsInRoom()

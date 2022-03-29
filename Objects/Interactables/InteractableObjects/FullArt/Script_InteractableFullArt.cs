@@ -132,12 +132,6 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     {
         if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
         {
-            if (dialogueNodes == null || dialogueNodes.Length == 0)
-            {
-                Debug.LogWarning("No dialogue nodes provided for text object");
-                return;
-            }
-            
             dialogueManager.StartDialogueNode(
                 promptDialogueNode,
                 SFXOn: true,
