@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-28 04:49:18
+// Last created by Dialogue Exporter at 2022-03-28 19:25:53
 
 using System.Collections;
 using System.Collections.Generic;
@@ -5014,7 +5014,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{62}",
         EN = new string[]
         {
-                @"��!",
+                @"���� ��� ��� �� �����!",
         },
         
     }

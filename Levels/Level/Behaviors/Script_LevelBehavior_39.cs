@@ -23,6 +23,8 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     [SerializeField] private Script_Trigger stayTrigger;
     [SerializeField] private Directions checkDirection;
 
+    [SerializeField] private Script_Marker noBarrierOnTalkLocation;
+
     private bool didGuardConfirm;
     private bool didMapNotification;
 
@@ -62,8 +64,8 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
 
         // If already spoken with guard by either interacting with or activating trigger
         // then don't activate trigger anymore and let Vx pass automatically 
-        // except on Sunday, where it's always blocking
-        if (isPsychicDuckActive && didGuardConfirm && game.Run.dayId != Script_Run.DayId.sun)
+        // except on Wednesday, where it's always blocking
+        if (isPsychicDuckActive && didGuardConfirm && game.Run.dayId != Script_Run.DayId.wed)
             return;
 
         // If player x position > Flan's, then is entering Trigger from right side (exiting rooms)
@@ -85,8 +87,9 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
 
     public void OnEndGuardDialogueBlock()
     {
-        /// Reinstate barrier
-        barrier.gameObject.SetActive(true);
+        /// Reinstate barrier unless Player is talking from the right side of guard.
+        if (game.GetPlayer().location != noBarrierOnTalkLocation.Position)
+            barrier.gameObject.SetActive(true);
         
         Debug.Log("OnEndGuardDialogueBlock: Set game to Interact.");
         game.ChangeStateInteract();
@@ -118,11 +121,14 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     // Flan's dialogue.
     public void CheckPlayerMoveDirection()
     {
+        var player = game.GetPlayer();
+        
         if (
-            Input.GetButtonDown(checkDirection.DirectionToKeyCode())
+            Input.GetButton(checkDirection.DirectionToKeyCode())
+            && player.FacingDirection == checkDirection
         )
         {
-            if (game.GetPlayer().State == Const_States_Player.Interact)
+            if (player.State == Const_States_Player.Interact)
                 StartGuardDialogue();
             else
                 Debug.Log("Trying to trigger Flan Dialogue but Player not in Interact");

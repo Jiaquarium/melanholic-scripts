@@ -29,6 +29,10 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     [SerializeField] private bool isResetDefault = true;
     [SerializeField] private bool isSelectAllOnFocus;
 
+    [SerializeField] private bool isAlphaInput;
+
+    [SerializeField] private Script_InputManager inputManager;
+
     private TMP_InputField TMPInputField;
     private TextMeshProUGUI TMPGUI;
     private float caretBlinkRate;
@@ -79,7 +83,8 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         // Script_SlowAwakeEventSystem will disable navigation events on prompt start up.
         // If we're still in this start up period, disable auto submit selection.
-        if (!EventSystem.current.sendNavigationEvents)  return;
+        if (!EventSystem.current.sendNavigationEvents)
+            return;
         
         if (
             Input.GetKeyDown(KeyCode.DownArrow) /// NOTE: CPU-ONLY
@@ -87,6 +92,12 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             || Input.GetButtonDown(Const_KeyCodes.Cancel)
         )
         {
+            // Ignore letters for entry inputs requiring typing alphabet characters.
+            if (isAlphaInput && inputManager.GetInputIsAlpha())
+            {
+                return;
+            }
+            
             TMPGUI.GetComponent<TMP_InputField>().DeactivateInputField();
             // set Submit as selected
             EventSystem.current.SetSelectedGameObject(submitButton);

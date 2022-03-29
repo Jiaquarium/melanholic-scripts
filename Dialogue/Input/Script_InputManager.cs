@@ -24,6 +24,8 @@ public class Script_InputManager : MonoBehaviour
     public Script_EntryInput entryInput;
     
     [SerializeField] private Script_SFXManager SFXManager;
+    
+    [SerializeField] private Script_AlphaInputUtils alphaInputUtils;
 
     private AudioSource audioSource;
     
@@ -113,6 +115,11 @@ public class Script_InputManager : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public bool GetInputIsAlpha()
+    {
+        return alphaInputUtils.IsKeyDownAlpha();
+    }
+    
     /// <summary>
     /// mode will dictate the max char count, custom validation etc
     /// </summary>

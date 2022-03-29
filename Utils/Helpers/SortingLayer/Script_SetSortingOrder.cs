@@ -19,9 +19,28 @@ public class Script_SetSortingOrder : MonoBehaviour
     public string sortingLayerAttribute;
     public string sortingLayerFallbackName = "Default";
     [SerializeField] private bool isParent;
+    
+    [SerializeField] private bool isUpdate;
+    
     private Renderer r;
     
-    private void OnValidate()
+    void OnValidate()
+    {
+        HandleSortingOrder();
+    }
+
+    void Start()
+    {
+        HandleSortingOrder();
+    }
+
+    void Update()
+    {
+        if (isUpdate)
+            HandleSortingOrder();
+    }
+
+    private void HandleSortingOrder()
     {
         if (string.IsNullOrEmpty(sortingLayerFallbackName))
             sortingLayerFallbackName = "Default";

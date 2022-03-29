@@ -105,6 +105,7 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
         StartCoroutine(WaitBeforeExitReaction());
 
+        // Note: this will not trigger "Can't Understand" Dialogue.
         IEnumerator WaitBeforeExitReaction()
         {
             yield return new WaitForSeconds(waitBeforeExitReactionTime);

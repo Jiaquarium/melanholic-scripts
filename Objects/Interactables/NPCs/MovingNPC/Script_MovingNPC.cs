@@ -241,13 +241,10 @@ public class Script_MovingNPC : Script_StaticNPC
                 Directions endFaceDirection = moveSets[moveSetIndex].endFaceDirection;
                 FaceDirection(endFaceDirection);
                 
-                game.ChangeStateInteract();
                 game.CurrentMovesDoneAction();
-                
 
                 if (allMoves.Count == 0)
                 {
-                    game.ChangeStateInteract();
                     game.AllMovesDoneAction(MovingNPCId);
 
                     if (isApproachingTarget)
