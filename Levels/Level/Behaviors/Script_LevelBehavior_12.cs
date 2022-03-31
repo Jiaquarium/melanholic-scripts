@@ -83,7 +83,6 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
     {
         Script_PuzzlesEventsManager.OnPuzzleProgress += OnPuzzleProgress;
         Script_PuzzlesEventsManager.OnPuzzleSuccess += OnPuzzleComplete;
-        fireplacePlayable.stopped += OnFireplaceExplosionDone;
 
         Debug.Log("LB12: enabled");
         if (!isDone)
@@ -96,7 +95,6 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
     {
         Script_PuzzlesEventsManager.OnPuzzleProgress -= OnPuzzleProgress;
         Script_PuzzlesEventsManager.OnPuzzleSuccess -= OnPuzzleComplete;
-        fireplacePlayable.stopped -= OnFireplaceExplosionDone;
 
         playerPlayableDirector = null;
 
@@ -227,9 +225,16 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         CutScenesDoneCamera();
     }
 
-    /// /// <summary>
-    /// NextNodeAction(s) End =============================================================================
-    /// </summary>
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
+    // Fireplace Explode Timeline
+    public void OnFireplaceExplosionDone()
+    {
+        game.ChangeStateInteract();
+    }
+    
+    // ------------------------------------------------------------------
 
     public void CutScenesDoneCamera()
     {
@@ -354,18 +359,6 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         // no follow up action on puzzle complete player timeline (isDone flag)
         if (aDirector == playerPlayableDirector && !isDone)
             HandleMovePlayerToMirror(playerMovesNeededToReachMirror);
-    }
-    /// <summary>
-    /// called as event listener
-    /// </summary>
-    private void OnFireplaceExplosionDone(PlayableDirector aDirector)
-    {
-        print($"HandlePlayableDirectorStopped(): Director: {aDirector}, playableAsset: {aDirector.playableAsset}");
-        // finished fireplace explosion timeline
-        if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[0])
-        {
-            game.ChangeStateInteract();
-        }
     }
 
     private void HandleMovePlayerToMirror(int distance)

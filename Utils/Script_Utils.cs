@@ -430,31 +430,42 @@ public static class Script_Utils
         int octant = (int)(Mathf.Round(8 * angle / (2 * Mathf.PI) + 8) % 8);
 
         CompassDir dir = (CompassDir)octant;
+        Directions dirToTarget;
     
         // handle if diagonal cases, if odd handle
         // set default directions (if perfectly diagonal, default to Right or Left)
         if (dir == CompassDir.NE)
         {
-            if (direction.x * direction.x >= direction.z * direction.z) dir = CompassDir.E;
-            else                                                        dir = CompassDir.N;
+            if (direction.x * direction.x >= direction.z * direction.z)
+                dirToTarget = CompassToDirectionDict[CompassDir.E];
+            else
+                dirToTarget = CompassToDirectionDict[CompassDir.N];
         }
         else if (dir == CompassDir.NW)
         {
-            if (direction.x * direction.x >= direction.z * direction.z) dir = CompassDir.W;
-            else                                                        dir = CompassDir.N;
+            if (direction.x * direction.x >= direction.z * direction.z)
+                dirToTarget = CompassToDirectionDict[CompassDir.W];
+            else
+                dirToTarget = CompassToDirectionDict[CompassDir.N];
         }
         else if (dir == CompassDir.SE)
         {
-            if (direction.x * direction.x >= direction.z * direction.z) dir = CompassDir.E;
-            else                                                        dir = CompassDir.S;
+            if (direction.x * direction.x >= direction.z * direction.z)
+                dirToTarget = CompassToDirectionDict[CompassDir.E];
+            else
+                dirToTarget = CompassToDirectionDict[CompassDir.S];
         }
         else if (dir == CompassDir.SW)
         {
-            if (direction.x * direction.x >= direction.z * direction.z) dir = CompassDir.W;
-            else                                                        dir = CompassDir.S;
+            if (direction.x * direction.x >= direction.z * direction.z)
+                dirToTarget = CompassToDirectionDict[CompassDir.W];
+            else
+                dirToTarget = CompassToDirectionDict[CompassDir.S];
         }
-        
-        return CompassToDirectionDict[dir];
+        else
+            dirToTarget = Directions.None;
+            
+        return dirToTarget;
     }
 
     public static Directions GetMyDirectionToTarget(this Transform obj, Transform target)

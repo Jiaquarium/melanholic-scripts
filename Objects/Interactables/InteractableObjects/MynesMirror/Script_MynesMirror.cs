@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Timeline;
+using UnityEngine.Playables;
 
 /// <summary>
 /// Ordering:
@@ -19,6 +21,9 @@ using UnityEngine.Events;
 ///         1) Specially defined override Nodes, completely define a custom flow
 /// 
 /// 3. End() from Dialogue End NextNodeAction
+/// 
+/// Most of the cut scene will be handled by calls to PRCS Manager (Custom).
+/// This director handles the shatter timeline.
 /// </summary>
 public class Script_MynesMirror : Script_InteractableObjectText
 {
@@ -34,6 +39,11 @@ public class Script_MynesMirror : Script_InteractableObjectText
 
     [SerializeField] protected Sprite defaultMirrorSprite;
     [SerializeField] protected Sprite brokenMirrorSprite;
+
+    [SerializeField] protected PlayableDirector director;
+    [SerializeField] protected TimelineAsset shatterTimeline;
+
+    [SerializeField] private Script_PRCSManager PRCSManager;
 
     private bool isSolved;
     
@@ -154,6 +164,35 @@ public class Script_MynesMirror : Script_InteractableObjectText
     {
         Script_DialogueManager.DialogueManager.StartDialogueNode(InteractionNode);
     }
+
+    // Shatter Timeline
+    public void RemoveMyne()
+    {
+        PRCSManager.CloseMynesMirrorNoFade();
+        Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId] = true;
+    }
+    
+    /// <summary>
+    /// Note! Call this on end dialogue node No because music will be faded out
+    /// on interaction with the mirror.
+    /// </summary>
+    /// 
+    /// Shatter Timeline
+    public void FadeInBGMusic()
+    {
+        Script_BackgroundMusicManager.Control.UnPauseAll();
+        Script_BackgroundMusicManager.Control.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+    }
+
+    // Shatter Timeline
+    public void OnShatterTimelineDone()
+    {
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: game.ChangeStateInteract
+        );
+    }
     
     // ------------------------------------------------------------------
     // Next Node Actions START
@@ -172,7 +211,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
         
         void OnFramingAnimationDone()
         {
-            Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror);
+            PRCSManager.OpenPRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror);
 
             // BGM coroutine may still be running, so ensure to Pause in case it was stopped prematurely
             // and never called its callback to pause BGM
@@ -190,39 +229,21 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public virtual void End()
     {
-        // Fade out BG Theme Player and Fade in Game BGM
+        // Fade out BG Theme Player
         Script_BackgroundMusicManager.Control.FadeOutMed(() => {
                 bgThemePlayer.gameObject.SetActive(false);
-                FadeInBGMusic();
             },
             Const_AudioMixerParams.ExposedBGVolume
         );
-        
-        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.MynesMirror, () => {
-            Script_ScarletCipherManager.Control.MynesMirrorsActivationStates[MynesMirrorId] = true;
-            
-            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
-                isOpen: false,
-                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
-                cb: game.ChangeStateInteract
-            );
-        });
 
+        director.Play(shatterTimeline);
+        
         HandleIsActivatedGraphics(true);
         
         // Track the interaction count.
         Script_MynesMirrorManager.Control.InteractionCount++;
     }
 
-    /// <summary>
-    /// Note! Call this on end dialogue node No because music will be faded out
-    /// on interaction with the mirror.
-    /// </summary>
-    public void FadeInBGMusic()
-    {
-        Script_BackgroundMusicManager.Control.UnPauseAll();
-        Script_BackgroundMusicManager.Control.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
-    }
     // Next Node Actions END
     // ------------------------------------------------------------------
 

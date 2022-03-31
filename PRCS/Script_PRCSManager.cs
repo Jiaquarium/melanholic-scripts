@@ -225,6 +225,11 @@ public class Script_PRCSManager : MonoBehaviour
         }
     }
 
+    public void CloseMynesMirrorNoFade()
+    {
+        ClosePRCSNoFade(MynesMirrorPRCS);
+    }
+
     public void SetAwakeningActive(bool isActive)
     {
         if (isActive)
