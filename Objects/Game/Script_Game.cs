@@ -700,7 +700,7 @@ public class Script_Game : MonoBehaviour
         weatherFXManager.SnowDayEffect();
         
         // Note: StartBgMusic should be before Grid Activation and Level Setup, because BGM changes
-        // on Awake/OnEnable/Start or Setup should override this default BGM Player.
+        // on Awake/OnEnable/Start/Setup should be able to override this default BGM Player.
         StartBgMusic();
         
         SetTileMaps();

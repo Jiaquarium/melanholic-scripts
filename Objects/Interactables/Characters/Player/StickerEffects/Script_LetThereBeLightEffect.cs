@@ -5,6 +5,7 @@ using UnityEngine;
 public class Script_LetThereBeLightEffect : Script_StickerEffect
 {
     [SerializeField] private RuntimeAnimatorController lanternOnAnimatorController;
+    [SerializeField] private AudioSource audioSource;
     
     private bool isLanternOn;
 
@@ -21,6 +22,15 @@ public class Script_LetThereBeLightEffect : Script_StickerEffect
             
             player.SwitchLight(false);
             isLanternOn = false;
+
+            var level = Script_Game.Game.levelBehavior;
+            
+            // Give control of SFX to the level if there's an event when lights turn off.
+            if (!level.OnLanternEffectOff())
+            {
+                var sfx = Script_SFXManager.SFX;
+                audioSource.PlayOneShot(sfx.LanternOff, sfx.LanternOffVol);
+            }
         }
         else
         {
@@ -28,6 +38,15 @@ public class Script_LetThereBeLightEffect : Script_StickerEffect
             
             player.SwitchLight(true);
             isLanternOn = true;
+
+            var level = Script_Game.Game.levelBehavior;
+
+            // Give control of SFX to the level if there's an event when lights turn on.
+            if (!level.OnLanternEffectOn())
+            {
+                var sfx = Script_SFXManager.SFX;
+                audioSource.PlayOneShot(sfx.LanternOn, sfx.LanternOnVol);
+            }
         }
     }
 

@@ -96,6 +96,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     private Script_WindManager windManager;
 
     private float currentTargetBlend;
+    private bool isExitingWindZone;
 
 
     public bool IsDone
@@ -470,6 +471,31 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             framing: Script_UIAspectRatioEnforcerFrame.Framing.MaskReveal,
             cb: () => { timelineController.PlayableDirectorPlayFromTimelines(2, 2); }
         );
+    }
+
+    public void HandleExitWindZone()
+    {
+        var exittingDir = game.GetPlayer().FacingDirection;
+        
+        Debug.Log($"HandleExitWindZone exittingDir {exittingDir}");
+        
+        // Only trigger this reaction if exiting with forward direction
+        if (exittingDir == Directions.Up && !isExitingWindZone)
+        {
+            var sfx = Script_SFXManager.SFX;
+            sfx.PlayMyneReveal();
+
+            // Prevent multiple calls
+            isExitingWindZone = true;
+
+            StartCoroutine(WaitEndFrameSetFlag());
+        }
+
+        IEnumerator WaitEndFrameSetFlag()
+        {
+            yield return new WaitForEndOfFrame();
+            isExitingWindZone = false;
+        }
     }
 
     // ------------------------------------------------------------------

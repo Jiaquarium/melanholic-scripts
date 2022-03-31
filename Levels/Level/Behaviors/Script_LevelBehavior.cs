@@ -119,7 +119,10 @@ public class Script_LevelBehavior : MonoBehaviour
         if (isSnowDay)      snowEffect.gameObject.SetActive(true);
         else                snowEffect.gameObject.SetActive(false);
     }
-    
+
+    public virtual bool OnLanternEffectOn() { return false; }
+    public virtual bool OnLanternEffectOff() { return false; }
+
     public virtual void InitialState() { }
     
     /// <summary>

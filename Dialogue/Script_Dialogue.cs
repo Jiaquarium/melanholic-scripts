@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-28 19:25:53
+// Last created by Dialogue Exporter at 2022-03-31 15:20:17
 
 using System.Collections;
 using System.Collections.Generic;
@@ -489,6 +489,32 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"You don’t feel like taking the elevator anymore.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Last Elevator
+{
+    "last-elevator_ids_first-day_default",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"� � � � � � � �                                � � � � � � � �!",
+        },
+        
+    }
+},
+{
+    "last-elevator_ids_first-day_psychic",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Baaaaa! Baaaa!",
         },
         
     }

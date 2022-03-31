@@ -14,9 +14,7 @@ public class Script_LightSwitch : Script_Switch
     
     public float onIntensity;
     public float offIntensity;
-    public float volumeScale;
     public AudioSource audioSource;
-    public AudioClip onOffSFX;
 
     protected override void OnValidate()
     {
@@ -44,7 +42,8 @@ public class Script_LightSwitch : Script_Switch
     {
         base.TurnOn();
         
-        audioSource.PlayOneShot(onOffSFX, volumeScale);
+        var sfx = Script_SFXManager.SFX;
+        audioSource.PlayOneShot(sfx.LightSwitchOn, sfx.LightSwitchOnVol);
 
         if (lightsControllers.Length > 0)
         {
@@ -59,7 +58,8 @@ public class Script_LightSwitch : Script_Switch
     {
         base.TurnOff();
 
-        audioSource.PlayOneShot(onOffSFX, volumeScale);
+        var sfx = Script_SFXManager.SFX;
+        audioSource.PlayOneShot(sfx.LightSwitchOff, sfx.LightSwitchOffVol);
         
         if (lightsControllers.Length > 0)
         {

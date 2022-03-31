@@ -29,6 +29,9 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     [SerializeField] private Script_Pushable[] pushables;
     [SerializeField] private Script_FullArtParent fullArtParent;
 
+    [SerializeField] private float waitBeforeQuestSFXTime;
+    [SerializeField] private bool didLightsOn;
+
     // ------------------------------------------------------------------
     // For Dev only.
     [SerializeField] private Script_Marker[] pushablesDoneLocations;
@@ -48,6 +51,7 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         ActivateTriggersAndPillars(true);
 
         HandleLanternReactions(game.GetPlayer().IsLightOn);
+        OnEnableLanternSFXReaction();
     }
 
     protected override void OnDisable() {
@@ -79,6 +83,37 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         base.Update();
 
         HandleLanternReactions(game.GetPlayer().IsLightOn);
+    }
+
+    /// <summary>
+    /// Must also handle the case if Player comes into level the first time with Lantern already on.
+    /// </summary>
+    public override void OnLevelInitComplete()
+    {
+        if (!didLightsOn && Script_Game.Game.GetPlayer().IsLightOn)
+        {
+            HandleLanternSFXReaction();
+        }
+    }
+    
+    public override bool OnLanternEffectOn()
+    {
+        var sfx = Script_SFXManager.SFX;
+        sfx.PlayLanternOnXL();
+
+        if (!didLightsOn)
+        {
+            HandleLanternSFXReaction();
+        }
+        
+        return true;
+    }
+
+    public override bool OnLanternEffectOff()
+    {
+        Script_SFXManager.SFX.PlayLanternOffXL();
+        
+        return true;
     }
 
     private void OnPuzzleProgress()
@@ -199,6 +234,39 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     private void HandleLanternReactions(bool isLightOn)
     {
         directionalLight.gameObject.SetActive(isLightOn);
+    }
+
+    private void HandleLanternSFXReaction()
+    {
+        var sfx = Script_SFXManager.SFX;
+        
+        didLightsOn = true;
+        game.ChangeStateCutScene();
+
+        // Fade out bgm
+        Script_BackgroundMusicManager.Control.FadeOutFast(() => {
+            StartCoroutine(WaitToPlayQuestProgressSFX());
+        }, Const_AudioMixerParams.ExposedBGVolume);
+
+        IEnumerator WaitToPlayQuestProgressSFX()
+        {
+            yield return new WaitForSeconds(waitBeforeQuestSFXTime);
+
+            sfx.PlayQuestProgress(() => {
+                Script_BackgroundMusicManager.Control.FadeInFast(() => {
+                    game.ChangeStateInteract();
+                }, Const_AudioMixerParams.ExposedBGVolume);
+            });
+        }
+    }
+
+    private void OnEnableLanternSFXReaction()
+    {
+        if (!didLightsOn && Script_Game.Game.GetPlayer().IsLightOn)
+        {
+            Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            Script_SFXManager.SFX.PlayLanternOnXL();
+        }
     }
 
     public override void Setup()

@@ -31,6 +31,10 @@ public class Script_ScreenFXManager : MonoBehaviour
     [SerializeField] private float currentFrequency;
     [SerializeField] private float currentInterval;
     [SerializeField] private float timer;
+
+    [SerializeField] private Script_AudioSourceFader rumbleAudio;
+    [SerializeField] private float rumbleFadeOutTime = 0.25f;
+    
     private Script_Clock.TimeStates lastState;
 
     void Update()
@@ -62,6 +66,20 @@ public class Script_ScreenFXManager : MonoBehaviour
             currentAmplitude,
             currentFrequency
         );
+
+        var sfx = Script_SFXManager.SFX;
+        rumbleAudio.Source.volume = sfx.ScreenShakeRumbleVol;
+        rumbleAudio.Source.clip = sfx.ScreenShakeRumble;
+        rumbleAudio.Source.Play();
+
+        StartCoroutine(WaitToFadeOutAudio());
+
+        IEnumerator WaitToFadeOutAudio()
+        {
+            yield return new WaitForSeconds(currentDuration);
+
+            rumbleAudio.FadeOut(rumbleFadeOutTime);
+        }
     }
 
     private void UpdateScreenFX()

@@ -150,6 +150,30 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip Fireworks;
     [Range(0f, 1f)] public float FireworksVol;
+
+    public AudioClip ScreenShakeRumble;
+    [Range(0f, 1f)] public float ScreenShakeRumbleVol;
+
+    public AudioClip LightSwitchOn;
+    [Range(0f, 1f)] public float LightSwitchOnVol;
+
+    public AudioClip LightSwitchOff;
+    [Range(0f, 1f)] public float LightSwitchOffVol;
+    
+    public AudioClip LanternOn;
+    [Range(0f, 1f)] public float LanternOnVol;
+
+    public AudioClip LanternOff;
+    [Range(0f, 1f)] public float LanternOffVol;
+
+    public AudioClip LanternOnXL;
+    [Range(0f, 1f)] public float LanternOnXLVol;
+
+    public AudioClip LanternOffXL;
+    [Range(0f, 1f)] public float LanternOffXLVol;
+
+    public AudioClip MyneReveal;
+    [Range(0f, 1f)] public float MyneRevealVol;
     
     [Space]
 
@@ -295,6 +319,21 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayItemPickUp()
     {
         SFXSource.PlayOneShot(ItemPickUp, ItemPickUpVol);
+    }
+
+    public void PlayLanternOnXL()
+    {
+        SFXSource.PlayOneShot(LanternOnXL, LanternOnXLVol);
+    }
+
+    public void PlayLanternOffXL()
+    {
+        SFXSource.PlayOneShot(LanternOffXL, LanternOffXLVol);
+    }
+
+    public void PlayMyneReveal()
+    {
+        SFXSource.PlayOneShot(MyneReveal, MyneRevealVol);
     }
 
     public void Play(AudioClip sfx, float vol = 1f)
