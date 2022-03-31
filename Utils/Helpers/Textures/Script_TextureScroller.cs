@@ -8,6 +8,7 @@ public class Script_TextureScroller : MonoBehaviour
     [SerializeField] private float scrollSpeed = .01f;
 
     private Renderer graphics;
+    private float timeStart;
 
     public float ScrollSpeed
     {
@@ -17,12 +18,23 @@ public class Script_TextureScroller : MonoBehaviour
 
     void Awake ()
     {
-        graphics = GetComponent<Renderer>();
+        UpdateMaterial();
     }
 
     void Update ()
     {
-        float x = Mathf.Repeat(Time.time * scrollSpeed, 1f);
+        UpdateOffset();
+    }
+
+    public void UpdateMaterial()
+    {
+        graphics = GetComponent<Renderer>();
+        timeStart = Time.time;
+    }
+
+    private void UpdateOffset()
+    {
+        float x = Mathf.Repeat((Time.time - timeStart) * scrollSpeed, 1f);
         Vector2 offset = new Vector2(x, 0f);
         graphics.material.SetTextureOffset(MainTex, offset);
     }

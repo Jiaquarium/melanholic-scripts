@@ -53,6 +53,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private bool isIceBlockMidCracked;
     [SerializeField] private bool isIceBlockRightCracked;
 
+    [SerializeField] private Renderer leftBody;
+    [SerializeField] private Renderer middleBody;
+    [SerializeField] private Renderer rightBody;
+
+    [SerializeField] private Material wavyUnlitStoneMaterial;
+
     [SerializeField] private List<GameObject> iceBlockTimelineObjects;
     [SerializeField] private List<CinemachineVirtualCamera> virtualCameras;
     [SerializeField] private List<Script_InteractablePaintingEntrance> worldPaintings;
@@ -62,6 +68,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_LevelBehavior_20 ballroomBehavior;
 
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
+
+    [SerializeField] private Script_InteractableBox grandMirrorInteractableBox;
     
     [Header("R2 Only")]
     [SerializeField] private float fadeToBlackTime;
@@ -108,6 +116,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         Script_GameEventsManager.OnLevelInitComplete += OnLevelInitCompleteEvent;
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone += PlayRevealNewWorldTimeline;
+        Script_InteractableObjectEventsManager.OnUnfreezeEffect += ActivateGrandMirrorBreathing;
+        Script_InteractableObjectEventsManager.OnDiagonalCut += OnDiagonalCut;
 
         currentTargetBlend = 0f;
         glitchManager.InitialState();
@@ -123,6 +133,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         Script_GameEventsManager.OnLevelInitComplete -= OnLevelInitCompleteEvent;
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone -= PlayRevealNewWorldTimeline;
+        Script_InteractableObjectEventsManager.OnUnfreezeEffect -= ActivateGrandMirrorBreathing;
+        Script_InteractableObjectEventsManager.OnDiagonalCut -= OnDiagonalCut;
 
         InitialState();
     }
@@ -162,7 +174,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     {
         if (currentIceBlockStats == iceBlockStatsLeft)
         {
-            worldPaintings[0].SetStateActive();   
+            worldPaintings[0].SetStateActive();
         }
         else if (currentIceBlockStats == iceBlockStatsMid)
         {
@@ -177,6 +189,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // Called from end of NewWorldRevealPaintingTimeline
     public void OnNewWorldRevealPaintingDone()
     {
+        // Unhide the interactable box that was hidden in OnDiagonalCut.
+        grandMirrorInteractableBox.gameObject.SetActive(true);
+        
         // If all three ice blocks have been destroyed, start the Awakening scene.
         if (IsAllIceBlocksCracked())
         {
@@ -254,7 +269,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     
     // ------------------------------------------------------------------
     // Unity Events & Timeline Signals
-
+    
+    /// <summary>
+    /// When Crackable begins cracking sequence, hide the Interactable Box
+    /// because the Ice Pieces get stuck inside.
+    /// </summary>
+    public void OnDiagonalCut(Script_CrackableStats ice)
+    {
+        grandMirrorInteractableBox.gameObject.SetActive(false);
+    }
+    
     public void OnIceBlockCracked(Script_CrackableStats ice)
     {
         game.ChangeStateCutScene();
@@ -267,6 +291,34 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             mynesGrandMirror.SetMirrorGraphics(false, 1);
         else if (ice == iceBlockStatsRight)
             mynesGrandMirror.SetMirrorGraphics(false, 2);
+    }
+
+    public void ActivateGrandMirrorBreathing(Script_CrackableStats ice)
+    {
+        if (ice == iceBlockStatsLeft)
+        {
+            leftBody.material = wavyUnlitStoneMaterial;
+            ActivateScroller(leftBody.GetComponent<Script_TextureScroller>());
+        }
+        else if (ice == iceBlockStatsMid)
+        {
+            middleBody.material = wavyUnlitStoneMaterial;
+            ActivateScroller(middleBody.GetComponent<Script_TextureScroller>());
+        }
+        else if (ice == iceBlockStatsRight)
+        {
+            rightBody.material = wavyUnlitStoneMaterial;
+            ActivateScroller(rightBody.GetComponent<Script_TextureScroller>());
+        }
+
+        void ActivateScroller(Script_TextureScroller scroller)
+        {
+            if (scroller != null)
+            {
+                scroller.enabled = true;
+                scroller.UpdateMaterial();
+            }
+        }
     }
 
     public void PlayRevealNewWorldTimeline(Script_CrackableStats iceStats)

@@ -170,6 +170,13 @@ public class Script_CrackableStats : Script_CharacterStats
         isHideOnDisable = true;
     }
 
+    public void OnUnfreezeEffect(Script_CrackableStats ice)
+    {
+        Debug.Log($"OnUnfreezeEffect <{ice}>");
+        
+        Script_InteractableObjectEventsManager.UnfreezeEffect(this);
+    }
+
     public void DiagonalCut()
     {
         shatter?.DiagonalCut();
@@ -178,6 +185,8 @@ public class Script_CrackableStats : Script_CharacterStats
         // which will shake screen. If immediate Shatter, IceSpikeEffect
         // will handle screen shake.
         isScreenShakeShatter = true;
+
+        Script_InteractableObjectEventsManager.DiagonalCut(this);
     }
 
     public void Shatter()

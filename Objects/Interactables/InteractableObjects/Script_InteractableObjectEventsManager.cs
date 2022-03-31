@@ -51,4 +51,20 @@ public class Script_InteractableObjectEventsManager : MonoBehaviour
         if (OnShatter != null)
             OnShatter(iceStats);
     }
+
+    public delegate void UnfreezeEffectDelegate(Script_CrackableStats iceStats);
+    public static event UnfreezeEffectDelegate OnUnfreezeEffect;
+    public static void UnfreezeEffect(Script_CrackableStats iceStats)
+    {
+        if (OnUnfreezeEffect != null)
+            OnUnfreezeEffect(iceStats);
+    }
+
+    public delegate void DiagonalCutDelegate(Script_CrackableStats iceStats);
+    public static event DiagonalCutDelegate OnDiagonalCut;
+    public static void DiagonalCut(Script_CrackableStats iceStats)
+    {
+        if (OnDiagonalCut != null)
+            OnDiagonalCut(iceStats);
+    }
 }
