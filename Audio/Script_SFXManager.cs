@@ -174,6 +174,9 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip MyneReveal;
     [Range(0f, 1f)] public float MyneRevealVol;
+
+    public AudioClip WindZoneExit;
+    [Range(0f, 1f)] public float WindZoneExitVol;
     
     [Space]
 
@@ -332,6 +335,11 @@ public class Script_SFXManager : MonoBehaviour
     }
 
     public void PlayMyneReveal()
+    {
+        SFXSource.PlayOneShot(MyneReveal, MyneRevealVol);
+    }
+
+    public void PlayWindZoneExit()
     {
         SFXSource.PlayOneShot(MyneReveal, MyneRevealVol);
     }

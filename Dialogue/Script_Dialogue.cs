@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-31 15:20:17
+// Last created by Dialogue Exporter at 2022-03-31 20:09:52
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3453,7 +3453,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Baaa! You don’t need me anymore, kiddo.",
+                @"Baaa! You don’t need those masks anymore, kiddo.",
+                @"You don’t need me anymore, baaaaa!",
         },
         
     }

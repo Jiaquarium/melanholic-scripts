@@ -172,6 +172,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private int tutorialEndLevel;
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
     [SerializeField] private Script_LevelBehavior[] disabledPianoLevels;
+    [SerializeField] private Script_LevelBehavior[] psychicLevels;
     
     // ------------------------------------------------------------------
     // Spawn points
@@ -344,6 +345,11 @@ public class Script_Game : MonoBehaviour
     public bool IsMelancholyPianoDisabled
     {
         get => disabledPianoLevels.FirstOrDefault(lvl => lvl == levelBehavior) != null;
+    }
+
+    public bool IsPsychicRoom
+    {
+        get => psychicLevels.FirstOrDefault(lvl => lvl == levelBehavior) != null;
     }
 
     /// <summary>

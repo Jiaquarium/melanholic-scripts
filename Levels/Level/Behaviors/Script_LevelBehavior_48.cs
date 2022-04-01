@@ -483,7 +483,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         if (exittingDir == Directions.Up && !isExitingWindZone)
         {
             var sfx = Script_SFXManager.SFX;
-            sfx.PlayMyneReveal();
+            sfx.PlayWindZoneExit();
 
             // Prevent multiple calls
             isExitingWindZone = true;
