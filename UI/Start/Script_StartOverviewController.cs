@@ -72,6 +72,12 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private Script_DeathByScreen[] deathByScreens;
     [SerializeField] private Script_BackgroundMusicManager bgmManager;
     [SerializeField] private float playGameOverBGWaitTime;
+
+    [Header("To Loading Screen Settings")]
+    [SerializeField] private Script_CanvasGroupController bgBlack;
+    [SerializeField] private float toLoadingBgBlackFadeInTime = 0.5f;
+    [SerializeField] private float toLoadingSubmenuFadeOutTime = 0.75f;
+    [SerializeField] private float waitBlackScreenBeforeLoadingScreenTime = 0.5f;
     
     private Script_DeathByScreen activeDeathByScreen;
     private Script_SavedGameSubmenuInputChoice[] choices;
@@ -603,17 +609,36 @@ public class Script_StartOverviewController : Script_UIState
     public void ContinueGame(int i)
     {
         state = UIState.Disabled;
-
-        Script_SaveGameControl.saveSlotId = i;
-        Script_SceneManager.ToGameScene();
+        Script_SaveGameControl.saveSlotId = i;        
+        
+        ToGameTransition(continueSubmenu);
     }
 
     public void NewGame(int i)
     {
         state = UIState.Disabled;
-        
         Script_SaveGameControl.saveSlotId = i;
-        Script_SceneManager.ToGameScene();
+        
+        ToGameTransition(newGameSubmenu);
+    }
+
+    private void ToGameTransition(Transform submenu)
+    {
+        // Fade In Black Bg, then Fade Out Submenu
+        bgBlack.Close();
+        bgBlack.FadeIn(toLoadingBgBlackFadeInTime, () => {
+            submenu.GetComponent<Script_CanvasGroupController>().FadeOut(
+                toLoadingSubmenuFadeOutTime,
+                () => StartCoroutine(WaitToLoadScene())
+            );
+        });
+
+        IEnumerator WaitToLoadScene()
+        {
+            yield return new WaitForSeconds(waitBlackScreenBeforeLoadingScreenTime);
+
+            Script_SceneManager.ToGameScene();
+        }
     }
 
     public void EnterDeleteFileChoices(Script_SavedGameTitle savedGame)

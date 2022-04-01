@@ -13,7 +13,10 @@ public class Script_SceneManager : MonoBehaviour
     public static Script_SceneManager SM;
     public const string TitleScene = "Title";
     public const string GameScene = "Game";
-    [SerializeField] private Transform LoadingScreen;
+
+    [Header("Loading Screen Settings")]
+    [SerializeField] private Script_CanvasGroupController LoadingScreen;
+    [SerializeField] private float loadingScreenFadeInTime;
 
     /// <summary>
     /// Singleton needs to be in Awake because there are multiple 

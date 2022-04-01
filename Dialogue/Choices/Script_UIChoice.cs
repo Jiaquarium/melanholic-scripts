@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class Script_UIChoice : MonoBehaviour
 {
     public Image cursor;
     public bool isSelected;
     public int Id;
+
+    [SerializeField] private Script_CanvasGroupController canvasGroupController;
 
     void Start()
     {
@@ -53,5 +56,29 @@ public class Script_UIChoice : MonoBehaviour
     public void InitializeState()
     {
         cursor.enabled = false;
+    }
+
+    /// <summary>
+    /// Call from OnClick handler to fade out (used when transitioning from UI).
+    /// </summary>
+    public void HandleFadeOut(float t = Script_CanvasGroupController.DefaultFadeTime, Action cb = null)
+    {
+        canvasGroupController?.FadeOut(a: () => {
+            canvasGroupController.MyCanvasGroup.alpha = 1f;
+            canvasGroupController.MyCanvasGroup.gameObject.SetActive(false);
+
+            if (cb != null)
+                cb();            
+        });
+    }
+
+    virtual public void TransitionSFX()
+    {
+        Script_SFXManager.SFX.PlaySubmitTransition();
+    }
+
+    virtual public void TransitionGongSFX()
+    {
+        Script_SFXManager.SFX.PlaySubmitTransitionGong();
     }
 }

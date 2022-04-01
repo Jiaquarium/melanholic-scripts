@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-03-25 21:14:19
+// Last created by UI Exporter at 2022-03-31 22:19:16
 
 using System.Collections;
 using System.Collections.Generic;
@@ -22,14 +22,28 @@ public class Script_UIText
     "intro_authors_by",
     new Model_LanguagesUI
     {
-        EN = @"By Jiaquarium"
+        EN = @"By"
+    }
+},
+{
+    "intro_authors_by_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Jiaquarium"
     }
 },
 {
     "intro_authors_music",
     new Model_LanguagesUI
     {
-        EN = @"Music Composed by s3z"
+        EN = @"Original Soundtrack By"
+    }
+},
+{
+    "intro_authors_music_name",
+    new Model_LanguagesUI
+    {
+        EN = @"s3z"
     }
 },
 {

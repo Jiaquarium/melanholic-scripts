@@ -15,6 +15,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_CanvasGroupFadeInOut))]
 public class Script_CanvasGroupController : MonoBehaviour
 {
+    public const float DefaultFadeTime = 0.5f;
+    
     // Can define the first button to select if an Event System needs this.
     public Button firstToSelect;
 
@@ -24,7 +26,6 @@ public class Script_CanvasGroupController : MonoBehaviour
     [SerializeField] bool isUseMaxAlpha;
     [SerializeField] float maxAlpha;
     
-    private const float DefaultFadeTime = 0.5f;
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
 
@@ -47,6 +48,8 @@ public class Script_CanvasGroupController : MonoBehaviour
                 intervalFader.enabled = value;
         }
     }
+
+    public CanvasGroup MyCanvasGroup { get => GetComponent<CanvasGroup>(); }
     
     public virtual void Open()
     {

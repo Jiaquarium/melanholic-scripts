@@ -226,6 +226,12 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip RhythmicXBeat;
     [Range(0f, 1f)] public float RhythmicXBeatVol;
+
+    public AudioClip SubmitTransition;
+    [Range(0f, 1f)] public float SubmitTransitionVol;
+
+    public AudioClip SubmitTransitionGong;
+    [Range(0f, 1f)] public float SubmitTransitionGongVol;
     
     public void PlayQuestProgress(Action cb = null)
     {
@@ -342,6 +348,16 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayWindZoneExit()
     {
         SFXSource.PlayOneShot(MyneReveal, MyneRevealVol);
+    }
+
+    public void PlaySubmitTransition()
+    {
+        SFXSource.PlayOneShot(SubmitTransition, SubmitTransitionVol);
+    }
+
+    public void PlaySubmitTransitionGong()
+    {
+        SFXSource.PlayOneShot(SubmitTransitionGong, SubmitTransitionGongVol);
     }
 
     public void Play(AudioClip sfx, float vol = 1f)
