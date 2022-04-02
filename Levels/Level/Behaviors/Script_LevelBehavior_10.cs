@@ -521,9 +521,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public override bool ActivateTrigger(string Id)
     {
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        if (!isPsychicDuckActive)   return false;
-
         if (Id == NRoomTriggerId && activeTriggerIndex == 0)
         {
             return NRoomTriggerReaction();
@@ -538,18 +535,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public void OnNRoomTriggerPlayerStay(string Id)
     {
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        if (!isPsychicDuckActive)    return;
-        
-        if (activeTriggerIndex == 0)    NRoomTriggerReaction();
+        if (activeTriggerIndex == 0)
+            NRoomTriggerReaction();
     }
 
     public void OnERoomTriggerPlayerStay(string Id)
     {
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        if (!isPsychicDuckActive)    return;
-        
-        if (activeTriggerIndex == 1)    ERoomTriggerReaction();
+        if (activeTriggerIndex == 1)
+            ERoomTriggerReaction();
     }
 
     public bool NRoomTriggerReaction()

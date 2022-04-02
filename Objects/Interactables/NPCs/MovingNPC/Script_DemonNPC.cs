@@ -148,7 +148,11 @@ public class Script_DemonNPC : Script_MovingNPC
 
     private void HandlePsychicDuck()
     {
+        var psychicNPC = GetComponent<Script_PsychicNPC>();
+        bool isPsychicNPC = psychicNPC != null && psychicNPC.IsAlwaysPsychic;
+        
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId)
+            || isPsychicNPC
             || Script_Game.Game.IsPsychicRoom;
         Debug.Log($"{name}: HandlePsychicDuck() isPsychicDuckActive: {isPsychicDuckActive}");
 
