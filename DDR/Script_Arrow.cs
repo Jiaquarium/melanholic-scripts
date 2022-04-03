@@ -104,8 +104,10 @@ public class Script_Arrow : MonoBehaviour
         // case where arrow passes outline and is not clicked in time
         if (t2 > tierNeg1Buffer)
         {
-            if (!isReported)
+            if (!isClicked)
             {
+                Debug.Log($"Reporting no click from arrow {this}");
+
                 DDRManager.ReportArrowTier(this);
                 if (type == "left")             DDRManager.nextLeftArrowIndex++;
                 else if (type == "down")        DDRManager.nextDownArrowIndex++;
@@ -123,8 +125,6 @@ public class Script_Arrow : MonoBehaviour
 
     public float ReportTier()
     {
-        isReported = true;
-
         if (isPassingOutline)
         {
             return -t2;

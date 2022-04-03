@@ -12,6 +12,8 @@ using UnityEditor;
 /// <summary>
 /// Arrows move towards Outlines. On input, check the current direction
 /// and report its rating.
+/// 
+/// Arrows only start being actively reported when in the Tier 3 buffer zone.
 /// </summary>
 public class Script_DDRManager : MonoBehaviour
 {
@@ -494,6 +496,8 @@ public class Script_DDRManager : MonoBehaviour
             // handle case if it's passed the outline and not tier1
             if (t < 0 && Mathf.Abs(t) > tierNeg1Buffer)
             {
+                Debug.Log($"Reporting non-clicked arrow {arrow.type} with t {t}");
+                
                 // report tier3 to game
                 arrow.isClicked = true;
                 game.HandleDDRArrowClick(3);
