@@ -83,6 +83,9 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
 
         game.HandleItemReceive(PsychicDuck);
         GotPsychicDuck = true;
+
+        // Switch Ids Dialoge to Big Ids'
+        Ids.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
     }
     // Next Node Action Unity Events END
     // ----------------------------------------------------------------------

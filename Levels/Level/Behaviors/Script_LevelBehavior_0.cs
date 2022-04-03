@@ -24,12 +24,32 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     [SerializeField] private Script_Hint hint; 
     
     [SerializeField] private Script_PRCS wellJustOpened; 
+
+    [Space]
+    [Header("Ids Cut Scenes")]
+    [Space]
     [SerializeField] private Script_DemonNPC Ids;
 
+    [SerializeField] private float waitBeforeIdsTalksDay1Time;
+
+    [SerializeField] private Script_DemonNPC IdsDay2;
+    [SerializeField] private Script_DialogueNode IdsDay1Node;
+    [SerializeField] private Script_DialogueNode[] IdsDay2Nodes;
+    [SerializeField] private Script_Trigger IdsRun2Trigger;
+    [SerializeField] private Script_VCamera IdsDay2VCam;
+
+    [SerializeField] private float pauseBeforeNewNodeTime;
+    
+    [Space]
+    [Header("Timeline Controlled Environment")]
+    [Space]
     [SerializeField] private Transform defaultTrees;
     [SerializeField] private Transform finalTrees;
 
     private bool didIdsRun;
+
+    private bool IsFirstMonday { get => game.CycleCount == 0 && game.Run.dayId == Script_Run.DayId.mon; }
+    private bool IsFirstTuesday { get => game.CycleCount == 0 && game.Run.dayId == Script_Run.DayId.tue; }
 
     private void Start()
     {
@@ -60,7 +80,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         }
         else
         {
-            HandlePlayIdsTimeline();   
+            HandleIdsMonWedIntro();   
         }
     }
     
@@ -74,44 +94,139 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         return false;
     }
 
-    /// <summary>
-    /// NextNodeAction START ===============================================================
-    /// </summary>
+    // ------------------------------------------------------------------
+    /// Next Node Actions
     public void OnWellCutSceneDone()
     {
         
     }
+
+    // IdsDay1Node
+    // Level Init
+    public void PlayIdsDay1RunTimeline()
+    {
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
+    }
+
+    public void UpdateIdsName()
+    {
+        Script_Names.UpdateIds();
+    }
+
+    public void IdsDialogueDay2Node1()
+    {
+        StartCoroutine(WaitToTalk());   
+        
+        IEnumerator WaitToTalk()
+        {
+            yield return new WaitForSeconds(pauseBeforeNewNodeTime);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(IdsDay2Nodes[1]);
+        }
+    }
+
+    public void IdsDialogueDay2Node2()
+    {
+        // Full Art
+        Script_DialogueManager.DialogueManager.StartDialogueNode(IdsDay2Nodes[2]);
+    }
+
+    public void IdsDialogueDay2Node3()
+    {
+        StartCoroutine(WaitToTalk());   
+        
+        IEnumerator WaitToTalk()
+        {
+            yield return new WaitForSeconds(pauseBeforeNewNodeTime);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(IdsDay2Nodes[3]);
+        }
+    }
+
+    public void IdsDialogueDay2Node4()
+    {
+        StartCoroutine(WaitToTalk());   
+        
+        IEnumerator WaitToTalk()
+        {
+            yield return new WaitForSeconds(pauseBeforeNewNodeTime);
+            // No Full Art
+            Script_DialogueManager.DialogueManager.StartDialogueNode(IdsDay2Nodes[4]);
+        }
+    }
+
+    public void OnDay2IdsDialogueDone()
+    {
+        // Ids runs back & switch VCam back to Main
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 3);
+        Script_VCamManager.VCamMain.SwitchToMainVCam(IdsDay2VCam);
+    }
+
+    // ------------------------------------------------------------------
+    // Unity Events
     
-    /// <summary>
-    /// NextNodeAction END ===============================================================
-    /// </summary>
-    /// ===========================================================================================
-    /// Signal Reactions START 
-    /// ===========================================================================================
+    // Trigger Day2
+    public void PlayIdsWoodsRunDay2Timeline()
+    {
+        // On Day 2 Tues, Ids approaches Rin from behind
+        if (IsFirstTuesday)
+        {
+            game.ChangeStateCutScene();
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 2);
+        }
+    }
+    
+    // ------------------------------------------------------------------
+    // Timeline Signals
     public void OnWellJustOpenedDone()
     {
         Script_PRCSManager.Control.HidePRCS(wellJustOpened, FadeSpeeds.Slow, () => {
             game.ChangeStateInteract();
             didStartThought = true;
 
-            HandlePlayIdsTimeline();
+            HandleIdsMonWedIntro();
         });
     }
 
+    // Ids Intro Woods Run
     public void OnIdsTimelineDone()
     {
         game.ChangeStateInteract();
-        didIdsRun = true;
     }
-    /// Signal Reactions END ========================================================================
 
+    public void IdsDialogueDay2()
+    {
+        Script_DialogueManager.DialogueManager.StartDialogueNode(IdsDay2Nodes[0]);
+
+        Script_VCamManager.VCamMain.SetNewVCam(IdsDay2VCam);
+    }
+
+    public void IdsDay2RunsOutTimelineDone()
+    {
+        game.ChangeStateInteract();
+    }
+
+    // ------------------------------------------------------------------
+
+    // On Day 1, Ids will open with dialogue.
     // On Mon (Tutorial Run) or Wed, Ids should lead you into the Mansion.
-    private void HandlePlayIdsTimeline()
+    private void HandleIdsMonWedIntro()
     {
         if (ShouldPlayIdsIntro())
         {
             game.ChangeStateCutScene();
-            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
+
+            if (IsFirstMonday)
+                StartCoroutine(WaitForIdsDialogue());
+            else
+                PlayIdsDay1RunTimeline();
+            
+            didIdsRun = true;
+        }
+
+        IEnumerator WaitForIdsDialogue()
+        {
+            yield return new WaitForSeconds(waitBeforeIdsTalksDay1Time);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(IdsDay1Node);
         }
     }
 
@@ -127,10 +242,10 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         playerMovementAnimator = game.GetPlayer().MyAnimator.GetComponent<Script_PlayerMovementAnimator>();
 
-        if (ShouldPlayIdsIntro())
-            Ids.gameObject.SetActive(true);
-        else
-            Ids.gameObject.SetActive(false);
+        Ids.gameObject.SetActive(ShouldPlayIdsIntro());
+        
+        IdsDay2.gameObject.SetActive(false);
+        IdsRun2Trigger.gameObject.SetActive(IsFirstTuesday);
         
         defaultTrees.gameObject.SetActive(true);
         finalTrees.gameObject.SetActive(false);

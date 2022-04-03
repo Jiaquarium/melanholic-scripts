@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-03-31 20:09:52
+// Last created by Dialogue Exporter at 2022-04-02 22:42:26
 
 using System.Collections;
 using System.Collections.Generic;
@@ -216,6 +216,160 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ids
+{
+    "woods_ids_day-1_intro",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Baaaa-baaaa.",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Hey, {0} is it?",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Ha, of course I can talk.",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro2",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"The name’s {3}.",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro3",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"It’s really not every day someone new comes in here, y’know?",
+                @"Consider yourself special, kiddo!",
+                @"Actually on the contrary, most people are fleeing from good ol’ {18}.",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro3_choices",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"So what brings you here, huh?",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro3_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Well you know what they say?",
+        },
+        choiceText = "Not too sure myself.",
+        
+    }
+},
+{
+    "woods_ids_day-2_intro3_b",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Ha-ha, kiddo, you got spunk! I like that!",
+                @"But you know what they say?",
+        },
+        choiceText = "None of your business.",
+        
+    }
+},
+{
+    "woods_ids_day-2_intro4",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"The ones who find this place <b>need to be here</b>.",
+                @"...In other words...| <b>They’re summoned here.</b>",
+                @"What about me you ask?",
+                @"So actually...",
+                @"Well you see...",
+                @"I’m trying to find something <b>I’ve lost</b>...",
+                @"And I can’t leave ‘til I do.",
+                @"......",
+                @"You know that tale about the boiling frog?",
+                @"Of course they’ll jump out of boiling water just like you and me.",
+                @"But you put ‘em in lukewarm water and raise the temperature slowly one degree at a time, and...",
+                @"BOOM!| They can’t sense the change at all.",
+                @"And there you have it,| boiling f|-r|-o|-g.",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro5",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Well, kiddo, that’s kinda how I <b>lost it</b>.",
+                @"......",
+                @"Alright alright, enough of this mushy stuff.",
+        },
+        
+    }
+},
+{
+    "woods_ids_day-2_intro6",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"You and I you know, we got plenty of time...| but the rest of ‘em.| Not so much...",
+                @"Speaking of time, I got to run for <b>today</b>. See you another <b>day</b>, {0}~~",
         },
         
     }
@@ -514,7 +668,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Baaaaa! Baaaa!",
+                @"Baaaa! Baaaaaaa!",
+        },
+        
+    }
+},
+{
+    "last-elevator_ids_big-ids_first-day_psychic",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Baa-baa-baa.",
         },
         
     }
@@ -1290,9 +1456,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"I know.",
+                @"I had a feeling you would.",
                 @"......",
-                @"This might sound crazy but|.|.|.",
+                @"Hey, this might sound crazy but|.|.|.",
         },
         choiceText = "I met him, {10}.",
         metadata = new Model_Languages.Metadata[]
@@ -1313,7 +1479,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Oh it looked like you wanted to say something... nevermind.",
+                @"Oh it looked like you wanted to say something... nevermind then.",
                 @"Anyways...... this might sound crazy but...",
         },
         choiceText = "(Don’t mention anything.)",
