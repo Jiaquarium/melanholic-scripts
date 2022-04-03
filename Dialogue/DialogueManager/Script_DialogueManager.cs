@@ -343,22 +343,31 @@ public class Script_DialogueManager : MonoBehaviour
         isInputDisabled = true;
         
         // fade into a new fullArt
-        if (currentNode.data.fullArt)
+        if (currentNode.data.fullArt != null)
         {
-            // use fadeIn if it's a new fullArt or fadeTransition if just switching out a fullArt
-            FadeSpeeds fadeInSpeed = lastFullArt == null ? currentNode.data.fadeIn : currentNode.data.fadeTransition;
-            if (lastFullArt != null)
+            // If the current full art and last are the same, then no need to do anything with Full Art
+            if (currentNode.data.fullArt == lastFullArt)
             {
-                fullArtManager.TransitionOutFullArt(lastFullArt, fadeInSpeed, null);
+                Debug.Log($"Full Art {currentNode.data.fullArt} same as Last Full Art {lastFullArt}");
+                DisplayNextDialoguePortionNextFrame();
             }
-            fullArtManager.ShowFullArt(
-                currentNode.data.fullArt,
-                fadeInSpeed, () =>
+            else
+            {
+                // use fadeIn if it's a new fullArt or fadeTransition if just switching out a fullArt
+                FadeSpeeds fadeInSpeed = lastFullArt == null ? currentNode.data.fadeIn : currentNode.data.fadeTransition;
+                if (lastFullArt != null)
                 {
-                    DisplayNextDialoguePortionNextFrame();
-                },
-                Script_FullArtManager.FullArtState.DialogueManager
-            );
+                    fullArtManager.TransitionOutFullArt(lastFullArt, fadeInSpeed, null);
+                }
+                fullArtManager.ShowFullArt(
+                    currentNode.data.fullArt,
+                    fadeInSpeed, () =>
+                    {
+                        DisplayNextDialoguePortionNextFrame();
+                    },
+                    Script_FullArtManager.FullArtState.DialogueManager
+                );
+            }
         }
         else
         {
@@ -846,7 +855,11 @@ public class Script_DialogueManager : MonoBehaviour
         /// Allow the InteractableFullArt object to handle this if it's a fullArt object
         /// e.g. not just fullArt attached to a dialogueNode
         bool isFullArtControlledByMe = fullArtManager.state == Script_FullArtManager.FullArtState.DialogueManager;
-        if (fullArtManager.activeFullArt != null && isFullArtControlledByMe)
+        if (
+            fullArtManager.activeFullArt != null
+            && isFullArtControlledByMe
+            && !currentNode.data.isLeaveFullArtUp
+        )
         {
             fullArtManager.HideFullArt(fullArtManager.activeFullArt, currentNode.data.fadeOut, () =>
             {
