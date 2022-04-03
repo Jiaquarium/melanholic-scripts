@@ -56,6 +56,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     [SerializeField] private Script_DialogueNode introNodeTalkedWithMyne;
     [SerializeField] private Script_DialogueNode introNodeNotTalkedWithMyne;
+    [SerializeField] private float waitBeforeIdsDialogueTime;
 
     [SerializeField] private Script_DialogueNode afterIntroRevealNodeTalkedWithMyne;
     [SerializeField] private Script_DialogueNode afterIntroRevealNodeNotTalkedWithMyne;
@@ -114,7 +115,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     [SerializeField] private PlayableDirector danceSetupDirector;
     [SerializeField] private Script_Marker playerDancePosition;
-    [SerializeField] private bool isRetry = false;
+    [SerializeField] private bool didIdsDance = false;
     
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
     [SerializeField] private PlayableDirector nameplateDirector;
@@ -210,26 +211,16 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     // ------------------------------------------------------------------------------------
     // Next Node Action Start
-    public void NameplateTimeline()
+    public void PreTheoryDialogue()
     {
         game.ChangeStateCutScene();
         
-        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
-            isOpen: true,
-            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
-            cb: () => namePlatePRCSPlayer.Play()
-        );
+        dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false);
     }
     
     public void OnNameplateDone()
     {
-        namePlatePRCSPlayer.Stop();
-
-        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
-            isOpen: false,
-            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
-            cb: () => dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false)
-        );
+        // namePlatePRCSPlayer.Stop();
     }
 
     public void IdsWalkToERoom()
@@ -269,26 +260,43 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         // 5. Ids Dances
         Script_LightFXManager.Control.IsPaused = true;
 
-        danceSetupDirector.GetComponent<Script_TimelineController>()
-            .PlayableDirectorPlayFromTimelines(0, 0);
+        // If it's the Ids Dance cut scene, do Framing.
+        if (!didIdsDance)
+        {
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                cb: DanceSetupTimeline
+            );
+        }
+        else
+            DanceSetupTimeline();
+
+        
+        void DanceSetupTimeline()
+        {
+            danceSetupDirector.GetComponent<Script_TimelineController>()
+                .PlayableDirectorPlayFromTimelines(0, 0);       
+        }
     }
     
-    public void WaitToDDR()
+    // Player Dance Intro Node
+    public void WaitToDDR(bool isRetry = false)
     {
         BgTransitionsInitialState();
-        
-        DDRManager.Activate(
-            mistakesAllowed,
-            playerSongMoves,
-            () => {
-                DDRManager.StartMusic();
-                crystalChandelier.GetComponent<Script_CrystalChandelier>()
-                    .StartSpinning();
-            }
-        );
-        
-        game.ChangeStateDDR();
 
+        // No Framing
+        if (isRetry)
+            StartDDR();
+        else
+        {
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: false,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                cb: StartDDR
+            );
+        }
+        
         void BgTransitionsInitialState()
         {
             bgTransitionIdx = 0;
@@ -302,6 +310,21 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             StarryNightBg.gameObject.SetActive(false);
             StarryNightBg.GetComponent<Script_MeshFadeController>().SetVisibility(true);
             scrollSpeedDelta = maxStarryNightScrollSpeed - startStarryNightScrollSpeed;
+        }
+
+        void StartDDR()
+        {
+            DDRManager.Activate(
+                mistakesAllowed,
+                playerSongMoves,
+                () => {
+                    DDRManager.StartMusic();
+                    crystalChandelier.GetComponent<Script_CrystalChandelier>()
+                        .StartSpinning();
+                }
+            );
+            
+            game.ChangeStateDDR();
         }
     }
 
@@ -411,15 +434,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void OnDanceSetupDone()
     {
         // Ids Dancing
-        if (!isRetry)
+        if (!didIdsDance)
         {
             IdsStartDancing();
-            isRetry = true;
+            didIdsDance = true;
             return;
         }
         
         // Otherwise, it's a retry, dance setup directly to DDR.
-        WaitToDDR();
+        WaitToDDR(isRetry: true);
         
         void IdsStartDancing()
         {
@@ -556,13 +579,22 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         game.PlayNPCBgTheme(IdsBgThemePlayerPrefab);
         game.ChangeStateCutScene();
         game.PlayerFaceDirection(Directions.Up);
-        dm.StartDialogueNode(IntroNode);
         
         Script_VCamManager.VCamMain.SetNewVCam(VCamLB10FollowIds);
         
         // if (activeTriggerIndex == triggerLocations.Length - 1) isCurrentPuzzleComplete = true;
         activeTriggerIndex++;
+        
+        StartCoroutine(WaitForIdsDialogue());
+        
         return true;
+
+        IEnumerator WaitForIdsDialogue()
+        {
+            yield return new WaitForSeconds(waitBeforeIdsDialogueTime);
+            
+            dm.StartDialogueNode(IntroNode);
+        }
     }
 
     public bool ERoomTriggerReaction()
@@ -1022,7 +1054,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
             if (GUILayout.Button("Nameplate Timeline"))
             {
-                t.NameplateTimeline();
+                t.PreTheoryDialogue();
             }
 
             if (GUILayout.Button("DDR"))
