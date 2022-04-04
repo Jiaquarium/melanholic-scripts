@@ -200,9 +200,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
                     }
                 }
                 
-                // TODO: REMOVE
-                Script_SortingOrder so = child.GetRendererChild().GetComponent<Script_SortingOrder>();
-                child.Setup(so.enabled, so.sortingOrderIsAxisZ, so.offset);
+                child.Setup(false, true, 0);
             }
         }
 

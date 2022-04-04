@@ -432,38 +432,44 @@ public static class Script_Utils
         CompassDir dir = (CompassDir)octant;
         Directions dirToTarget;
     
-        // handle if diagonal cases, if odd handle
-        // set default directions (if perfectly diagonal, default to Right or Left)
-        if (dir == CompassDir.NE)
+        // Handle even the diagonal cases, if perfectly diagonal
+        // default to Right (East) or Left (West)
+        switch (dir)
         {
-            if (direction.x * direction.x >= direction.z * direction.z)
-                dirToTarget = CompassToDirectionDict[CompassDir.E];
-            else
-                dirToTarget = CompassToDirectionDict[CompassDir.N];
+            case (CompassDir.E):
+            case (CompassDir.N):
+            case (CompassDir.W):
+            case (CompassDir.S):
+                dirToTarget = CompassToDirectionDict[dir];
+                break;
+            case (CompassDir.NE):
+                if (direction.x * direction.x >= direction.z * direction.z)
+                    dirToTarget = CompassToDirectionDict[CompassDir.E];
+                else
+                    dirToTarget = CompassToDirectionDict[CompassDir.N];
+                break;
+            case (CompassDir.NW):
+                if (direction.x * direction.x >= direction.z * direction.z)
+                    dirToTarget = CompassToDirectionDict[CompassDir.W];
+                else
+                    dirToTarget = CompassToDirectionDict[CompassDir.N];
+                break;
+            case (CompassDir.SE):
+                if (direction.x * direction.x >= direction.z * direction.z)
+                    dirToTarget = CompassToDirectionDict[CompassDir.E];
+                else
+                    dirToTarget = CompassToDirectionDict[CompassDir.S];
+                break;
+            case (CompassDir.SW):
+                if (direction.x * direction.x >= direction.z * direction.z)
+                    dirToTarget = CompassToDirectionDict[CompassDir.W];
+                else
+                    dirToTarget = CompassToDirectionDict[CompassDir.S];
+                break;
+            default:
+                dirToTarget = Directions.None;
+                break;
         }
-        else if (dir == CompassDir.NW)
-        {
-            if (direction.x * direction.x >= direction.z * direction.z)
-                dirToTarget = CompassToDirectionDict[CompassDir.W];
-            else
-                dirToTarget = CompassToDirectionDict[CompassDir.N];
-        }
-        else if (dir == CompassDir.SE)
-        {
-            if (direction.x * direction.x >= direction.z * direction.z)
-                dirToTarget = CompassToDirectionDict[CompassDir.E];
-            else
-                dirToTarget = CompassToDirectionDict[CompassDir.S];
-        }
-        else if (dir == CompassDir.SW)
-        {
-            if (direction.x * direction.x >= direction.z * direction.z)
-                dirToTarget = CompassToDirectionDict[CompassDir.W];
-            else
-                dirToTarget = CompassToDirectionDict[CompassDir.S];
-        }
-        else
-            dirToTarget = Directions.None;
             
         return dirToTarget;
     }
