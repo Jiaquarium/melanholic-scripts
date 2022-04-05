@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Ensure the shattered ice have
+/// - RigidBody
+/// - MeshCollider
+/// - Layer set to Environment_Remains
+/// </summary>
 public class Script_Shatter : MonoBehaviour
 {
     [SerializeField] float force;
     [SerializeField] float shatterRadius;
+    [SerializeField] float upwardsModifier;
     
     [SerializeField] private Transform forceOrigin;
     
@@ -26,7 +33,7 @@ public class Script_Shatter : MonoBehaviour
         physicsController.IsKinematic = false;
 
         // Apply force
-        physicsController.AddExplosionForce(force, forceOrigin.position, shatterRadius);
+        physicsController.AddExplosionForce(force, forceOrigin.position, shatterRadius, upwardsModifier);
     }
 
     /// <summary>

@@ -7,6 +7,8 @@ public class Script_PlayerStepsSFX : MonoBehaviour
 {
     [SerializeField] private List<AudioClip> stepSFXs;
     [SerializeField][Range(0f, 1f)] private float stepSFXVol;
+    [SerializeField] private List<AudioClip> iceWomanStepSFXs;
+    [SerializeField][Range(0f, 1f)] private float iceWomanStepSFXVol;
 
     [SerializeField] private Script_Player player;
     
@@ -20,7 +22,17 @@ public class Script_PlayerStepsSFX : MonoBehaviour
 
     private void Step()
     {
-        if (stepSFXs?.Count == 0)
+        HandleStepSFX(stepSFXs, stepSFXVol);
+    }
+
+    private void IceWomanStep()
+    {
+        HandleStepSFX(iceWomanStepSFXs, iceWomanStepSFXVol);
+    }
+
+    private void HandleStepSFX(List<AudioClip> clips, float volume)
+    {
+        if (clips?.Count == 0)
             return;
 
         // Don't play Step SFX for mutation, it's impossible to play SFX on intervals
@@ -35,12 +47,12 @@ public class Script_PlayerStepsSFX : MonoBehaviour
             return;
         }
         
-        AudioClip clip = stepSFXs[stepIdx];
-        audioSource.PlayOneShot(clip, stepSFXVol);
+        AudioClip clip = clips[stepIdx];
+        audioSource.PlayOneShot(clip, volume);
         
         stepIdx++;
         
-        if (stepIdx >= stepSFXs.Count)
+        if (stepIdx >= clips.Count)
             stepIdx = 0;
     }
 }

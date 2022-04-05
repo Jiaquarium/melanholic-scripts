@@ -379,7 +379,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         
         game.ChangeStateInteract();
         
-        bgThemePlayer.gameObject.SetActive(true);
+        PlayDramaticMusic();
+
         Script_AudioMixerVolume.SetVolume(
             audioMixer, BGMParam, 1f
         );
@@ -422,6 +423,19 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         game.GetPlayer().SetInvisible(false, 0f);
     }
 
+    private void PlayDramaticMusic()
+    {
+        bgThemePlayer.gameObject.SetActive(true);
+        game.PauseBgMusic();
+    }
+
+    private void PlayDefaultMusic()
+    {
+        bgThemePlayer.gameObject.SetActive(false);
+        bgThemePlayer.SoftStop();
+        game.StartBgMusic();
+    }
+
     // ----------------------------------------------------------------------
     // Next Node Actions
 
@@ -440,18 +454,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             isInitialize
         );
         
-        // If player activated the dramatic thoughts, and came back later
-        // start off with dramatic music
-        if (didActivateDramaticThoughts && !isCurrentPuzzleComplete)
-        {
-            bgThemePlayer.gameObject.SetActive(true);
-            game.PauseBgMusic();
-        }
-        // If puzzle is done just use default music.
-        else
-        {
-            bgThemePlayer.gameObject.SetActive(false);
-        }
+        // Should always start with Default music.
+        // If the player comes back, they would have already triggered FadeOutDramaticMusic
+        // from the final trigger, leaving with the room being silent.
+        PlayDefaultMusic();
 
         isInitialize = false;
     }

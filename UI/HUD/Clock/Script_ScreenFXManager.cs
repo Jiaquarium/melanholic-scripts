@@ -8,17 +8,17 @@ using UnityEditor;
 
 public class Script_ScreenFXManager : MonoBehaviour
 {
-    const float AwareDuration           = 0.5f;
+    const float AwareDuration           = 1f;
     const float AwareAmplitude          = 1f;
     const float AwareFrequency          = 1f;
     const float AwareInterval           = 60f;
 
-    const float WarningDuration         = 1f;
+    const float WarningDuration         = 1.75f;
     const float WarningAmplitude        = 1f;
     const float WarningFrequency        = 1f;
-    const float WarningInterval         = 30f;
+    const float WarningInterval         = 15f;
 
-    const float DangerDuration          = 1.5f;
+    const float DangerDuration          = 2f;
     const float DangerAmplitude         = 1f;
     const float DangerFrequency         = 1f;
     const float DangerInterval          = 5f;

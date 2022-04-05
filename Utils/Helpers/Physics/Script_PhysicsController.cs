@@ -24,9 +24,15 @@ public class Script_PhysicsController : MonoBehaviour
 
     // ForceMode.Impulse ideal for instant forces like explosions / collisions.
     // https://docs.unity3d.com/ScriptReference/ForceMode.Impulse.html
-    public void AddExplosionForce(float force, Vector3 origin, float radius)
+    public void AddExplosionForce(float force, Vector3 origin, float radius, float upwardsModifier = 0f)
     {
-        rigidBodies.ForEach(rigidBody => rigidBody.AddExplosionForce(force, origin, radius, 0f, ForceMode.Impulse));
+        rigidBodies.ForEach(rigidBody => rigidBody.AddExplosionForce(
+            force,
+            origin,
+            radius,
+            upwardsModifier,
+            ForceMode.Impulse
+        ));
     }
 
     private void PopulateRigidBodies()

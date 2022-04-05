@@ -31,6 +31,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private int mynesMirrorBgm;
     
     [SerializeField] private int glitchZoneSteps;
+    [SerializeField] private float waitBeforeAwakeningCutTime;
     [SerializeField] private float waitTimeAfterAwakening;
     
     [SerializeField] private Script_Snow snowEffectAlways;
@@ -69,8 +70,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
 
-    [SerializeField] private Script_InteractableBox grandMirrorInteractableBox;
-    
+    [SerializeField] private List<Collider> grandMirrorColliders;
+
     [Header("R2 Only")]
     [SerializeField] private float fadeToBlackTime;
     [SerializeField] private Transform playerReflectionMyne;
@@ -190,8 +191,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // Called from end of NewWorldRevealPaintingTimeline
     public void OnNewWorldRevealPaintingDone()
     {
-        // Unhide the interactable box that was hidden in OnDiagonalCut.
-        grandMirrorInteractableBox.gameObject.SetActive(true);
+        grandMirrorColliders.ForEach(part => {
+            // Turn back on Box Colliders
+            List<Collider> cols = part.GetComponents<Collider>().ToList();
+            cols?.ForEach(col => col.enabled = true);
+
+            // Turn off Mesh Colliders
+            var meshCol = part.GetComponent<MeshCollider>();
+            if (meshCol != null)
+                meshCol.enabled = false;
+        });
         
         // If all three ice blocks have been destroyed, start the Awakening scene.
         if (IsAllIceBlocksCracked())
@@ -233,33 +242,52 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         }
     }
 
+    /// <summary>
+    /// Pause Timeline here and fire OnAwakeningTimelineDone event from TimelineTeletypeReveal's
+    /// onTypingDoneAction handler.
+    /// </summary>
+    public void PauseAwakeningTimeline()
+    {
+        var awakeningDirector = timelineController.playableDirectors[1];
+        awakeningDirector.Pause();
+    }
+
+    // Last Timeline Teletype Reveal of Awakening Timeline
     public void OnAwakeningTimelineDone()
     {
+        Debug.Log("OnAwakeningTimelineDone Event called from Teletype Reveal Done Typing handler");
+        
         game.ChangeStateCutScene();
+
+        StartCoroutine(WaitToCut());        
         
-        // Set Fade Canvas Active
-        Script_TransitionManager.Control.TimelineBlackScreen();
-
-        Script_PRCSManager.Control.SetAwakeningActive(false);
-        
-        Debug.Log("Waiting for next part in sequence!!!");
-
-        // Wait a few seconds for black screen to stay up and then fade out.
-        EquipLastElevatorMaskBackground();
-
-        glitchManager.SetLow();
-        glitchManager.SetBlend(1f);
-
-        StartCoroutine(WaitToFadeOut());
-
-        IEnumerator WaitToFadeOut()
+        IEnumerator WaitToCut()
         {
+            yield return new WaitForSeconds(waitBeforeAwakeningCutTime);
+            
+            // Set Fade Canvas Active
+            Script_TransitionManager.Control.TimelineBlackScreen();
+
+            // Stop the previously paused Awakening Timeline
+            var awakeningDirector = timelineController.playableDirectors[1];
+            awakeningDirector.Stop();
+            
+            Script_PRCSManager.Control.SetAwakeningActive(false);
+            
+            Debug.Log("Waiting for next part in sequence!!!");
+
+            // Wait a few seconds for black screen to stay up and then fade out.
+            EquipLastElevatorMaskBackground();
+
+            glitchManager.SetLow();
+            glitchManager.SetBlend(1f);
+
             yield return new WaitForSeconds(waitTimeAfterAwakening);
 
             Script_TransitionManager.Control.TimelineFadeOut(
                 Script_TransitionManager.FadeTimeSlow,
                 () => Script_DialogueManager.DialogueManager.StartDialogueNode(lastElevatorMaskDialogue)
-            );            
+            );
         }
     }
 
@@ -272,12 +300,22 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // Unity Events & Timeline Signals
     
     /// <summary>
-    /// When Crackable begins cracking sequence, hide the Interactable Box
+    /// When Crackable begins cracking sequence, hide the Base & Side's Box Colliders
     /// because the Ice Pieces get stuck inside.
+    /// Turn on Mesh Colliders so Ice Pieces can still interact with the environment.
     /// </summary>
     public void OnDiagonalCut(Script_CrackableStats ice)
     {
-        grandMirrorInteractableBox.gameObject.SetActive(false);
+        grandMirrorColliders.ForEach(part => {
+            // Turn off Box Colliders
+            List<BoxCollider> cols = part.GetComponents<BoxCollider>().ToList();
+            cols?.ForEach(col => col.enabled = false);
+
+            // Turn on Mesh Colliders
+            var meshCol = part.GetComponent<MeshCollider>();
+            if (meshCol != null)
+                meshCol.enabled = true;
+        });
     }
     
     public void OnIceBlockCracked(Script_CrackableStats ice)

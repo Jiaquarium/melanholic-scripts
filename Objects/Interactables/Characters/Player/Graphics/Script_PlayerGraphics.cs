@@ -6,9 +6,10 @@ public class Script_PlayerGraphics : MonoBehaviour
 {
     public enum Materials
     {
-        Unlit       = 0,
+        UnlitShadows = 0,
         Lit         = 1,
-        SimpleUnlit = 2
+        SimpleUnlit = 2,
+        UnlitOnlyShadowCast = 3,
     }
     
     [SerializeField] private Script_Player player;
@@ -16,6 +17,7 @@ public class Script_PlayerGraphics : MonoBehaviour
     [SerializeField] private Material lit;
     [SerializeField] private Material unlit;
     [SerializeField] private Material simpleUnlit;
+    [SerializeField] private Material unlitOnlyShadowCast;
 
     public Material PlayerGraphicsMaterial
     {
@@ -33,14 +35,17 @@ public class Script_PlayerGraphics : MonoBehaviour
     {
         switch (materialType)
         {
-            case (Materials.Unlit):
-                graphics.material                                   = unlit;
+            case (Materials.UnlitShadows):
+                graphics.material = unlit;
                 break;
             case (Materials.Lit):
-                graphics.material                                   = lit;
+                graphics.material = lit;
                 break;
             case (Materials.SimpleUnlit):
-                graphics.material                                   = simpleUnlit;
+                graphics.material = simpleUnlit;
+                break;
+            case (Materials.UnlitOnlyShadowCast):
+                graphics.material = unlitOnlyShadowCast;
                 break;
         }
     }
