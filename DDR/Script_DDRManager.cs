@@ -47,9 +47,18 @@ public class Script_DDRManager : MonoBehaviour
 
 
     public Model_SongMoves songMoves;
+    
+    /// <summary>
+    /// Note: The Buffer values here are a percentage of Rising Time.
+    /// A 5% buffer value with 2 sec Rising Time, gives the Player .1 seconds to react.
+    /// </summary>
+    [Tooltip("% of TimeToRise. Time alloted to still be Tier 1 when pressing after arrow has passed Outline.")]
     public float tierNeg1Buffer;
+    [Tooltip("% of TimeToRise. Time alloted to be Tier 1 by pressing arrow before it has passed Outline.")]
     public float tier1Buffer;
+    [Tooltip("% of TimeToRise. Time alloted to be Tier 2 by pressing arrow before it has passed Outline.")]
     public float tier2Buffer;
+    [Tooltip("% of TimeToRise. Time alloted to be Tier 3 by pressing arrow before it has passed Outline.")]
     public float tier3Buffer;
     public float tierCommentActivationLength;
 

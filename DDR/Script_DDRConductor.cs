@@ -13,17 +13,6 @@ public class Script_DDRConductor : MonoBehaviour
         get => (float)AudioSettings.dspTime - songDspTimeStart;
     }
 
-    public float DeltaDspTime
-    {
-        get
-        {
-            if (currentDspTime == lastDspTime)
-                return Time.unscaledDeltaTime;
-            else
-                return currentDspTime - lastDspTime;
-        }
-    }
-
     void Start()
     {
         currentDspTime = (float)AudioSettings.dspTime;

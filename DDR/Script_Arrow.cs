@@ -9,8 +9,8 @@ public class Script_Arrow : MonoBehaviour
     public Vector3 startLocation;
     public Vector3 endLocation;
     public Vector3 secondEndLocation;
-    public float t;
-    public float t2;
+    [SerializeField] private float progress1;
+    [SerializeField] private float progress2;
     public bool isClicked = false;
     public Sprite clickedSprite;
     
@@ -26,6 +26,8 @@ public class Script_Arrow : MonoBehaviour
     private float tier1Buffer;
     private float tier2Buffer;
     private float tier3Buffer;
+
+    private float startSongPosition;
 
     void Update()
     {
@@ -48,12 +50,14 @@ public class Script_Arrow : MonoBehaviour
     
     void Rise()
     {
-        t += conductor.DeltaDspTime / timeToReachEndLocation;
+        var currentTime = conductor.SongPosition - startSongPosition;
+        progress1 = currentTime / timeToReachEndLocation;
+
         GetComponent<RectTransform>().localPosition = Vector3.Lerp(
-                startLocation,
-                endLocation,
-                t
-            );
+            startLocation,
+            endLocation,
+            progress1
+        );
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
         {
@@ -61,9 +65,9 @@ public class Script_Arrow : MonoBehaviour
         }
 
         // continue to move arrow off screen when done lerping
-        if (t >= 1f)
+        if (progress1 >= 1f)
         {
-            Debug.Log($"{this} {type} arrow reached end");
+            Debug.Log($"{this} {type} arrow reached end at time {conductor.SongPosition} TOTAL TIME: {currentTime}");
             
             isPassingOutline = true;
             startLocation = GetComponent<RectTransform>().localPosition;
@@ -72,15 +76,15 @@ public class Script_Arrow : MonoBehaviour
 
     void ChangeColorOnRise()
     {
-        if (1f - t <= tier1Buffer)
+        if (1f - progress1 <= tier1Buffer)
         {
             GetComponent<Image>().color = Color.green;
         }
-        else if (1f - t <= tier2Buffer)
+        else if (1f - progress1 <= tier2Buffer)
         {
             GetComponent<Image>().color = Color.yellow;
         }
-        else if (1f - t <= tier3Buffer)
+        else if (1f - progress1 <= tier3Buffer)
         {
             GetComponent<Image>().color = Color.red;
         }
@@ -89,12 +93,14 @@ public class Script_Arrow : MonoBehaviour
     // to continue to move offscreen
     void SecondRise()
     {
-        t2 += conductor.DeltaDspTime / timeToReachEndLocation;
+        var currentTime = conductor.SongPosition - startSongPosition;
+        progress2 = currentTime / timeToReachEndLocation - 1f;
+        
         GetComponent<RectTransform>().localPosition = Vector3.Lerp(
-                startLocation,
-                secondEndLocation,
-                t2
-            );
+            startLocation,
+            secondEndLocation,
+            progress2
+        );
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
         {
@@ -102,11 +108,11 @@ public class Script_Arrow : MonoBehaviour
         }
 
         // case where arrow passes outline and is not clicked in time
-        if (t2 > tierNeg1Buffer)
+        if (progress2 > tierNeg1Buffer)
         {
             if (!isClicked)
             {
-                Debug.Log($"Reporting no click from arrow {this}");
+                Debug.Log($"Reporting no click from arrow {this} at TOTAL TIME 2: {currentTime}");
 
                 DDRManager.ReportArrowTier(this);
                 if (type == "left")             DDRManager.nextLeftArrowIndex++;
@@ -117,7 +123,7 @@ public class Script_Arrow : MonoBehaviour
         }
 
         // destroy arrow when done with second lerp
-        if (t2 >= 1f)
+        if (progress2 >= 1f)
         {
             DestroyArrow();
         }
@@ -127,17 +133,17 @@ public class Script_Arrow : MonoBehaviour
     {
         if (isPassingOutline)
         {
-            return -t2;
+            return -progress2;
         }
         else
         {
-            return 1f - t;
+            return 1f - progress1;
         }
     }
 
     void ChangeColorOnSecondRise()
     {
-        if (t2 > tierNeg1Buffer)
+        if (progress2 > tierNeg1Buffer)
         {
             GetComponent<Image>().color = Color.red;
         }
@@ -173,10 +179,12 @@ public class Script_Arrow : MonoBehaviour
         tier3Buffer             = _tier3Buffer;
         DDRManager              = _DDRManager;
         conductor               = _conductor;
-        t                       = 0;
+        progress1               = 0;
         startLocation           = GetComponent<RectTransform>().localPosition;
         timeToReachEndLocation  = time;
         endLocation             = target;
         secondEndLocation       = endLocation + (endLocation - startLocation);
+
+        startSongPosition       = conductor.SongPosition;
     }
 }
