@@ -25,6 +25,7 @@ public class Script_ScreenFXManager : MonoBehaviour
 
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_ClockManager clockManager;
+    [SerializeField] private Script_HUDManager HUDManager;
     
     [SerializeField] private float currentDuration;
     [SerializeField] private float currentAmplitude;
@@ -47,6 +48,7 @@ public class Script_ScreenFXManager : MonoBehaviour
         if (
             clockManager.ClockTimeState == Script_Clock.TimeStates.None
             || clockManager.ClockState == Script_Clock.States.Done
+            || !HUDManager.IsClockShowing()
         )
             return;
 
