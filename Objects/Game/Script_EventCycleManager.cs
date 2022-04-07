@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Cleared when the days cycle is over.
 /// 
@@ -15,7 +19,11 @@ public class Script_EventCycleManager : MonoBehaviour
     
     // ------------------------------------------------------------------
     // Save State
-    [SerializeField] private bool didTalkToIds;
+    [Tooltip("Count of times interacted positively with Ids on Weekend (e.g. Asked to dance, found in Garden)")]
+    [SerializeField] private int idsPositiveInteractionCount;
+    
+    [Tooltip("Tracks if in previous day did interact positively with Ids on Weekend (e.g. Asked to dance, found in Garden)")]
+    [SerializeField] private bool didInteractPositivelyWithIds;
     
     [SerializeField] private int didTalkToElleniaCountdown;
     private const int ElleniaCountdownMax = 2;
@@ -25,12 +33,21 @@ public class Script_EventCycleManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_RunsManager runsManager;
 
-    private bool didTalkToIdsToday = false;
+    [SerializeField] private bool didInteractPositivelyWithIdsToday = false;
 
-    public bool DidTalkToIds
+    public int IdsPositiveInteractionCount
     {
-        get => didTalkToIds;
-        set => didTalkToIds = value;
+        get => idsPositiveInteractionCount;
+        set => idsPositiveInteractionCount = value;
+    }
+    
+    /// <summary>
+    /// Should only be accessed by SaveLoad State.
+    /// </summary>
+    public bool DidInteractPositivelyWithIds
+    {
+        get => didInteractPositivelyWithIds;
+        set => didInteractPositivelyWithIds = value;
     }
     
     public int DidTalkToEllenia
@@ -40,13 +57,12 @@ public class Script_EventCycleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// To notify at the end of day to track didTalkToIds = true.
+    /// To notify at the end of day to track didInteractPositivelyWithIds = true.
     /// Only do at day end in case didTalk state changes midday.
     /// </summary>
-    public bool DidTalkToIdsToday
+    public bool DidInteractPositivelyWithIdsToday
     {
-        get => didTalkToIdsToday;
-        set => didTalkToIdsToday = value;
+        get => didInteractPositivelyWithIdsToday;
     }
 
     // ------------------------------------------------------------------
@@ -100,14 +116,15 @@ public class Script_EventCycleManager : MonoBehaviour
     // If didn't talk to Ids on Day 1 Weekend (Thu), he will be in Sanctuary.
     public bool IsIdsInSanctuary()
     {
-        return game.IsRunDay(Script_Run.DayId.fri) && !didTalkToIds;
+        return (game.IsRunDay(Script_Run.DayId.fri) || game.IsRunDay(Script_Run.DayId.sat))
+            && !didInteractPositivelyWithIds;
     }
 
     // If didn't talk to Ids by Day 3 Weekend (Sat), he will be dead (i.e. didn't talk to him on
     // Day 1 and then didn't find him in the Sanctuary Day 2).
     public bool IsIdsDead()
     {
-        return game.IsRunDay(Script_Run.DayId.sat) && !didTalkToIds;
+        return game.IsRunDay(Script_Run.DayId.sat) && IdsPositiveInteractionCount == 0;
     }
     
     // Check if not the same day we talked with Ellenia and is still active count down.
@@ -128,6 +145,18 @@ public class Script_EventCycleManager : MonoBehaviour
         return game.IsRunDay(Script_Run.DayId.sat) && didTalkToElleniaCountdown == 0;
     }
 
+    // ------------------------------------------------------------------
+    // Weekend Handlers
+    public int InteractPositiveWithIds()
+    {
+        idsPositiveInteractionCount++;
+        didInteractPositivelyWithIdsToday = true;
+
+        return idsPositiveInteractionCount;
+    }
+
+    // ------------------------------------------------------------------
+
     public void EndOfDayJobs()
     {
         didTalkToElleniaCountdown =  Mathf.Max(0, didTalkToElleniaCountdown - 1);
@@ -135,17 +164,18 @@ public class Script_EventCycleManager : MonoBehaviour
 
         void HandleTalkedToIds()
         {
-            if (didTalkToIdsToday)  didTalkToIds = true;
-
-            didTalkToIdsToday = false;
+            didInteractPositivelyWithIds = didInteractPositivelyWithIdsToday;
+            
+            didInteractPositivelyWithIdsToday = false;
         }
     }
     
     public void InitialState()
     {
-        didTalkToIds                        = false;
+        didInteractPositivelyWithIds = false;
 
-        didTalkToElleniaCountdown           = 0;
+        idsPositiveInteractionCount = 0;
+        didTalkToElleniaCountdown = 0;
     }
 
     public void Setup()
@@ -160,3 +190,19 @@ public class Script_EventCycleManager : MonoBehaviour
         }   
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_EventCycleManager))]
+public class Script_EventCycleManagerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_EventCycleManager t = (Script_EventCycleManager)target;
+        if (GUILayout.Button("Interact Positive With Ids"))
+        {
+            t.InteractPositiveWithIds();
+        }
+    }
+}
+#endif

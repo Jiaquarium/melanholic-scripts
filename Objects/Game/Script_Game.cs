@@ -509,7 +509,7 @@ public class Script_Game : MonoBehaviour
     // Load Save Data and Initiate level
     void Start()
     {
-        Load(); // load Scarlet Cipher
+        Load();
         
         OnLoadTasks();
         
@@ -622,6 +622,8 @@ public class Script_Game : MonoBehaviour
             /// Always allow SBook for now (some people like to check out inventory at start of game)
             EnableSBook(true); // EnableSBook(false);
         }
+
+        IdsRoomBehavior.InitializeBGMOnRun();
     }
 
     public void ChangeStateToInitiateLevel()

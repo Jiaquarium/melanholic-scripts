@@ -21,6 +21,8 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
 
     [SerializeField] private Script_InteractableFullArt IdsNote;
     [SerializeField] private Script_TileMapExitEntrance exitToIdsRoom;
+
+    [SerializeField] private Script_LevelBehavior_10 IdsRoom;
     
     void Awake()
     {
@@ -39,6 +41,10 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
             );
             speaker.transform.SetParent(game.bgThemeSpeakersContainer, false);
             speaker.MaxDistance = speakerDistance;
+            
+            speaker.audioSource.clip = Script_BackgroundMusicManager.Control.GetClip(IdsRoom.BGMIdx);
+            if (!speaker.audioSource.isPlaying)
+                speaker.audioSource.Play();
         }
     }
     

@@ -24,6 +24,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     public const string NRoomTriggerId = "room_N";
     public const string ERoomTriggerId = "room_E";
+
+    public enum DialogueState
+    {
+        WeekendDay0 = 0,
+        WeekendDay1 = 1,
+        WeekendDay2 = 2,
+        Weekday = 9,
+    }
     
     // =======================================================================
     //  STATE DATA
@@ -31,6 +39,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // =======================================================================
     
     public bool isCurrentPuzzleComplete;
+    
+    [SerializeField] private DialogueState dialogueState;
+
+    [SerializeField] private int clubMusicIdx;
+    [SerializeField] private int sadIdsThemeIdx;
     
     [SerializeField] private Script_Trigger[] triggers;
     [SerializeField] private int activeTriggerIndex;
@@ -65,6 +78,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public Script_DialogueNode playerDanceIntroNode;
     public Script_DialogueNode badDanceOutroNode;
     public Script_DialogueNode goodDanceOutroNode;
+
+    [SerializeField] private Script_DialogueNode[] defaultRetryNodes;
     
     public GameObject crystalChandelier;
     public Script_LightFadeIn playerSpotLight;
@@ -142,8 +157,42 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     private bool didMapNotification;
     private bool isTimelineControlled = false;
 
-    private bool isIdsDeadPRCSDone;
+    [Space]
+    [Header("Weekend")]
+    [Space]
+    // Weekend Only
+    
+    [SerializeField] private Script_Marker weekendDialoguePlayerPosition;
+    [SerializeField] private List<Script_DialogueNode> weekendIdsCutSceneDialogues;
 
+    [SerializeField] private float waitBeforeWeekendDialogueTime;
+    [SerializeField] private float waitBetweenWeekendDialogueTime;
+    [SerializeField] private float waitAfterWeekendDialogueTime;
+    
+    [UnityEngine.Serialization.FormerlySerializedAs("weeekendDay0Nodes")]
+    [SerializeField] private List<Script_DialogueNode> weekendDay0Nodes;
+    
+    [UnityEngine.Serialization.FormerlySerializedAs("weeekendDay1Nodes")]
+    [SerializeField] private List<Script_DialogueNode> weekendDay1Nodes;
+    
+    [UnityEngine.Serialization.FormerlySerializedAs("weeekendDay2Nodes")]
+    [SerializeField] private List<Script_DialogueNode> weekendDay2Nodes;
+
+    [SerializeField] private Script_DialogueNode weekendDanceIntroNode;
+    [SerializeField] private Script_DialogueNode playerDanceIntroNodeWeekend;
+    [SerializeField] private Script_DialogueNode goodDanceOutroNodeWeekend;
+
+    [SerializeField] private Script_DialogueNode[] IdsNRoomWeekendDay2TalkedDialogue;
+    [SerializeField] private Script_DialogueNode weekendDay2RetalkNRoomDialogue;
+    
+    private bool didIdsLeaveWeekend;
+    private bool isIdsDeadPRCSDone;
+    private bool didInteractPositiveWithIds;
+    private bool isWeekendDay2Retalk;
+    
+
+    public int BGMIdx { get; set; }
+    
     private Script_DialogueNode IntroNode
     {
         get => Script_MynesMirrorManager.Control.DidInteract ?
@@ -164,6 +213,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_DDREventsManager.OnDDRDone               += OnDDRDone;
         Script_DDREventsManager.OnDDRMusicStart         += OnDDRStartPlayerDanceMusic;
         Script_ItemsEventsManager.OnItemStash           += OnItemStash;
+
+        InitialStateFireworks();
     }
 
     protected override void OnDisable()
@@ -174,6 +225,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_DDREventsManager.OnDDRDone               -= OnDDRDone;
         Script_DDREventsManager.OnDDRMusicStart         -= OnDDRStartPlayerDanceMusic;
         Script_ItemsEventsManager.OnItemStash           -= OnItemStash;
+        
+        InitialStateFireworks();
         
         if (!isTimelineControlled)
         {
@@ -223,6 +276,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         // namePlatePRCSPlayer.Stop();
     }
 
+    
+    // TalkedWithMyne & NotTalkedWithMyne Nodes
     public void IdsWalkToERoom()
     {
         game.ChangeStateCutScene();
@@ -272,7 +327,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         else
             DanceSetupTimeline();
 
-        
         void DanceSetupTimeline()
         {
             danceSetupDirector.GetComponent<Script_TimelineController>()
@@ -345,6 +399,227 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public void OnTalkToIdsRetry()
     {
         HandlePauseMusic();
+    }
+
+    public void IdsExitsWeekend()
+    {
+        game.ChangeStateCutScene();
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
+    }
+
+    // ------------------------------------------------------------------------------------
+    // Next Node Actions - Weekend Dialogue
+    
+    public void InteractPositiveWithIds()
+    {
+        if (!didInteractPositiveWithIds)
+        {
+            didInteractPositiveWithIds = true;
+            Script_EventCycleManager.Control.InteractPositiveWithIds();
+        }
+    }
+    
+    public void WeekendDay0FullArtNode()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay0Nodes[0]);
+        }
+    }
+
+    public void WeekendDay0ExitNodeA()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay0Nodes[1]);
+        }
+    }
+
+    public void WeekendDay0ExitNodeB()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay0Nodes[2]);
+        }
+    }
+
+    public void WeekendDay1FullArtNode()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay1Nodes[0]);
+        }
+    }
+
+    public void WeekendDay1ExitNodeA()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay1Nodes[1]);
+        }
+    }
+
+    public void WeekendDay1ExitNodeB()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay1Nodes[2]);
+        }
+    }
+
+    public void WeekendDay2FullArtNode()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay2Nodes[0]);
+        }
+    }
+
+    public void WeekendDay2NoFullArtNodeB()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay2Nodes[1]);
+        }
+    }
+
+    public void WeekendDay2FullArtNodeB()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay2Nodes[2]);
+        }
+    }
+
+    public void WeekendDay2RetalkNoFullArtNode()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay2Nodes[3]);
+        }
+    }
+
+    public void WeekendDay2DDRPassGiveSmallKeyNode()
+    {
+        StartCoroutine(WaitForDialogue());
+        
+        IEnumerator WaitForDialogue()
+        {
+            yield return new WaitForSeconds(waitBetweenWeekendDialogueTime);
+
+            dm.StartDialogueNode(weekendDay2Nodes[4]);
+        }
+    }
+
+    /// <summary>
+    /// Need to also close the Frame before walking to E Room on Day 2 Weekend.
+    /// </summary>
+    public void IdsWalkToERoomWeekend()
+    {
+        // Change Ids Psychic Nodes back to retry nodes in case they were
+        // switched if Player chose Day 2 Choice A dialogue.
+        Script_DemonNPC demonNPCIds = (Script_DemonNPC)Ids;
+        demonNPCIds.SwitchPsychicNodes(defaultRetryNodes);
+        
+        FadeInWeekendBGM();
+        
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: IdsWalkToERoom
+        );
+    }
+
+    // Wkd Day 2 - DialogueNode Psychic FullArt Choices A
+    public void OnWeekendDay2NRoomDialogueChoiceADone()
+    {
+        FadeInWeekendBGM();
+
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: () => {
+                game.ChangeStateInteract();
+                
+                // Switch dialogue nodes for Ids
+                Script_DemonNPC demonNPCIds = (Script_DemonNPC)Ids;
+                demonNPCIds.SwitchPsychicNodes(IdsNRoomWeekendDay2TalkedDialogue);
+            }
+        );
+
+    }
+    
+    private void FadeInWeekendBGM()
+    {
+        Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+
+        StartCoroutine(FadeInBGMNextFrame());
+
+        IEnumerator FadeInBGMNextFrame()
+        {
+            yield return null;
+            
+            Script_BackgroundMusicManager.Control.FadeInFast(null, Const_AudioMixerParams.ExposedBGVolume);
+            
+            if (lb9.speaker == null)
+                game.SwitchBgMusic(BGMIdx);
+        }
+    }
+
+    public void IdsFacePlayerPermanently()
+    {
+        // Ids will automatically face back to his Default direction, but Player
+        // may have interacted with him from another direction before the cut scene
+        Ids.DefaultFacingDirectionDisabled = true;
+        Ids.FaceDirection(Ids.transform.position.GetDirectionToTarget(game.GetPlayer().transform.position));
+    }
+    
+    // Weekend Dialogue Cut Scene Setup Timeline
+    public void InitializeRetalk()
+    {
+        isWeekendDay2Retalk = true;
+
+        HandleWeekendNRoom();
     }
     
     // ------------------------------------------------------------------------------------
@@ -457,6 +732,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     }
     
     
+    // Ids Exits Weekend Timeline 
     public void OnIdsExitsIdsRoom()
     {
         Ids.gameObject.SetActive(false);
@@ -506,6 +782,71 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         });    
     }
 
+    // Final Awakening Timeline
+    public void TimelineSetup()
+    {
+        BaseSetup();
+        
+        DeadIds.gameObject.SetActive(false);
+        Ids.gameObject.SetActive(false);
+
+        isTimelineControlled = true;
+    }
+
+    // Weekend Dialogue Cut Scene Setup
+    public void SetupWeekendDialogueCutScene()
+    {
+        game.GetPlayer().Teleport(weekendDialoguePlayerPosition.Position);
+        game.GetPlayer().FaceDirection(Directions.Up);
+        
+        Ids.DefaultFacingDirectionDisabled = false;
+        Ids.FaceDirection(Directions.Down);
+    }
+
+    // Weekend Dialogue Cut Scene Setup Timeline
+    public void StartWeekendDialogue()
+    {
+        if (isWeekendDay2Retalk)
+        {
+            dm.StartDialogueNode(weekendDay2RetalkNRoomDialogue);    
+
+            isWeekendDay2Retalk = false;
+            return;
+        }
+        
+        int day = (int)dialogueState;
+        dm.StartDialogueNode(weekendIdsCutSceneDialogues[day]);
+    }
+
+    public void OnWeekendIdsExitsRoomTimelineDone()
+    {
+        Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+        
+        // LB9 Persisting Speaker will have been destroyed at this point because HandlePauseMusic
+        // will have destroyed the speaker at the beginning on the cut scene.
+        if (lb9.speaker == null)
+            game.SwitchBgMusic(BGMIdx);
+        
+        Script_BackgroundMusicManager.Control.FadeInMed(null, Const_AudioMixerParams.ExposedBGVolume);
+        
+        StartCoroutine(WaitToCloseFrame());
+
+        IEnumerator WaitToCloseFrame()
+        {
+            yield return new WaitForSeconds(waitAfterWeekendDialogueTime);
+
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: false,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                cb: () => {
+                    game.ChangeStateInteract();
+                    didIdsLeaveWeekend = true;
+                    timelinesDoneCount++;
+                }
+            );
+        }
+    }
+
     // ------------------------------------------------------------------------------------
 
     // Happens after Pass DDR and after Ids gives Super Small Key.
@@ -542,58 +883,77 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         timelinesDoneCount++;
     }
 
-    public override bool ActivateTrigger(string Id)
-    {
-        if (Id == NRoomTriggerId && activeTriggerIndex == 0)
-        {
-            return NRoomTriggerReaction();
-        }
-        else if (Id == ERoomTriggerId && activeTriggerIndex == 1)
-        {
-            return ERoomTriggerReaction();
-        }
-
-        return false;
-    }
-
     public void OnNRoomTriggerPlayerStay(string Id)
     {
-        if (activeTriggerIndex == 0)
+        if (activeTriggerIndex == 0 && timelinesDoneCount == 1)
             NRoomTriggerReaction();
     }
 
     public void OnERoomTriggerPlayerStay(string Id)
     {
-        if (activeTriggerIndex == 1)
+        if (activeTriggerIndex == 1 && timelinesDoneCount == 2 && !didIdsLeaveWeekend)
             ERoomTriggerReaction();
     }
 
-    public bool NRoomTriggerReaction()
-    {
-        Script_EventCycleManager.Control.DidTalkToIdsToday = true;
-
-        triggers[0].gameObject.SetActive(false);
+    public bool NRoomTriggerReaction() {
+        activeTriggerIndex++;
         
-        HandlePauseMusic();
-
-        game.PlayNPCBgTheme(IdsBgThemePlayerPrefab);
+        return game.RunCycle == Script_RunsManager.Cycle.Weekday
+            ? HandleWeekdayNRoom()
+            : HandleWeekendNRoom();
+    }
+    
+    private bool HandleWeekdayNRoom()
+    {
         game.ChangeStateCutScene();
+        HandlePauseMusic();
+        game.PlayNPCBgTheme(IdsBgThemePlayerPrefab);
         game.PlayerFaceDirection(Directions.Up);
         
         Script_VCamManager.VCamMain.SetNewVCam(VCamLB10FollowIds);
         
-        // if (activeTriggerIndex == triggerLocations.Length - 1) isCurrentPuzzleComplete = true;
-        activeTriggerIndex++;
-        
         StartCoroutine(WaitForIdsDialogue());
-        
-        return true;
 
+        return true;
+        
         IEnumerator WaitForIdsDialogue()
         {
             yield return new WaitForSeconds(waitBeforeIdsDialogueTime);
             
             dm.StartDialogueNode(IntroNode);
+        }
+    }
+
+    /// <summary>
+    /// On the weekend, wait to increment activeTriggerIndex until Ids actually
+    /// walks to E Room since he can still remain in NRoom.
+    /// </summary>
+    private bool HandleWeekendNRoom()
+    {
+        game.ChangeStateCutScene();
+        
+        // Silent when talking on Weekend.
+        Script_BackgroundMusicManager.Control.FadeOutMed(
+            () => {
+                HandlePauseMusic();
+                Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+            },
+            Const_AudioMixerParams.ExposedBGVolume
+        );
+
+        StartCoroutine(WaitBeforeCutScene());
+        
+        return true;
+        
+        IEnumerator WaitBeforeCutScene()
+        {
+            yield return new WaitForSeconds(waitBeforeWeekendDialogueTime);
+
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                cb: () => GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 3)
+            );        
         }
     }
 
@@ -609,7 +969,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         
         game.PlayerFaceDirection(Directions.Right);
         game.GetMovingNPC(0).FaceDirection(Directions.Left);
-        dm.StartDialogueNode(danceIntroNode);
+        
+        var node = game.RunCycle == Script_RunsManager.Cycle.Weekend
+            ? weekendDanceIntroNode
+            : danceIntroNode;
+        dm.StartDialogueNode(node);
         
         activeTriggerIndex++;
         return true;
@@ -668,7 +1032,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             yield return new WaitForSeconds(postIdsDanceWaitTime);
             
             Ids.FaceDirection(Directions.Left);
-            dm.StartDialogueNode(playerDanceIntroNode);
+            
+            var node = game.RunCycle == Script_RunsManager.Cycle.Weekend
+                ? playerDanceIntroNodeWeekend
+                : playerDanceIntroNode;
+            dm.StartDialogueNode(node);
         }
 
         void HandleLeftMove(Model_SongMoves songMoves, float time)
@@ -790,7 +1158,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         else
         {
             Debug.Log($"**** OnDDRDone starting Good Node ****");
-            DDRFinish(goodDanceOutroNode);
+            
+            var node = game.RunCycle == Script_RunsManager.Cycle.Weekend
+                ? goodDanceOutroNodeWeekend
+                : goodDanceOutroNode;
+            DDRFinish(node);
 
             SwitchFromDanceCamToAfterDanceCam(true);
         }
@@ -896,10 +1268,21 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
         else
         {
+            if (didIdsLeaveWeekend)
+            {
+                Ids.gameObject.SetActive(false);
+                return;
+            }
+            
+            // Sat: If didn't talk to Ids at all, he'll be dead
             if (Script_EventCycleManager.Control.IsIdsDead())
                 HandleIdsDead();
+            // Fri: If Thu didn't talk to Ids, he'll be in Rock Garden
             else if (Script_EventCycleManager.Control.IsIdsInSanctuary())
                 HandleIdsNotHome();
+            // Thu: Ids is home
+            // If didn't talk on Thu, but found him in Rock Garden on Fri, he'll
+            // be home on Sat.
             else
                 HandleIdsHome();
         }
@@ -956,7 +1339,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // we are on Timeline count, spawn Ids accordingly
     void HandleIdsSpawn()
     {
-        if (timelinesDoneCount > IdsSpawns.Length)
+        if (timelinesDoneCount > IdsSpawns.Length || didIdsLeaveWeekend)
         {
             Ids.gameObject.SetActive(false);
         }
@@ -989,25 +1372,15 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             treasureChest.IsOpen = true;
         }
 
-        fireworks.ForEach(firework => firework.gameObject.SetActive(false));
+        InitialStateFireworks();
 
         isInitialized = true;
     }
 
-    // ----------------------------------------------------------------------
-    // Timeline Signals
-
-    public void TimelineSetup()
+    private void InitialStateFireworks()
     {
-        BaseSetup();
-        
-        DeadIds.gameObject.SetActive(false);
-        Ids.gameObject.SetActive(false);
-
-        isTimelineControlled = true;
+        fireworks.ForEach(firework => firework.gameObject.SetActive(false));
     }
-
-    // ----------------------------------------------------------------------
     
     private void SwitchFromDanceCamToAfterDanceCam(bool isSuccess)
     {
@@ -1018,15 +1391,37 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SwitchBetweenVCams(VCamLB10Dance, cam);
     }
 
+    /// <summary>
+    /// Need to establish only on game load because this could change
+    /// depending on Ids Positive Interaction 
+    /// </summary>
+    public void InitializeBGMOnRun()
+    {
+        bool isWeekendIdsDanceDay = Script_EventCycleManager.Control.IdsPositiveInteractionCount >= 2
+            && game.Run.dayId == Script_Run.DayId.sat;
+
+        BGMIdx = isWeekendIdsDanceDay ? clubMusicIdx : sadIdsThemeIdx;
+    }
+
     public override void Setup()
     {
         Ids.SetMoveSpeedWalk();
         
-        if (lb9.speaker == null)    game.SwitchBgMusic(4);
+        if (lb9.speaker == null)
+            game.SwitchBgMusic(BGMIdx);
 
         BaseSetup();
         HandleIdsInRoom();
+        HandleIdsDialogue();
         HandleIdsSpawn();
+
+        void HandleIdsDialogue()
+        {
+            if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
+                dialogueState = DialogueState.Weekday;
+            else
+                dialogueState = (DialogueState)(Mathf.Clamp(Script_EventCycleManager.Control.IdsPositiveInteractionCount, 0, 2));
+        }
     }
     
     #if UNITY_EDITOR

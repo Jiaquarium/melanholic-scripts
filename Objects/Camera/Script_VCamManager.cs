@@ -105,6 +105,10 @@ public class Script_VCamManager : MonoBehaviour
         }
 
         mainVCam?.SetPriority(1);
+        
+        if (mainVCam == otherVCam)
+            return;
+        
         otherVCam.SetPriority(0);
     }
 

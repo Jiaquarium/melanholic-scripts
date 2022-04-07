@@ -56,8 +56,25 @@ public class Script_MovingNPC : Script_StaticNPC
 
     private Animator animator;
     
+    public bool DefaultFacingDirectionDisabled
+    {
+        get => defaultFacingDirectionDisabled;
+        set => defaultFacingDirectionDisabled = value;
+    }
     public PlayableDirector MyDirector { get => myDirector; }
-    public Animator MyAnimator { get => animator; }
+    
+    public Animator MyAnimator
+    {
+        get
+        {
+            if (animator == null)
+                SetupAnimator();
+            
+            return animator;
+        }
+        set => animator = value;
+    }
+    
     public Script_MovingNPCMatchPlayer MovingNPCMatchPlayer { get => GetComponent<Script_MovingNPCMatchPlayer>(); }
     
     private Script_InteractionBoxController interactionBoxController { get; set; }
@@ -148,7 +165,7 @@ public class Script_MovingNPC : Script_StaticNPC
             if (myDirector.playableGraph.IsPlaying())
             {
                 myDirector.Pause();
-                animator.SetBool(NPCMoving, false);
+                MyAnimator.SetBool(NPCMoving, false);
                 
                 if (!disableFacingPlayerOnDialogue)
                     FacePlayer();
@@ -159,15 +176,15 @@ public class Script_MovingNPC : Script_StaticNPC
             if (HandleBlocking(facingDirection))
             {
                 myDirector.Pause();
-                animator.SetBool(NPCMoving, false);
+                MyAnimator.SetBool(NPCMoving, false);
             }
             else if (!myDirector.playableGraph.IsPlaying())
             {
                 myDirector.Play();
-                animator.SetBool(NPCMoving, true);
+                MyAnimator.SetBool(NPCMoving, true);
             }
             else if (myDirector.playableGraph.IsPlaying())
-                animator.SetBool(NPCMoving, true);
+                MyAnimator.SetBool(NPCMoving, true);
         }
 
         bool HandleBlocking(Directions dir)
@@ -216,7 +233,7 @@ public class Script_MovingNPC : Script_StaticNPC
         progress = 0f;
 
         AnimatorSetDirection(desiredDir);
-        animator.SetBool(NPCMoving, true);
+        MyAnimator.SetBool(NPCMoving, true);
     }
 
     public void ActuallyMove()
@@ -235,7 +252,7 @@ public class Script_MovingNPC : Script_StaticNPC
             
             if (currentMoves.Count == 0) {
                 localState = LocalStateInteract;
-                animator.SetBool(NPCMoving, false);
+                MyAnimator.SetBool(NPCMoving, false);
                 
                 NPCEndCommands endCommand = moveSets[moveSetIndex].NPCEndCommand;
                 Directions endFaceDirection = moveSets[moveSetIndex].endFaceDirection;
@@ -305,10 +322,10 @@ public class Script_MovingNPC : Script_StaticNPC
             z = 0f;
         }
         
-        animator.SetFloat(LastMoveX, x);
-        animator.SetFloat(LastMoveZ, z);
-        animator.SetFloat(MoveX, x);
-        animator.SetFloat(MoveZ, z);
+        MyAnimator.SetFloat(LastMoveX, x);
+        MyAnimator.SetFloat(LastMoveZ, z);
+        MyAnimator.SetFloat(MoveX, x);
+        MyAnimator.SetFloat(MoveZ, z);
 
         if (positionAdjuster != null)
             positionAdjuster.Adjust(dir);
@@ -477,7 +494,7 @@ public class Script_MovingNPC : Script_StaticNPC
 
     void HandleSpawnFacingDirection()
     {
-        if (animator != null)
+        if (MyAnimator != null)
         {
             if (lastFacingDirection == Directions.None)
             {
@@ -489,6 +506,11 @@ public class Script_MovingNPC : Script_StaticNPC
             }
         }
     }
+
+    private void SetupAnimator()
+    {
+        MyAnimator = rendererChild.GetComponent<Animator>();
+    }
     
     public override void Setup()
     {
@@ -497,8 +519,8 @@ public class Script_MovingNPC : Script_StaticNPC
 
         base.Setup();
 
-        animator = rendererChild.GetComponent<Animator>();
-        animator.SetBool(NPCMoving, false);
+        SetupAnimator();
+        MyAnimator.SetBool(NPCMoving, false);
         
         progress = 1f;
         location = transform.position;

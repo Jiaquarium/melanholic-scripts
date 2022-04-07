@@ -127,6 +127,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         return GetComponent<AudioSource>().isPlaying;
     }
 
+    public AudioClip GetClip(int i) => AudioClips[i];
+
     // ------------------------------------------------------------------
     // AudioMixer Helpers
     public void SetVolume(float newVol, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)

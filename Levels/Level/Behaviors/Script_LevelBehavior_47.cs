@@ -19,6 +19,7 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Ids;
 
     private bool didMapNotification;
+    private bool didInteractPositiveWithIds;
 
     protected override void OnEnable()
     {
@@ -55,9 +56,17 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
     // Next Node Actions
+    
+    /// <summary>
+    /// Should only be able to increment positive interactions by 1 per day.
+    /// </summary>
     public void TrackTalkedToIdsEndOfDay()
     {
-        Script_EventCycleManager.Control.DidTalkToIdsToday = true;   
+        if (!didInteractPositiveWithIds)
+        {
+            Script_EventCycleManager.Control.InteractPositiveWithIds();
+            didInteractPositiveWithIds = true;
+        }
     }
 
     public override void Setup()
@@ -69,7 +78,7 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
         }
 
         // Returning to the same room after talking to Ids, he will be gone.
-        if (Script_EventCycleManager.Control.DidTalkToIdsToday)
+        if (Script_EventCycleManager.Control.DidInteractPositivelyWithIdsToday)
         {
             Ids.gameObject.SetActive(false);
         }

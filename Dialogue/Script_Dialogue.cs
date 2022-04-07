@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-04-02 22:42:26
+// Last created by Dialogue Exporter at 2022-04-06 03:58:43
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1560,7 +1560,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Wow...| you’re kinda terrible.",
-                @"It’s okay though, no one’s great on their first go.",
+                @"It’s okay though, it takes time to master something. A lot ‘a time.",
         },
         
     }
@@ -1626,6 +1626,436 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Why must you tease me, hmph.",
         },
         choiceText = "No",
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ids' Room - Ids Weekend Day 1
+{
+    "basement_ids_n-room_weekend_day1_0",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Hey there, kiddo. It seems it’s been ages since I’ve seen ya ~",
+                @"Well actually ages since I’ve seen anyone really...",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day1_1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"My mind’s been in a jumble lately.",
+                @"Can’t even seem to remember the thing I was first looking for in here.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day1_2",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Anyways {0},| you know what scares me the most about being alone all the time is?",
+                @"That I might even come to like the feeling.",
+                @"Okay okay, I’ll stop with my blabbering!",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day1_3_choices",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"So what is it?| What brings you here, eh?",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day1_3_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Oh...",
+                @"Strange of you to come all the way down here for that but ha, suit yourself.| It was fun while it lasted.",
+        },
+        choiceText = "Just passing by.",
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day1_3_a1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Actually, I can’t stay for long either, I need some time to think over some things.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day1_3_b",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Now?",
+                @"Honestly, I’m really not in the mood <b>today</b>.",
+                @"But hey thanks for asking, kiddo.",
+        },
+        choiceText = "Want to dance?",
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day1_3_b1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Actually, I can’t stay for long, I need some time to think over some things.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ids' Room - Ids Weekend Day 2
+{
+    "basement_ids_n-room_weekend_day2_0",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Hey there, kiddo. It seems it’s been ages since I’ve seen ya ~",
+                @"Well actually ages since I’ve seen anyone really...",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day2_1_choices",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"So what is it?| What brings you here, eh?",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day2_1_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Oh...",
+                @"Strange of you to come all the way down here for that but ha, suit yourself.| It was fun while it lasted.",
+        },
+        choiceText = "Just passing by.",
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day2_1_a1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Actually, I can’t stay for long either, I need some time to think over some things.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day2_1_b",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Now?",
+                @"I’d really love to any other <b>day</b>.",
+                @"Just got too many things on my mind <b>today</b>.",
+                @"Everything’s all mixed up.",
+        },
+        choiceText = "Want to dance?",
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day2_1_b1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"You might’ve already guessed it, but I’m not a native here either, y’know?",
+                @"Yep, that’s right, {0}.| Used to be <i>out there</i>, outside these walls, just like you.",
+                @"If I’m being honest with you, I really don’t belong here.",
+                @"......",
+                @"I’m pretty sure I was looking for something when I first came here...| but I have no idea what that <i>thing</i> is anymore now.",
+                @"Ugh...",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day2_1_b2",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Even if I left here now,| there’d be nowhere to go.",
+                @"I’ve been here so long, I’m actually kinda scared I won’t be able to function <i>out there</i>.",
+                @"At least in here, I have a routine, I got a sense of things, y’know?",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day2_1_b3",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Hey it’s not like you gotta feel sorry for me or anything.",
+                @"It just is what it is.",
+                @"Actually all this talking has gotten me exhausted.",
+                @"I’ll see you another time...",
+                @"I need some time to think over some things...",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Ids' Room - Ids Weekend Day 3
+{
+    "basement_ids_n-room_weekend_day3_0",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Hey there, kiddo. It seems it’s been ages since I’ve seen ya ~",
+                @"Well actually ages since I’ve seen anyone really...",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_1_choices",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"What’s with the serious look? It looks like you might have something to say?",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_1_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Alrightty, well where was I then...",
+                @"Oh right, y’know down here I’ve had a lot of time to think.",
+                @"So really what does it matter if I can never find whatever <i>I’ve lost</i>.",
+                @"I’m starting to think that <i>thing</i> was actually just a <i>part</i> of myself.",
+                @"But if I can’t even remember that part of myself, what’s the point really?",
+                @"Just gotta look on the bright side of things I guess.",
+        },
+        choiceText = "No, it’s nothing.",
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_1_b",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Umm...",
+                @"To be honest I really haven’t been in the mood lately.",
+                @"If it was any other––",
+        },
+        choiceText = "Want to dance?",
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_1_b1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Wait you look really insistent, ha.",
+                @"What’s gotten into you?",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_1_b2",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Okay fine, I’ll do it for you then, {0}.",
+                @"Just this one time.",
+                @"Let’s go!",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_ids-dance",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Oh right, it’s me first, that’s how it goes...",
+                @"Ha... it’s really been a while.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_player-dance",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"You know why us {21} love dancing in the dark?",
+                @"There’s just something so romantic about staring into complete blackness, while feeling our warm wool rubbing against one another...",
+                @".|.|.|.|.|.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_success",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Wow, hey I’m actually kinda refreshed!",
+                @"This feels really nostalgic for some reason, kiddo.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_success1",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Well {0} I gotta run, but I’m sure I’ll be seeing you another time.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_success2",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Oh that’s right, before I forget!",
+                @"I’ve been meaning to give you this as a small present just to say...| thanks.",
+                @"You’ve always been someone I could trust.",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_retalk_intro",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Hey, kiddo, what is it? You look really serious...",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_retalk_0_choices",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Well what is it hmm?",
+        },
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_retalk_0_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Y’know down here I’ve had a lot of time to think.",
+                @"So really what does it matter if I can’t remember what <i>I’ve lost</i>.",
+                @"Hey, maybe that’s a sign that I’ve found it already.",
+                @"It’s time I just gotta tell myself, stop looking. No one else can do it for me.",
+                @"I could spend all my nights looking, and what if I <b>still</b> never find it.",
+                @"What kind of a life is that?",
+        },
+        choiceText = "No, it’s nothing",
+        
+    }
+},
+{
+    "basement_ids_n-room_weekend_day3_retalk_1_a",
+    new Model_Languages
+    {
+        speaker = "{3}",
+        EN = new string[]
+        {
+                @"Just gotta look on the bright side of things I guess.",
+        },
         
     }
 },
