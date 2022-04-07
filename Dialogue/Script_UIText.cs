@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-03-31 22:19:16
+// Last created by UI Exporter at 2022-04-07 14:08:52
 
 using System.Collections;
 using System.Collections.Generic;
@@ -534,7 +534,7 @@ public class Script_UIText
     "credits_main-staff_role1",
     new Model_LanguagesUI
     {
-        EN = @"MUSIC & SOUND"
+        EN = @"ORIGINAL SOUNDTRACK, SOUND DESIGN"
     }
 },
 {
@@ -559,17 +559,52 @@ public class Script_UIText
     }
 },
 {
+    "credits_extras_role0",
+    new Model_LanguagesUI
+    {
+        EN = @"ADDITIONAL SFX"
+    }
+},
+{
+    "credits_extras_name0",
+    new Model_LanguagesUI
+    {
+        EN = @"Taira Komori"
+    }
+},
+{
+    "credits_extras_role1",
+    new Model_LanguagesUI
+    {
+        EN = @"IDS’ DANCE TRACKS"
+    }
+},
+{
+    "credits_extras_name1",
+    new Model_LanguagesUI
+    {
+        EN = @"Patricia Taxxon"
+    }
+},
+{
     "credits_playtesters_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"Special thanks to all the playtesters that made this possible."
+        EN = @"SPECIAL THANKS TO ALL THE PLAYTESTERS."
+    }
+},
+{
+    "credits_playtesters_thank-you1",
+    new Model_LanguagesUI
+    {
+        EN = @"THIS WOULDN’T HAVE BEEN POSSIBLE WITHOUT YA’LL."
     }
 },
 {
     "credits_main-playtesters_role0",
     new Model_LanguagesUI
     {
-        EN = @"MAIN PLAYTESTERS"
+        EN = @"REPEAT PLAYTESTERS"
     }
 },
 {
@@ -737,7 +772,7 @@ public class Script_UIText
     "credits_thank-you_text1",
     new Model_LanguagesUI
     {
-        EN = @"P.S. There’s a shiteater in all of us."
+        EN = @"To the shiteater inside all of us."
     }
 },
 // ------------------------------------------------------------------

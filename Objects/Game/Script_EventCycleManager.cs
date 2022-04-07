@@ -26,7 +26,9 @@ public class Script_EventCycleManager : MonoBehaviour
     [SerializeField] private bool didInteractPositivelyWithIds;
     
     [SerializeField] private int didTalkToElleniaCountdown;
-    private const int ElleniaCountdownMax = 2;
+    
+    // With CountdownMax = 3, you just have to talk with Ellenia any day. 
+    private const int ElleniaCountdownMax = 3;
     // ------------------------------------------------------------------
 
     [SerializeField] private Script_LevelBehavior_27 LastElevator;

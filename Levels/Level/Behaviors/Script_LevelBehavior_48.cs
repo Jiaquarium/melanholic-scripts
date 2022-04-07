@@ -718,6 +718,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
                 t.isIceBlockRightCracked = true;
                 t.OnNewWorldRevealPaintingDone();
             }
+
+            if (GUILayout.Button("Mask Reveal Timeline"))
+            {
+                t.PlayMaskRevealTimeline();
+            }
             
             if (GUILayout.Button("Switch to Last Elevator Background"))
             {

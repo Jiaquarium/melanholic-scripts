@@ -40,6 +40,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject UnderworldEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
+    [SerializeField] private Script_ExitMetadataObject GrandMirrorFrontOfMirror;
     [SerializeField] private Script_ExitMetadataObject CelestialGardensEntrance;
     [SerializeField] private Script_ExitMetadataObject RockGardenEntrance;
     [SerializeField] private Script_ExitMetadataObject CatWalk2Entrance;
@@ -205,6 +206,11 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToGrandMirror()
     {
         Teleport(GrandMirrorEntrance);
+    }
+
+    public void ExitToGrandMirrorFrontOfMirror()
+    {
+        Teleport(GrandMirrorFrontOfMirror);
     }
 
     public void ExitToCelestialGardens()
@@ -427,6 +433,11 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Go To: Grand Mirror"))
                 {
                     t.ExitToGrandMirror();
+                }
+
+                if (GUILayout.Button("Go To: Grand Mirror (Front Of Mirror)"))
+                {
+                    t.ExitToGrandMirrorFrontOfMirror();
                 }
 
                 if (GUILayout.Button("Go To: Grand Mirror R2"))

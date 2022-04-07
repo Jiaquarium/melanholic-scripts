@@ -248,13 +248,16 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     // and reset the Enter Once Trigger.
     private void OnPlayerRestartHandleBgm(string tag, Script_HitBox hitBox)
     {
-        // Ignore if this Hurt Event caused Time to run out or if we're not checking for
-        // drama actually done.
+        // Ignore if this Hurt Event caused Time to run out
         if (Script_ClockManager.Control.ClockState == Script_Clock.States.Done)
         {
             Debug.Log($"{name} Ignore trying to restart BGM on Hurt because Time has run out");
             return;
         }
+
+        // Only need to handle this on DramaDone trigger
+        if (!isDramaDoneTriggerOff)
+            return;
 
         Debug.Log($"OnPlayerRestartHandleBgm() hurtbox tag: {tag}, hitBox tag: {hitBox.tag}");
         
