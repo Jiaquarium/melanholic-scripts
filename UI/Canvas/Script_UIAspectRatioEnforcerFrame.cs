@@ -28,6 +28,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         IdsDead = 4,
         ConstantThin = 5,
         TheSealing = 6,
+        ConstantDefault = 7,
     }
     
     public static Script_UIAspectRatioEnforcerFrame Control;
@@ -127,8 +128,14 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
                 break;
             
             // No dynamic sizing needed for framing
+            // Useful for non-Full Screen Full Art where it's unnecessary to match up to an implied
+            // Full Art viewport
             case (Framing.ConstantThin):
                 minBorderHeight = minBorderHeightThin;
+                canvasScaler = null;
+                break;
+            case (Framing.ConstantDefault):
+                minBorderHeight = minBorderHeightDefault;
                 canvasScaler = null;
                 break;
 
