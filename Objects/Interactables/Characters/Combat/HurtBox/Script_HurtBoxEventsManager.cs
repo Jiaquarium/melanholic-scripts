@@ -13,4 +13,12 @@ public class Script_HurtBoxEventsManager : MonoBehaviour
         if (OnHurt != null)
             OnHurt(hurtBoxTag, hitBox);
     }
+
+    public delegate void PlayerRestartDelegate(Collider col);
+    public static event PlayerRestartDelegate OnPlayerRestart;
+    public static void PlayerRestart(Collider col)
+    {
+        if (OnPlayerRestart != null)
+            OnPlayerRestart(col);
+    }
 }

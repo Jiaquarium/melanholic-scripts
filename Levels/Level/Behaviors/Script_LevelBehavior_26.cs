@@ -51,6 +51,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     [SerializeField] private float beforePaintingDoneCutSceneWaitTime;
 
+    [SerializeField] private Script_DialogueManager dialogueManager;
+
     
     [Header("Myne's Challenge Settings")]
     [SerializeField] private Script_DialogueNode[] mynesStopDialogue;
@@ -78,6 +80,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete        += OnLevelInitCompleteEvent;
 
         Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
+        Script_HurtBoxEventsManager.OnPlayerRestart         += OnPlayerRestartHandleState;
         Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
     }
@@ -87,6 +90,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete        -= OnLevelInitCompleteEvent;
         
         Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
+        Script_HurtBoxEventsManager.OnPlayerRestart         -= OnPlayerRestartHandleState;
         Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
 
@@ -283,6 +287,32 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                 if (!bgThemePlayer.IsPlaying)
                     bgThemePlayer.Play();
             }
+        }
+    }
+
+    /// <summary>
+    /// Handle the case where player is left in Talking state from Myne Dialogue and is
+    /// hit in during the Dialogue.
+    /// </summary>
+    private void OnPlayerRestartHandleState(Collider col)
+    {
+        var isCurrentNodeInMynes = false;
+        foreach (Script_DialogueNode node in mynesStopDialogue)
+        {
+            if (node == dialogueManager.currentNode)
+            {
+                isCurrentNodeInMynes = true;
+                break;
+            }
+        }
+        
+        Debug.Log($"OnPlayerRestartHandleState, player.State: {game.GetPlayer().State}; isCurrentNodeInMynes: {isCurrentNodeInMynes}");
+
+        // Check if player is in dialogue state and currentNode is any of the Myne Nodes
+        if (game.GetPlayer().State == Const_States_Player.Dialogue && isCurrentNodeInMynes)
+        {
+            Debug.Log($"Handling Restart during Dialogue, Current Node {dialogueManager.currentNode}");
+            game.ChangeStateCutScene();
         }
     }
     

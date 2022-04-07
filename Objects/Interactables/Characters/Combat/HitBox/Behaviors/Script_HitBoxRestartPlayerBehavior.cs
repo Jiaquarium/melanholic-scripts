@@ -50,6 +50,8 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
                 Script_TransitionManager.RestartPlayerFadeOutTime, () =>
                 {
                     Script_Game.Game.ChangeStateInteract();
+
+                    Script_HurtBoxEventsManager.PlayerRestart(col);
                 }
             ));
         }

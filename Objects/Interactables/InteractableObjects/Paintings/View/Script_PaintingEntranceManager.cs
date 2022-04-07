@@ -25,7 +25,6 @@ public class Script_PaintingEntranceManager : MonoBehaviour
 
         if (Id == 0)
         {
-            // print($"is it painting node? {Script_DialogueManager.DialogueManager.currentNode is Script_DialogueNode_PaintingEntrance}");
             Script_DialogueNode currentNode = Script_DialogueManager.DialogueManager.currentNode;
             Script_DialogueNode_PaintingEntrance paintingNode = (Script_DialogueNode_PaintingEntrance)currentNode;
             

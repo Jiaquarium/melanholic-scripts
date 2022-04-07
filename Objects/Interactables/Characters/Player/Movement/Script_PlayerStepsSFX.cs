@@ -47,6 +47,10 @@ public class Script_PlayerStepsSFX : MonoBehaviour
             return;
         }
         
+        // Handle different length SFXs for different Masks.
+        if (stepIdx >= clips.Count)
+            stepIdx = 0;
+        
         AudioClip clip = clips[stepIdx];
         audioSource.PlayOneShot(clip, volume);
         
