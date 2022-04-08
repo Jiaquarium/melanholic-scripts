@@ -13,7 +13,6 @@ using Unity.EditorCoroutines.Editor;
 public class Script_CameraShake : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
-    private CinemachineBasicMultiChannelPerlin noise;
 
     public void Shake(float duration, float amp, float freq, Action cb)
     {
@@ -36,9 +35,19 @@ public class Script_CameraShake : MonoBehaviour
         }
 
         timer = 0;
+
+        InitialState();
+        
+        if (cb != null)
+            cb();
+    }
+
+    public void InitialState()
+    {
+        CinemachineBasicMultiChannelPerlin noise = virtualCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
+        
         noise.m_AmplitudeGain = 0f;
         noise.m_FrequencyGain = 0f;
-        if (cb != null) cb();
     }
 }
 

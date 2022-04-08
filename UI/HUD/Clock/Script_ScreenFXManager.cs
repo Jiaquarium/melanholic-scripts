@@ -16,7 +16,7 @@ public class Script_ScreenFXManager : MonoBehaviour
     const float WarningDuration         = 1.75f;
     const float WarningAmplitude        = 1f;
     const float WarningFrequency        = 1f;
-    const float WarningInterval         = 15f;
+    const float WarningInterval         = 20f;
 
     const float DangerDuration          = 2f;
     const float DangerAmplitude         = 1f;
@@ -38,6 +38,8 @@ public class Script_ScreenFXManager : MonoBehaviour
     
     private Script_Clock.TimeStates lastState;
 
+    private bool isScreenShaking;
+
     void Update()
     {
         UpdateScreenFX();
@@ -52,11 +54,13 @@ public class Script_ScreenFXManager : MonoBehaviour
         )
             return;
 
-        timer -= Time.deltaTime;
+        timer -= Time.unscaledDeltaTime;
 
         if (timer <= 0)
         {
-            ShakeScreen();
+            if (!isScreenShaking)
+                ShakeScreen();
+            
             timer = currentInterval;
         }
     }
@@ -74,6 +78,8 @@ public class Script_ScreenFXManager : MonoBehaviour
         rumbleAudio.Source.clip = sfx.ScreenShakeRumble;
         rumbleAudio.Source.Play();
 
+        isScreenShaking = true;
+
         StartCoroutine(WaitToFadeOutAudio());
 
         IEnumerator WaitToFadeOutAudio()
@@ -81,6 +87,11 @@ public class Script_ScreenFXManager : MonoBehaviour
             yield return new WaitForSeconds(currentDuration);
 
             rumbleAudio.FadeOut(rumbleFadeOutTime);
+            
+            isScreenShaking = false;
+
+            // In the case Player exits level during shake, Script_CameraShake will not end it.
+            Script_VCamManager.VCamMain.StopShake();
         }
     }
 

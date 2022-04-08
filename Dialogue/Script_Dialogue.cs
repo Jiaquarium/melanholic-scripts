@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-04-06 03:58:43
+// Last created by Dialogue Exporter at 2022-04-07 18:34:50
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1963,7 +1963,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"There’s just something so romantic about staring into complete blackness, while feeling our warm wool rubbing against one another...",
                 @".|.|.|.|.|.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -2893,7 +2901,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"{64} here at your humble service, no <b>outsiders</b> past this point.",
-                @"Oh, you are able to understand me! Forgive me, turns out you can be trusted.",
+                @"Oh, you are able to understand me!| Forgive me!",
                 @"The older one’s room is just <b>down this hall</b>, and the younger one’s is through this <b>north door<b>.",
                 @"Be careful and safe travels, young one. I am here to serve.",
         },
@@ -5883,7 +5891,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "NA",
         EN = new string[]
         {
-                @"“I cannot believe in Western sincerity because it is invisible, but in feudal times we believed that sincerity resides in our entrails, and if we needed to show our sincerity, we had to cut our bellies and take out our visible sincerity.” – Yukio Mishima",
+                @"Can’t believe in sincerity because it is invisible. Is true sincerity somewhere deep inside? Maybe the only way to show it is to slash our bellies and take out our visible sincerity?",
         },
         
     }

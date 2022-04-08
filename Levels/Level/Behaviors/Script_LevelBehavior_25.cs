@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Audio;
 using System;
+using Cinemachine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -224,7 +225,11 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
         void OnReturnedToEasle()
         {
-            Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaVCam);
+            var VCamManager = Script_VCamManager.VCamMain;
+            
+            VCamManager.SwitchToMainVCam(followElleniaVCam);
+            VCamManager.SetDefaultCinemachineBlendUpdateMethod();
+
             Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[4], false);
         }
     }
@@ -366,7 +371,14 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         print("Ellenia walking to paintings cut scene");
         game.ChangeStateCutScene();
 
-        Script_VCamManager.VCamMain.SetNewVCam(followElleniaVCam);
+        var VCamManager = Script_VCamManager.VCamMain;
+        
+        VCamManager.SetNewVCam(followElleniaVCam);
+
+        // Ellenia is controlled by Timeline which is on Update clock.
+        // Jittery camera movement if Update Blend Method is left on Fixed.
+        VCamManager.SetCinemachineBlendUpdateMethod(CinemachineBrain.BrainUpdateMethod.LateUpdate);
+
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
     
@@ -481,12 +493,14 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         ElleniaIntroDoneDialogueNodes();
 
         spokenWithEllenia = true;
+        
+        // Ellenia walks to the Exit
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
-        // fade music back in
     }
 
     public void ElleniaExit()
     {
+        // Ellenia actually exits
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 7);
     }
 
@@ -678,6 +692,13 @@ public class Script_LevelBehavior_25Tester : Editor
         DrawDefaultInspector();
 
         Script_LevelBehavior_25 lb = (Script_LevelBehavior_25)target;
+        
+        if (GUILayout.Button("Ellenia Tour"))
+        {
+            lb.ElleniaWalksToPaintingsCutScene();
+        }
+
+        GUILayout.Space(12);
         
         if (GUILayout.Button("Set New Ellenia Password"))
         {

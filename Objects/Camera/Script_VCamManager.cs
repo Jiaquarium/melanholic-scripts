@@ -31,6 +31,8 @@ public class Script_VCamManager : MonoBehaviour
 
     [SerializeField] private CinemachineConfiner cinemachineConfiner;
 
+    [SerializeField] private CinemachineBrain.BrainUpdateMethod defaultBlendUpdateMethod = CinemachineBrain.BrainUpdateMethod.FixedUpdate;
+
     public CinemachineBrain Brain
     {
         get => brain;
@@ -136,6 +138,21 @@ public class Script_VCamManager : MonoBehaviour
         GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
     }
 
+    public void StopShake()
+    {
+        GetComponent<Script_CameraShake>().InitialState();
+    }
+
+    public void SetCinemachineBlendUpdateMethod(CinemachineBrain.BrainUpdateMethod updateMethod)
+    {
+        brain.m_BlendUpdateMethod = updateMethod;
+    }
+    
+    public void SetDefaultCinemachineBlendUpdateMethod()
+    {
+        brain.m_BlendUpdateMethod = defaultBlendUpdateMethod;
+    }
+
     public void GetAllVCamPrioritiesNotEqual(int i)
     {
         List<CinemachineVirtualCamera> vCams = new List<CinemachineVirtualCamera>();
@@ -179,6 +196,8 @@ public class Script_VCamManager : MonoBehaviour
         CinemachineBasicMultiChannelPerlin noise = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
         noise.m_AmplitudeGain = 0f;
         noise.m_FrequencyGain = 0f;
+
+        defaultBlendUpdateMethod = brain.m_BlendUpdateMethod;
     }
 }
 

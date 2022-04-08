@@ -1397,10 +1397,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     /// </summary>
     public void InitializeBGMOnRun()
     {
+        bool isWeekday = game.RunCycle == Script_RunsManager.Cycle.Weekday;
         bool isWeekendIdsDanceDay = Script_EventCycleManager.Control.IdsPositiveInteractionCount >= 2
             && game.Run.dayId == Script_Run.DayId.sat;
 
-        BGMIdx = isWeekendIdsDanceDay ? clubMusicIdx : sadIdsThemeIdx;
+        BGMIdx = isWeekday || isWeekendIdsDanceDay ? clubMusicIdx : sadIdsThemeIdx;
     }
 
     public override void Setup()

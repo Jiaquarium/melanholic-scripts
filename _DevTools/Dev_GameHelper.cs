@@ -9,6 +9,9 @@ using UnityEditor;
 public class Dev_GameHelper : MonoBehaviour
 {
     [SerializeField] private bool isDisableHUD;
+    [SerializeField] private bool isStartAwareTime;
+    [SerializeField] private bool isStartWarningTime;
+    [SerializeField] private bool isStartDangerTime;
     
     public Vector3Int playerSpawn;
     public int level;
@@ -81,6 +84,15 @@ public class Dev_GameHelper : MonoBehaviour
     {
         if (isDisableHUD && Debug.isDebugBuild)
             SetUIActive(false);
+        
+        var clock = Script_ClockManager.Control;
+        
+        if (isStartAwareTime)
+            clock.AwareTime();
+        else if (isStartWarningTime)
+            clock.WarningTime();
+        else if (isStartDangerTime)
+            clock.DangerTime();
     }
     
     public void DefaultPlayerSpawnPos()
