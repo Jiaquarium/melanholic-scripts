@@ -21,9 +21,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // ==================================================================
     // State Data
     [SerializeField] private bool isDone;
+    
+    // Only set for Dev purposes
+    [SerializeField] private bool isFinalRound;
     // ==================================================================
 
-    [SerializeField] private bool isFinalRound;
     [SerializeField] private List<GameObject> R1Objects;
     [SerializeField] private List<GameObject> R2Objects;
 

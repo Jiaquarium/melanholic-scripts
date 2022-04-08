@@ -9,7 +9,8 @@ public class Script_SaveLoadLevelBehavior_48 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_48 lvlModel = new Model_LevelBehavior_48(
-            _isDone           : LB48.IsDone
+            _isDone : LB48.IsDone,
+            _isFinalRound : LB48.IsFinalRound
         );
         
         data.levelsData.LB48 = lvlModel;
@@ -18,7 +19,9 @@ public class Script_SaveLoadLevelBehavior_48 : Script_SaveLoadLevelBehavior
     public override void Load(Model_RunData data)
     {
         Model_LevelBehavior_48 lvlModel         = data.levelsData.LB48;
+        
         LB48.IsDone                             = lvlModel.isDone;
+        LB48.IsFinalRound                       = lvlModel.isFinalRound;
 
         Debug.Log($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
