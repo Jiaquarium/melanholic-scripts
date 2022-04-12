@@ -24,6 +24,11 @@ public class Script_LightFXManager : MonoBehaviour
 
     private float timer;
 
+    // ------------------------------------------------------------------
+    // Trailer Only
+    
+    [SerializeField] private float intensityIncrement = 0.10f;
+
     public bool IsPaused
     {
         get => isPaused;
@@ -51,6 +56,16 @@ public class Script_LightFXManager : MonoBehaviour
     
     void Update()
     {
+        if (Const_Dev.IsTrailerMode)
+        {
+            if (Input.GetButtonDown(Const_KeyCodes.DevIncrement) && Input.GetButton(Const_KeyCodes.Lights))
+                AdjustCurrentLightsIntensity(true);
+            else if (Input.GetButtonDown(Const_KeyCodes.DevDecrement) && Input.GetButton(Const_KeyCodes.Lights))
+                AdjustCurrentLightsIntensity(false);
+            
+            return;
+        }
+        
         if (game.IsInHotel() || game.IsHideHUD)
             return;
         
@@ -66,6 +81,7 @@ public class Script_LightFXManager : MonoBehaviour
 
     /// <summary>
     /// Force a light intensity (only works when LightFXManager is paused)
+    /// Does not update current intensity.
     /// </summary>
     public void SetDirectionalLightsIntensity(float intensity)
     {
@@ -76,6 +92,20 @@ public class Script_LightFXManager : MonoBehaviour
 
             l.intensity = intensity;
         }
+    }
+
+    /// <summary>
+    /// Explicitly set current lights intensity and set lights. Only works if
+    /// LightFXManager is paused or Const_Dev.IsTrailerMode is true.
+    /// Used for Trailer
+    /// </summary>
+    public void AdjustCurrentLightsIntensity(bool isIncrement)
+    {
+        var increment = isIncrement ? intensityIncrement : -intensityIncrement;   
+        var newIntensity = Mathf.Max(defaultIntensity, CurrentIntensity + increment);
+        CurrentIntensity = newIntensity;
+        
+        SetDirectionalLightsIntensity(CurrentIntensity);
     }
 
     private void UpdateDirectionalLights()

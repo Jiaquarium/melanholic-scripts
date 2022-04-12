@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-04-07 14:08:52
+// Last created by UI Exporter at 2022-04-08 15:02:46
 
 using System.Collections;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ public class Script_UIText
     "intro_authors_music_name",
     new Model_LanguagesUI
     {
-        EN = @"s3z"
+        EN = @"s3-z"
     }
 },
 {
@@ -541,7 +541,7 @@ public class Script_UIText
     "credits_main-staff_name1",
     new Model_LanguagesUI
     {
-        EN = @"s3z"
+        EN = @"s3-z"
     }
 },
 {

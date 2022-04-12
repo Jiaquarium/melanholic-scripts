@@ -70,12 +70,21 @@ public class Script_Clock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Const_Dev.IsTrailerMode)
+        {
+            if (Input.GetButtonDown(Const_KeyCodes.DevIncrement) && Input.GetButton(Const_KeyCodes.Time))
+                FastForwardTime(60, true);
+            else if (Input.GetButtonDown(Const_KeyCodes.DevDecrement) && Input.GetButton(Const_KeyCodes.Time))
+                FastForwardTime(-60, true);
+        }
+        
         switch (State)
         {
             case (States.Active):
             {
                 CurrentTime += Time.deltaTime * TimeMultiplier;
-                if (CurrentTime > EndTime)  CurrentTime = EndTime;
+                if (CurrentTime > EndTime)
+                    CurrentTime = EndTime;
 
                 UpdateTimeState();
 
@@ -95,9 +104,13 @@ public class Script_Clock : MonoBehaviour
         DisplayTime();
     }
 
-    public void FastForwardTime(int sec)
+    public void FastForwardTime(int sec, bool isRoundDownToMinute = false)
     {
         CurrentTime += (float)sec;
+
+        if (isRoundDownToMinute)
+            CurrentTime = Script_Utils.RoundSecondsDownToMinute(CurrentTime);
+
         CheckDone();
     }
 

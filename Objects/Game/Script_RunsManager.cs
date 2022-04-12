@@ -90,6 +90,15 @@ public class Script_RunsManager : MonoBehaviour
         get => _sundayStartDay;
     }
     
+    void Update()
+    {
+        if (Const_Dev.IsTrailerMode)
+        {
+            if (Input.GetButtonDown(Const_KeyCodes.DevIncrement) && Input.GetButton(Const_KeyCodes.Day))
+                IncrementRun();
+        }
+    }
+    
     public Script_Run GetRunByIdx(int i)
     {
         return all[i];

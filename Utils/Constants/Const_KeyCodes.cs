@@ -29,6 +29,13 @@ public static class Const_KeyCodes
     public const string Effect9 = "Effect9";
     public const string Horizontal = "Horizontal";
     public const string Vertical = "Vertical";
-    
+
+    // ------------------------------------------------------------------
+    // Dev & Trailer
     public const string Dev = "Dev";
+    public const string DevIncrement = "DevIncrement";
+    public const string DevDecrement = "DevDecrement";
+    public const string Lights = "Lights";
+    public const string Time = "Time";
+    public const string Day = "Day";
 }

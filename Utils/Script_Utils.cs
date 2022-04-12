@@ -549,6 +549,13 @@ public static class Script_Utils
             : timeDisplay;
     }
 
+    public static float RoundSecondsDownToMinute(this float sec)
+    {
+        int roundedDownSec = (int)(sec / 60) * 60;
+
+        return (float)roundedDownSec;
+    }
+
     public static string FormatDateTime(this DateTime date)
     {
         var s = date.ToString("MMMM");

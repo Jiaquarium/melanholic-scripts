@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -658,11 +659,23 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Set Baked Grids Active"))
                 {
                     t.SetBakedLightingGridsActive(true);
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
                 }
 
                 if (GUILayout.Button("Set Baked Grids Inactive"))
                 {
                     t.SetBakedLightingGridsActive(false);
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
                 }
             }
 
@@ -672,11 +685,23 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Build Setup", GUILayout.Height(32)))
                 {
                     t.BuildSetup();
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
                 }
 
                 if (GUILayout.Button("Build Dev Explore Setup"))
                 {
                     t.BuildDevExploreSetup();
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
                 }
             }
 

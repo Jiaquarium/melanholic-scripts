@@ -17,6 +17,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	void Awake()
     {
         cam = GetComponent<Camera>();
+		this.enabled = Const_Dev.IsSpecsDisplayOn;
     }
 	
 	void Update()
@@ -42,14 +43,20 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		style.fontSize = fontSize;
 		style.normal.textColor = new Color (255f, 255f, 255f, 1.0f);
 		
-        GUI.Label(rect,
-@$"{FrameData()}, {VSyncData()}
+        var label = Const_Dev.IsTrailerMode ?
+@$"{Fps()}
+{CameraSize()}x
+pxRt:{PixelRatio()}x
+{VP()}
+lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}"
+: @$"{FrameData()}, {VSyncData()}
 {Resolution()}
 {PixelPerfectData()}
-{CameraSize()}
+ortho: {CameraSize()}
 {ScreenMode()}
-{BuildText()}",
-		style);
+{BuildText()}";
+
+		GUI.Label(rect, label, style);
 	}
 
 	private void RefreshFrameData()
@@ -60,10 +67,12 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	
 	private string FrameData()
 	{
-		string fpsText = string.Format("{0:0.0} ms ({1:0.} fps)", frameTimeMs, fps);
+		string fpsText = string.Format("{0:0.0} ms", frameTimeMs) + $" ({Fps()})";
 		
 		return fpsText;
 	}
+
+	private string Fps() => string.Format("{0:0.} fps", fps);
 
 	private string VSyncData()
 	{
@@ -82,9 +91,19 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		string screenPixelWidthText = string.Format("{0}", screenPixelWidth);
 		string screenPixelHeightText = string.Format("{0}", screenPixelHeight);
 		
-		string resText = $"VP: {screenPixelWidthText}X{screenPixelHeightText} | Screen: {Screen.currentResolution.ToString()}";
+		string resText = $"VP: {VP()} | Screen: {Screen.currentResolution.ToString()}";
 
 		return resText;
+	}
+
+	private string VP()
+	{
+		float screenPixelWidth = cam.pixelWidth;
+		float screenPixelHeight = cam.pixelHeight;
+		string screenPixelWidthText = string.Format("{0}", screenPixelWidth);
+		string screenPixelHeightText = string.Format("{0}", screenPixelHeight);
+		
+		return $"{screenPixelWidthText}X{screenPixelHeightText}";
 	}
 
 	private string BuildText()
@@ -97,7 +116,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 
 	private string CameraSize()
 	{
-		string cameraSizeText = $"ortho: {cam.orthographicSize}";
+		string cameraSizeText = $"{cam.orthographicSize}";
 
 		return cameraSizeText;
 	}
@@ -108,16 +127,14 @@ public class Dev_SpecsDisplay : MonoBehaviour
 			return string.Empty;
 		
 		int UIScale;
-		int calcedPixelRatio;
 		int PPCamRatio;
 		string pixelPerfectData = string.Empty;
 		
 		try
 		{
 			UIScale = graphics.UIDefaultScaleFactor;
-			calcedPixelRatio = graphics.PixelRatio;
 			PPCamRatio = pixelPerfectCamera.pixelRatio;
-			pixelPerfectData = $"pixel ratios (PPCam): {calcedPixelRatio}x ({PPCamRatio}x)\nUI scale: {UIScale}x";
+			pixelPerfectData = $"pixel ratios (PPCam): {PixelRatio()}x ({PPCamRatio}x)\nUI scale: {UIScale}x";
 		}
 		catch
 		{
@@ -125,6 +142,22 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		}
 
 		return pixelPerfectData;
+	}
+
+	private string PixelRatio()
+	{
+		int calcedPixelRatio;
+		
+		try
+		{
+			calcedPixelRatio = graphics.PixelRatio;
+		}
+		catch
+		{
+			calcedPixelRatio = 0;
+		}
+
+		return $"{calcedPixelRatio}";
 	}
 
 	private string ScreenMode()
