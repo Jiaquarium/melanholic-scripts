@@ -44,7 +44,9 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
             {
                 Debug.Log($"Detected Painting Entrance {obj.name}");
                 var paintingEntrance = (Script_InteractablePaintingEntrance)obj;
-                paintingEntrance.InitiatePaintingEntrance();
+                
+                if (!Const_Dev.IsTrailerMode)
+                    paintingEntrance.InitiatePaintingEntrance();
                 
                 // 16 frame (@ 30 fps) duration timeline.
                 myDirector.Play(timeline);
@@ -54,7 +56,7 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
         }
 
         // Handle returning to interact state here if no Painting Entrance was detected.
-        if (!isPaintingEntranceDetected)
+        if (!isPaintingEntranceDetected || Const_Dev.IsTrailerMode)
             StartCoroutine(WaitToInteract());
 
         IEnumerator WaitToInteract()

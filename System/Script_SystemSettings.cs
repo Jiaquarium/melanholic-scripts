@@ -21,7 +21,7 @@ public class Script_SystemSettings : MonoBehaviour
     
     public void SetScreenSettings()
     {
-        Screen.fullScreenMode = currentScreenMode;
+        // Screen.fullScreenMode = currentScreenMode;
     }
 
     void Update()

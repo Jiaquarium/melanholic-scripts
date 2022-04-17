@@ -51,6 +51,7 @@ public class Script_ScreenFXManager : MonoBehaviour
             clockManager.ClockTimeState == Script_Clock.TimeStates.None
             || clockManager.ClockState == Script_Clock.States.Done
             || !HUDManager.IsClockShowing()
+            || Const_Dev.IsTrailerMode
         )
             return;
 
