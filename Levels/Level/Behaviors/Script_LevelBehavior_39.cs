@@ -126,12 +126,11 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         if (
             Input.GetButton(checkDirection.DirectionToKeyCode())
             && player.FacingDirection == checkDirection
+            && player.State == Const_States_Player.Interact
+            && game.state == Const_States_Game.Interact
         )
         {
-            if (player.State == Const_States_Player.Interact)
-                StartGuardDialogue();
-            else
-                Debug.Log("Trying to trigger Flan Dialogue but Player not in Interact");
+            StartGuardDialogue();
         }
     }
 
