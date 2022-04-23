@@ -9,6 +9,8 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	[SerializeField] private Script_GraphicsManager graphics;
 	[SerializeField] private PixelPerfectCamera pixelPerfectCamera;
 	[SerializeField] private float fpsRefreshTimer;
+
+	[SerializeField] private bool isSingleLineDisplay;
 	
 	private float fps;
 	private float frameTimeMs;
@@ -44,11 +46,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		style.normal.textColor = new Color (255f, 255f, 255f, 1.0f);
 		
         var label = Const_Dev.IsTrailerMode ?
-@$"{Fps()}
-{CameraSize()}x
-pxRt:{PixelRatio()}x
-{VP()}
-lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}"
+TrailerModeSpecs()
 : @$"{FrameData()}, {VSyncData()}
 {Resolution()}
 {PixelPerfectData()}
@@ -58,6 +56,14 @@ ortho: {CameraSize()}
 
 		GUI.Label(rect, label, style);
 	}
+
+	private string TrailerModeSpecs() => isSingleLineDisplay ?
+		@$"{Fps()}, {CameraSize()}x, pxRt:{PixelRatio()}x, {VP()}, lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}"
+		: @$"{Fps()}
+{CameraSize()}x
+pxRt:{PixelRatio()}x
+{VP()}
+lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 
 	private void RefreshFrameData()
 	{
