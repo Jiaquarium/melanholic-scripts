@@ -29,15 +29,8 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_SystemSettings systemSettings;
     [SerializeField] private Script_SettingsController settingsController;
     
-    void OnApplicationQuit()
-    {
-        PlayerPrefs.DeleteAll();    
-    }
-    
     private void Awake()
     {
-        PlayerPrefs.DeleteAll();
-
         Time.timeScale = 1f;
         
         if (Main == null)

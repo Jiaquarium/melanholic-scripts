@@ -36,7 +36,7 @@ public static class Const_Dev
     
     public readonly static bool IsSpecsDisplayOn            = true;            // false
 
-    public readonly static bool IsTrailerMode               = true;            // false
+    public readonly static bool IsTrailerMode               = false;            // false
     
     public readonly static string Lang                      = "EN";             // "EN"
 

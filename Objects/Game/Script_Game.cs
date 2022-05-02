@@ -404,11 +404,6 @@ public class Script_Game : MonoBehaviour
         }
     }
     
-    void OnApplicationQuit()
-    {
-        PlayerPrefs.DeleteAll();    
-    }
-    
     void OnEnable()
     {
         Script_ClockEventsManager.OnTimesUp += TimesUpEffects;
@@ -432,7 +427,6 @@ public class Script_Game : MonoBehaviour
     /// NOTE: no refs to Game or other Managers in Awake, only allowed in Start()
     void Awake()
     {
-        PlayerPrefs.DeleteAll();
         DevCleanup();
 
         if (Game == null)

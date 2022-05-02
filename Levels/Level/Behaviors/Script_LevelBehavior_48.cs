@@ -410,29 +410,48 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     public void IncreaseGlitchBlend()
     {
-        float blendStep = 1f / glitchZoneSteps;
-        currentTargetBlend += blendStep;
+        if (Const_Dev.IsTrailerMode)
+        {
+            // Immediately set blend to high for trailer, so it's obvious we're using
+            // a glitch effect.
+            glitchManager.SetHigh(useCurrentBlend: true);
+            glitchManager.BlendTo(1f);
+        }
+        else
+        {
+            float blendStep = 1f / glitchZoneSteps;
+            currentTargetBlend += blendStep;
 
-        // Ensure current settings is Default.
-        glitchManager.SetDefault(useCurrentBlend: true);
-        glitchManager.BlendTo(currentTargetBlend);
+            // Ensure current settings is Default.
+            glitchManager.SetDefault(useCurrentBlend: true);
+            glitchManager.BlendTo(currentTargetBlend);
+        }
     }
 
     public void DecreaseGlitchBlend()
     {
-        float blendStep = 1f / glitchZoneSteps;
-        currentTargetBlend -= blendStep;
-
-        // Ensure current settings is Default.
-        glitchManager.SetDefault(useCurrentBlend: true);
-        
         // Once player clears the top of the wind zone, immediately set Blend for abrubt effect.
         Directions lastMove = game.GetPlayer().LastMove;
         
-        if (lastMove == Directions.Up)
-            glitchManager.SetBlend(currentTargetBlend);
+        // For trailer, always have glitching, unless exiting from the top.
+        if (Const_Dev.IsTrailerMode)
+        {
+            if (lastMove == Directions.Up)
+                glitchManager.SetBlend(0f);
+        }
         else
-            glitchManager.BlendTo(currentTargetBlend);
+        {
+            float blendStep = 1f / glitchZoneSteps;
+            currentTargetBlend -= blendStep;
+
+            // Ensure current settings is Default.
+            glitchManager.SetDefault(useCurrentBlend: true);
+            
+            if (lastMove == Directions.Up)
+                glitchManager.SetBlend(currentTargetBlend);
+            else
+                glitchManager.BlendTo(currentTargetBlend);
+        }
     }
 
     /// <summary>
