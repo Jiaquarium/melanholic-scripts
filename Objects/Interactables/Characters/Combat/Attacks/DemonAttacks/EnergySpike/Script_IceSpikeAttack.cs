@@ -18,6 +18,16 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
     [SerializeField] private Script_EnergySpike spikeS;
     [SerializeField] private Script_EnergySpike spikeW;
     
+    public List<Script_EnergySpike> Spikes
+    {
+        get => new List<Script_EnergySpike>{
+            spikeN,
+            spikeE,
+            spikeS,
+            spikeW
+        };
+    }
+    
     protected override void Awake()
     {
         base.Awake();

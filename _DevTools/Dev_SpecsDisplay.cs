@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Experimental.Rendering.Universal;
  
 [ExecuteAlways]
@@ -49,6 +50,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 TrailerModeSpecs()
 : @$"{FrameData()}, {VSyncData()}
 {Resolution()}
+{DisplayInfo()}
 {PixelPerfectData()}
 ortho: {CameraSize()}
 {ScreenMode()}
@@ -171,5 +173,17 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 		string screenMode = Screen.fullScreenMode.ToString();
 		
 		return screenMode;
+	}
+
+	private string DisplayInfo()
+	{
+		DisplayInfo info = Screen.mainWindowDisplayInfo;
+		
+		List<DisplayInfo> displayInfos = new List<DisplayInfo>();
+        Screen.GetDisplayLayout(displayInfos);
+        
+        var displayIdx = displayInfos.IndexOf(info);
+
+		return $"Display {displayIdx}, {info.name} {info.width}x{info.height}";
 	}
 }
