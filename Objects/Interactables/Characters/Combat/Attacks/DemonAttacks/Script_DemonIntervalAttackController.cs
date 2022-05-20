@@ -8,13 +8,22 @@ public class Script_DemonIntervalAttackController : MonoBehaviour
     [SerializeField] private float attackInterval;
     [SerializeField] private float timer;
 
+    [SerializeField] private bool isDisabled;
+
+    public bool IsDisabled
+    {
+        get => isDisabled;
+        set => isDisabled = value;
+    }
+
     private void Start()
     {
     }
     
     private void Update()
     {
-        AttackTimer();
+        if (!IsDisabled)
+            AttackTimer();
     }
 
     private void AttackTimer()

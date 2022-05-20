@@ -49,6 +49,11 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     
     private bool isTimelineControlled = false;
 
+    // ------------------------------------------------------------------
+    // Dev Only
+    [SerializeField] private bool isHideSpikes;
+    [SerializeField] private List<Script_DemonIntervalAttackController> spikeControllers;
+
 
     protected override void OnEnable()
     {
@@ -255,6 +260,10 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
     public override void Setup()
     {
+        // Handle no spikes for Trailer
+        if (Const_Dev.IsTrailerMode && isHideSpikes)
+            spikeControllers.ForEach(spikeController => spikeController.IsDisabled = true);
+        
         // Handle saving BGM played state.
         game.PauseBgMusic();
         AudioSource audio = EileenThemePlayer.GetComponent<AudioSource>();

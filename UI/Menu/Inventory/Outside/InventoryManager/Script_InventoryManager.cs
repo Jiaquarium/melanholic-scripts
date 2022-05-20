@@ -647,6 +647,46 @@ public class Script_InventoryManager : MonoBehaviour
             {
                 t.inventory.RemoveItemInSlot(0);
             }
+
+            if (GUILayout.Button("Remove Item Slot 1"))
+            {
+                t.inventory.RemoveItemInSlot(1);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 2"))
+            {
+                t.inventory.RemoveItemInSlot(2);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 3"))
+            {
+                t.inventory.RemoveItemInSlot(3);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 4"))
+            {
+                t.inventory.RemoveItemInSlot(4);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 5"))
+            {
+                t.inventory.RemoveItemInSlot(5);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 6"))
+            {
+                t.inventory.RemoveItemInSlot(6);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 7"))
+            {
+                t.inventory.RemoveItemInSlot(7);
+            }
+
+            if (GUILayout.Button("Remove Item Slot 8"))
+            {
+                t.inventory.RemoveItemInSlot(8);
+            }
         }
     }
 #endif   

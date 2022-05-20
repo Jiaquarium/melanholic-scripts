@@ -34,7 +34,7 @@ public static class Const_Dev
     // Forces dev custom spawn defined in inspector.
     public readonly static bool IsDevSpawn                  = false;            // false
     
-    public readonly static bool IsSpecsDisplayOn            = true;            // false
+    public readonly static bool IsSpecsDisplayOn            = false;            // false
 
     public readonly static bool IsTrailerMode               = false;            // false
     
