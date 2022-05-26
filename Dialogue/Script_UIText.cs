@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-04-08 15:02:46
+// Last created by UI Exporter at 2022-05-27 19:29:43
 
 using System.Collections;
 using System.Collections.Generic;
@@ -157,21 +157,21 @@ public class Script_UIText
     "good-ending_narrator_monologue8",
     new Model_LanguagesUI
     {
-        EN = @"Maybe <i>I</i> really was the <i>intruder</i>."
+        EN = @"Maybe <i>I</i> really was the intruder."
     }
 },
 {
     "good-ending_narrator_monologue9",
     new Model_LanguagesUI
     {
-        EN = @"In the end, am I really just like <i>him</i>?"
+        EN = @"In the end, is <i>he</i> all that I’ll ever be?"
     }
 },
 {
     "good-ending_narrator_monologue10",
     new Model_LanguagesUI
     {
-        EN = @"Maybe some questions will never be answered."
+        EN = @"Maybe some questions aren’t meant to be answered."
     }
 },
 {
@@ -199,14 +199,42 @@ public class Script_UIText
     "good-ending_narrator_monologue14",
     new Model_LanguagesUI
     {
-        EN = @"I had been living in a haze day to day."
+        EN = @"Living in a haze each and every day."
     }
 },
 {
     "good-ending_narrator_monologue15",
     new Model_LanguagesUI
     {
-        EN = @"<b>I’m ready to start again at zero.</b>"
+        EN = @"I know you’re just trying to help,"
+    }
+},
+{
+    "good-ending_narrator_monologue15_1",
+    new Model_LanguagesUI
+    {
+        EN = @"But what am I even leaving with? Is this all there is?"
+    }
+},
+{
+    "good-ending_narrator_monologue15_2",
+    new Model_LanguagesUI
+    {
+        EN = @"I guess it really doesn’t matter."
+    }
+},
+{
+    "good-ending_narrator_monologue15_3",
+    new Model_LanguagesUI
+    {
+        EN = @"My eyes... they feel incredibly heavy."
+    }
+},
+{
+    "good-ending_narrator_monologue15_b",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>I’ve had enough.</b>"
     }
 },
 {
@@ -248,7 +276,7 @@ public class Script_UIText
     "good-ending_the-end_type",
     new Model_LanguagesUI
     {
-        EN = @"『 GOOD ENDING 』"
+        EN = @"『 GOOD (ENOUGH) ENDING 』"
     }
 },
 {
@@ -296,13 +324,6 @@ public class Script_UIText
     }
 },
 {
-    "true-ending_narrator_monologue1_3",
-    new Model_LanguagesUI
-    {
-        EN = @"I was walking around in a white haze."
-    }
-},
-{
     "true-ending_narrator_monologue2_0",
     new Model_LanguagesUI
     {
@@ -327,7 +348,7 @@ public class Script_UIText
     "true-ending_narrator_monologue3_2",
     new Model_LanguagesUI
     {
-        EN = @"The only thing I could do really was to numb myself to it all."
+        EN = @"The only thing I could do was numb myself to it all."
     }
 },
 {
@@ -383,7 +404,7 @@ public class Script_UIText
     "true-ending_narrator_monologue6_1",
     new Model_LanguagesUI
     {
-        EN = @"Seasons I’d cycle through like shades of winter."
+        EN = @"Like I’d be cycling through shades of winter."
     }
 },
 {
@@ -433,6 +454,13 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The sun is coming up."
+    }
+},
+{
+    "true-ending_narrator_monologue8_b",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>It’s {49}</b>"
     }
 },
 {
@@ -933,14 +961,14 @@ public class Script_UIText
     "notes_ursie_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"Howdy {0},<br><br>I’ve come to my senses;<br>I’m confident in my abilities now.<br>Proving myself inside these<br>{18} walls means nothing.<br><br>{61}, {62} and I have hit the<br>dusty trail. There’s bigger fish out<br>there for us to fry."
+        EN = @"Howdy <b></b>,<br><br>It’s been a long time coming, but I’ve come<br>to my senses; proving myself inside these <br><b>{18}</b> walls means nothing. Why<br>continue to punish myself?<br><br>What’s the point of keeping a promise<br>that my past self made to my past self?<br>It’s about time I give myself permission to move on..."
     }
 },
 {
     "notes_ursie_thank-you1",
     new Model_LanguagesUI
     {
-        EN = @"Thank you for assisting us even at<br>such lows.<br><br>I’m not sure how I’ll repay you,<br>how about we name a cocktail after you. How’s the {0} <b>Spritz</b> sound?"
+        EN = @"{61}, {62} and I have hit the<br>old dusty trail. There’s bigger fish out<br>there for us to fry.<br><br>Thank you for assisting us even at<br>such lows. I’m not sure how I’ll repay you,<br>how about we name a cocktail after you. How’s the <b></b> <b>Spritz</b> sound?"
     }
 },
 {
@@ -1495,6 +1523,22 @@ public class Script_UIText
     }
 },
 // ------------------------------------------------------------------
+// Catwalk2
+{
+    "catwalk2_player_doubts",
+    new Model_LanguagesUI
+    {
+        EN = @"Have I ever had to care about anyone else?"
+    }
+},
+{
+    "catwalk2_player_doubts1",
+    new Model_LanguagesUI
+    {
+        EN = @"Am I even capable of that?"
+    }
+},
+// ------------------------------------------------------------------
 // Grand Mirror Room
 {
     "grand-mirror-room_player_welling-up",
@@ -1507,28 +1551,28 @@ public class Script_UIText
     "grand-mirror-room_player_welling-up1",
     new Model_LanguagesUI
     {
-        EN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance – that’s what I felt."
+        EN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance."
     }
 },
 {
     "grand-mirror-room_player_welling-up2",
     new Model_LanguagesUI
     {
-        EN = @"I tried to stop it."
+        EN = @"What if it’s not that I don’t <i>want</i> to draw my self-portrait..."
     }
 },
 {
     "grand-mirror-room_player_welling-up3",
     new Model_LanguagesUI
     {
-        EN = @"But then everything went dark."
+        EN = @"What if I|| <i>can’t</i>?"
     }
 },
 {
     "grand-mirror-room_player_change",
     new Model_LanguagesUI
     {
-        EN = @"This is how people change."
+        EN = @"Okay. I’ll talk..."
     }
 },
 // ------------------------------------------------------------------
@@ -1537,14 +1581,21 @@ public class Script_UIText
     "faceoff_ren-myne_quest0_block0_0",
     new Model_LanguagesUI
     {
-        EN = @"{0}, dear, this is just like you!"
+        EN = @"You said you’d talk, dear, so let’s talk."
     }
 },
 {
     "faceoff_ren-myne_quest0_block0_1",
     new Model_LanguagesUI
     {
-        EN = @"To poke your nose around where it doesn’t belong."
+        EN = @"{0}, allow me to be blunt..."
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block0_2",
+    new Model_LanguagesUI
+    {
+        EN = @"You’re poking your nose around where it doesn’t belong."
     }
 },
 {
@@ -1607,21 +1658,56 @@ public class Script_UIText
     "faceoff_ren-myne_quest0_block3_3",
     new Model_LanguagesUI
     {
-        EN = @"It’s the same as me."
+        EN = @"<b>It’s the same as me.</b>"
     }
 },
 {
     "faceoff_ren-myne_quest0_block4_0",
     new Model_LanguagesUI
     {
-        EN = @"So why don’t you do us all a favor,"
+        EN = @"He-he, you think you’re any different than me?"
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block4_1",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>Without me, there is no you.</b>"
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block4_2",
+    new Model_LanguagesUI
+    {
+        EN = @"I brought you here for one purpose| – to assist| <i>u|s</i>| – but..."
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block4_3",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>You are well past expired now, dear.</b>"
     }
 },
 {
     "faceoff_ren-myne_quest0_block5_0",
     new Model_LanguagesUI
     {
+        EN = @"So why don’t you do us all a favor,"
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block6_0",
+    new Model_LanguagesUI
+    {
         EN = @"Take your useless self out of <i>my</i> mansion."
+    }
+},
+{
+    "faceoff_ren-myne_quest0_block7_0",
+    new Model_LanguagesUI
+    {
+        EN = @"This world is better off without you."
     }
 },
 // ------------------------------------------------------------------
@@ -1641,52 +1727,66 @@ public class Script_UIText
     }
 },
 {
+    "faceoff_ren-myne_quest1_block0_2",
+    new Model_LanguagesUI
+    {
+        EN = @"This place doesn’t need you."
+    }
+},
+{
     "faceoff_ren-myne_quest1_block1_0",
-    new Model_LanguagesUI
-    {
-        EN = @"You might think you despise me."
-    }
-},
-{
-    "faceoff_ren-myne_quest1_block1_1",
-    new Model_LanguagesUI
-    {
-        EN = @"But in fact, I’m no villain..."
-    }
-},
-{
-    "faceoff_ren-myne_quest1_block2_0",
     new Model_LanguagesUI
     {
         EN = @"Someone like you could never understand."
     }
 },
 {
-    "faceoff_ren-myne_quest1_block2_1",
+    "faceoff_ren-myne_quest1_block1_1",
     new Model_LanguagesUI
     {
-        EN = @"You’ve never had to truly care about anyone but yourself."
+        EN = @"Someone who’s never had to truly care about anyone but themselves."
     }
 },
 {
-    "faceoff_ren-myne_quest1_block2_2",
+    "faceoff_ren-myne_quest1_block1_2",
     new Model_LanguagesUI
     {
         EN = @"It makes me sick."
     }
 },
 {
-    "faceoff_ren-myne_quest1_block3_0",
+    "faceoff_ren-myne_quest1_block1_glitch-response",
+    new Model_LanguagesUI
+    {
+        EN = @"I can’t stop thinking about you no matter how hard I try."
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block2_0",
     new Model_LanguagesUI
     {
         EN = @"You really have no clue, do you, dear?"
     }
 },
 {
-    "faceoff_ren-myne_quest1_block3_1",
+    "faceoff_ren-myne_quest1_block2_1",
     new Model_LanguagesUI
     {
         EN = @"You waltz in here, acting as if all this is yours!"
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block3_0",
+    new Model_LanguagesUI
+    {
+        EN = @"I think about you when I touch myself. I know you do too."
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block3_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Maybe you’re here to stay, maybe you’ll never truly go away."
     }
 },
 {
@@ -1715,6 +1815,13 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"And we can forget about all of this."
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block4_glitch-response",
+    new Model_LanguagesUI
+    {
+        EN = @"I hate you and I hate that I need you."
     }
 },
 {
@@ -1772,7 +1879,14 @@ public class Script_UIText
     "faceoff_ren-myne_quest2_block1_2",
     new Model_LanguagesUI
     {
-        EN = @"Please, just leave already."
+        EN = @"Please, just leave."
+    }
+},
+{
+    "faceoff_ren-myne_quest2_block1_half-glitch-response",
+    new Model_LanguagesUI
+    {
+        EN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝"
     }
 },
 {
@@ -1780,6 +1894,13 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Stop hurting yourself."
+    }
+},
+{
+    "faceoff_ren-myne_quest2_block2_half-glitch-response",
+    new Model_LanguagesUI
+    {
+        EN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝"
     }
 },
 {
