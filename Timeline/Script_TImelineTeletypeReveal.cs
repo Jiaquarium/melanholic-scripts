@@ -26,6 +26,8 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
     [SerializeField] private UnityEvent resumeAction;
     [SerializeField] private UnityEvent onTypingDoneAction;
 
+    [SerializeField] private bool isGlitchText;
+
     private bool isListening;
 
     private UnityEvent PauseAction
@@ -61,7 +63,8 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
             IEnumerator coroutine = Script_DialogueManager.TeletypeRevealLine(
                 textUI.text,
                 textUI,
-                OnTypingDone
+                OnTypingDone,
+                isGlitchText: isGlitchText
             );
             StartCoroutine(coroutine);
         }

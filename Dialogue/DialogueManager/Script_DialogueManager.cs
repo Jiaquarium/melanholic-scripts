@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
@@ -584,9 +585,34 @@ public class Script_DialogueManager : MonoBehaviour
         string sentence,
         TextMeshProUGUI textUI,
         Action cb,
-        bool silenceOverride = false
+        bool silenceOverride = false,
+        bool isGlitchText = false
     )
-    {
+    {   
+        if (isGlitchText)
+        {
+            var stringBuilder = new StringBuilder(sentence);
+            textUI.text = sentence;
+            int totalVisible = textUI.textInfo.characterCount;
+            char zalgoLetter;
+
+            // Replace all letters with Zalgo text            
+            for (var i = 0; i < totalVisible; i++)
+            {
+                TMP_CharacterInfo charInfo = textUI.textInfo.characterInfo[i];
+
+                // Replace letters/digits with Zalgo letters.
+                if (Char.IsLetterOrDigit(charInfo.character))
+                {
+                    zalgoLetter = charInfo.character.Zalgofy();
+                    stringBuilder.Remove(charInfo.index, 1);
+                    stringBuilder.Insert(charInfo.index, Char.ToString(zalgoLetter));
+                }
+            }
+
+            sentence = stringBuilder.ToString();
+        }
+        
         // Hide Text Commands.
         string formattedSentence = sentence.Replace(
             PauseTextCommand.ToString(),
