@@ -63,13 +63,14 @@ public class Script_StaticNPC : Script_Interactable
         {
             Debug.Log($"CHECKING DISABLED DIRECTIONS: {CheckDisabledDirections()}");
             
-            if (isDialogueCoolDown || CheckDisabledDirections())
+            if (isDialogueCoolDown || CheckDisabledDirections() || dialogueManager.isInputDisabled)
             {
-                Debug.Log($"Cannot interact with {name}, either still dialogue cool down or disabled direction");
+                Debug.Log($"No interact {name}, isDialogueCoolDown {isDialogueCoolDown}, isInputDisabled {dialogueManager.isInputDisabled} or cooldown");
                 return;
             }
             
-            if (!game.GetPlayerIsTalking())     TriggerDialogue();
+            if (!game.GetPlayerIsTalking())
+                TriggerDialogue();
             else
             {
                 if (dialogueManager.IsDialogueSkippable())  dialogueManager.SkipTypingSentence();
@@ -115,6 +116,8 @@ public class Script_StaticNPC : Script_Interactable
                 null,
                 this
             );
+            
+            Debug.Log($"TriggerDialogue, incrementing dialogue index from {dialogueIndex} to {dialogueIndex + 1}");
             HandleIncrementDialogueNodeIndex();
         }
     }

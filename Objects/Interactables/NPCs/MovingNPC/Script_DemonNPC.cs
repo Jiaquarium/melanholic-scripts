@@ -208,6 +208,8 @@ public class Script_DemonNPC : Script_MovingNPC
             // Skip the first Psychic node if we prepended it already to the Intro Node.
             if (didTalkPrependedIntroNode)
             {
+                Debug.Log($"didTalkPrependedIntroNode, incrementing dialogue index from {dialogueIndex} to {dialogueIndex + 1}");
+
                 HandleIncrementDialogueNodeIndex();
                 didTalkPrependedIntroNode = false;
             }
