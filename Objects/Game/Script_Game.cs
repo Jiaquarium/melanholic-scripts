@@ -1304,6 +1304,11 @@ public class Script_Game : MonoBehaviour
         return menuController.GetItemsInventoryItem(itemId, out slot);
     }
 
+    public Script_Item GetItemsStickerItem(string itemId, out int slot)
+    {
+        return menuController.GetItemsStickerItem(itemId, out slot);
+    }
+
     public void OrganizeInventory()
     {
         menuController.Organize();

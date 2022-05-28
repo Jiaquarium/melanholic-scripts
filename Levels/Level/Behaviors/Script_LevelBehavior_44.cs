@@ -12,6 +12,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     
     // ==================================================================
     // State Data
+
+    public bool didIntro;
     
     // ==================================================================
 
@@ -19,6 +21,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
 
     [SerializeField] private Script_ScarletCipherPiece[] scarletCipherPieces;
+
+    [SerializeField] private float waitBeforeIntroTime;
+    [SerializeField] private Script_DialogueNode introNode;
 
     private bool didMapNotification;
 
@@ -38,9 +43,32 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, HandleIntroDialogue);
             didMapNotification = true;
         }
+        else
+        {
+            HandleIntroDialogue();
+        }
+
+        void HandleIntroDialogue()
+        {
+            if (game.faceOffCounter != 2 || didIntro)
+                return;
+
+            game.ChangeStateCutScene();
+
+            StartCoroutine(WaitToIntroDialogue());
+
+            didIntro = true;
+
+            IEnumerator WaitToIntroDialogue()
+            {
+                yield return new WaitForSeconds(waitBeforeIntroTime);
+
+                Script_DialogueManager.DialogueManager.StartDialogueNode(introNode);            
+            }        
+        }        
     }
 
     // Hide all Scarlet Cipher pieces when any is picked up on a World Tile.
@@ -67,6 +95,15 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
 
         ballroomPaintingEntrance.DonePainting();
     }
+    
+    // ------------------------------------------------------------------
+    // Next Node Actions
+
+    public void OnIntroDialogueDone()
+    {
+        game.ChangeStateInteract();
+    }
+
     // ------------------------------------------------------------------
     
     public override void Setup()

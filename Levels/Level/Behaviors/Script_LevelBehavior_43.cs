@@ -19,8 +19,13 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
     
     // ==================================================================
     // State Data
+
+    public bool didIntro;
     
     // ==================================================================
+    
+    [SerializeField] private float waitBeforeIntroTime;
+    [SerializeField] private Script_DialogueNode introNode;
     
     private bool didMapNotification;
 
@@ -38,8 +43,39 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, HandleIntroDialogue);
             didMapNotification = true;
         }
+        else
+        {
+            HandleIntroDialogue();
+        }
+
+        void HandleIntroDialogue()
+        {
+            if (game.faceOffCounter != 1 || didIntro)
+                return;
+
+            game.ChangeStateCutScene();
+
+            StartCoroutine(WaitToIntroDialogue());
+
+            didIntro = true;
+
+            IEnumerator WaitToIntroDialogue()
+            {
+                yield return new WaitForSeconds(waitBeforeIntroTime);
+
+                Script_DialogueManager.DialogueManager.StartDialogueNode(introNode);            
+            }        
+        }
     }
+
+    // ----------------------------------------------------------------------
+    // Next Node Action
+
+    public void OnIntroDialogueDone()
+    {
+        game.ChangeStateInteract();
+    }    
 }

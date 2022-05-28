@@ -60,6 +60,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     // -------------------------------------------------------------------------------------
     // Elder's Intro
     [SerializeField] private Script_BgThemePlayer eldersTragedyBgThemePlayer;
+
+    // -------------------------------------------------------------------------------------
+    // Dialogue
+    [SerializeField] private Script_DialogueNode selfPortraitThought;
     
     // -------------------------------------------------------------------------------------
     // Deprecated
@@ -191,9 +195,15 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Script_Names.UpdateUrsie();
     }
 
+    public void OnSelfPortraitThoughtDone()
+    {
+        game.ChangeStateInteract();
+    }
+
     // ----------------------------------------------------------------------
-    // King's Intro Unity Events, Next Node Actions
-    
+    // Trigger Unity Events, Next Node Actions
+
+    // King's Intro Trigger
     public void KingsIntroTimeline()
     {
         // Pause King's walking Timeline.
@@ -227,6 +237,16 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
             });
         }
+    }
+
+    // Self Portrait Thought Trigger
+    public void SelfPortraitThought()
+    {
+        if (game.CycleCount != 0 || game.Run.dayId != Script_Run.DayId.mon)
+            return;
+
+        game.ChangeStateCutScene();
+        Script_DialogueManager.DialogueManager.StartDialogueNode(selfPortraitThought);
     }
 
     // ----------------------------------------------------------------------

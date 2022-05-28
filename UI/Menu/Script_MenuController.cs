@@ -272,6 +272,14 @@ public class Script_MenuController : Script_UIState
         return inventoryManager.SearchItemsForItemById(itemId, out slot);
     }
 
+    /// <summary>
+    /// Search Stickers
+    /// </summary>
+    public Script_Item GetItemsStickerItem(string itemId, out int slot)
+    {
+        return inventoryManager.SearchStickersForItemById(itemId, out slot);
+    }
+
     public Script_ItemObject InstantiateDropById(string itemId, Vector3 location, int LB)
     {
         return inventoryManager.InstantiateDropById(itemId, location, LB);

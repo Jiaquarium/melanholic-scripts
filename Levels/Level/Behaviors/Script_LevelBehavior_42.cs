@@ -44,7 +44,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode OnMooseGiveItemDoneNode;
     
     [SerializeField] private Script_DialogueNode OnSnowReactionNode;
+    
+    // A bit longer wait time to give Player time to absorb the snow effect
     [SerializeField] private float beforeSnowReactionWaitTime;
+    
     [SerializeField] private Script_LevelBehavior_13 CatWalkBehavior;
 
     [SerializeField] private Script_Moose[] Mooses;

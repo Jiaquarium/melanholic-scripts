@@ -13,6 +13,8 @@ public class Script_TeletypeNotificationManager : MonoBehaviour
     [SerializeField] private Script_TeletypeDialogueContainer[] dialogues;
     
     [SerializeField] private Script_TeletypeTextContainer[] EileensMindDialogue;
+    [SerializeField] private Script_TeletypeTextContainer[] CatWalk2Dialogue;
+    [SerializeField] private Script_CanvasGroupController[] CatWalk2CanvasGroups;
 
     [SerializeField] private Script_CanvasGroupController canvasGroupController;
 
@@ -23,11 +25,25 @@ public class Script_TeletypeNotificationManager : MonoBehaviour
         EileensMindDialogue[i].Open();
     }
 
+    public void ShowCatWalk2Dialogue(int i)
+    {
+        canvasGroupController.Open();
+
+        CatWalk2CanvasGroups[i].Open();
+        CatWalk2Dialogue[i].Open();
+    }
+
+    public void FadeOutCatWalk2Dialogue(int i)
+    {
+        CatWalk2CanvasGroups[i].FadeOut();        
+    }
+
     public void InitialState()
     {
         if (canvasGroupController != null)
             canvasGroupController.Close();
         
+        // Eileen's Mind
         foreach (var dialogue in dialogues)
         {
             if (dialogue != null)
@@ -35,6 +51,19 @@ public class Script_TeletypeNotificationManager : MonoBehaviour
                 dialogue.InitialState();
                 dialogue.gameObject.SetActive(true);
             }
+        }
+
+        // Catwalk2
+        foreach (var canvasGroupCtrl in CatWalk2CanvasGroups)
+        {
+            if (canvasGroupCtrl != null)
+                canvasGroupCtrl.Close();
+        }
+        
+        // Catwalk2
+        foreach (var textContainer in CatWalk2Dialogue)
+        {
+            textContainer.Close();
         }
     }
     

@@ -39,6 +39,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private PlayableDirector ElleniaDirector;
     
     [SerializeField] private Script_DialogueNode[] cutSceneNodes;
+    [SerializeField] private Script_DialogueNode cutSmallTalkNode;
     [SerializeField] private Script_DialogueNode onCorrectDoneNode;
     [SerializeField] private Script_DialogueNode onCorrectDonePastQuestDoneNode;
     
@@ -55,6 +56,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private float bgMusicFadeOutTime;
     [SerializeField] private float bgMusicEndIntroFadeOutTime;
     [SerializeField] private float waitToTurnTime; // should match with music
+    [SerializeField] private float waitToCutSmallTalkTime;
     
     [SerializeField] private Script_StickerObject AnimalWithinSticker;
     [SerializeField] private Script_DialogueNode onItemDescriptionDoneNode;
@@ -231,6 +233,18 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             VCamManager.SetDefaultCinemachineBlendUpdateMethod();
 
             Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[4], false);
+        }
+    }
+
+    public void CutSmallTalk()
+    {
+        StartCoroutine(WaitToTalk());   
+        
+        IEnumerator WaitToTalk()
+        {
+            yield return new WaitForSeconds(waitToCutSmallTalkTime);
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(cutSmallTalkNode);
         }
     }
 

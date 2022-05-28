@@ -28,6 +28,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private float cameraPanDoneWaitTime;
     [SerializeField] private float faceDirectionDoneWaitTime;
 
+    [SerializeField] private Script_DialogueNode tueR1Node;
     [SerializeField] private Script_DialogueNode wedR1Node;
     [SerializeField] private Script_DialogueNode monR2Node;
     
@@ -69,6 +70,27 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             );
         }
 
+        // Tue R1 Rin speaks about her reasons
+        else if (
+            game.CycleCount == 0
+            && game.Run.dayId == Script_Run.DayId.tue
+            && isFirstLoad
+        )
+        {
+            Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                {
+                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.FadeInSlow(
+                        () => StartOpeningDialogue(tueR1Node),
+                        BGMParam
+                    );
+                },
+                _isInteractAfter: false
+            );
+
+            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+        }
+        
         // Wed R1 Rin speaks about "Hardening"
         else if (
             game.CycleCount == 0
