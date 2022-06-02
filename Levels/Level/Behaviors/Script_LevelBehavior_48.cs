@@ -88,10 +88,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private Script_ElevatorManager elevatorManager;
 
-    // ------------------------------------------------------------------
-    // DEV
     [SerializeField] private Script_LevelBehavior_0 Woods;
-    // ------------------------------------------------------------------
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
@@ -530,6 +527,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             framing: Script_UIAspectRatioEnforcerFrame.Framing.MaskReveal,
             cb: () => { timelineController.PlayableDirectorPlayFromTimelines(2, 2); }
         );
+
+        // Setup Woods in case WellJustOpened cut scene didn't play.
+        Woods.didStartThought = true;
     }
 
     public void HandleExitWindZone()

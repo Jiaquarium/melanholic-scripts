@@ -29,7 +29,7 @@ public class Script_IntroController : Script_TimelineSequenceController
     // Skip to frame where Start Screen starts. Timeline will then initialize Start Screen via Signals.
     public void SkipToStartScreen()
     {
-        director.time = startScreenFrame / ((TimelineAsset)director.playableAsset).editorSettings.fps;
+        director.time = startScreenFrame / ((TimelineAsset)director.playableAsset).editorSettings.frameRate;
         director.Evaluate();
         
         if (!director.playableGraph.IsPlaying())

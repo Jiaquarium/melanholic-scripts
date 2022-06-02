@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-05-27 19:29:43
+// Last created by UI Exporter at 2022-06-01 21:13:28
 
 using System.Collections;
 using System.Collections.Generic;
@@ -411,7 +411,7 @@ public class Script_UIText
     "true-ending_narrator_monologue6_2",
     new Model_LanguagesUI
     {
-        EN = @"I was doing it to myself."
+        EN = @"But I’m not just them."
     }
 },
 {
@@ -984,14 +984,14 @@ public class Script_UIText
     "notes_eileen_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"Dear {0},<br><br>It seems the spikes have stopped<br>for a bit.<br><br>My mind is a bit clearer now.<br>I’ve decided to finally leave this place."
+        EN = @"To whomever might read this,<br><br>I’m not sure why, but I felt like I should write even if this never gets read. It seems the spikes have stopped for a bit. And although I know it won’t be forever, I can think a bit clearer now.<br><br>I wanted to let you know, I’ve finally decided to leave this place. I mean, for me at least, I know it’ll never be all sunshine and roses..."
     }
 },
 {
     "notes_eileen_thank-you1",
     new Model_LanguagesUI
     {
-        EN = @"Things seem to look brighter<br>after meeting you.<br><br>See you on the other side."
+        EN = @"But I’ve slowly come to the realization perhaps what I’m experiencing in here is just a fraction of the things I still need to see out there. You know the walls in here don’t change much.<br><br>Anyways, see you on the other side."
     }
 },
 {
@@ -1558,7 +1558,7 @@ public class Script_UIText
     "grand-mirror-room_player_welling-up2",
     new Model_LanguagesUI
     {
-        EN = @"What if it’s not that I don’t <i>want</i> to draw my self-portrait..."
+        EN = @"A slippery image of a self-portrait..."
     }
 },
 {
@@ -1723,14 +1723,14 @@ public class Script_UIText
     "faceoff_ren-myne_quest1_block0_1",
     new Model_LanguagesUI
     {
-        EN = @"Don’t you get it?| <b>You are the intruder here.</b>"
+        EN = @"Don’t you get it?"
     }
 },
 {
     "faceoff_ren-myne_quest1_block0_2",
     new Model_LanguagesUI
     {
-        EN = @"This place doesn’t need you."
+        EN = @"<b>You are the intruder here.</b>"
     }
 },
 {
@@ -1744,7 +1744,7 @@ public class Script_UIText
     "faceoff_ren-myne_quest1_block1_1",
     new Model_LanguagesUI
     {
-        EN = @"Someone who’s never had to truly care about anyone but themselves."
+        EN = @"Someone who’s never had to care about anyone but themselves."
     }
 },
 {

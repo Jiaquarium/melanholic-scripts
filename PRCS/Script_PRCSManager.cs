@@ -33,6 +33,7 @@ public class Script_PRCSManager : MonoBehaviour
     public static Script_PRCSManager Control;
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
+    [SerializeField] private Script_PRCS wellsJustOpenedPRCS;
 
     [UnityEngine.Serialization.FormerlySerializedAs("TimelinePRCSCanvasGroup")]
     [SerializeField] private Script_CanvasGroupController KingsIntroCanvasGroup;
@@ -420,10 +421,11 @@ public class Script_PRCSManager : MonoBehaviour
 
     public void Initialize()
     {
-        /// Hide CanvasGroup but ensure the PRCS canvas and ready to use
+        /// Hide CanvasGroup but ensure the PRCS canvas is ready to use
         PRCSCanvasGroup.gameObject.SetActive(false);
         PRCSCanvasGroup.alpha = 0f;
         PRCSCanvas.gameObject.SetActive(true);
+        wellsJustOpenedPRCS.gameObject.SetActive(false);
 
         customCanvasesParent.gameObject.SetActive(true);
         foreach (Canvas c in customCanvases)    c.gameObject.SetActive(true);

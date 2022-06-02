@@ -31,6 +31,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     
     [SerializeField] private Script_DemonNPC Ellenia;
     [SerializeField] private Script_DemonNPC ElleniaHurt;
+    [SerializeField] private Script_DialogueNode[] weekdayTalkedInitialElleniaPsychicNodes;
     [SerializeField] private Script_DialogueNode[] weekendDidntTalkElleniaPsychicNodes;
     [SerializeField] private Script_DialogueNode[] weekendTalkedElleniaPsychicNodes;
     [SerializeField] private Script_DialogueNode[] weekendTalkedElleniaTalkedStatePsychicNodes;
@@ -91,6 +92,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     private bool isInitialization = true;
     private bool shouldChangeGameStateToInteract;
+    private bool isShortPrompt = false;
 
     protected override void OnEnable()
     {
@@ -339,6 +341,17 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     }
 
     /// NextNodeAction START =====================================================================
+    
+    // Wrong PW (if player gets it wrong, it means they've already done a prompt, so default to short)
+    public void SetShortPrompt()
+    {
+        isShortPrompt = true;
+    }
+    
+    public void OnWeekdayTalkedInitialDialogueDone()
+    {
+        Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+    }
     
     /// Node: "i'm part of the..."
     public void PlayOminousMusic()
@@ -684,7 +697,16 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             // On Weekday: Skip Ellenia's intro if already done.
             else if (spokenWithEllenia)
             {
-                Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;       
+                if (isShortPrompt)
+                {
+                    Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+                }
+                else
+                {
+                    // If spoken with Ellenia already on a previous day, but is first time talking with
+                    // her this day, need to use Nodes that show Ellenia has forgotten Player
+                    Ellenia.SwitchPsychicNodes(weekdayTalkedInitialElleniaPsychicNodes);   
+                }
             }
         }
     }

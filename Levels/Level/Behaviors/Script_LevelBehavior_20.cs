@@ -268,7 +268,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         KingEclaire.MyDirector.Pause();
         
         KingEclaire.MyDirector.time = KingEclaireTimelineMidpointFrame /
-            ((TimelineAsset)KingEclaire.MyDirector.playableAsset).editorSettings.fps;
+            ((TimelineAsset)KingEclaire.MyDirector.playableAsset).editorSettings.frameRate;
         KingEclaire.MyDirector.Evaluate();
 
         KingEclaire.FacePlayer();

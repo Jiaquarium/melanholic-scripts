@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-05-26 17:56:54
+// Last created by Dialogue Exporter at 2022-06-01 22:43:45
 
 using System.Collections;
 using System.Collections.Generic;
@@ -357,8 +357,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You know that tale about the boiling frog?",
                 @"Of course they’ll jump out of boiling water just like you and me.",
                 @"But you put ‘em in lukewarm water and raise the temperature slowly one degree at a time, and...",
-                @"BOOM!| They can’t sense the change at all.",
-                @"And there you have it,| boiling f|-r|-o|-g.",
+                @"Yep, can’t sense the change at all.",
+                @"And BOOM,| there you have it,| boiling f|-r|-o|-g.",
         },
         
     }
@@ -399,7 +399,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"According to your calculations,| today {77} should be at {49}.",
+                @"According to your calculations, today {77} should be at {49}.",
+                @"Before this time, when looking at the sea, it’s just a black void.",
         },
         
     }
@@ -516,7 +517,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"<b>Tangled Hair</b>, a book of poetry.",
-                @"You like how these poems are pretty open to interpretation, but you’ve always preferred novels.",
+                @"You enjoy poems and all, but you’ve always preferred novels.",
         },
         
     }
@@ -904,10 +905,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Dear! Have you been up all night?",
                 @"They say you can hallucinate from lack of sleep.",
                 @"Your mind might be playing tricks on you.",
-                @"You probably can’t even tell left from right... or even you from me right now, he-he.",
-                @"If I may say so, the best solution is for you to find the nearest exit and get some rest, trust me dear.",
+                @"He-he, can you even tell us apart anymore?",
+                @"If I may say so, the best solution for you is to find the nearest exit and get some rest, trust me, dear.",
                 @"Forget about everything you have witnessed here.",
-                @"And please do not return, it is for your own good.",
+                @"And please, refrain from returning.| It is for your own good.",
         },
         
     }
@@ -1185,18 +1186,6 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
-    "mirror-halls_paintings_transformations_thought2",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                @"You’ve always refused to draw yourself.",
-        },
-        
-    }
-},
-{
     "mirror-halls_bao-zi_thought",
     new Model_Languages
     {
@@ -1253,7 +1242,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Lovers enjoying the sunrise.",
+                @"Looks like they’re enjoying the sunrise.",
                 @"It kinda reminds you of your research of {77}, where the distinction between sea and sky becomes clear.",
         },
         
@@ -1593,9 +1582,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Okay it’s settled...| I’ll just say it.",
                 @"Listen closely kiddo,| I’m <b><i>|p|a|r|t| o|f| y|o|u</i></b>.",
                 @"But the thing is, I can’t be for sure...| I guess it’s what they’d call a gut feeling?",
-                @"This isn’t just on a whim or something though!",
+                @"You know me, I wouldn’t say it unless I meant it, kay?",
                 @"I’ve had this feeling for some time now| – like I was cast off from someone.",
-                @"I really don’t even know how I ended up in this place. Yep, it’s quite the conundrum one might say.",
+                @"I really don’t even know how I ended up in this place. Yep, quite the conundrum!",
                 @"Actually, there’s a bit more to my theory. But anyways...",
                 @"You should be the one to use this. So here...",
         },
@@ -3047,8 +3036,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"I’m really sorry about the spikes. If you stay here too long you might get hurt too is all I mean.",
-                @"I really really hate this place, I really do.",
+                @"I’m really sorry about this mess. If you stay here too long you might get hurt too is all I mean...",
+                @"This place... I feel like it’s slowly wearing my mind down.",
         },
         
     }
@@ -3060,7 +3049,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Well, you see, that’s not really possible for me.",
+                @"Ahem, well, you see, that’s not really possible for me.",
         },
         choiceText = "Why don’t you get moving and just leave already?",
         
@@ -3073,9 +3062,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Well, the thing is... they’ve always been there. It really doesn’t matter where I go.",
+                @"Well, the thing is... they’ve always been there... It doesn’t matter where I go. They follow me like a shadow.",
                 @"You can probably see yourself, up, down, up, and down, all day and night long.",
-                @"It’s a little hard to put into words... But it makes me feel like I don’t have that long to breathe, so I’m always taking these short breathes, if that makes any sense?",
+                @"It’s a little hard to put into words... But it makes me feel like I don’t have too long to take a breath, so I’m always taking these short breaths... am I even making any sense anymore?",
                 @"It’s okay though. I’m used to it by now.",
         },
         choiceText = "Where did these spikes come from?",
@@ -3089,7 +3078,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Anyways, you aren’t a {13}...",
+                @"Anyways, y-you aren’t a {13}...",
                 @"But it seems to me, you can still understand what I’m saying.",
                 @"It’s really been a long time since a non-{13} could communicate with us.",
         },
@@ -3130,7 +3119,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"She’s always been a little rough on the edges...",
-                @"Oh no! I don’t mean that in a bad sense or anything.",
+                @"Oh no! Um... I don’t mean that in a bad sense or anything.",
         },
         
     }
@@ -3142,14 +3131,14 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"It’s just something tells me that... um...",
-                @"On her current path, she won’t ever be able to paint the {86}.",
+                @"It’s just something tells me that... that... how should I put this?",
+                @"On her current path...| she won’t ever be able to paint the {86}!",
                 @"You know, it’s really a thing of fables, no one’s ever really seen the {86} actually.",
-                @"But I think it’s one of those things where when you see it,| you’ll know it.",
-                @"It’s something she’s been doing ever since I can remember, but to tell you the truth, I’m getting a little worried these days.",
-                @"Well, sometimes painters, when they lose confidence, will try to plan out every detail of the final piece, all the lines, shapes, textures, all of it. It’s great when you already know what you’re painting...",
-                @"But it doesn’t quite work as well when you’re painting something without a form.",
-                @"What she’s really painting is|.|.|.|| <b><i>{14}</b></i>.",
+                @"But I think it’s one of those things where when you see it, you’ll know it.",
+                @"It’s something she’s been doing ever since I can remember, but to tell you the truth, I’m getting more worried than usual these days.",
+                @"Well, it’s just that... sometimes when painters lose confidence, they’ll try to plan out every detail of the final piece, all the lines, shapes, all of it. It’s absolutely fine when you already know what your final piece is supposed to look like... but...",
+                @"But I-I’ve been thinking... what if what you’re painting has no physical form?",
+                @"What if what she’s really trying to paint is|.|.|.|| <b><i>{14}</b></i>.",
                 @"I’ve always felt this, but she would never listen to me though... sigh...",
         },
         metadata = new Model_Languages.Metadata[]
@@ -3176,10 +3165,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"She really needs to hear it from... from someone else.",
+                @"She really needs to hear it from...| from someone else.",
                 @"That she’s in fact painting| <b><i>{14}</b></i>.",
-                @"She’ll never listen to me though...",
-                @"Now please, I think it’s better you leave soon.",
+                @"She would never listen to me though...",
+                @"Anyways, please, I think it’s better you leave here... I’m far too exhausted just thinking about all this.",
         },
         
     }
@@ -3191,10 +3180,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"You’re still here?| Not many would stay in a place like this with me.| Why would they?",
-                @"Well, even if she wanted to paint the {86}...",
-                @"...she’ll be missing a vital part if she can’t visualize...",
-                @"...|<b><i>{14}</b></i>.",
+                @"You’re still here?| Not many are left here these days.",
+                @"Well, I believe, if {12} truly wants to capture the {86}...",
+                @"...she needs to try and visualize...| <b><i>{14}</b></i>.",
+                @"...or else she’ll be missing a vital part...",
         },
         
     }
@@ -3220,9 +3209,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"If you ask me, the hardest thing, would be to paint my own self-portrait.",
-                @"I mean, oh sorry, I actually I don’t paint anymore, but it’s just the thought of picking myself apart...",
-                @"...and then putting all of it on a canvas for everyone to see...",
+                @"In my opinion, the most difficult thing... would be to paint my own self-portrait.",
+                @"I mean, it’s just the thought of picking myself apart...",
+                @"...and then putting all of it on a canvas for everyone to pick apart again...",
                 @"It makes me anxious just thinking about it.",
         },
         
@@ -3431,7 +3420,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Whoa you can talk to me?| You’re obviously not a {13} and definitely not an {6}.",
-                @"Wait,| have you not heard of me?! Jeez... <b>outsiders</b> can be pretty uncultured these days...",
+                @"Wait,| have you not heard of me?! Sheesh... <b>outsiders</b> can be pretty uncultured these days...",
         },
         
     }
@@ -3444,7 +3433,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"I’m part of a long line of <b>famous</b> {6} writers and illustrators.",
-                @"To tell you the truth, it’s my dream to have my art known across the land! One day!",
+                @"But to tell ya the truth, their work doesn’t hold a candle to mine! Ha!",
+                @"You know, it’s my dream to create the very best portrait in all the land. Something that’ll bring anyone who lays eyes on it to their <b>knees</b>! One day, you’ll see!",
                 @"My current subject of focus you ask?",
         },
         
@@ -3511,11 +3501,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"Ha, anyways, there’s no way someone like <i>you</i> could be of any use to me.",
-                @"I’ve been stuck painting the same thing over and over, can’t you tell?!",
-                @"Every time I start, I’m so excited that I’m going to <i>find</i> the right image this time! Kinda like rolling dice.",
-                @"But then the images slowly stop rolling.",
-                @"And it always ends up the same way... I end up painting the same thing! Ugh!",
+                @"Are you seeing this? I’ve been stuck painting the same thing over and over!",
+                @"Hey I’ll figure it out though, alright?! It’s kinda like rolling dice!",
+                @"But the same faces are always coming up... Every painting ends up looking the same! Hmph!",
         },
         
     }
@@ -3614,17 +3602,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @".........",
-                @"After all these years, I can’t believe it,| but <b><i>you</i></b>...",
+                @"After all these years, nobody really...",
+                @"I can’t believe it... but now <b><i>you</i></b>...",
                 @"<size=16><b>YOU.</b></size>",
                 @"<size=16><b>An outsider...</b></size>",
-                @"...actually <b>understands</b> me.",
-                @"I’ve been so scared to try anything truly new. Like every decision would be the wrong one...",
-                @"Hmph. I guess in a way, I did feel safe painting the same thing over and over.",
-                @"Not having to show anyone but myself.",
-                @"Hey I didn’t really have a choice though...",
-                @"Anyways, it’s pretty clear now!",
-                @"I know what I have to do now.",
-                @"It’s time I leave this place and bring my work to the outside world!",
+                @"I’ve been so scared to try anything new. Like every decision would just lead me to a dead end.",
+                @"Hmph, just painting the same thing over and over.",
+                @"But in all honesty, I was stuck... Okay, fine there, I admit it!",
+                @"Hey I didn’t really have a choice though... Admit there’s a problem? Ha, please, like anyone in this place would help...",
+                @"Anyways, it’s pretty clear now.",
+                @"I know what I have to do.",
+                @"It’s time I leave for good.",
+                @"I think I’ve scraped all that I can out of myself in here already. There’s nothing more for me, nope.",
                 @"...",
                 @"I owe you one; where I’m going I’m not going to need this anyways... So here take it, it’s yours...",
         },
@@ -3671,6 +3660,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
+    "ellenias-room_ellenia_psychic_question_repeat_initial",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"Have we met before? What’re you doing getting so close to my painting?!",
+                @"Hmph, I don’t usually take opinions from <b>outsiders</b>, but hey, I’m feelin’ nice.",
+                @"Well, c’mon now, what do you think about it?",
+                @"Spit it out, what is it already?",
+        },
+        
+    }
+},
+{
     "ellenias-room_ellenia_psychic_on-correct_redo",
     new Model_Languages
     {
@@ -3678,17 +3682,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @".........",
-                @"After all these years, I can’t believe it,| but <b><i>you</i></b>...",
+                @"After all these years, nobody really...",
+                @"I can’t believe it... but now <b><i>you</i></b>...",
                 @"<size=16><b>YOU.</b></size>",
                 @"<size=16><b>An outsider...</b></size>",
-                @"...actually <b>understands</b> me.",
-                @"I’ve been so scared to try anything truly new. Like every decision would be the wrong one...",
-                @"Hmph. I guess in a way, I did feel safe painting the same thing over and over.",
-                @"Not having to show anyone but myself.",
-                @"Hey I didn’t really have a choice though...",
-                @"Anyways, it’s pretty clear now!",
-                @"I know what I have to do now.",
-                @"It’s time I leave this place and bring my work to the outside world!",
+                @"I’ve been so scared to try anything new. Like every decision would just lead me to a dead end.",
+                @"Hmph, just painting the same thing over and over.",
+                @"But in all honesty, I was stuck... Okay, fine there, I admit it!",
+                @"Hey I didn’t really have a choice though... Admit there’s a problem? Ha, please, like anyone in this place would help...",
+                @"Anyways, it’s pretty clear now.",
+                @"I know what I have to do.",
+                @"It’s time I leave for good.",
+                @"I think I’ve scraped all that I can out of myself in here already. There’s nothing more for me, nope.",
                 @"...",
                 @"I owe you one; where I’m going I’m not going to need this anyways... So here take it, it’s yours...",
         },
@@ -3784,17 +3789,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @".........",
-                @"After all these years, I can’t believe it,| but <b><i>you</i></b>...",
+                @"After all these years, nobody really...",
+                @"I can’t believe it... but now <b><i>you</i></b>...",
                 @"<size=16><b>YOU.</b></size>",
                 @"<size=16><b>An outsider...</b></size>",
-                @"...actually <b>understands</b> me.",
-                @"I’ve been so scared to try anything truly new. Like every decision would be the wrong one...",
-                @"Hmph. I guess in a way, I did feel safe painting the same thing over and over.",
-                @"Not having to show anyone but myself.",
-                @"Hey I didn’t really have a choice though...",
-                @"Anyways, it’s pretty clear now!",
-                @"I know what I have to do now.",
-                @"It’s time I leave this place and bring my work to the outside world!",
+                @"I’ve been so scared to try anything new. Like every decision would just lead me to a dead end.",
+                @"Hmph, just painting the same thing over and over.",
+                @"But in all honesty, I was stuck... Okay, fine there, I admit it!",
+                @"Hey I didn’t really have a choice though... Admit there’s a problem? Ha, please, like anyone in this place would help...",
+                @"Anyways, it’s pretty clear now.",
+                @"I know what I have to do.",
+                @"It’s time I leave for good.",
+                @"I think I’ve scraped all that I can out of myself in here already. There’s nothing more for me, nope.",
                 @"...",
                 @"I owe you one; where I’m going I’m not going to need this anyways... So here take it, it’s yours...",
         },
@@ -4603,7 +4609,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"I’m called {63} in this realm.",
                 @"And let us see about this spell... Ah this technique! Why of course! I can understand it!",
-                @"Custom cryokinesis prepped with derivations of internal ESP! Impressive work! Yes!",
+                @"Custom cryokinesis! Derivations via fractalization! Impressive work!",
                 @"Ah! Can it be?! I think I’ve got it!",
         },
         
@@ -4880,7 +4886,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You begin to think things over,| the hotel’s day-to-day at least provided some structure...",
                 @"Maybe that simplicity still beats being lost in infinite vastness.",
                 @"Is this how it feels to be lost at sea?",
-                @"Nothing really seems to get easier in life... does it?",
+                @"Do things ever get easier?",
         },
         
     }
@@ -5165,7 +5171,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{38}",
         EN = new string[]
         {
-                @"Yes, I do.| You’re right, it’s time for us to truly start a new life. On the other side.",
+                @"Yes, I do.| You’re right, it’s time we start a new life. On the other side.",
                 @"We have to leave quick, {39}. Let’s go.",
         },
         metadata = new Model_Languages.Metadata[]
@@ -5314,9 +5320,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You’re a bit worried you might do <i>that</i> again.",
-                @"Ruin it when you’ve already made it.",
-                @"Keep it together, {0}!",
+                @"There’s no way you would do <i>that</i> again.",
+                @"That voice! Annoying!",
+                @"Keep it together, you got this, {0}!",
         },
         
     }
