@@ -63,7 +63,8 @@ public class Script_TeletypeNotificationManager : MonoBehaviour
         // Catwalk2
         foreach (var textContainer in CatWalk2Dialogue)
         {
-            textContainer.Close();
+            if (textContainer != null)
+                textContainer.Close();
         }
     }
     

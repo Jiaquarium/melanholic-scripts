@@ -591,26 +591,8 @@ public class Script_DialogueManager : MonoBehaviour
     {   
         if (isGlitchText)
         {
-            var stringBuilder = new StringBuilder(sentence);
             textUI.text = sentence;
-            int totalVisible = textUI.textInfo.characterCount;
-            char zalgoLetter;
-
-            // Replace all letters with Zalgo text            
-            for (var i = 0; i < totalVisible; i++)
-            {
-                TMP_CharacterInfo charInfo = textUI.textInfo.characterInfo[i];
-
-                // Replace letters/digits with Zalgo letters.
-                if (Char.IsLetterOrDigit(charInfo.character))
-                {
-                    zalgoLetter = charInfo.character.Zalgofy();
-                    stringBuilder.Remove(charInfo.index, 1);
-                    stringBuilder.Insert(charInfo.index, Char.ToString(zalgoLetter));
-                }
-            }
-
-            sentence = stringBuilder.ToString();
+            sentence = ZalgofyString(sentence, textUI);
         }
         
         // Hide Text Commands.
@@ -661,6 +643,32 @@ public class Script_DialogueManager : MonoBehaviour
 
         if (cb != null)
             cb();
+    }
+
+    public static string ZalgofyString(
+        string sentence,
+        TextMeshProUGUI textUI
+    )
+    {
+        var stringBuilder = new StringBuilder(sentence);
+        int totalVisible = textUI.textInfo.characterCount;
+        char zalgoLetter;
+
+        // Replace all letters with Zalgo text
+        for (var i = 0; i < totalVisible; i++)
+        {
+            TMP_CharacterInfo charInfo = textUI.textInfo.characterInfo[i];
+            
+            // Replace letters/digits with Zalgo letters.
+            if (Char.IsLetterOrDigit(charInfo.character))
+            {
+                zalgoLetter = charInfo.character.Zalgofy();
+                stringBuilder.Remove(charInfo.index, 1);
+                stringBuilder.Insert(charInfo.index, Char.ToString(zalgoLetter));
+            }
+        }
+
+        return stringBuilder.ToString();
     }
 
     void FinishRenderingDialogueSection()
