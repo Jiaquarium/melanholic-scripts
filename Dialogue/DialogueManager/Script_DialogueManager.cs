@@ -23,6 +23,7 @@ using UnityEngine.Events;
 public class Script_DialogueManager : MonoBehaviour
 {
     public const float pauseLength = 0.475f;
+    public const char DefaultDemonNPCChar = '�';
     
     public enum States
     {
@@ -567,8 +568,15 @@ public class Script_DialogueManager : MonoBehaviour
 
     private void HandleTeletypeReveal(string sentence, TextMeshProUGUI textUI)
     {
+        bool isGlitchText = currentNode != null
+            && currentNode.data != null
+            && currentNode.data.isZalgofy;
+        
+        if (isGlitchText)
+            sentence = Script_Utils.ZalgofyUnrichString(sentence);
+        
         coroutine = TeletypeRevealLine(
-            formattedLine,
+            sentence,
             activeCanvasText,
             OnTeletypeRevealLineDone
         );

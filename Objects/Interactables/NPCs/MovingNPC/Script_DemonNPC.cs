@@ -129,7 +129,18 @@ public class Script_DemonNPC : Script_MovingNPC
             PsychicNodes = psychicNodesController.Nodes;
         }
 
-        if (defaultNodes == null || defaultNodes.Length == 0)   defaultNodes = dialogueNodes;
+        if (defaultNodes == null || defaultNodes.Length == 0)
+        {
+            defaultNodes = dialogueNodes;
+            
+            // Set all default nodes to glitch text
+            foreach (var node in defaultNodes)
+            {
+                if (node != null && node.data != null)
+                    node.data.isZalgofy = true;
+            }
+        }
+
         base.OnEnable();
     }
 

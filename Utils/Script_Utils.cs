@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
+using System.Text;
 using System.Linq;
 using UnityEngine.UI;
 using System.Reflection;
@@ -344,6 +345,30 @@ public static class Script_Utils
         var random = new System.Random();
         int randomIndex = random.Next(glitchLetters.Count);
         return glitchLetters[randomIndex];
+    }
+
+    /// <summary>
+    /// Note, this will even zalgofy tags.
+    /// </summary>
+    /// <param name="sentence">String without tags</param>
+    /// <returns>Zalgofied string</returns>
+    public static string ZalgofyUnrichString(this string sentence)
+    {
+        var stringBuilder = new StringBuilder(sentence);
+        
+        for (var i = 0; i < sentence.Length; i++)
+        {
+            char c = sentence[i];
+            
+            if (Char.IsLetterOrDigit(c) || c == Script_DialogueManager.DefaultDemonNPCChar)
+            {
+                var zalgoLetter = c.Zalgofy();
+                stringBuilder.Remove(i, 1);
+                stringBuilder.Insert(i, Char.ToString(zalgoLetter));
+            }
+        }
+
+        return stringBuilder.ToString();
     }
 
     /// <summary>
