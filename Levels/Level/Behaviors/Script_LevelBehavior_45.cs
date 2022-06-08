@@ -102,6 +102,11 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
         return true;
     }
 
+    public void TotemCry()
+    {
+        Script_SFXManager.SFX.PlayTotemCry();
+    }
+
     private void HandleLanternLightReaction(bool isLightOn)
     {
         directionalLight.gameObject.SetActive(isLightOn);

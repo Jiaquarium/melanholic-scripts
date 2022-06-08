@@ -15,10 +15,13 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     /* =======================================================================
         STATE DATA
     ======================================================================= */
+    [Tooltip("Currently unused; for dialogue, only track current day talking state with didSpeakWithEileenToday")]
     public bool spokenWithEileen;
     public bool didOnEntranceAttack;
     /* ======================================================================= */
     
+    [SerializeField] private bool didSpeakWithEileenToday;
+
     [SerializeField] private Script_LevelBehavior_25 LB25;
     [SerializeField] private Script_LevelBehavior_26 LB26;
     
@@ -63,7 +66,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         playerPlayableDirector = game.GetPlayer().GetComponent<PlayableDirector>();
         playerPlayableDirector.stopped                  += OnDropTimelineDone;
         
-        if (spokenWithEileen)   OnFinishedTalking();
+        if (didSpeakWithEileenToday)
+            OnFinishedTalking();
     }
 
     protected override void OnDisable()
@@ -106,10 +110,12 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         }
     }
 
+    // RevealPW Node
     public void OnFinishedTalking()
     {
         Debug.Log("OnFinishedTalking() switching out Eileen's dialogue nodes now...");
         spokenWithEileen = true;
+        didSpeakWithEileenToday = true;
         Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
     }
     
@@ -217,7 +223,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         {
             HandleEileenDefault(isPuzzleDone: false);
             
-            if (spokenWithEileen)       Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+            if (didSpeakWithEileenToday)
+                Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
             
             // We need to set a new password, since the talked nodes don't call the password
             // set function and we are not saving the password from run to run

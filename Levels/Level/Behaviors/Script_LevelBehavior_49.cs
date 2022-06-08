@@ -21,8 +21,8 @@ public class Script_LevelBehavior_49 : Script_LevelBehavior
 
     [SerializeField] private float doubtsFadeOutTime;
 
-    [SerializeField] private bool[] doubtsActivationStates = new bool[2]{false, false};
-    private Coroutine[] fadeOutDoubts = new Coroutine[2];
+    [SerializeField] private bool[] doubtsActivationStates = new bool[3]{false, false, false};
+    private Coroutine[] fadeOutDoubts = new Coroutine[3];
     
     protected override void OnDisable()
     {

@@ -128,18 +128,7 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
 
     public override void Setup()
     {
-        // Weekend Cycle Conditions
-        if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
-        {
-            if (Script_EventCycleManager.Control.IsIdsDead())
-            {
-                Ero.gameObject.SetActive(false);
-            }
-            else if (Script_EventCycleManager.Control.IsIdsInSanctuary())
-            {
-                Ero.SwitchPsychicNodes(IdsSickEroNodes);
-            }    
-        }
+        Ero.gameObject.SetActive(false);
         
         if (isInit && (!Debug.isDebugBuild || !Const_Dev.IsDevMode))
         {
@@ -150,12 +139,7 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
         if (isDone)
         {
             game.DisableExits(false, 0);
-            Ero.gameObject.SetActive(false);
         }
-        // else
-        // {
-        //     game.DisableExits(true, 0);
-        // }
         
         isInit = false;
     }

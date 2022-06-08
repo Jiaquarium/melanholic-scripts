@@ -177,6 +177,9 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip WindZoneExit;
     [Range(0f, 1f)] public float WindZoneExitVol;
+
+    public AudioClip TotemCry;
+    [Range(0f, 1f)] public float TotemCryVol;
     
     [Space]
 
@@ -358,6 +361,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlaySubmitTransitionGong()
     {
         SFXSource.PlayOneShot(SubmitTransitionGong, SubmitTransitionGongVol);
+    }
+
+    public void PlayTotemCry()
+    {
+        SFXSource.PlayOneShot(TotemCry, TotemCryVol);
     }
 
     public void Play(AudioClip sfx, float vol = 1f)

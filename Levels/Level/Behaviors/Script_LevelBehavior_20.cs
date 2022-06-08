@@ -356,15 +356,10 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     private void SetupCycleConditions()
     {
-        // Ero reports of missing Ids.
+        Ero.gameObject.SetActive(false);
+        
         if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
         {
-            // Handle Ero Event Cycle
-            if (Script_EventCycleManager.Control.IsIdsDead())
-                Ero.gameObject.SetActive(true);
-            else
-                Ero.gameObject.SetActive(false);
-
             // Remove all NPCs except for King, they've gone to their respective rooms.
             SetDynamicSpectersActive(false);
             
@@ -373,7 +368,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
         else
         {
-            Ero.gameObject.SetActive(false);
             SetDynamicSpectersActive(true);
             
             // Ignore setting entrances to disabled if we're in Grand Mirror room, meaning
