@@ -568,11 +568,8 @@ public class Script_DialogueManager : MonoBehaviour
 
     private void HandleTeletypeReveal(string sentence, TextMeshProUGUI textUI)
     {
-        bool isGlitchText = currentNode != null
-            && currentNode.data != null
-            && currentNode.data.isZalgofy;
-        
-        if (isGlitchText)
+        // for Default Psychic Nodes
+        if (isZalgofyNode)
             sentence = Script_Utils.ZalgofyUnrichString(sentence);
         
         coroutine = TeletypeRevealLine(
@@ -588,6 +585,10 @@ public class Script_DialogueManager : MonoBehaviour
             DisplayNextLine();
         }
     }
+
+    private bool isZalgofyNode => currentNode != null
+            && currentNode.data != null
+            && currentNode.data.isZalgofy;
 
     public static IEnumerator TeletypeRevealLine(
         string sentence,
@@ -1036,20 +1037,26 @@ public class Script_DialogueManager : MonoBehaviour
 
             for (int i = 0; i < dialogueSection.lines.Length; i++)
             {
-                // Interpolate dynamic strings.
-                string unformattedLine = dialogueSection.lines[i];
-                string _formattedLine = Script_Utils.FormatString(unformattedLine);
-                
-                // Remove pause indicators
-                _formattedLine = _formattedLine.Replace("|", string.Empty);
-                
                 activeCanvasText = activeCanvasTexts[i];
-                activeCanvasText.text = _formattedLine;
+                
+                // If the current dialogue is glitch text, no need to interpolate,
+                // every taglike element will have been zalgofied.
+                if (!isZalgofyNode)
+                {
+                    // Interpolate dynamic strings.
+                    string unformattedLine = dialogueSection.lines[i];
+                    string _formattedLine = Script_Utils.FormatString(unformattedLine);
+                    
+                    // Remove pause indicators
+                    _formattedLine = _formattedLine.Replace("|", string.Empty);
+
+                    activeCanvasText.text = _formattedLine;
+                }
                 
                 // Reset TMP visibility.
                 activeCanvasText.maxVisibleCharacters = activeCanvasText.textInfo.characterCount + 1;
                 
-                Debug.Log($"SkipTypingSentence() _formattedLine {_formattedLine}");
+                Debug.Log($"SkipTypingSentence() activeCanvasText.text {activeCanvasText.text}");
                 Debug.Log($"SkipTypingSentence() activeCanvasText.maxVisibleCharacters {activeCanvasText.maxVisibleCharacters} activeCanvasText.textInfo.characterCount {activeCanvasText.textInfo.characterCount}");
             }
 
