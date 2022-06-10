@@ -42,6 +42,7 @@ public class Script_SavedGameTitleControl : MonoBehaviour
     public void Setup()
     {
         Script_SaveGameControl.SetPath();
+        
         if (Control == null)
         {
             Control = this;

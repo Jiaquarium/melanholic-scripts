@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// This GameObject should remain active.
@@ -17,6 +18,8 @@ public class Script_SettingsController : MonoBehaviour
         Controls = 1,
         Graphics = 2,
     }
+
+    public static Script_SettingsController Instance;
 
     [SerializeField] private States state;
     [SerializeField] private bool isThrottledInGame;
@@ -36,6 +39,8 @@ public class Script_SettingsController : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
 
+    [Header("Rebind Settings")]
+    [SerializeField] private List<Script_UIRebindAction> UIRebindActions;
     private float timer;
 
     public bool IsThrottledInGame { get => isThrottledInGame; }
@@ -102,7 +107,9 @@ public class Script_SettingsController : MonoBehaviour
     public void ToControls()
     {
         overviewCanvasGroup.Close();
+        
         controlsCanvasGroup.Open();
+        UpdateControlKeyDisplays();
 
         // Set Controls First Selected active.
         EventSystem.current.SetSelectedGameObject(controlsCanvasGroup.firstToSelect.gameObject);
@@ -147,8 +154,25 @@ public class Script_SettingsController : MonoBehaviour
         Script_TransitionManager.Control.ToTitleScreen();
         Script_TransitionManager.Control.EnterMenuSFX();
     }
+
+    // Controls: Reset All to Defaults
+    public void ResetDefaults()
+    {
+        Script_PlayerInputManager.Instance.SetDefault();
+    }
     
     // ------------------------------------------------------------
+    // Controls
+    
+    public void UpdateControlKeyDisplays()
+    {
+        UIRebindActions.ForEach(rebindKeyUI => {
+            rebindKeyUI.UpdateBehavior();
+        });
+    }
+    
+    // ------------------------------------------------------------
+    
 
     protected void EnterMenuSFX()
     {
@@ -186,6 +210,15 @@ public class Script_SettingsController : MonoBehaviour
 
     public virtual void Setup()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        
         gameObject.SetActive(true);
         audioSource.gameObject.SetActive(true);
         Close();

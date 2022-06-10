@@ -25,7 +25,12 @@ public class Script_MenuInputManager : Script_ExitViewInputManager
             return;
         }
 
-        if (Input.GetButtonDown(Const_KeyCodes.Inventory) || Input.GetButtonDown(Const_KeyCodes.Cancel))
+        var playerInput = game.GetPlayer().MyPlayerInput;
+        
+        if (
+            playerInput.actions[Const_KeyCodes.Inventory].WasPressedThisFrame()
+            || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
+        )
         {
             Debug.Log("{name} Exit menu input detected");
             Script_MenuEventsManager.ExitMenu();

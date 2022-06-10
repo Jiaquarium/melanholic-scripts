@@ -80,7 +80,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         game.ChangeStateCutScene();
         
         Flan.FaceDirection(Flan.transform.position.GetDirectionToTarget(playerPos));
-        Flan.ForceHandleAction(Const_KeyCodes.Action1);
+        Flan.ForceHandleAction(Const_KeyCodes.Interact);
 
         // NOTE Flan's last dialogue node needs to call EndGuardDialogue()
     }

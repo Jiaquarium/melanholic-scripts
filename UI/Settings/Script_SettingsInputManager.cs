@@ -13,7 +13,7 @@ public class Script_SettingsInputManager : MonoBehaviour
     
     public void HandleExitInput()
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Cancel))
+        if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
         {
             settingsController.Back();
         }

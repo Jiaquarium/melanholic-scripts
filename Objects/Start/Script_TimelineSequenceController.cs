@@ -28,7 +28,10 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
     // For Dialogue Markers.
     void Update()
     {
-        if (isListening && Input.GetButtonDown(Const_KeyCodes.Submit))
+        if (
+            isListening
+            && Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
+        )
         {
             Debug.Log($"{name} Playing timeline on input");
 

@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Script_Player))]
 public class Script_PlayerAction : MonoBehaviour
 {
-    private Script_Game game;
+    protected Script_Game game;
     private Script_Player player;
     private Dictionary<Directions, Vector3> directions;
     private Script_InteractionBoxController interactionBoxController;
@@ -68,19 +68,21 @@ public class Script_PlayerAction : MonoBehaviour
 
     protected virtual void HandleInteraction(Directions facingDirection, Vector3 location)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Action1))
+        var playerInput = player.MyPlayerInput;
+        
+        if (playerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
         {
             HandleDefaultAction(facingDirection, location);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        else if (playerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
         {
             stickerEffectsController.Effect(facingDirection);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Inventory))
+        else if (playerInput.actions[Const_KeyCodes.Inventory].WasPressedThisFrame())
         {
             OpenInventory();
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Cancel))
+        else if (playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
         {
             OpenSettings();
         }
@@ -92,7 +94,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     private void HandleLastElevatorActions(Directions facingDirection, Vector3 location)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        if (player.MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
         {
             stickerEffectsController.Effect(facingDirection);
         }
@@ -104,7 +106,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     private void HandleMelancholyPianoActions(Directions facingDirection, Vector3 location)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        if (player.MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
         {
             stickerEffectsController.Effect(facingDirection);
         }
@@ -150,7 +152,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     private void HandleDefaultAction(Directions facingDirection, Vector3 location)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Action1))
+        if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
         {
             if (!HandleDialogue(facingDirection))
                 HandlePickUpItem(facingDirection);
@@ -159,9 +161,9 @@ public class Script_PlayerAction : MonoBehaviour
 
     bool HandleDialogue(Directions facingDirection)
     {
-        if (!DetectNPC(Const_KeyCodes.Action1, facingDirection))
-            if (!DetectInteractableObject(Const_KeyCodes.Action1, facingDirection))
-                return DetectSavePoint(Const_KeyCodes.Action1, facingDirection);
+        if (!DetectNPC(Const_KeyCodes.Interact, facingDirection))
+            if (!DetectInteractableObject(Const_KeyCodes.Interact, facingDirection))
+                return DetectSavePoint(Const_KeyCodes.Interact, facingDirection);
 
         return true;
     }
@@ -173,7 +175,7 @@ public class Script_PlayerAction : MonoBehaviour
     {
         Script_Item item;
         Script_ItemObject itemObject = DetectAndOutItem(
-            Const_KeyCodes.Action1, facingDirection, out item
+            Const_KeyCodes.Interact, facingDirection, out item
         );
 
         /// itemObject will be null if item failed to pick up (e.g. inventory was full)
@@ -210,7 +212,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     public bool HandlePickingUp()
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Action1))
+        if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
         {
             HandleEndItemDescriptionDialogue(itemShown); // current item being held above Player's head
             return true;
@@ -372,7 +374,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     private void HandleExitPuppeteerNull(Directions facingDirection)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        if (player.MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
         {
             stickerEffectsController.Effect(facingDirection);
         }

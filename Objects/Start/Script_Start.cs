@@ -54,6 +54,7 @@ public class Script_Start : MonoBehaviour
 
     void Start()
     {
+        Script_PlayerInputManager.Instance.Setup();
         mainController.Setup();
 
         switch(startState)

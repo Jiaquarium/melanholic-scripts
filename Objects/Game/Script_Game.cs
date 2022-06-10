@@ -503,7 +503,8 @@ public class Script_Game : MonoBehaviour
     // Load Save Data and Initiate level
     void Start()
     {
-        Load();
+        Script_PlayerInputManager.Instance.Setup();
+        LoadGame();
         
         OnLoadTasks();
         
@@ -528,7 +529,7 @@ public class Script_Game : MonoBehaviour
         totalPlayTime = 0;
     }
 
-    private void Load()
+    private void LoadGame()
     {
         if (!Debug.isDebugBuild || Const_Dev.IsPersisting)
         {

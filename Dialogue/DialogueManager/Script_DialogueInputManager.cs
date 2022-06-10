@@ -14,12 +14,12 @@ public class Script_DialogueInputManager : MonoBehaviour
     protected virtual void HandleCutSceneDialogueAction()
     {
         if (
-            Input.GetButtonDown(Const_KeyCodes.Action1)
+            game.GetPlayer().MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame()
             && game.state == Const_States_Game.CutScene
         )
         {
             Debug.Log("Script_LevelBehavior: HandleDialogueAction()");
-            game.HandleContinuingDialogueActions(Const_KeyCodes.Action1);
+            game.HandleContinuingDialogueActions(Const_KeyCodes.Interact);
         }
     }
 }

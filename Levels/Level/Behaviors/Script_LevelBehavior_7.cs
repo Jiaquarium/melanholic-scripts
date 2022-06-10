@@ -55,7 +55,7 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
     [SerializeField] private Script_VCamera VCamLB7Zoomed;
     [SerializeField] private Script_Hint hint;
 
-    [SerializeField] private bool shownHint = false;
+    // [SerializeField] private bool shownHint = false;
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
     [SerializeField] private PlayableDirector nameplateDirector;
     
@@ -226,27 +226,27 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
     // handle inventory here since player is still in talking mode
     void HandleInventoryOpenAndClose()
     {
-        if (isDone)     return;
+        // if (isDone)     return;
         
-        if (!shownHint)
-        {
-            shownHint = true;
-            hintCoroutine = StartCoroutine(WaitToShowHint());
-        }
+        // if (!shownHint)
+        // {
+        //     shownHint = true;
+        //     hintCoroutine = StartCoroutine(WaitToShowHint());
+        // }
         
-        if (Input.GetButtonDown(Const_KeyCodes.Inventory) && game.state == Const_States_Game.CutScene)
-        {
-            game.OpenInventory();
-            StopCoroutine(hintCoroutine);
-            hint.Hide();
-            Script_DialogueManager.DialogueManager.HideDialogue();
-        }
+        // if (Input.GetButtonDown(Const_KeyCodes.Inventory) && game.state == Const_States_Game.CutScene)
+        // {
+        //     game.OpenInventory();
+        //     StopCoroutine(hintCoroutine);
+        //     hint.Hide();
+        //     Script_DialogueManager.DialogueManager.HideDialogue();
+        // }
 
-        IEnumerator WaitToShowHint()
-        {
-            yield return new WaitForSeconds(hintTimeBeforeShowing);
-            hint.Show();
-        }
+        // IEnumerator WaitToShowHint()
+        // {
+        //     yield return new WaitForSeconds(hintTimeBeforeShowing);
+        //     hint.Show();
+        // }
     }
 
     public override void OnCloseInventory()

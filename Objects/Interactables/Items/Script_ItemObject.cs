@@ -36,7 +36,7 @@ public class Script_ItemObject : Script_Interactable
     /// <returns>False if inventory was full, failed to pick up</returns>
     public void HandleAction(string action)
     {
-        if (action == Const_KeyCodes.Action1)
+        if (action == Const_KeyCodes.Interact)
         {
             PickUp();
         }

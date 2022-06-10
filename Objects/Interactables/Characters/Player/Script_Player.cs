@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using System;
 using UnityEngine.Timeline;
+using UnityEngine.InputSystem;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -46,6 +47,8 @@ public class Script_Player : Script_Character
 
     [SerializeField] private Light playerLight;
     [SerializeField] private SignalReceiver signalReceiver;
+
+    [SerializeField] private PlayerInput playerInput;
 
     protected Script_Game game;
     
@@ -188,6 +191,12 @@ public class Script_Player : Script_Character
     {
         get => isFinalRound;
         set => isFinalRound = value;
+    }
+
+    public PlayerInput MyPlayerInput
+    {
+        get => playerInput;
+        set => playerInput = value;
     }
 
     public void FlipSprite(bool flipX, bool flipY)
@@ -665,6 +674,8 @@ public class Script_Player : Script_Character
     )
     {   
         game = Script_Game.Game;
+        MyPlayerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
+
         directionsToVector = Script_Utils.GetDirectionToVectorDict();
         
         playerMovementHandler = GetComponent<Script_PlayerMovement>();

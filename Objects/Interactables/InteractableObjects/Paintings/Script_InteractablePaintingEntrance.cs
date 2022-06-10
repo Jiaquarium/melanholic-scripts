@@ -49,7 +49,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
         Debug.Log($"{name} HandleAction action: {action}");
         bool isDisabled = !isAllowDisabledDialogue && State == States.Disabled;
 
-        if (action == Const_KeyCodes.Action1 && !isDisabled)
+        if (action == Const_KeyCodes.Interact && !isDisabled)
         {
             ActionDefault();
         }

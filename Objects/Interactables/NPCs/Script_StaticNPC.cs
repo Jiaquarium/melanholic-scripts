@@ -59,7 +59,7 @@ public class Script_StaticNPC : Script_Interactable
     /// </summary>
     public void HandleAction(string action)
     {
-        if (action == Const_KeyCodes.Action1)
+        if (action == Const_KeyCodes.Interact)
         {
             Debug.Log($"CHECKING DISABLED DIRECTIONS: {CheckDisabledDirections()}");
             
@@ -85,7 +85,7 @@ public class Script_StaticNPC : Script_Interactable
     /// </summary>
     public void ForceHandleAction(string action)
     {
-        if (action == Const_KeyCodes.Action1)
+        if (action == Const_KeyCodes.Interact)
         {
             dialogueManager.IsOnEndUpdateNPCState = true;
             

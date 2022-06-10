@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// This should initialize with Player's Input
 public class Script_SettingsControllerGame : Script_SettingsController
 {
     [SerializeField] private Script_CanvasGroupController quitToMainMenuPrompt;

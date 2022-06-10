@@ -959,4 +959,5 @@ public static class Script_Utils
     // File Path Helpers
     public static string SaveFile(int slot) => $"saveData{Application.version}_{slot}.dat";
     public static string SaveTitleDataFile(int slot) => $"savedGameTitleData{Application.version}_{slot}.dat";
+    public static string KeyRebindsFile() => $"keyRebinds{Application.version}.dat";
 }

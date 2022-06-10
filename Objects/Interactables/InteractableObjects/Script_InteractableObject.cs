@@ -78,7 +78,7 @@ public class Script_InteractableObject : Script_Interactable
     public virtual void HandleAction(string action)
     {
         print($"Handling action: {action}");
-        if (action == Const_KeyCodes.Action1 && State == States.Active)
+        if (action == Const_KeyCodes.Interact && State == States.Active)
         {
             ActionDefault();
         }

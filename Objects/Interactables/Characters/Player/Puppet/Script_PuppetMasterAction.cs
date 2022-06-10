@@ -11,7 +11,7 @@ public class Script_PuppetMasterAction : Script_PlayerAction
 
     protected override void HandleInteraction(Directions facingDirection, Vector3 location)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Action2))
+        if (game.GetPlayer().MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
         {
             PlayerStickerEffect();
         }
@@ -27,6 +27,6 @@ public class Script_PuppetMasterAction : Script_PlayerAction
     /// </summary>
     private void PlayerStickerEffect()
     {
-        Script_Game.Game?.GetPlayer()?.HandlePuppeteerEffectHold();
+        game?.GetPlayer()?.HandlePuppeteerEffectHold();
     }
 }

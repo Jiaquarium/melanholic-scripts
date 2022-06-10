@@ -22,7 +22,12 @@ public class Script_InventoryViewInputManager : Script_ExitViewInputManager
         if (masterUIState != null && masterUIState.state == UIState.Disabled)
             return;
 
-        if (Input.GetButtonDown(Const_KeyCodes.Inventory) || Input.GetButtonDown(Const_KeyCodes.Cancel))
+        var playerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
+        
+        if (
+            playerInput.actions[Const_KeyCodes.Inventory].WasPressedThisFrame()
+            || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
+        )
         {
             print("HandleExitInput()");
             Script_MenuEventsManager.ExitSubmenu();

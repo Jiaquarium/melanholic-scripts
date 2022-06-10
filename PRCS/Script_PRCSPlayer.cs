@@ -44,6 +44,7 @@ public class Script_PRCSPlayer : MonoBehaviour
     private bool isNodesDone;
     private bool isReturnPressedDone;
     private bool isDetectingReturn;
+    private Script_Game game;
     
     void OnEnable()
     {
@@ -55,11 +56,16 @@ public class Script_PRCSPlayer : MonoBehaviour
         director.stopped -= PRCSDone;
     }
 
+    void Start()
+    {
+        game = Script_Game.Game;
+    }
+
     void Update()
     {
         if (isDetectingReturn)
         {
-            if (Input.GetButtonDown(Const_KeyCodes.Action1))
+            if (game.GetPlayer().MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
             {
                 isReturnPressedDone         = true;
                 isDetectingReturn           = false;

@@ -18,11 +18,13 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
     {
         if (!isFullArtMode || isInputDisabled)      return;
 
+        var playerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
+        
         if (
-            Input.GetButtonDown(Const_KeyCodes.Inventory)
-            || Input.GetButtonDown(Const_KeyCodes.Cancel)
-            || Input.GetButtonDown(Const_KeyCodes.Action1)
-            || Input.GetButtonDown(Const_KeyCodes.Submit)
+            playerInput.actions[Const_KeyCodes.Inventory].WasPressedThisFrame()
+            || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
+            || playerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame()
+            || playerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
         )
         {
             isInputDisabled = true;

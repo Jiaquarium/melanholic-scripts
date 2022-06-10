@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// For entry inputs handled by inputManager, use SetValidation to fill in vaidator
@@ -86,10 +87,12 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         if (!EventSystem.current.sendNavigationEvents)
             return;
         
+        PlayerInput playerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
+        
         if (
             Input.GetKeyDown(KeyCode.DownArrow) /// NOTE: CPU-ONLY
-            || Input.GetButtonDown(Const_KeyCodes.Submit)
-            || Input.GetButtonDown(Const_KeyCodes.Cancel)
+            || playerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
+            || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
         )
         {
             // Ignore letters for entry inputs requiring typing alphabet characters.

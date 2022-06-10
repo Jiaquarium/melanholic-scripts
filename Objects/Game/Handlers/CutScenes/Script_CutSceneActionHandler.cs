@@ -7,7 +7,7 @@ public class Script_CutSceneActionHandler : MonoBehaviour
     [SerializeField] private Script_Game game;
     public void HandleContinuingDialogueActions(string action, Script_Player player)
     {
-        if (action == Const_KeyCodes.Action1)
+        if (action == Const_KeyCodes.Interact)
         {
             if (player.State == Const_States_Player.Dialogue)
             {
