@@ -60,6 +60,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     {
         isActive = true;
         isLoading = true;
+        
         HighlightOutline(false);
         
         /// If this is slow awakening UI store if this should be highlighted 
@@ -85,6 +86,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         /// Don't show highlight for Slow Awake Event Systems (Choices) 
         if (
             EventSystem.current != null
+            && EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>() != null
             && !EventSystem.current.sendNavigationEvents
             && isLoading
         )

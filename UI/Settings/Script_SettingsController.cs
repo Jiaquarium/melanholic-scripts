@@ -7,21 +7,26 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// This GameObject should remain active.
 /// </summary>
 public class Script_SettingsController : MonoBehaviour
 {
-    private enum States
+    protected enum States
     {
         Overview = 0,
         Controls = 1,
         Graphics = 2,
+        MainMenu = 3,
     }
 
     public static Script_SettingsController Instance;
 
-    [SerializeField] private States state;
+    [SerializeField] protected States state;
     [SerializeField] private bool isThrottledInGame;
     [SerializeField] private float throttleTime;
     
@@ -41,6 +46,12 @@ public class Script_SettingsController : MonoBehaviour
 
     [Header("Rebind Settings")]
     [SerializeField] private List<Script_UIRebindAction> UIRebindActions;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] resetDefaultsSubmenuChoices;
+    [SerializeField] private GameObject resetDefaultsSubmenu;
+    [SerializeField] private GameObject onExitResetDefaultsSubmenuActiveObject;
+    
+    private bool isRebindSubmenu = false;
+
     private float timer;
 
     public bool IsThrottledInGame { get => isThrottledInGame; }
@@ -81,13 +92,20 @@ public class Script_SettingsController : MonoBehaviour
         settingsEventSystem.gameObject.SetActive(true);
         settingsInputManager.gameObject.SetActive(true);
 
-        EventSystem.current.SetSelectedGameObject(initialButtons[firstSelectedIdx].gameObject);
+        settingsEventSystem.SetSelectedGameObject(initialButtons[firstSelectedIdx].gameObject);
 
         state = States.Overview;
     }
 
     public void Close(bool isFade = false, Action cb = null)
     {
+        // Set to null to ensure when we open back Settings, the OnSelect event is triggered.
+        settingsEventSystem.SetSelectedGameObject(null);
+        
+        // Flush state to prevent opening SFX (initial button specifies an onlySFXTransitionParent
+        // so it should always come from null, thus no SFX)
+        settingsEventSystem.GetComponent<Script_EventSystemLastSelected>().InitializeState();
+        
         settingsEventSystem.gameObject.SetActive(false);
         settingsInputManager.gameObject.SetActive(false);
         
@@ -120,7 +138,7 @@ public class Script_SettingsController : MonoBehaviour
     }
 
     // From UI Back Buttons
-    public void Back()
+    public virtual void Back()
     {
         switch (state)
         {
@@ -139,8 +157,15 @@ public class Script_SettingsController : MonoBehaviour
                 
                 break;
             case (States.Controls):
-                OpenOverview(0);
-                ExitMenuSFX();
+                if (isRebindSubmenu)
+                {
+                    CloseResetDefaultsSubmenu(isSuccess: false);
+                }
+                else
+                {
+                    OpenOverview(0);
+                    ExitMenuSFX();
+                }
                 break;
             case (States.Graphics):
                 OpenOverview(1);
@@ -159,6 +184,23 @@ public class Script_SettingsController : MonoBehaviour
     public void ResetDefaults()
     {
         Script_PlayerInputManager.Instance.SetDefault();
+
+        CloseResetDefaultsSubmenu(isSuccess: true);
+    }
+
+    // Reset Default Submenu
+    public void CloseResetDefaultsSubmenu(bool isSuccess)
+    {
+        resetDefaultsSubmenu.SetActive(false);
+
+        EventSystem.current.SetSelectedGameObject(onExitResetDefaultsSubmenuActiveObject.gameObject);
+
+        if (isSuccess)
+            Script_SFXManager.SFX.PlayUISuccessEdit();
+        else
+            Script_SFXManager.SFX.PlayExitSubmenuPencil();
+        
+        isRebindSubmenu = false;
     }
     
     // ------------------------------------------------------------
@@ -169,6 +211,24 @@ public class Script_SettingsController : MonoBehaviour
         UIRebindActions.ForEach(rebindKeyUI => {
             rebindKeyUI.UpdateBehavior();
         });
+    }
+
+    public void OnStartRebindProcess()
+    {
+        settingsEventSystem.sendNavigationEvents = false;
+    }
+
+    public void OnDoneRebindProcess()
+    {
+        settingsEventSystem.sendNavigationEvents = true;
+    }
+
+    public void OpenResetDefaultsSubmenu()
+    {
+        isRebindSubmenu = true;
+        resetDefaultsSubmenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(resetDefaultsSubmenuChoices[0].gameObject);
+        EnterSubmenuSFX();
     }
     
     // ------------------------------------------------------------
@@ -208,6 +268,11 @@ public class Script_SettingsController : MonoBehaviour
         isThrottledInGame = true;
     }
 
+    private void InitialState()
+    {
+        resetDefaultsSubmenu.SetActive(false);
+    }
+    
     public virtual void Setup()
     {
         if (Instance == null)
@@ -219,8 +284,27 @@ public class Script_SettingsController : MonoBehaviour
             Destroy(this.gameObject);
         }
         
+        InitialState();
+        
         gameObject.SetActive(true);
         audioSource.gameObject.SetActive(true);
         Close();
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_SettingsController))]
+    public class Script_SettingsControllerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_SettingsController t = (Script_SettingsController)target;
+            
+            if (GUILayout.Button("Open Reset Defaults Submenu"))
+            {
+                t.OpenResetDefaultsSubmenu();
+            }
+        }
+    }
+#endif
 }

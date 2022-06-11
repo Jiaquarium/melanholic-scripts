@@ -13,6 +13,7 @@ public static class Const_KeyCodes
     public const string Interact = "Interact";
     public const string Inventory = "Inventory";
     public const string MaskEffect = "MaskEffect";
+    public const string Speed = "Speed";
     public const string Action3 = "Action3";
     public const string Up = "Up";
     public const string Left = "Left";

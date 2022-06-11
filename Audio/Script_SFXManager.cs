@@ -235,6 +235,12 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip SubmitTransitionGong;
     [Range(0f, 1f)] public float SubmitTransitionGongVol;
+
+    public AudioClip PencilEdit;
+    [Range(0f, 1f)] public float PencilEditVol;
+
+    public AudioClip PencilExitSubmenu;
+    [Range(0f, 1f)] public float PencilExitSubmenuVol;
     
     public void PlayQuestProgress(Action cb = null)
     {
@@ -368,6 +374,36 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(TotemCry, TotemCryVol);
     }
 
+    // ------------------------------------------------------------
+    // UI
+
+    public void PlayUISuccess()
+    {
+        SFXSource.PlayOneShot(SubmitTransition, SubmitTransitionVol);
+    }
+    
+    public void PlayUISuccessEdit()
+    {
+        SFXSource.PlayOneShot(PencilEdit, PencilEditVol);
+    }
+
+    public void PlayEnterSubmenu()
+    {
+        SFXSource.PlayOneShot(OpenCloseBookHeavy, OpenCloseBookHeavyVol);
+    }
+
+    public void PlayDullError()
+    {
+        SFXSource.PlayOneShot(UIErrorSFX, UIErrorSFXVol);
+    }
+
+    public void PlayExitSubmenuPencil()
+    {
+        SFXSource.PlayOneShot(PencilExitSubmenu, PencilExitSubmenuVol);
+    }
+
+    // ------------------------------------------------------------
+    
     public void Play(AudioClip sfx, float vol = 1f)
     {
         SFXSource.PlayOneShot(sfx, vol);

@@ -529,7 +529,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
         if (Input.GetButton(Const_KeyCodes.Dev) && isDev)
             walkSpeed = Speeds.Dev;
-        else if (Input.GetButton(Const_KeyCodes.Action3) && hasSpeedSealAndIsFormerSelf)
+        else if (hasSpeedSealAndIsFormerSelf && player.MyPlayerInput.actions[Const_KeyCodes.Speed].IsPressed())
             walkSpeed = Speeds.Run;
         else
             walkSpeed = Speeds.Default;

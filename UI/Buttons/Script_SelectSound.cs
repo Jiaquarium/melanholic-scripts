@@ -9,12 +9,16 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
 {
     public Script_InventoryAudioSettings settings;
     public Script_EventSystemLastSelected eventSystem;
-    // describes gameObject where we don't want to play SFX when coming from it
+    
+    [Tooltip("Specify gameObject to ignore OnSelect SFX when coming it. Useful to squelch SFX on initialize.")]
     public GameObject transition;
+    
+    // Specify this parent to ignore OnSelect SFX when coming it.
+    // Useful to squelch SFX on initialize.
     public Transform noSFXTransitionParent;
     
     // Specify this parent to only make OnSelect SFX when coming from a child of it.
-    // Useful when don't want SFX on initialize.
+    // Useful to squelch SFX on initialize.
     [SerializeField] private Transform onlySFXTransitionParent;
     
     [SerializeField] private Button button { get { return GetComponent<Button>(); } }
@@ -24,10 +28,6 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
     void Awake()
     {
         source = settings.selectAudioSource;
-    }
-
-    public void OnSubmit(BaseEventData e)
-    {
     }
 
     public virtual void OnSelect(BaseEventData e)
@@ -72,6 +72,7 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
         PlaySFX();
     }
 
+    public void OnSubmit(BaseEventData e) { }
 
     protected void PlaySFX()
     {

@@ -17,7 +17,9 @@ public class Script_PlayerInputManager : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     
     /// <summary>
-    /// Update here when adding more keys as rebindable.
+    /// When adding addt'l rebindable keys, update this field as well as:
+    /// - Save/Load the model
+    /// - SettingsController.UIRebindActions
     /// This also affects the exclusion keys during RebindingOperation.
     /// </summary>
     /// <typeparam name="string"></typeparam>
@@ -25,6 +27,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         Const_KeyCodes.Interact,
         Const_KeyCodes.Inventory,
         Const_KeyCodes.MaskEffect,
+        Const_KeyCodes.Speed,
     };
 
     public PlayerInput MyPlayerInput { get => playerInput; }
@@ -70,7 +73,12 @@ public class Script_PlayerInputManager : MonoBehaviour
             int controlBindingIndex = GetFirstControlBindingIndex(inputAction);
             var overridePath = inputAction.bindings[controlBindingIndex].overridePath;
 
-            if (!String.IsNullOrEmpty(overridePath))
+            // Check & validate the control path
+            var isValidControl = GetKeyboardControl(overridePath) != null;
+            
+            Debug.Log($"GetKeyboardControl: {GetKeyboardControl(overridePath)}, isValidControl: {isValidControl}");
+
+            if (!String.IsNullOrEmpty(overridePath) && isValidControl)
             {
                 overrides[i] = overridePath;
                 MatchUIActions(actionName, overridePath);
@@ -80,13 +88,19 @@ public class Script_PlayerInputManager : MonoBehaviour
         var keyBinds = new Model_KeyBindsData(
             _Interact: overrides[0],
             _Inventory: overrides[1],
-            _MaskEffect: overrides[2]
+            _MaskEffect: overrides[2],
+            _Speed: overrides[3]
         );
 
         string json = JsonUtility.ToJson(keyBinds);
         File.WriteAllText(FilePath, json);
     }
 
+    /// <summary>
+    /// JsonUtility will take care of building the model with the proper fields (e.g. if a player
+    /// changes the Interact field to Interactz, it will skip the value).
+    /// We use GetKeyboardControl to then validate the given path.
+    /// </summary>
     public void Load()
     {
         if(!File.Exists(FilePath))
@@ -99,7 +113,8 @@ public class Script_PlayerInputManager : MonoBehaviour
         {
             keyBinds.Interact,
             keyBinds.Inventory,
-            keyBinds.MaskEffect
+            keyBinds.MaskEffect,
+            keyBinds.Speed
         };
         
         for (var i = 0; i < keyBindsPaths.Count; i++)
@@ -108,7 +123,12 @@ public class Script_PlayerInputManager : MonoBehaviour
             var loadedOverridePath = keyBindsPaths[i];
             InputAction inputAction = playerMap.FindAction(actionName);
 
-            if (!String.IsNullOrEmpty(loadedOverridePath))
+            // Check & validate the control path
+            var isValidControl = GetKeyboardControl(keyBindsPaths[i]) != null;
+            
+            Debug.Log($"GetKeyboardControl: {GetKeyboardControl(keyBindsPaths[0])}, isValidControl: {isValidControl}");
+
+            if (!String.IsNullOrEmpty(loadedOverridePath) && isValidControl)
             {
                 // Apply override to only the very first Control.
                 int controlBindingIndex = GetFirstControlBindingIndex(inputAction);
@@ -167,9 +187,30 @@ public class Script_PlayerInputManager : MonoBehaviour
 
     public static int GetFirstControlBindingIndex(InputAction inputAction) => 
         inputAction.GetBindingIndexForControl(inputAction.controls[0]);
+
+    // Note: only returns the first binding control path.
+    // https://github.com/UnityTechnologies/InputSystem_Warriors/blob/056e74b1701f3bd2f218a34a46d6d2cc1e167a78/InputSystem_Warriors_Project/Assets/Scripts/Behaviours/UI/UIRebindActionBehaviour.cs#L116
+    public string GetHumanReadableBindingPath(string actionName, string actionMap = Const_KeyCodes.PlayerMap)
+    {
+        var inputAction = MyPlayerInput.actions.FindActionMap(actionMap).FindAction(actionName);
+        
+        int controlBindingIndex = inputAction.GetBindingIndexForControl(inputAction.controls[0]);
+        string path = InputControlPath.ToHumanReadableString(
+            inputAction.bindings[controlBindingIndex].effectivePath,
+            InputControlPath.HumanReadableStringOptions.OmitDevice
+        );
+        return path.ToUpper();
+    }
+
+    public InputControl GetKeyboardControl(string path)
+    {
+        var control = InputControlPath.TryFindControl(Keyboard.current, path);
+
+        return control;
+    }
     
     private string FilePath => $"{Script_SaveGameControl.path}/{Script_Utils.KeyRebindsFile()}";
-    
+
     /// <summary>
     /// Note: Can only be called after SettingsController is SetUp.
     /// </summary>
@@ -182,7 +223,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         UpdateKeyBindingUIs();
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [CustomEditor(typeof(Script_PlayerInputManager))]
     public class Script_PlayerInputManagerTester : Editor
     {
