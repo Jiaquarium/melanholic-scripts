@@ -26,7 +26,17 @@ public class Script_DynamicStringBuilder : MonoBehaviour
     {
         Params = new Dictionary<string, string>();
         
-        Params.Add("@@Run",             $"<b>{Script_Game.Game?.Run.dayName.FormatRun() ?? "?"}</b>");
-        Params.Add("@@CycleCount",      $"<b>{Script_Game.Game?.CycleCount.ToString() ?? "?"}</b>");
+        Params.Add("@@Run", $"<b>{Script_Game.Game?.Run.dayName.FormatRun() ?? "?"}</b>");
+        Params.Add("@@CycleCount", $"<b>{Script_Game.Game?.CycleCount.ToString() ?? "?"}</b>");
+        
+        if (Script_PlayerInputManager.Instance != null)
+            Params.Add("@@InventoryKey", $"<b>{Script_PlayerInputManager.Instance.GetHumanReadableBindingPath(Const_KeyCodes.Inventory)}</b>");
+        else
+            Params.Add("@@InventoryKey", $"<b>I</b>");
+        
+        if (Script_PlayerInputManager.Instance != null)
+            Params.Add("@@SpeedKey", $"<b>{Script_PlayerInputManager.Instance.GetHumanReadableBindingPath(Const_KeyCodes.Speed)}</b>");
+        else
+            Params.Add("@@SpeedKey", $"<b>LEFT SHIFT</b>");
     }
 }
