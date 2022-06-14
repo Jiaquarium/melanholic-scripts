@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-01 21:13:28
+// Last created by UI Exporter at 2022-06-11 14:26:26
 
 using System.Collections;
 using System.Collections.Generic;
@@ -276,7 +276,7 @@ public class Script_UIText
     "good-ending_the-end_type",
     new Model_LanguagesUI
     {
-        EN = @"『 GOOD (ENOUGH) ENDING 』"
+        EN = @"『 G̸̟͑O̶̯̒O̵̦͑D̷͍̄ ̷̙̂Ḛ̶̎N̵̘̆D̵͍͑Ì̶̼N̸͗ͅǴ̸͔ 』"
     }
 },
 {
@@ -904,7 +904,7 @@ public class Script_UIText
     "collectible_speed-seal",
     new Model_LanguagesUI
     {
-        EN = @"The spirits within this seal give you haste. Hold {25} to run when you are your former self."
+        EN = @"The spirits within this seal give you haste. Hold @@SpeedKey to run when you are your former self."
     }
 },
 // ------------------------------------------------------------------
@@ -1360,6 +1360,13 @@ public class Script_UIText
     }
 },
 {
+    "controls_speed_name",
+    new Model_LanguagesUI
+    {
+        EN = @"???"
+    }
+},
+{
     "controls_action_switch-active-sticker",
     new Model_LanguagesUI
     {
@@ -1391,7 +1398,56 @@ public class Script_UIText
     "controls_prep_name",
     new Model_LanguagesUI
     {
-        EN = @"Prep / Unprep Mask"
+        EN = @"Inventory Hotkeys"
+    }
+},
+{
+    "controls_button_reset",
+    new Model_LanguagesUI
+    {
+        EN = @"Reset All to Default"
+    }
+},
+{
+    "controls_notify_detecting",
+    new Model_LanguagesUI
+    {
+        EN = @"Detecting input..."
+    }
+},
+{
+    "controls_error_move",
+    new Model_LanguagesUI
+    {
+        EN = @"Cannot overwrite move keys"
+    }
+},
+{
+    "controls_error_taken",
+    new Model_LanguagesUI
+    {
+        EN = @"Key is taken"
+    }
+},
+{
+    "controls_error_system",
+    new Model_LanguagesUI
+    {
+        EN = @"Cannot overwrite menu keys"
+    }
+},
+{
+    "controls_error_other",
+    new Model_LanguagesUI
+    {
+        EN = @"Unknown error"
+    }
+},
+{
+    "controls_prompt_reset",
+    new Model_LanguagesUI
+    {
+        EN = @"All controls will be reset to default. Are you sure?"
     }
 },
 // ------------------------------------------------------------------
@@ -1400,28 +1456,28 @@ public class Script_UIText
     "eileens-mind_myne_challenge_passive",
     new Model_LanguagesUI
     {
-        EN = @"Stop! There is no chance you will make it in time! It’s for your own good."
+        EN = @"S̶t̶o̴p̷!̵ ̸T̴h̴e̶r̷e̷’̴s̷ ̸n̴o̵ ̴c̷h̴a̷n̴c̴e̶ ̸y̸o̷u̶ ̸w̴i̶l̸l̷ ̷m̶a̸k̴e̴ ̷i̴t̷ ̷i̵n̷ ̵t̷i̵m̴e̵!̵ ̶I̷t̵’̶s̵ ̶f̷o̷r̵ ̶y̵o̶u̷r̷ ̴o̶w̴n̷ ̵g̵o̵o̶d̶.̸"
     }
 },
 {
     "eileens-mind_myne_challenge_passive1",
     new Model_LanguagesUI
     {
-        EN = @"You are going to hurt yourself, can you not see?!"
+        EN = @"Y̶o̶u̵’̷r̶e̵ ̸g̵o̷i̶n̶g̵ ̶t̸o̶ ̵h̴u̶r̶t̴ ̴y̶o̵u̴r̵s̸e̸l̵f̷,̶ ̷c̸a̷n̸ ̸y̴o̸u̷ ̵n̶o̷t̶ ̷s̴e̷e̵?̴!̷"
     }
 },
 {
     "eileens-mind_myne_challenge_passive2",
     new Model_LanguagesUI
     {
-        EN = @"You imbecile! Put a stop to this right now!"
+        EN = @"Y̵o̸u̸ ̷i̴m̷b̵e̶c̵i̷l̷e̵!̷ ̸P̶u̴t̸ ̴a̶ ̴s̷t̸o̵p̸ ̴t̷o̴ ̴t̶h̸i̴s̶ ̴r̷i̶g̸h̶t̶ ̷n̸o̸w̵!̶"
     }
 },
 {
     "eileens-mind_myne_challenge_passive3",
     new Model_LanguagesUI
     {
-        EN = @"You will pay for this, mark my words!"
+        EN = @"Y̴o̷u̴ ̷w̵i̴l̵l̴ ̷p̸a̷y̴ ̷f̶o̸r̵ ̴t̵h̷i̸s̴,̸ ̴m̶a̵r̴k̵ ̴m̷y̸ ̵w̴o̵r̵d̴s̸!̵"
     }
 },
 {
@@ -1528,14 +1584,21 @@ public class Script_UIText
     "catwalk2_player_doubts",
     new Model_LanguagesUI
     {
-        EN = @"Have I ever had to care about anyone else?"
+        EN = @"O̷w̷n̶ ̵p̴r̸o̷b̴l̴e̶m̶s̸.̷ ̶O̵w̷n̶ ̷p̸r̵o̸b̵l̸e̶m̶s̸.̴ ̷I̴t̵'̶s̸ ̵M̷y̶ ̷o̴w̵n̴ ̶p̷r̷o̴b̷l̸e̷m̴s̶.̵"
     }
 },
 {
     "catwalk2_player_doubts1",
     new Model_LanguagesUI
     {
-        EN = @"Am I even capable of that?"
+        EN = @"N̵e̴v̸e̷r̵ ̴h̴a̴d̴ ̴t̷o̸ ̸c̵a̷r̵e̵ ̶f̶o̴r̴ ̷a̷n̷y̷o̷n̵e̷ ̴N̶e̸v̷e̴r̷ ̶e̸l̴s̵e̶?̶ ̴Y̵o̷u̴ ̷r̶e̴a̵l̶l̸y̷ ̶t̵h̶i̸n̴k̵ ̵M̵e̴?̴"
+    }
+},
+{
+    "catwalk2_player_doubts2",
+    new Model_LanguagesUI
+    {
+        EN = @"I̸t̶ ̵m̶a̷k̷e̶s̶ ̷m̶e̸ ̶s̶i̸c̸k̷.̶ ̵I̶t̴ ̷m̷a̸k̸e̶s̷ ̶m̵e̷ ̵s̴i̸c̸k̵.̴ ̸I̵t̸ ̶m̴a̸k̷e̵s̷ ̴m̵e̸ ̶s̷i̶c̴k̵.̵"
     }
 },
 // ------------------------------------------------------------------
@@ -1558,7 +1621,7 @@ public class Script_UIText
     "grand-mirror-room_player_welling-up2",
     new Model_LanguagesUI
     {
-        EN = @"A slippery image of a self-portrait..."
+        EN = @"A slippery image of a portrait..."
     }
 },
 {
@@ -1772,7 +1835,14 @@ public class Script_UIText
     "faceoff_ren-myne_quest1_block2_1",
     new Model_LanguagesUI
     {
-        EN = @"You waltz in here, acting as if all this is yours!"
+        EN = @"You waltz in here, making everyone suffer again and again..."
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block2_2",
+    new Model_LanguagesUI
+    {
+        EN = @"They’re just <i><b>your little visits</b></i>, aren’t they?"
     }
 },
 {
