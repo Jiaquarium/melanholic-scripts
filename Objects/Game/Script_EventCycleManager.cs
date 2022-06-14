@@ -106,10 +106,7 @@ public class Script_EventCycleManager : MonoBehaviour
 
     public bool IsIdsHome()
     {
-        return (
-            runsManager.RunCycle == Script_RunsManager.Cycle.Weekday
-            && game.IsRunDay(Script_Run.DayId.wed)
-        );
+        return runsManager.RunCycle == Script_RunsManager.Cycle.Weekday;
     }
     
     // ------------------------------------------------------------------

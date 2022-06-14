@@ -240,6 +240,9 @@ public class Script_Game : MonoBehaviour
         get => runsManager.CycleCount;
     }
 
+    public bool IsFirstMonday { get => CycleCount == 0 && Run.dayId == Script_Run.DayId.mon; }
+    public bool IsFirstTuesday { get => CycleCount == 0 && Run.dayId == Script_Run.DayId.tue; }
+
     // ------------------------------------------------------------------
     // Tilemap Properties
     public Tilemap TileMap

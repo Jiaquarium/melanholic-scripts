@@ -80,26 +80,26 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         }
     }
     
-    // After Map Notification, Ids should lead the way on Tutorial Run.
+    // After Map Notification, Ids should lead the way until Player gets Animal Within mask
+    // (by completing Ellenia's quest)
     private void HandlePlayIdsTimeline()
     {
         if (ShouldPlayIdsIntro())
         {
             game.ChangeStateCutScene();
             
-            if (Script_EventCycleManager.Control.IsLastElevatorTutorialRun())
-                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
-            else if (Script_EventCycleManager.Control.IsIdsRoomIntroDay())
+            // Ids should lead you to his room (wrong way) on the First Tuesday to get Player acquainted with mansion.
+            // Afterwards, he leads you on the critical path.
+            if (game.IsFirstTuesday || game.ElleniasRoomBehavior.isPuzzleComplete)
                 GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 1);
+            else
+                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
         }
     }
-    
+
     private bool ShouldPlayIdsIntro()
     {
-        return !didIdsRun && (
-            Script_EventCycleManager.Control.IsLastElevatorTutorialRun()
-            || Script_EventCycleManager.Control.IsIdsRoomIntroDay()
-        );
+        return !didIdsRun && game.RunCycle == Script_RunsManager.Cycle.Weekday; 
     }
 
     public override void Setup()

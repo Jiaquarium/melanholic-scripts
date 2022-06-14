@@ -113,7 +113,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
                 HandleSnowReaction(beforeSnowReactionWaitTime);
         }
     }
-    
+
+    /// <summary>
+    /// Always give hint to find the fireplace if didn't finish Lantern quest.
+    /// </summary>
     private bool HandleSnowReaction(float pauseTime)
     {
         if (didSnowReaction || CatWalkBehavior.didPickUpLightSticker)

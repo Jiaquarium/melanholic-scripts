@@ -620,6 +620,25 @@ public class Dev_GameHelper : MonoBehaviour
                     t.SaveCurrent();
                 }
 
+                if (GUILayout.Button("Increment Day (via Last Elevator)"))
+                {
+                    Script_Game game = Script_Game.Game;
+                    
+                    Model_Exit exitData = new Model_Exit(
+                        game.level,
+                        game.GetPlayer().transform.position,
+                        game.GetPlayer().FacingDirection
+                    );
+                    
+                    game.ElevatorCloseDoorsCutScene(
+                        null,
+                        null,
+                        Script_Elevator.Types.Last,
+                        exitData,
+                        Script_Exits.ExitType.SaveAndRestartOnLevel
+                    );
+                }
+
                 if (GUILayout.Button("Last Elevator Before Grand Mirror"))
                 {
                     t.BeforeGrandMirror();

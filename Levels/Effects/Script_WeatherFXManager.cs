@@ -12,7 +12,7 @@ public class Script_WeatherFXManager : MonoBehaviour
 
     public bool IsSnowDay
     {
-        get => game.Run.dayId == SnowDayId;
+        get => game.RunCycle == Script_RunsManager.Cycle.Weekend;
     }
     
     public void SnowDayEffect()

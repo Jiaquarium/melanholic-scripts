@@ -48,9 +48,6 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     private bool didIdsRun;
 
-    private bool IsFirstMonday { get => game.CycleCount == 0 && game.Run.dayId == Script_Run.DayId.mon; }
-    private bool IsFirstTuesday { get => game.CycleCount == 0 && game.Run.dayId == Script_Run.DayId.tue; }
-
     private void Start()
     {
         Debug.Log($"{name} didStartThought: {didStartThought}");
@@ -167,7 +164,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     public void PlayIdsWoodsRunDay2Timeline()
     {
         // On Day 2 Tues, Ids approaches Rin from behind
-        if (IsFirstTuesday)
+        if (game.IsFirstTuesday)
         {
             game.ChangeStateCutScene();
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 2);
@@ -214,7 +211,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         {
             game.ChangeStateCutScene();
 
-            if (IsFirstMonday)
+            if (game.IsFirstMonday)
                 StartCoroutine(WaitForIdsDialogue());
             else
                 PlayIdsDay1RunTimeline();
@@ -232,10 +229,9 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     private bool ShouldPlayIdsIntro()
     {
-        return !didIdsRun && (
-            Script_EventCycleManager.Control.IsIdsRoomIntroDay()
-            || Script_EventCycleManager.Control.IsLastElevatorTutorialRun()
-        );
+        return !didIdsRun
+            && game.RunCycle == Script_RunsManager.Cycle.Weekday
+            && !game.IsFirstTuesday;
     }
 
     public override void Setup()
@@ -245,7 +241,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         Ids.gameObject.SetActive(ShouldPlayIdsIntro());
         
         IdsDay2.gameObject.SetActive(false);
-        IdsRun2Trigger.gameObject.SetActive(IsFirstTuesday);
+        IdsRun2Trigger.gameObject.SetActive(game.IsFirstTuesday);
         
         defaultTrees.gameObject.SetActive(true);
         finalTrees.gameObject.SetActive(false);
