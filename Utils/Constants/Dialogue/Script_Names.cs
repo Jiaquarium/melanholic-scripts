@@ -128,7 +128,7 @@ public class Script_Names: MonoBehaviour
     public const string HeartsCapacity                  = "<b>Hearts Capacity</b>";             // {46}
     public const string Vx                              = "<b>Vx</b>";                          // {47}
     public const string Dan                             = "<b>dan</b>";                         // {48}
-    public const string T611am                          = "<b>6:11 a.m.</b>";                   // {49}
+    public const string T600am                          = "<b>6:00 a.m.</b>";                   // {49}
     public const string Mon                             = "<b>Monday</b>";                      // {50}
     public const string Tue                             = "<b>Tuesday</b>";                     // {51}
     public const string Wed                             = "<b>Wednesday</b>";                   // {52}

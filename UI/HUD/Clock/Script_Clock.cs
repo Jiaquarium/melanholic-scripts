@@ -21,11 +21,11 @@ public class Script_Clock : MonoBehaviour
         Danger = 3
     }
 
-    public const float StartTime        = 18660f; // 5:11:00
-    public const float AwareTime        = 20460f; // 5:41:00 half game time is passed, 30 min (6 min IRL)
-    public const float WarningTime      = 21360f; // 5:56:00 15 min left (3 min IRL)
-    public const float DangerTime       = 22200f; // 6:06:00 5 min left (1 min IRL)
-    public const float EndTime          = 22260f; // 6:11:00 Nautical Dawn Chicago, IL Jan 1 2021
+    public const float StartTime        = 18000f; // 5:00:00
+    public const float AwareTime        = StartTime + 1800f; // 30 min game time passed, 30 min left (6 min IRL)
+    public const float WarningTime      = StartTime + 2700f; // 45 min game time passed, 15 min left (3 min IRL)
+    public const float DangerTime       = StartTime + 3300f; // 55 min game time passed, 5 min left (1 min IRL)
+    public const float EndTime          = StartTime + 3600f; // 60 min game time passed, "Nautical Dawn" Chicago Jan 1 is 6:11am, roughly 6:00am
     public static float TimeMultiplier  = 5f;
     public static float TotalTime       = EndTime - StartTime;
     

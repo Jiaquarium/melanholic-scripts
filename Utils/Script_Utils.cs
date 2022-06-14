@@ -294,7 +294,7 @@ public static class Script_Utils
             Script_Names.HeartsCapacity,                // {46}
             Script_Names.Vx,                            // {47}
             Script_Names.Dan,                           // {48}
-            Script_Names.T611am,                        // {49}
+            Script_Names.T600am,                        // {49}
             Script_Names.Mon,                           // {50}
             Script_Names.Tue,                           // {51}
             Script_Names.Wed,                           // {52}
