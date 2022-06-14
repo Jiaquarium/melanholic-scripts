@@ -128,22 +128,22 @@ public class Script_PlayerAction : MonoBehaviour
     
     private void HandleStickerSwitch(Directions facingDirection, Vector3 location)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Effect1))
+        if (player.MyPlayerInput.actions[Const_KeyCodes.Effect1].WasPressedThisFrame())
         {
             Debug.Log($"Switch to {Const_KeyCodes.Effect1}");
             stickerEffectsController.Switch(0);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect2))
+        else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect2].WasPressedThisFrame())
         {
             Debug.Log($"Switch to {Const_KeyCodes.Effect2}");
             stickerEffectsController.Switch(1);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect3))
+        else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect3].WasPressedThisFrame())
         {
             Debug.Log($"Switch to {Const_KeyCodes.Effect3}");
             stickerEffectsController.Switch(2);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect4))
+        else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect4].WasPressedThisFrame())
         {
             Debug.Log($"Switch to {Const_KeyCodes.Effect4}");
             stickerEffectsController.Switch(3);

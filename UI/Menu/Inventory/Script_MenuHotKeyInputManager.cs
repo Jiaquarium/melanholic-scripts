@@ -8,47 +8,49 @@ public class Script_MenuHotKeyInputManager : MonoBehaviour
     
     public void OnHotkey(Script_MenuController.InventoryStates state, int slotIndex)
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Effect1))
+        var playerInput = Script_PlayerInputManager.Instance;
+        
+        if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect1].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 1; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect1, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect2))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect2].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 2; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect2, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect3))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect3].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 3; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect3, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect4))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect4].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 4; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect4, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect5))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect5].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 5; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect5, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect6))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect6].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 6; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect6, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect7))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect7].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 7; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect7, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect8))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect8].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 8; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect8, state, slotIndex);
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Effect9))
+        else if (playerInput.MyPlayerInput.actions[Const_KeyCodes.Effect9].WasPressedThisFrame())
         {
             Debug.Log($"Hot Key 9; slotIndex: {slotIndex}; state: {state}");
             HandleHotKey(Const_KeyCodes.Effect9, state, slotIndex);
