@@ -34,6 +34,7 @@ public class Script_EventCycleManager : MonoBehaviour
     [SerializeField] private Script_LevelBehavior_27 LastElevator;
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_RunsManager runsManager;
+    [SerializeField] private Script_ClockManager clockManager;
 
     [SerializeField] private bool didInteractPositivelyWithIdsToday = false;
 
@@ -112,19 +113,10 @@ public class Script_EventCycleManager : MonoBehaviour
     // ------------------------------------------------------------------
     // Weekend Cycle Event Conditions
     
-    // If didn't talk to Ids on Day 1 Weekend (Thu), he will be in Sanctuary.
-    public bool IsIdsInSanctuary()
-    {
-        return (game.IsRunDay(Script_Run.DayId.fri) || game.IsRunDay(Script_Run.DayId.sat))
-            && !didInteractPositivelyWithIds;
-    }
+    public bool IsIdsInSanctuary() => clockManager.ClockTime >= Script_Clock.R2CursedTime
+            && clockManager.ClockTime < Script_Clock.R2IdsDeadTime;
 
-    // If didn't talk to Ids by Day 3 Weekend (Sat), he will be dead (i.e. didn't talk to him on
-    // Day 1 and then didn't find him in the Sanctuary Day 2).
-    public bool IsIdsDead()
-    {
-        return game.IsRunDay(Script_Run.DayId.sat) && IdsPositiveInteractionCount == 0;
-    }
+    public bool IsIdsDead() => clockManager.ClockTime >= Script_Clock.R2IdsDeadTime;
     
     // Check if not the same day we talked with Ellenia and is still active count down.
     // Must talk with Ellenia on previous day for her to ask about her painting.

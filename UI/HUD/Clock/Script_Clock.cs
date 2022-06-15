@@ -28,6 +28,9 @@ public class Script_Clock : MonoBehaviour
     public const float EndTime          = StartTime + 3600f; // 60 min game time passed, "Nautical Dawn" Chicago Jan 1 is 6:11am, roughly 6:00am
     public static float TimeMultiplier  = 5f;
     public static float TotalTime       = EndTime - StartTime;
+
+    public const float R2CursedTime     = StartTime + 600f; // 10 min game time passed
+    public const float R2IdsDeadTime    = StartTime + 2100f; // 35 min game time passed
     
     [SerializeField] private float currentTime;
     

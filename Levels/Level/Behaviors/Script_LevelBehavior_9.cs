@@ -14,7 +14,10 @@ using UnityEngine;
 public class Script_LevelBehavior_9 : Script_LevelBehavior
 {
     public Script_ProximitySpeaker speaker; // to be set by code
+    [SerializeField] private float speakerFadeOutTime;
+    
     [Space]
+    
     [SerializeField] private float speakerDistance;
     [SerializeField] private Script_ProximitySpeaker speakerPrefab;
     [SerializeField] private Script_Marker speakerLoc;
@@ -23,10 +26,30 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     [SerializeField] private Script_TileMapExitEntrance exitToIdsRoom;
 
     [SerializeField] private Script_LevelBehavior_10 IdsRoom;
+
+    private bool didFadeOutSpeaker;
     
     void Awake()
     {
         speaker = null; // needs to be null so we can instantiate a global speaker
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        
+        var eventCycleManager = Script_EventCycleManager.Control;
+        
+        if (
+            speaker != null
+            && speaker.gameObject.activeInHierarchy
+            && (eventCycleManager.IsIdsInSanctuary() || eventCycleManager.IsIdsDead())
+            && !didFadeOutSpeaker
+        )
+        {
+            speaker.GetComponent<Script_AudioSourceFader>().FadeOut(speakerFadeOutTime);
+            didFadeOutSpeaker = true;
+        }
     }
     
     void HandleSpeakerRegen()
@@ -43,6 +66,7 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
             speaker.MaxDistance = speakerDistance;
             
             speaker.audioSource.clip = Script_BackgroundMusicManager.Control.GetClip(IdsRoom.BGMIdx);
+
             if (!speaker.audioSource.isPlaying)
                 speaker.audioSource.Play();
         }
@@ -50,13 +74,12 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     
     public override void Setup()
     {
-        HandleSpeakerRegen();
-        
+        if (!didFadeOutSpeaker)
+            HandleSpeakerRegen();
+
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
         {
-            // Disable exit and show Ids note if not Wed (last day) on Weekday Cycle.
-            if (Script_EventCycleManager.Control.IsIdsHome())   HandleIdsHome();
-            else                                                HandleIdsNotHomeLocked();
+            HandleIdsHome();
         }
         else
         {
@@ -74,25 +97,33 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
             }
         }
 
+        /// <summary>
+        /// Note: if Player finished DDR quest, then no BGM.
+        /// </summary>
         void HandleIdsHome()
         {
             exitToIdsRoom.IsDisabled = false;
             IdsNote.gameObject.SetActive(false);
-            speaker.gameObject.SetActive(true);
-        }
+            
+            var eventCycleManager = Script_EventCycleManager.Control;
+            var isSpeakerOn = !IdsRoom.isCurrentPuzzleComplete
+                && !eventCycleManager.IsIdsInSanctuary()
+                && !eventCycleManager.IsIdsDead();
 
-        void HandleIdsNotHomeLocked()
-        {
-            exitToIdsRoom.IsDisabled = true;
-            IdsNote.gameObject.SetActive(true);
-            speaker.gameObject.SetActive(false);
+            speaker.gameObject.SetActive(isSpeakerOn);
         }
 
         void HandleIdsNotHomeNotLocked()
         {
             exitToIdsRoom.IsDisabled = false;
             IdsNote.gameObject.SetActive(false);
-            speaker.gameObject.SetActive(false);
+            
+            var eventCycleManager = Script_EventCycleManager.Control;
+            var isSpeakerOn = !IdsRoom.isCurrentPuzzleComplete
+                && !eventCycleManager.IsIdsInSanctuary()
+                && !eventCycleManager.IsIdsDead();
+
+            speaker.gameObject.SetActive(isSpeakerOn);
         }
     }
 }

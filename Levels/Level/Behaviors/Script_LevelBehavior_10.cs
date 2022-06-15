@@ -27,9 +27,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public enum DialogueState
     {
-        WeekendDay0 = 0,
-        WeekendDay1 = 1,
-        WeekendDay2 = 2,
+        Weekend = 0,
         Weekday = 9,
     }
     
@@ -814,37 +812,37 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             return;
         }
         
-        int day = (int)dialogueState;
-        dm.StartDialogueNode(weekendIdsCutSceneDialogues[day]);
+        dm.StartDialogueNode(weekendIdsCutSceneDialogues[0]);
     }
 
+    // Note: ARCHIVE, used previously for leaving on 3-day cycle first 2 days.
     public void OnWeekendIdsExitsRoomTimelineDone()
     {
-        Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+        // Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
         
-        // LB9 Persisting Speaker will have been destroyed at this point because HandlePauseMusic
-        // will have destroyed the speaker at the beginning on the cut scene.
-        if (lb9.speaker == null)
-            game.SwitchBgMusic(BGMIdx);
+        // // LB9 Persisting Speaker will have been destroyed at this point because HandlePauseMusic
+        // // will have destroyed the speaker at the beginning on the cut scene.
+        // if (lb9.speaker == null)
+        //     game.SwitchBgMusic(BGMIdx);
         
-        Script_BackgroundMusicManager.Control.FadeInMed(null, Const_AudioMixerParams.ExposedBGVolume);
+        // Script_BackgroundMusicManager.Control.FadeInMed(null, Const_AudioMixerParams.ExposedBGVolume);
         
-        StartCoroutine(WaitToCloseFrame());
+        // StartCoroutine(WaitToCloseFrame());
 
-        IEnumerator WaitToCloseFrame()
-        {
-            yield return new WaitForSeconds(waitAfterWeekendDialogueTime);
+        // IEnumerator WaitToCloseFrame()
+        // {
+        //     yield return new WaitForSeconds(waitAfterWeekendDialogueTime);
 
-            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
-                isOpen: false,
-                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
-                cb: () => {
-                    game.ChangeStateInteract();
-                    didIdsLeaveWeekend = true;
-                    timelinesDoneCount++;
-                }
-            );
-        }
+        //     Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+        //         isOpen: false,
+        //         framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+        //         cb: () => {
+        //             game.ChangeStateInteract();
+        //             didIdsLeaveWeekend = true;
+        //             timelinesDoneCount++;
+        //         }
+        //     );
+        // }
     }
 
     // ------------------------------------------------------------------------------------
@@ -1268,34 +1266,31 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         }
         else
         {
-            if (didIdsLeaveWeekend)
+            // Completed DDR quest Weekend
+            if (isCurrentPuzzleComplete)
             {
-                Ids.gameObject.SetActive(false);
+                HandleDDRDone();
                 return;
             }
             
-            // Sat: If didn't talk to Ids at all, he'll be dead
+            // If haven't completed DDR quest, and past 5:XXam, then Ids
+            // will be dead.
             if (Script_EventCycleManager.Control.IsIdsDead())
                 HandleIdsDead();
-            // Fri: If Thu didn't talk to Ids, he'll be in Rock Garden
+            // If haven't completed DDR quest, and past 5:XXam, then Ids
+            // will be in Rock Garden.
             else if (Script_EventCycleManager.Control.IsIdsInSanctuary())
                 HandleIdsNotHome();
-            // Thu: Ids is home
-            // If didn't talk on Thu, but found him in Rock Garden on Fri, he'll
-            // be home on Sat.
             else
                 HandleIdsHome();
         }
 
         void HandleIdsHome()
         {
-            // Ids note only appears when he's not home on Weekend Day 2.
             IdsLeaveMeBeNote.gameObject.SetActive(false);
-
-            // Ids only dies if not talked to by Weekend Day 3.
             DeadIds.gameObject.SetActive(false);
-            
             Ids.gameObject.SetActive(true);
+
             treasureChest.gameObject.SetActive(true);
             
             foreach (Script_Trigger t in triggers)
@@ -1306,13 +1301,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         {
             Script_BackgroundMusicManager.Control.Stop();
             
-            // Ids leaves note when he's not home on Weekend Day 2.
             IdsLeaveMeBeNote.gameObject.SetActive(true);
-
-            // Ids only dies if not talked to by Weekend Day 3.
             DeadIds.gameObject.SetActive(false);
-
             Ids.gameObject.SetActive(false);
+
+            treasureChest.gameObject.SetActive(true);
             
             foreach (Script_Trigger t in triggers)
                 t.gameObject.SetActive(false);
@@ -1322,13 +1315,25 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         {
             Script_BackgroundMusicManager.Control.Stop();
             
-            // Ids note only appears when he's not home on Weekend Day 2.
             IdsLeaveMeBeNote.gameObject.SetActive(false);
-
-            // Ids dies since not talked to by Weekend Day 3.
             DeadIds.gameObject.SetActive(true);
-
             Ids.gameObject.SetActive(false);
+
+            treasureChest.gameObject.SetActive(true);
+            
+            foreach (Script_Trigger t in triggers)
+                t.gameObject.SetActive(false);
+        }
+
+        void HandleDDRDone()
+        {
+            Script_BackgroundMusicManager.Control.Stop();
+            
+            IdsLeaveMeBeNote.gameObject.SetActive(false);
+            DeadIds.gameObject.SetActive(false);
+            Ids.gameObject.SetActive(false);
+
+            treasureChest.gameObject.SetActive(true);
             
             foreach (Script_Trigger t in triggers)
                 t.gameObject.SetActive(false);
@@ -1357,6 +1362,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         Ids.UpdateLocation();
     }
 
+    /// <summary>
+    /// Call this from Timeline to opt out of Cycle set up (e.g. Final Awakening).
+    /// </summary>
     private void BaseSetup()
     {
         if (!isInitialized)
@@ -1397,11 +1405,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     /// </summary>
     public void InitializeBGMOnRun()
     {
-        bool isWeekday = game.RunCycle == Script_RunsManager.Cycle.Weekday;
-        bool isWeekendIdsDanceDay = Script_EventCycleManager.Control.IdsPositiveInteractionCount >= 2
-            && game.Run.dayId == Script_Run.DayId.sat;
+        // bool isWeekday = game.RunCycle == Script_RunsManager.Cycle.Weekday;
+        // bool isWeekendIdsDanceDay = game.RunCycle == Script_RunsManager.Cycle.Weekend
+        //     && !Script_EventCycleManager.Control.IsIdsInSanctuary()
+        //     && !Script_EventCycleManager.Control.IsIdsDead();
 
-        BGMIdx = isWeekday || isWeekendIdsDanceDay ? clubMusicIdx : sadIdsThemeIdx;
+        BGMIdx = clubMusicIdx;
     }
 
     public override void Setup()
@@ -1421,7 +1430,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
                 dialogueState = DialogueState.Weekday;
             else
-                dialogueState = (DialogueState)(Mathf.Clamp(Script_EventCycleManager.Control.IdsPositiveInteractionCount, 0, 2));
+                dialogueState = DialogueState.Weekend;
         }
     }
     

@@ -140,6 +140,16 @@ public class Script_ClockManager : MonoBehaviour
     {
         clock.CurrentTime = Script_Clock.AwareTime;
     }
+
+    public void R2CursedTime()
+    {
+        clock.CurrentTime = Script_Clock.R2CursedTime;
+    }
+
+    public void R2IdsDeadTime()
+    {
+        clock.CurrentTime = Script_Clock.R2IdsDeadTime;
+    }
 }
 
 #if UNITY_EDITOR
@@ -150,24 +160,34 @@ public class Script_ClockManagerTester : Editor
         DrawDefaultInspector();
 
         Script_ClockManager t = (Script_ClockManager)target;
-        if (GUILayout.Button("TimesUp()"))
+        if (GUILayout.Button("Times Up"))
         {
             t.TimesUp();
         }
 
-        if (GUILayout.Button("AwareTime()"))
+        if (GUILayout.Button("Aware Time"))
         {
             t.AwareTime();
         }
 
-        if (GUILayout.Button("WarningTime()"))
+        if (GUILayout.Button("Warning Time"))
         {
             t.WarningTime();
         }
         
-        if (GUILayout.Button("DangerTime()"))
+        if (GUILayout.Button("Danger Time"))
         {
             t.DangerTime();
+        }
+
+        if (GUILayout.Button("R2 Cursed Time"))
+        {
+            t.R2CursedTime();
+        }
+
+        if (GUILayout.Button("R2 Ids Dead Time"))
+        {
+            t.R2IdsDeadTime();
         }
     }
 }

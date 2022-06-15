@@ -77,17 +77,9 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
             else                            puppeteerSticker.gameObject.SetActive(true);
         }
 
-        // Returning to the same room after talking to Ids, he will be gone.
-        if (Script_EventCycleManager.Control.DidInteractPositivelyWithIdsToday)
-        {
-            Ids.gameObject.SetActive(false);
-        }
+        if (Script_EventCycleManager.Control.IsIdsInSanctuary())
+            Ids.gameObject.SetActive(true);
         else
-        {
-            if (Script_EventCycleManager.Control.IsIdsInSanctuary())
-                Ids.gameObject.SetActive(true);
-            else
-                Ids.gameObject.SetActive(false);
-        }
+            Ids.gameObject.SetActive(false);
     }
 }
