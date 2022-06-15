@@ -113,10 +113,12 @@ public class Script_EventCycleManager : MonoBehaviour
     // ------------------------------------------------------------------
     // Weekend Cycle Event Conditions
     
-    public bool IsIdsInSanctuary() => clockManager.ClockTime >= Script_Clock.R2CursedTime
-            && clockManager.ClockTime < Script_Clock.R2IdsDeadTime;
+    public bool IsIdsInSanctuary() => game.RunCycle == Script_RunsManager.Cycle.Weekend
+        && clockManager.ClockTime >= Script_Clock.R2CursedTime
+        && clockManager.ClockTime < Script_Clock.R2IdsDeadTime;
 
-    public bool IsIdsDead() => clockManager.ClockTime >= Script_Clock.R2IdsDeadTime;
+    public bool IsIdsDead() => game.RunCycle == Script_RunsManager.Cycle.Weekend
+        && clockManager.ClockTime >= Script_Clock.R2IdsDeadTime;
     
     // Check if not the same day we talked with Ellenia and is still active count down.
     // Must talk with Ellenia on previous day for her to ask about her painting.
@@ -128,13 +130,9 @@ public class Script_EventCycleManager : MonoBehaviour
         return !isSameDayTalked && isTalkedActive;
     }
 
-    // If it's Day 3 and you didn't talk on previous day, then Ellenia will be hurt.
-    public bool IsElleniaHurt()
-    {
-        Debug.Log($"didTalkToElleniaCountdown {didTalkToElleniaCountdown}");
-        
-        return game.IsRunDay(Script_Run.DayId.sat) && didTalkToElleniaCountdown == 0;
-    }
+    // If it's past 5:10 Ellenia will be Hurt
+    public bool IsElleniaHurt() => game.RunCycle == Script_RunsManager.Cycle.Weekend
+        && clockManager.ClockTime >= Script_Clock.R2CursedTime;
 
     // ------------------------------------------------------------------
     // Weekend Handlers

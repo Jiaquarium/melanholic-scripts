@@ -631,7 +631,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             ElleniaHurt.gameObject.SetActive(true);
             Ellenia.gameObject.SetActive(false);
 
-            easle.gameObject.SetActive(false);
+            easle.gameObject.SetActive(true);
             easleYellAtPlayerIOText.gameObject.SetActive(false);
             easleFullArt.gameObject.SetActive(false);
 
@@ -677,22 +677,18 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             // No Intro here at all because already done in Weekday cycle, so need Dialogue States.
             if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
             {
-                if (Script_EventCycleManager.Control.IsElleniaComfortable() || isElleniaComfortableCurrentRun)
+                if (!isShortPrompt)
                 {
                     Ellenia.SwitchPsychicNodes(weekendTalkedElleniaPsychicNodes);
+                    Ellenia.SwitchTalkedPsychicNodes(weekendTalkedElleniaTalkedStatePsychicNodes);
                     isElleniaComfortableCurrentRun = true;
+
+                    Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.None;
                 }
                 else
                 {
-                    Ellenia.SwitchPsychicNodes(weekendDidntTalkElleniaPsychicNodes);
+                    Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
                 }
-
-                Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.None;
-
-                // Give new Talked Nodes for Weekend Cycle
-                // Ellenia will always go through weekendTalkedElleniaPsychicNodes unlike Weekday cycle,
-                // where it is necessary to skip the intro Nodes to save time.
-                Ellenia.SwitchTalkedPsychicNodes(weekendTalkedElleniaTalkedStatePsychicNodes);
             }
             // On Weekday: Skip Ellenia's intro if already done.
             else if (spokenWithEllenia)

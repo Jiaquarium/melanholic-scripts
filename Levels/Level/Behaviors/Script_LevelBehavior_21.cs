@@ -228,7 +228,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             
             // We need to set a new password, since the talked nodes don't call the password
             // set function and we are not saving the password from run to run
-            if (LB26.isPuzzleComplete)  OnElleniaPassword(); 
+            if (LB26.isPuzzleComplete)
+                OnElleniaPassword(); 
 
             // Eileen Ellenia Hurt Event Cycle.
             if (game.RunCycle == Script_RunsManager.Cycle.Weekend)

@@ -37,18 +37,21 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     protected override void Update()
     {
         base.Update();
-        
-        var eventCycleManager = Script_EventCycleManager.Control;
-        
-        if (
-            speaker != null
-            && speaker.gameObject.activeInHierarchy
-            && (eventCycleManager.IsIdsInSanctuary() || eventCycleManager.IsIdsDead())
-            && !didFadeOutSpeaker
-        )
+
+        if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
         {
-            speaker.GetComponent<Script_AudioSourceFader>().FadeOut(speakerFadeOutTime);
-            didFadeOutSpeaker = true;
+            var eventCycleManager = Script_EventCycleManager.Control;
+            
+            if (
+                speaker != null
+                && speaker.gameObject.activeInHierarchy
+                && (eventCycleManager.IsIdsInSanctuary() || eventCycleManager.IsIdsDead())
+                && !didFadeOutSpeaker
+            )
+            {
+                speaker.GetComponent<Script_AudioSourceFader>().FadeOut(speakerFadeOutTime);
+                didFadeOutSpeaker = true;
+            }
         }
     }
     
@@ -76,6 +79,8 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     {
         if (!didFadeOutSpeaker)
             HandleSpeakerRegen();
+        
+        HandleSpeaker();
 
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
         {
@@ -104,24 +109,25 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
         {
             exitToIdsRoom.IsDisabled = false;
             IdsNote.gameObject.SetActive(false);
-            
-            var eventCycleManager = Script_EventCycleManager.Control;
-            var isSpeakerOn = !IdsRoom.isCurrentPuzzleComplete
-                && !eventCycleManager.IsIdsInSanctuary()
-                && !eventCycleManager.IsIdsDead();
-
-            speaker.gameObject.SetActive(isSpeakerOn);
         }
 
         void HandleIdsNotHomeNotLocked()
         {
             exitToIdsRoom.IsDisabled = false;
             IdsNote.gameObject.SetActive(false);
-            
+        }
+
+        void HandleSpeaker()
+        {
             var eventCycleManager = Script_EventCycleManager.Control;
-            var isSpeakerOn = !IdsRoom.isCurrentPuzzleComplete
+            
+            var isSpeakerOnWeekday = !IdsRoom.isCurrentPuzzleComplete;
+            var isSpeakerOnWeekend = !IdsRoom.isCurrentPuzzleComplete
                 && !eventCycleManager.IsIdsInSanctuary()
                 && !eventCycleManager.IsIdsDead();
+            
+            var isSpeakerOn = game.RunCycle == Script_RunsManager.Cycle.Weekend ?
+                isSpeakerOnWeekend : isSpeakerOnWeekday;
 
             speaker.gameObject.SetActive(isSpeakerOn);
         }
