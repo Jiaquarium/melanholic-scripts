@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-15 22:36:08
+// Last created by UI Exporter at 2022-06-16 11:07:01
 
 using System.Collections;
 using System.Collections.Generic;
@@ -881,7 +881,7 @@ public class Script_UIText
     "usable_super-small-key",
     new Model_LanguagesUI
     {
-        EN = @"A @@SuperSmallKey."
+        EN = @"A̸ @@SuperSmallKey s̸p̷e̵c̷i̵f̵i̶c̸a̴l̸l̸y̴ ̶m̴a̴d̷e̴ ̵f̴o̸r̷ ̶r̸e̶g̸u̵l̶a̶r̷ ̸s̷i̸z̸e̴d̴ ̶k̶e̶y̶h̵o̷l̶e̷s̶.̷"
     }
 },
 // ------------------------------------------------------------------
@@ -897,7 +897,7 @@ public class Script_UIText
     "collectible_last-spell-recipe-book",
     new Model_LanguagesUI
     {
-        EN = @"Does there have to be a last one?"
+        EN = @"D̴o̷e̶s̴ ̷t̷h̶e̷r̸e̴ ̸h̸a̵v̷e̷ ̴t̶o̴ ̸b̵e̴ ̸a̵ ̶l̵a̵s̸t̶ ̴o̷n̵e̸?̵"
     }
 },
 {
