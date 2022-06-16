@@ -20,6 +20,12 @@ public class Script_ClockManager : MonoBehaviour
     
     [SerializeField] private Script_Game game;
     
+    // Delay before clock on Sunday starts blinking. This is to build
+    // some suspense, and bc we're using an external clock, we need to
+    // standardize when we start so the blink always starts the same visually
+    // (e.g. not cutting to a blink right when canvas fades in)
+    [SerializeField] private float delayBeforeClockBlinkSunday;
+    
     private bool didFireDoneEvent;
     private bool didSetSunEndTime;
     
@@ -50,6 +56,8 @@ public class Script_ClockManager : MonoBehaviour
     }
 
     public bool DidSetSunEndTime { get => didSetSunEndTime; }
+
+    public float DelayBeforeClockBlinkSunday { get => delayBeforeClockBlinkSunday; }
 
     void Update()
     {

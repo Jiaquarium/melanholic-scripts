@@ -43,6 +43,10 @@ public class Script_Clock : MonoBehaviour
 
     [SerializeField] private Script_ClockManager clockManager;
     
+    private float sundayTimer;
+    private float sundayClockStartBlinkingTimeStamp;
+    private bool isSundayClockStartBlinkingTimeStampSet;
+    
     private float blinkTimer; // Dev
     private bool lastHideColons; // Dev
     
@@ -71,6 +75,11 @@ public class Script_Clock : MonoBehaviour
     public TimeStates TimeState
     {
         get => timeState;
+    }
+    
+    void Start()
+    {
+        sundayTimer = clockManager.DelayBeforeClockBlinkSunday;
     }
     
     // Update is called once per frame
@@ -106,7 +115,20 @@ public class Script_Clock : MonoBehaviour
                 break;
             }
         }
-        
+
+        if (clockManager.DidSetSunEndTime && !isSundayClockStartBlinkingTimeStampSet)
+        {
+            sundayTimer -= Time.deltaTime;
+            
+            if (sundayTimer <= 0)
+            {
+                sundayTimer = 0f;
+                
+                sundayClockStartBlinkingTimeStamp = Time.time;
+                isSundayClockStartBlinkingTimeStampSet = true;
+            }
+        }
+
         DisplayTime(clockManager.DidSetSunEndTime);
     }
 
@@ -137,7 +159,10 @@ public class Script_Clock : MonoBehaviour
         // On Sunday, with normal time, blink every half second.
         if (clockManager.DidSetSunEndTime)
         {
-            hideColons = (int)Mathf.Floor((Time.time * 2)) % 2 == 0;
+            var isSundayBlinking = sundayTimer <= 0f;
+            var normalizedTime = Time.time - sundayClockStartBlinkingTimeStamp;
+            hideColons = isSundayBlinking
+                && (int)Mathf.Floor(normalizedTime * 2) % 2 == 0;
         }
         else
         {
