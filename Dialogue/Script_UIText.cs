@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-15 15:43:25
+// Last created by UI Exporter at 2022-06-15 22:36:08
 
 using System.Collections;
 using System.Collections.Generic;
@@ -945,7 +945,7 @@ public class Script_UIText
     "notes_ids_not-home",
     new Model_LanguagesUI
     {
-        EN = @"Hiya!<br><br>If you’re reading this that means I’m out dancin’ <b>today</b>. You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!"
+        EN = @"Hiya!<br><br>If you’re reading this I’m most likely dancin’ this very moment. Care to join? You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!"
     }
 },
 {
