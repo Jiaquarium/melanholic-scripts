@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,6 +19,11 @@ public class Script_RunsManager : MonoBehaviour
         Weekday = 1,
         Sunday = 2
     }
+
+    private const string SaveFileDayNameSatId = "save-file_day-name_sat";
+    private const string SaveFileDayNameSatR2Id = "save-file_day-name_sat_R2";
+    private const string SaveFileDayNameSunId = "save-file_day-name_sun";
+
     
     [SerializeField] private Script_Run.DayId _startDay;
     [SerializeField] private Script_Run.DayId _weekendStartDay;
@@ -142,6 +148,18 @@ public class Script_RunsManager : MonoBehaviour
         RunIdx = GetRunIdxByDayId(dayId);
         RunCycle = GetCycleByRunIds(RunIdx);
     }
+
+    public string GetPlayerDisplayDayName(Script_Run run) => run.dayId switch
+    {
+        Script_Run.DayId.mon
+        or Script_Run.DayId.tue
+        or Script_Run.DayId.wed => Script_UIText.Text[SaveFileDayNameSatId].GetProp<string>(Const_Dev.Lang) ?? string.Empty,
+        Script_Run.DayId.thu
+        or Script_Run.DayId.fri
+        or Script_Run.DayId.sat => Script_UIText.Text[SaveFileDayNameSatR2Id].GetProp<string>(Const_Dev.Lang) ?? string.Empty,
+        Script_Run.DayId.sun => Script_UIText.Text[SaveFileDayNameSunId].GetProp<string>(Const_Dev.Lang) ?? string.Empty,
+        _ => String.Empty
+    };
 
     private int IncrementRunIdxInCycle(int runIdx, Script_Run[] cycle)
     {

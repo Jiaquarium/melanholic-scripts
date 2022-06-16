@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-06-16 11:08:51
+// Last created by Dialogue Exporter at 2022-06-16 17:15:38
 
 using System.Collections;
 using System.Collections.Generic;
@@ -399,7 +399,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You’ve spent time researching this natural phenomenon known as {77}... It was particularly important for seafarers... since before this time, when looking at the sea, it’s just a black void.",
+                @"You’ve spent time researching the natural phenomenon known as {77}...",
+                @"It was particularly important for seafarers... Since before this time, when looking out at the sea, it’s just a black void.",
                 @"According to your calculations, tomorrow, {77} should be at {49}.",
                 @"Which is exactly when your shift <b>ends</b>...| is it fate?",
         },

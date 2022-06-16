@@ -79,6 +79,11 @@ public class Dev_GameHelper : MonoBehaviour
     // Level Grids
     [SerializeField] private List<Grid> bakedLightingGrids;
 
+    // ----------------------------------------------------------------------
+    // Game Objects for Activation / Deactivation
+    [SerializeField] private GameObject HUD;
+    [SerializeField] private GameObject settings;
+
     private bool didSetWeekend;
 
     void Start()
@@ -255,6 +260,20 @@ public class Dev_GameHelper : MonoBehaviour
     {
         runsManager.StartWeekdayCycle();
         Script_Game.LevelsInactivate();
+
+        Debug.Log("Build Setup/ Setting GameObjects active states");
+        
+        if (!settings.activeInHierarchy)
+        {
+            Debug.Log($"<color=red>Settings being set to: {true}</color>");
+            settings.gameObject.SetActive(true);
+        }
+        
+        if (HUD.activeInHierarchy)
+        {
+            Debug.Log($"<color=red>HUD being set to: {false}</color>");
+            HUD.gameObject.SetActive(false);
+        }
     }
 
     public void BuildDevExploreSetup()

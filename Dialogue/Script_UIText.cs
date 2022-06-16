@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-16 11:07:01
+// Last created by UI Exporter at 2022-06-16 18:04:33
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1234,6 +1234,29 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Nautical Dawn"
+    }
+},
+// ------------------------------------------------------------------
+// Save Files
+{
+    "save-file_day-name_sat",
+    new Model_LanguagesUI
+    {
+        EN = @"Saturday"
+    }
+},
+{
+    "save-file_day-name_sat_R2",
+    new Model_LanguagesUI
+    {
+        EN = @"S̵a̸t̶u̵r̵d̷a̶y̵"
+    }
+},
+{
+    "save-file_day-name_sun",
+    new Model_LanguagesUI
+    {
+        EN = @"Sunday"
     }
 },
 // ------------------------------------------------------------------
