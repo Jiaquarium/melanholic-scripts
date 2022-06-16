@@ -9,9 +9,10 @@ using UnityEngine;
 public class Script_TreasureChest : Script_InteractableObject
 {
     [SerializeField] private bool _isOpen;
+    [SerializeField] private bool isEmpty;
     
     [Tooltip("The item inside the chest.")]
-    [SerializeField] private Script_ItemObject item;
+    [SerializeField] protected Script_ItemObject item;
     
     [SerializeField] private Sprite openSprite;
     [SerializeField] private Sprite closedSprite;
@@ -19,6 +20,8 @@ public class Script_TreasureChest : Script_InteractableObject
     [SerializeField] private bool useMesh;
     [SerializeField] private Script_Interactable openMesh;
     [SerializeField] private Script_Interactable closedMesh;
+
+    [SerializeField] protected AudioSource audioSource;
 
     public bool IsOpen
     {
@@ -28,6 +31,12 @@ public class Script_TreasureChest : Script_InteractableObject
             _isOpen = value;
             HandleGraphics(_isOpen);
         }
+    }
+
+    public bool IsEmpty
+    {
+        get => isEmpty;
+        set => isEmpty = value;
     }
 
     protected override void OnEnable()
@@ -62,7 +71,15 @@ public class Script_TreasureChest : Script_InteractableObject
         
         if (!IsOpen)
         {
-            Script_Game.Game.HandleItemReceive(item);
+            // If there is an item, Item receive will play its SFX instead.
+            if (isEmpty)
+            {
+                var sfx = Script_SFXManager.SFX;
+                audioSource.PlayOneShot(sfx.useKey, sfx.useKeyVol);
+            }
+            else
+                Script_Game.Game.HandleItemReceive(item);
+
             IsOpen = true;
         }
     }

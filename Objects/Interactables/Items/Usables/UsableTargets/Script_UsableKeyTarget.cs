@@ -38,6 +38,7 @@ public class Script_UsableKeyTarget : Script_UsableTarget
             myExit.IsDisabled = false;
             Script_ItemsEventsManager.Unlock(key, Id);
         }
-        if (myTreasureChest != null)    myTreasureChest.UnlockWithKey();
+        if (myTreasureChest != null)
+            myTreasureChest.UnlockWithKey();
     }
 }

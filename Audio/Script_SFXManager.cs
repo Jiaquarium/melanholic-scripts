@@ -110,7 +110,7 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip MainQuestDone;
     [Range(0f, 1f)] public float MainQuestDoneVol;
-    public float MainQuestDuration = 5.0f;
+    public float MainQuestDuration = 7.0f;
 
     public AudioClip Freeze;
     [Range(0f, 1f)] public float FreezeVol;

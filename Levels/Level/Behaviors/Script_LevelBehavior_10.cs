@@ -1377,7 +1377,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         // Ids DDR quest is completed and the Locked Treasure Chest was opened.
         if (gotBoarNeedle)
         {
-            treasureChest.IsOpen = true;
+            treasureChest.IsEmpty = true;
         }
 
         InitialStateFireworks();
