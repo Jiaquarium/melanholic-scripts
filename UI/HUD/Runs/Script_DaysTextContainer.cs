@@ -7,7 +7,7 @@ using TMPro;
 public class Script_DaysTextContainer : MonoBehaviour
 {
     [SerializeField] private Image activeImage;
-    [SerializeField] private Script_StringFormatTMP text;
+    [SerializeField] private Script_TMProPopulator TMProPopulator;
 
     private bool isCurrentDay;
 
@@ -22,9 +22,9 @@ public class Script_DaysTextContainer : MonoBehaviour
         }
     }
 
-    public string Text
+    public void UpdateTMPId(string newId)
     {
-        get => text.DynamicText;
-        set => text.DynamicText = value;
+        if (TMProPopulator != null)
+            TMProPopulator.UpdateTextId(newId);   
     }
 }

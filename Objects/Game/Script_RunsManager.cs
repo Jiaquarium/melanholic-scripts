@@ -35,6 +35,8 @@ public class Script_RunsManager : MonoBehaviour
     [Space]
 
     [SerializeField] private Script_DaysTextContainer[] daysText = new Script_DaysTextContainer[3];
+    [SerializeField] private string SatId;
+    [SerializeField] private string SatR2Id;
     
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_EventCycleManager eventCycleManager;
@@ -233,18 +235,19 @@ public class Script_RunsManager : MonoBehaviour
     // ------------------------------------------------------------------
     // UI
 
+    /// <summary>
+    /// Handle highlighting and text for days.
+    /// </summary>
     public void HandleDaysCanvas()
     {
-        for (int i = 0; i < daysText.Length; i++)
-        {
-            if (i >= daysText.Length || i >= Days.Length)
-                return;
+        var isSunday = Run.dayId == Script_Run.DayId.sun;
 
-            Script_DaysTextContainer dtContainer = daysText[i];
-            
-            dtContainer.Text = Days[i].displayName;
-            dtContainer.IsCurrentDay = Days[i] == Run;
-        }
+        daysText[0].IsCurrentDay = !isSunday;
+        daysText[1].IsCurrentDay = isSunday;
+
+        // On Weekday and Sunday show regular Sat text.
+        var Id = RunCycle == Cycle.Weekend ? SatR2Id : SatId;
+        daysText[0].UpdateTMPId(Id);
     }
 
     // ------------------------------------------------------------------

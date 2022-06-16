@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Timeline;
+using UnityEngine.Playables;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,7 +15,13 @@ public class Script_DayNotificationManager : MonoBehaviour
     public static Script_DayNotificationManager Control;
     
     [SerializeField] private Script_RunsManager runsManager;    
-    [SerializeField] private Script_DayNotification dayNotification;
+    [SerializeField] private Script_DayNotification saturdayNotification;
+    [SerializeField] private Script_DayNotification saturdayR2Notification;
+    [SerializeField] private Script_DayNotification sundayNotification;
+
+    [SerializeField] private List<GameObject> saturdayNotificationObjectsToBind;
+    [SerializeField] private List<GameObject> saturdayR2NotificationObjectsToBind;
+    [SerializeField] private List<GameObject> sundayNotificationObjectsToBind;
 
     [SerializeField] private Script_Game game;
 
@@ -26,15 +34,29 @@ public class Script_DayNotificationManager : MonoBehaviour
         bool _isInteractAfter = true
     )
     {
-        dayNotification.DayText = runsManager.Run.dayName;
-        dayNotification.CycleCountSubtext = runsManager.CycleCount.FormatCycleCount();
-        
         game.ChangeStateCutScene();
+
+        int timelineIdx = 0;
+        int directorIdx = 0;
+        TimelineAsset timeline = timelineController.timelines[timelineIdx];
+        PlayableDirector director = timelineController.playableDirectors[directorIdx];
+
+        List<GameObject> objectsToBind = runsManager.RunCycle switch
+        {
+            Script_RunsManager.Cycle.Weekday => saturdayNotificationObjectsToBind,
+            Script_RunsManager.Cycle.Weekend => saturdayR2NotificationObjectsToBind,
+            Script_RunsManager.Cycle.Sunday => sundayNotificationObjectsToBind,
+            _ => saturdayNotificationObjectsToBind
+        };
         
-        if (cb != null) onTimelineDoneAction = cb;
+        director.BindTimelineTracks(timeline, objectsToBind);
+        
+        if (cb != null)
+            onTimelineDoneAction = cb;
+        
         isInteractAfter = _isInteractAfter;
         
-        timelineController.PlayableDirectorPlayFromTimelines(0, 0);
+        timelineController.PlayableDirectorPlayFromTimelines(directorIdx, timelineIdx);
     }
 
     // ----------------------------------------------------------------------
@@ -77,7 +99,9 @@ public class Script_DayNotificationManager : MonoBehaviour
 
         timelineController = GetComponent<Script_TimelineController>();
 
-        dayNotification.Setup();
+        saturdayNotification.Setup();
+        saturdayR2Notification.Setup();
+        sundayNotification.Setup();
 
         isInteractAfter = true;
     }
@@ -91,7 +115,7 @@ public class Script_DayNotificationManagerTester : Editor
         DrawDefaultInspector();
 
         Script_DayNotificationManager t = (Script_DayNotificationManager)target;
-        if (GUILayout.Button("Play Map Notification"))
+        if (GUILayout.Button("Play Day Notification"))
         {
             t.PlayDayNotification();
         }

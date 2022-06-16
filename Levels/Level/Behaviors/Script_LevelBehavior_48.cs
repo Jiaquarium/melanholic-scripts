@@ -123,9 +123,17 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         currentTargetBlend = 0f;
         glitchManager.InitialState();
 
-        // Only R1 has the entrance from the Last Elevator.
         if (!isFinalRound)
+        {
+            // Only R1 has the entrance from the Last Elevator.
             PauseBgmForElevator();
+        }
+        else
+        {
+            // In Final Round set the time to 5:59:55am so in sync with
+            // MaskRevealTimeline.
+            Script_ClockManager.Control.SetFinalRoundGrandMirrorTime();
+        }
     }
 
     protected override void OnDisable()

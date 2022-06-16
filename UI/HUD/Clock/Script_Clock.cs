@@ -31,6 +31,8 @@ public class Script_Clock : MonoBehaviour
 
     public const float R2CursedTime     = StartTime + 600f; // 10 min game time passed
     public const float R2IdsDeadTime    = StartTime + 2100f; // 35 min game time passed
+
+    public const float FinalRoundGrandMirrorTime = EndTime - 5f; // 5 seconds before end time
     
     [SerializeField] private float currentTime;
     
@@ -41,7 +43,8 @@ public class Script_Clock : MonoBehaviour
 
     [SerializeField] private Script_ClockManager clockManager;
     
-    private float blinkTimer;
+    private float blinkTimer; // Dev
+    private bool lastHideColons; // Dev
     
     public float CurrentTime
     {
@@ -90,7 +93,8 @@ public class Script_Clock : MonoBehaviour
                     CurrentTime = EndTime;
 
                 UpdateTimeState();
-
+                CheckDone();
+                
                 break;
             }
             case (States.Paused):
@@ -102,9 +106,8 @@ public class Script_Clock : MonoBehaviour
                 break;
             }
         }
-
-        CheckDone();
-        DisplayTime();
+        
+        DisplayTime(clockManager.DidSetSunEndTime);
     }
 
     public void FastForwardTime(int sec, bool isRoundDownToMinute = false)
@@ -125,27 +128,52 @@ public class Script_Clock : MonoBehaviour
         }
     }
     
-    private void DisplayTime()
+    private void DisplayTime(bool forceDefault = false)
     {
-        bool isClose                = CurrentTime >= WarningTime;
+        // On Sunday, show the normal clock at 6am.
+        bool isClose                = CurrentTime >= WarningTime && !forceDefault;
         bool hideColons;
-        float MultiplierHalf        = TimeMultiplier / 2;
-        float MultiplierFourth      = MultiplierHalf / 2;
-        float MultiplierEigth       = MultiplierFourth / 2;
-        
-        // if the current second is odd and active clock, hide colons to show blinking
-        if (isClose)
+
+        // On Sunday, with normal time, blink every half second.
+        if (clockManager.DidSetSunEndTime)
         {
-            // blinking every other in game time
-            hideColons = State == States.Active
-                && (int)Mathf.Floor(CurrentTime) % 2 == 0;
+            hideColons = (int)Mathf.Floor((Time.time * 2)) % 2 == 0;
         }
         else
         {
-            // blinking every 2 sec in game time, every .5 sec real time
-            hideColons = State == States.Active
-                && (int)Mathf.Floor(CurrentTime) % TimeMultiplier >= MultiplierHalf;
+            if (isClose)
+            {
+                // If the current second is odd and active clock, hide colons to show blinking
+                // Blinking on every other sec in game time.
+                hideColons = State == States.Active
+                    && (int)Mathf.Floor(CurrentTime) % 2 == 0;
+            }
+            else
+            {
+                // Blink every half second
+                hideColons = State == States.Active
+                    && (CurrentTime * 2) % (TimeMultiplier * 2) >= TimeMultiplier;
+            }
         }
+
+        // ------------------------------------------------------------------
+        // For Dev Only
+        if (Const_Dev.IsClockDebug)
+        {
+            if (hideColons != lastHideColons)
+            {
+                Debug.Log($"mod {(CurrentTime * 2) % (TimeMultiplier * 2)} time: {Time.time - blinkTimer}");
+
+                blinkTimer = Time.time;
+                lastHideColons = hideColons;
+            }
+            else
+            {
+                Debug.Log($"mod {(CurrentTime * 2) % (TimeMultiplier * 2)}");
+            }
+            isClose = true;
+        }
+        // ------------------------------------------------------------------
 
         string displayTime = (CurrentTime).FormatSecondsClock(isClose, hideColons);
         

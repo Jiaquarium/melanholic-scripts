@@ -24,6 +24,12 @@ public class Script_TMProPopulator : MonoBehaviour
         HandlePopulateById();
     }
 
+    public void UpdateTextId(string _Id)
+    {
+        Id = _Id;
+        HandlePopulateById();
+    }
+
     private void HandlePopulateById()
     {
         if (!String.IsNullOrEmpty(Id))

@@ -21,6 +21,7 @@ public class Script_ClockManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     
     private bool didFireDoneEvent;
+    private bool didSetSunEndTime;
     
     public float ClockTime
     {
@@ -40,6 +41,7 @@ public class Script_ClockManager : MonoBehaviour
     public Script_Clock.States ClockState
     {
         get => clock.State;
+        set => clock.State = value;
     }
     
     public Script_Clock.TimeStates ClockTimeState
@@ -47,8 +49,13 @@ public class Script_ClockManager : MonoBehaviour
         get => clock.TimeState;
     }
 
+    public bool DidSetSunEndTime { get => didSetSunEndTime; }
+
     void Update()
     {
+        if (!DidSetSunEndTime)
+            HandleSundayTime();
+        
         if (clock.State == Script_Clock.States.Done)
         {
             if (!didFireDoneEvent)
@@ -105,6 +112,26 @@ public class Script_ClockManager : MonoBehaviour
     {
         clock.FastForwardTime(sec);
         HandleTimebar();
+    }
+
+    public void SetFinalRoundGrandMirrorTime()
+    {
+        clock.CurrentTime = Script_Clock.FinalRoundGrandMirrorTime;    
+    }
+
+    public void SetEndTime()
+    {
+        clock.CurrentTime = Script_Clock.EndTime;
+    }
+
+    private void HandleSundayTime()
+    {
+        if (game.RunCycle == Script_RunsManager.Cycle.Sunday)
+        {
+            ClockState = Script_Clock.States.Paused;
+            SetEndTime();
+            didSetSunEndTime = true;
+        }
     }
 
     /// <summary>

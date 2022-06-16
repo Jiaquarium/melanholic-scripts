@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-11 14:26:26
+// Last created by UI Exporter at 2022-06-15 15:43:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1025,6 +1025,29 @@ public class Script_UIText
     }
 },
 // ------------------------------------------------------------------
+// HUD
+{
+    "HUD_days_today",
+    new Model_LanguagesUI
+    {
+        EN = @"SAT"
+    }
+},
+{
+    "HUD_days_today_R2",
+    new Model_LanguagesUI
+    {
+        EN = @"Ṡ̸̮Á̵̳̿T̴̼̉͆"
+    }
+},
+{
+    "HUD_days_tomorrow",
+    new Model_LanguagesUI
+    {
+        EN = @"SUN"
+    }
+},
+// ------------------------------------------------------------------
 // Inventory
 {
     "menu_top-bar_stickers",
@@ -1167,6 +1190,50 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"『 Take the Last Elevator? 』"
+    }
+},
+// ------------------------------------------------------------------
+// Day Notifications
+{
+    "day-notification_title_sat",
+    new Model_LanguagesUI
+    {
+        EN = @"Saturday"
+    }
+},
+{
+    "day-notification_subtitle_sat",
+    new Model_LanguagesUI
+    {
+        EN = @"1 Hour Until Nautical Dawn"
+    }
+},
+{
+    "day-notification_title_sat_R2",
+    new Model_LanguagesUI
+    {
+        EN = @"S̵a̸t̶u̵r̵d̷a̶y̵"
+    }
+},
+{
+    "day-notification_subtitle_sat_R2",
+    new Model_LanguagesUI
+    {
+        EN = @"1̵ ̸H̶o̵u̶r̵ ̷U̸n̸t̷i̷l̶ ̷N̷a̴u̷t̸i̶c̶a̵l̷ ̷D̸a̸w̴n̸"
+    }
+},
+{
+    "day-notification_title_sun",
+    new Model_LanguagesUI
+    {
+        EN = @"Sunday"
+    }
+},
+{
+    "day-notification_subtitle_sun",
+    new Model_LanguagesUI
+    {
+        EN = @"Nautical Dawn"
     }
 },
 // ------------------------------------------------------------------
