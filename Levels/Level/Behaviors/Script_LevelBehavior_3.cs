@@ -38,64 +38,52 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            ErasDirector.stopped += OnErasMovesDone;
-            Script_PRCSEventsManager.OnPRCSDone += PRCSDoneReaction;
-        }
+        // ErasDirector.stopped += OnErasMovesDone;
+        // Script_PRCSEventsManager.OnPRCSDone += PRCSDoneReaction;
     }
 
     protected override void OnDisable()
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            ErasDirector.stopped -= OnErasMovesDone;
-            Script_PRCSEventsManager.OnPRCSDone -= PRCSDoneReaction;
-        }
+        // ErasDirector.stopped -= OnErasMovesDone;
+        // Script_PRCSEventsManager.OnPRCSDone -= PRCSDoneReaction;
     }
     
     public override void Cleanup() {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            if (isDone)     game.DestroyNPCs();
-        }
+        // if (isDone)     game.DestroyNPCs();
     }
     
     public override bool ActivateTrigger(string Id)
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            if (
-                (
-                    (Id == "room_1" && activeTriggerIndex == 0 )
-                    || (Id == "room_2" && activeTriggerIndex == 1)
-                ) && !isDone
-            )
-            {
-                game.ChangeStateCutScene();
-                
-                if (activeTriggerIndex == 0)
-                {
-                    game.PauseBgMusic();
-                    game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
-                    game.PlayerFaceDirection(Directions.Down);
-                    Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
-                }
-                else if (activeTriggerIndex == 1)
-                {
-                    game.PlayerFaceDirection(Directions.Right);
-                    Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
-                    Script_VCamManager.VCamMain.SetNewVCam(VCamLB3);
-                }
-                
-                dm.StartDialogueNode(triggerNodes[activeTriggerIndex]);
-                
-                activeTriggerIndex++;
-                if (activeTriggerIndex > 1)     isDone = true;
+        // if (
+        //     (
+        //         (Id == "room_1" && activeTriggerIndex == 0 )
+        //         || (Id == "room_2" && activeTriggerIndex == 1)
+        //     ) && !isDone
+        // )
+        // {
+        //     game.ChangeStateCutScene();
+            
+        //     if (activeTriggerIndex == 0)
+        //     {
+        //         game.PauseBgMusic();
+        //         game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
+        //         game.PlayerFaceDirection(Directions.Down);
+        //         Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
+        //     }
+        //     else if (activeTriggerIndex == 1)
+        //     {
+        //         game.PlayerFaceDirection(Directions.Right);
+        //         Ero.GetComponent<Script_MovingNPCFaceDirectionController>().FacePlayer();
+        //         Script_VCamManager.VCamMain.SetNewVCam(VCamLB3);
+        //     }
+            
+        //     dm.StartDialogueNode(triggerNodes[activeTriggerIndex]);
+            
+        //     activeTriggerIndex++;
+        //     if (activeTriggerIndex > 1)     isDone = true;
 
-                return true;
-            }
-        }
+        //     return true;
+        // }
 
         return false;
     }    
@@ -180,18 +168,13 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
         
         game.SetupDemons(demonsParent, demonSpawns);
         
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            game.SetupMovingNPC(Ero, !isActivated);
-            
-            EroIntroParent.gameObject.SetActive(true);
-            EroIntroTriggersParent.gameObject.SetActive(true);    
-        }
-        else
-        {
-            EroIntroParent.gameObject.SetActive(false);
-            EroIntroTriggersParent.gameObject.SetActive(false);    
-        }
+        // game.SetupMovingNPC(Ero, !isActivated);
+        
+        // EroIntroParent.gameObject.SetActive(true);
+        // EroIntroTriggersParent.gameObject.SetActive(true);
+  
+        EroIntroParent.gameObject.SetActive(false);
+        EroIntroTriggersParent.gameObject.SetActive(false);    
         
         isActivated = true;
     }

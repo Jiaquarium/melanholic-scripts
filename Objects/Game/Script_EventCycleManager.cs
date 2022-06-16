@@ -89,22 +89,6 @@ public class Script_EventCycleManager : MonoBehaviour
         );
     }
     
-    public bool IsIdsRoomIntroDay()
-    {
-        return (
-            runsManager.RunCycle == Script_RunsManager.Cycle.Weekday
-            && game.IsRunDay(Script_Run.DayId.wed)
-        );
-    }
-
-    public bool IsIdsGivePsychicDuckDay()
-    {
-        return (
-            runsManager.RunCycle == Script_RunsManager.Cycle.Weekday
-            && game.IsRunDay(Script_Run.DayId.mon)
-        );
-    }
-
     public bool IsIdsHome()
     {
         return runsManager.RunCycle == Script_RunsManager.Cycle.Weekday;
@@ -120,16 +104,6 @@ public class Script_EventCycleManager : MonoBehaviour
     public bool IsIdsDead() => game.RunCycle == Script_RunsManager.Cycle.Weekend
         && clockManager.ClockTime >= Script_Clock.R2IdsDeadTime;
     
-    // Check if not the same day we talked with Ellenia and is still active count down.
-    // Must talk with Ellenia on previous day for her to ask about her painting.
-    public bool IsElleniaComfortable()
-    {
-        bool isSameDayTalked    = didTalkToElleniaCountdown == ElleniaCountdownMax;
-        bool isTalkedActive     = didTalkToElleniaCountdown > 0;
-
-        return !isSameDayTalked && isTalkedActive;
-    }
-
     // If it's past 5:10 Ellenia will be Hurt
     public bool IsElleniaHurt() => game.RunCycle == Script_RunsManager.Cycle.Weekend
         && clockManager.ClockTime >= Script_Clock.R2CursedTime;

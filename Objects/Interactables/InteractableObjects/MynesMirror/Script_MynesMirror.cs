@@ -18,7 +18,7 @@ using UnityEngine.Playables;
 ///         3) Default Node (Default END)
 ///     
 ///     B) Special Conditions
-///         1) Specially defined override Nodes, completely define a custom flow
+///         1) Specially defined override Nodes, completely define a custom flow (e.g. comment on Sealing)
 /// 
 /// 3. End() from Dialogue End NextNodeAction
 /// 

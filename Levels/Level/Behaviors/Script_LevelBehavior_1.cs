@@ -58,10 +58,10 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
 
     private void OnLevelInit()
     {
-        if (game.IsRunDay(Script_Run.DayId.sun) && !didIdsMusicCutScene)
-        {
-            IdsMusicCutScene();
-        }
+        // if (game.IsRunDay(Script_Run.DayId.wed) && !didIdsMusicCutScene)
+        // {
+        //     IdsMusicCutScene();
+        // }
     }
 
     /// OnNextNodeAction handler START ================================================================================

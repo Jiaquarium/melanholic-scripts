@@ -43,110 +43,92 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            nameplateDirector.stopped += OnNameplateDone;
-        }
+        // nameplateDirector.stopped += OnNameplateDone;
     }
 
     protected override void OnDisable()
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            nameplateDirector.stopped -= OnNameplateDone;
-        }
+        // nameplateDirector.stopped -= OnNameplateDone;
     }
     
     public override bool ActivateTrigger(string Id)
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            if (
-                (
-                    (Id == "hallway_1" && activeTriggerIndex == 0)
-                    || (Id == "hallway_2" && activeTriggerIndex == 1)
-                    || (Id == "hallway_3" && activeTriggerIndex == 2)
-                )
-                && !isDone
-            )
-            {
-                OnTrigger();
-                return true;
-            }
-        }
+        // if (
+        //     (
+        //         (Id == "hallway_1" && activeTriggerIndex == 0)
+        //         || (Id == "hallway_2" && activeTriggerIndex == 1)
+        //         || (Id == "hallway_3" && activeTriggerIndex == 2)
+        //     )
+        //     && !isDone
+        // )
+        // {
+        //     OnTrigger();
+        //     return true;
+        // }
 
         return false;
     }
 
     private void OnTrigger()
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            game.PauseBgMusic();
-            if (game.GetNPCBgThemeActive())     game.UnPauseNPCBgTheme();
-            else                                game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
-            
-            CacheMovingNPCMoves(0);
-            game.ChangeStateCutSceneNPCMoving();
-            activeTriggerIndex++;
-            if (activeTriggerIndex > 2) isDone = true;
-            
-            game.GetMovingNPC(0).ApproachTarget(
-                game.GetPlayerLocation(),
-                new Vector3(1f, 0, 0),
-                Directions.Left,
-                NPCEndCommands.None
-            );
-        }
+        // game.PauseBgMusic();
+        // if (game.GetNPCBgThemeActive())     game.UnPauseNPCBgTheme();
+        // else                                game.PlayNPCBgTheme(EroBgThemePlayerPrefab);
+        
+        // CacheMovingNPCMoves(0);
+        // game.ChangeStateCutSceneNPCMoving();
+        // activeTriggerIndex++;
+        // if (activeTriggerIndex > 2) isDone = true;
+        
+        // game.GetMovingNPC(0).ApproachTarget(
+        //     game.GetPlayerLocation(),
+        //     new Vector3(1f, 0, 0),
+        //     Directions.Left,
+        //     NPCEndCommands.None
+        // );
 
         // need this to save NPC moves since ForceMove will erase its moveSets
-        void CacheMovingNPCMoves(int Id)
-        {
-            Script_MovingNPC npc = game.GetMovingNPC(Id);
+        // void CacheMovingNPCMoves(int Id)
+        // {
+        //     Script_MovingNPC npc = game.GetMovingNPC(Id);
             
-            // Model_NPC NPCData = game.Levels.levelsData[game.level].NPCsData[Id];
-            // Model_MoveSet[] allMoveSets = NPCData.moveSets;
-            // use GameObject, don't use gameData NPCData
-            Model_MoveSet[] allMoveSets = moveSetsData.moveSets;
-            truncatedMoveSet = new Model_MoveSet[
-                Mathf.Max(allMoveSets.Length - activeTriggerIndex - 1, 0)
-            ];
+        //     // Model_NPC NPCData = game.Levels.levelsData[game.level].NPCsData[Id];
+        //     // Model_MoveSet[] allMoveSets = NPCData.moveSets;
+        //     // use GameObject, don't use gameData NPCData
+        //     Model_MoveSet[] allMoveSets = moveSetsData.moveSets;
+        //     truncatedMoveSet = new Model_MoveSet[
+        //         Mathf.Max(allMoveSets.Length - activeTriggerIndex - 1, 0)
+        //     ];
             
-            for (int j = 0, k = activeTriggerIndex + 1; j < truncatedMoveSet.Length; j++, k++)
-            {
-                truncatedMoveSet[j] = allMoveSets[k];
-            }
-        }
+        //     for (int j = 0, k = activeTriggerIndex + 1; j < truncatedMoveSet.Length; j++, k++)
+        //     {
+        //         truncatedMoveSet[j] = allMoveSets[k];
+        //     }
+        // }
     }
     
     public override void OnLevelInitComplete() {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            if (!isActivated)
-            {
-                isActivated = true;
-                game.ChangeStateCutSceneNPCMoving();
-                game.TriggerMovingNPCMove(0);            
-            }
-        }
+        // if (!isActivated)
+        // {
+        //     isActivated = true;
+        //     game.ChangeStateCutSceneNPCMoving();
+        //     game.TriggerMovingNPCMove(0);            
+        // }
     }
     public override void HandleMovingNPCOnApproachedTarget(int i)
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            dm.StartDialogueNode(TriggerNodes[activeTriggerIndex - 1]);
-            RehydrateMovingNPCMoves(0);
-            game.ChangeStateCutScene();
-        }
+        // dm.StartDialogueNode(TriggerNodes[activeTriggerIndex - 1]);
+        // RehydrateMovingNPCMoves(0);
+        // game.ChangeStateCutScene();
 
-        void RehydrateMovingNPCMoves(int Id)
-        {
-            Script_MovingNPC npc = game.GetMovingNPC(Id);
+        // void RehydrateMovingNPCMoves(int Id)
+        // {
+        //     Script_MovingNPC npc = game.GetMovingNPC(Id);
             
-            npc.moveSets = truncatedMoveSet;
+        //     npc.moveSets = truncatedMoveSet;
 
-            npc.QueueMoves();
-        }
+        //     npc.QueueMoves();
+        // }
     }
 
     /*
@@ -155,19 +137,16 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     */
     protected override void HandleAction()
     {
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            if (
-                game.state == "cut-scene"
-                && !game.GetPlayerIsTalking()
-                && !isPRCSActive
-            )
-            {
-                game.ChangeStateCutSceneNPCMoving();
-                // need this bc once leave room, no longer inProgress
-                game.TriggerMovingNPCMove(0);
-            }
-        }
+        // if (
+        //     game.state == "cut-scene"
+        //     && !game.GetPlayerIsTalking()
+        //     && !isPRCSActive
+        // )
+        // {
+        //     game.ChangeStateCutSceneNPCMoving();
+        //     // need this bc once leave room, no longer inProgress
+        //     game.TriggerMovingNPCMove(0);
+        // }
     }
 
     public override void SetSwitchState(int Id, bool isOn)
@@ -205,18 +184,13 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
             isInitialize: !isInitialized
         );
         
-        if (game.Run.dayId == Script_Run.DayId.none)
-        {
-            game.SetupMovingNPC(Ero, isInitialize: !isInitialized);
+        // game.SetupMovingNPC(Ero, isInitialize: !isInitialized);
+        
+        // EroParent.gameObject.SetActive(true);            
+        // EroIntroTriggersParent.gameObject.SetActive(true);
             
-            EroParent.gameObject.SetActive(true);            
-            EroIntroTriggersParent.gameObject.SetActive(true);
-        }
-        else
-        {
-            EroParent.gameObject.SetActive(false);            
-            EroIntroTriggersParent.gameObject.SetActive(false);
-        }
+        EroParent.gameObject.SetActive(false);            
+        EroIntroTriggersParent.gameObject.SetActive(false);
         
         isInitialized = true;
     }

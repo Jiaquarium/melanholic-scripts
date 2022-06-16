@@ -126,7 +126,7 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         HandleGrandMirrorPaintingEntrance();
 
         /// Setup Ids intro on Run 0
-        if (!GotPsychicDuck && Script_EventCycleManager.Control.IsIdsGivePsychicDuckDay())
+        if (Script_EventCycleManager.Control.IsLastElevatorTutorialRun())
         {
             Ids.gameObject.SetActive(true);
             Ids.SetExtraInteractableBoxes(false);
