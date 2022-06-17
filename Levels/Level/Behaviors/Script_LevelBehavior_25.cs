@@ -98,7 +98,12 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     {
         ElleniaDirector.stopped                         += OnElleniaPlayableDone;    
         Script_PRCSEventsManager.OnPRCSDone             += OnElleniasHandPRCSDone;
-        Script_GameEventsManager.OnLevelInitComplete    += HandleStartCheckingElleniaHurtCutScene;
+        
+        if (Script_EventCycleManager.Control.IsElleniaHurt())
+        {
+            Script_GameEventsManager.OnLevelInitComplete    += HandleStartCheckingElleniaHurtCutScene;
+            isElleniaHurtToday = true;
+        }
     }
 
     protected override void OnDisable()
@@ -110,7 +115,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     protected override void Update()
     {
-        if (isCheckingPsychicDuckElleniaHurtCutScene)
+        if (isCheckingPsychicDuckElleniaHurtCutScene && !isCurrentPuzzleComplete)
         {
             HandleElleniaHurtCutScene();
         }
@@ -252,22 +257,16 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     private void HandleStartCheckingElleniaHurtCutScene()
     {
-        if (Script_EventCycleManager.Control.IsElleniaHurt())
-        {
-            isCheckingPsychicDuckElleniaHurtCutScene = true;
-        }
-        else
-        {
-            isCheckingPsychicDuckElleniaHurtCutScene = false;
-        }
+        isCheckingPsychicDuckElleniaHurtCutScene = true;
     }
     
     private void HandleElleniaHurtCutScene()
     {
         // Ensure Psychic Duck is the active sticker and we haven't already played this cut scene.
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        if (!isPsychicDuckActive)                       return;
-        if (isElleniaHurtCutSceneActivated)             return;
+        
+        if (!isPsychicDuckActive || isElleniaHurtCutSceneActivated)
+            return;
         
         isElleniaHurtCutSceneActivated                  = true;
         isCheckingPsychicDuckElleniaHurtCutScene        = false;
@@ -624,16 +623,15 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         // and to skip the giving Animal Within dialogue.
         game.SetupMovingNPC(Ellenia, isInitialization);
         
+        // isElleniaHurtToday will also be set in OnEnable when it checks IsElleniaHurt,
+        // which should happen on same frame as this check.
         if (isElleniaHurtToday || Script_EventCycleManager.Control.IsElleniaHurt())
         {
-            paintingEntranceMid.State = Script_InteractableObject.States.Disabled;
+            if (!isCurrentPuzzleComplete)
+                paintingEntranceMid.State = Script_InteractableObject.States.Disabled;
             
-            ElleniaHurt.gameObject.SetActive(true);
+            ElleniaHurt.gameObject.SetActive(!isCurrentPuzzleComplete);
             Ellenia.gameObject.SetActive(false);
-
-            easle.gameObject.SetActive(true);
-            easleYellAtPlayerIOText.gameObject.SetActive(false);
-            easleFullArt.gameObject.SetActive(false);
 
             isElleniaHurtToday = true;
         }
@@ -641,27 +639,18 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         {
             paintingEntranceMid.State = Script_InteractableObject.States.Active;
             
-            ElleniaHurt.gameObject.SetActive(false);
-            Ellenia.gameObject.SetActive(true);
-            
             HandleElleniaDialogueState();
             
             if (isPuzzleComplete)
                 Ellenia.MyPastQuestState = Script_DemonNPC.PastQuestState.Done;
 
-            if (isCurrentPuzzleComplete)
-            {
-                Ellenia.gameObject.SetActive(false);
-                easleYellAtPlayerIOText.gameObject.SetActive(false);
-                easleFullArt.gameObject.SetActive(true);
-            }
-            else
-            {
-                Ellenia.gameObject.SetActive(true);
-                easleYellAtPlayerIOText.gameObject.SetActive(true);
-                easleFullArt.gameObject.SetActive(false);
-            }
+            Ellenia.gameObject.SetActive(!isCurrentPuzzleComplete);
+            ElleniaHurt.gameObject.SetActive(false);
         }
+
+        easle.gameObject.SetActive(true);
+        easleYellAtPlayerIOText.gameObject.SetActive(!isCurrentPuzzleComplete);
+        easleFullArt.gameObject.SetActive(isCurrentPuzzleComplete);
         
         game.SetupInteractableObjectsText(textParent, isInitialization);
         game.SetupInteractableFullArt(fullArtParent, isInitialization);
