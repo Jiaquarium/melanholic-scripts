@@ -23,6 +23,8 @@ public class Script_RunsManager : MonoBehaviour
     private const string SaveFileDayNameSatId = "save-file_day-name_sat";
     private const string SaveFileDayNameSatR2Id = "save-file_day-name_sat_R2";
     private const string SaveFileDayNameSunId = "save-file_day-name_sun";
+    [SerializeField] private string SatId;
+    [SerializeField] private string SatR2Id;
 
     
     [SerializeField] private Script_Run.DayId _startDay;
@@ -41,8 +43,6 @@ public class Script_RunsManager : MonoBehaviour
     [Space]
 
     [SerializeField] private Script_DaysTextContainer[] daysText = new Script_DaysTextContainer[3];
-    [SerializeField] private string SatId;
-    [SerializeField] private string SatR2Id;
     
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_EventCycleManager eventCycleManager;

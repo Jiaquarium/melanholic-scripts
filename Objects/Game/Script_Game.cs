@@ -242,6 +242,7 @@ public class Script_Game : MonoBehaviour
 
     public bool IsFirstMonday { get => CycleCount == 0 && Run.dayId == Script_Run.DayId.mon; }
     public bool IsFirstTuesday { get => CycleCount == 0 && Run.dayId == Script_Run.DayId.tue; }
+    public bool IsFirstThursday { get => CycleCount == 0 && Run.dayId == Script_Run.DayId.thu; }
 
     public string GetPlayerDisplayDayName
     {

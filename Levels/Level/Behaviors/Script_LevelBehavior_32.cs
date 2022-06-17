@@ -51,6 +51,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform WeekdayWalls;
     [SerializeField] private Transform WeekendWalls;
 
+    // ------------------------------------------------------------------
+    // Day Notifications
+    [SerializeField] private Script_GlitchFXManager glitchManager;
+
+
     private int frontDoorDialogueIndex;
     private bool isFirstLoad = true;
 
@@ -58,6 +63,20 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // ------------------------------------------------------------------
     // Dev Only TBD DELETE
     public string DEVELOPMENT_CCTVCodeInput;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        glitchManager.InitialState();
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        glitchManager.InitialState();
+    }
 
     public override void OnLevelInitComplete()
     {
@@ -352,7 +371,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         Script_DialogueManager.DialogueManager.StartDialogueNode(onDisabledSurveillanceNode);
     }
-    
+
     // ------------------------------------------------------------------
 
     private void DisableSurveillanceSequence()

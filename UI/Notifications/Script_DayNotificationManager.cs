@@ -13,17 +13,24 @@ using UnityEditor;
 public class Script_DayNotificationManager : MonoBehaviour
 {
     public static Script_DayNotificationManager Control;
+
+    private const string DefaultSatDayNotificationTitleId = "day-notification_title_sat";
+    private const string DefaultSatDayNotificationSubtitleId = "day-notification_subtitle_sat";
+    private const string SatR2DayNotificationTitleId = "day-notification_title_sat_R2";
+    private const string SatR2DayNotificationSubtitleId = "day-notification_subtitle_sat_R2";
     
     [SerializeField] private Script_RunsManager runsManager;    
     [SerializeField] private Script_DayNotification saturdayNotification;
     [SerializeField] private Script_DayNotification saturdayR2Notification;
+    [SerializeField] private Script_DayNotification saturdayFirstR2Notification;
+    [SerializeField] private Script_TMProPopulator[] saturdayFirstR2NotificationTexts;
     [SerializeField] private Script_DayNotification sundayNotification;
 
     [SerializeField] private List<GameObject> saturdayNotificationObjectsToBind;
     [SerializeField] private List<GameObject> saturdayR2NotificationObjectsToBind;
-    [SerializeField] private List<GameObject> sundayNotificationObjectsToBind;
 
     [SerializeField] private Script_Game game;
+    [SerializeField] private Script_GlitchFXManager glitchManager;
 
     private Action onTimelineDoneAction;
     private bool isInteractAfter = true;
@@ -35,21 +42,35 @@ public class Script_DayNotificationManager : MonoBehaviour
     )
     {
         game.ChangeStateCutScene();
-
-        int timelineIdx = 0;
         int directorIdx = 0;
-        TimelineAsset timeline = timelineController.timelines[timelineIdx];
-        PlayableDirector director = timelineController.playableDirectors[directorIdx];
+        int timelineIdx = 0;
 
-        List<GameObject> objectsToBind = runsManager.RunCycle switch
+        if (game.IsFirstThursday)
         {
-            Script_RunsManager.Cycle.Weekday => saturdayNotificationObjectsToBind,
-            Script_RunsManager.Cycle.Weekend => saturdayR2NotificationObjectsToBind,
-            Script_RunsManager.Cycle.Sunday => sundayNotificationObjectsToBind,
-            _ => saturdayNotificationObjectsToBind
-        };
-        
-        director.BindTimelineTracks(timeline, objectsToBind);
+            timelineIdx = 1;
+
+            // Inject old Text; timeline will switch it out with zalgofied
+            saturdayFirstR2NotificationTexts[0].UpdateTextId(DefaultSatDayNotificationTitleId);
+            saturdayFirstR2NotificationTexts[1].UpdateTextId(DefaultSatDayNotificationSubtitleId);
+        }
+        else if (game.RunCycle == Script_RunsManager.Cycle.Sunday)
+        {
+            timelineIdx = 2;
+        }
+        else
+        {
+            TimelineAsset timeline = timelineController.timelines[timelineIdx];
+            PlayableDirector director = timelineController.playableDirectors[directorIdx];
+
+            List<GameObject> objectsToBind = runsManager.RunCycle switch
+            {
+                Script_RunsManager.Cycle.Weekday => saturdayNotificationObjectsToBind,
+                Script_RunsManager.Cycle.Weekend => saturdayR2NotificationObjectsToBind,
+                _ => saturdayNotificationObjectsToBind
+            };
+            
+            director.BindTimelineTracks(timeline, objectsToBind);
+        }
         
         if (cb != null)
             onTimelineDoneAction = cb;
@@ -87,6 +108,28 @@ public class Script_DayNotificationManager : MonoBehaviour
             onTimelineDoneAction = null;
         }
     }
+
+    // Day Notification First R2 Timeline
+    public void SetUIDayNotificationGlitch(bool isOn)
+    {
+        if (isOn)
+        {
+            glitchManager.SetUIDayNotification();
+            glitchManager.SetBlend(1f);
+        }
+        else
+        {
+            glitchManager.SetBlend(0f);
+        }
+    }
+
+    // Day Notification First R2 Timeline
+    // Inject new text.
+    public void SwitchFirstR2DayNotificationText()
+    {
+        saturdayFirstR2NotificationTexts[0].UpdateTextId(SatR2DayNotificationTitleId);
+        saturdayFirstR2NotificationTexts[1].UpdateTextId(SatR2DayNotificationSubtitleId);
+    }
     
     // ----------------------------------------------------------------------
 
@@ -101,6 +144,7 @@ public class Script_DayNotificationManager : MonoBehaviour
 
         saturdayNotification.Setup();
         saturdayR2Notification.Setup();
+        saturdayFirstR2Notification.Setup();
         sundayNotification.Setup();
 
         isInteractAfter = true;
