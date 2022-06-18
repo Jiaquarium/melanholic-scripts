@@ -29,6 +29,8 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         Params.Add("@@Run", $"<b>{Script_Game.Game?.Run.dayName.FormatRun() ?? "?"}</b>");
         Params.Add("@@CycleCount", $"<b>{Script_Game.Game?.CycleCount.ToString() ?? "?"}</b>");
         
+        Params.Add("@@DDRCurrentTry", $"<b>{Script_Game.Game?.IdsRoomBehavior.CurrentTry.ToString() ?? "?"}</b>");
+        
         if (Script_PlayerInputManager.Instance != null)
             Params.Add("@@InventoryKey", $"<b>{Script_PlayerInputManager.Instance.GetHumanReadableBindingPath(Const_KeyCodes.Inventory)}</b>");
         else

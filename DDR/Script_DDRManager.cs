@@ -91,6 +91,7 @@ public class Script_DDRManager : MonoBehaviour
     public int mistakesAllowed;
     [SerializeField] private TextMeshProUGUI mistakesText;
     [SerializeField] private TextMeshProUGUI mistakesAllowedText;
+    [SerializeField] private GameObject[] mistakeCrosses;
 
     public float timeToRise;
     public bool didFail;
@@ -124,6 +125,8 @@ public class Script_DDRManager : MonoBehaviour
     {
         get => musicSource.isPlaying;
     }
+
+    public int MistakeCrossesLength { get => mistakeCrosses.Length; }
     
     void Awake()
     {
@@ -150,6 +153,7 @@ public class Script_DDRManager : MonoBehaviour
             HandleRightArrowSpawn();
             
             HandleInput();
+            UpdateMistakeCrosses();
             HandleMistakes();
             HandleSongFinish();
         }
@@ -168,6 +172,7 @@ public class Script_DDRManager : MonoBehaviour
         game.ManagePlayerViews(Const_States_PlayerViews.DDR);
 
         HandleMistakesCanvasGroup();
+        UpdateMistakeCrosses();
 
         activeLeftArrows            = new Script_Arrow[songMoves.leftMoveTimes.Length];
         activeDownArrows            = new Script_Arrow[songMoves.downMoveTimes.Length];
@@ -562,6 +567,15 @@ public class Script_DDRManager : MonoBehaviour
         {
             didFail = true;
             Deactivate();
+        }
+    }
+
+    private void UpdateMistakeCrosses()
+    {
+        for (var i = 0; i < mistakeCrosses.Length; i++)
+        {
+            bool isNotMistake = i < mistakesAllowed - Mistakes;
+            mistakeCrosses[i].SetActive(isNotMistake);
         }
     }
 

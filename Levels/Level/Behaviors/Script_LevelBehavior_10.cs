@@ -97,7 +97,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     public Model_SongMoves playerSongMoves;
     public Model_SongMoves IdsSongMoves;
-    public int mistakesAllowed;
+    
+    [SerializeField] private int mistakesAllowed;
+    [SerializeField] private int maxMistakesAllowed;
+    [SerializeField] private int increaseAllotmentInterval;
+    [SerializeField] private int currentTry;
 
     [SerializeField] private List<float> bgTransitionTimes;
     [SerializeField] private Canvas StarryNightBg;
@@ -190,6 +194,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
 
     public int BGMIdx { get; set; }
+
+    public int CurrentTry { get => currentTry; }
     
     private Script_DialogueNode IntroNode
     {
@@ -366,6 +372,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         void StartDDR()
         {
+            if (DDRManager.MistakeCrossesLength != maxMistakesAllowed)
+            {
+                Debug.LogError("Max mistakes need to equal total number of mistake crosses available");
+            }
+            
+            HandleIncreaseMistakesAllowed();
+            
             DDRManager.Activate(
                 mistakesAllowed,
                 playerSongMoves,
@@ -377,6 +390,17 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             );
             
             game.ChangeStateDDR();
+
+            void HandleIncreaseMistakesAllowed()
+            {
+                if (currentTry > 0 && currentTry % increaseAllotmentInterval == 0)
+                    mistakesAllowed++;
+                
+                if (!Const_Dev.IsDevMode)
+                    mistakesAllowed = Mathf.Min(mistakesAllowed, maxMistakesAllowed);
+            
+                currentTry++;
+            }
         }
     }
 

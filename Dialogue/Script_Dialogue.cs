@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-06-17 13:29:18
+// Last created by Dialogue Exporter at 2022-06-17 21:05:23
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1614,7 +1614,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Wanna try again?",
+                @"Not like I’m counting or anything, but that was attempt No. @@DDRCurrentTry. <b>Wanna try again?</b>",
         },
         
     }
