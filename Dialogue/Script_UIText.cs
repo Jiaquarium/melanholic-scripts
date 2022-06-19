@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-16 18:04:33
+// Last created by UI Exporter at 2022-06-18 22:02:31
 
 using System.Collections;
 using System.Collections.Generic;
@@ -283,7 +283,7 @@ public class Script_UIText
     "good-ending_the-end_label",
     new Model_LanguagesUI
     {
-        EN = @"Everything Returns to Zero"
+        EN = @"A Mirror Who Lost Its Reflection"
     }
 },
 // ------------------------------------------------------------------
@@ -1110,6 +1110,15 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Use"
+    }
+},
+// ------------------------------------------------------------------
+// Notes Tally Tracker
+{
+    "notes-tally-tracker_UI_label",
+    new Model_LanguagesUI
+    {
+        EN = @"Found:"
     }
 },
 // ------------------------------------------------------------------
@@ -2130,6 +2139,15 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"『 B.A.D. 』"
+    }
+},
+// ------------------------------------------------------------------
+// Notifications
+{
+    "ddr_notifications_close",
+    new Model_LanguagesUI
+    {
+        EN = @"LAST MOVES! GET READY!"
     }
 },
 

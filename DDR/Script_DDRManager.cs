@@ -44,7 +44,7 @@ public class Script_DDRManager : MonoBehaviour
     public Script_TierComment Tier1Comment;
     public Script_TierComment Tier2Comment;
     public Script_TierComment Tier3Comment;
-
+    [SerializeField] private Script_TierComment closeNotification;
 
     public Model_SongMoves songMoves;
     
@@ -61,6 +61,8 @@ public class Script_DDRManager : MonoBehaviour
     [Tooltip("% of TimeToRise. Time alloted to be Tier 3 by pressing arrow before it has passed Outline.")]
     public float tier3Buffer;
     public float tierCommentActivationLength;
+    [SerializeField] private float closeNotificationActivationLength;
+    [SerializeField] private float closeNotificationSongPosition;
 
 
     public Script_Arrow[] activeLeftArrows      = new Script_Arrow[0];
@@ -104,6 +106,7 @@ public class Script_DDRManager : MonoBehaviour
     private int lastBeat;
 
     private bool isHandledSuccess;
+    private bool didCloseNotification;
     
     public int Mistakes
     {
@@ -146,6 +149,7 @@ public class Script_DDRManager : MonoBehaviour
         if (State == DDRState.Active)
         {
             HandleBpmPulse();
+            HandleCloseNotification();
             
             HandleLeftArrowSpawn();
             HandleDownArrowSpawn();
@@ -327,6 +331,18 @@ public class Script_DDRManager : MonoBehaviour
             
             StartRightArrow();
             rightMoveCount++;
+        }
+    }
+
+    private void HandleCloseNotification()
+    {
+        if (
+            conductor.SongPosition >= closeNotificationSongPosition
+            && !didCloseNotification
+        )
+        {
+            closeNotification.Activate();
+            didCloseNotification = true;
         }
     }
 
@@ -633,6 +649,9 @@ public class Script_DDRManager : MonoBehaviour
         ScriptArrowOutlineDown.FlashBpm();
         ScriptArrowOutlineUp.FlashBpm();
         ScriptArrowOutlineRight.FlashBpm();
+
+        if (closeNotification.gameObject.activeInHierarchy)
+            closeNotification.Pulse();
     }
 
     private void OnBeatEffect()
@@ -666,8 +685,10 @@ public class Script_DDRManager : MonoBehaviour
         Tier1Comment.Setup(tierCommentActivationLength);
         Tier2Comment.Setup(tierCommentActivationLength);
         Tier3Comment.Setup(tierCommentActivationLength);
+        closeNotification.Setup(closeNotificationActivationLength);
 
         isHandledSuccess = false;
+        didCloseNotification = false;
     }
 
     public void Setup()
@@ -710,6 +731,11 @@ public class Script_DDRManager : MonoBehaviour
             if (GUILayout.Button("Song Finish"))
             {
                 t.HandleSongFinish(true);
+            }
+
+            if (GUILayout.Button("Close Notification"))
+            {
+                t.closeNotification.Activate();
             }
         }
     }
