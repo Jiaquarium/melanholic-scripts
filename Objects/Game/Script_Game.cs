@@ -128,6 +128,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_WindManager windManager;
 
     [SerializeField] private Script_PianoManager pianoManager;
+    [SerializeField] private Script_NotesTallyTracker notesTallyTracker;
 
     // ------------------------------------------------------------------
     // Canvases
@@ -505,6 +506,7 @@ public class Script_Game : MonoBehaviour
         HUDManager.Setup();
         saveManager.Setup();
         pianoManager.Setup();
+        notesTallyTracker.Setup();
 
         settingsController.Setup();
     }

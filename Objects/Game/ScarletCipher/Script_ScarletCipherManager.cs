@@ -15,6 +15,8 @@ public class Script_ScarletCipherManager : MonoBehaviour
 {
     public static Script_ScarletCipherManager Control;
     public const int QuestionCount = 10;
+    public static int IntroRoomNotesCount = 4;
+
     [SerializeField] private int[] _scarletCipher = new int[QuestionCount];
     [SerializeField] private bool[] _scarletCipherVisibility = new bool[QuestionCount];
     [Tooltip("The relevant 10 question conversation nodes")]

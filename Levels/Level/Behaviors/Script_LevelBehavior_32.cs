@@ -55,6 +55,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // Day Notifications
     [SerializeField] private Script_GlitchFXManager glitchManager;
 
+    // ------------------------------------------------------------------
+    // Note Tally Tracker
+    [SerializeField] private Script_NotesTallyTracker notesTallyTracker;
 
     private int frontDoorDialogueIndex;
     private bool isFirstLoad = true;
@@ -431,6 +434,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     public override void Setup()
     {
         HandleDayEnvironment();
+        notesTallyTracker.UpdateNotesTallyUI();
         
         // Cover screen with Black to prevent flash of Lobby on reloads.
         if (isFirstLoad)
