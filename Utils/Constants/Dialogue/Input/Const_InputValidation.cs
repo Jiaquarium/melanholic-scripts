@@ -2,16 +2,16 @@
 {
     public static class Entry
     {
-        public const int minASCII = 32;
+        public const int minASCII = 32; // includes [space]
         public const int maxASCII = 126;
         public const int maxCharCount = 280;
     }
 
     public static class Name
     {
-        public const int minASCII = 33; // excludes [space]
+        public const int minASCII = 32; // includes [space]
         public const int maxASCII = 126;
-        public const int maxCharCount = 16;
+        public const int maxCharCount = 12;
     }
 
     public static class Answer

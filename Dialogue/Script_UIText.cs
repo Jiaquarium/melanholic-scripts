@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-18 22:02:31
+// Last created by UI Exporter at 2022-06-19 05:58:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -904,7 +904,7 @@ public class Script_UIText
     "collectible_speed-seal",
     new Model_LanguagesUI
     {
-        EN = @"The spirits within this seal give you haste. Hold @@SpeedKey to run when you are your former self."
+        EN = @"The spirits within this seal give you haste. Hold @@SpeedKey to run. Its effects only work when you are not wearing a @@Sticker_Bold (your former self)."
     }
 },
 // ------------------------------------------------------------------
@@ -1007,7 +1007,7 @@ public class Script_UIText
     "notes_last-well-map_hint",
     new Model_LanguagesUI
     {
-        EN = @"The only truth I know,<br>seasons always go in order."
+        EN = @"Have come to trust the seasons<br>they always go in order."
     }
 },
 {
@@ -1067,7 +1067,7 @@ public class Script_UIText
     "menu_top-bar_notes",
     new Model_LanguagesUI
     {
-        EN = @"Notes"
+        EN = @"Notes ♪"
     }
 },
 {
