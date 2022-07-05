@@ -6,10 +6,10 @@ using UnityEngine;
 public class Script_DialogueManagerCanvasHandler : MonoBehaviour
 {
     public CanvasGroup dialogueCanvasGroup;
-    public Canvas[] dialogueCanvases;
+    [SerializeField] private Script_CanvasGroupController[] dialogueCanvases;
 
     private void OnValidate() {
-        dialogueCanvases = dialogueCanvasGroup.transform.GetChildren<Canvas>();
+        dialogueCanvases = dialogueCanvasGroup.transform.GetChildren<Script_CanvasGroupController>();
     }
 
     /// <summary>
@@ -18,16 +18,16 @@ public class Script_DialogueManagerCanvasHandler : MonoBehaviour
     /// </summary>
     public void DisableCanvases()
     {
-        foreach (Canvas canvas in dialogueCanvases)
-            canvas?.gameObject.SetActive(false);
+        foreach (Script_CanvasGroupController canvasGroup in dialogueCanvases)
+            canvasGroup?.Close();
     }
     
     public void DisableInactiveCanvases()
     {
-        foreach (Canvas canvas in dialogueCanvases)
+        foreach (Script_CanvasGroupController canvasGroup in dialogueCanvases)
         {
-            if (canvas != GetComponent<Script_DialogueManager>().activeCanvas)
-                canvas.gameObject.SetActive(false);
+            if (canvasGroup != GetComponent<Script_DialogueManager>().activeCanvas)
+                canvasGroup.Close();
         }
     }
 
@@ -36,19 +36,27 @@ public class Script_DialogueManagerCanvasHandler : MonoBehaviour
     /// </summary>
     public void DisableOnlyEmptyCanvases()
     {
-        foreach (Canvas canvas in dialogueCanvases)
+        foreach (Script_CanvasGroupController canvasGroup in dialogueCanvases)
         {
-            if (canvas.GetComponent<Script_Canvas>().IsTextEmpty())
-                canvas.gameObject.SetActive(false);
+            if (canvasGroup.canvasChild.IsTextEmpty())
+                canvasGroup.Close();
         }
     }
 
     public void DisableInactiveContinuationIcons()
     {
-        foreach (Canvas canvas in dialogueCanvases)
+        foreach (Script_CanvasGroupController canvasGroup in dialogueCanvases)
         {
-            if (canvas != GetComponent<Script_DialogueManager>().activeCanvas)
-                canvas.GetComponent<Script_Canvas>().DisableContinuationIcon();
+            if (canvasGroup != GetComponent<Script_DialogueManager>().activeCanvas)
+                canvasGroup.canvasChild.DisableContinuationIcon();
         }
+    }
+
+    public void Setup()
+    {
+        foreach (Script_CanvasGroupController canvasGroup in dialogueCanvases)
+            canvasGroup.canvasChild?.gameObject.SetActive(true);
+        
+        DisableCanvases();
     }
 }

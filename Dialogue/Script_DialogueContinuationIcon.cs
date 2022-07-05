@@ -111,12 +111,6 @@ public class Script_DialogueContinuationIcon : MonoBehaviour
         isInitialFlicker = true;
     }
 
-    void InitializeState()
-    {
-        InitialOffState();
-        isDisabled = false;
-    }
-
     public void Disable()
     {
         isDisabled = true;
@@ -124,6 +118,7 @@ public class Script_DialogueContinuationIcon : MonoBehaviour
     
     public void Setup()
     {
-        InitializeState();
+        InitialOffState();
+        isDisabled = false;
     }
 }

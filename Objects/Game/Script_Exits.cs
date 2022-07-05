@@ -194,6 +194,7 @@ public class Script_Exits : MonoBehaviour
     void ChangeLevelFade()
     {
         // Start Fading in Black Fader
+        canvas.gameObject.SetActive(true);
         canvas.alpha += fadeSpeed * Time.deltaTime;
 
         if (canvas.alpha >= 1f)
@@ -291,6 +292,7 @@ public class Script_Exits : MonoBehaviour
     /// </summary>
     void FadeInLevel()
     {
+        canvas.gameObject.SetActive(true);
         canvas.alpha -= fadeSpeed * Time.deltaTime;
 
         if (canvas.alpha <= 0f && isFadeIn)

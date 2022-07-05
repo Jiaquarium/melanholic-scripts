@@ -72,25 +72,25 @@ public class Script_SaveViewManager : MonoBehaviour
     public void InputChoice(int Id)
     {
         // yes, save
-        if (Id == 0)
-        {
-            string savePointNameId = game.GetSavePointData().nameId;
-            // check to see if editting or new entry
-            Script_Entry existingEntry = entryManager.GetExistingEntry(savePointNameId);
-            if (existingEntry != null)
-                entryInput.InitializeState(existingEntry.text);
-            else
-                entryInput.InitializeState(string.Empty);
+        // if (Id == 0)
+        // {
+        //     string savePointNameId = game.GetSavePointData().nameId;
+        //     // check to see if editting or new entry
+        //     Script_Entry existingEntry = entryManager.GetExistingEntry(savePointNameId);
+        //     if (existingEntry != null)
+        //         entryInput.InitializeState(existingEntry.text);
+        //     else
+        //         entryInput.InitializeState(string.Empty);
             
-            StartEntryMode();
-            dm.HideDialogue();
-        }
-        // no, don't save
-        else
-        {
-            dm.NextDialogueNode(1);
-        }
-        EndSavePrompt();
+        //     StartEntryMode();
+        //     dm.HideDialogue();
+        // }
+        // // no, don't save
+        // else
+        // {
+        //     dm.NextDialogueNode(1);
+        // }
+        // EndSavePrompt();
     }
 
     /// <summary>
@@ -99,34 +99,34 @@ public class Script_SaveViewManager : MonoBehaviour
     public void InputSaveEntryChoice(int Id, string playerInputText)
     {
         // Submit
-        if (Id == 0)
-        {
-            Model_SavePointData spData = game.GetSavePointData();
+        // if (Id == 0)
+        // {
+        //     Model_SavePointData spData = game.GetSavePointData();
             
-            // create Entry
-            entryManager.AddEntry(
-                spData.nameId,
-                playerInputText,
-                DateTime.Now,
-                spData.headline
-            );
+        //     // create Entry
+        //     entryManager.AddEntry(
+        //         spData.nameId,
+        //         playerInputText,
+        //         DateTime.Now,
+        //         spData.headline
+        //     );
             
-            saveProgressCanvas.SetActive(true);
-            Script_SaveGameControl.control.Save();
+        //     saveProgressCanvas.SetActive(true);
+        //     Script_SaveGameControl.control.Save();
 
-            isShowingSaving = true;
-            Script_AwaitFile.AwaitFile(Script_SaveGameControl.saveFilePath);
-            isShowingSaving = false;
+        //     isShowingSaving = true;
+        //     Script_AwaitFile.AwaitFile(Script_SaveGameControl.saveFilePath);
+        //     isShowingSaving = false;
             
-            StartCoroutine(AwaitSaveComplete());
-        }
-        // Cancel
-        else if (Id == 1)
-        {
-            Debug.Log("Cancelling save entry input!");
-            dm.NextDialogueNode(1);
-        }
-        EndEntryMode();
+        //     StartCoroutine(AwaitSaveComplete());
+        // }
+        // // Cancel
+        // else if (Id == 1)
+        // {
+        //     Debug.Log("Cancelling save entry input!");
+        //     dm.NextDialogueNode(1);
+        // }
+        // EndEntryMode();
     }
 
     /// <summary>

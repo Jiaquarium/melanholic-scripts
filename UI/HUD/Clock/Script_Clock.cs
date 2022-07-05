@@ -22,6 +22,7 @@ public class Script_Clock : MonoBehaviour
     }
 
     public const float StartTime        = 18000f; // 5:00:00
+    public const float FourthTime       = StartTime + 900f; // 15 min game time passed
     public const float AwareTime        = StartTime + 1800f; // 30 min game time passed, 30 min left (6 min IRL)
     public const float WarningTime      = StartTime + 2700f; // 45 min game time passed, 15 min left (3 min IRL)
     public const float DangerTime       = StartTime + 3300f; // 55 min game time passed, 5 min left (1 min IRL)

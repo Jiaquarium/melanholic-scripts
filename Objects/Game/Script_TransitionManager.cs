@@ -44,11 +44,15 @@ public class Script_TransitionManager : MonoBehaviour
     [Tooltip("Wait time after clicking To Main Menu UI choice on Bad Ending The Sealing cut scene.")]
     [SerializeField] private float toTitleWaitTime;
     
-    public Script_CanvasGroupFadeInOut fader;
-    [SerializeField] private Script_CanvasGroupController timelineFaderOver;
-    [SerializeField] private Script_CanvasGroupController timelineFaderUnder;
-    
+    [Header("Fading Canvases")]
     [SerializeField] private Script_CanvasGroupController underDialogueController;
+    public Script_CanvasGroupFadeInOut fader;
+    [SerializeField] private Script_CanvasGroupController timelineUnderHUD;
+    [SerializeField] private Script_CanvasGroupController timelineFaderUnder;
+    [SerializeField] private Script_CanvasGroupController timelineFaderOver;
+    [SerializeField] private Script_CanvasGroupController timelineFaderOverWhite;
+    [SerializeField] private Script_CanvasGroupController faderOverWhite;
+    
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_TimeManager timeManager;
 
@@ -565,9 +569,13 @@ public class Script_TransitionManager : MonoBehaviour
 
     public void InitialState()
     {
+        timelineFaderUnder.InitialState();
         fader.GetComponent<Script_CanvasGroupController>().InitialState();
+        timelineUnderHUD.InitialState();
         timelineFaderUnder.InitialState();
         timelineFaderOver.InitialState();
+        timelineFaderOverWhite.InitialState();
+        faderOverWhite.InitialState();
     }
     
     public void Setup()
@@ -581,7 +589,6 @@ public class Script_TransitionManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         
-        fader.gameObject.SetActive(true);
         restartPrompt.Close();
 
         endingsCanvasGroup.gameObject.SetActive(false);
@@ -589,6 +596,14 @@ public class Script_TransitionManager : MonoBehaviour
         trueEndingCanvasGroup.gameObject.SetActive(false);
         SealingCanvasGroup.gameObject.SetActive(false);
         endingsBgCanvasGroup.gameObject.SetActive(false);
+
+        timelineFaderUnder.Close();
+        fader.GetComponent<Script_CanvasGroupController>().Close();
+        timelineUnderHUD.Close();
+        timelineFaderUnder.Close();
+        timelineFaderOver.Close();
+        timelineFaderOverWhite.Close();
+        faderOverWhite.Close();
     }
 }
 

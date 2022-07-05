@@ -9,12 +9,17 @@ using UnityEditor;
 
 public class Script_Timebar : MonoBehaviour
 {
-    public Slider slider;
+    [SerializeField] private Image imageFill;
+    [SerializeField] private Slider slider;
     
     public float TimeElapsed
     {
-        get => slider.value;
-        set => slider.value = value;
+        get => imageFill.fillAmount;
+        set 
+        {
+            slider.value = value;
+            imageFill.fillAmount = value;
+        }
     }
 }
 
@@ -28,12 +33,12 @@ public class Script_TimebarTester : Editor
         Script_Timebar t = (Script_Timebar)target;
         if (GUILayout.Button("+ 1f"))
         {
-            t.TimeElapsed += 1f;
+            t.TimeElapsed += 1f / (float)Script_ClockManager.TimebarIncrements;
         }
 
         if (GUILayout.Button("- 1f"))
         {
-            t.TimeElapsed -= 1f;
+            t.TimeElapsed -= 1f / (float)Script_ClockManager.TimebarIncrements;
         }
     }
 }

@@ -906,6 +906,7 @@ public static class Script_Utils
 
     public static float GetFadeTime(this FadeSpeeds fadeSpeed)
     {
+        const float fadeXFastTime = 0.10f;
         const float fadeFastTime = 0.25f;
         const float fadeMedTime = 0.75f;
         const float fadeSlowTime = 1.25f;
@@ -913,6 +914,7 @@ public static class Script_Utils
         
         return fadeSpeed switch
         {
+            FadeSpeeds.XFast => fadeXFastTime,
             FadeSpeeds.Fast => fadeFastTime,
             FadeSpeeds.Med => fadeMedTime,
             FadeSpeeds.Slow => fadeSlowTime,

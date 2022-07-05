@@ -37,6 +37,9 @@ public class Script_DialogueManager : MonoBehaviour
     public static float DialogueContinuationFlickerInterval = 0.75f;
     private static char PauseTextCommand = '|';
     
+    
+    [SerializeField] private float dialogueFadeTime;
+
     // NOTE: for cut scenes this may be null if not defined by call to StartDialogue.
     public Script_Interactable activeInteractable;
     public Script_Game game;
@@ -45,7 +48,7 @@ public class Script_DialogueManager : MonoBehaviour
     public AudioClip dialogueStartSoundFX;
     public AudioClip typeSFX;
 
-    public Transform activeCanvas;
+    public Script_CanvasGroupController activeCanvas;
     public TextMeshProUGUI activeCanvasText;
     public TextMeshProUGUI[] activeCanvasTexts;
     /*
@@ -53,45 +56,49 @@ public class Script_DialogueManager : MonoBehaviour
         LINE
         LINE
     */
-    public Canvas DefaultCanvas;
-    public TextMeshProUGUI DefaultCanvasName;
-    public TextMeshProUGUI[] DefaultCanvasDialogueTexts;
+    [SerializeField] private Script_CanvasGroupController DefaultCanvas;
+    [SerializeField] private TextMeshProUGUI DefaultCanvasName;
+    [SerializeField] private TextMeshProUGUI[] DefaultCanvasDialogueTexts;
 
-    public Canvas DefaultCanvasTop;
-    public TextMeshProUGUI DefaultCanvasNameTop;
-    public TextMeshProUGUI[] DefaultCanvasDialogueTextsTop;
+    // public Canvas DefaultCanvasTop;
+    // public TextMeshProUGUI DefaultCanvasNameTop;
+    // public TextMeshProUGUI[] DefaultCanvasDialogueTextsTop;
 
-    public Canvas CanvasChoice1Row;
+    [SerializeField] private Script_CanvasGroupController CanvasChoice1Row;
     public TextMeshProUGUI CanvasChoice1RowName;
     public TextMeshProUGUI[] CanvasChoice1RowDialogueTexts;
 
-    public Canvas CanvasChoice1RowTop;
-    public TextMeshProUGUI CanvasChoice1RowTopName;
-    public TextMeshProUGUI[] CanvasChoice1RowTopDialogueTexts;
+    // public Canvas CanvasChoice1RowTop;
+    // public TextMeshProUGUI CanvasChoice1RowTopName;
+    // public TextMeshProUGUI[] CanvasChoice1RowTopDialogueTexts;
 
-    public Canvas SaveChoiceCanvas;
-    public TextMeshProUGUI SaveChoiceName;
-    public TextMeshProUGUI[] SaveChoiceDialogueTexts;
+    // public Canvas SaveChoiceCanvas;
+    // public TextMeshProUGUI SaveChoiceName;
+    // public TextMeshProUGUI[] SaveChoiceDialogueTexts;
 
     /// based on SaveChoiceCanvas
-    public Canvas PaintingEntranceChoiceCanvas;
+    public Script_CanvasGroupController PaintingEntranceChoiceCanvas;
     public TextMeshProUGUI[] PaintingEntranceChoiceDialogueTexts;
 
-    public Canvas ReadChoiceCanvasBottom; 
+    [SerializeField] private Script_CanvasGroupController ReadChoiceCanvasBottom; 
     public TextMeshProUGUI[] ReadChoiceDialogueTexts;
 
     /*
         LINE
         LINE
     */
-    public Canvas DefaultReadTextCanvas;
+    public Script_CanvasGroupController DefaultReadTextCanvas;
     public TextMeshProUGUI[] DefaultReadTextCanvasTexts;
-    public Canvas DefaultReadTextCanvasTop;
-    public TextMeshProUGUI[] DefaultReadTextCanvasTextsTop;
-    public Canvas ItemDescriptionCanvasBottom;
+    
+    // public Canvas DefaultReadTextCanvasTop;
+    // public TextMeshProUGUI[] DefaultReadTextCanvasTextsTop;
+    
+    public Script_CanvasGroupController ItemDescriptionCanvasBottom;
     public TextMeshProUGUI[] ItemDescriptionCanvasTextsBottom;
-    public Canvas ItemDescriptionCanvasTop;
-    public TextMeshProUGUI[] ItemDescriptionCanvasTextsTop;
+    
+    // public Canvas ItemDescriptionCanvasTop;
+    // public TextMeshProUGUI[] ItemDescriptionCanvasTextsTop;
+    
     public Script_SaveViewManager saveManager;
     public Script_PaintingEntranceManager paintingEntranceManager;
     [SerializeField] private Script_InputManager inputManager;
@@ -112,6 +119,7 @@ public class Script_DialogueManager : MonoBehaviour
 
     private TextMeshProUGUI nameText;
     private TextMeshProUGUI dialogueText;
+    
     private Script_ChoiceManager choiceManager;
     private string playerName;
     private IEnumerator coroutine;
@@ -259,14 +267,13 @@ public class Script_DialogueManager : MonoBehaviour
             currentNode.data.OnBeforeNodeAction.Invoke();
         }
 
+        isInputDisabled = true;
+        
         if (currentNode.data.fullArt != null)
         {
-            isInputDisabled = true;
-            
             fullArtManager.ShowFullArt(
                 currentNode.data.fullArt,
-                currentNode.data.fadeIn, () => {    // Use node fadeIn speed so fullArt can be extensible
-                    isInputDisabled = false;
+                currentNode.data.fadeIn, () => {
                     StartDialogue(currentNode.data.dialogue, type ?? currentNode.data.type, SFXOn);
                 },
                 Script_FullArtManager.FullArtState.DialogueManager
@@ -318,9 +325,9 @@ public class Script_DialogueManager : MonoBehaviour
     public void NextDialogueNode(int childIdx)
     {
         // to prevent multiple calls when in the middle of handling fade in callback
-        if (isInputDisabled)    return;
+        if (isInputDisabled)
+            return;
         
-        ShowDialogue();
         EndInputMode();
         
         Script_FullArt lastFullArt      = currentNode.data.fullArt;
@@ -334,13 +341,13 @@ public class Script_DialogueManager : MonoBehaviour
             OnEndDialogueSections();
             return;
         }
+        
         SetupTypingSpeed();
-
         EnqueueDialogueSections(currentNode.data.dialogue);
         SetupCanvases(currentNode.data.dialogue, currentNode.data.type);
-        
-        // if (nameText != null)
-        //     nameText.text = Script_Utils.FormatString(currentNode.data.dialogue.name) + ":";
+
+        // Ensure to immediately reinit the active canvas, since not fading in when doing NextNode.
+        ShowDialogue();
         
         isInputDisabled = true;
         
@@ -485,16 +492,19 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
     
-    void StartDialogue(
+    private void StartDialogue(
         Model_Dialogue dialogue,
         string type,
         bool SFXOn = true
     )
     {
+        isInputDisabled = false;
         isKeepingDialogueUp = false;
+        
         ClearQueueState();
         
         SetupCanvases(dialogue, type);
+        activeCanvas.canvasChild.DisableContinuationIcon();
         
         // specify silent typing dialogue types
         if (
@@ -515,13 +525,22 @@ public class Script_DialogueManager : MonoBehaviour
         
         ShowDialogue();
 
+        Debug.Log("Fade In dialogue canvas");
+        
         if (SFXOn && !isSilentTyping)
         {
             audioSource.PlayOneShot(dialogueStartSoundFX, dialogueStartVolumeScale);
         }
 
         EnqueueDialogueSections(dialogue);
-        ContinueDialogue();
+        
+        activeCanvas.InitialState();
+        activeCanvas.FadeIn(dialogueFadeTime, () => {
+            // Reactivate Continuation Icon
+            activeCanvas.canvasChild.Setup();
+
+            ContinueDialogue();
+        });
     }
 
     private void DisplayNextDialoguePortion()
@@ -642,7 +661,11 @@ public class Script_DialogueManager : MonoBehaviour
             if (nextVisibleChar == PauseTextCommand)
                 yield return new WaitForSeconds(pauseLength);
             else
-                yield return null;
+            {
+                // Don't pause before the first character reveal.
+                if (visibleCount > 0)
+                    yield return null;
+            }
             
             visibleCount++;
         }
@@ -775,20 +798,7 @@ public class Script_DialogueManager : MonoBehaviour
         {
             t.text = "";
         }
-        DefaultCanvasNameTop.text = "";
-        foreach (TextMeshProUGUI t in DefaultCanvasDialogueTextsTop)
-        {
-            t.text = "";
-        }
         foreach (TextMeshProUGUI t in CanvasChoice1RowDialogueTexts)
-        {
-            t.text = "";
-        }
-        foreach (TextMeshProUGUI t in CanvasChoice1RowTopDialogueTexts)
-        {
-            t.text = "";
-        }
-        foreach (TextMeshProUGUI t in SaveChoiceDialogueTexts)
         {
             t.text = "";
         }
@@ -804,15 +814,7 @@ public class Script_DialogueManager : MonoBehaviour
         {
             t.text = "";
         }
-        foreach (TextMeshProUGUI t in DefaultReadTextCanvasTextsTop)
-        {
-            t.text = "";
-        }
         foreach (TextMeshProUGUI t in ItemDescriptionCanvasTextsBottom)
-        {
-            t.text = "";
-        }
-        foreach (TextMeshProUGUI t in ItemDescriptionCanvasTextsTop)
         {
             t.text = "";
         }
@@ -898,33 +900,60 @@ public class Script_DialogueManager : MonoBehaviour
         /// Allow the InteractableFullArt object to handle this if it's a fullArt object
         /// e.g. not just fullArt attached to a dialogueNode
         bool isFullArtControlledByMe = fullArtManager.state == Script_FullArtManager.FullArtState.DialogueManager;
+        
         if (
             fullArtManager.activeFullArt != null
             && isFullArtControlledByMe
             && !currentNode.data.isLeaveFullArtUp
         )
         {
-            fullArtManager.HideFullArt(fullArtManager.activeFullArt, currentNode.data.fadeOut, () =>
-            {
-                StartCoroutine(EndDialogue());
-            });
+            StartCoroutine(FullArtEndDialogue());
         }
         else
         {
-            StartCoroutine(EndDialogue());
+            StartCoroutine(NoFullArtEndDialogue());
         }
 
-        // Wait a frame before actually ending dialogue. This prevents processing the End Dialogue
+        // Waiting until the fading out to end dialogue prevents processing the End Dialogue
         // input with a new interaction (e.g. a cut scene happens when in front of a Text Object).
-        IEnumerator EndDialogue()
+        IEnumerator FullArtEndDialogue()
         {
             yield return null;
-
-            isInputDisabled = false;
             
             if (!HandleKeepDialogueUpOnAction())
-                HideDialogue();
+            {
+                ClearAllCanvasTexts();
+                activeCanvas.FadeOut(dialogueFadeTime, () => {
+                    fullArtManager.HideFullArt(
+                        fullArtManager.activeFullArt, currentNode.data.fadeOut, OnEndDialogue
+                    );
+                });
+            }
+            else
+            {
+                OnEndDialogue();
+            }
+        }
+        
+        IEnumerator NoFullArtEndDialogue()
+        {
+            yield return null;
+            
+            if (!HandleKeepDialogueUpOnAction())
+            {
+                ClearAllCanvasTexts();
+                activeCanvas.FadeOut(dialogueFadeTime, OnEndDialogue);
+            }
+            else
+            {
+                OnEndDialogue();
+            }
+        }
 
+        void OnEndDialogue()
+        {
+            isInputDisabled = false;
+            
             /// In picking up state, player state will be handled by player Action
             /// upon finishing the item description dialogue. Otherwise, set the player state
             /// back to Interact.
@@ -1065,23 +1094,28 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
 
-    public void HideDialogue()
+    private void HideDialogue()
     {
         // Hide at end of dialogue so we don't see flicker when we change types
-        if (activeCanvas != null)   activeCanvas.gameObject.SetActive(false);
+        if (activeCanvas != null)
+            activeCanvas.Close();
+
         canvas.gameObject.SetActive(false);
         canvas.alpha = 0f;
         canvas.blocksRaycasts = false;
     }
 
-    void ShowDialogue()
+    private void ShowDialogue()
     {
+        if (activeCanvas != null)
+            activeCanvas.Open();
+        
         canvas.gameObject.SetActive(true);
         canvas.alpha = 1f;
         canvas.blocksRaycasts = true;
     }
 
-    void SetupCanvases(Model_Dialogue dialogue, string type)
+    private void SetupCanvases(Model_Dialogue dialogue, string type)
     {
         /// Allow option item descriptions to not override text
         if (
@@ -1103,6 +1137,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
         
         string canvasLocType = Const_DialogueTypes.Location.Bottom;
+        
         if (currentNode.data.locationType != null)
         {
             canvasLocType = currentNode.data.locationType;
@@ -1116,20 +1151,9 @@ public class Script_DialogueManager : MonoBehaviour
             }
             else
             {
-                if (canvasLocType == Const_DialogueTypes.Location.Top)
-                {
-                    activeCanvas = DefaultReadTextCanvasTop.transform;
-                    activeCanvasTexts = DefaultReadTextCanvasTextsTop;
-                    DefaultReadTextCanvasTop.gameObject.SetActive(true);
-                }
-                else
-                {
-                    activeCanvas = DefaultReadTextCanvas.transform;
-                    activeCanvasTexts = DefaultReadTextCanvasTexts;
-                    DefaultReadTextCanvas.gameObject.SetActive(true);
-                }
-                
-                // activeCanvas.GetComponent<Script_Canvas>().ContinuationIcon.Setup();
+                activeCanvas = DefaultReadTextCanvas;
+                activeCanvasTexts = DefaultReadTextCanvasTexts;
+                DefaultReadTextCanvas.gameObject.SetActive(true);
             }
         }
         else if (
@@ -1137,37 +1161,19 @@ public class Script_DialogueManager : MonoBehaviour
             || type == Const_DialogueTypes.Type.ItemNoPickUp
         )
         {
-            if (canvasLocType == Const_DialogueTypes.Location.Top)
-            {
-                activeCanvas = ItemDescriptionCanvasTop.transform;
-                activeCanvasTexts = ItemDescriptionCanvasTextsTop;
-                ItemDescriptionCanvasTop.gameObject.SetActive(true);
-            }
-            else
-            {
-                activeCanvas = ItemDescriptionCanvasBottom.transform;
-                activeCanvasTexts = ItemDescriptionCanvasTextsBottom;
-                ItemDescriptionCanvasBottom.gameObject.SetActive(true);
-            }
+            activeCanvas = ItemDescriptionCanvasBottom;
+            activeCanvasTexts = ItemDescriptionCanvasTextsBottom;
+            ItemDescriptionCanvasBottom.gameObject.SetActive(true);
 
-            // if other continuation icons are active, disable them
+            // If other continuation icons are active, disable them
             canvasHandler.DisableInactiveContinuationIcons();
-            // activeCanvas.GetComponent<Script_Canvas>().ContinuationIcon.Setup();
-        }
-        else if (currentNode is Script_DialogueNode_SavePoint)
-        {
-            activeCanvas = SaveChoiceCanvas.transform;
-            SaveChoiceCanvas.gameObject.SetActive(true);
-            nameText = SaveChoiceName;
-            activeCanvasTexts = SaveChoiceDialogueTexts;
-            // SetupName(dialogue.name);
         }
         else if (
             currentNode is Script_DialogueNode_PaintingEntrance
             || currentNode.data.type == Const_DialogueTypes.Type.PaintingEntrance
         )
         {
-            activeCanvas = PaintingEntranceChoiceCanvas.transform;
+            activeCanvas = PaintingEntranceChoiceCanvas;
             PaintingEntranceChoiceCanvas.gameObject.SetActive(true);
             activeCanvasTexts = PaintingEntranceChoiceDialogueTexts;
         }
@@ -1182,28 +1188,16 @@ public class Script_DialogueManager : MonoBehaviour
         }
         else
         {
-            if (canvasLocType == Const_DialogueTypes.Location.Top)
-            {
-                activeCanvas = DefaultCanvasTop.transform;
-                // activeCanvas.GetComponent<Script_Canvas>().ContinuationIcon.Setup();
-
-                DefaultCanvasTop.gameObject.SetActive(true);
-                activeCanvasTexts = DefaultCanvasDialogueTextsTop;
-                nameText = DefaultCanvasNameTop;
-            }
-            else
-            {
-                activeCanvas = DefaultCanvas.transform;
-                // activeCanvas.GetComponent<Script_Canvas>().ContinuationIcon.Setup();
-
-                DefaultCanvas.gameObject.SetActive(true);
-                activeCanvasTexts = DefaultCanvasDialogueTexts;
-                nameText = DefaultCanvasName;
-            }
-            // SetupName(dialogue.name);           
+            activeCanvas = DefaultCanvas;
+            DefaultCanvas.gameObject.SetActive(true);
+            activeCanvasTexts = DefaultCanvasDialogueTexts;
+            nameText = DefaultCanvasName;
         }
-        foreach (var c in activeCanvasTexts)     c.gameObject.SetActive(true);
-        activeCanvas.GetComponent<Script_Canvas>().Setup();
+        
+        foreach (var c in activeCanvasTexts)
+            c.gameObject.SetActive(true);
+        
+        activeCanvas.canvasChild.Setup();
         SetupName(dialogue.name);
     }
 
@@ -1224,29 +1218,17 @@ public class Script_DialogueManager : MonoBehaviour
 
     private void SetDialogueCanvasToCanvasChoice1Row(string loc)
     {
-        if  (loc == Const_DialogueTypes.Location.Top)
-        {
-            activeCanvas = CanvasChoice1RowTop.transform;
-            CanvasChoice1RowTop.gameObject.SetActive(true);
-            
-            activeCanvasTexts = CanvasChoice1RowTopDialogueTexts;
-            nameText = CanvasChoice1RowTopName;
-            nameText.text = Script_Utils.FormatString(currentNode.data.dialogue.name) + ":";
-        }
-        else
-        {
-            activeCanvas = CanvasChoice1Row.transform;
-            CanvasChoice1Row.gameObject.SetActive(true);
-            
-            activeCanvasTexts = CanvasChoice1RowDialogueTexts;
-            nameText = CanvasChoice1RowName;
-            nameText.text = Script_Utils.FormatString(currentNode.data.dialogue.name) + ":";
-        }
+        activeCanvas = CanvasChoice1Row;
+        CanvasChoice1Row.gameObject.SetActive(true);
+        
+        activeCanvasTexts = CanvasChoice1RowDialogueTexts;
+        nameText = CanvasChoice1RowName;
+        nameText.text = Script_Utils.FormatString(currentNode.data.dialogue.name) + ":";
     }
 
     private void SetDialogueCanvasToReadChoice()
     {
-        activeCanvas = ReadChoiceCanvasBottom.transform;
+        activeCanvas = ReadChoiceCanvasBottom;
         ReadChoiceCanvasBottom.gameObject.SetActive(true);
         
         activeCanvasTexts = ReadChoiceDialogueTexts;
@@ -1262,7 +1244,7 @@ public class Script_DialogueManager : MonoBehaviour
     {
         HideDialogue();
         ClearAllCanvasTexts();
-        canvasHandler.DisableCanvases();
+        canvasHandler.Setup();
     }
 
     public void Initialize()

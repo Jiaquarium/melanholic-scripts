@@ -50,6 +50,11 @@ public class Script_CanvasGroupController : MonoBehaviour
     }
 
     public CanvasGroup MyCanvasGroup { get => GetComponent<CanvasGroup>(); }
+
+    public Script_Canvas canvasChild
+    {
+        get => GetComponentInChildren<Script_Canvas>(true);
+    } 
     
     public virtual void Open()
     {
@@ -86,14 +91,9 @@ public class Script_CanvasGroupController : MonoBehaviour
             StopCoroutine(fadeOutCoroutine);
             fadeOutCoroutine = null;
         }
-
-        bool isFadedToMaxAlpha = isUseMaxAlpha && c.alpha >= maxAlpha;
-        bool isFadedIn = c.alpha == 1 || isFadedToMaxAlpha;
         
-        if (isFadedIn || fadeInCoroutine != null)
-        {
+        if (fadeInCoroutine != null)
             return;
-        }
 
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
                 if (a != null) a();
@@ -125,9 +125,7 @@ public class Script_CanvasGroupController : MonoBehaviour
             fadeInCoroutine = null;
         }
         
-        bool isFadedOut = c.alpha == 0;
-
-        if (isFadedOut || fadeOutCoroutine != null)
+        if (fadeOutCoroutine != null)
             return;
 
         fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(t, () => {

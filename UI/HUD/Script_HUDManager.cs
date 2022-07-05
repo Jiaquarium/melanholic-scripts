@@ -47,11 +47,13 @@ public class Script_HUDManager : MonoBehaviour
         
         if (IsClockShowing() || IsTimesUp)
         {
-            timeCanvasGroup.FadeIn(FadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
+            if (!timeCanvasGroup.gameObject.activeInHierarchy || timeCanvasGroup.MyCanvasGroup.alpha < 1f)
+                timeCanvasGroup.FadeIn(FadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
         }
         else
         {
-            timeCanvasGroup.FadeOut(FadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
+            if (timeCanvasGroup.gameObject.activeInHierarchy)
+                timeCanvasGroup.FadeOut(FadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
         }
     }
 

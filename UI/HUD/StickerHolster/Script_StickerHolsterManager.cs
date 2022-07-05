@@ -48,15 +48,23 @@ public class Script_StickerHolsterManager : MonoBehaviour
         
         if (IsHolsterShowing)
         {
-            stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(
-                FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
-            );
+            var canvasGroupController = stickerHolster.GetComponent<Script_CanvasGroupController>();
+
+            if (!stickerHolster.gameObject.activeInHierarchy || canvasGroupController.MyCanvasGroup.alpha < 1f)
+            {
+                stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(
+                    FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
+                );
+            }
         }
         else
         {
-            stickerHolster.GetComponent<Script_CanvasGroupController>().FadeOut(
-                FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
-            );
+            if (stickerHolster.gameObject.activeInHierarchy)
+            {
+                stickerHolster.GetComponent<Script_CanvasGroupController>().FadeOut(
+                    FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
+                );
+            }
         }
     }
     

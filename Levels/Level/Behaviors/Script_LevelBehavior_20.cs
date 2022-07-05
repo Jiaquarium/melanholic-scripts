@@ -206,8 +206,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     // King's Intro Trigger
     public void KingsIntroTimeline()
     {
-        // Pause King's walking Timeline.
-
         // Check for Psychic Duck
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
         if (isPsychicDuckActive && !isKingIntroCutSceneDone && !didStartKingsIntro)
@@ -216,11 +214,14 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
             game.ChangeStateCutScene();
 
+            // Pause King's walking Timeline.
             KingEclaire.State = Script_StaticNPC.States.Dialogue;
 
             Script_BackgroundMusicManager.Control.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
 
             Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {
+                Debug.Log($"Faded in Timeline Under after t {timelineFaderFadeInTime} sec");
+                
                 Script_Player p = game.GetPlayer();
                 
                 p.Teleport(KingIntroPlayerSpawn.Position);

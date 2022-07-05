@@ -102,9 +102,13 @@ public class Script_ClockManager : MonoBehaviour
     {
         float timeElapsed = clock.CurrentTime - Script_Clock.StartTime;
         float donePercent = timeElapsed / Script_Clock.TotalTime;
-        int doneValue = (int)Mathf.Floor(donePercent * TimebarIncrements);
         
-        timebar.TimeElapsed = doneValue;
+        // Only move on minute increments.
+        int doneValue = (int)Mathf.Floor(donePercent * TimebarIncrements);
+
+        float fillAmount = (float)doneValue / (float)TimebarIncrements;
+        
+        timebar.TimeElapsed = fillAmount;
     }
 
     public void InitialState()
@@ -185,6 +189,11 @@ public class Script_ClockManager : MonoBehaviour
     {
         clock.CurrentTime = Script_Clock.R2IdsDeadTime;
     }
+
+    public void FourthTime()
+    {
+        clock.CurrentTime = Script_Clock.FourthTime;
+    }
 }
 
 #if UNITY_EDITOR
@@ -200,6 +209,11 @@ public class Script_ClockManagerTester : Editor
             t.TimesUp();
         }
 
+        if (GUILayout.Button("Fourth Time"))
+        {
+            t.FourthTime();
+        }
+        
         if (GUILayout.Button("Aware Time"))
         {
             t.AwareTime();
