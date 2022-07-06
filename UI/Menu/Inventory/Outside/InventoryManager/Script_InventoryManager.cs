@@ -17,7 +17,8 @@ public class Script_InventoryManager : MonoBehaviour
     public enum Types
     {
         Stickers,
-        Items
+        Items,
+        Equipment,
     }
     
     [SerializeField] private Script_MenuController menuController;
@@ -192,6 +193,9 @@ public class Script_InventoryManager : MonoBehaviour
             case Types.Stickers:
                 inventory.HighlightItem(i, isOn);
                 break;
+            case Types.Equipment:
+                equipment.HighlightItem(i, isOn);
+                break;
             case Types.Items:
                 items.HighlightItem(i, isOn);
                 break;
@@ -214,14 +218,20 @@ public class Script_InventoryManager : MonoBehaviour
     // View
     private void HandleItemDescription(int i, Types type)
     {
+        Script_Item item;
+        
         switch(type)
         {
             case Types.Stickers:
-                Script_Item _item = inventory.GetItemInSlot(i);
-                inventoryViewController.HandleItemDescription(_item);
+                item = inventory.GetItemInSlot(i);
+                inventoryViewController.HandleItemDescription(item);
+                break;
+            case Types.Equipment:
+                item = equipment.GetStickerInSlot(i) as Script_Item;
+                inventoryViewController.HandleItemDescription(item);
                 break;
             case Types.Items:
-                Script_Item item = items.GetItemInSlot(i);
+                item = items.GetItemInSlot(i);
                 itemsViewController.HandleItemDescription(item);
                 break;
         }

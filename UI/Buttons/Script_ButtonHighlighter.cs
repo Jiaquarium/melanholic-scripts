@@ -19,6 +19,8 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     public Image[] outlines;
     [SerializeField] protected bool isHighlighted;
     [SerializeField] protected Image deactivateOverlay;
+
+    [SerializeField] private Script_ItemHighlight itemHighlighter;
     
     /// Ensure initializing comes before OnSelect
     void OnEnable()
@@ -42,12 +44,18 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     {
         Debug.Log($"OnSelect {name}");
         HighlightOutline(true);
+
+        if (itemHighlighter != null)
+            itemHighlighter.HighlightAndShowDescription(true);
     }
 
     public virtual void OnDeselect(BaseEventData e)
     {
         Debug.Log($"OnDeselect {name}");
         HighlightOutline(false);
+
+        if (itemHighlighter != null)
+            itemHighlighter.HighlightAndShowDescription(false);
     }
 
     public void Select()

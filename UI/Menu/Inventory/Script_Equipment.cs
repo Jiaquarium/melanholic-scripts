@@ -100,6 +100,11 @@ public class Script_Equipment : MonoBehaviour
         return false;
     }
 
+    public void HighlightItem(int i, bool isFocus)
+    {
+        Script_InventoryHelpers.HighlightItem(i, isFocus, stickers, stickerImages);
+    }
+
     void HandleStickerHolsterAdd(Script_Sticker stickerToAdd, int i)
     {
         Script_StickerHolsterManager.Control.AddSticker(stickerToAdd, i);   
