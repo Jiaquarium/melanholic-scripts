@@ -206,6 +206,12 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip OpenCloseBookReverse;
     [Range(0f, 1f)] public float OpenCloseBookReverseVol;
 
+    public AudioClip OpenMenu;
+    [Range(0f, 1f)] public float OpenMenuVol;
+
+    public AudioClip CloseMenu;
+    [Range(0f, 1f)] public float CloseMenuVol;
+
     public AudioClip OpenCloseBookHeavy;
     [Range(0f, 1f)] public float OpenCloseBookHeavyVol;
 

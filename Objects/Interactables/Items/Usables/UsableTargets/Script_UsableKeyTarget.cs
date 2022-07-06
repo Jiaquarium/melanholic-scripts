@@ -20,7 +20,7 @@ public class Script_UsableKeyTarget : Script_UsableTarget
         
         if (key == myKey)
         {
-            Script_Game.Game.CloseInventory();
+            Script_Game.Game.CloseInventory(noSFX: true);
             OnUnlock(key);
             return true;
         }

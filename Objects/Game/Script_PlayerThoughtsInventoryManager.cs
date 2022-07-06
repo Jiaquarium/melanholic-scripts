@@ -13,8 +13,16 @@ public class Script_PlayerThoughtsInventoryManager : MonoBehaviour
     public Script_ThoughtSlotHolder thoughtSlotHolder;
     private Script_Game game;
 
-    public void OpenInventory()
+    [SerializeField] private AudioSource inventoryAudioSource;
+
+    public void OpenInventory(bool noSFX = false)
     {
+        if (!noSFX)
+        {
+            var sfx = Script_SFXManager.SFX;
+            inventoryAudioSource.PlayOneShot(sfx.OpenMenu, sfx.OpenMenuVol);
+        }
+        
         inventoryCanvasGroup.gameObject.SetActive(true);
         // inventoryCanvasGroup.alpha = 1f;
         // inventoryCanvasGroup.blocksRaycasts = true;
@@ -33,8 +41,14 @@ public class Script_PlayerThoughtsInventoryManager : MonoBehaviour
         }
     }
 
-    public void CloseInventory()
+    public void CloseInventory(bool noSFX = false)
     {
+        if (!noSFX)
+        {
+            var sfx = Script_SFXManager.SFX;
+            inventoryAudioSource.PlayOneShot(sfx.CloseMenu, sfx.CloseMenuVol);
+        }
+
         inventoryCanvasGroup.gameObject.SetActive(false);
         inventoryCanvasGroup.alpha = 0f;
         // inventoryCanvasGroup.blocksRaycasts = false;   
@@ -45,31 +59,9 @@ public class Script_PlayerThoughtsInventoryManager : MonoBehaviour
         menuController.EnableSBook(isActive);
     }
 
-    /// <summary>
-    /// Handles copying thoughts into slots
-    /// </summary>
-    public void UpdatePlayerThoughts(
-        Model_Thought thought,
-        Model_PlayerThoughts thoughts,
-        Script_PlayerThoughtsInventoryButton[] thoughtSlots
-    )
-    {
-        foreach (Script_PlayerThoughtsInventoryButton ts in thoughtSlots)
-        {
-            ts.text.text = string.Empty;
-        }
-
-        // works ONLY if thoughts is exactly equal to maxHP
-        for (int i = 0; i < thoughts.uglyThoughts.Count; i++)
-        {
-            string newThoughtText = thoughts.uglyThoughts[i].thought;
-            thoughtSlots[i].text.text = Script_Utils.FormatString(newThoughtText);
-        }
-    }
-
     public void InitializeState()
     {
-        CloseInventory();
+        CloseInventory(noSFX: true);
         thoughtsCanvasGroup.gameObject.SetActive(false);
         sBookCanvasGroup.gameObject.SetActive(false);
     }

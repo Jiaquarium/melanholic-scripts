@@ -469,7 +469,7 @@ public class Script_InventoryManager : MonoBehaviour
                 Script_Game.Game.GetPlayerLocation(),
                 Script_Game.Game.level
             );
-            Script_Game.Game.CloseInventory();
+            Script_Game.Game.CloseInventory(noSFX: true);
         }        
         else
         {

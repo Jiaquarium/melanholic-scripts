@@ -1050,22 +1050,6 @@ public class Script_Game : MonoBehaviour
         return player;
     }
 
-    public void AddPlayerThought(Model_Thought thought)
-    {
-        playerThoughtHandler.AddPlayerThought(thought, thoughts);
-        
-        int thoughtCount = playerThoughtHandler.GetThoughtsCount(thoughts);
-        
-        playerThoughtsInventoryManager.UpdatePlayerThoughts(thought, thoughts, thoughtSlots);
-    }
-
-    public void RemovePlayerThought(Model_Thought thought)
-    {
-        playerThoughtHandler.RemovePlayerThought(thought, thoughts);
-
-        playerThoughtsInventoryManager.UpdatePlayerThoughts(thought, thoughts, thoughtSlots);
-    }
-
     public int GetThoughtsCount()
     {
         return playerThoughtHandler.GetThoughtsCount(thoughts);
@@ -1172,18 +1156,18 @@ public class Script_Game : MonoBehaviour
         menuController.InitializeState(eventSystem);
     }
     
-    public void OpenInventory()
+    public void OpenInventory(bool noSFX = false)
     {
         lastState = state;
         ChangeStateToInventory();
-        playerThoughtsInventoryManager.OpenInventory();
+        playerThoughtsInventoryManager.OpenInventory(noSFX);
     }
 
-    public void CloseInventory()
+    public void CloseInventory(bool noSFX = false)
     {
         ChangeStateLastState(Const_States_Game.Inventory);
         player.SetLastState();
-        playerThoughtsInventoryManager.CloseInventory();
+        playerThoughtsInventoryManager.CloseInventory(noSFX);
         levelBehavior.OnCloseInventory();
     }
 
