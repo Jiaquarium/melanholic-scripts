@@ -1193,11 +1193,11 @@ public class Script_Game : MonoBehaviour
     public void HighlightItem(
         int id,
         bool isOn,
-        bool showDesc,
+        bool isUpdateDescription,
         Script_InventoryManager.Types type
     )
     {
-        menuController.HighlightItem(id, isOn, showDesc, type);
+        menuController.HighlightItem(id, isOn, isUpdateDescription, type);
     }
 
     public bool AddItem(Script_Item item)

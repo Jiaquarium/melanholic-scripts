@@ -221,11 +221,11 @@ public class Script_MenuController : Script_UIState
     public void HighlightItem(
         int id,
         bool isOn,
-        bool showDesc,
+        bool isUpdateDescription,
         Script_InventoryManager.Types type
     )
     {
-        inventoryManager.HighlightItem(id, isOn, showDesc, type);
+        inventoryManager.HighlightItem(id, isOn, isUpdateDescription, type);
     }
 
     public bool AddItem(Script_Item item)

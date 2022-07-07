@@ -26,9 +26,6 @@ public class Script_InventoryManager : MonoBehaviour
     [SerializeField] private Script_SBookOverviewController sBookController;
     [SerializeField] private Script_ItemsController itemsController;
     
-    [SerializeField] private Script_InventoryViewController inventoryViewController;
-    [SerializeField] private Script_InventoryViewController itemsViewController;
-    
     [SerializeField] private Script_ItemChoices stickerChoices;
     [SerializeField] private Script_ItemChoices collectibleChoices;
     [SerializeField] private Script_ItemChoices usableChoices;
@@ -36,6 +33,9 @@ public class Script_InventoryManager : MonoBehaviour
     
     // Stickers
     [SerializeField] private Script_Inventory inventory;
+    [SerializeField] private Script_ItemDescription descriptionInventory;
+    [SerializeField] private Script_ItemDescription descriptionItems;
+    
     // Items
     [SerializeField] private Script_Items items;
     
@@ -182,7 +182,7 @@ public class Script_InventoryManager : MonoBehaviour
     public void HighlightItem(
         int i,
         bool isOn,
-        bool showDescription,
+        bool isUpdateDescription,
         Types type
     )
     {
@@ -202,7 +202,7 @@ public class Script_InventoryManager : MonoBehaviour
         }
 
         // call to replace itemDescription text
-        if (isOn && showDescription)
+        if (isOn && isUpdateDescription)
         {
             Debug.Log($"Show item description text: {i}");
             HandleItemDescription(i, type);
@@ -216,24 +216,45 @@ public class Script_InventoryManager : MonoBehaviour
 
     // ------------------------------------------------------------------
     // View
+    public void SetItemDescription(Script_ItemDescription itemDescription, bool isActive)
+    {
+        itemDescription.gameObject.SetActive(isActive);
+    }
+    
     private void HandleItemDescription(int i, Types type)
     {
-        Script_Item item;
+        Script_Item item = null;
+        Script_ItemDescription itemDescription = null;
         
         switch(type)
         {
             case Types.Stickers:
                 item = inventory.GetItemInSlot(i);
-                inventoryViewController.HandleItemDescription(item);
+                itemDescription = descriptionInventory;
                 break;
             case Types.Equipment:
                 item = equipment.GetStickerInSlot(i) as Script_Item;
-                inventoryViewController.HandleItemDescription(item);
+                itemDescription = descriptionInventory;
                 break;
             case Types.Items:
                 item = items.GetItemInSlot(i);
-                itemsViewController.HandleItemDescription(item);
+                itemDescription = descriptionItems;
                 break;
+        }
+
+        HandleItemDescription(item);
+
+        void HandleItemDescription(Script_Item item)
+        {
+            if (item == null)
+            {
+                SetItemDescription(itemDescription, false);
+                return;
+            }
+            
+            itemDescription.Name = item.name;
+            itemDescription.Text = item.Description;
+            SetItemDescription(itemDescription, true);
         }
     }
 
@@ -374,6 +395,10 @@ public class Script_InventoryManager : MonoBehaviour
         if (stickersHandler.StickSticker(sticker, equipment, inventory, slotId))
         {
             EnterInventory();
+
+            // Keep current slot highlighted and update for now empty slot description.
+            HighlightItem(slotId, true, true, Types.Stickers);
+
             return true;
         }
 
@@ -392,22 +417,40 @@ public class Script_InventoryManager : MonoBehaviour
         else if (Script_ActiveStickerManager.Control.ActiveSticker == stickerToRemove)
             ErrorUnableSFX();
         else
+        {
             UnstickSticker(stickerToRemove, equipment, inventory, stickerSlotId, false);
+            
+            // Keep current slot highlighted and update for now empty slot description.
+            HighlightItem(stickerSlotId, true, true, Types.Equipment);
+        }
     }
 
     /// <summary>
     /// Equipping and unequipping via hot key. Switch the Masks in either slot.
     /// Error SFX if neither slot has a Mask.
     /// </summary>
-    public bool HandleHotkeyStickUnstick(int stickerSlotId, int equipmentSlotId)
+    public bool HandleHotkeyStickUnstick(int stickerSlotId, int equipmentSlotId, Types type)
     {
-        return stickersHandler.HotKeyStickUnstick(
+        bool isNewContents = stickersHandler.HotKeyStickUnstick(
             equipment,
             inventory,
             stickerSlotId,
             equipmentSlotId,
             isBackground: false
         );
+
+        // Update the description for the new contents of the slot
+        switch (type)
+        {
+            case (Types.Stickers):
+                HighlightItem(stickerSlotId, true, true, type);
+                break;
+            case (Types.Equipment):
+                HighlightItem(equipmentSlotId, true, true, type);
+                break;
+        }
+
+        return isNewContents;
     }
 
     // Note, this will not remove ones past the point of a full equipment.
@@ -648,11 +691,6 @@ public class Script_InventoryManager : MonoBehaviour
 
             Script_InventoryManager t = (Script_InventoryManager)target;
             
-            if (GUILayout.Button("Slot 0, Hotkey 1 (Equipment Slot 0)"))
-            {
-                t.HandleHotkeyStickUnstick(0, 0);
-            }
-
             if (GUILayout.Button("Remove Item Slot 0"))
             {
                 t.inventory.RemoveItemInSlot(0);

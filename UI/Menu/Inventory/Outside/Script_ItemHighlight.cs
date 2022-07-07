@@ -13,6 +13,8 @@ public class Script_ItemHighlight : MonoBehaviour
         bool isOn
     )
     {
+        Debug.Log($"HighlightAndShowDescription({isOn}, {withItemDescription}, {inventoryType})");
+
         int myId = GetComponent<Script_Slot>().Id;
         Script_Game.Game.HighlightItem(myId, isOn, withItemDescription, inventoryType);
     }

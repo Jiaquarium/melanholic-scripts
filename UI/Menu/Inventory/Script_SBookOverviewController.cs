@@ -74,10 +74,16 @@ public class Script_SBookOverviewController : Script_InventoryController
     {
         inventoryViewController.gameObject.SetActive(false);
         
+        // Enter Inventory will reset to active. This must come before activating
+        // the next Event System to avoid 2 Event System warning.
+        EventSystem.current.gameObject.SetActive(false);
+        
         itemChoices = _itemChoices;
         itemChoices.gameObject.SetActive(true);
 
-        EventSystem.current.gameObject.SetActive(false);
+        // Reactivating the same item choices from a different item, will not trigger First Selected
+        // on Event System, so do it manually.
+        itemChoices.SetFirstChoiceActive();
     }
 
     /// <summary>

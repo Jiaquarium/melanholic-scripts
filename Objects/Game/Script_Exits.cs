@@ -44,6 +44,7 @@ public class Script_Exits : MonoBehaviour
         SaveAndRestartOnLevel       = 6,
     }
     
+    [Tooltip("Wait time for black screen between rooms")]
     [SerializeField] private float waitToFadeInLevelTime;
     
     public CanvasGroup canvas;
@@ -56,13 +57,18 @@ public class Script_Exits : MonoBehaviour
 
     public bool isFadeIn;
     public float InitiateLevelWaitTime;
-    public float fadeSpeed;
+    
+    [Tooltip("Fade time upon exiting from and arriving in rooms")]
+    [SerializeField] private float levelFadeTime;
+    
     [SerializeField] private bool isHandlingExit; /// Used to prevent multiple exitting and crashing
 
     private bool exitsDisabled;
     private bool isDefaultFadeOut;
     private int levelToGo;
     private FollowUp currentFollowUp;
+
+    private float fadeTimer;
     
     public bool IsHandlingExit
     {
@@ -71,8 +77,10 @@ public class Script_Exits : MonoBehaviour
     
     void Update()
     {
-        if (isDefaultFadeOut)   ChangeLevelFade();
-        if (isFadeIn)           FadeInLevel();
+        if (isDefaultFadeOut)
+            ChangeLevelFade();
+        if (isFadeIn)
+            FadeInLevel();
     }
 
     public void Exit(
@@ -115,32 +123,38 @@ public class Script_Exits : MonoBehaviour
             case (FollowUp.SaveAndRestart):
             {
                 Debug.Log("SaveAndRestart Exit Follow Up");
-                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                StartFadeOut();
                 break;
             }
             case (FollowUp.Piano):
             {
-                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                StartFadeOut();
                 break;
             }
             case (FollowUp.SaveAndStartWeekendCycle):
             {
                 Debug.Log("SaveAndStartWeekendCycle Exit Follow Up");
-                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                StartFadeOut();
                 break;
             }
             case (FollowUp.SaveAndRestartOnLevel):
             {
                 Debug.Log("SaveAndRestartOnLevel Exit Follow Up");
-                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                StartFadeOut();
                 break;
             }
             default:
             {
                 Debug.Log("Default Fading Out");
-                isDefaultFadeOut = true; // triggers ChangeLevelFade(); 
+                StartFadeOut();
                 break;
             }
+        }
+
+        void StartFadeOut()
+        {
+            fadeTimer = levelFadeTime;
+            isDefaultFadeOut = true;
         }
     }
 
@@ -176,12 +190,8 @@ public class Script_Exits : MonoBehaviour
 
     public void StartFadeIn()
     {
+        fadeTimer = levelFadeTime;
         isFadeIn = true;
-    }
-
-    public void StartFadeOut()
-    {
-        isDefaultFadeOut = true;
     }
 
     public bool GetIsExitsDisabled()
@@ -195,10 +205,13 @@ public class Script_Exits : MonoBehaviour
     {
         // Start Fading in Black Fader
         canvas.gameObject.SetActive(true);
-        canvas.alpha += fadeSpeed * Time.deltaTime;
+        
+        fadeTimer -= Time.deltaTime;
+        canvas.alpha = Mathf.Min(1f, 1 - fadeTimer / levelFadeTime);
 
-        if (canvas.alpha >= 1f)
+        if (fadeTimer <= 0f)
         {
+            fadeTimer = 0f;
             canvas.alpha = 1f;
             isDefaultFadeOut = false;
             
@@ -252,7 +265,7 @@ public class Script_Exits : MonoBehaviour
             
             yield return new WaitForSeconds(waitToFadeInLevelTime);
 
-            isFadeIn = true; // OnDoneExitingTransition will be called after fadeIn is complete
+            StartFadeIn();
         }
     }
 
@@ -293,14 +306,17 @@ public class Script_Exits : MonoBehaviour
     void FadeInLevel()
     {
         canvas.gameObject.SetActive(true);
-        canvas.alpha -= fadeSpeed * Time.deltaTime;
+        fadeTimer -= Time.deltaTime;
+        canvas.alpha = Mathf.Max(0f, fadeTimer / levelFadeTime);
 
-        if (canvas.alpha <= 0f && isFadeIn)
+        if (fadeTimer <= 0)
         {
+            fadeTimer = 0f;
             canvas.alpha = 0f;
             
             OnDoneExitingTransition();
-            // must happen last so handlers can interact with fade in sequence.
+            
+            // Must happen last so handlers can interact with fade in sequence.
             isFadeIn = false;
         }
     }

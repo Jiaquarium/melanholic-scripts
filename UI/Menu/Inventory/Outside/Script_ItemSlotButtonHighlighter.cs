@@ -24,17 +24,17 @@ public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelec
     
     private void HighlightAndShowDescription(
         bool isOn,
-        bool withItemDescription,
+        bool isUpdateDescription,
         Script_InventoryManager.Types type
     )
     {
-        Debug.Log($"HighlightSlot{isOn}");
+        Debug.Log($"HighlightAndShowDescription({isOn}, {isUpdateDescription}, {type})");
         
         foreach (Image img in outlines)
         {
             img.enabled = isOn;
             int myId = GetComponent<Script_InventoryViewSlot>().Id;
-            Script_Game.Game.HighlightItem(myId, isOn, withItemDescription, type);
+            Script_Game.Game.HighlightItem(myId, isOn, isUpdateDescription, type);
         }
         
         isHighlighted = isOn;

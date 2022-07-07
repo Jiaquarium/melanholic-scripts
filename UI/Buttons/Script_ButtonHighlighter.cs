@@ -46,7 +46,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         HighlightOutline(true);
 
         if (itemHighlighter != null)
-            itemHighlighter.HighlightAndShowDescription(true);
+            itemHighlighter.HighlightAndShowDescription(isOn: true);
     }
 
     public virtual void OnDeselect(BaseEventData e)
@@ -55,7 +55,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         HighlightOutline(false);
 
         if (itemHighlighter != null)
-            itemHighlighter.HighlightAndShowDescription(false);
+            itemHighlighter.HighlightAndShowDescription(isOn: false);
     }
 
     public void Select()

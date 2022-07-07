@@ -8,32 +8,19 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class Script_InventoryViewController : Script_SBookViewController
 {
-    [SerializeField] private Script_ItemDescription itemDescription;
     [SerializeField] private Script_InventoryManager inventoryManager;
+    [SerializeField] private Script_ItemDescription itemDescription;
 
     void OnDisable()
     {
         Debug.Log("InventoryViewController OnDisable();");
-        itemDescription.gameObject.SetActive(false);
-    }
-
-    public void HandleItemDescription(Script_Item item)
-    {
-        if (item == null)
-        {
-            itemDescription.gameObject.SetActive(false);
-            return;
-        }
-        
-        itemDescription.Name = item.name;
-        itemDescription.Text = item.Description;
-        itemDescription.gameObject.SetActive(true);
+        inventoryManager.SetItemDescription(itemDescription, false);
     }
 
     public override void Setup()
     {
         base.Setup();
         gameObject.SetActive(false);
-        itemDescription.gameObject.SetActive(false);
+        inventoryManager.SetItemDescription(itemDescription, false);
     }
 }

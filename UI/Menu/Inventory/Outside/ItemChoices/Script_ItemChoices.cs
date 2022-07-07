@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum ItemChoices
 {
@@ -14,6 +15,8 @@ public enum ItemChoices
 public class Script_ItemChoices : MonoBehaviour
 {
     [SerializeField] private Script_ItemChoice[] itemChoiceChildren;
+    [SerializeField] private EventSystem eventSystem;
+
     public int itemSlotId { get; set;}
 
     void OnValidate()
@@ -21,6 +24,13 @@ public class Script_ItemChoices : MonoBehaviour
         UpdateActiveChildren();
     }
 
+    public void SetFirstChoiceActive()
+    {
+        var firstChildChoice = itemChoiceChildren[0].gameObject;
+        
+        eventSystem.SetSelectedGameObject(firstChildChoice);
+    }
+    
     public void SetDropChoice(bool isActive)
     {
         foreach (Script_ItemChoice itemChoice in itemChoiceChildren)

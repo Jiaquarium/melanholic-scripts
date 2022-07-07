@@ -74,19 +74,21 @@ public class Script_MenuHotKeyInputManager : MonoBehaviour
 
     private void HandleInventoryHotKey(string keyCode, int slotIndex)
     {
+        var type = Script_InventoryManager.Types.Stickers;
+        
         switch (keyCode)
         {
             case (Const_KeyCodes.Effect1):
-                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 0);
+                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 0, type);
                 break;
             case (Const_KeyCodes.Effect2):
-                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 1);
+                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 1, type);
                 break;
             case (Const_KeyCodes.Effect3):
-                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 2);
+                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 2, type);
                 break;
             case (Const_KeyCodes.Effect4):
-                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 3);
+                inventoryManager.HandleHotkeyStickUnstick(slotIndex, 3, type);
                 break;
             default:
                 break;
@@ -95,34 +97,36 @@ public class Script_MenuHotKeyInputManager : MonoBehaviour
 
     private void HandleEquipmentHotKey(string keyCode, int slotIndex)
     {
+        var type = Script_InventoryManager.Types.Equipment;
+        
         switch (keyCode)
         {
             case (Const_KeyCodes.Effect1):
-                inventoryManager.HandleHotkeyStickUnstick(0, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(0, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect2):
-                inventoryManager.HandleHotkeyStickUnstick(1, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(1, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect3):
-                inventoryManager.HandleHotkeyStickUnstick(2, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(2, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect4):
-                inventoryManager.HandleHotkeyStickUnstick(3, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(3, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect5):
-                inventoryManager.HandleHotkeyStickUnstick(4, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(4, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect6):
-                inventoryManager.HandleHotkeyStickUnstick(5, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(5, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect7):
-                inventoryManager.HandleHotkeyStickUnstick(6, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(6, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect8):
-                inventoryManager.HandleHotkeyStickUnstick(7, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(7, slotIndex, type);
                 break;
             case (Const_KeyCodes.Effect9):
-                inventoryManager.HandleHotkeyStickUnstick(8, slotIndex);
+                inventoryManager.HandleHotkeyStickUnstick(8, slotIndex, type);
                 break;
             default:
                 break;
