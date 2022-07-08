@@ -5,6 +5,8 @@ using Cinemachine;
 
 public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
 {
+    private static int ExitFaderSortingOrder = 999;
+
     [SerializeField] private Transform restartDestination;
     [SerializeField] private Directions facingDirection = Directions.Up;
 
@@ -27,6 +29,10 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
                 return;
             
             Script_Game.Game.ChangeStateCutScene();
+            Script_HUDManager.Control.IsForceUp = true;
+            
+            // Force Time HUD to appear above fader
+            Script_HUDManager.Control.TimeHUDSortingOrder = ExitFaderSortingOrder + 1;
             
             StartCoroutine(Script_Game.Game.TransitionFadeIn(
                 Script_TransitionManager.RestartPlayerFadeInTime, () =>
@@ -50,6 +56,9 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
                 Script_TransitionManager.RestartPlayerFadeOutTime, () =>
                 {
                     Script_Game.Game.ChangeStateInteract();
+
+                    Script_HUDManager.Control.IsForceUp = false;
+                    Script_HUDManager.Control.SetTimeHUDSortingOrderDefault();
 
                     Script_HurtBoxEventsManager.PlayerRestart(col);
                 }

@@ -20,8 +20,12 @@ public class Script_HUDManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     
     [SerializeField] private bool isPaused;
+    [SerializeField] private bool isForceUp;
+
+    [SerializeField] private Canvas timeHUDCanvas;
 
     private FadeSpeeds defaultFadeSpeed;
+    private int timeHUDdefaultSortingOrder;
 
     public bool IsTimesUp { get; set; }
 
@@ -37,6 +41,18 @@ public class Script_HUDManager : MonoBehaviour
         set => fadeSpeed = value;
     }
 
+    public bool IsForceUp
+    {
+        get => isForceUp;
+        set => isForceUp = value;
+    }
+
+    public int TimeHUDSortingOrder
+    {
+        get => timeHUDCanvas.sortingOrder;
+        set => timeHUDCanvas.sortingOrder = value;
+    }
+    
     void Update()
     {
         // After IsTimesUp, this will be controlled by TimesUp timeline.
@@ -45,7 +61,7 @@ public class Script_HUDManager : MonoBehaviour
             return;
         }
         
-        if (IsClockShowing() || IsTimesUp)
+        if (IsClockShowing() || IsTimesUp || IsForceUp)
         {
             if (!timeCanvasGroup.gameObject.activeInHierarchy || timeCanvasGroup.MyCanvasGroup.alpha < 1f)
                 timeCanvasGroup.FadeIn(FadeSpeed.ToFadeTime(), null, isUnscaledTime: true);
@@ -57,6 +73,9 @@ public class Script_HUDManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Should clock show depending on Player and Game states
+    /// </summary>
     public bool IsClockShowing()
     {
         return game.state == Const_States_Game.Interact
@@ -76,6 +95,11 @@ public class Script_HUDManager : MonoBehaviour
         FadeSpeed = defaultFadeSpeed;
     }
 
+    public void SetTimeHUDSortingOrderDefault()
+    {
+        TimeHUDSortingOrder = timeHUDdefaultSortingOrder;
+    }
+
     public void Setup()
     {
         if (Control == null)
@@ -90,5 +114,6 @@ public class Script_HUDManager : MonoBehaviour
         HUDCanvasGroup.gameObject.SetActive(true);
 
         defaultFadeSpeed = FadeSpeed;
+        timeHUDdefaultSortingOrder = TimeHUDSortingOrder;
     }
 }

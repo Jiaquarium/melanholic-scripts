@@ -40,8 +40,12 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     [SerializeField] private TimelineAsset playerDropTimeline;
     
     [SerializeField] private Script_PlayerDropSFXOnEnable dropSFX;
-    [SerializeField] private Script_UrselkAttacks urselkAttacks;
+    
+    [SerializeField] private float onEntranceActivateSpikesTime;
     [SerializeField] private float onEntranceAttackFreezeTime;
+    
+    [SerializeField] private Script_UrselkAttacks urselkAttacks;
+    [SerializeField] private Script_DemonIntervalAttackController defaultEileenSpikeController;
     
     private List<GameObject> playerObjsToBind = new List<GameObject>();
 
@@ -61,10 +65,17 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete    += OnEntranceAttack;
-        Script_CombatEventsManager.OnEnemyAttackEnd     += OnEntranceAttackEnd;
+        Script_CombatEventsManager.OnEnemyAttackEnd     += HandleOnEntranceAttackDone;
         
         playerPlayableDirector = game.GetPlayer().GetComponent<PlayableDirector>();
         playerPlayableDirector.stopped                  += OnDropTimelineDone;
+        
+        // The first time player enters, need to trigger the OnEntranceAttack sequence
+        if (!didOnEntranceAttack)
+        {
+            Script_HUDManager.Control.IsForceUp = true;
+            defaultEileenSpikeController.IsDisabled = true;
+        }
         
         if (didSpeakWithEileenToday)
             OnFinishedTalking();
@@ -73,7 +84,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete    -= OnEntranceAttack;
-        Script_CombatEventsManager.OnEnemyAttackEnd     -= OnEntranceAttackEnd;
+        Script_CombatEventsManager.OnEnemyAttackEnd     -= HandleOnEntranceAttackDone;
         
         playerPlayableDirector.stopped -= OnDropTimelineDone;
         playerPlayableDirector = null;
@@ -89,6 +100,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         {
             game.UnPauseBgMusic();
         }
+
+        defaultEileenSpikeController.IsDisabled = false;
 
         isTimelineControlled = false;
     }
@@ -163,26 +176,22 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         }
     }
 
-    /// <summary>
-    /// Do one initial spike attack when Player first enters to ensure player is
-    /// dealt damage as "victim"
-    /// 
-    /// Changes state to interact 
-    /// </summary>
+    // Initial spike attack when Player first enters
     private void OnEntranceAttack()
     {
-        if (didOnEntranceAttack)    return;
+        if (didOnEntranceAttack)
+            return;
+        
         game.ChangeStateCutScene();
-        
         urselkAttacks.AlternatingSpikesAttack();
-        
         didOnEntranceAttack = true;
         isOnEntranceAttackFrozen = true;
-
+        
         StartCoroutine(WaitToInteractSafe());
+        StartCoroutine(WaitToEnableEileenSpikes());
         
         /// To be extra safe so player doesn't freeze on entrance
-        /// if OnEntranceAttackEnd doesn't fire
+        /// if HandleOnEntranceAttackDone doesn't fire
         /// 9/29 playtest: frozen even after hit 
         IEnumerator WaitToInteractSafe()
         {
@@ -191,21 +200,29 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             Debug.Log("Safe set to interact after OnEntranceAttack");
 
             if (isOnEntranceAttackFrozen)
-            {
-                game.ChangeStateInteract();
-                isOnEntranceAttackFrozen = false;
-            }
+                OnEntranceAttackDone();
+        }
+
+        IEnumerator WaitToEnableEileenSpikes()
+        {
+            yield return new WaitForSeconds(onEntranceActivateSpikesTime);
+            defaultEileenSpikeController.IsDisabled = false;
         }
     }
 
-    private void OnEntranceAttackEnd(string hitBoxId)
+    private void HandleOnEntranceAttackDone(string hitBoxId)
     {
         if (hitBoxId == Const_HitBox.EileenEnergySpikeEntrance)
         {
-            game.ChangeStateInteract();
-            isOnEntranceAttackFrozen = false;
-            Debug.Log("Entrance attack is over");
+            OnEntranceAttackDone();
         }
+    }
+
+    private void OnEntranceAttackDone()
+    {
+        game.ChangeStateInteract();
+        isOnEntranceAttackFrozen = false;
+        Script_HUDManager.Control.IsForceUp = false;
     }
 
     private void BaseSetup()

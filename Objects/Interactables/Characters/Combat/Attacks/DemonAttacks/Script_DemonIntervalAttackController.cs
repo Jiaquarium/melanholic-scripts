@@ -6,9 +6,11 @@ using UnityEngine;
 public class Script_DemonIntervalAttackController : MonoBehaviour
 {
     [SerializeField] private float attackInterval;
-    [SerializeField] private float timer;
+    [SerializeField] private float initialTimeInterval;
 
     [SerializeField] private bool isDisabled;
+
+    private float timer;
 
     public bool IsDisabled
     {
@@ -16,8 +18,9 @@ public class Script_DemonIntervalAttackController : MonoBehaviour
         set => isDisabled = value;
     }
 
-    private void Start()
+    void OnEnable()
     {
+        timer = initialTimeInterval;
     }
     
     private void Update()
@@ -34,7 +37,6 @@ public class Script_DemonIntervalAttackController : MonoBehaviour
         {
             Attack();
             
-            timer = 0;
             timer = attackInterval;
         }
     }

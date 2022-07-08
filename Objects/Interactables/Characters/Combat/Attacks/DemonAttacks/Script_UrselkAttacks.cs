@@ -17,7 +17,8 @@ public class Script_UrselkAttacks : Script_DemonAttacks
 
     void Awake()
     {
-        if (attackGrid != null)     attackGrid.gameObject.SetActive(false);
+        if (attackGrid != null)
+            attackGrid.gameObject.SetActive(false);
     }
     
     public void RandomSpikes()

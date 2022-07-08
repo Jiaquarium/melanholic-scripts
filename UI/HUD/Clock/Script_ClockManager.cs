@@ -13,18 +13,21 @@ public class Script_ClockManager : MonoBehaviour
 {
     public static Script_ClockManager Control;
     public static int TimebarIncrements = 60;
+    public static string HurtTrigger = "hurt";
     
     [SerializeField] private Script_HUDManager HUDManager;
     [SerializeField] private Script_Clock clock;
     [SerializeField] private Script_Timebar timebar;
-    
-    [SerializeField] private Script_Game game;
-    
+
     // Delay before clock on Sunday starts blinking. This is to build
     // some suspense, and bc we're using an external clock, we need to
     // standardize when we start so the blink always starts the same visually
     // (e.g. not cutting to a blink right when canvas fades in)
     [SerializeField] private float delayBeforeClockBlinkSunday;
+    
+    [SerializeField] private Animator timeHUDAnimator;
+    
+    [SerializeField] private Script_Game game;
     
     private bool didFireDoneEvent;
     private bool didSetSunEndTime;
@@ -124,6 +127,9 @@ public class Script_ClockManager : MonoBehaviour
     {
         clock.FastForwardTime(sec);
         HandleTimebar();
+
+        // Timebar animation to notify of time change
+        timeHUDAnimator.SetTrigger(HurtTrigger);
     }
 
     public void SetFinalRoundGrandMirrorTime()
@@ -237,6 +243,11 @@ public class Script_ClockManagerTester : Editor
         if (GUILayout.Button("R2 Ids Dead Time"))
         {
             t.R2IdsDeadTime();
+        }
+
+        if (GUILayout.Button("Fast Forward Time 1 min"))
+        {
+            t.FastForwardTime(60);
         }
     }
 }
