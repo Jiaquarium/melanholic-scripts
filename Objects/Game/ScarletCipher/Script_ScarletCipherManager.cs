@@ -22,6 +22,8 @@ public class Script_ScarletCipherManager : MonoBehaviour
     [Tooltip("The relevant 10 question conversation nodes")]
     [SerializeField] private bool[] _mynesMirrorsActivationStates = new bool[QuestionCount];
     [SerializeField] private bool[] _mynesMirrorsSolved = new bool[QuestionCount];
+
+    [SerializeField] private Script_ScarletCipherNotification _scarletCipherNotification;
     
     public int[] ScarletCipher
     {
@@ -33,6 +35,22 @@ public class Script_ScarletCipherManager : MonoBehaviour
     {
         get => _scarletCipherVisibility;
         set => _scarletCipherVisibility = value;
+    }
+
+    /// <summary>
+    /// The current viewable state of the Scarlet Cipher in which the Player can see.
+    /// </summary>
+    public int[] ScarletCipherPublic
+    {
+        get
+        {
+            int[] publicScarletCipher = new int[10];
+            
+            for (var i = 0; i < ScarletCipher.Length; i++)
+                publicScarletCipher[i] = ScarletCipherVisibility[i] ? ScarletCipher[i] : -1;
+
+            return publicScarletCipher;
+        }
     }
 
     public bool[] MynesMirrorsActivationStates
@@ -47,14 +65,19 @@ public class Script_ScarletCipherManager : MonoBehaviour
         set => _mynesMirrorsSolved = value;
     }
 
+    public Script_ScarletCipherNotification ScarletCipherNotification
+    {
+        get => _scarletCipherNotification;
+    }
+
     /// <summary>
     /// Use this to reveal pieces of Scarlet Cipher
     /// </summary>
-    public bool RevealScarletCipherSlot(int i, bool isVisible = true)
+    public int RevealScarletCipherSlot(int i, bool isVisible = true)
     {
         ScarletCipherVisibility[i] = isVisible;
 
-        return ScarletCipherVisibility[i];
+        return ScarletCipher[i];
     }
 
     public bool HandleCipherSlot(int cipherSlot, int choiceIdx)
@@ -128,6 +151,35 @@ public class Script_ScarletCipherManager : MonoBehaviour
         return true;
     }
 
+    // ------------------------------------------------------------------
+    // View
+    public void PlayScarletCipherNotification(int revealedNum)
+    {
+        Script_Game.Game.ChangeStateCutScene();
+        
+        string s = revealedNum.ToString();
+        ScarletCipherNotification.Open(s);
+        
+        var SFX = Script_SFXManager.SFX;
+        
+        SFX.PlayScarletCipherPickupSFX(() => {
+            SFX.PlayTakeNote();
+            
+            ScarletCipherNotification.Close(() => {
+                StartCoroutine(WaitToInteract());
+            });
+        });
+
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSeconds(ScarletCipherNotification.PauseAfterNotifyingTime);
+            
+            Script_Game.Game.ChangeStateInteract();
+        }
+    }
+    
+    // ------------------------------------------------------------------
+    
     public void InitialState()
     {
         ResetMynesMirrors();
@@ -160,7 +212,10 @@ public class Script_ScarletCipherManager : MonoBehaviour
         else if (Control != this)
         {
             Destroy(this.gameObject);
-        }   
+        }
+
+        _scarletCipherNotification.Setup();
+
     }
 }
 
@@ -168,12 +223,14 @@ public class Script_ScarletCipherManager : MonoBehaviour
 [CustomEditor(typeof(Script_ScarletCipherManager))]
 public class Script_ScarletCipherEditor : Editor
 {
+    private SerializedProperty scarletCipherNotification;
     private SerializedProperty scarletCipher;
     private SerializedProperty scarletCipherVisibility;
     private SerializedProperty mynesMirrorsActivationStates;
     private SerializedProperty mynesMirrorsSolved;
     private static bool[] showItemSlots = new bool[Script_ScarletCipherManager.QuestionCount];
 
+    private const string ScarletCipherNotificationName      = "_scarletCipherNotification";
     private const string ScarletCipherName                  = "_scarletCipher";
     private const string ScarletCipherVisibilityName        = "_scarletCipherVisibility";
     private const string DialoguesName                      = "dialogues";
@@ -182,6 +239,7 @@ public class Script_ScarletCipherEditor : Editor
 
     private void OnEnable()
     {
+        scarletCipherNotification       = serializedObject.FindProperty(ScarletCipherNotificationName);
         scarletCipher                   = serializedObject.FindProperty(ScarletCipherName);
         scarletCipherVisibility         = serializedObject.FindProperty(ScarletCipherVisibilityName);
         mynesMirrorsActivationStates    = serializedObject.FindProperty(MynesMirrorsActivationStatesName);
@@ -192,6 +250,8 @@ public class Script_ScarletCipherEditor : Editor
     {
         // ensure our serialized object is up-to-date with the Inventory
         serializedObject.Update();
+        
+        EditorGUILayout.PropertyField(scarletCipherNotification, new GUIContent("Notification"));
         
         for (int i = 0; i < Script_ScarletCipherManager.QuestionCount; i++)
         {

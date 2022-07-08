@@ -9,6 +9,8 @@ using TMPro;
 [RequireComponent(typeof(Script_Slot))]
 public class Script_SavedGameTitle : MonoBehaviour
 {
+    private static string hiddenScarletCipherDigit = "X";
+    
     [SerializeField] private Script_StartOverviewController mainController;
     [SerializeField] private GameObject savedState;
     [SerializeField] private GameObject emptyState;
@@ -18,8 +20,11 @@ public class Script_SavedGameTitle : MonoBehaviour
     [SerializeField] private TextMeshProUGUI headlineText;
     [SerializeField] private TextMeshProUGUI dateText;
     [SerializeField] private TextMeshProUGUI playTimeText;
+    [SerializeField] private TextMeshProUGUI maskCountText;
+    [SerializeField] private List<TextMeshProUGUI> scarletCipherCodeTexts;
     [SerializeField] private Transform continueSubmenu;
     [SerializeField] private Transform newGameSubmenu;
+    
     public bool isRendered { get; private set; }
     
     public void OnClick()
@@ -65,8 +70,13 @@ public class Script_SavedGameTitle : MonoBehaviour
         clockTimeText.text      = clockTime.FormatSecondsClock(isClose: clockTime >= Script_Clock.WarningTime);
         nameText.text           = name;
         
-        /// Empty means we are initializing a run, use default headline
-        headlineText.text       = String.IsNullOrEmpty(headline) ? headlineText.text : headline;
+        maskCountText.text      = savedGame.maskCount.ToString();
+        
+        for (var i = 0; i < scarletCipherCodeTexts.Count; i++)
+        {
+            int digit = savedGame.scarletCipher[i];
+            scarletCipherCodeTexts[i].text = digit < 0 ? hiddenScarletCipherDigit : digit.ToString();
+        }
         
         dateText.text           = dateTime.FormatLastPlayedDateTime();
         playTimeText.text       = playTime.FormatTotalPlayTime();

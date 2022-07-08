@@ -594,15 +594,6 @@ public class Script_Player : Script_Character
         playerEffect.DropSFX();
     }
 
-    public void ScarletCipherPickUpSFX()
-    {
-        SetIsStandby();
-        
-        playerEffect.ScarletCipherPickUpSFX(() => {
-            SetIsInteract();
-        }); 
-    }
-
     public void Teleport(Vector3 newLocation)
     {
         transform.position = newLocation;

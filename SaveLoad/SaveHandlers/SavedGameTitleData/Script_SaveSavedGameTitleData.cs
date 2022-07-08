@@ -14,10 +14,12 @@ public class Script_SaveSavedGameTitleData : MonoBehaviour
         
         string name             = Script_Names.Player;
         
-        Script_Entry lastEntry  = game.entryManager.GetLastEntry();
-        string headline         = lastEntry ? lastEntry.headline : string.Empty;
+        string headline         = string.Empty;
+
+        int maskCount           = game.GetMaskCount();
+        int[] scarletCipher     = Script_ScarletCipherManager.Control.ScarletCipherPublic;
         
-        long date               = lastEntry ? lastEntry.timestamp.ToBinary() : DateTime.Now.ToBinary();
+        long date               = DateTime.Now.ToBinary();
         float playTime          = game.totalPlayTime;
 
         return new Model_SavedGameTitleData(
@@ -25,6 +27,8 @@ public class Script_SaveSavedGameTitleData : MonoBehaviour
             clockTime,
             name,
             headline,
+            maskCount,
+            scarletCipher,
             date,
             playTime
         );

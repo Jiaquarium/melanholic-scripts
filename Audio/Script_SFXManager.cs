@@ -380,6 +380,11 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(TotemCry, TotemCryVol);
     }
 
+    public void PlayTakeNote()
+    {
+        SFXSource.PlayOneShot(PencilEdit, PencilEditVol);
+    }
+
     // ------------------------------------------------------------
     // UI
 

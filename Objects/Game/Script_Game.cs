@@ -1287,6 +1287,8 @@ public class Script_Game : MonoBehaviour
         return menuController.GetEquipmentItems();
     }
 
+    public int GetMaskCount() => menuController.GetMaskCount();
+
     /// <summary>
     /// To be called from the key target
     /// </summary>

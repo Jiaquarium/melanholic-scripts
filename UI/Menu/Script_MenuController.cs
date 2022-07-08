@@ -218,6 +218,27 @@ public class Script_MenuController : Script_UIState
         return inventoryManager.GetEquipmentItems();
     }
 
+    public int GetMaskCount()
+    {
+        Script_Item[] inventoryItems = GetStickers();
+        Script_Sticker[] equipmentItems = GetEquipmentItems();
+        int count = 0;
+
+        for (var i = 0; i < inventoryItems.Length; i++)
+        {
+            if (inventoryItems[i] != null)
+                count++;
+        }
+
+        for (var j = 0; j < equipmentItems.Length; j++)
+        {
+            if (equipmentItems[j] != null)
+                count++;
+        }
+
+        return count;
+    }
+
     public void HighlightItem(
         int id,
         bool isOn,

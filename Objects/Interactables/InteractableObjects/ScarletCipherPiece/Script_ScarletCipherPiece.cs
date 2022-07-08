@@ -33,12 +33,11 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
 
     protected override void ActionDefault()
     {
-        Script_ScarletCipherManager.Control.RevealScarletCipherSlot(ScarletCipherId);
+        var scarletCipherManager = Script_ScarletCipherManager.Control;
+        int revealedNum = scarletCipherManager.RevealScarletCipherSlot(ScarletCipherId);
+        scarletCipherManager.PlayScarletCipherNotification(revealedNum);
         
         Hide();
-
-        // Player to emit SFX because this is set inactive immediately.
-        Script_Game.Game.GetPlayer().ScarletCipherPickUpSFX();
 
         Script_ScarletCipherEventsManager.ScarletCipherPiecePickUp(ScarletCipherId);
     }
