@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-19 05:58:15
+// Last created by UI Exporter at 2022-06-22 13:35:37
 
 using System.Collections;
 using System.Collections.Generic;
@@ -210,10 +210,17 @@ public class Script_UIText
     }
 },
 {
+    "good-ending_narrator_monologue15_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Y̵o̴u̴ ̵k̸e̴p̶t̶ ̸t̵a̶k̷i̶n̸g̵ ̴m̶e̸ ̵d̴o̶w̶n̸ ̷t̵h̵e̸r̷e̴.̵.̴.̴ ̷a̵n̷d̷ ̵f̴o̵r̴ ̶w̵h̶a̷t̵?̴"
+    }
+},
+{
     "good-ending_narrator_monologue15_1",
     new Model_LanguagesUI
     {
-        EN = @"But what am I even leaving with? Is this all there is?"
+        EN = @"Is this all there is?"
     }
 },
 {
@@ -412,13 +419,6 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"But I’m not just them."
-    }
-},
-{
-    "true-ending_narrator_monologue6_3",
-    new Model_LanguagesUI
-    {
-        EN = @"But I’m not them."
     }
 },
 {
