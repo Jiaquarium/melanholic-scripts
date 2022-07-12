@@ -77,6 +77,9 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private float cutSceneFadeInTime;
     [SerializeField] private float elleniaHurtCutSceneWaitToFadeInTime;
     [SerializeField] private Script_Marker playerTeleportPos;
+    
+    [SerializeField] private float waitBeforeSelfRealizationTime;
+    [SerializeField] private Script_DialogueNode selfRealizationDialogue;
 
     // ------------------------------------------------------------------
     // Painting Entrances
@@ -92,12 +95,16 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     private bool isInitialization = true;
     private bool shouldChangeGameStateToInteract;
+
+    [SerializeField] private bool isInitialPuzzleCompletion;
     
     /// <summary>
     /// Note: ensure to update this value after speaking with Ellenia
     /// Currently, every node either ends with Correct or Wrong nodes
     /// </summary>
     private bool didTalkWithElleniaToday = false;
+
+    private Action onSelfRealizationDoneAction;
 
     public bool DidTalkWithElleniaToday
     {
@@ -496,6 +503,9 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         game.ChangeStateCutScene();
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 5);
         
+        if (!isPuzzleComplete)
+            isInitialPuzzleCompletion = true;
+        
         isPuzzleComplete = true;
         isCurrentPuzzleComplete = true;
         didTalkWithElleniaToday = true;
@@ -582,6 +592,11 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 8);
     }
 
+    public void OnSelfRealizationDone()
+    {
+        onSelfRealizationDoneAction();
+    }
+
     /// NextNodeAction END ==================================================
     // ----------------------------------------------------------------------
     // Timeline Signals
@@ -611,7 +626,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             }, 
             defaultCb: () =>
             {
-                HandleFadeInBgm(game.ChangeStateInteract);
+                HandleDefault();
             },
             Script_TransitionManager.FinalNotifications.Ellenia
         );
@@ -623,6 +638,23 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                 easleFullArt.gameObject.SetActive(true);
                 cb();
             }, BGMParam);
+        }
+
+        void HandleDefault()
+        {
+            if (isInitialPuzzleCompletion)
+                StartCoroutine(WaitForSelfRealizationDialogue());
+            else
+                HandleFadeInBgm(game.ChangeStateInteract);
+        }
+        
+        IEnumerator WaitForSelfRealizationDialogue()
+        {
+            onSelfRealizationDoneAction = () => HandleFadeInBgm(game.ChangeStateInteract);
+            
+            yield return new WaitForSeconds(waitBeforeSelfRealizationTime);
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(selfRealizationDialogue);
         }
     }
 
