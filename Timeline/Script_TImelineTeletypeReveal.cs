@@ -100,6 +100,9 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
         }
 
         if (sequenceController != null)
+        {
+            ResumeAction.SafeInvoke();
             sequenceController.Play();
+        }
     }
 }

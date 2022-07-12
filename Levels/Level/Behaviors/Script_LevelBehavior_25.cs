@@ -92,8 +92,18 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     private bool isInitialization = true;
     private bool shouldChangeGameStateToInteract;
-    private bool isShortPrompt = false;
+    
+    /// <summary>
+    /// Note: ensure to update this value after speaking with Ellenia
+    /// Currently, every node either ends with Correct or Wrong nodes
+    /// </summary>
+    private bool didTalkWithElleniaToday = false;
 
+    public bool DidTalkWithElleniaToday
+    {
+        get => didTalkWithElleniaToday;
+    }
+    
     protected override void OnEnable()
     {
         ElleniaDirector.stopped                         += OnElleniaPlayableDone;    
@@ -344,7 +354,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     // Wrong PW (if player gets it wrong, it means they've already done a prompt, so default to short)
     public void SetShortPrompt()
     {
-        isShortPrompt = true;
+        didTalkWithElleniaToday = true;
     }
     
     public void OnWeekdayTalkedInitialDialogueDone()
@@ -488,6 +498,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         
         isPuzzleComplete = true;
         isCurrentPuzzleComplete = true;
+        didTalkWithElleniaToday = true;
     }
 
     public void GiveSticker()
@@ -662,11 +673,11 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
         void HandleElleniaDialogueState()
         {
-            // On Weekend Cycle, must talk with Ellenia before she'll allow you to comment on her painting.
+            // On Weekend Cycle, you can now talk to Ellenia from the start (no requirement to talk a previous day).
             // No Intro here at all because already done in Weekday cycle, so need Dialogue States.
             if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
             {
-                if (!isShortPrompt)
+                if (!didTalkWithElleniaToday)
                 {
                     Ellenia.SwitchPsychicNodes(weekendTalkedElleniaPsychicNodes);
                     Ellenia.SwitchTalkedPsychicNodes(weekendTalkedElleniaTalkedStatePsychicNodes);
@@ -682,7 +693,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             // On Weekday: Skip Ellenia's intro if already done.
             else if (spokenWithEllenia)
             {
-                if (isShortPrompt)
+                if (didTalkWithElleniaToday)
                 {
                     Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
                 }

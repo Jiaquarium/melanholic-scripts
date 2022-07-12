@@ -250,8 +250,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     }
 
     /// <summary>
-    /// Pause Timeline here and fire OnAwakeningTimelineDone event from TimelineTeletypeReveal's
-    /// onTypingDoneAction handler.
+    /// Pause Timeline manually with signal. Fire TimelineTeletypeReveal's onTypingDoneAction to
+    /// resume the timeline, since we need to care for differing type speeds based on frame rates.
     /// </summary>
     public void PauseAwakeningTimeline()
     {

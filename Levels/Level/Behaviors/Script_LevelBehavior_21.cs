@@ -20,7 +20,11 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     public bool didOnEntranceAttack;
     /* ======================================================================= */
     
+    // Got to Eileen PW Node
     [SerializeField] private bool didSpeakWithEileenToday;
+    
+    // If talked with Eileen but did not get to the PW node
+    [SerializeField] private bool didInitiateWithEileenToday;
 
     [SerializeField] private Script_LevelBehavior_25 LB25;
     [SerializeField] private Script_LevelBehavior_26 LB26;
@@ -61,6 +65,15 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     [SerializeField] private bool isHideSpikes;
     [SerializeField] private List<Script_DemonIntervalAttackController> spikeControllers;
 
+    public bool DidSpeakWithEileenToday
+    {
+        get => didSpeakWithEileenToday;
+    }
+    
+    public bool DidInitiateWithEileenToday
+    {
+        get => didInitiateWithEileenToday;
+    }
 
     protected override void OnEnable()
     {
@@ -130,6 +143,11 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         spokenWithEileen = true;
         didSpeakWithEileenToday = true;
         Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+    }
+
+    public void OnFirstPsychicNodeDone()
+    {
+        didInitiateWithEileenToday = true;
     }
     
     // ----------------------------------------------------------------------

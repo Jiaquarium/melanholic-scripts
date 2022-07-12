@@ -280,7 +280,7 @@ public static class Script_Utils
             Script_Names.Inventory,                     // {32}
             Script_Names.Ursie,                         // {33}
             Script_Names.UrselkHouse,                   // {34}
-            Script_Names.UrselksSaloon,                 // {35}
+            Script_Names.UrsaSaloon,                    // {35}
             Script_Names.Ballroom,                      // {36}
             Script_Names.KelsingorMansion,              // {37}
             Script_Names.Kaffe,                         // {38}

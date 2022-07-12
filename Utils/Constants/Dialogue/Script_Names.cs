@@ -103,7 +103,7 @@ public class Script_Names: MonoBehaviour
     }
     
     public const string UrselkHouse                     = "<b>Urselk House</b>";                // {34}
-    public const string UrselksSaloon                   = "<b>Urselks Saloon</b>";              // {35}
+    public const string UrsaSaloon                      = "<b>Ursa Saloon</b>";                 // {35}
     public const string Ballroom                        = "<b>Ballroom</b>";                    // {36}
     public const string KelsingorMansion                = "<b>Kelsingør Mansion</b>";           // {37}
     
@@ -121,8 +121,8 @@ public class Script_Names: MonoBehaviour
     
     public const string MagicCircle                     = "<b>Magic Circle</b>";                // {40}
     public const string Menu                            = "<b>Menu</b>";                        // {41}
-    public const string CursedOnes                      = "<b>Cursed Ones</b>";                // {42}
-    public const string CursedOne                       = "<b>Cursed One</b>";                 // {43}
+    public const string CursedOnes                      = "<b>Cursed Specters</b>";             // {42}
+    public const string CursedOne                       = "<b>Cursed Specter</b>";              // {43}
     public const string HouseMaster                     = "<b>House Master</b>";                // {44}
     public const string Thoughts                        = "<b>Thoughts</b>";                    // {45}
     public const string HeartsCapacity                  = "<b>Hearts Capacity</b>";             // {46}

@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Script_LevelBehavior_39 : Script_LevelBehavior
 {
-    public const string MapName = "Urselks Hall";
+    public const string MapName = "Dark Dark Hall";
     
     /* =======================================================================
         STATE DATA
@@ -22,11 +22,15 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
 
     [SerializeField] private Script_Trigger stayTrigger;
     [SerializeField] private Directions checkDirection;
+    [SerializeField] private Directions checkDirectionEileenReminder;
 
     [SerializeField] private Script_Marker noBarrierOnTalkLocation;
 
+    [SerializeField] private Script_DialogueNode EileenReminderDialogue;
+
     private bool didGuardConfirm;
     private bool didMapNotification;
+    private bool didEileenReminder;
 
     protected override void OnEnable()
     {
@@ -134,6 +138,39 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         }
     }
 
+    /// <summary>
+    /// Safeguard to hint Player to talk to Eileen again
+    /// </summary>
+    public void CheckPlayerExitingEileenReminder()
+    {
+        var player = game.GetPlayer();
+        
+        var isExiting = Input.GetButton(checkDirectionEileenReminder.DirectionToKeyCode())
+            && player.FacingDirection == checkDirectionEileenReminder
+            && player.State == Const_States_Player.Interact
+            && game.state == Const_States_Game.Interact;
+
+        var needsReminder = !game.ElleniasRoomBehavior.isPuzzleComplete
+            && game.ElleniasRoomBehavior.DidTalkWithElleniaToday
+            && game.EileensRoomBehavior.DidInitiateWithEileenToday
+            && !game.EileensRoomBehavior.DidSpeakWithEileenToday;
+
+        if (isExiting && needsReminder && !didEileenReminder)
+        {
+            game.ChangeStateCutScene();
+            Script_DialogueManager.DialogueManager.StartDialogueNode(EileenReminderDialogue);
+            didEileenReminder = true;
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Next Node Actions
+    
+    public void OnEileenReminderDone()
+    {
+        game.ChangeStateInteract();
+    }
+    
     // ----------------------------------------------------------------------
 
     public override void Setup()

@@ -17,7 +17,8 @@ public class Script_TriggerPlayerStay : Script_Trigger
     {
        if (other.tag == Const_Tags.Player)
        {
-            if (triggerStayEvent.CheckUnityEvent())     triggerStayEvent.Invoke(Id);
+            if (triggerStayEvent.CheckUnityEvent())
+                triggerStayEvent.Invoke(Id);
        }     
     }
 }

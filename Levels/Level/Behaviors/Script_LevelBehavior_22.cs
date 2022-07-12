@@ -10,6 +10,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_22 : Script_LevelBehavior
 {
+    public const string MapName = "Ursa Saloon";
+    
     /* =======================================================================
         STATE DATA
     ======================================================================= */
@@ -38,7 +40,22 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     [SerializeField] private AudioSource SFXAudioSource;
 
     private bool spokenWithUrsie;
+    private bool didMapNotification;
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+    }
+    
     private void Awake()
     {
         ktvRoomExit.IsDisabled = true;
@@ -138,6 +155,15 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
 
+    private void OnLevelInitCompleteEvent()
+    {
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
+    }
+    
     // If you complete the quest Ursie and MelbaPeche will have left, leaving a note.
     public void PuzzleCompleteState()
     {
