@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Script_DoorExit : Script_InteractableObjectExit
 {
     [SerializeField] protected List<Directions> exitDirections;
+    
+    [Tooltip("Define an action instead of exiting")]
+    [SerializeField] private UnityEvent customExclusiveExitAction;
 
     private Directions facingDirection;
     
@@ -17,8 +21,16 @@ public class Script_DoorExit : Script_InteractableObjectExit
             {
                 if (dir == exitDirection)
                 {
-                    facingDirection = dir;
-                    Exit();
+                    if (customExclusiveExitAction.CheckUnityEventAction())
+                    {
+                        customExclusiveExitAction.Invoke();
+                    }
+                    else
+                    {
+                        facingDirection = dir;
+                        Exit();
+                    }
+
                     return true;
                 }
             }

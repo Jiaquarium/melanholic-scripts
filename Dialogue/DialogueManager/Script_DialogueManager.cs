@@ -1184,7 +1184,7 @@ public class Script_DialogueManager : MonoBehaviour
         )
         {
             // don't set continuation for choice canvas section
-            SetDialogueCanvasToCanvasChoice1Row(canvasLocType);
+            SetDialogueCanvasToCanvasChoice1Row();
         }
         else
         {
@@ -1216,7 +1216,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
 
-    private void SetDialogueCanvasToCanvasChoice1Row(string loc)
+    private void SetDialogueCanvasToCanvasChoice1Row()
     {
         activeCanvas = CanvasChoice1Row;
         CanvasChoice1Row.gameObject.SetActive(true);

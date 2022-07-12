@@ -54,6 +54,9 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         
         if (!didStartThought)
         {
+            // On Initial Opening, pause BGM, fade in after Dialogue.
+            game.StopBgMusic();
+            
             Debug.Log($"**** {name} starting wells cut scene ****");
             Script_PRCSManager.Control.OpenPRCSNoFade(wellJustOpened);
         }
@@ -93,6 +96,13 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
     /// Next Node Actions
+    public void OnWellOpeningDialogueDone()
+    {
+        Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+        Script_BackgroundMusicManager.Control.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+        game.StartBgMusic();
+    }
+    
     public void OnWellCutSceneDone()
     {
         

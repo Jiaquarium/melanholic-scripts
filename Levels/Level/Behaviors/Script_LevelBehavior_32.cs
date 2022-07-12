@@ -31,6 +31,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode tueR1Node;
     [SerializeField] private Script_DialogueNode wedR1Node;
     [SerializeField] private Script_DialogueNode monR2Node;
+    [SerializeField] private Script_DialogueNode satWeekendStartNode;
     
     [SerializeField] private Script_DialogueNode[] frontDoorNodes;
 
@@ -38,7 +39,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     [SerializeField] private Script_InteractableObject hotelFrontDoor;
     [SerializeField] private Script_InteractableObject CCTVCamera;
-    [SerializeField] private Script_Interactable invisibleBarrier;
 
     // ------------------------------------------------------------------
     // Dynamic Environment
@@ -51,6 +51,12 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform WeekdayWalls;
     [SerializeField] private Transform WeekendWalls;
 
+    // ------------------------------------------------------------------
+    // Endings
+    [SerializeField] private Script_Interactable invisibleBarrier;
+    [SerializeField] private Script_DoorExit goodEndingExitPrompter;
+    [SerializeField] private Script_DialogueNode goodEndingPrompt;
+    
     // ------------------------------------------------------------------
     // Day Notifications
     [SerializeField] private Script_GlitchFXManager glitchManager;
@@ -99,18 +105,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             && isFirstLoad
         )
         {
-            Script_DayNotificationManager.Control.PlayDayNotification(() =>
-                {
-                    Script_BackgroundMusicManager.Control.UnPause();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(
-                        () => StartOpeningDialogue(tueR1Node),
-                        BGMParam
-                    );
-                },
-                _isInteractAfter: false
-            );
-
-            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+            HandleOpeningDialogueSetup(tueR1Node);
         }
         
         // Wed R1 Rin speaks about "Hardening"
@@ -120,18 +115,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             && isFirstLoad
         )
         {
-            Script_DayNotificationManager.Control.PlayDayNotification(() =>
-                {
-                    Script_BackgroundMusicManager.Control.UnPause();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(
-                        () => StartOpeningDialogue(wedR1Node),
-                        BGMParam
-                    );
-                },
-                _isInteractAfter: false
-            );
-
-            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+            HandleOpeningDialogueSetup(wedR1Node);
         }
         
         // Mon R2 Rin directs attention towards repeating cycle
@@ -141,18 +125,17 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             && isFirstLoad
         )
         {
-            Script_DayNotificationManager.Control.PlayDayNotification(() =>
-                {
-                    Script_BackgroundMusicManager.Control.UnPause();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(
-                        () => StartOpeningDialogue(monR2Node),
-                        BGMParam
-                    );
-                },
-                _isInteractAfter: false
-            );
+            HandleOpeningDialogueSetup(monR2Node);
+        }
 
-            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+        // Sat Weekend Start suggests Rin isn't fully aware of cycle but is becoming more cognizant of it.
+        else if (
+            game.CycleCount == 0
+            && game.Run.dayId == Script_Run.DayId.thu
+            && isFirstLoad
+        )
+        {
+            HandleOpeningDialogueSetup(satWeekendStartNode);
         }
 
         // Default Day Notification.
@@ -204,6 +187,22 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
                 Script_DialogueManager.DialogueManager.StartDialogueNode(dialogueNode);
             }
+        }
+
+        void HandleOpeningDialogueSetup(Script_DialogueNode dialogueNode)
+        {
+            Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                {
+                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.FadeInSlow(
+                        () => StartOpeningDialogue(dialogueNode),
+                        BGMParam
+                    );
+                },
+                _isInteractAfter: false
+            );
+
+            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());            
         }
     }
 
@@ -273,6 +272,17 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);        
     }
 
+    public void OnGoodEndingPromptConfirm()
+    {
+        game.GetPlayer().TimelineMoveUp();
+    }
+
+    public void OnGoodEndingPromptCancel()
+    {
+        game.ChangeStateInteract();
+        game.GetPlayer().FaceDirection(Directions.Down);
+    }
+
     // ------------------------------------------------------------------
     // InteractableObject UnityEvents
     public void OnTryToExitFrontDoor()
@@ -317,6 +327,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             default:
                 break;
         }
+    }
+
+    public void GoodEndingExitPrompt()
+    {
+        game.ChangeStateCutScene();
+        game.GetPlayer().FaceDirection(Directions.Up);
+        Script_DialogueManager.DialogueManager.StartDialogueNode(goodEndingPrompt);
     }
 
     // ------------------------------------------------------------------
@@ -368,6 +385,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     public void OnDisableSurveillanceWhiteScreen()
     {
         HandleEndingExitState(true);
+        goodEndingExitPrompter.gameObject.SetActive(true);
     }
 
     public void OnDisableSurveillanceDone()
@@ -455,14 +473,17 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             case (Script_TransitionManager.Endings.True):
                 Debug.Log("------ SETTING UP TRUE ENDING, remove door ------");
                 HandleEndingExitState(true);
+                goodEndingExitPrompter.gameObject.SetActive(false);
                 break;
 
-            case (Script_TransitionManager.Endings.Dream):
-                Debug.Log("------ SETTING UP DREAM ENDING, remove door ------");
+            // State changes will happen via Timeline.
+            case (Script_TransitionManager.Endings.Good):
                 HandleEndingExitState(true);
+                goodEndingExitPrompter.gameObject.SetActive(true);
                 break;
 
             default:
+                goodEndingExitPrompter.gameObject.SetActive(false);
                 break;
         }
 
