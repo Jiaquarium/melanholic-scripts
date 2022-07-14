@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-06-22 13:35:37
+// Last created by UI Exporter at 2022-07-13 21:59:32
 
 using System.Collections;
 using System.Collections.Generic;
@@ -108,7 +108,7 @@ public class Script_UIText
     "good-ending_narrator_monologue1",
     new Model_LanguagesUI
     {
-        EN = @"Needless to say, I’ll never see {37} ever again."
+        EN = @"Needless to say, I’ll never see {18} ever again."
     }
 },
 {
@@ -150,56 +150,91 @@ public class Script_UIText
     "good-ending_narrator_monologue7",
     new Model_LanguagesUI
     {
-        EN = @"Maybe I wasn’t really helping anyone, not even myself."
+        EN = @"Looking at the sea now..."
+    }
+},
+{
+    "good-ending_narrator_monologue7_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Was I being naïve?"
     }
 },
 {
     "good-ending_narrator_monologue8",
     new Model_LanguagesUI
     {
-        EN = @"Maybe <i>I</i> really was the intruder."
+        EN = @"To think this would be good for my head..."
     }
 },
 {
     "good-ending_narrator_monologue9",
     new Model_LanguagesUI
     {
-        EN = @"In the end, is <i>he</i> all that I’ll ever be?"
+        EN = @"......"
     }
 },
 {
     "good-ending_narrator_monologue10",
     new Model_LanguagesUI
     {
-        EN = @"Maybe some questions aren’t meant to be answered."
+        EN = @"Were they all just in my head?"
     }
 },
 {
     "good-ending_narrator_monologue11",
     new Model_LanguagesUI
     {
-        EN = @"The most important thing though,"
+        EN = @"And <i>him</i>."
     }
 },
 {
     "good-ending_narrator_monologue12",
     new Model_LanguagesUI
     {
-        EN = @"Is that I finally have an end to this chapter of my life."
+        EN = @"Am I really losing it?"
+    }
+},
+{
+    "good-ending_narrator_monologue12_0",
+    new Model_LanguagesUI
+    {
+        EN = @"But then why do they feel so familiar?"
+    }
+},
+{
+    "good-ending_narrator_monologue12_1",
+    new Model_LanguagesUI
+    {
+        EN = @"Like pieces of me."
     }
 },
 {
     "good-ending_narrator_monologue13",
     new Model_LanguagesUI
     {
-        EN = @"There’s really no point in staying at the bottom of a well for so long."
+        EN = @"Maybe some questions aren’t meant to be answered."
     }
 },
 {
     "good-ending_narrator_monologue14",
     new Model_LanguagesUI
     {
-        EN = @"Living in a haze each and every day."
+        EN = @"The most important thing though,"
+    }
+},
+{
+    "good-ending_narrator_monologue14_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Is that I finally have an end to this chapter of my life."
+    }
+},
+{
+    "good-ending_narrator_monologue14_1",
+    new Model_LanguagesUI
+    {
+        EN = @"I’ve been at the bottom of a well for far too long now."
     }
 },
 {
@@ -269,7 +304,7 @@ public class Script_UIText
     "good-ending_narrator_monologue19",
     new Model_LanguagesUI
     {
-        EN = @"Finally I can sleep now."
+        EN = @"Finally, I can sleep now."
     }
 },
 {
@@ -306,7 +341,7 @@ public class Script_UIText
     "true-ending_narrator_monologue0_1",
     new Model_LanguagesUI
     {
-        EN = @"Needless to say, I’ll never see {37} ever again."
+        EN = @"Needless to say, I’ll never see {18} ever again."
     }
 },
 {
@@ -348,21 +383,21 @@ public class Script_UIText
     "true-ending_narrator_monologue3_1",
     new Model_LanguagesUI
     {
-        EN = @"Spending so many nights in there,"
+        EN = @"Spending so many nights in there."
     }
 },
 {
     "true-ending_narrator_monologue3_2",
     new Model_LanguagesUI
     {
-        EN = @"The only thing I could do was numb myself to it all."
+        EN = @"The only thing I could do was numb myself to it all..."
     }
 },
 {
     "true-ending_narrator_monologue3_3",
     new Model_LanguagesUI
     {
-        EN = @"It felt like I was watching myself in third person."
+        EN = @"And watch myself in third person."
     }
 },
 {
@@ -376,49 +411,56 @@ public class Script_UIText
     "true-ending_narrator_monologue5_0",
     new Model_LanguagesUI
     {
-        EN = @"Looking at the sea now, it’s becoming a bit clearer."
+        EN = @"Looking at the sea now, it’s becoming a bit clearer..."
     }
 },
 {
     "true-ending_narrator_monologue5_1",
     new Model_LanguagesUI
     {
-        EN = @"All the feelings in purgatory I was helplessly dragging around."
+        EN = @"My feelings in purgatory I was helplessly dragging around."
     }
 },
 {
     "true-ending_narrator_monologue5_2",
     new Model_LanguagesUI
     {
-        EN = @"If I’m being honest, I can see parts of them in me."
+        EN = @"In the past, I would’ve locked them away,"
     }
 },
 {
     "true-ending_narrator_monologue5_3",
     new Model_LanguagesUI
     {
-        EN = @"Parts of myself in them."
+        EN = @"But they’re parts of me."
     }
 },
 {
     "true-ending_narrator_monologue6_0",
     new Model_LanguagesUI
     {
-        EN = @"I’ve always feared becoming stuck in <i>only them</i> though."
+        EN = @"I’ve always feared becoming <i>only them</i> though..."
     }
 },
 {
     "true-ending_narrator_monologue6_1",
     new Model_LanguagesUI
     {
-        EN = @"Like I’d be cycling through shades of winter."
+        EN = @"Like I’d be forever a night in winter."
     }
 },
 {
     "true-ending_narrator_monologue6_2",
     new Model_LanguagesUI
     {
-        EN = @"But I’m not just them."
+        EN = @"I’ve paid my visits."
+    }
+},
+{
+    "true-ending_narrator_monologue6_3",
+    new Model_LanguagesUI
+    {
+        EN = @"<b>I’m not just them.</b>"
     }
 },
 {
@@ -504,7 +546,7 @@ public class Script_UIText
     "bad-ending_narrator_the-sealing1",
     new Model_LanguagesUI
     {
-        EN = @"{37} along with all those inside were locked away, permanently losing touch with the outside world."
+        EN = @"{18} along with all those inside were locked away, permanently losing touch with the outside world."
     }
 },
 {
@@ -872,7 +914,7 @@ public class Script_UIText
     "sticker_my-mask",
     new Model_LanguagesUI
     {
-        EN = @"A mysterious @@Sticker_Bold birthed from spirits inside and outside of {37}. It emanates a powerful aura, a feeling only its original owner can harness."
+        EN = @"A mysterious @@Sticker_Bold birthed from spirits inside and outside of {18}. It emanates a powerful aura, a feeling only its original owner can harness."
     }
 },
 // ------------------------------------------------------------------
@@ -1706,7 +1748,7 @@ public class Script_UIText
     "grand-mirror-room_player_welling-up",
     new Model_LanguagesUI
     {
-        EN = @"At that moment,| something began to well up inside of me."
+        EN = @"At that moment,| something began to well up inside me."
     }
 },
 {
@@ -1720,11 +1762,18 @@ public class Script_UIText
     "grand-mirror-room_player_welling-up2",
     new Model_LanguagesUI
     {
-        EN = @"A slippery image of a portrait..."
+        EN = @"Why do I feel like I’ve been retracing a memory?"
     }
 },
 {
     "grand-mirror-room_player_welling-up3",
+    new Model_LanguagesUI
+    {
+        EN = @"A slippery image of a portrait..."
+    }
+},
+{
+    "grand-mirror-room_player_welling-up4",
     new Model_LanguagesUI
     {
         EN = @"What if I|| <i>can’t</i>?"
