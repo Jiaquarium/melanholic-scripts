@@ -498,6 +498,10 @@ public class Script_DialogueManager : MonoBehaviour
         bool SFXOn = true
     )
     {
+        bool noFadeIn = isKeepingDialogueUp || (
+            currentNode.data.isCustomDialogueFadeIn
+            && currentNode.data.dialogueFadeInSpeed == FadeSpeeds.None
+        );
         isInputDisabled = false;
         isKeepingDialogueUp = false;
         
@@ -535,12 +539,27 @@ public class Script_DialogueManager : MonoBehaviour
         EnqueueDialogueSections(dialogue);
         
         activeCanvas.InitialState();
-        activeCanvas.FadeIn(dialogueFadeTime, () => {
+        
+        if (noFadeIn)
+        {
+            activeCanvas.Open();
+            SetupContinueDialogue();
+        }
+        else
+        {
+            var fadeTime = currentNode.data.isCustomDialogueFadeIn ? 
+                currentNode.data.dialogueFadeInSpeed.ToFadeTime()
+                : dialogueFadeTime;
+            activeCanvas.FadeIn(fadeTime, SetupContinueDialogue);
+        }
+
+        void SetupContinueDialogue()
+        {
             // Reactivate Continuation Icon
             activeCanvas.canvasChild.Setup();
 
             ContinueDialogue();
-        });
+        }
     }
 
     private void DisplayNextDialoguePortion()
@@ -900,6 +919,9 @@ public class Script_DialogueManager : MonoBehaviour
         /// Allow the InteractableFullArt object to handle this if it's a fullArt object
         /// e.g. not just fullArt attached to a dialogueNode
         bool isFullArtControlledByMe = fullArtManager.state == Script_FullArtManager.FullArtState.DialogueManager;
+        var canvasFadeTime = currentNode.data.isCustomDialogueFadeOut ? 
+            currentNode.data.dialogueFadeOutSpeed.ToFadeTime()
+            : dialogueFadeTime;
         
         if (
             fullArtManager.activeFullArt != null
@@ -920,10 +942,10 @@ public class Script_DialogueManager : MonoBehaviour
         {
             yield return null;
             
-            if (!HandleKeepDialogueUpOnAction())
+            if (!HandleKeepDialogueUp())
             {
                 ClearAllCanvasTexts();
-                activeCanvas.FadeOut(dialogueFadeTime, () => {
+                activeCanvas.FadeOut(canvasFadeTime, () => {
                     fullArtManager.HideFullArt(
                         fullArtManager.activeFullArt, currentNode.data.fadeOut, OnEndDialogue
                     );
@@ -939,10 +961,10 @@ public class Script_DialogueManager : MonoBehaviour
         {
             yield return null;
             
-            if (!HandleKeepDialogueUpOnAction())
+            if (!HandleKeepDialogueUp())
             {
                 ClearAllCanvasTexts();
-                activeCanvas.FadeOut(dialogueFadeTime, OnEndDialogue);
+                activeCanvas.FadeOut(canvasFadeTime, OnEndDialogue);
             }
             else
             {
@@ -1034,19 +1056,15 @@ public class Script_DialogueManager : MonoBehaviour
         }
     }
 
-    private bool HandleKeepDialogueUpOnAction()
+    private bool HandleKeepDialogueUp()
     {
         // on option to keep dialogue up (for command prompts e.g. tutorials)
-        if (
-            currentNode.data.showDialogueOnAction
-            && (
-                !string.IsNullOrEmpty(currentNode.data.action)
-                || !string.IsNullOrEmpty(currentNode.data.updateAction)
-            )
-        )
+        if (currentNode.data.isKeepThisDialogueUp)
         {
-            // set for dialogue continuation icon
+            // Dialogue Icon needs this as well (to know to continue blinking).
             isKeepingDialogueUp = true;
+
+            Debug.Log($"Keep current dialogue up isKeepingDialogueUp: {isKeepingDialogueUp}");
             return true;
         }
 

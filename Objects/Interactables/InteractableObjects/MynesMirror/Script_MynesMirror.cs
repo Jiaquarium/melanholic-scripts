@@ -12,12 +12,13 @@ using UnityEngine.Playables;
 ///
 /// 2. StartDialogue() from Timeline End Signal
 ///     Dialogue Flow:
-///     A) Default
+///     A) Default Case
 ///         1) Interaction Node? (Myne's Mirror Manager gives this node based on # of interactions with Mirror)
+///             Note: Always set these to NoFadeOut: True
 ///         2) Hint Node? Check cases in MynesMirrorNodesController_Mirror0 (based on Day)
 ///         3) Default Node (Default END)
 ///     
-///     B) Special Conditions
+///     B) Special Conditions Case
 ///         1) Specially defined override Nodes, completely define a custom flow (e.g. comment on Sealing)
 /// 
 /// 3. End() from Dialogue End NextNodeAction
@@ -229,6 +230,8 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public virtual void End()
     {
+        Debug.Log("End Myne dialogue");
+        
         // Fade out BG Theme Player
         Script_BackgroundMusicManager.Control.FadeOutMed(() => {
                 bgThemePlayer.gameObject.SetActive(false);
@@ -252,6 +255,8 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public void OnInteractionDialogueDone()
     {
+        Debug.Log("Interaction Node done, do HintNode");
+        
         Script_DialogueManager.DialogueManager.StartDialogueNode(HintNode, SFXOn: false);
     }
 }
