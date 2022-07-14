@@ -185,7 +185,7 @@ public class Script_DDRManager : MonoBehaviour
 
         DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().FadeIn(
             FadeSpeeds.Fast.GetFadeTime(),
-            a: cb
+            onFadedIn: cb
         );
 
         void HandleMistakesCanvasGroup()
@@ -204,7 +204,7 @@ public class Script_DDRManager : MonoBehaviour
 
         DDRCanvasGroup.GetComponent<Script_CanvasGroupController>().FadeOut(
             FadeSpeeds.Fast.GetFadeTime(),
-            a: () => {
+            onFadedOut: () => {
                 if (cb != null)
                     cb();
                 

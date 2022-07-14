@@ -63,7 +63,7 @@ public class Script_UIChoice : MonoBehaviour
     /// </summary>
     public void HandleFadeOut(float t = Script_CanvasGroupController.DefaultFadeTime, Action cb = null)
     {
-        canvasGroupController?.FadeOut(a: () => {
+        canvasGroupController?.FadeOut(onFadedOut: () => {
             canvasGroupController.MyCanvasGroup.alpha = 1f;
             canvasGroupController.MyCanvasGroup.gameObject.SetActive(false);
 

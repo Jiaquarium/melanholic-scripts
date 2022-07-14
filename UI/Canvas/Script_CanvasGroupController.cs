@@ -74,7 +74,7 @@ public class Script_CanvasGroupController : MonoBehaviour
 
     public virtual void FadeIn(
         float t = DefaultFadeTime,
-        Action a = null,
+        Action onFadedIn = null,
         bool isUnscaledTime = false
     )
     {
@@ -96,8 +96,10 @@ public class Script_CanvasGroupController : MonoBehaviour
             return;
 
         fadeInCoroutine = StartCoroutine(fader.FadeInCo(t, () => {
-                if (a != null) a();
                 fadeInCoroutine = null;
+                
+                if (onFadedIn != null)
+                    onFadedIn();
             },
             maxAlpha: isUseMaxAlpha ? maxAlpha : 1f,
             isUnscaledTime: isUnscaledTime
@@ -109,7 +111,7 @@ public class Script_CanvasGroupController : MonoBehaviour
     /// </summary>
     public virtual void FadeOut(
         float t = DefaultFadeTime,
-        Action a = null,
+        Action onFadedOut = null,
         bool isUnscaledTime = false
     )
     {
@@ -129,9 +131,11 @@ public class Script_CanvasGroupController : MonoBehaviour
             return;
 
         fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(t, () => {
-                if (a != null) a();
                 fader.gameObject.SetActive(false);
                 fadeOutCoroutine = null;
+                
+                if (onFadedOut != null)
+                    onFadedOut();
             },
             isUnscaledTime: isUnscaledTime
         ));
