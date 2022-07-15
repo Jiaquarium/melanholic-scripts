@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-07-14 13:53:25
+// Last created by Dialogue Exporter at 2022-07-15 01:30:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -446,7 +446,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"For you, me, the rest of ‘em... there’s not much time, you know...",
+                @"You know... for you, me, the rest of ‘em... there’s not much time...",
                 @"And speaking of time, I gotta run. See you around, {0}~",
         },
         
@@ -854,7 +854,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Outside?| You mustn’t worry about that, my dear. I assure you there’s no need for alarm, he-he.",
-                @"Perhaps you could be seeing things again? Have you been up all night?",
+                @"Perhaps <b>you</b> could be seeing things again? Have you been up all night?",
         },
         choiceText = "What were those outside?",
         
@@ -1547,6 +1547,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Something tells me him and these {42}|.|.|.",
                 @"Might somehow be...",
                 @"...<b>connected</b>.",
+                @"Then there’s this fact <i>you’re</i> involved now...",
                 @"I know, this might all sound crazy but|.|.|.",
         },
         choiceText = "I met him, {10}.",
@@ -1556,6 +1557,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 null,
                 null,
                 null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -2519,7 +2524,6 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Yup, you tell’em, {61}!",
-                @"It’s hard working in the <b>desert</b>, but hey, at least it’s honest work! Ba-ha-ha!",
         },
         
     }
@@ -2558,6 +2562,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"The ones who already fled?| Ha! They don’t belong here to begin with!",
+                @"They could never work in a <b>desert</b> like us! It’s rough alright, but hey, at least it’s honest work! Ba-ha!",
         },
         
     }
@@ -3258,8 +3263,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It’s just something tells me that... how should I put this...?",
                 @"On her current path...| she won’t ever <i>find</i> the image of the {8}.",
-                @"Rumor has it that the {8} even leads a <b>double life</b>...",
-                @"You know, it’s all actually a thing of fables, no one’s ever really seen the {8}.",
+                @"And to make matters worse, it’s rumored they even lead some sort of <b>double life</b>...",
+                @"Well you know, it’s all actually a thing of fables, no one’s ever really seen the {8}.",
                 @"But it seems to me, it’s one of those instances where when you see it, you’ll know it.",
                 @"It’s something she’s been doing ever since I can remember, but to tell the truth... I’m getting more worried than usual these days.",
                 @"Well, it’s just that... sometimes when painters lose confidence, they’ll try to plan out every detail of the final piece, all the lines, shapes, all of it. It’s absolutely fine when you already know what your final piece is supposed to look like... but...",
@@ -5050,8 +5055,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You begin to think things over,| the hotel’s day-to-day at least provided some structure...",
-                @"Maybe that simplicity still beats being lost in infinite vastness.",
+                @"You begin to think things over,| the hotel’s day-to-day routine...",
+                @"Maybe it’s still better than being lost in infinite vastness.",
                 @"Is this how it feels to be lost at sea?",
         },
         

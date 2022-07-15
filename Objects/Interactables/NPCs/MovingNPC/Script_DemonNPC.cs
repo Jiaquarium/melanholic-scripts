@@ -46,10 +46,10 @@ public class Script_DemonNPC : Script_MovingNPC
     // Intro Psychic Node
     [SerializeField] bool _isIntroPsychicNode;
     [Tooltip("Shows an intro node on first interaction")]
-    [HideInInspector][SerializeField] private Script_DialogueNode _introPsychicNode;
+    [SerializeField] private Script_DialogueNode _introPsychicNode;
     [Tooltip("Make the intro node's child the first Psychic Node")]
     // This is useful if you want to show the Psychic Node no matter what
-    [HideInInspector][SerializeField] bool _shouldPrependIntroNode;
+    [SerializeField] bool _shouldPrependIntroNode;
     
     private Script_DialogueNode[] defaultNodes;
     
@@ -292,28 +292,29 @@ public class Script_DemonNPC : Script_MovingNPC
     [CustomEditor(typeof(Script_DemonNPC))]
     public class Script_DemonNPCEditor : Editor
     {
-        SerializedProperty _introPsychicNodeProperty;
-        private const string introPsychicNodePropertyName = "_introPsychicNode";
+        // SerializedProperty _introPsychicNodeProperty;
+        // private const string introPsychicNodePropertyName = "_introPsychicNode";
         
-        void OnEnable()
-        {
-            _introPsychicNodeProperty = serializedObject.FindProperty(introPsychicNodePropertyName);
-        }
+        // void OnEnable()
+        // {
+        //     _introPsychicNodeProperty = serializedObject.FindProperty(introPsychicNodePropertyName);
+        // }
 
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            var t = target as Script_DemonNPC;
+        // public override void OnInspectorGUI()
+        // {
+        //     base.OnInspectorGUI();
+        //     var t = target as Script_DemonNPC;
 
-            if (t.IsIntroPsychicNodes)
-            {
-                t._shouldPrependIntroNode   = EditorGUILayout.Toggle("Should Prepend Intro Node", t._shouldPrependIntroNode);
-                EditorGUILayout.PropertyField(_introPsychicNodeProperty);
+        //     if (t.IsIntroPsychicNodes)
+        //     {
+        //         t._shouldPrependIntroNode   = EditorGUILayout.Toggle("Should Prepend Intro Node", t._shouldPrependIntroNode);
+                
+        //         EditorGUILayout.PropertyField(_introPsychicNodeProperty);
+        //     }
 
-                // Apply changes to the serializedProperty - always do this at the end of OnInspectorGUI.
-                serializedObject.ApplyModifiedProperties();
-            }
-        }
+        //     // Apply changes to the serializedProperty - always do this at the end of OnInspectorGUI.
+        //     serializedObject.ApplyModifiedProperties();
+        // }
     }
     #endif
 }
