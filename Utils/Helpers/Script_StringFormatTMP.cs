@@ -24,21 +24,17 @@ public class Script_StringFormatTMP : MonoBehaviour
         set => dynamicText = value;
     }
 
-    void Start()
+    void OnEnable()
     {
-        string unformattedStr = GetComponent<TextMeshProUGUI>().text; 
-        GetComponent<TextMeshProUGUI>().text = Script_Utils.FormatString(unformattedStr);
+        UpdateText();
     }
 
-    void OnValidate()
+    private void UpdateText()
     {
-        if (useDynamicDisplay)  DynamicDisplay();
-    }
-
-    void Update()
-    {
-        if (useDynamicDisplay)  DynamicDisplay();
-        else                    FormatTMPText();
+        if (useDynamicDisplay)
+            DynamicDisplay();
+        else
+            FormatTMPText();
     }
 
     private void FormatTMPText()

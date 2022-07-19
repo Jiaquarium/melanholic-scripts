@@ -246,6 +246,9 @@ public class Script_UIRebindAction : MonoBehaviour
         errorOtherTMP.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    // Note: Do not call every frame, ToHumanReadableString's performance is very slow.
+    /// </summary>
     private void UpdateBindingDisplayUI()
     {
         // Note: only returns the first binding control path.

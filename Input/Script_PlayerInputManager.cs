@@ -188,6 +188,7 @@ public class Script_PlayerInputManager : MonoBehaviour
     public static int GetFirstControlBindingIndex(InputAction inputAction) => 
         inputAction.GetBindingIndexForControl(inputAction.controls[0]);
 
+    // Note: Do not call every frame, ToHumanReadableString's performance is very slow.
     // Note: only returns the first binding control path.
     // https://github.com/UnityTechnologies/InputSystem_Warriors/blob/056e74b1701f3bd2f218a34a46d6d2cc1e167a78/InputSystem_Warriors_Project/Assets/Scripts/Behaviours/UI/UIRebindActionBehaviour.cs#L116
     public string GetHumanReadableBindingPath(string actionName, string actionMap = Const_KeyCodes.PlayerMap)

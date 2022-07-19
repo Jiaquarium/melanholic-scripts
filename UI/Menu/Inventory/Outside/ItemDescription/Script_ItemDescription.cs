@@ -31,8 +31,14 @@ public class Script_ItemDescription : MonoBehaviour
     {
         get { return DescriptionTMP.text; }
         set {
-            if (string.IsNullOrEmpty(value))    DescriptionTMP.text = nullDescription;
-            else                                DescriptionTMP.text = Script_Utils.FormatString(value);
+            if (string.IsNullOrEmpty(value))
+                DescriptionTMP.text = nullDescription;
+            else
+                DescriptionTMP.text = Script_Utils.FormatString(
+                    value,
+                    isFormatInventoryKey: true,
+                    isFormatSpeedKey: true
+                );
         }
     }
 }

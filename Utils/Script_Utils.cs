@@ -222,7 +222,11 @@ public static class Script_Utils
     /// <summary>
     /// Params for item names defined in Script_ItemStringBuilder
     /// </summary>
-    public static string FormatString(this string unformattedString)
+    public static string FormatString(
+        this string unformattedString,
+        bool isFormatInventoryKey = false,
+        bool isFormatSpeedKey = false
+    )
     {
         string itemFormattedStr = ReplaceParams(
             unformattedString,
@@ -233,6 +237,15 @@ public static class Script_Utils
         try
         {
             Script_DynamicStringBuilder.BuildParams();
+
+            // Opt into these params because they are very slow to fetch
+            // due to InputControlPath.ToHumanReadableString
+            if (isFormatInventoryKey)
+                Script_DynamicStringBuilder.BuildInventoryParam();
+            
+            if (isFormatSpeedKey)
+                Script_DynamicStringBuilder.BuildSpeedParam();
+
             itemAndDynamicFormattedStr = ReplaceParams(
                 itemFormattedStr,
                 Script_DynamicStringBuilder.Params

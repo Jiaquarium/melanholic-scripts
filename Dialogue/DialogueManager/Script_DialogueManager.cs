@@ -599,7 +599,11 @@ public class Script_DialogueManager : MonoBehaviour
         
         string unformattedLine = lines.Dequeue();
 
-        formattedLine = Script_Utils.FormatString(unformattedLine);
+        formattedLine = Script_Utils.FormatString(
+            unformattedLine,
+            isFormatInventoryKey: currentNode.data.isFormatInventoryKey,
+            isFormatSpeedKey: currentNode.data.isFormatSpeedKey
+        );
 
         HandleTeletypeReveal(formattedLine, activeCanvasText);
     }
@@ -1092,7 +1096,11 @@ public class Script_DialogueManager : MonoBehaviour
                 {
                     // Interpolate dynamic strings.
                     string unformattedLine = dialogueSection.lines[i];
-                    string _formattedLine = Script_Utils.FormatString(unformattedLine);
+                    string _formattedLine = Script_Utils.FormatString(
+                        unformattedLine,
+                        isFormatInventoryKey: currentNode.data.isFormatInventoryKey,
+                        isFormatSpeedKey: currentNode.data.isFormatSpeedKey
+                    );
                     
                     // Remove pause indicators
                     _formattedLine = _formattedLine.Replace("|", string.Empty);
