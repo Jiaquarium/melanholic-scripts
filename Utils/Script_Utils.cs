@@ -972,7 +972,21 @@ public static class Script_Utils
 
     // -------------------------------------------------------------------------------------
     // File Path Helpers
-    public static string SaveFile(int slot) => $"saveData{Application.version}_{slot}.dat";
-    public static string SaveTitleDataFile(int slot) => $"savedGameTitleData{Application.version}_{slot}.dat";
-    public static string KeyRebindsFile() => $"keyRebinds{Application.version}.dat";
+    
+    /// <summary>
+    /// Version number must be formatted like W.X.Y.Z
+    /// </summary>
+    
+    public static string SaveFile(int slot) => $"saveData{RemoveBuildNumber(Application.version)}_{slot}.dat";
+    public static string SaveTitleDataFile(int slot) => $"savedGameTitleData{RemoveBuildNumber(Application.version)}_{slot}.dat";
+    public static string KeyRebindsFile() => $"keyRebinds{RemoveBuildNumber(Application.version)}.dat";
+
+    // Will remove last "." and anything after it.
+    public static string RemoveBuildNumber(string version)
+    {
+        int index = version.LastIndexOf(".");
+        string removedLastNumberVersion = index >= 0 ? version.Substring(0, index) : version;
+
+        return removedLastNumberVersion;
+    }
 }

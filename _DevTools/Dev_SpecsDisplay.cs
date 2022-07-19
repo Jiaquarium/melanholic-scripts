@@ -16,11 +16,14 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	private float fps;
 	private float frameTimeMs;
 	private float timer;
+	private string version;
  
 	void Awake()
     {
         cam = GetComponent<Camera>();
 		this.enabled = Const_Dev.IsSpecsDisplayOn;
+
+		version = Version();
     }
 	
 	void Update()
@@ -54,7 +57,8 @@ TrailerModeSpecs()
 {PixelPerfectData()}
 ortho: {CameraSize()}
 {ScreenMode()}
-{BuildText()}";
+{BuildText()}
+{version}";
 
 		GUI.Label(rect, label, style);
 	}
@@ -67,6 +71,8 @@ pxRt:{PixelRatio()}x
 {VP()}
 lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 
+	private string Version() => Application.version;
+	
 	private void RefreshFrameData()
 	{
 		frameTimeMs = Time.smoothDeltaTime * 1000f;

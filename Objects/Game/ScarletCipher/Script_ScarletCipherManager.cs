@@ -155,7 +155,12 @@ public class Script_ScarletCipherManager : MonoBehaviour
     // View
     public void PlayScarletCipherNotification(int revealedNum)
     {
-        Script_Game.Game.ChangeStateCutScene();
+        var game = Script_Game.Game;
+        var player = game.GetPlayer();
+        
+        // Must switch to nonmoving state here to force Player to stop movement.
+        player.SetIsStandby();
+        game.ChangeStateCutScene();
         
         string s = revealedNum.ToString();
         ScarletCipherNotification.Open(s);
@@ -174,7 +179,8 @@ public class Script_ScarletCipherManager : MonoBehaviour
         {
             yield return new WaitForSeconds(ScarletCipherNotification.PauseAfterNotifyingTime);
             
-            Script_Game.Game.ChangeStateInteract();
+            player.SetIsInteract();
+            game.ChangeStateInteract();
         }
     }
     
