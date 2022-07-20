@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-07-15 01:30:15
+// Last created by Dialogue Exporter at 2022-07-20 02:02:35
 
 using System.Collections;
 using System.Collections.Generic;
@@ -661,8 +661,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"A painting of the mogul who originally funded construction of the hotel. Not too much is known about him.",
-                @"It’s a strange painting. His face is smudged out, but still, kind of reminds you of someone from the past.",
+                @"A painting of the mogul who originally funded construction of the hotel.",
+                @"You’ve heard he lives a “double life” of sorts... but not too much is known about him.",
         },
         
     }
@@ -3208,7 +3208,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Y-you aren’t a {13}...",
+                @"......",
+                @"Hey by the way... Y-you aren’t a {13}, are you...?",
                 @"But it seems to me, you can still understand much of what I’m saying.",
                 @"It’s really been a long time since a non-{13} could communicate with us.",
         },
@@ -3263,8 +3264,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It’s just something tells me that... how should I put this...?",
                 @"On her current path...| she won’t ever <i>find</i> the image of the {8}.",
-                @"And to make matters worse, it’s rumored they even lead some sort of <b>double life</b>...",
-                @"Well you know, it’s all actually a thing of fables, no one’s ever really seen the {8}.",
+                @"It’s all actually a thing of fables...",
+                @"...No one’s ever really seen the {8}...",
                 @"But it seems to me, it’s one of those instances where when you see it, you’ll know it.",
                 @"It’s something she’s been doing ever since I can remember, but to tell the truth... I’m getting more worried than usual these days.",
                 @"Well, it’s just that... sometimes when painters lose confidence, they’ll try to plan out every detail of the final piece, all the lines, shapes, all of it. It’s absolutely fine when you already know what your final piece is supposed to look like... but...",
