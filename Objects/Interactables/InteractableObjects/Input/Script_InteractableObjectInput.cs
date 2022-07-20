@@ -26,6 +26,9 @@ public class Script_InteractableObjectInput : Script_InteractableObject
         {
             game.GetPlayer().SetIsTalking();
 
+            // Must specify this so Dialogue Input Manager knows to not accept cut scene inputs.
+            Script_DialogueManager.DialogueManager.isInputMode = true;
+            
             // Set input canvas active
             inputManager.Initialize(inputMode, inputField, inputManager.CCTVInputCanvasGroup);
             inputManager.gameObject.SetActive(true);
@@ -57,12 +60,15 @@ public class Script_InteractableObjectInput : Script_InteractableObject
 
     private void EndInput()
     {
-        // Wait for the End of the Frame to end input so won't overlap with an interaction input.
+        // Wait for the next frame to end input so won't overlap with an interaction input.
         StartCoroutine(NextFrameEndInput());
         
         IEnumerator NextFrameEndInput()
         {
             yield return null;
+            
+            Script_DialogueManager.DialogueManager.isInputMode = false;
+            
             inputManager.End();
             Script_Game.Game.GetPlayer().SetIsInteract();
         }

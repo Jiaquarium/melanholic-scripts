@@ -18,7 +18,7 @@ public class Script_DialogueInputManager : MonoBehaviour
             && game.state == Const_States_Game.CutScene
         )
         {
-            Debug.Log("Script_LevelBehavior: HandleDialogueAction()");
+            Debug.Log("HandleCutSceneDialogueAction()");
             game.HandleContinuingDialogueActions(Const_KeyCodes.Interact);
         }
     }

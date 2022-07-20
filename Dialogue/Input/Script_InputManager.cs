@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(AudioSource))]
 public class Script_InputManager : MonoBehaviour
 {
@@ -15,6 +19,9 @@ public class Script_InputManager : MonoBehaviour
     [SerializeField] private Script_InputCodeHandler codeHandler;
     [SerializeField] public TMP_InputField TMPInputField;
     [SerializeField] public TMP_InputField TMPNameInputField;
+    
+    // For Dev Only
+    [SerializeField] public TMP_InputField TMPCodeInputField;
     
     
     [SerializeField] private CanvasGroup inputCanvasGroup;
@@ -173,4 +180,28 @@ public class Script_InputManager : MonoBehaviour
         nameInputCanvasGroup.gameObject.SetActive(false);
         CCTVInputCanvasGroup.gameObject.SetActive(false);
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_InputManager))]
+    public class Script_InputManagerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_InputManager t = (Script_InputManager)target;
+            if (GUILayout.Button("Populate CCTV Code"))
+            {
+                string scarletCipherText = "";
+                int[] scarletCipher = Script_ScarletCipherManager.Control.ScarletCipher;
+
+                foreach (int codeNum in scarletCipher)
+                {
+                    scarletCipherText += codeNum.ToString();
+                }
+                
+                t.TMPCodeInputField.text = scarletCipherText;
+            }
+        }
+    }
+#endif
 }

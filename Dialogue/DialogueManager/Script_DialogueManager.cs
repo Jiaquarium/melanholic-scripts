@@ -867,6 +867,8 @@ public class Script_DialogueManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("EndInputMode > HandleEndDialogue");
+            
             HandleEndDialogue();
         }
     }
@@ -904,7 +906,9 @@ public class Script_DialogueManager : MonoBehaviour
         // actually end dialogue
         else
         {
-            /// HandDialogueNodeAction() handled later
+            Debug.Log("OnEndDialogueSections > HandleEndDialogue");
+            
+            // HandDialogueNodeAction() handled later
             HandleEndDialogue();
             return true;
         }
