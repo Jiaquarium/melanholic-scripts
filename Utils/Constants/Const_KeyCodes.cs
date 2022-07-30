@@ -50,4 +50,7 @@ public static class Const_KeyCodes
     public const string Lights = "Lights";
     public const string Time = "Time";
     public const string Day = "Day";
+    public const string UIVisibility = "UIVisibility";
+    public const string PlayerVisibility = "PlayerVisibility";
+    public const string SpecsDisplay = "SpecsDisplay";
 }

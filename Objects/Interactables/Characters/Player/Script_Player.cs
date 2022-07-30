@@ -511,8 +511,6 @@ public class Script_Player : Script_Character
         }
     }
 
-    // Call with fadeTime = 0f for instant.
-    // For materials where alpha is not affected, this will instantly disable player Graphics. 
     public void SetInvisible(bool isHide, float fadeTime = -1f)
     {
         _isInvisible = isHide;

@@ -60,6 +60,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     // Dev Only
     [SerializeField] private Script_Marker devHalfTriggerHalfSpikesLocation;
+    [SerializeField] private Script_Trigger dramaticThoughtsTrigger;
     
     private Script_LBSwitchHandler switchHandler;
     private bool isPauseSpikes;
@@ -506,6 +507,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             if (GUILayout.Button("Puzzle Success"))
             {
                 t.PuzzleSuccess();
+            }
+
+            if (GUILayout.Button("Dramatic Thoughts Cut Scene"))
+            {
+                var dramaticThoughtsLocation = t.dramaticThoughtsTrigger.transform.position;
+                Script_Game.Game.GetPlayer().Teleport(dramaticThoughtsLocation);
             }
 
             if (GUILayout.Button("Hide Player"))

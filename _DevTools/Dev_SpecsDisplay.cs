@@ -17,6 +17,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	private float frameTimeMs;
 	private float timer;
 	private string version;
+	private bool isHidden;
  
 	void Awake()
     {
@@ -35,11 +36,16 @@ public class Dev_SpecsDisplay : MonoBehaviour
 			RefreshFrameData();
 			timer = fpsRefreshTimer;
 		}
+
+		HandleDevInput();
 	}
  
 	void OnGUI()
 	{
-        int w = Screen.width, h = Screen.height;
+        if (isHidden)
+			return;
+		
+		int w = Screen.width, h = Screen.height;
  
 		GUIStyle style = new GUIStyle();
  
@@ -191,5 +197,27 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
         var displayIdx = displayInfos.IndexOf(info);
 
 		return $"Display {displayIdx}, {info.name} {info.width}x{info.height}";
+	}
+
+	private void HandleDevInput()
+	{
+		if (!Const_Dev.IsTrailerMode)
+			return;
+		
+		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
+		{
+			Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
+		}
+
+		if (Input.GetButtonDown(Const_KeyCodes.PlayerVisibility))
+		{
+			var isInvisible = Script_Game.Game.GetPlayer().isInvisible;
+			Script_Game.Game.GetPlayer().SetInvisible(!isInvisible);
+		}
+
+		if (Input.GetButtonDown(Const_KeyCodes.SpecsDisplay))
+		{
+			isHidden = !isHidden;
+		}
 	}
 }
