@@ -14,8 +14,10 @@ public class Script_DayNotificationManager : MonoBehaviour
 {
     public static Script_DayNotificationManager Control;
 
+    private const string DefaultSatDayNotificationTimeId = "day-notification_time_sat";
     private const string DefaultSatDayNotificationTitleId = "day-notification_title_sat";
     private const string DefaultSatDayNotificationSubtitleId = "day-notification_subtitle_sat";
+    private const string SatR2DayNotificationTimeId = "day-notification_time_sat_R2";
     private const string SatR2DayNotificationTitleId = "day-notification_title_sat_R2";
     private const string SatR2DayNotificationSubtitleId = "day-notification_subtitle_sat_R2";
     

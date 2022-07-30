@@ -23,9 +23,9 @@ public class Script_RunsManager : MonoBehaviour
     private const string SaveFileDayNameSatId = "save-file_day-name_sat";
     private const string SaveFileDayNameSatR2Id = "save-file_day-name_sat_R2";
     private const string SaveFileDayNameSunId = "save-file_day-name_sun";
-    [SerializeField] private string SatId;
-    [SerializeField] private string SatR2Id;
-
+    private const string SatId = "HUD_days_today";
+    private const string SatR2Id = "HUD_days_today_R2";
+    private const string SunId = "HUD_days_tomorrow";
     
     [SerializeField] private Script_Run.DayId _startDay;
     [SerializeField] private Script_Run.DayId _weekendStartDay;
@@ -258,13 +258,17 @@ public class Script_RunsManager : MonoBehaviour
     /// </summary>
     public void HandleDaysCanvas()
     {
-        var isSunday = Run.dayId == Script_Run.DayId.sun;
+        // True Hour: Only display 1 day container in HUD
+        daysText[0].IsCurrentDay = true;
 
-        daysText[0].IsCurrentDay = !isSunday;
-        daysText[1].IsCurrentDay = isSunday;
+        var Id = RunCycle switch
+        {
+            Cycle.Weekday => SatId,
+            Cycle.Weekend => SatR2Id,
+            Cycle.Sunday => SunId,
+            _ => SatId,
+        };
 
-        // On Weekday and Sunday show regular Sat text.
-        var Id = RunCycle == Cycle.Weekend ? SatR2Id : SatId;
         daysText[0].UpdateTMPId(Id);
     }
 
