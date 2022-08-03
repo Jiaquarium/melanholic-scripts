@@ -85,7 +85,7 @@ public class Script_ScreenFXManager : MonoBehaviour
 
         IEnumerator WaitToFadeOutAudio()
         {
-            yield return new WaitForSeconds(currentDuration);
+            yield return new WaitForSecondsRealtime(currentDuration);
 
             rumbleAudio.FadeOut(rumbleFadeOutTime);
             

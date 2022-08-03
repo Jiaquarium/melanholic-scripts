@@ -30,7 +30,7 @@ public class Script_CameraShake : MonoBehaviour
 
         while (timer > 0f)
         {
-            timer -= Time.deltaTime;
+            timer -= Time.unscaledDeltaTime;
             yield return null;
         }
 
