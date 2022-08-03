@@ -67,8 +67,8 @@ public class Script_Names: MonoBehaviour
     
     public static string ElleniaPassword                                                        // {14} Updated in Eileen Room (L21)
     {
-        get => Names?._ElleniaPassword;
-        set => Names._ElleniaPassword = value;
+        get => Names?._ElleniaPassword.ToUpper();
+        set => Names._ElleniaPassword = value.ToUpper();
     }  
     
     public const string Tedmunch                        = "<b>Tedmunch</b>";                    // {15}

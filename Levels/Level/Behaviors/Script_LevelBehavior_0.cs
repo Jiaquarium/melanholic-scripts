@@ -55,6 +55,8 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         if (!didStartThought)
         {
             // On Initial Opening, pause BGM, fade in after Dialogue.
+            // Note: Must set volume to 0 before Stop, or will pop on Play again
+            Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             game.StopBgMusic();
             
             Debug.Log($"**** {name} starting wells cut scene ****");
@@ -98,9 +100,9 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     /// Next Node Actions
     public void OnWellOpeningDialogueDone()
     {
-        Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
-        Script_BackgroundMusicManager.Control.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+        // BG Param previously set to 0f 
         game.StartBgMusic();
+        Script_BackgroundMusicManager.Control.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
     }
     
     public void OnWellCutSceneDone()

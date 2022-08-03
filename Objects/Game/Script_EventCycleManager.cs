@@ -97,14 +97,16 @@ public class Script_EventCycleManager : MonoBehaviour
     // ------------------------------------------------------------------
     // Weekend Cycle Event Conditions
     
+    // 5:10-5:35 Ids in Rock Garden
     public bool IsIdsInSanctuary() => game.RunCycle == Script_RunsManager.Cycle.Weekend
         && clockManager.ClockTime >= Script_Clock.R2CursedTime
         && clockManager.ClockTime < Script_Clock.R2IdsDeadTime;
 
+    // After 5:35 Ids Dead
     public bool IsIdsDead() => game.RunCycle == Script_RunsManager.Cycle.Weekend
         && clockManager.ClockTime >= Script_Clock.R2IdsDeadTime;
     
-    // If it's past 5:10 Ellenia will be Hurt
+    // After 5:10 Ellenia Hurt
     public bool IsElleniaHurt() => game.RunCycle == Script_RunsManager.Cycle.Weekend
         && clockManager.ClockTime >= Script_Clock.R2CursedTime;
 

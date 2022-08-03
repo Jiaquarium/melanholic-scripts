@@ -159,7 +159,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     {
         string Password = Script_Names.ElleniaPassword;
 
-        return !string.IsNullOrEmpty(Password) && Password.ToLower() == pw.ToLower();
+        return !string.IsNullOrEmpty(Password) && Password.ToUpper() == pw.ToUpper();
     }
 
     public void ElleniaIntroDoneDialogueNodes()

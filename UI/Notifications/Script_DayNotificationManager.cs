@@ -52,8 +52,9 @@ public class Script_DayNotificationManager : MonoBehaviour
             timelineIdx = 1;
 
             // Inject old Text; timeline will switch it out with zalgofied
-            saturdayFirstR2NotificationTexts[0].UpdateTextId(DefaultSatDayNotificationTitleId);
-            saturdayFirstR2NotificationTexts[1].UpdateTextId(DefaultSatDayNotificationSubtitleId);
+            saturdayFirstR2NotificationTexts[0].UpdateTextId(DefaultSatDayNotificationTimeId);
+            saturdayFirstR2NotificationTexts[1].UpdateTextId(DefaultSatDayNotificationTitleId);
+            saturdayFirstR2NotificationTexts[2].UpdateTextId(DefaultSatDayNotificationSubtitleId);
         }
         else if (game.RunCycle == Script_RunsManager.Cycle.Sunday)
         {
@@ -129,8 +130,9 @@ public class Script_DayNotificationManager : MonoBehaviour
     // Inject new text.
     public void SwitchFirstR2DayNotificationText()
     {
-        saturdayFirstR2NotificationTexts[0].UpdateTextId(SatR2DayNotificationTitleId);
-        saturdayFirstR2NotificationTexts[1].UpdateTextId(SatR2DayNotificationSubtitleId);
+        saturdayFirstR2NotificationTexts[0].UpdateTextId(SatR2DayNotificationTimeId);
+        saturdayFirstR2NotificationTexts[1].UpdateTextId(SatR2DayNotificationTitleId);
+        saturdayFirstR2NotificationTexts[2].UpdateTextId(SatR2DayNotificationSubtitleId);
     }
     
     // ----------------------------------------------------------------------

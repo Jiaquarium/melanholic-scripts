@@ -72,10 +72,11 @@ public class Script_Piano : Script_InteractableObjectText
         {
             IsRemembered = true;
             
-            GetComponent<AudioSource>().PlayOneShot(
-                Script_SFXManager.SFX.CorrectPartialProgress,
-                Script_SFXManager.SFX.CorrectPartialProgressVol
-            );
+            game.ChangeStateCutScene();
+
+            Script_SFXManager.SFX.PlayQuestProgress(() => {
+                game.ChangeStateInteract();
+            });
         }
     }
 }

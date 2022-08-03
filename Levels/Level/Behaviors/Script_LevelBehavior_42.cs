@@ -199,8 +199,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         wellsWorldBehaviors.ForEach(
             behavior => behavior.HeavySnow.gameObject.SetActive(true)
         );
-
-        SetFireplaceExitActive(true);
     }
 
     public void StopHeavySnow()
@@ -208,8 +206,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         wellsWorldBehaviors.ForEach(
             behavior => behavior.HeavySnow.gameObject.SetActive(false)
         );
-
-        SetFireplaceExitActive(false);
     }
 
     // Will also affect Fireplace Exit state.
@@ -218,8 +214,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         wellsWorldBehaviors.ForEach(
             behavior => behavior.SmallSnow.gameObject.SetActive(isActive)
         );
-
-        SetFireplaceExitActive(isActive);
     }
 
     /// <summary>
@@ -465,6 +459,9 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public override void Setup()
     {
         wellsPuzzleController.InitialState();
+
+        // Always leave fireplace open
+        SetFireplaceExitActive(true);
 
         // Only Spawn Last Well Map if Player has not picked it up.
         if (didPickUpLastWellMap)

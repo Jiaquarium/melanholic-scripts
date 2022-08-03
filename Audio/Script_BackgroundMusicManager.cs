@@ -315,6 +315,15 @@ public class Script_BackgroundMusicManagerTester : Editor
         {
             t.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
         }
+        if (GUILayout.Button("Stop"))
+        {
+            t.Stop();
+        }
+        if (GUILayout.Button("Play"))
+        {
+            int level = Script_Game.Game.level;
+            t.Play(Script_Game.Game.Levels.levelsData[level].bgMusicAudioClipIndex);
+        }
     }
 }
 #endif
