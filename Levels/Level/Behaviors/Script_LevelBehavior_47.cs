@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Script_LevelBehavior_47 : Script_LevelBehavior
 {
-    public const string MapName = "Rock Garden";
+    private const string MapName = Script_Names.RockGarden;
     
     // ==================================================================
     // State Data

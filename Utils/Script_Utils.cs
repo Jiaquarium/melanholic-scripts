@@ -336,15 +336,23 @@ public static class Script_Utils
             Script_Names.XXXWorld,                      // {75}
             Script_Names.OtherSide,                     // {76}
             Script_Names.NauticalDawn,                  // {77}
-            Script_Names.UrselksHall,                   // {78}
+            Script_Names.DarkDarkHall,                  // {78}
             Script_Names.ActiveStickerCommand,          // {79}
             Script_Names.SwitchActiveSticker,           // {80}
             Script_Names.Prep,                          // {81}
             Script_Names.SwitchActiveStickerKeyCodes,   // {82}
             Script_Names.Elder,                         // {83}
             Script_Names.WellsWorld,                    // {84}
-            Script_Names.CelestialGardens,              // {85}
-            Script_Names.OwnerPlain                     // {86}
+            Script_Names.CelestialGardensWorld,         // {85}
+            Script_Names.OwnerPlain,                    // {86}
+            Script_Names.RockGarden,                    // {87}
+            Script_Names.MirrorHalls,                   // {88}
+            Script_Names.HallwayToBasement,             // {89}
+            Script_Names.Basement,                      // {90}
+            Script_Names.InsideAPainting,               // {91}
+            Script_Names.DiningRoom,                    // {92}
+            Script_Names.R2CursedTime,                  // {93}
+            Script_Names.IdsDeadTime                    // {94}
         );
     }
 

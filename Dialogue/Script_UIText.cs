@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-07-30 14:12:56
+// Last created by UI Exporter at 2022-08-03 16:38:18
 
 using System.Collections;
 using System.Collections.Generic;
@@ -994,7 +994,7 @@ public class Script_UIText
     "notes_ids_leave-me",
     new Model_LanguagesUI
     {
-        EN = @"Need to be alone."
+        EN = @"Need to be alone.<br><br>Went to the {87} at {93}<br><br>Don’t worry, coming back at {94}"
     }
 },
 // ------------------------------------------------------------------

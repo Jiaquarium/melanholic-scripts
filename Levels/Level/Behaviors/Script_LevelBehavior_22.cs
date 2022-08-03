@@ -10,7 +10,7 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_22 : Script_LevelBehavior
 {
-    public const string MapName = "Ursa Saloon";
+    public const string MapName = Script_Names.UrsaSaloon;
     
     /* =======================================================================
         STATE DATA

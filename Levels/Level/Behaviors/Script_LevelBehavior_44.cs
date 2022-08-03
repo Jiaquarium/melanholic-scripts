@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Script_LevelBehavior_44 : Script_LevelBehavior
 {
-    public const string MapName = "XXX World";
+    public const string MapName = Script_Names.XXXWorld;
     
     // ==================================================================
     // State Data

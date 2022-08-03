@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Script_LevelBehavior_8 : Script_LevelBehavior
 {
-    public const string MapName = "Hallway to Basement";
+    public const string MapName = Script_Names.HallwayToBasement;
     
     [SerializeField] private Script_LevelBehavior_6 mirrorPuzzleBehavior;
     [SerializeField] private Script_TileMapExitEntrance entrance;

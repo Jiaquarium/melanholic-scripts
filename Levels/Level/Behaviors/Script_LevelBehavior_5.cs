@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Script_LevelBehavior_5 : Script_LevelBehavior
 {
-    public const string MapName = "Mirror Halls";
+    private const string MapName = Script_Names.MirrorHalls;
     
     /* =======================================================================
         STATE DATA

@@ -30,8 +30,8 @@ public class Script_Clock : MonoBehaviour
     public static float TimeMultiplier  = 5f;
     public static float TotalTime       = EndTime - StartTime;
 
-    public const float R2CursedTime     = StartTime + 600f; // 10 min game time passed
-    public const float R2IdsDeadTime    = StartTime + 2100f; // 35 min game time passed
+    public const float R2CursedTime     = StartTime + 1800f; // 5:30
+    public const float R2IdsDeadTime    = StartTime + 2700f; // 5:45
 
     public const float FinalRoundGrandMirrorTime = EndTime - 5f; // 5 seconds before end time
     

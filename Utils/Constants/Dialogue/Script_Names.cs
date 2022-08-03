@@ -191,7 +191,7 @@ public class Script_Names: MonoBehaviour
     public const string XXXWorld                        = "<b>XXX World</b>";                   // {75}
     public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
     public const string NauticalDawn                    = "<b>Nautical Dawn</b>";               // {77}
-    public const string UrselksHall                     = "<b>Urselks Hall</b>";                // {78}
+    public const string DarkDarkHall                    = "<b>Dark Dark Hall</b>";              // {78}
     
     // The Active Mask Command.
     public const string ActiveStickerCommand            = "<b>Mask Command</b>";                // {79}
@@ -200,8 +200,17 @@ public class Script_Names: MonoBehaviour
     public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
     public const string Elder                           = "<b>Elder</b>";                       // {83}
     public const string WellsWorld                      = "<b>Wells World</b>";                 // {84}
-    public const string CelestialGardens                = "<b>Celestial Gardens World</b>";     // {85}
+    public const string CelestialGardensWorld           = "<b>Celestial Gardens World</b>";     // {85}
     public const string OwnerPlain                      = "owner";                              // {86}
+    public const string RockGarden                      = "<b>Rock Garden</b>";                 // {87}
+    public const string MirrorHalls                     = "<b>Mirror Halls</b>"; // {88}
+    public const string HallwayToBasement               = "<b>Hallway to Basement</b>"; // {89}
+    public const string Basement                        = "<b>Basement</b>"; // {90}
+    public const string InsideAPainting                 = "<b>Inside a Painting</b>"; // {91}
+    public const string DiningRoom                      = "<b>Dining Room</b>"; // {92}
+    public const string R2CursedTime                    = "<b>5:30 a.m.</b>"; // {93}
+    public const string IdsDeadTime                     = "<b>5:45 a.m.</b>"; // {94}
+
 
 
     // ------------------------------------------------------------------
