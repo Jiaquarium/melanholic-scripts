@@ -110,9 +110,10 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         {
             yield return new WaitForSeconds(waitBeforeExitReactionTime);
             
-            var node = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId)
-                ? exitReactionPsychic
-                : exitReactionDefault;
+            bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+            
+            var node = isPsychicDuckActive ? exitReactionPsychic : exitReactionDefault;
+            exitReactionDefault.data.isZalgofy = true;
 
             Script_DialogueManager.DialogueManager.StartDialogueNode(node);
         }

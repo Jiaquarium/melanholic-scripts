@@ -21,6 +21,8 @@ public class Script_InteractableObjectText : Script_InteractableObject
 
     protected override void OnEnable()
     {
+        
+        
         base.OnEnable();
     }
 
@@ -129,5 +131,12 @@ public class Script_InteractableObjectText : Script_InteractableObject
     protected void InvokePreAction()
     {
         if (PreTextAction.CheckUnityEventAction()) PreTextAction.Invoke();
+    }
+
+    public override void InitializeState()
+    {
+        dialogueIndex = 0;
+        
+        base.InitializeState();
     }
 }

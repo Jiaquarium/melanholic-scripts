@@ -122,7 +122,7 @@ public class Script_DemonNPC : Script_MovingNPC
 
     protected override void OnEnable()
     {
-        InitialDialogueState();
+        base.OnEnable();
         
         if (psychicNodesController != null)
         {
@@ -140,8 +140,6 @@ public class Script_DemonNPC : Script_MovingNPC
                     node.data.isZalgofy = true;
             }
         }
-
-        base.OnEnable();
     }
 
     protected override void OnDisable()
@@ -260,11 +258,6 @@ public class Script_DemonNPC : Script_MovingNPC
         // Switch the current dialogue node to the intro Psychic one 
         SwitchDialogueNodes(new Script_DialogueNode[]{IntroPsychicNode}, isReset: true);
     }
-    
-    private void InitialDialogueState()
-    {
-        didLastTalkPsychic = false;
-    }
 
     private void OnPsychicDialogueTalked()
     {
@@ -282,6 +275,13 @@ public class Script_DemonNPC : Script_MovingNPC
         // specify quest state done behavior
     }
 
+    protected override void InitialState()
+    {
+        didLastTalkPsychic = false;
+        
+        base.InitialState();
+    }
+    
     /// For now, just start a convo if is hurt
     public override void Setup()
     {

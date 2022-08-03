@@ -46,7 +46,10 @@ public class Script_StaticNPC : Script_Interactable
 
     protected virtual void OnEnable()
     {
-        if (isAutoSetup)  AutoSetup();
+        InitialState();
+        
+        if (isAutoSetup)
+            AutoSetup();
     }
     
     // Update is called once per frame
@@ -182,6 +185,11 @@ public class Script_StaticNPC : Script_Interactable
     public virtual void Move() {}
     public virtual void Glimmer() {}
     public virtual void Freeze(bool isFrozen) {}
+
+    protected virtual void InitialState()
+    {
+        dialogueIndex = 0;
+    }
 
     protected virtual void AutoSetup()
     {

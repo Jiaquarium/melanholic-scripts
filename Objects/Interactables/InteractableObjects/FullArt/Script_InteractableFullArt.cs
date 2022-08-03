@@ -33,7 +33,6 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     protected override void OnEnable()
     {
         Script_DialogueEventsManager.OnDialogueEnd += OnMyDialogueEnd;
-        InitializeState();
 
         base.OnEnable();
     }

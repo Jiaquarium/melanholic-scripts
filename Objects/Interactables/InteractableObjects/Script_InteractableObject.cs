@@ -40,6 +40,8 @@ public class Script_InteractableObject : Script_Interactable
         {
             AutoSetup();
         }
+        
+        InitializeState();
     }
 
     protected override void Awake()
