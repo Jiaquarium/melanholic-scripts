@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-07-20 02:02:35
+// Last created by Dialogue Exporter at 2022-08-03 12:53:09
 
 using System.Collections;
 using System.Collections.Generic;
@@ -66,7 +66,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You and the <b>hotel</b> {8} had previously discussed your last day would be {56}.",
+                @"You and the <b>hotel</b> {8} had previously discussed that <b>tonight</b> would be your <b>last</b> shift.",
+                @"It’s finally over at {49}.. Only one more hour...",
                 @"If you can just make it until then...",
                 @"Everything will be okay after that.",
                 @"You’re sure of it.",
@@ -98,8 +99,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"No, it’s actually quite satisfying, settling into the routine.",
                 @"It’s why you wanted this job in the first place, to <b>clear your mind</b>.",
                 @"Sometimes you can even smell the sea from here...| So why leave it all?",
-                @"...It’s pointless to think these things... {56}<b>’s</b> your last day anyways...",
-                @"Everything will be okay <b>tomorrow</b>.",
+                @"...It’s pointless to think these things... <b>Tonight’s</b> your <b>last</b> night anyways...",
+                @"Only one more hour until it’s all finally over...",
+                @"If you can just make it until then...",
+                @"Everything will be okay after that.",
                 @"You’re sure of it.",
         },
         
@@ -463,7 +466,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You’ve spent time researching the natural phenomenon known as {77}...",
                 @"It was particularly important for seafarers... Since before this time, when looking out at the sea, it’s just a black void.",
-                @"According to your calculations, tomorrow, {77} should be at {49}.",
+                @"According to your calculations, today {77} should be at {49}.",
                 @"Which is exactly when your shift <b>ends</b>...| is it fate?",
         },
         
@@ -506,7 +509,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Really would like to leave, but no...",
+                @"Really would like to leave, but no... still one more hour...",
         },
         
     }
@@ -723,7 +726,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You don’t feel like taking the elevator anymore.",
+                @"You don’t feel the need to take the elevator anymore.",
         },
         
     }
@@ -1322,7 +1325,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Looks like they’re enjoying the sunrise.",
-                @"It kinda reminds you of your research of {77}, where the distinction between sea and sky becomes clear.",
+                @"It’s great and all, but it reminds you of your research of {77}, where the distinction between sea and sky becomes clear.",
         },
         
     }
@@ -1540,7 +1543,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Him? You mean the {8}... I had a feeling you would.",
+                @"{10}? Oh, the {8}... I had a feeling you would.",
                 @"...Figured it was only a matter of time... Been around here long enough to know these things...",
                 @"......",
                 @"Listen kiddo, <b>I have a hunch</b>.",

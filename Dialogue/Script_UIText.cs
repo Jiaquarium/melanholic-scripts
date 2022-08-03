@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-07-13 21:59:32
+// Last created by UI Exporter at 2022-07-30 14:12:56
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1072,21 +1072,21 @@ public class Script_UIText
     "HUD_days_today",
     new Model_LanguagesUI
     {
-        EN = @"SAT"
+        EN = @"FINAL NIGHT"
     }
 },
 {
     "HUD_days_today_R2",
     new Model_LanguagesUI
     {
-        EN = @"Ṡ̸̮Á̵̳̿T̴̼̉͆"
+        EN = @"F̶̥̊Ȋ̴̗N̴͉̑A̶̫͠Ḽ̸͝ ̸͈̐N̴͈͊Ì̶̙G̵̕ͅH̵̖̎T̸̼́"
     }
 },
 {
     "HUD_days_tomorrow",
     new Model_LanguagesUI
     {
-        EN = @"SUN"
+        EN = @"NAUTICAL DAWN"
     }
 },
 // ------------------------------------------------------------------
@@ -1246,38 +1246,59 @@ public class Script_UIText
 // ------------------------------------------------------------------
 // Day Notifications
 {
+    "day-notification_time_sat",
+    new Model_LanguagesUI
+    {
+        EN = @"5:00am"
+    }
+},
+{
     "day-notification_title_sat",
     new Model_LanguagesUI
     {
-        EN = @"Saturday"
+        EN = @"The Final Night"
     }
 },
 {
     "day-notification_subtitle_sat",
     new Model_LanguagesUI
     {
-        EN = @"1 Hour Until Nautical Dawn"
+        EN = @"1 Hour Remains"
+    }
+},
+{
+    "day-notification_time_sat_R2",
+    new Model_LanguagesUI
+    {
+        EN = @"5̵̮̆:̸̥̚0̸̩̆0̵̢͒a̸̢͆m̶͎̈"
     }
 },
 {
     "day-notification_title_sat_R2",
     new Model_LanguagesUI
     {
-        EN = @"S̵a̸t̶u̵r̵d̷a̶y̵"
+        EN = @"T̷h̷e̷ ̸F̶i̶n̵a̷l̸ ̴N̷i̷g̵h̸t̶"
     }
 },
 {
     "day-notification_subtitle_sat_R2",
     new Model_LanguagesUI
     {
-        EN = @"1̵ ̸H̶o̵u̶r̵ ̷U̸n̸t̷i̷l̶ ̷N̷a̴u̷t̸i̶c̶a̵l̷ ̷D̸a̸w̴n̸"
+        EN = @"1̷̪̓ ̴͕̕H̶̗̽o̵̱͠u̶͓͝ȓ̶͎ ̴̼̽R̸̤͒e̷̖̚m̶͙̐a̶̞̿i̸̲͑ñ̶̞s̶̱̉"
+    }
+},
+{
+    "day-notification_time_sun",
+    new Model_LanguagesUI
+    {
+        EN = @"6:00am"
     }
 },
 {
     "day-notification_title_sun",
     new Model_LanguagesUI
     {
-        EN = @"Sunday"
+        EN = @"A New Beginning"
     }
 },
 {
@@ -1293,21 +1314,21 @@ public class Script_UIText
     "save-file_day-name_sat",
     new Model_LanguagesUI
     {
-        EN = @"Saturday"
+        EN = @"The Final Night"
     }
 },
 {
     "save-file_day-name_sat_R2",
     new Model_LanguagesUI
     {
-        EN = @"S̵a̸t̶u̵r̵d̷a̶y̵"
+        EN = @"Ṫ̷̻̙h̴̖̲̒ẽ̸̡̐ ̸̨̍F̵̟͊i̶̫͊̿n̵̖̘͌a̴̜̺͒l̶͎̟̒̏ ̵͚̻̑͆N̸͉̗̔ï̴̻ğ̸̝̟h̵̥̦̽̀ť̵̡͋"
     }
 },
 {
     "save-file_day-name_sun",
     new Model_LanguagesUI
     {
-        EN = @"Sunday"
+        EN = @"A New Beginning"
     }
 },
 // ------------------------------------------------------------------
