@@ -6,20 +6,9 @@ using System;
 
 public class Script_ScarletCipherNotification : MonoBehaviour
 {
-    [SerializeField] private float fadeInTime;
-    [SerializeField] private float fadeOutTime;
-
-    [Tooltip("Time how long the randomizer animation should last. Should stop on last beat of SFX.")]
-    [SerializeField] private float randomDuration = 1.74f;
-    [SerializeField] private float switchDigitTime;
-    [SerializeField] private float pauseAfterNotifyingTime;
-
-    [SerializeField] private TextMeshProUGUI TMPtext;
+    private const int RandomizerTryLimit = 5;
     
-    [SerializeField] private bool isRandomAnimation;
-
-    private Script_CanvasGroupController controller;
-    private float timer;
+    [SerializeField] private TextMeshProUGUI TMPtext;
 
     public string Text
     {
@@ -27,55 +16,73 @@ public class Script_ScarletCipherNotification : MonoBehaviour
         set => TMPtext.text = value;
     }
 
-    public float PauseAfterNotifyingTime
-    {
-        get => pauseAfterNotifyingTime;
-    }
+    public int FinalRevealDigit { get; set; }
 
-    void Update()
+    private Script_CanvasGroupController controller;
+    private int lastDigit = -1;
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
+    /// <summary>
+    /// Get random digit that differs vs. last revealed guaranteeing a visual change.
+    /// </summary>
+    public void RandomizeDigit()
     {
-        if (isRandomAnimation)
+        int randomDigit = lastDigit;
+        int tryCount = 0;
+
+        while (
+            randomDigit == lastDigit
+            && tryCount < RandomizerTryLimit)
         {
-            timer -= Time.smoothDeltaTime;
-
-            if (timer <= 0f)
-            {
-                int randomDigit = UnityEngine.Random.Range(0, 10);
-                Text = randomDigit.ToString();
-                
-                timer = switchDigitTime;
-            }
+            randomDigit = UnityEngine.Random.Range(0, 10);
+            tryCount++;
         }
+
+        Text = randomDigit.ToString();
+        lastDigit = randomDigit;
     }
+
+    /// <summary>
+    /// Get random digit that also differs from the final reveal guaranteeing a visual change.
+    /// </summary>
+    public void RandomizeDigitNotFinal()
+    {
+        int randomDigit = lastDigit;
+        int tryCount = 0;
+
+        while (
+            randomDigit == lastDigit
+            || randomDigit == FinalRevealDigit
+            && tryCount < RandomizerTryLimit
+        )
+        {
+            randomDigit = UnityEngine.Random.Range(0, 10);
+            tryCount++;
+        }
+
+        Text = randomDigit.ToString();
+        lastDigit = randomDigit;
+    }
+
+    public void RevealFinalDigit()
+    {
+        Text = FinalRevealDigit.ToString();
+    }
+
+    // ------------------------------------------------------------------
     
-    public void Open(string text)
+    public void InitialState()
     {
-        isRandomAnimation = true;
-        timer = switchDigitTime;
-        
-        controller.FadeIn(fadeInTime);
-
-        StartCoroutine(WaitToRevealNumber());
-
-        IEnumerator WaitToRevealNumber()
-        {
-            yield return new WaitForSeconds(randomDuration);
-
-            isRandomAnimation = false;
-            timer = 0f;
-            
-            Text = text;
-        }
-    }
-
-    public void Close(Action cb)
-    {
-        controller.FadeOut(fadeOutTime, cb);
+        lastDigit = -1;
     }
     
     public void Setup()
     {
         controller = GetComponent<Script_CanvasGroupController>();
         controller.Close();
+
+        InitialState();
     }
 }

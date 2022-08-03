@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Playables;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,6 +25,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
     [SerializeField] private bool[] _mynesMirrorsSolved = new bool[QuestionCount];
 
     [SerializeField] private Script_ScarletCipherNotification _scarletCipherNotification;
+    [SerializeField] private PlayableDirector _notificationDirector;
     
     public int[] ScarletCipher
     {
@@ -162,28 +164,32 @@ public class Script_ScarletCipherManager : MonoBehaviour
         player.SetIsStandby();
         game.ChangeStateCutScene();
         
-        string s = revealedNum.ToString();
-        ScarletCipherNotification.Open(s);
+        int n = revealedNum;
+        ScarletCipherNotification.FinalRevealDigit = n;
+        ScarletCipherNotification.InitialState();
         
-        var SFX = Script_SFXManager.SFX;
-        
-        SFX.PlayScarletCipherPickupSFX(() => {
-            SFX.PlayTakeNote();
-            
-            ScarletCipherNotification.Close(() => {
-                StartCoroutine(WaitToInteract());
-            });
-        });
-
-        IEnumerator WaitToInteract()
-        {
-            yield return new WaitForSeconds(ScarletCipherNotification.PauseAfterNotifyingTime);
-            
-            player.SetIsInteract();
-            game.ChangeStateInteract();
-        }
+        _notificationDirector.Play();
     }
     
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
+    public void ScarletCipherNotificationDone()
+    {
+        var game = Script_Game.Game;
+        var player = game.GetPlayer();
+        
+        player.SetIsInteract();
+        game.ChangeStateInteract();
+    }
+
+    public void PlayTakeNote()
+    {
+        var SFX = Script_SFXManager.SFX;
+        
+        SFX.PlayTakeNote();
+    }
+
     // ------------------------------------------------------------------
     
     public void InitialState()
@@ -230,6 +236,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
 public class Script_ScarletCipherEditor : Editor
 {
     private SerializedProperty scarletCipherNotification;
+    private SerializedProperty notificationDirector;
     private SerializedProperty scarletCipher;
     private SerializedProperty scarletCipherVisibility;
     private SerializedProperty mynesMirrorsActivationStates;
@@ -237,6 +244,7 @@ public class Script_ScarletCipherEditor : Editor
     private static bool[] showItemSlots = new bool[Script_ScarletCipherManager.QuestionCount];
 
     private const string ScarletCipherNotificationName      = "_scarletCipherNotification";
+    private const string NotificationDirector               = "_notificationDirector";
     private const string ScarletCipherName                  = "_scarletCipher";
     private const string ScarletCipherVisibilityName        = "_scarletCipherVisibility";
     private const string DialoguesName                      = "dialogues";
@@ -246,6 +254,7 @@ public class Script_ScarletCipherEditor : Editor
     private void OnEnable()
     {
         scarletCipherNotification       = serializedObject.FindProperty(ScarletCipherNotificationName);
+        notificationDirector            = serializedObject.FindProperty(NotificationDirector);
         scarletCipher                   = serializedObject.FindProperty(ScarletCipherName);
         scarletCipherVisibility         = serializedObject.FindProperty(ScarletCipherVisibilityName);
         mynesMirrorsActivationStates    = serializedObject.FindProperty(MynesMirrorsActivationStatesName);
@@ -258,6 +267,7 @@ public class Script_ScarletCipherEditor : Editor
         serializedObject.Update();
         
         EditorGUILayout.PropertyField(scarletCipherNotification, new GUIContent("Notification"));
+        EditorGUILayout.PropertyField(notificationDirector, new GUIContent("Director"));
         
         for (int i = 0; i < Script_ScarletCipherManager.QuestionCount; i++)
         {
