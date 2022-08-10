@@ -26,7 +26,12 @@ public class Script_Names: MonoBehaviour
     }
     
     public const string Mask                            = "<b>mask</b>";                        // {1}
-    public const string MelzTheGreat                    = "<b>Melz the Great</b>";              // {2}
+
+    public static string PlayerUnbold                                                           // {2}
+    {
+        get => Names?._Player;
+    }
+
     public static string Ids                                                                    // {3}
     {
         get => Names?._Ids;

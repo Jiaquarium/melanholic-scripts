@@ -7,7 +7,7 @@ public class Script_SaveLoadNames : MonoBehaviour
     public void SaveNames(Model_SaveData data)
     {
         Model_Names names = new Model_Names(
-            _Player:                    Script_Names.Player,
+            _Player:                    Script_Names.PlayerUnbold,
             _Ids:                       Script_Names.Ids,
             _Ero:                       Script_Names.Ero,
             _Myne:                      Script_Names.Myne,

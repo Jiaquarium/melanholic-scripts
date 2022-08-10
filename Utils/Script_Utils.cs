@@ -260,7 +260,7 @@ public static class Script_Utils
             itemAndDynamicFormattedStr,
             Script_Names.Player,                        // {0}
             Script_Names.Mask,                          // {1}
-            Script_Names.MelzTheGreat,                  // {2}
+            Script_Names.PlayerUnbold,                  // {2}
             Script_Names.Ids,                           // {3}
             Script_Names.Ero,                           // {4}
             Script_Names.PreppedMasks,                  // {5}
