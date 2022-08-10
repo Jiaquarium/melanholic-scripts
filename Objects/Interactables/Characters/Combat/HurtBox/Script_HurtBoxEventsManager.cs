@@ -14,6 +14,14 @@ public class Script_HurtBoxEventsManager : MonoBehaviour
             OnHurt(hurtBoxTag, hitBox);
     }
 
+    public delegate void OnPlayerRestartTeleportDelegate(Collider col);
+    public static event OnPlayerRestartTeleportDelegate OnPlayerRestartTeleport;
+    public static void PlayerRestartTeleport(Collider col)
+    {
+        if (OnPlayerRestartTeleport != null)
+            OnPlayerRestartTeleport(col);
+    }
+
     public delegate void PlayerRestartDelegate(Collider col);
     public static event PlayerRestartDelegate OnPlayerRestart;
     public static void PlayerRestart(Collider col)

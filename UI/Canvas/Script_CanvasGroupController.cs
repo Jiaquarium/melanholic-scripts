@@ -29,6 +29,30 @@ public class Script_CanvasGroupController : MonoBehaviour
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
 
+    public bool IsUseMaxAlpha
+    {
+        get => isUseMaxAlpha;
+        set => isUseMaxAlpha = value;
+    }
+
+    public float MaxAlpha
+    {
+        get => maxAlpha;
+        set => maxAlpha = value;
+    }
+
+    public Coroutine FadeOutCoroutine
+    {
+        get => fadeOutCoroutine;
+        set => fadeOutCoroutine = value;
+    }
+
+    public Coroutine FadeInCoroutine
+    {
+        get => fadeInCoroutine;
+        set => fadeInCoroutine = value;
+    }
+
     public bool IsFadingIn
     {
         get => fadeInCoroutine != null;

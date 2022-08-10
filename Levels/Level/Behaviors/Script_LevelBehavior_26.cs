@@ -57,6 +57,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [Header("Myne's Challenge Settings")]
     [SerializeField] private Script_DialogueNode[] mynesStopDialogue;
     [SerializeField] private Script_DialogueNode dramaDoneRepeatDialogue;
+    [SerializeField] private Script_DemoNoteController demoNoteController;
 
     // Dev Only
     [SerializeField] private Script_Marker devHalfTriggerHalfSpikesLocation;
@@ -75,6 +76,13 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     private bool isTimelineControlled = false;
     
     private bool isInitialize = true;
+    private bool isDemoEnd;
+
+    public bool IsDemoEnd
+    {
+        get => isDemoEnd;
+        set => isDemoEnd = value;
+    }
 
     protected override void OnEnable()
     {
@@ -84,6 +92,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_HurtBoxEventsManager.OnPlayerRestart         += OnPlayerRestartHandleState;
         Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
+        Script_ItemsEventsManager.OnItemStash               += OnSnowWomanStash;
     }
 
     protected override void OnDisable()
@@ -94,6 +103,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_HurtBoxEventsManager.OnPlayerRestart         -= OnPlayerRestartHandleState;
         Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
+        Script_ItemsEventsManager.OnItemStash               -= OnSnowWomanStash;
 
         bgThemePlayer.gameObject.SetActive(false);
 
@@ -119,7 +129,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     protected override void Update()
     {
-        attackController.AttackTimer(isPauseSpikes || isCurrentPuzzleComplete);
+        attackController.AttackTimer(isPauseSpikes || isCurrentPuzzleComplete || IsDemoEnd);
         HandleDramaticThoughtsCutScene();
     }
 
@@ -173,10 +183,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         )
         {
             game.ChangeStateCutScene();
-            
+
             // This will trigger the cut scene.
             isPauseSpikes = true;
-            
+
             // Leave trigger active, isDramaCutSceneActivated flag to control state.
             return false;
         }
@@ -224,13 +234,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         {
             if (!didActivateDramaticThoughts)
                 Script_TeletypeNotificationManager.Control.ShowEileensMindDialogue(2);
-            
-            return true;
-        }
-        else if (Id == MyneChallengePassive3)
-        {
-            if (!didActivateDramaticThoughts)
-                Script_TeletypeNotificationManager.Control.ShowEileensMindDialogue(3);
             
             return true;
         }
@@ -348,7 +351,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         if (isDramaticThoughts)
         {
             isDramaCutSceneActivated = true;
-            
+
             if (!didActivateDramaticThoughts)
                 FullCutScene();
             else
@@ -476,6 +479,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public void OnMyneChallengeDialogueDone()
     {
         game.ChangeStateInteract();
+    }
+
+    public void OnSnowWomanStash(string itemId)
+    {
+        if (Const_Dev.IsDemo && itemId == iceSpike.Item.id)
+            demoNoteController.ActivateDemoText();
     }
 
     // ----------------------------------------------------------------------

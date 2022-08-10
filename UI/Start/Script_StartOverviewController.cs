@@ -43,6 +43,7 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private Script_CanvasGroupController startOptionsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController startScreenTitle;
     [SerializeField] private Script_CanvasGroupController startScreenCTA;
+    [SerializeField] private Script_CanvasGroupController demoHeader;
     [SerializeField] private Script_SettingsController settingsController;
     [SerializeField] private Script_CanvasGroupController controlsCanvasGroup;
     
@@ -178,6 +179,12 @@ public class Script_StartOverviewController : Script_UIState
     public void StartOptionsOpen(bool isFadeIn = false)
     {
         startScreenCTA.Close();
+        
+        if (Const_Dev.IsDemo)
+            demoHeader.Open();
+        else
+            demoHeader.Close();
+
         settingsController.Close();
         controlsCanvasGroup.Close();
         
@@ -243,6 +250,7 @@ public class Script_StartOverviewController : Script_UIState
             else
             {
                 startScreenCTA.Close();
+                demoHeader.Close();
                 
                 PlayBgm();
                 
@@ -252,6 +260,9 @@ public class Script_StartOverviewController : Script_UIState
                     
                     startScreenCTA.gameObject.SetActive(true);
                     startScreenCTA.StartIntervalFader(isFadeIn: true);
+                    
+                    if (Const_Dev.IsDemo)
+                        demoHeader.FadeIn(startScreenCTA.GetComponent<Script_CanvasGroupFadeInterval>().Interval);
                     
                     startScreenController.gameObject.SetActive(true);
                 });

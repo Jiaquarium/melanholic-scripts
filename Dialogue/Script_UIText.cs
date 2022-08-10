@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-08-03 16:38:18
+// Last created by UI Exporter at 2022-08-10 12:45:33
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1361,6 +1361,13 @@ public class Script_UIText
         EN = @"End"
     }
 },
+{
+    "start_demo-version",
+    new Model_LanguagesUI
+    {
+        EN = @"The Demo Vers"
+    }
+},
 // ------------------------------------------------------------------
 // Settings
 {
@@ -1625,7 +1632,7 @@ public class Script_UIText
     "eileens-mind_myne_challenge_passive1",
     new Model_LanguagesUI
     {
-        EN = @"Y̶o̶u̵’̷r̶e̵ ̸g̵o̷i̶n̶g̵ ̶t̸o̶ ̵h̴u̶r̶t̴ ̴y̶o̵u̴r̵s̸e̸l̵f̷,̶ ̷c̸a̷n̸ ̸y̴o̸u̷ ̵n̶o̷t̶ ̷s̴e̷e̵?̴!̷"
+        EN = @"Y̶o̶u̵’̷r̶e̵ ̸g̵o̷i̶n̶g̵ ̶t̸o̶ ̵h̴u̶r̶t̴ ̴y̶o̵u̴r̵s̸e̸l̵f̷,̶ ̷c̶a̵n̸'̶t̵ ̸y̴o̸u̷ ̷s̴e̷e̵?̴!̷"
     }
 },
 {
@@ -1738,6 +1745,29 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"* OH NO OH NO OH NO"
+    }
+},
+// ------------------------------------------------------------------
+// Demo
+{
+    "demo-end_note",
+    new Model_LanguagesUI
+    {
+        EN = @"Dear {2},||<br><br>You’ve reached the end of the demo version!| Thank you so much for playing Night Loops.| If you liked what you saw, please consider wishlisting the full version on Steam, which will be released soon.| I hope you enjoy the full version of the game!|| <br><br>Sincerely,||<br>Jiaquarium"
+    }
+},
+{
+    "demo-end_choice0",
+    new Model_LanguagesUI
+    {
+        EN = @"Return to Main Menu"
+    }
+},
+{
+    "demo-end_choice1",
+    new Model_LanguagesUI
+    {
+        EN = @"Quit to Desktop"
     }
 },
 // ------------------------------------------------------------------

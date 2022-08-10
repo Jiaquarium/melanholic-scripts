@@ -130,6 +130,8 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_PianoManager pianoManager;
     [SerializeField] private Script_NotesTallyTracker notesTallyTracker;
 
+    [SerializeField] private Script_DemoNoteController demoNoteController;
+
     // ------------------------------------------------------------------
     // Canvases
     [SerializeField] private Script_AllCanvasGroupsParent canvasGroupsParent;
@@ -507,6 +509,7 @@ public class Script_Game : MonoBehaviour
         saveManager.Setup();
         pianoManager.Setup();
         notesTallyTracker.Setup();
+        demoNoteController.Setup();
 
         settingsController.Setup();
     }

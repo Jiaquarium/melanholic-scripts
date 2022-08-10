@@ -9,6 +9,8 @@ public class Script_CanvasGroupFadeInterval : MonoBehaviour
     [SerializeField] private float interval;
     [SerializeField] private bool isManualStart;
 
+    public float Interval { get => interval; }
+    
     void OnEnable()
     {
         if (!isManualStart)

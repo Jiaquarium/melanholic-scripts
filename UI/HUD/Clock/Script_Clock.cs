@@ -199,6 +199,10 @@ public class Script_Clock : MonoBehaviour
             }
             isClose = true;
         }
+
+        if (Const_Dev.IsClockShowColonsAlways)
+            hideColons = false;
+
         // ------------------------------------------------------------------
 
         string displayTime = (CurrentTime).FormatSecondsClock(isClose, hideColons);

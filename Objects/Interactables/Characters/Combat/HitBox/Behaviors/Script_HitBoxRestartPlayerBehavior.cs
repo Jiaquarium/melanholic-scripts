@@ -43,9 +43,11 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
                     
                     p.Teleport(restartDestination.position);
                     p.FaceDirection(facingDirection);
+
+                    Script_HurtBoxEventsManager.PlayerRestartTeleport(col);
                     
                     Script_Game.Game.SnapActiveCam(prevPlayerPos);
-                    FadeOut();        
+                    FadeOut();
                 }
             ));
         }

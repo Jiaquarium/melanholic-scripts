@@ -34,10 +34,19 @@ public static class Const_Dev
     // Forces dev custom spawn defined in inspector.
     public readonly static bool IsDevSpawn                  = false;            // false
     
-    public readonly static bool IsSpecsDisplayOn            = false;            // false
-
-    public readonly static bool IsTrailerMode               = false;            // false
-    
     public readonly static string Lang                      = "EN";             // "EN"
 
+    public readonly static bool IsDemo                      = false;             // true
+
+    // ------------------------------------------------------------------
+    // Extra Dev Flags
+
+    public readonly static bool IsTrailerMode               = false;            // false
+    public readonly static bool IsSpecsDisplayOn            = false;            // false
+    public readonly static bool IsPublisherSpecsOn          = false;            // false
+
+    public readonly static bool IsClockDebug                = false;            // false
+    
+    // Use when taking screenshots
+    public readonly static bool IsClockShowColonsAlways     = false;            // false
 }
