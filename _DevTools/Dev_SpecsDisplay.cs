@@ -22,7 +22,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	void Awake()
     {
         cam = GetComponent<Camera>();
-		this.enabled = Const_Dev.IsSpecsDisplayOn;
+		this.enabled = Const_Dev.IsSpecsDisplayOn || Const_Dev.IsPublisherSpecsOn;
 
 		version = Version();
     }
@@ -55,9 +55,22 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		style.fontSize = fontSize;
 		style.normal.textColor = new Color (255f, 255f, 255f, 1.0f);
 		
-        var label = Const_Dev.IsTrailerMode ?
-TrailerModeSpecs()
-: @$"{FrameData()}, {VSyncData()}
+        string label;
+
+		if (Const_Dev.IsTrailerMode)
+		{
+			label =
+TrailerModeSpecs();
+		}
+		else if (Const_Dev.IsPublisherSpecsOn)
+		{
+			label =
+@$"{version}";
+		}
+		else
+		{
+			label =
+@$"{FrameData()}, {VSyncData()}
 {Resolution()}
 {DisplayInfo()}
 {PixelPerfectData()}
@@ -65,6 +78,7 @@ ortho: {CameraSize()}
 {ScreenMode()}
 {BuildText()}
 {version}";
+		}
 
 		GUI.Label(rect, label, style);
 	}
@@ -77,7 +91,7 @@ pxRt:{PixelRatio()}x
 {VP()}
 lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 
-	private string Version() => Application.version;
+	private string Version() => $"v{Application.version}";
 	
 	private void RefreshFrameData()
 	{
@@ -206,13 +220,17 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 		
 		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
 		{
-			Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
+			if (Script_Game.Game != null)
+				Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
 		}
 
 		if (Input.GetButtonDown(Const_KeyCodes.PlayerVisibility))
 		{
-			var isInvisible = Script_Game.Game.GetPlayer().isInvisible;
-			Script_Game.Game.GetPlayer().SetInvisible(!isInvisible);
+			if (Script_Game.Game != null)
+			{
+				var isInvisible = Script_Game.Game.GetPlayer().isInvisible;
+				Script_Game.Game.GetPlayer().SetInvisible(!isInvisible);
+			}			
 		}
 
 		if (Input.GetButtonDown(Const_KeyCodes.SpecsDisplay))
