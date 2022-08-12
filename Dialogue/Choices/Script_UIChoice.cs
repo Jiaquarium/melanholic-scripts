@@ -77,8 +77,19 @@ public class Script_UIChoice : MonoBehaviour
         Script_SFXManager.SFX.PlaySubmitTransition();
     }
 
-    virtual public void TransitionGongSFX()
+    /// <summary>
+    /// - LastElevatorPromptChoices UIChoice: Yes
+    /// </summary>
+    virtual public void TransitionLastElevatorSFX()
     {
-        Script_SFXManager.SFX.PlaySubmitTransitionGong();
+        Script_SFXManager.SFX.PlaySubmitTransition();
+    }
+
+    /// <summary>
+    /// - LastElevatorPromptChoices UIChoice: No
+    /// </summary>
+    virtual public void TransitionLastElevatorSFXCancel()
+    {
+        Script_SFXManager.SFX.PlaySubmitTransitionCancel();
     }
 }

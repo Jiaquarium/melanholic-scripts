@@ -63,6 +63,13 @@ public class Script_ChoiceManager : MonoBehaviour
             yield return null;
             
             EndChoiceMode();
+
+            if (!dialogueManager.isInputDisabled)
+            {
+                Debug.Log("Submit UI Choice");
+                Script_SFXManager.SFX.PlayUIChoiceSubmit();
+            }
+
             dialogueManager.NextDialogueNode(Id);
         }
     }

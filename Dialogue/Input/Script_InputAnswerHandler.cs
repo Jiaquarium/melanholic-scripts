@@ -17,6 +17,9 @@ public class Script_InputAnswerHandler : Script_InputHandler
     {
         // allow game -> level behavior to handle
         print("give submission to Script_Game: " + text);
+
+        Script_SFXManager.SFX.PlayUIChoiceSubmit();
+
         int childNodeIdx = Script_Game.Game.HandleSubmit(text);
         return childNodeIdx;
     }

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-08-03 12:53:09
+// Last created by Dialogue Exporter at 2022-08-11 14:41:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3386,7 +3386,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Legend has it, there was once a woman living in a mountain village whose husband goes missing in a snowstorm.",
+                @"Legend has it, there was once a woman living in a mountain village whose partner goes missing in a snowstorm.",
                 @"She tirelessly searches the mountainside for him through the ongoing blizzard.",
         },
         
@@ -3399,33 +3399,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"On the edge of collapsing, she makes it to a clearing to see a cabin in the distance.",
-                @"Through a window, cast from the warm glow of a fireplace, she sees two shadowy figures passionately making love.",
-        },
-        
-    }
-},
-{
-    "eileens-room_painting_snow-woman_thought2",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                @"With her last breath, she makes out one of the shadows. She can make no mistake,",
-                @"That one of the silhouettes is her partner.",
-        },
-        
-    }
-},
-{
-    "eileens-room_painting_snow-woman_thought3",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                @"The story then goes, she becomes a spirit of the snowstorm who spares the good and passes judgement upon the wicked.",
+                @"With her last breath, she makes it to a clearing to see a cabin in the distance.",
+                @"They say whatever she saw there turned her into the spirit of the snowstorm – a spirit that traps the wicked and spares the good.",
         },
         
     }
@@ -3453,9 +3428,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"There seems to be just a single entry.",
                 @"<i>“Dear Journal,”</i>",
-                @"<i>“Today, I’m going to work on my painting! But I have something to get off my chest first. It’s not like you’re going to tell anyone, and there’s really no one else to even tell anymore, so here...”</i>",
-                @"<i>“I’ll admit, I think I need some guidance with this new one. It’s tough enough as it is, but it’s really everything on the outside that makes it even harder...”</i>",
-                @"<i>“Everything out there is moving so fast; no way I could survive like that. And meanwhile, I’m in here digging my own little tunnel...”</i>",
+                @"<i>“Today, I’m going to work on my painting! But I have something to get off my chest first. It’s not like you’re going to tell anyone, everyone’s already gone anyways so here...”</i>",
+                @"<i>“I’ll admit, it’s tough enough as it is, but it’s really everything on the outside that makes it even tougher...”</i>",
+                @"<i>“Everything out there is moving so fast. No way I could survive like that. And meanwhile, I feel like I’m here digging my own little tunnel...”</i>",
                 @"<i>“Well at least tunnels open up to somewhere, right? Maybe someday.”</i>",
         },
         

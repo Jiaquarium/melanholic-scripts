@@ -932,6 +932,7 @@ public static class Script_Utils
         const float fadeMedTime = 0.75f;
         const float fadeSlowTime = 1.25f;
         const float fadeXSlowTime = 2.0f;
+        const float fadeXXSlowTime = 5.0f;
         
         return fadeSpeed switch
         {
@@ -940,6 +941,7 @@ public static class Script_Utils
             FadeSpeeds.Med => fadeMedTime,
             FadeSpeeds.Slow => fadeSlowTime,
             FadeSpeeds.XSlow => fadeXSlowTime,
+            FadeSpeeds.XXSlow => fadeXXSlowTime,
             _ => 0f,
         };
     }

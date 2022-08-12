@@ -239,15 +239,25 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip SubmitTransition;
     [Range(0f, 1f)] public float SubmitTransitionVol;
 
-    public AudioClip SubmitTransitionGong;
-    [Range(0f, 1f)] public float SubmitTransitionGongVol;
+    public AudioClip SubmitTransitionNegative;
+    [Range(0f, 1f)] public float SubmitTransitionNegativeVol;
 
     public AudioClip PencilEdit;
     [Range(0f, 1f)] public float PencilEditVol;
 
     public AudioClip PencilExitSubmenu;
     [Range(0f, 1f)] public float PencilExitSubmenuVol;
+
+    public AudioClip PenContractSign;
+    [Range(0f, 1f)] public float PenContractSignVol;
+
+    public AudioClip UIChoiceSubmit;
+    [Range(0f, 1f)] public float UIChoiceSubmitVol;
     
+    public AudioClip PianoNote;
+    [Range(0f, 1f)] public float PianoNoteVol;
+
+
     public void PlayQuestProgress(Action cb = null)
     {
         float SFXduration = CorrectPartialProgressDuration;
@@ -370,9 +380,9 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(SubmitTransition, SubmitTransitionVol);
     }
 
-    public void PlaySubmitTransitionGong()
+    public void PlaySubmitTransitionCancel()
     {
-        SFXSource.PlayOneShot(SubmitTransitionGong, SubmitTransitionGongVol);
+        SFXSource.PlayOneShot(SubmitTransitionNegative, SubmitTransitionNegativeVol);
     }
 
     public void PlayTotemCry()
@@ -383,6 +393,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayTakeNote()
     {
         SFXSource.PlayOneShot(PencilEdit, PencilEditVol);
+    }
+
+    public void PlayContractSign()
+    {
+        SFXSource.PlayOneShot(PenContractSign, PenContractSignVol);
     }
 
     // ------------------------------------------------------------
@@ -411,6 +426,20 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayExitSubmenuPencil()
     {
         SFXSource.PlayOneShot(PencilExitSubmenu, PencilExitSubmenuVol);
+    }
+
+    /// <summary>
+    /// - Dialogue Choices
+    /// - Ellenia Password
+    /// </summary>
+    public void PlayUIChoiceSubmit()
+    {
+        SFXSource.PlayOneShot(UIChoiceSubmit, UIChoiceSubmitVol);
+    }
+
+    public void PlayPianoNote()
+    {
+        SFXSource.PlayOneShot(PianoNote, PianoNoteVol);
     }
 
     // ------------------------------------------------------------

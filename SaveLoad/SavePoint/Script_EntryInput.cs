@@ -90,8 +90,14 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         PlayerInput playerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
         
         if (
-            Input.GetKeyDown(KeyCode.DownArrow) /// NOTE: CPU-ONLY
-            || playerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
+            // NOTE: CPU-ONLY
+            Input.GetKeyDown(KeyCode.DownArrow)
+            || (
+                playerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
+                // NOTE: CPU-ONLY
+                // Space should just give a null SFX, not navigate to Submit
+                && !Input.GetKeyDown(KeyCode.Space)
+            )
             || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
         )
         {

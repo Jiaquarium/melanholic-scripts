@@ -222,13 +222,26 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     /// </summary>
     public void RemoveFullArt()
     {
+        var game = Script_Game.Game;
+        
+        Debug.Log($"RemoveFullArt called with state {game.fullArtManager.state}");
+        
         // whoever opens the fullArt get priority to remove it; otherwise there are multiple calls to remove it
-        if (Script_Game.Game.fullArtManager.state != Script_FullArtManager.FullArtState.InteractableObject)
+        if (game.fullArtManager.state != Script_FullArtManager.FullArtState.InteractableObject)
             return;
         
-        print("RemoveFullArt(): end dialogue event caught by FullArt");
+        Debug.Log("RemoveFullArt(): end dialogue event caught by FullArt");
+        
         isInputDisabled = true;
-        Script_Game.Game.fullArtManager.HideFullArt(activeFullArt, fadeOutSpeed, () =>
+        var player = game.GetPlayer();
+
+        // Dialogue Manager OnEndDialogue may have set Player back to Interact.
+        // In that case, Player should be set to Viewing until Full Art is completely removed.
+        // fullArtManager will set player back to Interact.
+        if (player.State == Const_States_Player.Interact)
+            player.SetIsViewing();
+
+        game.fullArtManager.HideFullArt(activeFullArt, fadeOutSpeed, () =>
         {
             isFullArtMode = false;
             isInputDisabled = false;
@@ -256,9 +269,9 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
                         StopBgThemePlayer();
                         
                         // Unpause whatever was playing before
-                        if (Script_Game.Game.UnPauseNPCBgTheme() == null)
+                        if (game.UnPauseNPCBgTheme() == null)
                         {
-                            Script_Game.Game.UnPauseBgMusic();
+                            game.UnPauseBgMusic();
                         }
                         
                         Script_AudioMixerVolume.SetVolume(

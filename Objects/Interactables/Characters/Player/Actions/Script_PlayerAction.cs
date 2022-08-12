@@ -84,6 +84,7 @@ public class Script_PlayerAction : MonoBehaviour
         }
         else if (playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
         {
+            Debug.Log("Open Settings");
             OpenSettings();
         }
         else

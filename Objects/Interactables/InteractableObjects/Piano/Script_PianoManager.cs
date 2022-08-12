@@ -53,6 +53,8 @@ public class Script_PianoManager : MonoBehaviour
     public void ExitPianoChoices()
     {
         SetPianosCanvasGroupActive(false);
+
+        Script_SFXManager.SFX.PlayPianoNote();
         
         game.NextFrameChangeStateInteract();
     }
