@@ -985,9 +985,9 @@ public static class Script_Utils
     /// Version number must be formatted like W.X.Y.Z
     /// </summary>
     
-    public static string SaveFile(int slot) => $"saveData{RemoveBuildNumber(Application.version)}_{slot}.dat";
-    public static string SaveTitleDataFile(int slot) => $"savedGameTitleData{RemoveBuildNumber(Application.version)}_{slot}.dat";
-    public static string KeyRebindsFile() => $"keyRebinds{RemoveBuildNumber(Application.version)}.dat";
+    public static string SaveFile(int slot) => $"nl_savedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
+    public static string SaveTitleDataFile(int slot) => $"nl_titlesavedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
+    public static string KeyRebindsFile() => $"nl_keyrebinds_v{GetMajorVersion(Application.version)}.dat";
 
     // Will remove last "." and anything after it.
     public static string RemoveBuildNumber(string version)
@@ -996,5 +996,10 @@ public static class Script_Utils
         string removedLastNumberVersion = index >= 0 ? version.Substring(0, index) : version;
 
         return removedLastNumberVersion;
+    }
+
+    public static string GetMajorVersion(string version)
+    {
+        return version.Substring(0, 1);
     }
 }
