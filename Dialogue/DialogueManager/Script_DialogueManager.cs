@@ -344,13 +344,16 @@ public class Script_DialogueManager : MonoBehaviour
         
         SetupTypingSpeed();
         EnqueueDialogueSections(currentNode.data.dialogue);
+        
         SetupCanvases(currentNode.data.dialogue, currentNode.data.type);
+        // Must disable dialogue continuation icon until after fade-ins
+        activeCanvas.canvasChild.DisableContinuationIcon();
 
         // Ensure to immediately reinit the active canvas, since not fading in when doing NextNode.
         ShowDialogue();
         
         isInputDisabled = true;
-        
+
         // fade into a new fullArt
         if (currentNode.data.fullArt != null)
         {
@@ -402,9 +405,13 @@ public class Script_DialogueManager : MonoBehaviour
         void DisplayNextDialoguePortionNextFrame()
         {
             StartCoroutine(WaitToDisplayNextDialoguePortion());
+
             IEnumerator WaitToDisplayNextDialoguePortion()
             {
                 yield return null;
+                // Reenable Continuation Icon
+                activeCanvas.canvasChild.Setup();
+                
                 DisplayNextDialoguePortion();
                 isInputDisabled = false;
             }
@@ -508,9 +515,10 @@ public class Script_DialogueManager : MonoBehaviour
         ClearQueueState();
         
         SetupCanvases(dialogue, type);
+        // Must disable dialogue continuation icon until after fade-ins
         activeCanvas.canvasChild.DisableContinuationIcon();
         
-        // specify silent typing dialogue types
+        // Specify silent typing dialogue types
         if (
             type == Const_DialogueTypes.Type.Read
             || type == Const_DialogueTypes.Type.Item
@@ -555,7 +563,7 @@ public class Script_DialogueManager : MonoBehaviour
 
         void SetupContinueDialogue()
         {
-            // Reactivate Continuation Icon
+            // Reenable Continuation Icon
             activeCanvas.canvasChild.Setup();
 
             ContinueDialogue();
@@ -967,6 +975,7 @@ public class Script_DialogueManager : MonoBehaviour
         
         IEnumerator NoFullArtEndDialogue()
         {
+            // Avoid processing a new interaction with the same Input event.
             yield return null;
             
             if (!HandleKeepDialogueUp())

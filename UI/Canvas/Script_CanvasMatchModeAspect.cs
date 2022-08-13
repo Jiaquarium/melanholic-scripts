@@ -13,6 +13,10 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Script_CanvasMatchModeAspect : MonoBehaviour
 {
     [SerializeField] private PixelPerfectCamera pixelPerfectCamera;
+
+    private double screenAspect;
+    private double scaleHeight;
+
     private CanvasScaler canvasScaler;
 
     
@@ -30,8 +34,8 @@ public class Script_CanvasMatchModeAspect : MonoBehaviour
     private void SetMatchModeFromAspect()
     {
         // Get current screen Aspect Ratio
-        double screenAspect = (double)Screen.width / (double)Screen.height;
-        double scaleHeight = screenAspect / pixelPerfectCamera.TargetAspect;
+        screenAspect = (double)Screen.width / (double)Screen.height;
+        scaleHeight = screenAspect / pixelPerfectCamera.TargetAspect;
 
         // Letterboxed, set to match width
         if (scaleHeight < 1.0d)
