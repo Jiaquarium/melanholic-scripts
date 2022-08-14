@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 [RequireComponent(typeof(Button))]
 public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
@@ -10,16 +11,19 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
     public Script_InventoryAudioSettings settings;
     public Script_EventSystemLastSelected eventSystem;
     
-    [Tooltip("Specify gameObject to ignore OnSelect SFX when coming it. Useful to squelch SFX on initialize.")]
+    [Tooltip("Specify gameObject to ignore OnSelect SFX when coming from it. Useful to squelch SFX on initialize.")]
     public GameObject transition;
     
-    // Specify this parent to ignore OnSelect SFX when coming it.
+    // Specify this parent to ignore OnSelect SFX when coming from its children.
     // Useful to squelch SFX on initialize.
     public Transform noSFXTransitionParent;
     
     // Specify this parent to only make OnSelect SFX when coming from a child of it.
     // Useful to squelch SFX on initialize.
     [SerializeField] private Transform onlySFXTransitionParent;
+
+    [Tooltip("Option to explicitly list all objects nav'ing from to trigger SFX when selecting this object.")]
+    [SerializeField] private List<Transform> explicitOnlyNavigationSFXs;
     
     [SerializeField] private Button button { get { return GetComponent<Button>(); } }
     private AudioSource source;
@@ -66,6 +70,13 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
             }
 
             if (isOutsideSFXParent)
+                return;
+        }
+
+        if (explicitOnlyNavigationSFXs != null && explicitOnlyNavigationSFXs.Count > 0)
+        {
+            var match = explicitOnlyNavigationSFXs.FirstOrDefault(t => t.gameObject == eventSystem.lastSelected);
+            if (match == null)
                 return;
         }
 

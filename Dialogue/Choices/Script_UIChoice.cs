@@ -72,9 +72,21 @@ public class Script_UIChoice : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// - New, Continue Game
+    /// - Demo End Note to Main Menu
+    /// </summary>
     virtual public void TransitionSFX()
     {
         Script_SFXManager.SFX.PlaySubmitTransition();
+    }
+
+    /// <summary>
+    /// - Demo End Note Quit to Desktop
+    /// </summary>
+    virtual public void TransitionCancelSFX()
+    {
+        Script_SFXManager.SFX.PlaySubmitTransitionCancel();
     }
 
     /// <summary>
@@ -91,5 +103,32 @@ public class Script_UIChoice : MonoBehaviour
     virtual public void TransitionLastElevatorSFXCancel()
     {
         Script_SFXManager.SFX.PlaySubmitTransitionCancel();
+    }
+
+    /// <summary>
+    /// - Title: SavedGamesSubmenu_Continue
+    /// - Title: SavedGamesSubmenu_New
+    /// - Title: SavedGamesSubmenu_Copy
+    /// - Title: SavedGamesSubmenu_Delete
+    /// </summary>
+    public void PencilExitSubmenuSFX()
+    {
+        Script_SFXManager.SFX.PlayExitSubmenuPencil();
+    }
+
+    /// <summary>
+    /// - Title: Copy Yes
+    /// </summary>
+    public void PencilEditSFX()
+    {
+        Script_SFXManager.SFX.PlayTakeNote();
+    }
+
+    /// <summary>
+    /// - Title: Delete Yes
+    /// </summary>
+    public void ChainWrappingCloseMenuSFX()
+    {
+        Script_SFXManager.SFX.PlayChainWrappingCloseMenuSFX();
     }
 }

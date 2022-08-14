@@ -442,6 +442,11 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(PianoNote, PianoNoteVol);
     }
 
+    public void PlayChainWrappingCloseMenuSFX()
+    {
+        SFXSource.PlayOneShot(CloseMenu, CloseMenuVol);
+    }
+
     // ------------------------------------------------------------
     
     public void Play(AudioClip sfx, float vol = 1f)

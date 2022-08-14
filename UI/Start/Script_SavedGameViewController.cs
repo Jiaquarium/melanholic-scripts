@@ -10,11 +10,17 @@ public class Script_SavedGameViewController : Script_SlotsViewController
     {
         base.UpdateSlots();
         UpdateSavedGames();
+
+        void UpdateSavedGames()
+        {
+            savedGames = slotsHolder.GetChildren<Script_SavedGameTitle>();
+        }
     }
-    
-    void UpdateSavedGames()
+
+    public void HoldHighlights(bool isHold)
     {
-        savedGames = slotsHolder.GetChildren<Script_SavedGameTitle>();
+        foreach (var savedGame in savedGames)
+            savedGame.HoldHighlight(isHold);
     }
 
     public override void Setup()

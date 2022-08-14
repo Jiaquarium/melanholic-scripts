@@ -91,16 +91,16 @@ public class Script_StartOverviewController : Script_UIState
     
     void OnEnable()
     {
-        Script_StartEventsManager.OnExitSubmenu     += ActivateViewState;
-        Script_StartEventsManager.OnExitFileActions += DeactivateViewState;
+        Script_StartEventsManager.OnExitSubmenu     += RefreshFileActionBanners;
+        Script_StartEventsManager.OnExitFileActions += RemoveFileActionBanners;
 
         crunchDirector.stopped += OnCrunchPlayableDone;
     }
 
     void OnDisable()
     {
-        Script_StartEventsManager.OnExitSubmenu     -= ActivateViewState;
-        Script_StartEventsManager.OnExitFileActions -= DeactivateViewState;
+        Script_StartEventsManager.OnExitSubmenu     -= RefreshFileActionBanners;
+        Script_StartEventsManager.OnExitFileActions -= RemoveFileActionBanners;
 
         crunchDirector.stopped -= OnCrunchPlayableDone;
     }
@@ -502,6 +502,9 @@ public class Script_StartOverviewController : Script_UIState
         newGameSubmenu.gameObject.SetActive(false);
         deleteGameSubmenu.gameObject.SetActive(false);
         pasteGameSubmenu.gameObject.SetActive(false);
+
+        Debug.Log("Enter Saved Games Select View");
+        HoldHighlights(false);
     }
 
     /// <summary>
@@ -512,7 +515,7 @@ public class Script_StartOverviewController : Script_UIState
         State = SavedGameState.Delete;
         savedGameController.InitializeState();
         EnterSavedGamesSelectView();
-        ActivateViewState();
+        RefreshFileActionBanners();
     }
 
     /// <summary>
@@ -520,7 +523,7 @@ public class Script_StartOverviewController : Script_UIState
     /// </summary>
     private void ReenterDeleteView()
     {
-        ActivateViewState();
+        RefreshFileActionBanners();
     }
 
     /// <summary>
@@ -531,7 +534,7 @@ public class Script_StartOverviewController : Script_UIState
         State = SavedGameState.Copy;
         savedGameController.InitializeState();
         EnterSavedGamesSelectView();
-        ActivateViewState();
+        RefreshFileActionBanners();
     }
 
     /// <summary>
@@ -557,7 +560,7 @@ public class Script_StartOverviewController : Script_UIState
 
             savedGameController.InitializeState(nextOpenSlotId);
             EnterSavedGamesSelectView();
-            ActivateViewState();
+            RefreshFileActionBanners();
         }
         else
         {
@@ -566,7 +569,7 @@ public class Script_StartOverviewController : Script_UIState
         
     }
     
-    private void ActivateViewState()
+    private void RefreshFileActionBanners()
     {
         fileActionBannersCanvasGroup.gameObject.SetActive(true);
         deleteBanner.gameObject.SetActive(false);
@@ -580,7 +583,8 @@ public class Script_StartOverviewController : Script_UIState
         if (State == SavedGameState.Paste)
             pasteBanner.gameObject.SetActive(true);
     }
-    private void DeactivateViewState()
+
+    private void RemoveFileActionBanners()
     {
         deleteBanner.gameObject.SetActive(false);
         copyBanner.gameObject.SetActive(false);
@@ -595,17 +599,21 @@ public class Script_StartOverviewController : Script_UIState
     public void EnterFileChoices(Script_SavedGameTitle savedGame)
     {
         int slotId = savedGame.GetComponent<Script_Slot>().Id;
+        
+        // Must handle highlighting before setting Event System's Selected Object
+        HoldHighlights(true);
+        
         if (savedGame.isRendered)
         {
             choices = continueChoices;
             continueSubmenu.gameObject.SetActive(true);
-            // EnterSubmenuSFX();
         }
         else
         {
             choices = newGameChoices;
             newGameSubmenu.gameObject.SetActive(true);
         }
+        
         EnterSubmenuSFX();
 
         /// Set slot Id in submenu
@@ -655,14 +663,16 @@ public class Script_StartOverviewController : Script_UIState
     public void EnterDeleteFileChoices(Script_SavedGameTitle savedGame)
     {
         int slotId = savedGame.GetComponent<Script_Slot>().Id;
+
         if (savedGame.isRendered)
         {
-            deleteBanner.gameObject.SetActive(false);
-
+            // Must handle highlighting before setting Event System's Selected Object
+            HoldHighlights(true);
+            
             choices = deleteGameChoices;
             deleteGameSubmenu.gameObject.SetActive(true);
 
-            /// Set slot Id in submenu
+            // Set slot Id in submenu
             foreach (Script_SavedGameSubmenuInputChoice choice in choices)
             {
                 choice.Id = slotId;
@@ -692,11 +702,14 @@ public class Script_StartOverviewController : Script_UIState
                 .GetSlotTransform(i)
                 .GetComponent<Script_SavedGameTitle>()
                 .InitializeState();
+
+            Script_SFXManager.SFX.PlayChainWrappingCloseMenuSFX();
         }
         
         // end delete mode
         State = SavedGameState.Start;
         EnterSavedGamesSelectView();
+        RefreshFileActionBanners();
     }
 
     public void EnterPasteFileChoices(Script_SavedGameTitle savedGame)
@@ -706,11 +719,12 @@ public class Script_StartOverviewController : Script_UIState
         // Check if it's the same slot we're copying from
         if (targetSlotId != copiedSlotId)
         {
-            pasteBanner.gameObject.SetActive(false);
-
-            /// Only show submenu if overwriting a file
+            // Only show submenu if overwriting a file
             if (savedGame.isRendered)
             {
+                // Must handle highlighting before setting Event System's Selected Object
+                HoldHighlights(true);
+
                 choices = pasteGameChoices;
                 pasteGameSubmenu.gameObject.SetActive(true);
 
@@ -723,6 +737,7 @@ public class Script_StartOverviewController : Script_UIState
                 EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
                 savedGameController.gameObject.SetActive(false);
                 submenuController.gameObject.SetActive(true);
+
                 EnterSubmenuSFX();
             }
             else
@@ -749,11 +764,14 @@ public class Script_StartOverviewController : Script_UIState
                 .GetSlotTransform(targetSlotId)
                 .GetComponent<Script_SavedGameTitle>()
                 .InitializeState();
+            
+            Script_SFXManager.SFX.PlayTakeNote();
         }
         
         // end copy mode
         State = SavedGameState.Start;
         EnterSavedGamesSelectView();
+        RefreshFileActionBanners();
     }
 
     private bool CheckFullSaveSlots()
@@ -812,6 +830,12 @@ public class Script_StartOverviewController : Script_UIState
             Script_SFXManager.SFX.OpenCloseBookHeavy,
             Script_SFXManager.SFX.OpenCloseBookHeavyVol
         );
+    }
+
+    private void HoldHighlights(bool isHold)
+    {
+        Debug.Log("On Enter Submenu Hold Highlights");
+        savedGameController.HoldHighlights(isHold);
     }
 
     private void ErrorSFX()

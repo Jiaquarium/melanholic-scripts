@@ -24,6 +24,8 @@ public class Script_SavedGameTitle : MonoBehaviour
     [SerializeField] private List<TextMeshProUGUI> scarletCipherCodeTexts;
     [SerializeField] private Transform continueSubmenu;
     [SerializeField] private Transform newGameSubmenu;
+
+    [SerializeField] private Script_ButtonHighlighter buttonHighlighter;
     
     public bool isRendered { get; private set; }
     
@@ -47,6 +49,11 @@ public class Script_SavedGameTitle : MonoBehaviour
                 mainController.EnterFileChoices(this);
                 break;
         }
+    }
+
+    public void HoldHighlight(bool isHold)
+    {
+        buttonHighlighter.IsPaused = isHold;
     }
     
     private void EmptyState()

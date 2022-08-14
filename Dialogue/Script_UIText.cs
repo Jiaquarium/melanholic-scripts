@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-08-10 12:45:33
+// Last created by UI Exporter at 2022-08-13 15:01:01
 
 using System.Collections;
 using System.Collections.Generic;
@@ -574,14 +574,14 @@ public class Script_UIText
     "game-over_choice_0",
     new Model_LanguagesUI
     {
-        EN = @"Start your @@Run over."
+        EN = @"Start tonight over"
     }
 },
 {
     "game-over_choice_1",
     new Model_LanguagesUI
     {
-        EN = @"Go to main menu."
+        EN = @"Go to main menu"
     }
 },
 // ------------------------------------------------------------------
