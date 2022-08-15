@@ -412,6 +412,23 @@ public static class Script_Utils
     }
 
     /// <summary>
+    /// Set all of list to desired active state up until the stated index
+    /// If the index supplied is not in the range, then just set the whole range.
+    /// </summary>
+    /// <param name="items">List of components to modify</param>
+    /// <param name="index">Up until this index change active state</param>
+    /// <param name="isActive">Component's GameObject's active state</param>
+    public static List<GameObject> SetAllUntilIndex(
+        this List<GameObject> items, int index, bool isActive
+    )
+    {
+        for (var i = 0; i <= Mathf.Min(items.Count - 1, index); i++)
+            items[i].SetActive(isActive);
+        
+        return items;
+    }
+
+    /// <summary>
     /// Returns a new array w/o nulls. Does not mutate the original.
     /// </summary>
     /// <param name="arr">Any array</param>

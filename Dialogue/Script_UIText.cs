@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-08-13 15:01:01
+// Last created by UI Exporter at 2022-08-15 14:02:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1495,7 +1495,35 @@ public class Script_UIText
     "intro_loading_title",
     new Model_LanguagesUI
     {
+        EN = @"Loading"
+    }
+},
+{
+    "intro_loading_title1",
+    new Model_LanguagesUI
+    {
+        EN = @"Loading."
+    }
+},
+{
+    "intro_loading_title2",
+    new Model_LanguagesUI
+    {
+        EN = @"Loading.."
+    }
+},
+{
+    "intro_loading_title3",
+    new Model_LanguagesUI
+    {
         EN = @"Loading..."
+    }
+},
+{
+    "intro_loading_title_complete",
+    new Model_LanguagesUI
+    {
+        EN = @"♥"
     }
 },
 // ------------------------------------------------------------------
