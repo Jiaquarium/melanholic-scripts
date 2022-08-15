@@ -35,7 +35,6 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     [SerializeField] private PlayableDirector nameplateDirector;
     [SerializeField] private Script_DialogueNode afterNameplateNode;
     [SerializeField] private Script_PRCSPlayer namePlatePRCSPlayer;
-    [SerializeField] private bool isPRCSActive; /// Used to not trigger move when we want to call PRCS
     // private Queue<string> cachedCurrentMoves = new Queue<string>();
     // private Queue<string[]> cachedAllMoves = new Queue<string[]>();
 
@@ -160,7 +159,6 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     public void NameplateTimeline()
     {
         Debug.Log("Calling from node");
-        isPRCSActive = true;
         game.ChangeStateCutScene();
         namePlatePRCSPlayer.Play();
     }
@@ -171,7 +169,6 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     {
         namePlatePRCSPlayer.Stop();
         dm.StartDialogueNode(afterNameplateNode, SFXOn: false);
-        isPRCSActive = false;
     }
     
     public override void Setup()

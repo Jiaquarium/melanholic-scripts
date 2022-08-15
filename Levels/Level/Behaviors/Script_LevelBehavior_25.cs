@@ -89,7 +89,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
     
     private bool isElleniaHurtToday;
-    private bool isElleniaComfortableCurrentRun;
     private bool isElleniaHurtCutSceneActivated;
     private bool isCheckingPsychicDuckElleniaHurtCutScene;
 
@@ -713,7 +712,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                 {
                     Ellenia.SwitchPsychicNodes(weekendTalkedElleniaPsychicNodes);
                     Ellenia.SwitchTalkedPsychicNodes(weekendTalkedElleniaTalkedStatePsychicNodes);
-                    isElleniaComfortableCurrentRun = true;
 
                     Ellenia.MyDialogueState = Script_DemonNPC.DialogueState.None;
                 }

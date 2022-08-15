@@ -28,9 +28,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     
     [SerializeField] private PlayableDirector ErosDirector;
 
-    private bool didIdsMusicCutScene;
-    
-
     public Script_BgThemePlayer EroBgThemePlayerPrefab;
     
     protected override void OnEnable() {
@@ -106,8 +103,6 @@ public class Script_LevelBehavior_1 : Script_LevelBehavior
     {
         game.ChangeStateCutScene();
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
-
-        didIdsMusicCutScene = true;
     }
 
     private void OnEroExitDone(PlayableDirector aDirector)

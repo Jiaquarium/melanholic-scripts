@@ -83,6 +83,7 @@ public class Dev_GameHelper : MonoBehaviour
     // Game Objects for Activation / Deactivation
     [SerializeField] private GameObject HUD;
     [SerializeField] private GameObject settings;
+    [SerializeField] private GameObject endings;
 
     private bool didSetWeekend;
 
@@ -273,6 +274,12 @@ public class Dev_GameHelper : MonoBehaviour
         {
             Debug.Log($"<color=red>HUD being set to: {false}</color>");
             HUD.gameObject.SetActive(false);
+        }
+
+        if (endings.activeInHierarchy)
+        {
+            Debug.Log($"<color=red>endings being set to: {false}</color>");
+            endings.gameObject.SetActive(false);
         }
     }
 

@@ -220,7 +220,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         }
         catch (System.Exception error)
         {
-            Debug.LogWarning(error);
+            Debug.LogWarning($"{name}: {error}");
         }
     }
 

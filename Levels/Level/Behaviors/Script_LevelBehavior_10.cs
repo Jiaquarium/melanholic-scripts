@@ -38,7 +38,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     public bool isCurrentPuzzleComplete;
     
-    [SerializeField] private DialogueState dialogueState;
+    // [SerializeField] private DialogueState dialogueState;
 
     [SerializeField] private int clubMusicIdx;
     [SerializeField] private int sadIdsThemeIdx;
@@ -1446,16 +1446,16 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         BaseSetup();
         HandleIdsInRoom();
-        HandleIdsDialogue();
+        // HandleIdsDialogue();
         HandleIdsSpawn();
 
-        void HandleIdsDialogue()
-        {
-            if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
-                dialogueState = DialogueState.Weekday;
-            else
-                dialogueState = DialogueState.Weekend;
-        }
+        // void HandleIdsDialogue()
+        // {
+            // if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
+            //     dialogueState = DialogueState.Weekday;
+            // else
+            //     dialogueState = DialogueState.Weekend;
+        // }
     }
     
     #if UNITY_EDITOR
