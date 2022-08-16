@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-08-11 14:41:25
+// Last created by Dialogue Exporter at 2022-08-15 20:06:07
 
 using System.Collections;
 using System.Collections.Generic;
@@ -559,6 +559,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It’s an old photo with Dad.",
                 @"He doesn’t smile in pictures, since he claims it looks too forced.",
+        },
+        
+    }
+},
+{
+    "hotel-lobby_player_fireplace_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The gentle crackling soothes you.",
         },
         
     }
@@ -4192,6 +4204,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         
     }
 },
+{
+    "grand-mirror-room_bookshelf_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The words feel close to you.",
+        },
+        
+    }
+},
 // ------------------------------------------------------------------
 // Cut Scenes
 {
@@ -5114,6 +5138,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"The sight of cherry blossoms calms you.",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+//     Catwalk 2
+{
+    "catwalk2_outhouse_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"These look like outhouses...",
+                @"There’s no time for a restroom break!",
         },
         
     }

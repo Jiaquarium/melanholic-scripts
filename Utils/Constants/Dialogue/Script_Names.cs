@@ -207,12 +207,16 @@ public class Script_Names: MonoBehaviour
     public const string WellsWorld                      = "<b>Wells World</b>";                 // {84}
     public const string CelestialGardensWorld           = "<b>Celestial Gardens World</b>";     // {85}
     public const string OwnerPlain                      = "owner";                              // {86}
-    public const string RockGarden                      = "<b>Rock Garden</b>";                 // {87}
+    public const string RockGarden                      = "<b>Hidden Field of Sin</b>";         // {87}
     public const string MirrorHalls                     = "<b>Mirror Halls</b>"; // {88}
-    public const string HallwayToBasement               = "<b>Hallway to Basement</b>"; // {89}
-    public const string Basement                        = "<b>Basement</b>"; // {90}
+    public const string HallwayToBasement               = "<b>Passage to the Depths</b>"; // {89}
+    
+    // Ids will be introduced at this point (beginning of Day 2)    
+    public const string Basement                        = "<b>Ids’ Vault</b>"; // {90}
     public const string InsideAPainting                 = "<b>Inside a Painting</b>"; // {91}
-    public const string DiningRoom                      = "<b>Dining Room</b>"; // {92}
+    
+    // Specify Room bc first room to encounter, sets stage
+    public const string DiningRoom                      = "<b>Parlor Room</b>"; // {92}
     public const string R2CursedTime                    = "<b>5:30 a.m.</b>"; // {93}
     public const string IdsDeadTime                     = "<b>5:45 a.m.</b>"; // {94}
 
