@@ -20,6 +20,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     
     [SerializeField] private Script_DialogueNode startNode;
     
+    [SerializeField] private float afterSigningWaitTime;
     [SerializeField] private float beforeInternalThoughtWaitTime;
     
     [SerializeField] private Script_DialogueNode newGameNode;
@@ -78,6 +79,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         base.OnEnable();
 
         glitchManager.InitialState();
+
+        Script_TransitionsEventsManager.OnStandaloneCutOutZoomOutDone += StartNewGameDialogue;
     }
 
     protected override void OnDisable()
@@ -85,6 +88,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         base.OnDisable();
 
         glitchManager.InitialState();
+
+        Script_TransitionsEventsManager.OnStandaloneCutOutZoomOutDone -= StartNewGameDialogue;
     }
 
     public override void OnLevelInitComplete()
@@ -94,7 +99,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         {
             Script_DayNotificationManager.Control.PlayDayNotification(
                 StartNewGameSequence,
-                _isInteractAfter: false
+                _isInteractAfter: false,
+                isFirstDay: true
             );
         }
 
@@ -244,19 +250,18 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         Script_BackgroundMusicManager.Control.UnPause();
         Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
         
-        /// Fade out black canvas
-        Script_TransitionManager.Control.UnderDialogueFadeOut(
-            Script_TransitionManager.UnderDialogueFadeTime, () => {
-            
-            // Wait a moment to start Node: hotel-lobby_player-internal_time-stopped
-            StartCoroutine(WaitForPlayerThought());
-        });
+        // Wait to ZoomOut
+        StartCoroutine(WaitToCutOutZoomOut());
 
-        IEnumerator WaitForPlayerThought()
+        IEnumerator WaitToCutOutZoomOut()
         {
-            yield return new WaitForSeconds(beforeInternalThoughtWaitTime);
-
-            Script_DialogueManager.DialogueManager.StartDialogueNode(newGameNode);
+            yield return new WaitForSeconds(afterSigningWaitTime);
+            
+            // Start CutOutZoomOut Timeline
+            Script_DayNotificationManager.Control.PlayCutOutZoomOut();
+            
+            // Hide Underdialogue fade out
+            Script_TransitionManager.Control.UnderDialogueBlackScreen(false);
         }
     }
 
@@ -361,6 +366,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     
     // ------------------------------------------------------------------
     // Timeline Signals START
+    
     public void OnHotelCameraPan()
     {
         // game.GetPlayer().FaceDirection(Directions.Right);
@@ -395,6 +401,19 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
 
+    // CutOutZoomOut Timeline
+    private void StartNewGameDialogue()
+    {
+        StartCoroutine(WaitToStartNewGameDialogue());
+
+        IEnumerator WaitToStartNewGameDialogue()
+        {
+            yield return new WaitForSeconds(beforeInternalThoughtWaitTime);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(newGameNode);
+        }
+    }
+    
     private void DisableSurveillanceSequence()
     {
         game.ChangeStateCutScene();

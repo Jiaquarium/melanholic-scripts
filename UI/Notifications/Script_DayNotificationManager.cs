@@ -37,12 +37,20 @@ public class Script_DayNotificationManager : MonoBehaviour
     private Action onTimelineDoneAction;
     private bool isInteractAfter = true;
     private Script_TimelineController timelineController;
+    private bool isShortDayNotificationDay1;
+    private bool didOnDayNotificationEnd;
+
+    public PlayableDirector playableDirector => GetComponent<PlayableDirector>();
 
     public void PlayDayNotification(
         Action cb = null,
-        bool _isInteractAfter = true
+        bool _isInteractAfter = true,
+        bool isFirstDay = false
     )
     {
+        isShortDayNotificationDay1 = isFirstDay;
+        didOnDayNotificationEnd = false;
+        
         game.ChangeStateCutScene();
         int directorIdx = 0;
         int timelineIdx = 0;
@@ -83,6 +91,11 @@ public class Script_DayNotificationManager : MonoBehaviour
         timelineController.PlayableDirectorPlayFromTimelines(directorIdx, timelineIdx);
     }
 
+    public void PlayCutOutZoomOut()
+    {
+        timelineController.PlayableDirectorPlayFromTimelines(0, 3);
+    }
+
     // ----------------------------------------------------------------------
     // Timeline Signals
 
@@ -98,8 +111,26 @@ public class Script_DayNotificationManager : MonoBehaviour
             SFXManager.PlayDawn();
     }
     
+    /// <summary>
+    /// On Day 1 we want to stop the timeline before reaching the portion
+    /// where it shows the Cut Out Mask, that will be handled later via
+    /// DayNotificationStandaloneCutOut Timeline
+    /// </summary>
+    public void OnDayNotificationDay1Done()
+    {
+        if (!isShortDayNotificationDay1)
+            return;
+        
+        playableDirector.Stop();
+
+        OnDayNotificationDone();
+    }
+    
     public void OnDayNotificationDone()
     {
+        if (didOnDayNotificationEnd)
+            return;
+        
         if (isInteractAfter)
             game.ChangeStateInteract();
 
@@ -110,6 +141,8 @@ public class Script_DayNotificationManager : MonoBehaviour
             onTimelineDoneAction();
             onTimelineDoneAction = null;
         }
+
+        didOnDayNotificationEnd = true;
     }
 
     // Day Notification First R2 Timeline
@@ -134,6 +167,12 @@ public class Script_DayNotificationManager : MonoBehaviour
         saturdayFirstR2NotificationTexts[1].UpdateTextId(SatR2DayNotificationTitleId);
         saturdayFirstR2NotificationTexts[2].UpdateTextId(SatR2DayNotificationSubtitleId);
     }
+
+    // CutOutZoomOut Timeline
+    public void OnStandaloneCutOutZoomOutDone()
+    {
+        Script_TransitionsEventsManager.StandaloneCutOutZoomOutDone();
+    }
     
     // ----------------------------------------------------------------------
 
@@ -152,6 +191,7 @@ public class Script_DayNotificationManager : MonoBehaviour
         sundayNotification.Setup();
 
         isInteractAfter = true;
+        isShortDayNotificationDay1 = false;
     }
 }
 
