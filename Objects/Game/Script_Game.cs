@@ -57,6 +57,7 @@ public class Script_Game : MonoBehaviour
     
     // ------------------------------------------------------------------
     // Specific Level Behaviors for state
+    public Script_LevelBehavior_0 WoodsBehavior;
     public Script_LevelBehavior_10 IdsRoomBehavior;
     public Script_LevelBehavior_20 BallroomBehavior;
     public Script_LevelBehavior_21 EileensRoomBehavior;
@@ -363,6 +364,10 @@ public class Script_Game : MonoBehaviour
     {
         get => psychicLevels.FirstOrDefault(lvl => lvl == levelBehavior) != null;
     }
+
+    public bool IsDefaultWoodsEntranceFromHotel => levelBehavior == WoodsBehavior
+        && WoodsBehavior.didStartThought
+        && LastLevelBehavior == bayV2Behavior;
 
     /// <summary>
     /// Force stickers and clock to be disabled as if were in Hotel.

@@ -44,9 +44,6 @@ public class Script_Exits : MonoBehaviour
         SaveAndRestartOnLevel       = 6,
     }
     
-    [Tooltip("Wait time for black screen between rooms")]
-    [SerializeField] private float waitToFadeInLevelTime;
-    
     public CanvasGroup canvas;
     [SerializeField] private Script_ExitToWeekendCutScene exitToWeekendCutScene;
 
@@ -54,15 +51,31 @@ public class Script_Exits : MonoBehaviour
     private Script_Game game;
     private IEnumerator coroutine;
 
-
     public bool isFadeIn;
-    public float InitiateLevelWaitTime;
     
-    [Tooltip("Fade time upon exiting from and arriving in rooms")]
-    [SerializeField] private float levelFadeTime;
+    [Tooltip("Wait time after fading in level until player can interact")]
+    [SerializeField] private float initiateLevelWaitTime;
     
+    [Tooltip("Wait time for black screen between rooms")]
+    [SerializeField] private float defaultLevelWaitToFadeInTime;
+    
+    [Tooltip("Fade time upon entering a room")]
+    [SerializeField] private float defaultLevelFadeInTime;
+    
+    [Tooltip("Fade time for exiting a room")]
+    [SerializeField] private float defaultLevelFadeOutTime;
+    
+    [Space][Header("Custom Level Fade & Wait Times")][Space]
+
+    [SerializeField] private float woodsFromHotelFadeInTime;
+    [SerializeField] private float woodsFromHotelWaitTime;
+
+    [Space][Header("Dev Flags Display")][Space]
     [SerializeField] private bool isHandlingExit; /// Used to prevent multiple exitting and crashing
 
+    private float currentLevelFadeInTime;
+    private float currentWaitToFadeInLevelTime;
+    
     private bool exitsDisabled;
     private bool isDefaultFadeOut;
     private int levelToGo;
@@ -73,6 +86,12 @@ public class Script_Exits : MonoBehaviour
     public bool IsHandlingExit
     {
         get => isHandlingExit;
+    }
+
+    public float InitiateLevelWaitTime
+    {
+        get => initiateLevelWaitTime;
+        set => initiateLevelWaitTime = value;
     }
     
     void Update()
@@ -117,7 +136,7 @@ public class Script_Exits : MonoBehaviour
             case (FollowUp.CutSceneNoFade):
             {
                 Debug.Log("Changing Level without Fade");
-                ChangeLevelNoFade();
+                HandleChangeLevelNoFade();
                 break;
             }
             case (FollowUp.SaveAndRestart):
@@ -153,7 +172,7 @@ public class Script_Exits : MonoBehaviour
 
         void StartFadeOut()
         {
-            fadeTimer = levelFadeTime;
+            fadeTimer = defaultLevelFadeOutTime;
             isDefaultFadeOut = true;
         }
     }
@@ -190,8 +209,23 @@ public class Script_Exits : MonoBehaviour
 
     public void StartFadeIn()
     {
-        fadeTimer = levelFadeTime;
+        HandleCustomLevelFading(game.levelBehavior);
+
         isFadeIn = true;
+
+        /// <summary>
+        /// Describe custom cases for fading into levels
+        /// </summary>
+        void HandleCustomLevelFading(Script_LevelBehavior behavior)
+        {
+            // Slow, dramatic fade on for default Woods entrances
+            if (game.IsDefaultWoodsEntranceFromHotel)
+                currentLevelFadeInTime = woodsFromHotelFadeInTime;
+            else
+                currentLevelFadeInTime = defaultLevelFadeInTime;
+            
+            fadeTimer = currentLevelFadeInTime;
+        }
     }
 
     public bool GetIsExitsDisabled()
@@ -207,7 +241,7 @@ public class Script_Exits : MonoBehaviour
         canvas.gameObject.SetActive(true);
         
         fadeTimer -= Time.deltaTime;
-        canvas.alpha = Mathf.Min(1f, 1 - fadeTimer / levelFadeTime);
+        canvas.alpha = Mathf.Min(1f, 1 - fadeTimer / defaultLevelFadeOutTime);
 
         if (fadeTimer <= 0f)
         {
@@ -262,10 +296,23 @@ public class Script_Exits : MonoBehaviour
             yield return null;
             
             ChangeLevel();
-            
-            yield return new WaitForSeconds(waitToFadeInLevelTime);
+
+            HandleCustomLevelWait(game.levelBehavior);
+            yield return new WaitForSeconds(currentWaitToFadeInLevelTime);
 
             StartFadeIn();
+        }
+
+        /// <summary>
+        /// Describe custom cases for waiting in black screen between levels
+        /// </summary>
+        void HandleCustomLevelWait(Script_LevelBehavior behavior)
+        {
+            // Slow, dramatic on the default Woods entrance
+            if (game.IsDefaultWoodsEntranceFromHotel)
+                currentWaitToFadeInLevelTime = woodsFromHotelWaitTime;
+            else
+                currentWaitToFadeInLevelTime = defaultLevelWaitToFadeInTime;
         }
     }
 
@@ -274,7 +321,7 @@ public class Script_Exits : MonoBehaviour
     /// Use when covering the screen with another cut scene before
     /// changing levels
     /// </summary>
-    private void ChangeLevelNoFade()
+    private void HandleChangeLevelNoFade()
     {
         ChangeLevel();
         OnDoneExitingTransition();
@@ -307,7 +354,7 @@ public class Script_Exits : MonoBehaviour
     {
         canvas.gameObject.SetActive(true);
         fadeTimer -= Time.deltaTime;
-        canvas.alpha = Mathf.Max(0f, fadeTimer / levelFadeTime);
+        canvas.alpha = Mathf.Max(0f, fadeTimer / currentLevelFadeInTime);
 
         if (fadeTimer <= 0)
         {
