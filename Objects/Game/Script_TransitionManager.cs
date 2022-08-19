@@ -569,8 +569,14 @@ public class Script_TransitionManager : MonoBehaviour
 
     public void InitialState()
     {
-        timelineFaderUnder.InitialState();
         fader.GetComponent<Script_CanvasGroupController>().InitialState();
+
+        InitialStateExcludingLevelFader();
+    }
+
+    public void InitialStateExcludingLevelFader()
+    {
+        underDialogueController.InitialState();
         timelineUnderHUD.InitialState();
         timelineFaderUnder.InitialState();
         timelineFaderOver.InitialState();

@@ -93,6 +93,9 @@ public class Script_Exits : MonoBehaviour
         get => initiateLevelWaitTime;
         set => initiateLevelWaitTime = value;
     }
+
+    public float TotalLevelTransitionTime => defaultLevelWaitToFadeInTime
+        + defaultLevelFadeInTime + initiateLevelWaitTime;
     
     void Update()
     {
@@ -350,7 +353,7 @@ public class Script_Exits : MonoBehaviour
     /// <summary>
     /// Fade in the level (fade out the canvas)
     /// </summary>
-    void FadeInLevel()
+    private void FadeInLevel()
     {
         canvas.gameObject.SetActive(true);
         fadeTimer -= Time.deltaTime;
@@ -368,7 +371,7 @@ public class Script_Exits : MonoBehaviour
         }
     }
 
-    void OnDoneExitingTransition()
+    private void OnDoneExitingTransition()
     {
         StartCoroutine(WaitToCompleteInit());
         

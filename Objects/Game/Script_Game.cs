@@ -723,7 +723,7 @@ public class Script_Game : MonoBehaviour
         
         // Note: StartBgMusic should be before Grid Activation and Level Setup, because BGM changes
         // on Awake/OnEnable/Start/Setup should be able to override this default BGM Player.
-        StartBgMusic();
+        HandleLevelBgm();
         
         SetTileMaps();
         
@@ -735,6 +735,7 @@ public class Script_Game : MonoBehaviour
         SetupDialogueManagerOnLevel();
         SetupThoughtManager();
         InitializeHintManager();
+        transitionManager.InitialStateExcludingLevelFader();
 
         // Level Behavior Setups (must occur last for references to be set)
         InitLevelBehavior();
@@ -1837,10 +1838,47 @@ public class Script_Game : MonoBehaviour
         _MUSIC_
     ========================================================================= */
 
+    public void HandleLevelBgm()
+    {
+        if (npcBgThemePlayer != null && GetNPCThemeMusicIsPlaying())
+            return;
+        
+        // Check to see if BGM index has changed
+        int i = Levels.levelsData[level].bgMusicAudioClipIndex;
+
+        if (Levels.levelsData[level].isBgmPaused)
+        {
+            Debug.Log($"Level {Levels.levelsData[level]} starting with PAUSED Bgm");
+            i = -1;
+        }
+        
+        // If so fade out music and fade in start music
+        if (i != BGMManager.CurrentClipIndex)
+        {
+            // Log warning if fade out and fade in time > level transition time
+            if (Script_AudioEffectsManager.fadeXFastTime + Script_AudioEffectsManager.fadeFastTime > exitsHandler.TotalLevelTransitionTime)
+                Debug.LogWarning("The time to fade out and in BGM is greater than total level transition time. Audio might break!");
+
+            BGMManager.FadeOutXFast(() => {
+                FadeInPlayBgm();
+            }, Const_AudioMixerParams.ExposedBGVolume);
+        }
+        else
+        {
+            BGMManager.Play(i);
+        }
+
+        void FadeInPlayBgm()
+        {
+            BGMManager.Play(i);
+            BGMManager.FadeInFast(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        }
+    }
+    
     public void StartBgMusic()
     {
-        // TODO: make this a general theme player, not just for Ero
-        if (npcBgThemePlayer != null && GetNPCThemeMusicIsPlaying())   return;
+        if (npcBgThemePlayer != null && GetNPCThemeMusicIsPlaying())
+            return;
         
         int i = Levels.levelsData[level].bgMusicAudioClipIndex;
 

@@ -99,6 +99,10 @@ public class Script_PlayerAction : MonoBehaviour
         {
             stickerEffectsController.Effect(facingDirection);
         }
+        else if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+        {
+            HandleNoInteractions();
+        }
         else
         {
             HandleStickerSwitch(facingDirection, location);
@@ -110,6 +114,10 @@ public class Script_PlayerAction : MonoBehaviour
         if (player.MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
         {
             stickerEffectsController.Effect(facingDirection);
+        }
+        else if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+        {
+            HandleNoInteractions();
         }
         else
         {
@@ -160,7 +168,7 @@ public class Script_PlayerAction : MonoBehaviour
         }
     }
 
-    bool HandleDialogue(Directions facingDirection)
+    private bool HandleDialogue(Directions facingDirection)
     {
         if (!DetectNPC(Const_KeyCodes.Interact, facingDirection))
             if (!DetectInteractableObject(Const_KeyCodes.Interact, facingDirection))
@@ -169,10 +177,15 @@ public class Script_PlayerAction : MonoBehaviour
         return true;
     }
 
+    private void HandleNoInteractions()
+    {
+        Script_SFXManager.SFX.PlayDullError();
+    }
+
     /// <summary>
     /// Handles the whole picking up flow including the subtext
     /// </summary>
-    bool HandlePickUpItem(Directions facingDirection)
+    private bool HandlePickUpItem(Directions facingDirection)
     {
         Script_Item item;
         Script_ItemObject itemObject = DetectAndOutItem(

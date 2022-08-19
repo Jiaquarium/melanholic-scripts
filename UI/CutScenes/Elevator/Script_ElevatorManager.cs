@@ -167,7 +167,10 @@ public class Script_ElevatorManager : MonoBehaviour
         
         // When entering Bay v1 from Last Elevator, the BGM will be paused via Behavior.
         if (!bgm.IsPlaying)
+        {
+            Debug.Log("Start BGM from Elevator Manager");
             game.StartBgMusic();
+        }
         
         IsBgmOn = true;
     }

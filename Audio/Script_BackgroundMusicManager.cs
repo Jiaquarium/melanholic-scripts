@@ -41,13 +41,13 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             return;
         }
         
+        // Continue track
         if (
             i == currentClipIndex
             && !forcePlay
             && source.isPlaying
         )
         {
-            // continue track is isPlaying
             return;
         }
 
@@ -177,6 +177,16 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         );
     }
 
+    public void FadeOutXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        FadeOut(cb, Script_AudioEffectsManager.fadeXFastTime, outputMixer);
+    }
+
+    public void FadeInXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        FadeIn(cb, Script_AudioEffectsManager.fadeXFastTime, outputMixer);
+    }
+    
     public void FadeOutFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeFastTime, outputMixer);

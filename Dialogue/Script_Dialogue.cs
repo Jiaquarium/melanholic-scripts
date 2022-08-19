@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-08-15 20:06:07
+// Last created by Dialogue Exporter at 2022-08-17 16:11:22
 
 using System.Collections;
 using System.Collections.Generic;
@@ -210,6 +210,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Cold.",
                 @"It’s ice...",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Piano
+{
+    "pianos_nonkeys_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The backside of the piano. Its surface is very shiny, no dust!",
         },
         
     }

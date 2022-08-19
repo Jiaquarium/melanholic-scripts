@@ -69,6 +69,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode introNodeNotTalkedWithMyne;
     [SerializeField] private float waitBeforeIdsDialogueTime;
 
+    [SerializeField] private float waitBeforePreTheoryDialogueTime;
     [SerializeField] private Script_DialogueNode afterIntroRevealNodeTalkedWithMyne;
     [SerializeField] private Script_DialogueNode afterIntroRevealNodeNotTalkedWithMyne;
 
@@ -268,11 +269,19 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     // ------------------------------------------------------------------------------------
     // Next Node Action Start
+    
     public void PreTheoryDialogue()
     {
         game.ChangeStateCutScene();
-        
-        dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false);
+
+        StartCoroutine(WaitForPreTheoryDialogue());
+
+        IEnumerator WaitForPreTheoryDialogue()
+        {
+            yield return new WaitForSeconds(waitBeforePreTheoryDialogueTime);
+
+            dm.StartDialogueNode(AfterIntroRevealNode, SFXOn: false);
+        }
     }
     
     public void OnNameplateDone()

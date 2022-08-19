@@ -15,10 +15,29 @@ public class Script_LevelBehavior_34 : Script_LevelBehavior
     /* ======================================================================= */
 
     [SerializeField] private Transform exitParent;
+    
+    [SerializeField] private Script_ElevatorManager elevatorManager;
     [SerializeField] private Script_Elevator elevator; /// Ref'ed by ElevatorManager
 
     private bool isInit = true;
 
+    protected override void OnEnable()
+    {
+        PauseBgmForElevator();
+
+        void PauseBgmForElevator()
+        {
+            Debug.Log($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
+
+            // Only stop Bgm if the elevator manager hasn't already restarted it.
+            // This happens on same frame but after Bgm Start on InitLevel.
+            if (!elevatorManager.IsBgmOn)
+            {
+                Script_BackgroundMusicManager.Control.Stop();
+            }
+        }
+    }
+    
     public override void Setup()
     {
         game.SetupInteractableObjectsExit(exitParent, isInit);

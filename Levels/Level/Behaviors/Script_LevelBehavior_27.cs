@@ -16,6 +16,8 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     // State Data END
     // =======================================================================
 
+    [SerializeField] private float waitToGivePsychicDuckTime;
+    
     [SerializeField] private Transform exitParent;
     [SerializeField] private Script_Elevator elevator; /// Ref'ed by ElevatorManager
     
@@ -79,13 +81,22 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
     // Next Node Action Unity Events START
     public void GivePsychicDuck()
     {
-        if (GotPsychicDuck)     return; // need to properly exit out, see note in ItemPickUpTheatricsPlayer
+        // Need to properly exit out, see note in ItemPickUpTheatricsPlayer
+        if (GotPsychicDuck)
+            return;
+        
+        StartCoroutine(WaitToGivePsychicDuck());
 
-        game.HandleItemReceive(PsychicDuck);
-        GotPsychicDuck = true;
+        IEnumerator WaitToGivePsychicDuck()
+        {
+            yield return new WaitForSeconds(waitToGivePsychicDuckTime);
 
-        // Switch Ids Dialoge to Big Ids'
-        Ids.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+            game.HandleItemReceive(PsychicDuck);
+            GotPsychicDuck = true;
+
+            // Switch Ids Dialoge to Big Ids'
+            Ids.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
+        }
     }
     // Next Node Action Unity Events END
     // ----------------------------------------------------------------------
