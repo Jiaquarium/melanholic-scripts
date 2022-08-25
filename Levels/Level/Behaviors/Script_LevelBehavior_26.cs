@@ -54,11 +54,14 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private Script_DialogueManager dialogueManager;
 
     
-    [Header("Myne's Challenge Settings")]
+    [Space][Header("Myne's Challenge Settings")][Space]
     [SerializeField] private Script_DialogueNode[] mynesStopDialogue;
     [SerializeField] private Script_DialogueNode dramaDoneRepeatDialogue;
     [SerializeField] private Script_DemoNoteController demoNoteController;
 
+    [Space][Header("Demo")][Space]
+    [SerializeField] private Script_CrackableStats giantFinalIce;
+    
     // Dev Only
     [SerializeField] private Script_Marker devHalfTriggerHalfSpikesLocation;
     [SerializeField] private Script_Trigger dramaticThoughtsTrigger;
@@ -92,7 +95,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_HurtBoxEventsManager.OnPlayerRestart         += OnPlayerRestartHandleState;
         Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
-        Script_ItemsEventsManager.OnItemStash               += OnSnowWomanStash;
+        Script_InteractableObjectEventsManager.OnInteractAfterShatter += OnInteractAfterShatter;
     }
 
     protected override void OnDisable()
@@ -103,7 +106,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_HurtBoxEventsManager.OnPlayerRestart         -= OnPlayerRestartHandleState;
         Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
-        Script_ItemsEventsManager.OnItemStash               -= OnSnowWomanStash;
+        Script_InteractableObjectEventsManager.OnInteractAfterShatter -= OnInteractAfterShatter;
 
         bgThemePlayer.gameObject.SetActive(false);
 
@@ -321,6 +324,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             Debug.Log($"Handling Restart during Dialogue, Current Node {dialogueManager.currentNode}");
             game.ChangeStateCutScene();
         }
+
+        // Must set this flag, so the drama trigger can react with the repeat cutscene
+        isDramaCutSceneActivated = false;
     }
     
     private void FadeOutDramaticMusic()
@@ -470,7 +476,16 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     {
         bgThemePlayer.gameObject.SetActive(false);
         bgThemePlayer.SoftStop();
-        game.StartBgMusic();
+        game.StartBgMusicNoFade();
+    }
+
+    private void OnInteractAfterShatter(Script_CrackableStats ice)
+    {
+        if (Const_Dev.IsDemo && ice == giantFinalIce)
+        {
+            giantFinalIce.IsIcePersists = true;
+            demoNoteController.ActivateDemoText();
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -479,12 +494,6 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public void OnMyneChallengeDialogueDone()
     {
         game.ChangeStateInteract();
-    }
-
-    public void OnSnowWomanStash(string itemId)
-    {
-        if (Const_Dev.IsDemo && itemId == iceSpike.Item.id)
-            demoNoteController.ActivateDemoText();
     }
 
     // ----------------------------------------------------------------------

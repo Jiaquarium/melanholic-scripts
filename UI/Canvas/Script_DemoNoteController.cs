@@ -33,7 +33,7 @@ public class Script_DemoNoteController : MonoBehaviour
         EileensMindBehavior.IsDemoEnd = true;
         
         var bgm = Script_BackgroundMusicManager.Control;
-        bgm.FadeOutSlow(bgm.Stop, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        bgm.FadeOutXXSlow(bgm.Stop, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
         
         FadeTo(1f, FadeInIntroTheme);
 

@@ -13,6 +13,7 @@ public class Script_CrackableStats : Script_CharacterStats
     [SerializeField] private UnityEvent<Script_CrackableStats> crackedAction;
     
     [SerializeField] private float defaultHideRemainsTime;
+    [SerializeField] private bool isIcePersists;
 
     [SerializeField] private Sprite defaultImage;
     [SerializeField] private Sprite lowHealthImage;
@@ -44,6 +45,12 @@ public class Script_CrackableStats : Script_CharacterStats
     protected UnityEvent<Script_CrackableStats> CrackedAction
     {
         get => crackedAction;
+    }
+
+    public bool IsIcePersists
+    {
+        get => isIcePersists;
+        set => isIcePersists = value;
     }
 
     void OnDisable()
@@ -120,8 +127,9 @@ public class Script_CrackableStats : Script_CharacterStats
 
     protected virtual void HideIce()
     {
-        Debug.Log($"{name} HideIce");
-        gameObject.SetActive(false);
+        Debug.Log($"{name} HideIce, isIcePersists: {isIcePersists}");
+        if (!isIcePersists)
+            gameObject.SetActive(false);
     }
 
     private void HandleHurtGraphics(int hp)
@@ -144,7 +152,8 @@ public class Script_CrackableStats : Script_CharacterStats
     // Called from Diagonal Cut Shatter Timeline so player can move around before the ice fully vanishes.
     public void AllowPlayerInteract()
     {
-        Script_Game.Game.ChangeStateInteract();   
+        Script_Game.Game.ChangeStateInteract();
+        Script_InteractableObjectEventsManager.InteractAfterShatter(this);
     }
     
     // Default to be called at end of Timeline Shatter.

@@ -141,7 +141,7 @@ public class Script_SceneManager : MonoBehaviour
 
         // Called after new Scene is loaded
         Debug.Log("End of LoadSceneAsync, Closing loading screen");
-        SM.LoadingScreen.Close();
+        SM.InitialState();
     }
 
     private void HandleDuckMasksProgress(float progress)

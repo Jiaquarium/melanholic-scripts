@@ -44,6 +44,14 @@ public class Script_InteractableObjectEventsManager : MonoBehaviour
             OnIceCrackingTimelineDone(iceStats);
     }
 
+    public delegate void InteractAfterShatterDelegate(Script_CrackableStats iceStats);
+    public static event InteractAfterShatterDelegate OnInteractAfterShatter;
+    public static void InteractAfterShatter(Script_CrackableStats iceStats)
+    {
+        if (OnInteractAfterShatter != null)
+            OnInteractAfterShatter(iceStats);
+    }
+
     public delegate void ShatterDelegate(Script_CrackableStats iceStats);
     public static event ShatterDelegate OnShatter;
     public static void Shatter(Script_CrackableStats iceStats)
