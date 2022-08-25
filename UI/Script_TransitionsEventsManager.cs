@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Script_TransitionsEventsManager : MonoBehaviour
 {
-    public delegate void StandaloneCutOutZoomOutDoneAction();
-    public static event StandaloneCutOutZoomOutDoneAction OnStandaloneCutOutZoomOutDone;
-    public static void StandaloneCutOutZoomOutDone()
+    public delegate void DayNotificationStandaloneFadeOutDoneAction();
+    public static event DayNotificationStandaloneFadeOutDoneAction OnDayNotificationStandaloneFadeOutDone;
+    public static void DayNotificationStandaloneFadeOutDone()
     {
-        if (OnStandaloneCutOutZoomOutDone != null)
-            OnStandaloneCutOutZoomOutDone(); 
+        if (OnDayNotificationStandaloneFadeOutDone != null)
+            OnDayNotificationStandaloneFadeOutDone(); 
     }
 }

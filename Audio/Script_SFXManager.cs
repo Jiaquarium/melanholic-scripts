@@ -12,6 +12,7 @@ public class Script_SFXManager : MonoBehaviour
     public static Script_SFXManager SFX;
 
     public AudioSource SFXSource;
+    [SerializeField] private AudioSource SFXDialogueSource;
     
     [Header("---- World SFX ----")]
     public AudioClip PlayerStashItem;
@@ -196,6 +197,12 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip UITypingSFX;
     [Range(0f, 1f)] public float UITypingSFXVol;
+
+    public AudioClip DialogueTypingSFX;
+    [Range(0f, 1f)] public float DialogueTypingSFXVol;
+
+    public AudioClip TypewriterTypingSFX;
+    [Range(0f, 1f)] public float TypewriterTypingSFXVol;
     
     public AudioClip UICodeTypingSFX;
     [Range(0f, 1f)] public float UICodeTypingSFXVol;
@@ -257,6 +264,7 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip PianoNote;
     [Range(0f, 1f)] public float PianoNoteVol;
 
+    private bool isDialogueTypingInProgress;
 
     public void PlayQuestProgress(Action cb = null)
     {
@@ -445,6 +453,30 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayChainWrappingCloseMenuSFX()
     {
         SFXSource.PlayOneShot(CloseMenu, CloseMenuVol);
+    }
+
+    
+    // Continuous SFX
+    public void StartDialogueTyping(AudioClip clip = null)
+    {
+        if (isDialogueTypingInProgress)
+            return;
+        
+        if (clip == null)
+            clip = DialogueTypingSFX;
+        
+        SFXDialogueSource.clip = clip;
+        SFXDialogueSource.loop = true;
+        
+        SFXDialogueSource.Play();
+
+        isDialogueTypingInProgress = true;
+    }
+
+    public void StopDialogueTyping()
+    {
+        isDialogueTypingInProgress = false;
+        SFXDialogueSource.loop = false;
     }
 
     // ------------------------------------------------------------

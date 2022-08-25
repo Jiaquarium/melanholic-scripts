@@ -46,7 +46,6 @@ public class Script_DialogueManager : MonoBehaviour
     public CanvasGroup canvas;
     public AudioSource audioSource;
     public AudioClip dialogueStartSoundFX;
-    public AudioClip typeSFX;
 
     public Script_CanvasGroupController activeCanvas;
     public TextMeshProUGUI activeCanvasText;
@@ -143,8 +142,6 @@ public class Script_DialogueManager : MonoBehaviour
     // ------------------------------------------------------------------
     // Sticker Reactions
     [SerializeField] private Script_DialogueNode disabledMelancholyPianoReactionNode;
-
-    // ------------------------------------------------------------------
 
     private States State
     {
@@ -645,7 +642,8 @@ public class Script_DialogueManager : MonoBehaviour
         TextMeshProUGUI textUI,
         Action cb,
         bool silenceOverride = false,
-        bool isGlitchText = false
+        bool isGlitchText = false,
+        AudioClip sfxOverride = null
     )
     {   
         if (isGlitchText)
@@ -679,9 +677,12 @@ public class Script_DialogueManager : MonoBehaviour
         // Get # of visible characters in Text object.
         int totalVisibleCharacters = textUI.textInfo.characterCount;
         int visibleCount = 0;
-
+        
         while (visibleCount < totalVisibleCharacters)
         {
+            if (silenceOverride)
+                Script_SFXManager.SFX.StartDialogueTyping(sfxOverride);
+            
             // Reveal current character.
             textUI.maxVisibleCharacters = visibleCount;
 
@@ -703,6 +704,10 @@ public class Script_DialogueManager : MonoBehaviour
 
         // Reveal the last character.
         textUI.maxVisibleCharacters = visibleCount;
+
+        // Stop SFX
+        if (silenceOverride)
+            Script_SFXManager.SFX.StopDialogueTyping();
 
         if (cb != null)
             cb();
@@ -1123,6 +1128,9 @@ public class Script_DialogueManager : MonoBehaviour
                 
                 // Reset TMP visibility.
                 activeCanvasText.maxVisibleCharacters = activeCanvasText.textInfo.characterCount + 1;
+
+                // Stop dialogue typing SFX.
+                Script_SFXManager.SFX.StopDialogueTyping();
                 
                 Debug.Log($"SkipTypingSentence() activeCanvasText.text {activeCanvasText.text}");
                 Debug.Log($"SkipTypingSentence() activeCanvasText.maxVisibleCharacters {activeCanvasText.maxVisibleCharacters} activeCanvasText.textInfo.characterCount {activeCanvasText.textInfo.characterCount}");

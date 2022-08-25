@@ -32,6 +32,7 @@ public class Script_DayNotificationManager : MonoBehaviour
     [SerializeField] private Script_GlitchFXManager glitchManager;
 
     private Action onTimelineDoneAction;
+    private Action onBeforeFadeOutAction;
     private bool isInteractAfter = true;
     private Script_TimelineController timelineController;
     private bool isShortDayNotificationDay1;
@@ -42,7 +43,8 @@ public class Script_DayNotificationManager : MonoBehaviour
     public void PlayDayNotification(
         Action cb = null,
         bool _isInteractAfter = true,
-        bool isFirstDay = false
+        bool isFirstDay = false,
+        Action beforeFadeOutCb = null
     )
     {
         isShortDayNotificationDay1 = isFirstDay;
@@ -78,15 +80,15 @@ public class Script_DayNotificationManager : MonoBehaviour
             timelineIdx = 5;
         }
         
-        if (cb != null)
-            onTimelineDoneAction = cb;
+        onBeforeFadeOutAction = beforeFadeOutCb;
+        onTimelineDoneAction = cb;
         
         isInteractAfter = _isInteractAfter;
         
         timelineController.PlayableDirectorPlayFromTimelines(directorIdx, timelineIdx);
     }
 
-    public void PlayCutOutZoomOut()
+    public void PlayFadeOutDay1()
     {
         timelineController.PlayableDirectorPlayFromTimelines(0, 1);
     }
@@ -105,7 +107,18 @@ public class Script_DayNotificationManager : MonoBehaviour
         else
             SFXManager.PlayDawn();
     }
-    
+
+    // Call 0.5 sec (15 frames) before fully fading out.
+    // Play typewriter Map Notification here.
+    public void OnBeforeFadeOut()
+    {
+        if (onBeforeFadeOutAction != null)
+        {
+            onBeforeFadeOutAction();
+            onBeforeFadeOutAction = null;
+        }
+    }
+
     public void OnDayNotificationDone()
     {
         if (didOnDayNotificationEnd)
@@ -146,12 +159,6 @@ public class Script_DayNotificationManager : MonoBehaviour
         saturdayFirstR2NotificationTexts[0].UpdateTextId(SatR2DayNotificationTimeId);
         saturdayFirstR2NotificationTexts[1].UpdateTextId(SatR2DayNotificationTitleId);
         saturdayFirstR2NotificationTexts[2].UpdateTextId(SatR2DayNotificationSubtitleId);
-    }
-
-    // CutOutZoomOut Timeline
-    public void OnStandaloneCutOutZoomOutDone()
-    {
-        Script_TransitionsEventsManager.StandaloneCutOutZoomOutDone();
     }
     
     // ----------------------------------------------------------------------

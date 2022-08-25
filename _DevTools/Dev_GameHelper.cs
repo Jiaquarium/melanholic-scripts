@@ -349,8 +349,7 @@ public class Dev_GameHelper : MonoBehaviour
 
         MynesGrandMirrorRoomBehavior.IsDone = true;
 
-        // Set Run and Cycle data to Weekend Thursday.
-        Script_Game.Game.NextRunSaveInitialize(false, Script_Run.DayId.thu);
+        Script_Game.Game.StartWeekendCycleSaveInitialize();
     }
 
     public void StartSundayCycle()

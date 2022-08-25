@@ -1,6 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+/// <summary>
+/// Test Cases for Day Notifications:
+/// 1. Day 1
+/// 2. Default R1 with Dialogue
+/// 3. Default R1
+/// 4. R2 Day 1 with Dialogue
+/// 5. Default R2 (no dialogue follow ups)
+/// 6. Sunday
+/// </summary>
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,6 +21,7 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_32 : Script_LevelBehavior
 {
+    public const string MapName = Script_Names.HotelLobby;
     private static string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
     
     /* =======================================================================
@@ -69,7 +81,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     private int frontDoorDialogueIndex;
     private bool isFirstLoad = true;
 
-    
+    // ------------------------------------------------------------------
+    // Map Notification
+
+    private bool didMapNotification;
+
     // ------------------------------------------------------------------
     // Dev Only TBD DELETE
     public string DEVELOPMENT_CCTVCodeInput;
@@ -79,8 +95,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         base.OnEnable();
 
         glitchManager.InitialState();
-
-        Script_TransitionsEventsManager.OnStandaloneCutOutZoomOutDone += StartNewGameDialogue;
     }
 
     protected override void OnDisable()
@@ -88,8 +102,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         base.OnDisable();
 
         glitchManager.InitialState();
-
-        Script_TransitionsEventsManager.OnStandaloneCutOutZoomOutDone -= StartNewGameDialogue;
     }
 
     public override void OnLevelInitComplete()
@@ -100,7 +112,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             Script_DayNotificationManager.Control.PlayDayNotification(
                 StartNewGameSequence,
                 _isInteractAfter: false,
-                isFirstDay: true
+                isFirstDay: true,
+                
+                // Standalone FadeOut Timeline will call OnBeforeFadeOut to
+                // allow Player to interact. 
+                beforeFadeOutCb: () => {
+                    StartNewGameDialogue();
+                }
             );
         }
 
@@ -144,6 +162,25 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             HandleOpeningDialogueSetup(satWeekendStartNode);
         }
 
+        // Sunday, don't do typewriting for Map Name
+        else if (
+            game.Run.dayId == Script_Run.DayId.sun
+            && isFirstLoad
+        )
+        {
+            // On First Load of subsequent days, play the Day Notification only once.
+            Script_DayNotificationManager.Control.PlayDayNotification(() =>
+                {
+                    Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
+                    game.StartBgMusicNoFade();
+                    Script_BackgroundMusicManager.Control.FadeInSlow(game.ChangeStateInteract, BGMParam);
+                },
+                _isInteractAfter: false
+            );
+
+            StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
+        }
+
         // Default Day Notification.
         else if (isFirstLoad)
         {
@@ -152,11 +189,14 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 {
                     Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
                     game.StartBgMusicNoFade();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(() => {
-                        game.ChangeStateInteract();
-                    }, BGMParam);
+                    Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
                 },
-                _isInteractAfter: false
+                _isInteractAfter: false,
+                beforeFadeOutCb: () => {
+                    HandleMapNotification(() => {
+                        game.ChangeStateInteract();
+                    });
+                }
             );
 
             StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());
@@ -202,12 +242,14 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 {
                     Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
                     game.StartBgMusicNoFade();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(
-                        () => StartOpeningDialogue(dialogueNode),
-                        BGMParam
-                    );
+                    Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
                 },
-                _isInteractAfter: false
+                _isInteractAfter: false,
+                beforeFadeOutCb: () => {
+                    HandleMapNotification(() => {
+                        StartOpeningDialogue(dialogueNode);
+                    });                    
+                }
             );
 
             StartCoroutine(CloseUnderDialogueBlackScreenNextFrame());            
@@ -254,14 +296,14 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
         
         // Wait to ZoomOut
-        StartCoroutine(WaitToCutOutZoomOut());
+        StartCoroutine(WaitToFadeOutDay1());
 
-        IEnumerator WaitToCutOutZoomOut()
+        IEnumerator WaitToFadeOutDay1()
         {
             yield return new WaitForSeconds(afterSigningWaitTime);
             
-            // Start CutOutZoomOut Timeline
-            Script_DayNotificationManager.Control.PlayCutOutZoomOut();
+            // Start FadeOutDay1 Timeline
+            Script_DayNotificationManager.Control.PlayFadeOutDay1();
             
             // Hide Underdialogue fade out
             Script_TransitionManager.Control.UnderDialogueBlackScreen(false);
@@ -404,10 +446,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
 
-    // CutOutZoomOut Timeline
+    // Standalone FadeOut Day 1 Timeline
     private void StartNewGameDialogue()
     {
-        StartCoroutine(WaitToStartNewGameDialogue());
+        HandleMapNotification(() => StartCoroutine(WaitToStartNewGameDialogue()));
 
         IEnumerator WaitToStartNewGameDialogue()
         {
@@ -446,6 +488,24 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
         if (frontDoorDialogueIndex >= frontDoorNodes.Length)
             frontDoorDialogueIndex = 0;
+    }
+
+    /// <summary>
+    /// Map Notification should play while the Day Notification is still fading out,
+    /// the typewriter effect will start exactly when Day Notification is fully faded out.
+    /// </summary>
+    private void HandleMapNotification(Action cb)
+    {
+        Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
+                if (cb != null)
+                    cb();
+            },
+            isInteractAfter: false,
+            isSFXOn: true,
+            sfx: Script_SFXManager.SFX.TypewriterTypingSFX
+        );
+        
+        didMapNotification = true;
     }
 
     private void HandleDayEnvironment()

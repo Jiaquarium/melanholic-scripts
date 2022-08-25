@@ -10,6 +10,9 @@ public class Script_MapNotification : MonoBehaviour
     [SerializeField] private float fadeInTime;
     [SerializeField] private float fadeOutTime;
 
+    [SerializeField] private Script_CanvasGroupController textCanvasGroup;
+    [SerializeField] private Script_TimelineTeletypeReveal teletypeReveal;
+    [SerializeField] private float textCanvasGroupFadeOutTime;
     [SerializeField] private TextMeshProUGUI TMPtext;
 
     private Script_CanvasGroupController controller;
@@ -20,16 +23,43 @@ public class Script_MapNotification : MonoBehaviour
         set => TMPtext.text = value;
     }
     
-    public void Open(string text)
+    public void Open(
+        string text,
+        bool isSFXOn,
+        AudioClip sfx
+    )
     {
         Text = text.AddBrackets(withSpace: true);
         
-        controller.FadeIn(fadeInTime);
+        teletypeReveal.IsSFXOn = isSFXOn;
+        teletypeReveal.SfxOverride = sfx;
+        
+        textCanvasGroup.Close();
+
+        controller.FadeIn(fadeInTime, () => {
+            textCanvasGroup.Open();
+        });
     }
 
+    /// <summary>
+    /// Check to ensure they are active to avoid coroutine error.
+    /// Always make sure the callback is called though.
+    /// </summary>
     public void Close(Action cb)
     {
-        controller.FadeOut(fadeOutTime, cb);
+        if (textCanvasGroup.gameObject.activeInHierarchy)
+        {
+            textCanvasGroup.FadeOut(textCanvasGroupFadeOutTime, () => {
+                controller.FadeOut(fadeOutTime, cb);
+            });
+        }
+        else if (controller.gameObject.activeInHierarchy)
+            controller.FadeOut(fadeOutTime, cb);
+        else
+        {
+            if (cb != null)
+                cb();
+        }
     }
     
     public void Setup()

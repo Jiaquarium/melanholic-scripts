@@ -27,6 +27,8 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
     [SerializeField] private UnityEvent onTypingDoneAction;
 
     [SerializeField] private bool isGlitchText;
+    [SerializeField] private bool isSFXOn;
+    [SerializeField] private AudioClip sfxOverride;
 
     private bool isListening;
 
@@ -38,6 +40,18 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
     private UnityEvent ResumeAction
     {
         get => resumeAction;
+    }
+
+    public bool IsSFXOn
+    {
+        get => isSFXOn;
+        set => isSFXOn = value;
+    }
+
+    public AudioClip SfxOverride
+    {
+        get => sfxOverride;
+        set => sfxOverride = value;
     }
 
     void OnEnable()
@@ -64,7 +78,9 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
                 textUI.text,
                 textUI,
                 OnTypingDone,
-                isGlitchText: isGlitchText
+                silenceOverride: IsSFXOn, 
+                isGlitchText: isGlitchText,
+                sfxOverride: SfxOverride
             );
             StartCoroutine(coroutine);
         }

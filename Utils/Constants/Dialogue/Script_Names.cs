@@ -219,6 +219,7 @@ public class Script_Names: MonoBehaviour
     public const string DiningRoom                      = "<b>Parlor Room</b>"; // {92}
     public const string R2CursedTime                    = "<b>5:30 a.m.</b>"; // {93}
     public const string IdsDeadTime                     = "<b>5:45 a.m.</b>"; // {94}
+    public const string HotelLobby                      = "<b>Hotel Lobby</b>"; // {95}
 
 
 
