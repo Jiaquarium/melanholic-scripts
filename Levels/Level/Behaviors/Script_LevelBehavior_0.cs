@@ -101,7 +101,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     public void OnWellOpeningDialogueDone()
     {
         // BG Param previously set to 0f 
-        game.StartBgMusic();
+        game.StartBgMusicNoFade();
         Script_BackgroundMusicManager.Control.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
     }
     

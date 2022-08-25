@@ -150,7 +150,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             // On First Load of subsequent days, play the Day Notification only once.
             Script_DayNotificationManager.Control.PlayDayNotification(() =>
                 {
-                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
+                    game.StartBgMusicNoFade();
                     Script_BackgroundMusicManager.Control.FadeInSlow(() => {
                         game.ChangeStateInteract();
                     }, BGMParam);
@@ -199,7 +200,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         {
             Script_DayNotificationManager.Control.PlayDayNotification(() =>
                 {
-                    Script_BackgroundMusicManager.Control.UnPause();
+                    Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
+                    game.StartBgMusicNoFade();
                     Script_BackgroundMusicManager.Control.FadeInSlow(
                         () => StartOpeningDialogue(dialogueNode),
                         BGMParam
@@ -247,7 +249,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // Called from StartNode on New Game.
     public void OnEndStartDialogue()
     {
-        Script_BackgroundMusicManager.Control.UnPause();
+        Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
+        game.StartBgMusicNoFade();
         Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
         
         // Wait to ZoomOut

@@ -16,6 +16,12 @@ using UnityEditor;
 /// 
 /// Events:
 /// Ids should only be here on Sunday
+/// 
+/// Audio Tests:
+/// - Seamless BGM when going from LB9 to LB10
+/// - Destroy speaker when entering Mysterious Room
+/// - Regen speaker when returning to LB9
+/// - No fades
 /// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_10 : Script_LevelBehavior
@@ -1450,8 +1456,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     {
         Ids.SetMoveSpeedWalk();
         
+        // Level BGM default set to not play (-1), leaving it up to BG Speaker
         if (lb9.speaker == null)
+        {
             game.SwitchBgMusic(BGMIdx);
+        }
 
         BaseSetup();
         HandleIdsInRoom();

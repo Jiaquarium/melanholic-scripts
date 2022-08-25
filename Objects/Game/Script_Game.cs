@@ -723,7 +723,10 @@ public class Script_Game : MonoBehaviour
         
         // Note: StartBgMusic should be before Grid Activation and Level Setup, because BGM changes
         // on Awake/OnEnable/Start/Setup should be able to override this default BGM Player.
-        HandleLevelBgm();
+        if (levelBehavior.IsNoFadeInBgm)
+            StartBgMusicNoFade();
+        else
+            StartBgMusicFade();
         
         SetTileMaps();
         
@@ -1838,57 +1841,20 @@ public class Script_Game : MonoBehaviour
         _MUSIC_
     ========================================================================= */
 
-    public void HandleLevelBgm()
+    public void StartBgMusicFade()
     {
-        if (npcBgThemePlayer != null && GetNPCThemeMusicIsPlaying())
-            return;
+        int bgmIndex = Levels.levelsData[level].bgMusicAudioClipIndex;
+        bool isBgmPaused = Levels.levelsData[level].isBgmPaused;
         
-        // Check to see if BGM index has changed
-        int i = Levels.levelsData[level].bgMusicAudioClipIndex;
-
-        if (Levels.levelsData[level].isBgmPaused)
-        {
-            Debug.Log($"Level {Levels.levelsData[level]} starting with PAUSED Bgm");
-            i = -1;
-        }
-        
-        // If so fade out music and fade in start music
-        if (i != BGMManager.CurrentClipIndex)
-        {
-            // Log warning if fade out and fade in time > level transition time
-            if (Script_AudioEffectsManager.fadeXFastTime + Script_AudioEffectsManager.fadeFastTime > exitsHandler.TotalLevelTransitionTime)
-                Debug.LogWarning("The time to fade out and in BGM is greater than total level transition time. Audio might break!");
-
-            BGMManager.FadeOutXFast(() => {
-                FadeInPlayBgm();
-            }, Const_AudioMixerParams.ExposedBGVolume);
-        }
-        else
-        {
-            BGMManager.Play(i);
-        }
-
-        void FadeInPlayBgm()
-        {
-            BGMManager.Play(i);
-            BGMManager.FadeInFast(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
-        }
+        BGMManager.StartLevelBgmFade(bgmIndex, isBgmPaused);
     }
     
-    public void StartBgMusic()
+    public void StartBgMusicNoFade()
     {
-        if (npcBgThemePlayer != null && GetNPCThemeMusicIsPlaying())
-            return;
+        int bgmIndex = Levels.levelsData[level].bgMusicAudioClipIndex;
+        bool isBgmPaused = Levels.levelsData[level].isBgmPaused;
         
-        int i = Levels.levelsData[level].bgMusicAudioClipIndex;
-
-        if (Levels.levelsData[level].isBgmPaused)
-        {
-            Debug.Log($"Level {Levels.levelsData[level]} starting with PAUSED Bgm");
-            i = -1;
-        }
-        
-        BGMManager.Play(i);
+        BGMManager.StartLevelBgmNoFade(bgmIndex, isBgmPaused);
     }
 
     public void SwitchBgMusic(int i)

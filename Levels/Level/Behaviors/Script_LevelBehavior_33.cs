@@ -60,6 +60,20 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         }
 
         HandleElevatorDisabledState(elevator);
+
+        PauseBgmForElevator();
+
+        void PauseBgmForElevator()
+        {
+            Debug.Log($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
+
+            // Only stop Bgm if the elevator manager hasn't already restarted it.
+            // This happens on same frame but after Bgm Start on InitLevel.
+            if (!elevatorManager.IsBgmOn)
+            {
+                Script_BackgroundMusicManager.Control.Stop();
+            }
+        }
     }
 
     protected override void OnDisable()

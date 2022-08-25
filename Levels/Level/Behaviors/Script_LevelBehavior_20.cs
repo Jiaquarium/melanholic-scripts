@@ -290,12 +290,15 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
         eldersTragedyBgThemePlayer.FadeOutStop(() => {
             bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
-            bgm.PlayFadeIn(bgm.CurrentClipIndex, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+            bgm.PlayFadeIn(
+                bgm.CurrentClipIndex,
+                game.ChangeStateInteract,
+                outputMixer: Const_AudioMixerParams.ExposedBGVolume
+            );
         });
 
         void OnRemoveLetterBoxDone()
         {
-            game.ChangeStateInteract();
             game.CanvasesInitialState();
             
             // Face King in the proper direction upon timeline restarting.

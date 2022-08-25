@@ -17,48 +17,130 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Script_BgThemeSpeakersController bgThemeSpeakersController;
 
+    [SerializeField] private Script_Game game;
+
     private int currentClipIndex = -1;
     private Coroutine currentFadeCoroutine;
     private Coroutine currentWaiToPlayCoroutine;
 
+    public AudioSource Source => GetComponent<AudioSource>();
+    
     public int CurrentClipIndex
     {
         get => currentClipIndex;
+        set => currentClipIndex = value;
     }
 
     public bool IsPlaying
     {
-        get => GetComponent<AudioSource>()?.isPlaying ?? false;
+        get => Source?.isPlaying ?? false;
     }
 
-    public void Play(int i, bool forcePlay = false, float startTime = 0f)
+    public void StartLevelBgmNoFade(int bgmIndex, bool isBgmPaused)
     {
-        var source = GetComponent<AudioSource>();
+        if (game.npcBgThemePlayer != null && game.GetNPCThemeMusicIsPlaying())
+            return;
         
+        if (isBgmPaused)
+        {
+            Debug.Log($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
+            Play(-1);
+            return;
+        }
+        
+        Play(bgmIndex);
+    }
+
+    /// <summary>
+    /// Fade in BGM but only if the index has changed and the index isn't silent.
+    /// Otherwise, do the default play behavior.
+    /// </summary>
+    public void StartLevelBgmFade(int bgmIndex, bool isBgmPaused)
+    {
+        if (game.npcBgThemePlayer != null && game.GetNPCThemeMusicIsPlaying())
+            return;
+        
+        Debug.Log($"Level {game.Levels.levelsData[game.level]} attempting to play bgmIndex {bgmIndex}");
+        
+        // If Bgm Index is silent, a BG Speaker might be present instead, so do default behavior.
+        if (isBgmPaused || bgmIndex == -1)
+        {
+            Debug.Log($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
+            Play(-1);
+            return;
+        }
+        
+        // If bgm index changed, then fade in start music
+        if (bgmIndex != CurrentClipIndex)
+        {
+            // Log warning if fade out and fade in time > level transition time
+            if (Script_AudioEffectsManager.fadeFastTime > game.exitsHandler.TotalLevelTransitionTime)
+                Debug.LogWarning("The time to fade out and in BGM is greater than total level transition time. Audio might break!");
+
+            // Set Source's clip immediately and update clip index on the same frame as call
+            // (to match StartLevelBgmNoFade's behavior)
+            HandleLoadClip(bgmIndex, Source);
+            CurrentClipIndex = bgmIndex;
+
+            currentFadeCoroutine = StartCoroutine(FadeInPlayBgmNextFrame());
+        }
+        else
+        {
+            Play(bgmIndex);
+        }
+
+        IEnumerator FadeInPlayBgmNextFrame()
+        {
+            // Wait a frame to give level behavior a chance to cancel BGM Manager Fading / setting volume to 0f.
+            yield return null;
+            
+            SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            Play(bgmIndex, didLoadClip: true);
+            FadeInFast(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        }
+    }
+    
+    public void Play(
+        int i,
+        bool forcePlay = false,
+        float startTime = 0f,
+        bool didLoadClip = false
+    )
+    {
         if (i == -1)
         {
             Stop();
             return;
         }
         
+        // Give option to load clip beforehand if calling this
+        // in a coroutine.
+        if (!didLoadClip)
+            HandleLoadClip(i, Source);
+
         // Continue track
         if (
-            i == currentClipIndex
+            i == CurrentClipIndex
             && !forcePlay
-            && source.isPlaying
+            && Source.isPlaying
         )
         {
             return;
         }
-
-        source.clip = AudioClips[i];
         
         if (startTime > 0f)
-            source.time = startTime;
+            Source.time = startTime;
         
-        source.Play();
+        Source.Play();
+        CurrentClipIndex = i;
+    }
 
-        currentClipIndex = i;
+    private void HandleLoadClip(
+        int i,
+        AudioSource source
+    )
+    {
+        source.clip = AudioClips[i];
     }
 
     public void PlayFadeIn(
@@ -86,21 +168,25 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public void Stop()
     {
-        AudioSource source = GetComponent<AudioSource>();
-        source.volume = 0f;
-        source.Stop();
-        source.volume = 1f;
+        Source.volume = 0f;
+        Source.Stop();
+
+        EndCurrentCoroutines();
+
+        Source.volume = 1f;
     }
 
     public void Pause()
     {
         Debug.Log("~~~~ Pausing BGM ~~~~");
         
-        AudioSource source = GetComponent<AudioSource>();
-        float lastVol = source.volume;
-        source.volume = 0f; // to avoid any ripping noise
-        source.Pause();
-        source.volume = lastVol;
+        float lastVol = Source.volume;
+        Source.volume = 0f; // to avoid any ripping noise
+        Source.Pause();
+        
+        EndCurrentCoroutines();
+        
+        Source.volume = lastVol;
     }
 
     public void PauseAll()
@@ -111,9 +197,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public void UnPause()
     {
-        var source = GetComponent<AudioSource>();
-        if (source != null)
-            source.UnPause();
+        if (Source != null)
+            Source.UnPause();
     }
 
     public void UnPauseAll()
@@ -124,7 +209,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public bool GetIsPlaying()
     {
-        return GetComponent<AudioSource>().isPlaying;
+        return Source.isPlaying;
     }
 
     public AudioClip GetClip(int i) => AudioClips[i];
@@ -217,11 +302,6 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         FadeIn(cb, Script_AudioEffectsManager.fadeSlowTime, outputMixer);
     }
 
-    public void FadeInXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
-    {
-        FadeIn(cb, Script_AudioEffectsManager.fadeXXSlowTime, outputMixer);
-    }
-
     public void FadeOutXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
@@ -230,6 +310,16 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void FadeInXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
     {
         FadeIn(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
+    }
+
+    public void FadeOutXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        FadeOut(cb, Script_AudioEffectsManager.fadeXXSlowTime, outputMixer);
+    }
+    
+    public void FadeInXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    {
+        FadeIn(cb, Script_AudioEffectsManager.fadeXXSlowTime, outputMixer);
     }
 
     private void EndCurrentCoroutines()

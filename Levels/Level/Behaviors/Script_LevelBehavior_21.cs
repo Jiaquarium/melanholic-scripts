@@ -309,10 +309,13 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         
         // Handle saving BGM played state.
         game.PauseBgMusic();
+        
         AudioSource audio = EileenThemePlayer.GetComponent<AudioSource>();
         audio.volume = 1f;
         audio.gameObject.SetActive(true);
-        if (!audio.isPlaying) audio.UnPause();
+        
+        if (!audio.isPlaying)
+            audio.UnPause();
         
         // Handle coming from Eileen Mind painting
         Debug.Log($"LB21: Last LB is {game.LastLevelBehavior}");

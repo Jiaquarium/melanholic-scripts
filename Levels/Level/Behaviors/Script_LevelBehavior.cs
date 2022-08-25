@@ -9,12 +9,14 @@ using UnityEngine.Playables;
 public class Script_LevelBehavior : MonoBehaviour
 {
     public Script_Game game;
-    
+    [SerializeField] private bool isNoFadeInBgm;
     [SerializeField] private Script_Snow snowEffect;
     [SerializeField] private Script_VCamera levelVCam;
 
     [SerializeField] private Script_BoundingVolume boundingVolume;
 
+    public bool IsNoFadeInBgm => isNoFadeInBgm;
+    
     public Script_VCamera LevelVCam
     {
         get => levelVCam;

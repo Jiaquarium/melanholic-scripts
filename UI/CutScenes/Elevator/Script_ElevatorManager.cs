@@ -169,7 +169,7 @@ public class Script_ElevatorManager : MonoBehaviour
         if (!bgm.IsPlaying)
         {
             Debug.Log("Start BGM from Elevator Manager");
-            game.StartBgMusic();
+            game.StartBgMusicNoFade();
         }
         
         IsBgmOn = true;
