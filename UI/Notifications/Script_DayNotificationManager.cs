@@ -28,9 +28,6 @@ public class Script_DayNotificationManager : MonoBehaviour
     [SerializeField] private Script_TMProPopulator[] saturdayFirstR2NotificationTexts;
     [SerializeField] private Script_DayNotification sundayNotification;
 
-    [SerializeField] private List<GameObject> saturdayNotificationObjectsToBind;
-    [SerializeField] private List<GameObject> saturdayR2NotificationObjectsToBind;
-
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_GlitchFXManager glitchManager;
 
@@ -55,32 +52,30 @@ public class Script_DayNotificationManager : MonoBehaviour
         int directorIdx = 0;
         int timelineIdx = 0;
 
-        if (game.IsFirstThursday)
+        if (isFirstDay)
         {
-            timelineIdx = 1;
+            timelineIdx = 0;
+        }
+        else if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
+        {
+            timelineIdx = 2;
+        }
+        else if (game.IsFirstThursday)
+        {
+            timelineIdx = 3;
 
             // Inject old Text; timeline will switch it out with zalgofied
             saturdayFirstR2NotificationTexts[0].UpdateTextId(DefaultSatDayNotificationTimeId);
             saturdayFirstR2NotificationTexts[1].UpdateTextId(DefaultSatDayNotificationTitleId);
             saturdayFirstR2NotificationTexts[2].UpdateTextId(DefaultSatDayNotificationSubtitleId);
         }
+        else if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
+        {
+            timelineIdx = 4;
+        }
         else if (game.RunCycle == Script_RunsManager.Cycle.Sunday)
         {
-            timelineIdx = 2;
-        }
-        else
-        {
-            TimelineAsset timeline = timelineController.timelines[timelineIdx];
-            PlayableDirector director = timelineController.playableDirectors[directorIdx];
-
-            List<GameObject> objectsToBind = runsManager.RunCycle switch
-            {
-                Script_RunsManager.Cycle.Weekday => saturdayNotificationObjectsToBind,
-                Script_RunsManager.Cycle.Weekend => saturdayR2NotificationObjectsToBind,
-                _ => saturdayNotificationObjectsToBind
-            };
-            
-            director.BindTimelineTracks(timeline, objectsToBind);
+            timelineIdx = 5;
         }
         
         if (cb != null)
@@ -93,7 +88,7 @@ public class Script_DayNotificationManager : MonoBehaviour
 
     public void PlayCutOutZoomOut()
     {
-        timelineController.PlayableDirectorPlayFromTimelines(0, 3);
+        timelineController.PlayableDirectorPlayFromTimelines(0, 1);
     }
 
     // ----------------------------------------------------------------------
@@ -109,21 +104,6 @@ public class Script_DayNotificationManager : MonoBehaviour
             SFXManager.PlayDawnWeekend();
         else
             SFXManager.PlayDawn();
-    }
-    
-    /// <summary>
-    /// On Day 1 we want to stop the timeline before reaching the portion
-    /// where it shows the Cut Out Mask, that will be handled later via
-    /// DayNotificationStandaloneCutOut Timeline
-    /// </summary>
-    public void OnDayNotificationDay1Done()
-    {
-        if (!isShortDayNotificationDay1)
-            return;
-        
-        playableDirector.Stop();
-
-        OnDayNotificationDone();
     }
     
     public void OnDayNotificationDone()
