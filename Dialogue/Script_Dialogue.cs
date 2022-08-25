@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-08-17 16:11:22
+// Last created by Dialogue Exporter at 2022-08-25 12:53:16
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1126,7 +1126,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{10}",
         EN = new string[]
         {
-                @"Please have a wonderful rest of your @@Run.",
+                @"Please have a wonderful rest of your night.",
         },
         
     }
@@ -2716,7 +2716,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 {
                     isUnskippable = true, 
                 },
-                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
