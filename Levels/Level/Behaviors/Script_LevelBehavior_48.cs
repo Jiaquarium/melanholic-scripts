@@ -98,6 +98,14 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     private float currentTargetBlend;
     private bool isExitingWindZone;
 
+    // ------------------------------------------------------------------
+    // Trailer Only
+    
+    [SerializeField] private Script_VCamera trailerVCam;
+    private bool isTrailerVCam;
+    
+    // ------------------------------------------------------------------
+
 
     public bool IsDone
     {
@@ -159,6 +167,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         
         // Initialize World Painting States for Reveal Cut Scenes.
         ballroomBehavior.SetPaintingEntrancesActive(false);
+    }
+
+    protected override void Update()
+    {
+        if (Const_Dev.IsTrailerMode)
+            HandleTrailerPan();
     }
 
     // ------------------------------------------------------------------
@@ -323,6 +337,19 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             if (meshCol != null)
                 meshCol.enabled = true;
         });
+
+        // For trailer mode make all ice explode in unison.
+        if (Const_Dev.IsTrailerMode)
+        {
+            if (ice != iceBlockStatsLeft)
+                iceBlockStatsLeft.Hurt(1, null);
+            
+            if (ice != iceBlockStatsMid)
+                iceBlockStatsMid.Hurt(1, null);
+            
+            if (ice != iceBlockStatsRight)
+                iceBlockStatsRight.Hurt(1, null);
+        }
     }
     
     public void OnIceBlockCracked(Script_CrackableStats ice)
@@ -705,6 +732,24 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceR2Node);
         }
     }
+
+    // ------------------------------------------------------------------
+    // Trailer Only
+
+    private void HandleTrailerPan()
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.TrailerCam))
+        {
+            if (!isTrailerVCam)
+                Script_VCamManager.VCamMain.SetNewVCam(trailerVCam);
+            else
+                Script_VCamManager.VCamMain.SwitchToMainVCam(trailerVCam);
+            
+            isTrailerVCam = !isTrailerVCam;
+        }
+    }
+
+    // ------------------------------------------------------------------
 
     public override void InitialState()
     {

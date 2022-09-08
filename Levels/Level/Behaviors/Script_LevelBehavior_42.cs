@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.Playables;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -58,6 +59,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
     [SerializeField] private List<Script_WellsWorldBehavior> wellsWorldBehaviors;
 
+    // ------------------------------------------------------------------
+    // Trailer Only
+    
+    [SerializeField] private PlayableDirector trailerDirector;
+    [SerializeField] private float waitToPlayTrailerDirectorTime;
+    
+    // ------------------------------------------------------------------
+
     private bool didMapNotification;
     private bool didSnowReaction;
 
@@ -95,6 +104,12 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             SetSmallSnowActive(true);
         else
             SetSmallSnowActive(false);
+    }
+
+    protected override void Update()
+    {
+        if (Const_Dev.IsTrailerMode)
+            HandleTrailerPan();
     }
     
     private void OnLevelInitCompleteEvent()
@@ -455,6 +470,28 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         foreach (var Suzette in Suzettes)
             Suzette.gameObject.SetActive(isActive);
     }
+
+    // ------------------------------------------------------------------
+    // Trailer Only
+
+    private void HandleTrailerPan()
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.TrailerCam))
+        {
+            trailerDirector.Stop();
+
+            StartCoroutine(WaitToPlay());
+        }
+
+        IEnumerator WaitToPlay()
+        {
+            yield return new WaitForSeconds(waitToPlayTrailerDirectorTime);
+
+            trailerDirector.Play();
+        }
+    }
+
+    // ------------------------------------------------------------------
 
     public override void Setup()
     {

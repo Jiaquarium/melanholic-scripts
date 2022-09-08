@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -26,6 +27,14 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
     
     [SerializeField] private float waitBeforeIntroTime;
     [SerializeField] private Script_DialogueNode introNode;
+
+    // ------------------------------------------------------------------
+    // Trailer Only
+    
+    [SerializeField] private PlayableDirector trailerDirector;
+    [SerializeField] private float waitToPlayTrailerDirectorTime;
+    
+    // ------------------------------------------------------------------
     
     private bool didMapNotification;
 
@@ -37,6 +46,12 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+    }
+
+    protected override void Update()
+    {
+        if (Const_Dev.IsTrailerMode)
+            HandleTrailerPan();
     }
 
     private void OnLevelInitCompleteEvent()
@@ -77,5 +92,25 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
     public void OnIntroDialogueDone()
     {
         game.ChangeStateInteract();
-    }    
+    }
+
+    // ------------------------------------------------------------------
+    // Trailer Only
+
+    private void HandleTrailerPan()
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.TrailerCam))
+        {
+            trailerDirector.Stop();
+
+            StartCoroutine(WaitToPlay());
+        }
+
+        IEnumerator WaitToPlay()
+        {
+            yield return new WaitForSeconds(waitToPlayTrailerDirectorTime);
+
+            trailerDirector.Play();
+        }
+    }
 }

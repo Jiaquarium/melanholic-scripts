@@ -65,6 +65,9 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;
     [SerializeField] private Script_LevelBehavior_27 LastElevatorBehavior;
     [SerializeField] private Script_LevelBehavior_48 MynesGrandMirrorRoomBehavior;
+    [SerializeField] private List<Script_WorldTile> WellsWorldTiles;
+    [SerializeField] private List<Script_WorldTile> CelestialGardensWorldTiles;
+    [SerializeField] private List<Script_WorldTile> XXXWorldTiles;
 
     // ----------------------------------------------------------------------
     // Quests Done Dynamic Settings
@@ -281,6 +284,34 @@ public class Dev_GameHelper : MonoBehaviour
             Debug.Log($"<color=red>endings being set to: {false}</color>");
             endings.gameObject.SetActive(false);
         }
+
+        // Notify on state of World Tiles
+        bool isAllWellWorldActive = true;
+        WellsWorldTiles.ForEach(worldTile => {
+            if (!worldTile.gameObject.activeSelf)
+                isAllWellWorldActive = false;
+        });
+
+        bool isAllCelGardensWorldActive = true;
+        CelestialGardensWorldTiles.ForEach(worldTile => {
+            if (!worldTile.gameObject.activeSelf)
+                isAllCelGardensWorldActive = false;
+        });
+
+        bool isAllXXXWorldActive = true;
+        XXXWorldTiles.ForEach(worldTile => {
+            if (!worldTile.gameObject.activeSelf)
+                isAllXXXWorldActive = false;
+        });
+
+        if (!isAllWellWorldActive)
+            Debug.LogWarning($"<color=orange>NOT ALL WELLS WORLD TILES ARE ACTIVE</color>");
+        
+        if (!isAllCelGardensWorldActive)
+            Debug.LogWarning($"<color=orange>NOT ALL CEL GARDENS WORLD TILES ARE ACTIVE</color>");
+        
+        if (!isAllXXXWorldActive)
+            Debug.LogWarning($"<color=orange>NOT ALL XXX WORLD TILES ARE ACTIVE</color>");
     }
 
     public void BuildDevExploreSetup()

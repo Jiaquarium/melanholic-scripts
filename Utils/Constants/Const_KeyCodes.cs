@@ -53,4 +53,5 @@ public static class Const_KeyCodes
     public const string UIVisibility = "UIVisibility";
     public const string PlayerVisibility = "PlayerVisibility";
     public const string SpecsDisplay = "SpecsDisplay";
+    public const string TrailerCam = "TrailerCam";
 }

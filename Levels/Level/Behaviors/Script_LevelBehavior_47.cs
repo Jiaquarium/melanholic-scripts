@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,6 +18,14 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
     
     [SerializeField] private Script_StickerObject puppeteerSticker;
     [SerializeField] private Script_DemonNPC Ids;
+
+    // ------------------------------------------------------------------
+    // Trailer Only
+    
+    [SerializeField] private PlayableDirector trailerDirector;
+    [SerializeField] private float waitToPlayTrailerDirectorTime;
+    
+    // ------------------------------------------------------------------
 
     private bool didMapNotification;
     private bool didInteractPositiveWithIds;
@@ -35,6 +44,12 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
 
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
         Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
+    }
+
+    protected override void Update()
+    {
+        if (Const_Dev.IsTrailerMode)
+            HandleTrailerPan();
     }
 
     private void OnLevelInitCompleteEvent()
@@ -68,6 +83,28 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
             didInteractPositiveWithIds = true;
         }
     }
+
+    // ------------------------------------------------------------------
+    // Trailer Only
+
+    private void HandleTrailerPan()
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.TrailerCam))
+        {
+            trailerDirector.Stop();
+
+            StartCoroutine(WaitToPlay());
+        }
+
+        IEnumerator WaitToPlay()
+        {
+            yield return new WaitForSeconds(waitToPlayTrailerDirectorTime);
+
+            trailerDirector.Play();
+        }
+    }
+
+    // ------------------------------------------------------------------
 
     public override void Setup()
     {
