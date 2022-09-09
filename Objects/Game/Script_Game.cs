@@ -378,6 +378,8 @@ public class Script_Game : MonoBehaviour
         set => isHideHUD = value;
     }
 
+    public int BgmIndex => Levels.levelsData[level].bgMusicAudioClipIndex;
+
     // ------------------------------------------------------------------
     // Camera Properties
     public PixelPerfectCamera PixelPerfectCamera
@@ -388,7 +390,7 @@ public class Script_Game : MonoBehaviour
     public float CameraSize
     {
         get => GetComponent<Camera>().orthographicSize;
-    } 
+    }
 
     /// <summary>
     /// (DEV): Sets all levels to inactive from Dev'ing
@@ -787,7 +789,6 @@ public class Script_Game : MonoBehaviour
         ClearDrops();
         
         StopMovingNPCThemes();
-        BGMManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
         BGMManager.SetDefault(Const_AudioMixerParams.ExposedSFXVolume);
     }
 
@@ -1843,18 +1844,16 @@ public class Script_Game : MonoBehaviour
 
     public void StartBgMusicFade()
     {
-        int bgmIndex = Levels.levelsData[level].bgMusicAudioClipIndex;
         bool isBgmPaused = Levels.levelsData[level].isBgmPaused;
         
-        BGMManager.StartLevelBgmFade(bgmIndex, isBgmPaused);
+        BGMManager.StartLevelBgmFade(BgmIndex, isBgmPaused);
     }
     
     public void StartBgMusicNoFade()
     {
-        int bgmIndex = Levels.levelsData[level].bgMusicAudioClipIndex;
         bool isBgmPaused = Levels.levelsData[level].isBgmPaused;
         
-        BGMManager.StartLevelBgmNoFade(bgmIndex, isBgmPaused);
+        BGMManager.StartLevelBgmNoFade(BgmIndex, isBgmPaused);
     }
 
     public void SwitchBgMusic(int i)
@@ -1933,6 +1932,8 @@ public class Script_Game : MonoBehaviour
     {
         return npcBgThemePlayer.GetComponent<AudioSource>().isPlaying;
     }
+
+    public int GetLevelBgmIndex(int levelToGo) => Levels.levelsData[levelToGo].bgMusicAudioClipIndex;
 
     public void StopMovingNPCThemes()
     {

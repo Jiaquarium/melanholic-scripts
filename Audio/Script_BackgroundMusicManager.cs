@@ -18,6 +18,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     [SerializeField] private Script_BgThemeSpeakersController bgThemeSpeakersController;
 
     [SerializeField] private Script_Game game;
+    [SerializeField] private Script_Exits exitsManager;
 
     private int currentClipIndex = -1;
     private Coroutine currentFadeCoroutine;
@@ -93,11 +94,41 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         {
             // Wait a frame to give level behavior a chance to cancel BGM Manager Fading / setting volume to 0f.
             yield return null;
-            
-            SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+
+            Script_AudioMixerVolume.SetVolume(audioMixer, Const_AudioMixerParams.ExposedBGVolume, 0f);
             Play(bgmIndex, didLoadClip: true);
             FadeInFast(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
         }
+    }
+
+    /// <summary>
+    /// Fade out music when going to a different Bgm index level (or when new index is -1).
+    /// </summary>
+    /// <param name="levelToGo">The new upcoming level exiting to</param>
+    public void StopLevelBgmFade(int levelToGo)
+    {
+        Debug.Log("Handle Fade Out BGM");
+
+        int newBgmIndex = game.GetLevelBgmIndex(levelToGo);
+        
+        // If level going to is the same, do not fade out.
+        if (game.BgmIndex == newBgmIndex)
+            return;
+        else
+            FadeOut(null, exitsManager.DefaultLevelFadeOutTime, Const_AudioMixerParams.ExposedBGVolume);
+    }
+
+    public void StopLevelBgmNoFade(int levelToGo)
+    {
+        Debug.Log("Handle Fade Out BGM No Fade");
+        
+        int newBgmIndex = game.GetLevelBgmIndex(levelToGo);
+        
+        // If level going to is the same, do not fade out.
+        if (game.BgmIndex == newBgmIndex)
+            return;
+        else
+            Stop();
     }
     
     public void Play(
@@ -221,7 +252,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         EndCurrentCoroutines();
         Script_AudioMixerVolume.SetVolume(audioMixer, outputMixer, newVol);
     }
-    
+
     public void FadeOut(
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
