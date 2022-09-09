@@ -9,6 +9,8 @@ public class Script_PlayerStepsSFX : MonoBehaviour
     [SerializeField][Range(0f, 1f)] private float stepSFXVol;
     [SerializeField] private List<AudioClip> iceWomanStepSFXs;
     [SerializeField][Range(0f, 1f)] private float iceWomanStepSFXVol;
+    [SerializeField] private List<AudioClip> animalWithinStepSFXs;
+    [SerializeField][Range(0f, 1f)] private float animalWithinStepSFXVol;
 
     [SerializeField] private Script_Player player;
     
@@ -28,6 +30,11 @@ public class Script_PlayerStepsSFX : MonoBehaviour
     private void IceWomanStep()
     {
         HandleStepSFX(iceWomanStepSFXs, iceWomanStepSFXVol);
+    }
+
+    private void AnimalWithinStep()
+    {
+        HandleStepSFX(animalWithinStepSFXs, animalWithinStepSFXVol);
     }
 
     private void HandleStepSFX(List<AudioClip> clips, float volume)
