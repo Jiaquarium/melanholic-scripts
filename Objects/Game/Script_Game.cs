@@ -1846,14 +1846,14 @@ public class Script_Game : MonoBehaviour
     {
         bool isBgmPaused = Levels.levelsData[level].isBgmPaused;
         
-        BGMManager.StartLevelBgmFade(BgmIndex, isBgmPaused);
+        BGMManager.HandleStartLevelBgmFade(BgmIndex, isBgmPaused);
     }
     
     public void StartBgMusicNoFade()
     {
         bool isBgmPaused = Levels.levelsData[level].isBgmPaused;
         
-        BGMManager.StartLevelBgmNoFade(BgmIndex, isBgmPaused);
+        BGMManager.HandleStartLevelBgmNoFade(BgmIndex, isBgmPaused);
     }
 
     public void SwitchBgMusic(int i)

@@ -141,41 +141,41 @@ public class Script_Exits : MonoBehaviour
             case (FollowUp.CutSceneNoFade):
             {
                 Debug.Log("Changing Level without Fade");
-                Script_BackgroundMusicManager.Control.StopLevelBgmNoFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmNoFade(levelToGo);
                 HandleChangeLevelNoFade();
                 break;
             }
             case (FollowUp.SaveAndRestart):
             {
                 Debug.Log("SaveAndRestart Exit Follow Up");
-                Script_BackgroundMusicManager.Control.StopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
             }
             case (FollowUp.Piano):
             {
-                Script_BackgroundMusicManager.Control.StopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
             }
             case (FollowUp.SaveAndStartWeekendCycle):
             {
                 Debug.Log("SaveAndStartWeekendCycle Exit Follow Up");
-                Script_BackgroundMusicManager.Control.StopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
             }
             case (FollowUp.SaveAndRestartOnLevel):
             {
                 Debug.Log("SaveAndRestartOnLevel Exit Follow Up");
-                Script_BackgroundMusicManager.Control.StopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
             }
             default:
             {
                 Debug.Log("Default Fading Out");
-                Script_BackgroundMusicManager.Control.StopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
             }

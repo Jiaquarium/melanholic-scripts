@@ -37,8 +37,11 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         get => Source?.isPlaying ?? false;
     }
 
-    public void StartLevelBgmNoFade(int bgmIndex, bool isBgmPaused)
+    public void HandleStartLevelBgmNoFade(int bgmIndex, bool isBgmPaused)
     {
+        // Set volume back to 1, since it'll be 0 from Fade Out
+        SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+        
         if (game.npcBgThemePlayer != null && game.GetNPCThemeMusicIsPlaying())
             return;
         
@@ -48,6 +51,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             Play(-1);
             return;
         }
+
+        Debug.Log($"StartLevelBgmNoFade bgmIndex {bgmIndex}, isBgmPaused {isBgmPaused}");
         
         Play(bgmIndex);
     }
@@ -56,26 +61,39 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     /// Fade in BGM but only if the index has changed and the index isn't silent.
     /// Otherwise, do the default play behavior.
     /// </summary>
-    public void StartLevelBgmFade(int bgmIndex, bool isBgmPaused)
+    public void HandleStartLevelBgmFade(int bgmIndex, bool isBgmPaused)
     {
+        float defaultBgmFadeInTime = Script_AudioEffectsManager.fadeFastTime;
+        
         if (game.npcBgThemePlayer != null && game.GetNPCThemeMusicIsPlaying())
-            return;
-        
-        Debug.Log($"Level {game.Levels.levelsData[game.level]} attempting to play bgmIndex {bgmIndex}");
-        
+        {
+            // Set volume back to 1, since it'll be 0 from Fade Out
+            SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+        }
         // If Bgm Index is silent, a BG Speaker might be present instead, so do default behavior.
-        if (isBgmPaused || bgmIndex == -1)
+        else if (isBgmPaused || bgmIndex == -1)
         {
             Debug.Log($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
+            // Set volume back to 1, since it'll be 0 from Fade Out
+            SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
             Play(-1);
-            return;
         }
-        
         // If bgm index changed, then fade in start music
-        if (bgmIndex != CurrentClipIndex)
+        else if (bgmIndex != CurrentClipIndex)
         {
-            // Log warning if fade out and fade in time > level transition time
-            if (Script_AudioEffectsManager.fadeFastTime > game.exitsHandler.TotalLevelTransitionTime)
+            FadeInBgmNextFrame();
+        }
+        else
+        {
+            // Set volume back to 1, since it'll be 0 from Fade Out
+            SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+            Play(bgmIndex);
+        }
+
+        void FadeInBgmNextFrame()
+        {
+            // Log warning if fade in time > level transition time
+            if (defaultBgmFadeInTime > game.exitsHandler.TotalLevelTransitionTime)
                 Debug.LogWarning("The time to fade out and in BGM is greater than total level transition time. Audio might break!");
 
             // Set Source's clip immediately and update clip index on the same frame as call
@@ -83,11 +101,9 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             HandleLoadClip(bgmIndex, Source);
             CurrentClipIndex = bgmIndex;
 
+            // Note: Do not set volume to 1f when fading in, since we need to
+            // have volume start at 0f; otherwise, will hear popping.
             currentFadeCoroutine = StartCoroutine(FadeInPlayBgmNextFrame());
-        }
-        else
-        {
-            Play(bgmIndex);
         }
 
         IEnumerator FadeInPlayBgmNextFrame()
@@ -97,7 +113,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
             Script_AudioMixerVolume.SetVolume(audioMixer, Const_AudioMixerParams.ExposedBGVolume, 0f);
             Play(bgmIndex, didLoadClip: true);
-            FadeInFast(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+            FadeIn(null, defaultBgmFadeInTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
         }
     }
 
@@ -105,7 +121,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     /// Fade out music when going to a different Bgm index level (or when new index is -1).
     /// </summary>
     /// <param name="levelToGo">The new upcoming level exiting to</param>
-    public void StopLevelBgmFade(int levelToGo)
+    public void HandleStopLevelBgmFade(int levelToGo)
     {
         Debug.Log("Handle Fade Out BGM");
 
@@ -118,7 +134,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             FadeOut(null, exitsManager.DefaultLevelFadeOutTime, Const_AudioMixerParams.ExposedBGVolume);
     }
 
-    public void StopLevelBgmNoFade(int levelToGo)
+    public void HandleStopLevelBgmNoFade(int levelToGo)
     {
         Debug.Log("Handle Fade Out BGM No Fade");
         
