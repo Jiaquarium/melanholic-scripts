@@ -946,6 +946,7 @@ public static class Script_Utils
     {
         const float fadeXFastTime = 0.10f;
         const float fadeFastTime = 0.25f;
+        const float fadeMedFastTime = 0.50f;
         const float fadeMedTime = 0.75f;
         const float fadeSlowTime = 1.25f;
         const float fadeXSlowTime = 2.0f;
@@ -955,6 +956,7 @@ public static class Script_Utils
         {
             FadeSpeeds.XFast => fadeXFastTime,
             FadeSpeeds.Fast => fadeFastTime,
+            FadeSpeeds.MedFast => fadeMedFastTime,
             FadeSpeeds.Med => fadeMedTime,
             FadeSpeeds.Slow => fadeSlowTime,
             FadeSpeeds.XSlow => fadeXSlowTime,

@@ -30,6 +30,8 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private float defaultInputDisabledTime;
     [SerializeField] private float waitBeforeFadeInCTATime;
     [SerializeField] private float buttonFadeInTime;
+
+    [SerializeField] private float transitionExitFadeTime;
     
     [SerializeField] private Script_IntroController introController;
     [SerializeField] private Script_StartScreenController startScreenController;
@@ -76,6 +78,7 @@ public class Script_StartOverviewController : Script_UIState
 
     [Header("To Loading Screen Settings")]
     [SerializeField] private Script_CanvasGroupController bgBlack;
+    [SerializeField] private Script_CanvasGroupController fader;
     [SerializeField] private float toLoadingBgBlackFadeInTime = 0.5f;
     [SerializeField] private float toLoadingSubmenuFadeOutTime = 0.75f;
     [SerializeField] private float waitBlackScreenBeforeLoadingScreenTime = 0.5f;
@@ -396,8 +399,34 @@ public class Script_StartOverviewController : Script_UIState
 
     public void Quit()
     {
-          Debug.Log($"{name} Quit called");
-          Application.Quit();
+        DisableInput();
+        fader.Close();
+        fader.FadeIn(FadeSpeeds.MedFast.ToFadeTime(), Application.Quit, isUnscaledTime: true);
+    }
+
+    // Also called from Menu button click handlers.
+    public void EnterMenuSFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.OpenCloseBook,
+            Script_SFXManager.SFX.OpenCloseBookVol
+        );
+    }
+
+    /// <summary>
+    /// - Title Screen: End
+    /// </summary>
+    public void EndGameSFX()
+    {
+        Script_SFXManager.SFX.PlaySubmitTransitionCancel();
+    }
+
+    public void ExitMenuSFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(
+            Script_SFXManager.SFX.OpenCloseBookReverse,
+            Script_SFXManager.SFX.OpenCloseBookReverseVol
+        );
     }
 
     // ----------------------------------------------------------------------
@@ -774,6 +803,11 @@ public class Script_StartOverviewController : Script_UIState
         RefreshFileActionBanners();
     }
 
+    private void DisableInput()
+    {
+        EventSystem.current.sendNavigationEvents = false;
+    }
+    
     private bool CheckFullSaveSlots()
     {
         foreach (Transform slot in savedGameController.GetSlots())
@@ -805,23 +839,6 @@ public class Script_StartOverviewController : Script_UIState
             
             btn.GetComponent<Script_ButtonHighlighter>().Activate(isActive);
         }
-    }
-
-    // Also called from Menu button click handlers.
-    public void EnterMenuSFX()
-    {
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.OpenCloseBook,
-            Script_SFXManager.SFX.OpenCloseBookVol
-        );
-    }
-
-    public void ExitMenuSFX()
-    {
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.OpenCloseBookReverse,
-            Script_SFXManager.SFX.OpenCloseBookReverseVol
-        );
     }
     
     private void EnterSubmenuSFX()

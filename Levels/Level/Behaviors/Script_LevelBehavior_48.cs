@@ -252,6 +252,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         {
             var bgm = Script_BackgroundMusicManager.Control;
 
+            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             bgm.PlayFadeIn(
                 mynesMirrorBgm,
                 cb: null,

@@ -14,10 +14,8 @@ public class Script_DemoNoteController : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController demoTextCanvasGroup;
     [SerializeField] private Script_CanvasGroupController choicesCanvasGroup;
     [SerializeField] private Script_CanvasGroupController demoBg;
-    [SerializeField] private float fadeTime;
     [SerializeField] private float waitForDemoTextTime;
     [SerializeField] private float waitForChoicesTime;
-    [SerializeField] private float transitionExitFadeTime;
     [SerializeField] private float waitToRevealScrollingBgTime;
     [SerializeField] private float demoBgFadeOutTime;
     
@@ -29,16 +27,22 @@ public class Script_DemoNoteController : MonoBehaviour
 
     public void ActivateDemoText()
     {
+        // Note: Ensure bgm fade out time less than FadeTo time.
+        float fadeToBlackTime = FadeSpeeds.XXSlow.GetFadeTime();
+        float fadeOutBgmTime = Mathf.Clamp(fadeToBlackTime - 1f, 0f, fadeToBlackTime);
+
         Script_Game.Game.ChangeStateCutScene();
         EileensMindBehavior.IsDemoEnd = true;
         
         var bgm = Script_BackgroundMusicManager.Control;
-        bgm.FadeOutXXSlow(bgm.Stop, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        bgm.FadeOut(bgm.Stop, fadeOutBgmTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
         
         FadeTo(1f, FadeInIntroTheme);
 
         void FadeInIntroTheme()
         {
+            // Must set volume to 0 before to avoid Bgm popping.
+            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             bgm.PlayFadeIn(
                 i: introThemeIdx,
                 cb: () => {
@@ -49,6 +53,23 @@ public class Script_DemoNoteController : MonoBehaviour
                 fadeTime: waitForDemoTextTime,
                 outputMixer: Const_AudioMixerParams.ExposedBGVolume
             );
+        }
+
+        void FadeTo(float alpha, Action cb)
+        {
+            gameObject.SetActive(true);
+            
+            controller.IsUseMaxAlpha = true;
+            controller.MaxAlpha = alpha;
+            
+            // Force Fade In
+            if (controller.FadeInCoroutine != null)
+            {
+                StopCoroutine(controller.FadeInCoroutine);
+                controller.FadeInCoroutine = null;
+            }
+
+            controller.FadeIn(fadeToBlackTime, cb);
         }
 
         void HandleScrollingBGReveal()
@@ -87,37 +108,24 @@ public class Script_DemoNoteController : MonoBehaviour
     public void ReturnToMainMenu()
     {
         DisableInput();
-        StartCoroutine(Script_Game.Game.TransitionFadeIn(
-            transitionExitFadeTime, Script_TransitionManager.Control.ToTitleScreen)
+        StartCoroutine(
+            Script_Game.Game.TransitionFadeIn(
+                FadeSpeeds.MedFast.ToFadeTime(), Script_TransitionManager.Control.ToTitleScreen
+            )
         );
     }
 
     public void QuitToDesktop()
     {
         DisableInput();
-        StartCoroutine(Script_Game.Game.TransitionFadeIn(
-            transitionExitFadeTime, Application.Quit)
+        StartCoroutine(
+            Script_Game.Game.TransitionFadeIn(
+                FadeSpeeds.MedFast.ToFadeTime(), Application.Quit
+            )
         );
     }
 
     // ----------------------------------------------------------------------
-
-    private void FadeTo(float alpha, Action cb)
-    {
-        gameObject.SetActive(true);
-        
-        controller.IsUseMaxAlpha = true;
-        controller.MaxAlpha = alpha;
-        
-        // Force Fade In
-        if (controller.FadeInCoroutine != null)
-        {
-            StopCoroutine(controller.FadeInCoroutine);
-            controller.FadeInCoroutine = null;
-        }
-
-        controller.FadeIn(fadeTime, cb);
-    }
     
     private void DisableInput()
     {

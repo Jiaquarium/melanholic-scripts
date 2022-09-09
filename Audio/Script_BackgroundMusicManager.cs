@@ -199,7 +199,6 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         float startTime = 0f
     )
     {
-        // SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
         FadeIn(cb, fadeTime, outputMixer);
         
         currentWaiToPlayCoroutine = StartCoroutine(WaitNextFramePlay());
