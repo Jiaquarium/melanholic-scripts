@@ -426,6 +426,11 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(OpenCloseBookHeavy, OpenCloseBookHeavyVol);
     }
 
+    public void PlayBlipError()
+    {
+        SFXSource.PlayOneShot(ErrorBlip, ErrorBlipVol);
+    }
+    
     public void PlayDullError()
     {
         SFXSource.PlayOneShot(UIErrorSFX, UIErrorSFXVol);

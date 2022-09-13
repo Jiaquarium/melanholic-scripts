@@ -16,7 +16,7 @@ using UnityEditor;
 /// </summary>
 public class Script_SettingsController : MonoBehaviour
 {
-    protected enum States
+    public enum States
     {
         Overview = 0,
         Controls = 1,
@@ -26,7 +26,8 @@ public class Script_SettingsController : MonoBehaviour
 
     public static Script_SettingsController Instance;
 
-    [SerializeField] protected States state;
+    public States state;
+
     [SerializeField] private bool isThrottledInGame;
     [SerializeField] private float throttleTime;
     
@@ -36,6 +37,8 @@ public class Script_SettingsController : MonoBehaviour
     
     [SerializeField] private Script_CanvasGroupController overviewCanvasGroup;
     [SerializeField] private Script_CanvasGroupController controlsCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController graphicsCanvasGroup;
+    [SerializeField] private Script_SettingsGraphicsController graphicsController;
     [SerializeField] private Script_CanvasGroupController bgCanvasGroup;
     [SerializeField] private FadeSpeeds bgFadeSpeed;
     
@@ -88,6 +91,7 @@ public class Script_SettingsController : MonoBehaviour
         bgCanvasGroup.FadeIn(bgFadeSpeed.GetFadeTime(), isUnscaledTime: true);
         overviewCanvasGroup.Open();
         controlsCanvasGroup.Close();
+        graphicsCanvasGroup.Close();
 
         settingsEventSystem.gameObject.SetActive(true);
         settingsInputManager.gameObject.SetActive(true);
@@ -111,6 +115,7 @@ public class Script_SettingsController : MonoBehaviour
         
         overviewCanvasGroup.Close();
         controlsCanvasGroup.Close();
+        graphicsCanvasGroup.Close();
         
         if (isFade)
             bgCanvasGroup.FadeOut(bgFadeSpeed.GetFadeTime(), cb, isUnscaledTime: true);
@@ -121,7 +126,7 @@ public class Script_SettingsController : MonoBehaviour
     // ------------------------------------------------------------
     // Unity Events
     
-    // UI Controls Button
+    // UI Settings Overview: Controls Button
     public void ToControls()
     {
         overviewCanvasGroup.Close();
@@ -135,6 +140,18 @@ public class Script_SettingsController : MonoBehaviour
         EnterMenuSFX();
 
         state = States.Controls;
+    }
+
+    // UI Settings Overview: Graphics Button
+    public void ToGraphics()
+    {
+        overviewCanvasGroup.Close();
+        graphicsCanvasGroup.Open();
+        
+        graphicsController.ToGraphics();
+
+        EnterMenuSFX();
+        state = States.Graphics;
     }
 
     // From UI Back Buttons

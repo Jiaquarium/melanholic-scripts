@@ -205,10 +205,7 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 	{
 		DisplayInfo info = Screen.mainWindowDisplayInfo;
 		
-		List<DisplayInfo> displayInfos = new List<DisplayInfo>();
-        Screen.GetDisplayLayout(displayInfos);
-        
-        var displayIdx = displayInfos.IndexOf(info);
+        var displayIdx = Script_Utils.GetCurrentDisplayIdx();
 
 		return $"Display {displayIdx}, {info.name} {info.width}x{info.height}";
 	}

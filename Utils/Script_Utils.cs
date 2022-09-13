@@ -1000,6 +1000,18 @@ public static class Script_Utils
     }
 
     // -------------------------------------------------------------------------------------
+    // Screen Helpers
+
+    public static int GetCurrentDisplayIdx()
+    {
+        List<DisplayInfo> displayInfos = new List<DisplayInfo>();
+        // Necessary call or Display Index will be -1
+        Screen.GetDisplayLayout(displayInfos);
+        
+        return displayInfos.IndexOf(Screen.mainWindowDisplayInfo);
+    }
+
+    // -------------------------------------------------------------------------------------
     // File Path Helpers
     
     /// <summary>

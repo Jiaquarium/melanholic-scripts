@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// This Input Manager works slightly different than the rest because it
@@ -10,12 +11,21 @@ using UnityEngine;
 public class Script_SettingsInputManager : MonoBehaviour
 {
     [SerializeField] private Script_SettingsController settingsController;
+    [SerializeField] private Script_SettingsGraphicsController graphicsController;
     
     public void HandleExitInput()
     {
         if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
         {
-            settingsController.Back();
+            switch (settingsController.state)
+            {
+                case (Script_SettingsController.States.Graphics):
+                    graphicsController.HandleGraphicsBack();
+                    break;
+                default:
+                    settingsController.Back();
+                    break;
+            }
         }
     }
 }

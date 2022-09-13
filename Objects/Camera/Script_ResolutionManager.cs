@@ -21,7 +21,7 @@ public class Script_ResolutionManager : MonoBehaviour
     void Start()
     {
         if (Display.displays.Length > 1)
-            displayIdx = GetCurrentDisplayIdx();
+            displayIdx = Script_Utils.GetCurrentDisplayIdx();
     }
 
     // Update is called once per frame
@@ -58,18 +58,10 @@ public class Script_ResolutionManager : MonoBehaviour
     private void HandleFullScreenDisplayChange()
     {
         int lastDisplayIdx = displayIdx;
-        displayIdx = GetCurrentDisplayIdx();
+        displayIdx = Script_Utils.GetCurrentDisplayIdx();
 
         // Changed displays and is full screen
         if (displayIdx != lastDisplayIdx && Screen.fullScreen)
             SetFullScreenResolution();
-    }
-
-    private int GetCurrentDisplayIdx()
-    {
-        List<DisplayInfo> displayInfos = new List<DisplayInfo>();
-        Screen.GetDisplayLayout(displayInfos);
-        
-        return displayInfos.IndexOf(Screen.mainWindowDisplayInfo);
     }
 }
