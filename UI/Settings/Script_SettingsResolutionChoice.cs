@@ -9,7 +9,7 @@ public class Script_SettingsResolutionChoice : MonoBehaviour
     public Vector2Int resolution;
     
     [SerializeField] private TextMeshProUGUI myText;
-    [SerializeField] private Script_SettingsGraphicsController graphicsController;
+    [SerializeField] private Script_SettingsSystemController systemController;
 
     public Button MyButton => GetComponent<Button>(); 
     public Script_ButtonHighlighter ButtonHighlighter => GetComponent<Script_ButtonHighlighter>(); 
@@ -29,7 +29,7 @@ public class Script_SettingsResolutionChoice : MonoBehaviour
 
     public void SetResolution()
     {
-        graphicsController.SetResolution(this);
+        systemController.SetResolution(this);
     }
 
     // ------------------------------------------------------------

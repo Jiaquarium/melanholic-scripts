@@ -106,10 +106,8 @@ public class Script_UIChoice : MonoBehaviour
     }
 
     /// <summary>
-    /// - Title: SavedGamesSubmenu_Continue
-    /// - Title: SavedGamesSubmenu_New
-    /// - Title: SavedGamesSubmenu_Copy
-    /// - Title: SavedGamesSubmenu_Delete
+    /// Note: Don't use this when there's multiple ways to exit;
+    /// implement SFX via script instead.
     /// </summary>
     public void PencilExitSubmenuSFX()
     {

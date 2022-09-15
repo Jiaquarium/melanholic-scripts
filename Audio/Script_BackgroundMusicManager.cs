@@ -470,6 +470,18 @@ public class Script_BackgroundMusicManagerTester : Editor
             int level = Script_Game.Game.level;
             t.Play(Script_Game.Game.Levels.levelsData[level].bgMusicAudioClipIndex);
         }
+
+        GUILayout.Space(12);
+
+        if (GUILayout.Button("Fade Out Master XXSlow"))
+        {
+            t.FadeOutXXSlow(null, Const_AudioMixerParams.ExposedMasterVolume);
+        }
+
+        if (GUILayout.Button("Fade In Master XXSlow"))
+        {
+            t.FadeInXXSlow(null, Const_AudioMixerParams.ExposedMasterVolume);
+        }
     }
 }
 #endif

@@ -31,5 +31,6 @@ public class Script_SavedGameSubmenuInputManager : Script_ExitViewInputManager
     private void CloseSubmenu()
     {
         mainController.EnterSavedGamesSelectView();
+        Script_SFXManager.SFX.PlayExitSubmenuPencil();
     }   
 }

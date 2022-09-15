@@ -324,9 +324,11 @@ public class Script_StartOverviewController : Script_UIState
             yield return new WaitForSeconds(crunchTimeDown);
 
             // Switch when teeth are opening
+            // Ensure to clear event system before to prevent Select Sound
+            // possibly clicking
+            savedGameEventSystem.InitializeState();
             startScreenCanvasGroup.gameObject.SetActive(false);
             savedGameCanvasGroup.gameObject.SetActive(true);
-
 
             InitializeSavedGamesState();
 
@@ -366,8 +368,12 @@ public class Script_StartOverviewController : Script_UIState
         // Also prevents restarting intro sequence from Settings and its child views.
         startScreenController.gameObject.SetActive(false);
         
-        // Disable start screen EventSystem
+        // Note: Clear Start Screen EventSystem to prevent clicking when coming back from Settings
+        // (When navigating to Settings, if not cleared, the Start Option: Settings Button will be the
+        // last selected causing a click because that object is not explicitly ignored by Select Sound)
+        startScreenEventSystem.GetComponent<Script_EventSystemLastSelected>().InitializeState();
         startScreenEventSystem.gameObject.SetActive(false);
+        
         startOptionsCanvasGroup.Close();
 
         Debug.Log($"{name} Opening settings canvasGroup");

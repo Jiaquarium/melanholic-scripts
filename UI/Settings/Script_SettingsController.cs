@@ -38,7 +38,7 @@ public class Script_SettingsController : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController overviewCanvasGroup;
     [SerializeField] private Script_CanvasGroupController controlsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController graphicsCanvasGroup;
-    [SerializeField] private Script_SettingsGraphicsController graphicsController;
+    [SerializeField] private Script_SettingsSystemController systemController;
     [SerializeField] private Script_CanvasGroupController bgCanvasGroup;
     [SerializeField] private FadeSpeeds bgFadeSpeed;
     
@@ -148,7 +148,7 @@ public class Script_SettingsController : MonoBehaviour
         overviewCanvasGroup.Close();
         graphicsCanvasGroup.Open();
         
-        graphicsController.ToGraphics();
+        systemController.ToGraphics();
 
         EnterMenuSFX();
         state = States.Graphics;

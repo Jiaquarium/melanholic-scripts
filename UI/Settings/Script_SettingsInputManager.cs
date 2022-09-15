@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 public class Script_SettingsInputManager : MonoBehaviour
 {
     [SerializeField] private Script_SettingsController settingsController;
-    [SerializeField] private Script_SettingsGraphicsController graphicsController;
+    [SerializeField] private Script_SettingsSystemController systemController;
     
     public void HandleExitInput()
     {
@@ -20,7 +20,7 @@ public class Script_SettingsInputManager : MonoBehaviour
             switch (settingsController.state)
             {
                 case (Script_SettingsController.States.Graphics):
-                    graphicsController.HandleGraphicsBack();
+                    systemController.HandleGraphicsBack();
                     break;
                 default:
                     settingsController.Back();

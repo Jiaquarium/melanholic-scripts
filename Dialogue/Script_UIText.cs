@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-09-09 12:28:04
+// Last created by UI Exporter at 2022-09-15 14:00:06
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1388,7 +1388,7 @@ public class Script_UIText
     "settings_graphics",
     new Model_LanguagesUI
     {
-        EN = @"Graphics"
+        EN = @"System"
     }
 },
 {
@@ -1645,6 +1645,36 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"All controls will be reset to default. Are you sure?"
+    }
+},
+// ------------------------------------------------------------------
+// System
+{
+    "graphics_title",
+    new Model_LanguagesUI
+    {
+        EN = @"『 System 』"
+    }
+},
+{
+    "graphics_resolutions_title",
+    new Model_LanguagesUI
+    {
+        EN = @"Force Windowed Resolution"
+    }
+},
+{
+    "graphics_resolutions_current",
+    new Model_LanguagesUI
+    {
+        EN = @"current viewport"
+    }
+},
+{
+    "graphics_resolutions_help-text",
+    new Model_LanguagesUI
+    {
+        EN = @"Select to set available resolution"
     }
 },
 // ------------------------------------------------------------------
