@@ -12,7 +12,7 @@ public class Script_Timebar : MonoBehaviour
     [SerializeField] private Image imageFill;
     [SerializeField] private Slider slider;
     
-    public float TimeElapsed
+    public float Fill
     {
         get => imageFill.fillAmount;
         set 
@@ -33,12 +33,12 @@ public class Script_TimebarTester : Editor
         Script_Timebar t = (Script_Timebar)target;
         if (GUILayout.Button("+ 1f"))
         {
-            t.TimeElapsed += 1f / (float)Script_ClockManager.TimebarIncrements;
+            t.Fill += 1f / (float)Script_ClockManager.TimebarIncrements;
         }
 
         if (GUILayout.Button("- 1f"))
         {
-            t.TimeElapsed -= 1f / (float)Script_ClockManager.TimebarIncrements;
+            t.Fill -= 1f / (float)Script_ClockManager.TimebarIncrements;
         }
     }
 }

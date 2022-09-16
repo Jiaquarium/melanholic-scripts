@@ -377,7 +377,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         StartCoroutine(
             Script_AudioMixerFader.Fade(
                 audioMixer,
-                Const_AudioMixerParams.ExposedMasterVolume,
+                Const_AudioMixerParams.ExposedGameVolume,
                 bgMusicFadeOutTime,
                 0f,
                 () => {
@@ -385,7 +385,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                     // should turn on beat
                     game.PauseBgMusic();
                     Script_AudioMixerVolume
-                        .SetVolume(audioMixer, Const_AudioMixerParams.ExposedMasterVolume, 1f);
+                        .SetVolume(audioMixer, Const_AudioMixerParams.ExposedGameVolume, 1f);
                     ElleniaBgThemePlayer.gameObject.SetActive(true);
 
                     StartCoroutine(StartDialogueOnBeat());
@@ -464,13 +464,13 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             StartCoroutine(
                 Script_AudioMixerFader.Fade(
                     audioMixer,
-                    Const_AudioMixerParams.ExposedMasterVolume,
+                    Const_AudioMixerParams.ExposedGameVolume,
                     bgMusicEndIntroFadeOutTime,
                     0f,
                     () => {
                         Script_AudioMixerVolume.SetVolume(
                             audioMixer,
-                            Const_AudioMixerParams.ExposedMasterVolume,
+                            Const_AudioMixerParams.ExposedGameVolume,
                             1f
                         );
                         ElleniaBgThemePlayer.GetComponent<AudioSource>().volume = 0f;

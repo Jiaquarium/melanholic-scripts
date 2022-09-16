@@ -111,7 +111,7 @@ public class Script_ClockManager : MonoBehaviour
 
         float fillAmount = (float)doneValue / (float)TimebarIncrements;
         
-        timebar.TimeElapsed = fillAmount;
+        timebar.Fill = fillAmount;
     }
 
     public void InitialState()

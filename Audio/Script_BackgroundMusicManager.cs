@@ -195,7 +195,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Action cb = null,
         bool forcePlay = true,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
-        string outputMixer = Const_AudioMixerParams.ExposedMasterVolume,
+        string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
         float startTime = 0f
     )
     {
@@ -262,7 +262,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     // ------------------------------------------------------------------
     // AudioMixer Helpers
-    public void SetVolume(float newVol, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void SetVolume(float newVol, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         EndCurrentCoroutines();
         Script_AudioMixerVolume.SetVolume(audioMixer, outputMixer, newVol);
@@ -271,7 +271,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void FadeOut(
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
-        string outputMixer = Const_AudioMixerParams.ExposedMasterVolume
+        string outputMixer = Const_AudioMixerParams.ExposedGameVolume
     )
     {
         EndCurrentCoroutines();
@@ -291,7 +291,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void FadeIn(
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
-        string outputMixer = Const_AudioMixerParams.ExposedMasterVolume
+        string outputMixer = Const_AudioMixerParams.ExposedGameVolume
     )
     {
         EndCurrentCoroutines();
@@ -308,62 +308,62 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         );
     }
 
-    public void FadeOutXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeOutXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeXFastTime, outputMixer);
     }
 
-    public void FadeInXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeInXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeIn(cb, Script_AudioEffectsManager.fadeXFastTime, outputMixer);
     }
     
-    public void FadeOutFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeOutFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeFastTime, outputMixer);
     }
 
-    public void FadeInFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeInFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeIn(cb, Script_AudioEffectsManager.fadeFastTime, outputMixer);
     }
 
-    public void FadeOutMed(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeOutMed(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeMedTime, outputMixer);
     }
 
-    public void FadeInMed(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeInMed(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeIn(cb, Script_AudioEffectsManager.fadeMedTime, outputMixer);
     }
 
-    public void FadeOutSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeOutSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeSlowTime, outputMixer);
     }
 
-    public void FadeInSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeInSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeIn(cb, Script_AudioEffectsManager.fadeSlowTime, outputMixer);
     }
 
-    public void FadeOutXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeOutXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
     }
 
-    public void FadeInXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeInXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeIn(cb, Script_AudioEffectsManager.fadeXSlowTime, outputMixer);
     }
 
-    public void FadeOutXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeOutXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeXXSlowTime, outputMixer);
     }
     
-    public void FadeInXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void FadeInXXSlow(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeIn(cb, Script_AudioEffectsManager.fadeXXSlowTime, outputMixer);
     }
@@ -395,7 +395,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         bgThemeSpeakersController.UnPauseSpeakers();
     }
 
-    public void SetDefault(string outputMixer = Const_AudioMixerParams.ExposedMasterVolume)
+    public void SetDefault(string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         EndCurrentCoroutines();
         SetVolume(1f, outputMixer);
@@ -475,12 +475,12 @@ public class Script_BackgroundMusicManagerTester : Editor
 
         if (GUILayout.Button("Fade Out Master XXSlow"))
         {
-            t.FadeOutXXSlow(null, Const_AudioMixerParams.ExposedMasterVolume);
+            t.FadeOutXXSlow(null, Const_AudioMixerParams.ExposedGameVolume);
         }
 
         if (GUILayout.Button("Fade In Master XXSlow"))
         {
-            t.FadeInXXSlow(null, Const_AudioMixerParams.ExposedMasterVolume);
+            t.FadeInXXSlow(null, Const_AudioMixerParams.ExposedGameVolume);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿public static class Const_AudioMixerParams
 {
-    public const string ExposedMasterVolume   = "ExposedMasterVolume";
-    public const string ExposedBGVolume       = "ExposedBGVolume";
-    public const string ExposedSFXVolume      = "ExposedSFXVolume";
+    public const string MasterVolume = "MasterVolume";
+    public const string ExposedGameVolume = "ExposedGameVolume";
+    public const string ExposedBGVolume = "ExposedBGVolume";
+    public const string ExposedSFXVolume = "ExposedSFXVolume";
 }

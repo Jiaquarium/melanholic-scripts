@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-09-15 14:00:06
+// Last created by UI Exporter at 2022-09-15 17:13:09
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1654,6 +1654,20 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"『 System 』"
+    }
+},
+{
+    "system_master-volume_title",
+    new Model_LanguagesUI
+    {
+        EN = @"Master Volume"
+    }
+},
+{
+    "system_master-volume_current",
+    new Model_LanguagesUI
+    {
+        EN = @"current volume"
     }
 },
 {

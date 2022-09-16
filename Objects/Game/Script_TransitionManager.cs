@@ -465,7 +465,7 @@ public class Script_TransitionManager : MonoBehaviour
         {
             bgm.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
             bgm.SetVolume(1f, Const_AudioMixerParams.ExposedSFXVolume);
-            bgm.SetVolume(1f, Const_AudioMixerParams.ExposedMasterVolume);
+            bgm.SetVolume(1f, Const_AudioMixerParams.ExposedGameVolume);
             
             yield return null;
             

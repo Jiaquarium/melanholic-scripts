@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// World SFX here
 /// For UI use Script_InventoryAudioSettings
@@ -503,3 +507,19 @@ public class Script_SFXManager : MonoBehaviour
         }
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_SFXManager))]
+public class Script_SFXManagerTester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_SFXManager t = (Script_SFXManager)target;
+        if (GUILayout.Button("Play Piano Note"))
+        {
+            t.PlayPianoNote();
+        }
+    }
+}
+#endif
