@@ -12,4 +12,9 @@ public class Script_AudioMixerVolume : MonoBehaviour
 
         audioMixer.SetFloat(exposedParam, Mathf.Log10(clampedVol) * 20);
     }
+
+    static public void SetVolumeRaw(AudioMixer audioMixer, string exposedParam, float targetVol)
+    {
+        audioMixer.SetFloat(exposedParam, targetVol);
+    }
 }

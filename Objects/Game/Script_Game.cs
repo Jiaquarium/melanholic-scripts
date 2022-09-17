@@ -161,6 +161,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_UIAspectRatioEnforcerFrame UIAspectRatioEnforcerFrame;
 
     [SerializeField] private Script_SettingsController settingsController;
+    [SerializeField] private Script_SaveSettingsControl saveSettingsControl;
 
     // ------------------------------------------------------------------
     // Levels
@@ -458,6 +459,7 @@ public class Script_Game : MonoBehaviour
         }
         
         saveGameControl.Setup();
+        saveSettingsControl.Setup();
 
         Script_SystemSettings.DisableMouse();
         systemSettings.TargetFrameRate();
@@ -525,6 +527,9 @@ public class Script_Game : MonoBehaviour
     void Start()
     {
         Script_PlayerInputManager.Instance.Setup();
+        saveSettingsControl.Load();
+        Script_PlayerInputManager.Instance.UpdateKeyBindingUIs();
+
         LoadGame();
         
         OnLoadTasks();

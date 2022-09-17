@@ -26,11 +26,6 @@ public class Script_StartScreenController : MonoBehaviour
         get => titleFadeInTime;
     }
     
-    void OnEnable()
-    {
-        Initialize();
-    }
-
     void OnDisable()
     {
         // Prevent sound effect on re-initialization.
@@ -39,13 +34,6 @@ public class Script_StartScreenController : MonoBehaviour
     
     void Update()
     {
-        // timer -= Time.deltaTime;
-
-        // if (timer <= 0)
-        // {
-        //     mainController.InitializeIntro();
-        // }
-
         GetComponent<Script_StartScreenInputManager>().HandleEnterInput();
     }
 
@@ -53,11 +41,6 @@ public class Script_StartScreenController : MonoBehaviour
     {
         titleCanvasGroup.InitialState();
         titleCanvasGroup.FadeIn(titleFadeInTime);
-    }
-    
-    public void Initialize()
-    {
-        timer = inactivityResetTime;
     }
 
     public void Setup()

@@ -10,6 +10,10 @@ using System.IO;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// Should only reference this instance as a Singleton (because Game will actually use
+/// Start Scene's Player Input Manager)
+/// </summary>
 public class Script_PlayerInputManager : MonoBehaviour
 {
     public static Script_PlayerInputManager Instance;
@@ -59,7 +63,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         return inputActions;
     }
 
-    public void Save()
+    public void Save(Model_SettingsData settingsData)
     {
         // Make List of nulls to populate with override paths, if any
         List<string> overrides = new List<string>(new string[rebindableActionNames.Count]);
@@ -85,15 +89,14 @@ public class Script_PlayerInputManager : MonoBehaviour
             }
         }
         
-        var keyBinds = new Model_KeyBindsData(
+        Model_KeyBindsData keyBinds = new Model_KeyBindsData(
             _Interact: overrides[0],
             _Inventory: overrides[1],
             _MaskEffect: overrides[2],
             _Speed: overrides[3]
         );
 
-        string json = JsonUtility.ToJson(keyBinds);
-        File.WriteAllText(FilePath, json);
+        settingsData.keyBindsData = keyBinds;
     }
 
     /// <summary>
@@ -101,12 +104,16 @@ public class Script_PlayerInputManager : MonoBehaviour
     /// changes the Interact field to Interactz, it will skip the value).
     /// We use GetKeyboardControl to then validate the given path.
     /// </summary>
-    public void Load()
+    public void Load(Model_SettingsData settingsData)
     {
-        if(!File.Exists(FilePath))
-            return;
+        Model_KeyBindsData keyBinds = settingsData?.keyBindsData;
         
-        Model_KeyBindsData keyBinds = JsonUtility.FromJson<Model_KeyBindsData>(File.ReadAllText(FilePath));
+        if (keyBinds == null)
+        {
+            Debug.Log("Key Rebinds settings null");
+            return;
+        }
+        
         var playerMap = MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap);
         
         var keyBindsPaths = new List<string>()
@@ -210,18 +217,12 @@ public class Script_PlayerInputManager : MonoBehaviour
         return control;
     }
     
-    private string FilePath => $"{Script_SaveGameControl.path}/{Script_Utils.KeyRebindsFile()}";
+    private string FilePath => $"{Script_SaveGameControl.path}/{Script_Utils.SettingsFile}";
 
-    /// <summary>
-    /// Note: Can only be called after SettingsController is SetUp.
-    /// </summary>
     public void Setup()
     {
         MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap).Enable();
         MyPlayerInput.actions.FindActionMap(Const_KeyCodes.UIMap).Enable();
-        
-        Script_PlayerInputManager.Instance.Load();
-        UpdateKeyBindingUIs();
     }
 
 #if UNITY_EDITOR
@@ -233,16 +234,6 @@ public class Script_PlayerInputManager : MonoBehaviour
 
             Script_PlayerInputManager t = (Script_PlayerInputManager)target;
             
-            if (GUILayout.Button("Save Key Rebinds"))
-            {
-                t.Save();
-            }
-
-            if (GUILayout.Button("Load Key Rebinds"))
-            {
-                t.Load();
-            }
-
             if (GUILayout.Button("Set Default"))
             {
                 t.SetDefault();

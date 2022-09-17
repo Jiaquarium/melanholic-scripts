@@ -35,6 +35,7 @@ public class Script_StartOverviewController : Script_UIState
     
     [SerializeField] private Script_IntroController introController;
     [SerializeField] private Script_StartScreenController startScreenController;
+    [SerializeField] private Script_StartScreenInputManager startScreenInputManager;
     
     [SerializeField] private CanvasGroup introCanvasGroup;
     [SerializeField] private CanvasGroup savedGameCanvasGroup;
@@ -181,6 +182,8 @@ public class Script_StartOverviewController : Script_UIState
     // Will be called whenever a confirm key is pressed on Start Options (via Start Screen Controller).
     public void StartOptionsOpen(bool isFadeIn = false)
     {
+        Debug.Log("StartOptionsOpen");
+        
         startScreenCTA.Close();
         
         if (Const_Dev.IsDemo)
@@ -233,7 +236,8 @@ public class Script_StartOverviewController : Script_UIState
         
         void HandleEntryPoint()
         {
-            // If coming from Saved Games > Back or Quit to Main Menu, have start options immediately available.
+            // If coming from Saved Games > Back or Game Settings > Quit to Main Menu,
+            // have start options immediately available.
             if (isFromBack)
             {
                 StartOptionsOpen();
@@ -245,10 +249,12 @@ public class Script_StartOverviewController : Script_UIState
                     PlayBgm();
                 }
 
-                WaitForAction(defaultInputDisabledTime, () => {
-                    Debug.Log($"Setting start screen controller active, isFromBack {isFromBack}");
-                    startScreenController.gameObject.SetActive(true);
-                });
+                Debug.Log($"Setting start screen controller active instantly, isFromBack {isFromBack}");
+                startScreenController.gameObject.SetActive(true);
+
+                // Must mark CTADone or Start Screen Input Manager will try to activate start options
+                // and close other canvases on confirm key.
+                startScreenInputManager.IsCTADone = true;
             }
             else
             {
@@ -258,30 +264,23 @@ public class Script_StartOverviewController : Script_UIState
                 PlayBgm();
                 
                 // Give Player some time to look at Title before showing CTA.
-                WaitForAction(waitBeforeFadeInCTATime, () => {
-                    Debug.Log($"Fading in CTA, isFromBack {isFromBack}");
-                    
-                    startScreenCTA.gameObject.SetActive(true);
-                    startScreenCTA.StartIntervalFader(isFadeIn: true);
-                    
-                    if (Const_Dev.IsDemo)
-                        demoHeader.FadeIn(startScreenCTA.GetComponent<Script_CanvasGroupFadeInterval>().Interval);
-                    
-                    startScreenController.gameObject.SetActive(true);
-                });
+                StartCoroutine(WaitToShowCTA());
             }
         }
 
-        void WaitForAction(float time, Action action)
+        IEnumerator WaitToShowCTA()
         {
-            StartCoroutine(WaitToAction());
-            
-            IEnumerator WaitToAction()
-            {
-                yield return new WaitForSeconds(time);
+            yield return new WaitForSeconds(waitBeforeFadeInCTATime);
 
-                action();
-            }
+            Debug.Log($"Fading in CTA, isFromBack {isFromBack}");
+                    
+            startScreenCTA.gameObject.SetActive(true);
+            startScreenCTA.StartIntervalFader(isFadeIn: true);
+            
+            if (Const_Dev.IsDemo)
+                demoHeader.FadeIn(startScreenCTA.GetComponent<Script_CanvasGroupFadeInterval>().Interval);
+            
+            startScreenController.gameObject.SetActive(true);
         }
     }
 

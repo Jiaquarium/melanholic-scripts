@@ -19,8 +19,8 @@ public class Script_SettingsInputManager : MonoBehaviour
         {
             switch (settingsController.state)
             {
-                case (Script_SettingsController.States.Graphics):
-                    systemController.HandleGraphicsBack();
+                case (Script_SettingsController.States.System):
+                    systemController.HandleSystemSubmenuEscBack();
                     break;
                 default:
                     settingsController.Back();

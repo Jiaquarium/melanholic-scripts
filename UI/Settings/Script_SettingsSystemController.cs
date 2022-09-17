@@ -6,11 +6,15 @@ using UnityEngine.UI;
 using System.Linq;
 using TMPro;
 using UnityEngine.Audio;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
+/// <summary>
+/// Will create / update settingsData save file on Back out of System Settings.
+/// </summary>
 public class Script_SettingsSystemController : MonoBehaviour
 {
     public enum SystemState
@@ -43,6 +47,16 @@ public class Script_SettingsSystemController : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private AudioMixer audioMixer;
 
+    public float MasterVolumeLogarithmic
+    {
+        get
+        {
+            float vol;
+            audioMixer.GetFloat(Const_AudioMixerParams.MasterVolume, out vol);
+            return vol;
+        }
+    }
+    
     void OnValidate()
     {
         PopulateResolutionChoices();
@@ -74,7 +88,7 @@ public class Script_SettingsSystemController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstSelected);
     }
 
-    public void HandleGraphicsBack()
+    public void HandleSystemSubmenuEscBack()
     {
         switch (systemState)
         {
@@ -195,17 +209,24 @@ public class Script_SettingsSystemController : MonoBehaviour
     private void SetMasterVolume(float newVol) => Script_AudioMixerVolume.SetVolume(
         audioMixer, Const_AudioMixerParams.MasterVolume, newVol
     );
+
+    /// <summary>
+    /// Set Audio Mixer volume, using its native logarithmic scale
+    /// </summary>
+    /// <param name="newVol">Logarithmic volume</param>
+    private void SetMasterVolumeRaw(float newVol) => Script_AudioMixerVolume.SetVolumeRaw(
+        audioMixer, Const_AudioMixerParams.MasterVolume, newVol
+    );
     
     private void UpdateMasterVolUI()
     {
-        float logarithmicFill;
-        audioMixer.GetFloat(Const_AudioMixerParams.MasterVolume, out logarithmicFill);
+        float logarithmicFill = MasterVolumeLogarithmic;
 
         // Convert logarithmic to decimal
-        float decimalFill = Mathf.Pow(10, (logarithmicFill / 20));
+        float percentFill = Mathf.Pow(10, (logarithmicFill / 20));
         
         // Ensure to round to the proper increment
-        timebar.Fill = Mathf.Round(decimalFill * FillIncrement) / FillIncrement;
+        timebar.Fill = Mathf.Round(percentFill * FillIncrement) / FillIncrement;
 
         // Display volume as a whole number 0-10
         masterVolCurrentText.text = $"{Mathf.Round(timebar.Fill * FillIncrement)}";
@@ -237,6 +258,39 @@ public class Script_SettingsSystemController : MonoBehaviour
 		var VPText = $"{screenPixelWidthText}X{screenPixelHeightText}";
         resolutionCurrentText.text = VPText;
     }
+
+    // ------------------------------------------------------------
+    // Saving & Loading
+
+    public void Save(Model_SettingsData settingsData)
+    {
+        float cleanedMasterVolume = MasterVolumeLogarithmic;
+        
+        Model_SystemData systemData = new Model_SystemData(
+            _masterVolume: cleanedMasterVolume
+        );
+
+        settingsData.systemData = systemData;
+    }
+
+    public void Load(Model_SettingsData settingsData)
+    {
+        if (settingsData.systemData == null)
+            return;
+        
+        LoadMasterVolume(settingsData.systemData);
+
+        void LoadMasterVolume(Model_SystemData systemData)
+        {
+            // Ensure logarithmic volume is within Audio Mixer range (-80db to 0db).
+            // Nonmatching type will automatically be set as default value (0f).
+            float loadedVolume = Mathf.Clamp(systemData.masterVolume, -80f, 0f);
+            
+            SetMasterVolumeRaw(loadedVolume);
+        }
+    }
+
+    // ------------------------------------------------------------
 
     private void EnterSubmenuSFX()
     {
@@ -288,6 +342,11 @@ public class Script_SettingsSystemController : MonoBehaviour
             if (GUILayout.Button("Set Master Volume 0f"))
             {
                 t.SetMasterVolume(0f);
+            }
+
+            if (GUILayout.Button("Print Master Volume (Log)"))
+            {
+                Debug.Log(t.MasterVolumeLogarithmic);
             }
         }
     }

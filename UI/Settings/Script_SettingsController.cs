@@ -20,7 +20,7 @@ public class Script_SettingsController : MonoBehaviour
     {
         Overview = 0,
         Controls = 1,
-        Graphics = 2,
+        System = 2,
         MainMenu = 3,
     }
 
@@ -129,6 +129,8 @@ public class Script_SettingsController : MonoBehaviour
     // UI Settings Overview: Controls Button
     public void ToControls()
     {
+        Debug.Log("ToControls()");
+
         overviewCanvasGroup.Close();
         
         controlsCanvasGroup.Open();
@@ -151,7 +153,7 @@ public class Script_SettingsController : MonoBehaviour
         systemController.ToGraphics();
 
         EnterMenuSFX();
-        state = States.Graphics;
+        state = States.System;
     }
 
     // From UI Back Buttons
@@ -183,10 +185,16 @@ public class Script_SettingsController : MonoBehaviour
                     OpenOverview(0);
                     ExitMenuSFX();
                 }
+                
+                Script_SaveSettingsControl.Instance.Save();
+                
                 break;
-            case (States.Graphics):
+            case (States.System):
                 OpenOverview(1);
                 ExitMenuSFX();
+                
+                Script_SaveSettingsControl.Instance.Save();
+                
                 break;
         }
     }

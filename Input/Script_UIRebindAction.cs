@@ -50,7 +50,7 @@ public class Script_UIRebindAction : MonoBehaviour
     [SerializeField] private TextMeshProUGUI errorTakenTMP;
     [SerializeField] private TextMeshProUGUI errorMenuTMP;
     [SerializeField] private TextMeshProUGUI errorOtherTMP;
-    
+
     private InputAction inputAction;
     private InputActionRebindingExtensions.RebindingOperation rebindOperation;
     private ErrorTypes errorType;
@@ -222,8 +222,6 @@ public class Script_UIRebindAction : MonoBehaviour
 
             UpdateBehavior();
             inputAction.Enable();
-            
-            Script_PlayerInputManager.Instance.Save();
             
             rebindingHighlight.SetActive(false);
 

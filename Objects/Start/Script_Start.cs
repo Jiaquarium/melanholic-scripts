@@ -28,6 +28,7 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_SFXManager SFXManager;
     [SerializeField] private Script_SystemSettings systemSettings;
     [SerializeField] private Script_SettingsController settingsController;
+    [SerializeField] private Script_SaveSettingsControl saveSettingsControl;
     
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class Script_Start : MonoBehaviour
         }
 
         savedGameTitleControl.Setup();
+        saveSettingsControl.Setup();
         sceneManager.Setup();
         SFXManager.Setup();
         settingsController.Setup();
@@ -55,17 +57,20 @@ public class Script_Start : MonoBehaviour
     void Start()
     {
         Script_PlayerInputManager.Instance.Setup();
+        saveSettingsControl.Load();
+        Script_PlayerInputManager.Instance.UpdateKeyBindingUIs();
+        
         mainController.Setup();
-
+        
         switch(startState)
         {
-            case(StartStates.GameOver):
+            case (StartStates.GameOver):
                 Debug.Log("Script_Start in Start() loading Game Over");
                 mainController.InitializeGameOverState();
                 mainController.ToGameOver(deathType);
                 break;
 
-            case(StartStates.BackToMainMenu):
+            case (StartStates.BackToMainMenu):
                 Debug.Log("Coming back from Game, No Intro Start Screen");
                 mainController.InitializeIntroSimple(isForceInitedSimple: true);
                 break;
