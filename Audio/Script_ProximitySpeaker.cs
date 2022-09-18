@@ -33,15 +33,19 @@ public class Script_ProximitySpeaker : Script_Speaker
         set => maxVol = value;
     }
     
-    protected virtual void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+        
         // SFX speakers only need volume to be adjusted.
         if (!isSFXSpeaker)
             audioSource.Stop();
     }
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        
         AdjustVolume();
         
         if (!isSFXSpeaker)

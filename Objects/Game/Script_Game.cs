@@ -80,6 +80,7 @@ public class Script_Game : MonoBehaviour
     // Managers
     
     [SerializeField] private Script_SystemSettings systemSettings;
+    [SerializeField] private Script_AudioConfiguration audioConfiguration;
     public Script_DialogueManager dialogueManager;
     [SerializeField] private Script_SaveViewManager saveManager;
     [SerializeField] private Script_MenuController menuController;
@@ -521,6 +522,7 @@ public class Script_Game : MonoBehaviour
         demoNoteController.Setup();
 
         settingsController.Setup();
+        audioConfiguration.Setup();
     }
 
     // Load Save Data and Initiate level

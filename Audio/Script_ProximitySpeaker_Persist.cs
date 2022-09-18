@@ -10,10 +10,12 @@ public class Script_ProximitySpeaker_Persist : Script_ProximitySpeaker
     public int levelToPersistUntil;
     [SerializeField] private int originLevel;
     
-    
+    /// <summary>
+    /// Note: Defined here to null child OnDisable
+    /// </summary>
     protected override void OnDisable()
     {
-        // to null base     
+        Script_AudioConfiguration.Instance.RemoveSpeaker(this);
     }
 
     protected override void Awake() {

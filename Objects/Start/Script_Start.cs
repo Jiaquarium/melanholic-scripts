@@ -29,6 +29,7 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_SystemSettings systemSettings;
     [SerializeField] private Script_SettingsController settingsController;
     [SerializeField] private Script_SaveSettingsControl saveSettingsControl;
+    [SerializeField] private Script_AudioConfiguration audioConfiguration;
     
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class Script_Start : MonoBehaviour
         sceneManager.Setup();
         SFXManager.Setup();
         settingsController.Setup();
+        audioConfiguration.Setup();
         
         Script_SystemSettings.DisableMouse();
         systemSettings.TargetFrameRate();

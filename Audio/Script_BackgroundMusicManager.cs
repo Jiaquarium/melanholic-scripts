@@ -37,6 +37,16 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         get => Source?.isPlaying ?? false;
     }
 
+    /// <summary>
+    /// Used to track the play state, so we can restart Bgm on device output changes.
+    /// </summary>
+    public bool IsPlayingThisFrame { get; set; }
+    
+    void LateUpdate()
+    {
+        IsPlayingThisFrame = IsPlaying;
+    }
+    
     public void HandleStartLevelBgmNoFade(int bgmIndex, bool isBgmPaused)
     {
         // Set volume back to 1, since it'll be 0 from Fade Out
@@ -233,6 +243,16 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         EndCurrentCoroutines();
         
         Source.volume = lastVol;
+    }
+
+    /// <summary>
+    /// Pause the Bgm source in a Level Behavior Setup. Must return BGM back
+    /// to default level.
+    /// </summary>
+    public void PauseBgmOnSetup()
+    {
+        Pause();
+        SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
     }
 
     public void PauseAll()

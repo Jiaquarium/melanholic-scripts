@@ -307,8 +307,8 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         if (Const_Dev.IsTrailerMode && isHideSpikes)
             spikeControllers.ForEach(spikeController => spikeController.IsDisabled = true);
         
-        // Handle saving BGM played state.
-        game.PauseBgMusic();
+        // Pause BGM without stopping the fade in Bgm coroutine.
+        Script_BackgroundMusicManager.Control.PauseBgmOnSetup();
         
         AudioSource audio = EileenThemePlayer.GetComponent<AudioSource>();
         audio.volume = 1f;

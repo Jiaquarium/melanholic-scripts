@@ -33,26 +33,15 @@ public class Script_BgThemePlayer : Script_Speaker
     private Coroutine currentFadeCoroutine;    
     private Coroutine currentWaiToPlayCoroutine;
 
-    private AudioSource source;
-
     public bool IsPlaying
     {
         get => Source.isPlaying;
     }
     
-    private AudioSource Source
+    protected override void OnEnable()
     {
-        get
-        {
-            if (source == null)
-                source = GetComponent<AudioSource>();
-            
-            return source;
-        }
-    }
-
-    void OnEnable()
-    {
+        base.OnEnable();
+        
         if (isUntrackedSource)
             return;
         
