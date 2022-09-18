@@ -57,6 +57,26 @@ public class Script_SaveSettingsControl : MonoBehaviour
         }
     }
 
+    public void LoadMasterVolume()
+    {
+        try
+        {
+            string path = Application.persistentDataPath;
+            string filePath = $"{path}/{Script_Utils.SettingsFile}";
+
+            if(!File.Exists(filePath))
+                return;
+
+            Model_SettingsData settingsData = JsonUtility.FromJson<Model_SettingsData>(File.ReadAllText(filePath));
+            
+            systemHandler.LoadOnlyMasterVolume(settingsData);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Failed Settings Load: " + e.ToString());
+        }
+    }
+
     public void Setup()
     {
         if (Instance == null)

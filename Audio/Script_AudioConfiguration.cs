@@ -48,6 +48,8 @@ public class Script_AudioConfiguration : MonoBehaviour
 
     private void RestartBgmPlayState()
     {
+        Script_SaveSettingsControl.Instance.LoadMasterVolume();
+        
         if (bgm.IsPlayingThisFrame)
             bgm.Source?.Play();
         

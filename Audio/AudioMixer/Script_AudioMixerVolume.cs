@@ -6,15 +6,9 @@ using System;
 
 public class Script_AudioMixerVolume : MonoBehaviour
 {
-    static public void SetVolume(AudioMixer audioMixer, string exposedParam, float targetVol)
-    {
-        float clampedVol = Mathf.Clamp(targetVol, 0.0001f, 1);
+    static public void SetVolume(AudioMixer audioMixer, string exposedParam, float targetVol) =>
+        audioMixer.SetFloat(exposedParam, targetVol.ConvertFloatToDecibel());
 
-        audioMixer.SetFloat(exposedParam, Mathf.Log10(clampedVol) * 20);
-    }
-
-    static public void SetVolumeRaw(AudioMixer audioMixer, string exposedParam, float targetVol)
-    {
-        audioMixer.SetFloat(exposedParam, targetVol);
-    }
+    static public void SetMasterVolume(float targetVol) =>
+        AudioListener.volume = targetVol;
 }

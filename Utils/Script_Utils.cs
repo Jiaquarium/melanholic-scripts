@@ -1012,6 +1012,18 @@ public static class Script_Utils
     }
 
     // -------------------------------------------------------------------------------------
+    // Conversions
+
+    public static float ConvertFloatToDecibel(this float floatVol)
+    {
+        float clampedVol = Mathf.Clamp(floatVol, 0.0001f, 1f);
+
+        return Mathf.Log10(clampedVol) * 20f;
+    }
+
+    public static float ConvertDecibelToFloat(this float dbVol) => Mathf.Pow(10f, (dbVol / 20f));
+
+    // -------------------------------------------------------------------------------------
     // File Path Helpers
     
     /// <summary>

@@ -47,15 +47,7 @@ public class Script_SettingsSystemController : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private AudioMixer audioMixer;
 
-    public float MasterVolumeLogarithmic
-    {
-        get
-        {
-            float vol;
-            audioMixer.GetFloat(Const_AudioMixerParams.MasterVolume, out vol);
-            return vol;
-        }
-    }
+    public float AudioListenerMasterVolume => AudioListener.volume;
     
     void OnValidate()
     {
@@ -206,24 +198,16 @@ public class Script_SettingsSystemController : MonoBehaviour
         }
     }
 
-    private void SetMasterVolume(float newVol) => Script_AudioMixerVolume.SetVolume(
-        audioMixer, Const_AudioMixerParams.MasterVolume, newVol
-    );
-
     /// <summary>
-    /// Set Audio Mixer volume, using its native logarithmic scale
+    /// Ensures Listener volume is only set by desired increments.
     /// </summary>
-    /// <param name="newVol">Logarithmic volume</param>
-    private void SetMasterVolumeRaw(float newVol) => Script_AudioMixerVolume.SetVolumeRaw(
-        audioMixer, Const_AudioMixerParams.MasterVolume, newVol
+    private void SetMasterVolume(float newVol) => Script_AudioMixerVolume.SetMasterVolume(
+        Mathf.Round(newVol * FillIncrement) / FillIncrement
     );
     
     private void UpdateMasterVolUI()
     {
-        float logarithmicFill = MasterVolumeLogarithmic;
-
-        // Convert logarithmic to decimal
-        float percentFill = Mathf.Pow(10, (logarithmicFill / 20));
+        float percentFill = AudioListenerMasterVolume;
         
         // Ensure to round to the proper increment
         timebar.Fill = Mathf.Round(percentFill * FillIncrement) / FillIncrement;
@@ -262,32 +246,49 @@ public class Script_SettingsSystemController : MonoBehaviour
     // ------------------------------------------------------------
     // Saving & Loading
 
+    /// <summary>
+    /// Save as a decibel since if the value becomes corrupted, it will default to 0f, meaning
+    /// Audio Listener will default to 1f; otherwise, Audio Listener would default to 0f and game
+    /// would start silently.
+    /// </summary>
     public void Save(Model_SettingsData settingsData)
     {
-        float cleanedMasterVolume = MasterVolumeLogarithmic;
+        float masterVolumeDecibels = AudioListenerMasterVolume.ConvertFloatToDecibel();
         
         Model_SystemData systemData = new Model_SystemData(
-            _masterVolume: cleanedMasterVolume
+            _masterVolume: masterVolumeDecibels
         );
 
         settingsData.systemData = systemData;
     }
 
+    /// <summary>
+    /// Load will use all System Load Handlers. If we need to load separate fields, define separate handlers.
+    /// </summary>
     public void Load(Model_SettingsData settingsData)
     {
         if (settingsData.systemData == null)
             return;
         
-        LoadMasterVolume(settingsData.systemData);
+        HandleMasterVolumeLoad(settingsData.systemData);
+    }
 
-        void LoadMasterVolume(Model_SystemData systemData)
-        {
-            // Ensure logarithmic volume is within Audio Mixer range (-80db to 0db).
-            // Nonmatching type will automatically be set as default value (0f).
-            float loadedVolume = Mathf.Clamp(systemData.masterVolume, -80f, 0f);
-            
-            SetMasterVolumeRaw(loadedVolume);
-        }
+    public void LoadOnlyMasterVolume(Model_SettingsData settingsData)
+    {
+        if (settingsData.systemData == null)
+            return;
+        
+        HandleMasterVolumeLoad(settingsData.systemData);
+    }
+
+    private void HandleMasterVolumeLoad(Model_SystemData systemData)
+    {
+        // Ensure decibel volume range is within Audio Listener range of 0.0001f to 1.0f (-80db to 0db)
+        // Nonmatching type will automatically be set as default value (0f).
+        float loadedVolumeDecibel = Mathf.Clamp(systemData.masterVolume, -80f, 0f);
+        
+        // dB value of -80 will convert to .0001f so ensure to round this to 0.
+        SetMasterVolume(loadedVolumeDecibel.ConvertDecibelToFloat());
     }
 
     // ------------------------------------------------------------
@@ -344,9 +345,9 @@ public class Script_SettingsSystemController : MonoBehaviour
                 t.SetMasterVolume(0f);
             }
 
-            if (GUILayout.Button("Print Master Volume (Log)"))
+            if (GUILayout.Button("Print Master Volume (Float)"))
             {
-                Debug.Log(t.MasterVolumeLogarithmic);
+                Debug.Log(t.AudioListenerMasterVolume);
             }
         }
     }
