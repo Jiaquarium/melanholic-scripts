@@ -21,6 +21,9 @@ public class Script_PlayerMovement : MonoBehaviour
     public enum Speeds
     {
         Default     = 0,
+        /// <summary>
+        /// Speed Seal
+        /// </summary>
         Run         = 1,
         Dev         = 999
     }
@@ -42,6 +45,7 @@ public class Script_PlayerMovement : MonoBehaviour
     [SerializeField] private float defaultSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float devRunSpeed;
+    [SerializeField] private float slowSpeed;
     [SerializeField] private float IceSpikeSpeedMultiplier;
     
     public int exitUpStairsOrderLayer;
@@ -138,6 +142,8 @@ public class Script_PlayerMovement : MonoBehaviour
     /// move on input.
     /// </summary>
     public bool IsPassive { get; set; }
+
+    public bool IsEmphasizeWalk { get; set; }
     
     void Awake()
     {
@@ -408,6 +414,15 @@ public class Script_PlayerMovement : MonoBehaviour
             _ => 1f
         };
 
+        /// <summary>
+        /// For emphatic moments, ignore all previous.
+        /// </summary>
+        if (IsEmphasizeWalk)
+        {
+            speed = slowSpeed;
+            maskMultiplier = 1f;
+        }
+
         // Apply wind adjustments if wind is blowing, ignoring any Mask Multiplier adjustments.
         // Run speed is applied via its own WindFactors. Run speed will never be affected by
         // Mask Multiplier because you can only Run when in Former Self.
@@ -419,9 +434,15 @@ public class Script_PlayerMovement : MonoBehaviour
         
         float framesPerMove = 1f / (Time.fixedDeltaTime * adjustedSpeed);
         float roundedFramesPerMove = Mathf.RoundToInt(framesPerMove);
+        
         if (!Mathf.Approximately(roundedFramesPerMove, framesPerMove))
             Debug.LogWarning($"Motion not smooth; frames per move {framesPerMove} floored {roundedFramesPerMove}");
         
+        // Adjust animator speed as a fraction of default speed
+        var adjustedAnimatorSpeed = adjustedSpeed / defaultSpeed;
+        if (animator.speed != adjustedAnimatorSpeed)
+            animator.speed = adjustedAnimatorSpeed;
+
         return adjustedSpeed;
     }
 
@@ -431,7 +452,7 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (progress < 1f)
         {
-            MoveTransform();   
+            MoveTransform();
         }
         // Make button holds smooth.
         // If we're already at progress == 1f and waiting for the Update clock,
@@ -541,6 +562,10 @@ public class Script_PlayerMovement : MonoBehaviour
             return;
         
         animator.SetBool(PlayerMovingAnimatorParam, false);
+        
+        // Prevent being stuck in the last Animator Speed if immediately
+        // switch out of Interact state while in non-default walk state.
+        InitialStateAnimatorSpeed();
     }
     
     // Handle Moving State in Animator.
@@ -558,11 +583,22 @@ public class Script_PlayerMovement : MonoBehaviour
             );
         
         animator.SetBool(PlayerMovingAnimatorParam, isMovingAnimation);
+
+        // Prevent being stuck in a speed adjusted idle animation (because WalkSpeed is not
+        // called when not actually moving).
+        if (!isMovingAnimation)
+            InitialStateAnimatorSpeed();
     }
 
     private void HandleBufferedMoveAnimations(Directions bufferedMove)
     {
         animator.SetBool(PlayerMovingAnimatorParam, bufferedMove != Directions.None);
+    }
+
+    private void InitialStateAnimatorSpeed()
+    {
+        MyAnimator.speed = 1f;
+        walkSpeed = Speeds.Default;
     }
 
     public void AnimatorSetDirection(Directions dir)
@@ -822,6 +858,7 @@ public class Script_PlayerMovement : MonoBehaviour
         isNoInputMoveByWind = false;
         windAdjustment = windManager.NoEffectFactor;
         IsNorthWind = false;
+        IsEmphasizeWalk = false;
     }
 
     // ------------------------------------------------------------------

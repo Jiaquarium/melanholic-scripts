@@ -11,6 +11,14 @@ public class Script_PlayerStepsSFX : MonoBehaviour
     [SerializeField][Range(0f, 1f)] private float iceWomanStepSFXVol;
     [SerializeField] private List<AudioClip> animalWithinStepSFXs;
     [SerializeField][Range(0f, 1f)] private float animalWithinStepSFXVol;
+    [SerializeField] private List<AudioClip> psychicDuckStepSFXs;
+    [SerializeField][Range(0f, 1f)] private float psychicDuckStepSFXVol;
+    [SerializeField] private List<AudioClip> thirdEyeStepSFXs;
+    [SerializeField][Range(0f, 1f)] private float thirdEyeStepSFXVol;
+    [SerializeField] private List<AudioClip> lanternStepSFXs;
+    [SerializeField][Range(0f, 1f)] private float lanternStepSFXVol;
+    [SerializeField] private List<AudioClip> puppeteerStepSFXs;
+    [SerializeField][Range(0f, 1f)] private float puppeteerStepSFXVol;
 
     [SerializeField] private Script_Player player;
     
@@ -22,19 +30,47 @@ public class Script_PlayerStepsSFX : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    // - Default Player Graphics Controller
     private void Step()
     {
         HandleStepSFX(stepSFXs, stepSFXVol);
     }
 
+    // - Snow Woman Player Graphics Controller
     private void IceWomanStep()
     {
         HandleStepSFX(iceWomanStepSFXs, iceWomanStepSFXVol);
     }
 
+    // - Animal Within Player Graphics Controller
     private void AnimalWithinStep()
     {
         HandleStepSFX(animalWithinStepSFXs, animalWithinStepSFXVol);
+    }
+
+    // - Psychic Duck Player Graphics Controller
+    private void PsychicDuckStep()
+    {
+        HandleStepSFX(psychicDuckStepSFXs, psychicDuckStepSFXVol);
+    }
+
+    // - Third Eye Player Graphics Controller
+    // For now make this same as Step()
+    private void ThirdEyeStep()
+    {
+        HandleStepSFX(thirdEyeStepSFXs, thirdEyeStepSFXVol);
+    }
+
+    // - Lantern Player Graphics Controller
+    private void LanternStep()
+    {
+        HandleStepSFX(lanternStepSFXs, lanternStepSFXVol);
+    }
+
+    // - Puppeteer Player Graphics Controller
+    private void PuppeteerStep()
+    {
+        HandleStepSFX(puppeteerStepSFXs, puppeteerStepSFXVol);
     }
 
     private void HandleStepSFX(List<AudioClip> clips, float volume)
@@ -62,8 +98,5 @@ public class Script_PlayerStepsSFX : MonoBehaviour
         audioSource.PlayOneShot(clip, volume);
         
         stepIdx++;
-        
-        if (stepIdx >= clips.Count)
-            stepIdx = 0;
     }
 }

@@ -142,6 +142,12 @@ public class Script_Player : Script_Character
         set => playerMovementHandler.IsNorthWind = value;
     }
 
+    public bool IsEmphasizeWalk
+    {
+        get => playerMovementHandler.IsEmphasizeWalk;
+        set => playerMovementHandler.IsEmphasizeWalk = value;
+    }
+
     public Directions LastMove
     {
         get => playerMovementHandler.LastMove;
@@ -724,7 +730,17 @@ public class Script_PlayerTester : Editor
         if (GUILayout.Button("Buff Effect"))
         {
             player.SetBuffEffectActive(true);
-        }   
+        }
+
+        if (GUILayout.Button("Set Emphasize Walk: True"))
+        {
+            player.IsEmphasizeWalk = true;
+        }
+
+        if (GUILayout.Button("Set Emphasize Walk: False"))
+        {
+            player.IsEmphasizeWalk = false;
+        }
     }
 }
 #endif

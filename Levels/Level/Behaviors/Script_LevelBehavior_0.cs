@@ -246,6 +246,12 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
             && !game.IsFirstTuesday;
     }
 
+    private void HandleFirstDayEmphasizeWalk()
+    {
+        if (game.IsFirstMonday)
+            game.GetPlayer().IsEmphasizeWalk = true;
+    }
+
     public override void Setup()
     {
         playerMovementAnimator = game.GetPlayer().MyAnimator.GetComponent<Script_PlayerMovementAnimator>();
@@ -257,5 +263,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         
         defaultTrees.gameObject.SetActive(true);
         finalTrees.gameObject.SetActive(false);
+
+        HandleFirstDayEmphasizeWalk();
     }
 }

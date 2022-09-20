@@ -24,6 +24,8 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     [SerializeField] private Script_HUDManager HUDManager;
     [SerializeField] private Script_StickerHolsterManager stickerHolsterManager;
 
+    [SerializeField] private Script_TriggerReliableStay emphasizeWalkTrigger;
+
     private bool didIdsRun;
        
     protected override void OnEnable() {
@@ -68,6 +70,8 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
             Script_SFXManager.SFX.PlayHallwayScare();
 
             StartCoroutine(WaitAfterScare());
+
+            emphasizeWalkTrigger.gameObject.SetActive(false);
         }
 
         IEnumerator WaitAfterScare()
@@ -98,6 +102,23 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
     }
 
     // ------------------------------------------------------------------
+    // Unity Events
+    
+    public void OnTriggerPlayerEnter()
+    {
+        var player = game.GetPlayer();
+        
+        player.IsEmphasizeWalk = true;
+    }
+
+    public void OnTriggerPlayerExit()
+    {
+        var player = game.GetPlayer();
+        
+        player.IsEmphasizeWalk = false;
+    }
+
+    // ------------------------------------------------------------------
     
     private void OnLevelInitCompleteEvent()
     {
@@ -123,7 +144,10 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
         if (ShouldPlayIdsIntro())
             Ids.gameObject.SetActive(true);
         else
-            Ids.gameObject.SetActive(false);        
+            Ids.gameObject.SetActive(false);
+        
+        if (!game.IsFirstMonday)
+            emphasizeWalkTrigger.gameObject.SetActive(false);
     }        
 }
 
