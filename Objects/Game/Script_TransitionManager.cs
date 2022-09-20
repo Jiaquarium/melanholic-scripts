@@ -39,8 +39,13 @@ public class Script_TransitionManager : MonoBehaviour
     // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
     // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
     [SerializeField] private float restartGameTimeOnSave;
+    
+    [Tooltip("Ensure is less than restartGameTimeOnSave to avoid clicking when changing Scenes.")]
+    [SerializeField] private float fadeOutMusicTimeOnSave;
+    
     [Tooltip("Wait time after clicking Restart... UI choice on Bad Ending The Sealing cut scene.")]
     [SerializeField] private float restartGameTimeOnBadEnding;
+    
     [Tooltip("Wait time after clicking To Main Menu UI choice on Bad Ending The Sealing cut scene.")]
     [SerializeField] private float toTitleWaitTime;
     
@@ -90,21 +95,14 @@ public class Script_TransitionManager : MonoBehaviour
     private Script_GameOverController.DeathTypes deathType;
     private bool didPlayAllPuzzlesDoneCutScene = false;
     
-    public float RestartGameTimeOnSave
-    {
-        get => restartGameTimeOnSave;
-    }
+    public float RestartGameTimeOnSave => restartGameTimeOnSave;
 
-    public float RestartGameTimeOnBadEnding
-    {
-        get => restartGameTimeOnBadEnding;
-    }
+    public float FadeOutMusicTimeOnSave => fadeOutMusicTimeOnSave;
 
-    public float ToTitleWaitTime
-    {
-        get => toTitleWaitTime;
-    }
-    
+    public float RestartGameTimeOnBadEnding => restartGameTimeOnBadEnding;
+
+    public float ToTitleWaitTime => toTitleWaitTime;
+
     public IEnumerator FadeIn(float t, Action action)
     {
         return fader.FadeInCo(t, action);

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-08-25 12:53:16
+// Last created by Dialogue Exporter at 2022-09-20 15:50:17
 
 using System.Collections;
 using System.Collections.Generic;
@@ -52,7 +52,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"The Piano chords echoed...| but nothing happened...",
+                @"The piano chords echo...| but nothing happens...",
+        },
+        
+    }
+},
+{
+    "sticker-reaction_player_disabled-painting-entrance",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You try to enter the canvas...| but nothing happens...",
         },
         
     }
@@ -3771,9 +3783,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It’s just me, myself, and I in here! That’s it.",
                 @"......",
                 @"Anyways, it’s pretty clear now.",
-                @"I know what I have to do.",
+                @"I’ve scraped all that I can out of myself already... <b>There’s nothing else left for me here</b>,| nope.",
                 @"It’s time I leave for good.",
-                @"I think I’ve scraped all that I can out of myself already. There’s nothing more for me here, nope.",
                 @"......",
                 @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anyways... So here take it, it’s yours...",
         },
@@ -3787,8 +3798,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"I know it’s probably the greatest gift you’ve ever received in your miserable life, ha!| But I won’t be needing it where I’m going.",
-                @"It’s time for me to make a name for {18} once and for all!",
+                @"I know it’s probably the greatest gift you’ve ever received in your miserable life, ha!| Consider it a <b>piece of me</b>!",
+                @"Okay enough small talk! It’s time for me to make a name for {18} once and for all!",
                 @"Bye!",
         },
         
@@ -3883,7 +3894,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"The memory of when you first left home for good... it’s clearer now.",
+                @"The memory of when you first arrived here... it’s clearer now.",
         },
         
     }

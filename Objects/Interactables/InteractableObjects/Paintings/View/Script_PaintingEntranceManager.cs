@@ -6,6 +6,13 @@ public class Script_PaintingEntranceManager : MonoBehaviour
 {
     public Script_DialogueChoice[] choices;
     public CanvasGroup paintingEntranceChoiceCanvas;
+    public Script_DialogueNode disabledPaintingEntranceReactionNode;
+    
+    [SerializeField] private float beforeDisabledReactionWaitTime;
+    [SerializeField] private Script_Game game;
+    
+    public bool DidTryDisabledEntrance { get; set; }
+    public float BeforeDisabledReactionWaitTime => beforeDisabledReactionWaitTime;
     
     public void StartPaintingEntrancePromptMode()
     {
@@ -37,6 +44,16 @@ public class Script_PaintingEntranceManager : MonoBehaviour
             Script_DialogueManager.DialogueManager.NextDialogueNode(Id);
         }
     }
+
+    // ------------------------------------------------------------------
+    // Next Node Actions
+
+    public void OnDisabledPaintingEntranceReactionDone()
+    {
+        Script_SFXManager.SFX.PlayTVChannelChangeStatic(game.ChangeStateInteract);
+    }
+
+    // ------------------------------------------------------------------
 
     private void EndPrompt()
     {

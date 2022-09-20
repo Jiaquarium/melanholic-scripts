@@ -133,7 +133,7 @@ public class Script_DialogueManager : MonoBehaviour
     private bool isForceUpdateNPCState;
 
     // ------------------------------------------------------------------
-    // Player Feedback to First Psychic Node Interaction
+    // Player Feedback to First Interactions
     [SerializeField] private Script_DialogueNode cantUnderstandReactionNode;
     [SerializeField] private float beforeCantUnderstandReactionWaitTime;
     [SerializeField] private bool shouldCantUnderstandReaction;

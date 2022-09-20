@@ -2274,7 +2274,12 @@ public class Script_Game : MonoBehaviour
 
         IEnumerator WaitToRestartGame()
         {
+            Script_BackgroundMusicManager.Control.FadeOut(
+                null, transitionManager.FadeOutMusicTimeOnSave, Const_AudioMixerParams.ExposedBGVolume
+            );
+            
             yield return new WaitForSeconds(transitionManager.RestartGameTimeOnSave);
+            
             RestartGame();
         }
     }

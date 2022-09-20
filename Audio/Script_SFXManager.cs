@@ -185,6 +185,10 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip TotemCry;
     [Range(0f, 1f)] public float TotemCryVol;
+
+    public AudioClip TVChannelChangeStatic;
+    [Range(0f, 1f)] public float TVChannelChangeStaticVol;
+    public float TVChannelChangeStaticDuration = 0.275f;
     
     [Space]
 
@@ -387,6 +391,11 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(MyneReveal, MyneRevealVol);
     }
 
+    public void PlayWindZonePushBack()
+    {
+        SFXSource.PlayOneShot(WindPushBack, WindPushBackVol);
+    }
+
     public void PlaySubmitTransition()
     {
         SFXSource.PlayOneShot(SubmitTransition, SubmitTransitionVol);
@@ -410,6 +419,22 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayContractSign()
     {
         SFXSource.PlayOneShot(PenContractSign, PenContractSignVol);
+    }
+
+    public void PlayTVChannelChangeStatic(Action cb = null)
+    {
+        float SFXduration = TVChannelChangeStaticDuration;
+        
+        SFXSource.PlayOneShot(TVChannelChangeStatic, TVChannelChangeStaticVol);
+
+        if (cb != null)
+            StartCoroutine(OnSFXDone());
+        
+        IEnumerator OnSFXDone()
+        {
+            yield return new WaitForSeconds(SFXduration);
+            cb();
+        }
     }
 
     // ------------------------------------------------------------

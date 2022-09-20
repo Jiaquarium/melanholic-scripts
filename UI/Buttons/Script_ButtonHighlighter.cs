@@ -27,6 +27,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     /// Ensure initializing comes before OnSelect
     void OnEnable()
     {
+        Debug.Log($"{name} onEnable");
         InitializeState();
         HandleSlowAwakeOnEnable();
     }
@@ -46,7 +47,11 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     {
         Debug.Log($"OnSelect {name}");
         
-        if (IsPaused)
+        bool isSlowAwakeState = EventSystem.current != null
+            && EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>() != null
+            && EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>().Timer > 0f;
+        
+        if (IsPaused || isSlowAwakeState)
             return;
         
         HighlightOutline(true);
@@ -80,7 +85,9 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         
         HighlightOutline(false);
         
-        /// If this is slow awakening UI store if this should be highlighted 
+        // If this is slow awakening UI store if this should be highlighted.
+        // Basically, we want to call HighlightOutline in two parts with Slow Awake Event System;
+        // HandleSlowAwake will handle the call to the other part of Highlight Outline.
         if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject)
             isHighlighted = true;
     }
@@ -92,7 +99,10 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
             EventSystem.current != null
             && EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>() != null
         )
+        {
+            Debug.Log($"{name} HandleSlowAwakeOnEnable");
             HandleHighlight(false);
+        }
     }
 
     /// <summary>
@@ -114,7 +124,9 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         {
             isLoading = false;
             if (isHighlighted)
+            {
                 HandleHighlight(true);
+            }
         }
     }
 
@@ -122,8 +134,10 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     {
         if (isOn)   Debug.Log($"{name}: HighlightOutline {isOn}");
 
+        // Slow Awake: Handled by HandleSlowAwake
         HandleHighlight(isOn);
         
+        // Slow Awake: Handled by InitializeState
         isHighlighted = isOn;
     }
 

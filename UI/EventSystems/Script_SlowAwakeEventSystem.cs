@@ -11,8 +11,10 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Script_EventSystemLastSelected))]
 public class Script_SlowAwakeEventSystem : MonoBehaviour
 {
-    private static float startUpTime = 0.5f;
+    private static float startUpTime = 1.0f;
     private float timer;
+
+    public float Timer => timer;
     
     void OnEnable()
     {

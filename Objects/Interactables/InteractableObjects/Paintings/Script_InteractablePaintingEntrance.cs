@@ -91,8 +91,30 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
 
             if (State == States.Disabled)
             {
-                Debug.Log($"{name} State: {State}");
-                Script_Game.Game.GetPlayer().SetIsInteract();
+                var paintingEntranceManager = Script_DialogueManager.DialogueManager.paintingEntranceManager;
+                
+                yield return new WaitForSeconds(paintingEntranceManager.BeforeDisabledReactionWaitTime);
+                
+                if (paintingEntranceManager.DidTryDisabledEntrance)
+                {
+                    Debug.Log($"{name} State: {State}");
+                    Script_SFXManager.SFX.PlayTVChannelChangeStatic(
+                        Script_Game.Game.GetPlayer().SetIsInteract
+                    );
+                }
+                else
+                {
+                    Script_Game.Game.GetPlayer().SetIsInteract();
+                    Script_Game.Game.ChangeStateCutScene();
+                    Script_DialogueManager.DialogueManager.StartDialogueNode(
+                        paintingEntranceManager.disabledPaintingEntranceReactionNode,
+                        SFXOn: true
+                    );
+
+                    // Play SFX on dialogue done.
+                }
+
+                paintingEntranceManager.DidTryDisabledEntrance = true;
             }
             else
             {
