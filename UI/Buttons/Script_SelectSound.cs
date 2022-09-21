@@ -51,7 +51,7 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
             foreach (Transform child in noSFXTransitionParent)
             {
                 if (child.gameObject == eventSystem.lastSelected){
-                    Debug.Log("Ignoring SelectSFX because coming from a noSFXTransition");
+                    Dev_Logger.Debug("Ignoring SelectSFX because coming from a noSFXTransition");
                     return;
                 }
             }
@@ -64,7 +64,7 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
             foreach (Transform child in onlySFXTransitionParent)
             {
                 if (child.gameObject == eventSystem.lastSelected){
-                    Debug.Log("Ignoring SelectSFX because coming from child not specified by onlySFXTransitionParent");
+                    Dev_Logger.Debug("Ignoring SelectSFX because coming from child not specified by onlySFXTransitionParent");
                     isOutsideSFXParent = false;
                 }
             }

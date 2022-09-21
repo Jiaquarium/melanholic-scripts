@@ -137,7 +137,7 @@ public class Script_InputManager : MonoBehaviour
         CanvasGroup canvasGroup
     )
     {
-        Debug.Log($"input mode {inputMode}");
+        Dev_Logger.Debug($"input mode {inputMode}");
         
         switch (inputMode)
         {

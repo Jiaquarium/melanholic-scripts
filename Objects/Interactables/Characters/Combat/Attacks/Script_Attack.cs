@@ -41,7 +41,7 @@ public class Script_Attack : MonoBehaviour, IHitBoxResponder
         Action onAttackDone = transform.GetParentRecursive<Script_Player>().onAttackDone;
         if (onAttackDone != null)
         {
-            Debug.Log("Player doing Action given by an attacked HurtBox");
+            Dev_Logger.Debug("Player doing Action given by an attacked HurtBox");
             onAttackDone();
             transform.GetParentRecursive<Script_Player>().onAttackDone = null;
         }

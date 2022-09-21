@@ -182,7 +182,7 @@ public class Script_StartOverviewController : Script_UIState
     // Will be called whenever a confirm key is pressed on Start Options (via Start Screen Controller).
     public void StartOptionsOpen(bool isFadeIn = false)
     {
-        Debug.Log("StartOptionsOpen");
+        Dev_Logger.Debug("StartOptionsOpen");
         
         startScreenCTA.Close();
         
@@ -212,7 +212,7 @@ public class Script_StartOverviewController : Script_UIState
     // StartScreenStart will activate input.
     public void FadeInTitleScreen(bool withCTA)
     {
-        Debug.Log("Fade in Title Screen");
+        Dev_Logger.Debug("Fade in Title Screen");
         
         StartScreenStart(!withCTA);
     }
@@ -222,7 +222,7 @@ public class Script_StartOverviewController : Script_UIState
     // Start options should be hidden until player presses Start command.
     public void StartScreenStart(bool isFromBack = false)
     {
-        Debug.Log($"{name} StartScreenStart called isFromBack: {isFromBack}");
+        Dev_Logger.Debug($"{name} StartScreenStart called isFromBack: {isFromBack}");
         
         introController.DisableInput();
         
@@ -245,11 +245,11 @@ public class Script_StartOverviewController : Script_UIState
                 // If coming from Game, we'll need to play BGM
                 if (!bgmManager.IsPlaying)
                 {
-                    Debug.Log("BGM was not playing, playing now!");
+                    Dev_Logger.Debug("BGM was not playing, playing now!");
                     PlayBgm();
                 }
 
-                Debug.Log($"Setting start screen controller active instantly, isFromBack {isFromBack}");
+                Dev_Logger.Debug($"Setting start screen controller active instantly, isFromBack {isFromBack}");
                 startScreenController.gameObject.SetActive(true);
 
                 // Must mark CTADone or Start Screen Input Manager will try to activate start options
@@ -272,7 +272,7 @@ public class Script_StartOverviewController : Script_UIState
         {
             yield return new WaitForSeconds(waitBeforeFadeInCTATime);
 
-            Debug.Log($"Fading in CTA, isFromBack {isFromBack}");
+            Dev_Logger.Debug($"Fading in CTA, isFromBack {isFromBack}");
                     
             startScreenCTA.gameObject.SetActive(true);
             startScreenCTA.StartIntervalFader(isFadeIn: true);
@@ -286,7 +286,7 @@ public class Script_StartOverviewController : Script_UIState
 
     private void PlayBgm()
     {
-        Debug.Log("Playing BGM");
+        Dev_Logger.Debug("Playing BGM");
         
         bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
         bgmManager.Play(startScreenBgm);
@@ -375,7 +375,7 @@ public class Script_StartOverviewController : Script_UIState
         
         startOptionsCanvasGroup.Close();
 
-        Debug.Log($"{name} Opening settings canvasGroup");
+        Dev_Logger.Debug($"{name} Opening settings canvasGroup");
         
         settingsController.OpenOverview(buttonIdx);
     }
@@ -456,17 +456,17 @@ public class Script_StartOverviewController : Script_UIState
         switch(deathType)
         {
             case(Script_GameOverController.DeathTypes.ThoughtsOverload):
-                Debug.Log("Thoughts Overload Screen");
+                Dev_Logger.Debug("Thoughts Overload Screen");
                 activeDeathByScreen = deathByScreens[1];
                 break;
 
             case(Script_GameOverController.DeathTypes.Impaled):
-                Debug.Log("Impaled Game Over Screen");
+                Dev_Logger.Debug("Impaled Game Over Screen");
                 activeDeathByScreen = deathByScreens[2];
                 break;
 
             case(Script_GameOverController.DeathTypes.DemoOver):
-                Debug.Log("Demo Over Game Over Screen");
+                Dev_Logger.Debug("Demo Over Game Over Screen");
                 activeDeathByScreen = deathByScreens[3];
                 break;
 
@@ -537,7 +537,7 @@ public class Script_StartOverviewController : Script_UIState
         deleteGameSubmenu.gameObject.SetActive(false);
         pasteGameSubmenu.gameObject.SetActive(false);
 
-        Debug.Log("Enter Saved Games Select View");
+        Dev_Logger.Debug("Enter Saved Games Select View");
         HoldHighlights(false);
     }
 
@@ -717,7 +717,7 @@ public class Script_StartOverviewController : Script_UIState
             submenuController.gameObject.SetActive(true);
             
             EnterSubmenuSFX();
-            Debug.Log("Enter delete submenu");
+            Dev_Logger.Debug("Enter delete submenu");
         }
         else
         {
@@ -787,7 +787,7 @@ public class Script_StartOverviewController : Script_UIState
 
     public void CopyGame(int targetSlotId)
     {
-        Debug.Log("Trying to Copy");
+        Dev_Logger.Debug("Trying to Copy");
         
         Script_SaveGameControl.saveSlotId = copiedSlotId;
         
@@ -856,7 +856,7 @@ public class Script_StartOverviewController : Script_UIState
 
     private void HoldHighlights(bool isHold)
     {
-        Debug.Log("On Enter Submenu Hold Highlights");
+        Dev_Logger.Debug("On Enter Submenu Hold Highlights");
         savedGameController.HoldHighlights(isHold);
     }
 

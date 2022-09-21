@@ -8,7 +8,7 @@ public class Script_HurtBoxEventsManager : MonoBehaviour
     public static event OnHurtDelegate OnHurt;
     public static void Hurt(string hurtBoxTag, Script_HitBox hitBox)
     {
-        Debug.Log($"Hurt event: hurtBoxTag {hurtBoxTag}, hitBox {hitBox.tag}");
+        Dev_Logger.Debug($"Hurt event: hurtBoxTag {hurtBoxTag}, hitBox {hitBox.tag}");
         
         if (OnHurt != null)
             OnHurt(hurtBoxTag, hitBox);

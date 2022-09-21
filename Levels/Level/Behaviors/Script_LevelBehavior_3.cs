@@ -130,18 +130,18 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
     
     private void PRCSDoneReaction(Script_PRCSPlayer PRCSPlayer)
     {
-        Debug.Log("PRCS is Done");
+        Dev_Logger.Debug("PRCS is Done");
         // GetComponent<Script_PRCSPlayer>().Stop(() => OnDone());
         if (PRCSPlayer == IntroPlayerPart1)
         {
-            Debug.Log("PART 1 PRCS DONE!!!");
+            Dev_Logger.Debug("PART 1 PRCS DONE!!!");
 
             // Play part 2
             IntroPlayerPart2.Play();
         }
         else if (PRCSPlayer == IntroPlayerPart2)
         {
-            Debug.Log("PART 2 PRCS DONE!!!");
+            Dev_Logger.Debug("PART 2 PRCS DONE!!!");
 
             dm.StartDialogueNode(onPRCSTimelineDoneNode, SFXOn: false);
         }

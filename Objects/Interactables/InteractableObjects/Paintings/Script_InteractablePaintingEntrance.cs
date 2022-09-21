@@ -46,7 +46,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
     // Painting Entrance have option to allow text interaction.
     public override void HandleAction(string action)
     {
-        Debug.Log($"{name} HandleAction action: {action}");
+        Dev_Logger.Debug($"{name} HandleAction action: {action}");
         bool isDisabled = !isAllowDisabledDialogue && State == States.Disabled;
 
         if (action == Const_KeyCodes.Interact && !isDisabled)
@@ -97,7 +97,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
                 
                 if (paintingEntranceManager.DidTryDisabledEntrance)
                 {
-                    Debug.Log($"{name} State: {State}");
+                    Dev_Logger.Debug($"{name} State: {State}");
                     Script_SFXManager.SFX.PlayTVChannelChangeStatic(
                         Script_Game.Game.GetPlayer().SetIsInteract
                     );
@@ -119,7 +119,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
             else
             {
                 // Script_Game.Game.GetPlayer().SetIsInteract();
-                Debug.Log("starting dialogue node in painting");
+                Dev_Logger.Debug("starting dialogue node in painting");
                 /// Player state is set to dialogue by DM but just to be safe
                 Script_Game.Game.GetPlayer().SetIsTalking();
                 Script_DialogueManager.DialogueManager.StartDialogueNode(
@@ -179,7 +179,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
             case (States.Active):
                 if (paintingGraphics != null && activeSprite != null)
                 {
-                    Debug.Log($"{name} Setting to States.Active");
+                    Dev_Logger.Debug($"{name} Setting to States.Active");
                     
                     paintingGraphics.sprite = activeSprite;
                     if (myAnimator != null)
@@ -190,7 +190,7 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
             case (States.Disabled):
                 if (paintingGraphics != null && disabledSprite != null)
                 {
-                    Debug.Log($"{name} Setting to States.Disabled");
+                    Dev_Logger.Debug($"{name} Setting to States.Disabled");
                     
                     paintingGraphics.sprite = disabledSprite;
                     if (myAnimator != null)

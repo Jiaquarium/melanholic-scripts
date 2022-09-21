@@ -84,7 +84,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
 
     public bool HandleCipherSlot(int cipherSlot, int choiceIdx)
     {
-        Debug.Log($"Checking cipher slot {cipherSlot} with {choiceIdx}. Expected: {ScarletCipher[cipherSlot]}");
+        Dev_Logger.Debug($"Checking cipher slot {cipherSlot} with {choiceIdx}. Expected: {ScarletCipher[cipherSlot]}");
 
         bool isSolved = ScarletCipher[cipherSlot] == choiceIdx;
         MynesMirrorsSolved[cipherSlot] = isSolved;
@@ -114,7 +114,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
 
     public bool CheckCCTVCode(string codeInput)
     {
-        Debug.Log($"Scarlet Cipher Length: {ScarletCipher.Length}");
+        Dev_Logger.Debug($"Scarlet Cipher Length: {ScarletCipher.Length}");
         
         if (codeInput.Length < QuestionCount)   return false;
         
@@ -132,7 +132,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
                 return false;
             }
             
-            Debug.Log($"codeValue {codeValue}; ScarletCipher[{i}] {ScarletCipher[i]}");
+            Dev_Logger.Debug($"codeValue {codeValue}; ScarletCipher[{i}] {ScarletCipher[i]}");
 
             if (codeValue != ScarletCipher[i])
             {
@@ -277,7 +277,7 @@ public class Script_ScarletCipherEditor : Editor
         Script_ScarletCipherManager t = (Script_ScarletCipherManager)target;
         if (GUILayout.Button("Check Mirrors Solved"))
         {
-            Debug.Log($"All mirrors solved: {t.CheckAllMirrorsSolved()}");
+            Dev_Logger.Debug($"All mirrors solved: {t.CheckAllMirrorsSolved()}");
         }
         
         // ensure changes in our serialized object go back into the game object

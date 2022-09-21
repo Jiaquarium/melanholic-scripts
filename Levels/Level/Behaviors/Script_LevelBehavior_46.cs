@@ -224,7 +224,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     /// </summary>
     private void OpeningCutScene()
     {
-        Debug.Log($"{name} Opening cut scene!");
+        Dev_Logger.Debug($"{name} Opening cut scene!");
         
         game.ChangeStateCutScene();
 

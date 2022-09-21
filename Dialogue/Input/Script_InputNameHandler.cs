@@ -19,7 +19,7 @@ public class Script_InputNameHandler : Script_InputHandler
 
         Script_Names.Player = text;
 
-        Debug.Log("Saving name: " + text);
+        Dev_Logger.Debug("Saving name: " + text);
 
         Script_SFXManager.SFX.PlayContractSign();
         

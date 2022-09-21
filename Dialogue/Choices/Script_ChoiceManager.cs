@@ -66,7 +66,7 @@ public class Script_ChoiceManager : MonoBehaviour
 
             if (!dialogueManager.isInputDisabled)
             {
-                Debug.Log("Submit UI Choice");
+                Dev_Logger.Debug("Submit UI Choice");
                 Script_SFXManager.SFX.PlayUIChoiceSubmit();
             }
 

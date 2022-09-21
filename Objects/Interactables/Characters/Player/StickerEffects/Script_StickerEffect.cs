@@ -53,12 +53,12 @@ public abstract class Script_StickerEffect : MonoBehaviour
 
     protected virtual void OnEquip()
     {
-        Debug.Log($"{name} OnEquip()");
+        Dev_Logger.Debug($"{name} OnEquip()");
     }
 
     protected virtual void OnUnequip()
     {
-        Debug.Log($"{name} OnUnequip()");
+        Dev_Logger.Debug($"{name} OnUnequip()");
     }
 
     // Unequip when switching to another Sticker. The main difference with this and OnUnequip is that
@@ -67,13 +67,13 @@ public abstract class Script_StickerEffect : MonoBehaviour
     // need to unecessarily override with the Default controller before switching to the new one.
     protected virtual void OnUnequipSwitch()
     {
-        Debug.Log($"{name} OnUnequipSwitch()");
+        Dev_Logger.Debug($"{name} OnUnequipSwitch()");
     }
 
     // To be used in the background when needing to return back to default state.
     protected virtual void OnUnequipState()
     {
-        Debug.Log($"{name} OnUnequipState(). Player state set to <b>Interact</b>");
+        Dev_Logger.Debug($"{name} OnUnequipState(). Player state set to <b>Interact</b>");
         
         OnUnequipControllerSynced();
         player.SetIsInteract();

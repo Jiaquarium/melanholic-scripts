@@ -44,7 +44,7 @@ public class Script_EntriesViewController : Script_SlotsViewController
     public void OnEntrySelect(string text)
     {
         entryDetailSelectedView.GetComponent<Script_EntryDetailView>().SetText(text);
-        Debug.Log($"Set entry detail text: {text}.");
+        Dev_Logger.Debug($"Set entry detail text: {text}.");
         
         ShowEntryDetail();
     }
@@ -82,12 +82,12 @@ public class Script_EntriesViewController : Script_SlotsViewController
         entryDetailNoneSelectedView.gameObject.SetActive(true);
         entryDetailSelectedView.gameObject.SetActive(false);
 
-        Debug.Log("HideEntryDefault() Hiding entriesDetailSelectedView");
+        Dev_Logger.Debug("HideEntryDefault() Hiding entriesDetailSelectedView");
     }
 
     void ShowEntryDetail()
     {
-        Debug.Log("Show entry detail after setting text.");
+        Dev_Logger.Debug("Show entry detail after setting text.");
         
         entryDetailSelectedView.gameObject.SetActive(true);
         entryDetailNoneSelectedView.gameObject.SetActive(false);

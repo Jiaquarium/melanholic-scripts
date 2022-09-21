@@ -46,8 +46,8 @@ public class Script_LevelBehavior_49 : Script_LevelBehavior
         string puppeteerId = Const_Items.PuppeteerId;
         int slot;
 
-        Debug.Log($"puppeteer in stickers {game.GetItemsStickerItem(puppeteerId, out slot) != null}");
-        Debug.Log($"puppeteer in equipment {game.CheckStickerEquippedById(puppeteerId)}");
+        Dev_Logger.Debug($"puppeteer in stickers {game.GetItemsStickerItem(puppeteerId, out slot) != null}");
+        Dev_Logger.Debug($"puppeteer in equipment {game.CheckStickerEquippedById(puppeteerId)}");
         
         bool hasPuppeteerMask = game.GetItemsStickerItem(puppeteerId, out slot) != null
             || game.CheckStickerEquippedById(puppeteerId);

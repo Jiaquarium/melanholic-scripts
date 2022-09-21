@@ -501,7 +501,7 @@ public class Script_PlayerMovement : MonoBehaviour
             {
                 bufferedInput = inputButtonDownBuffer.Peek();
 
-                Debug.Log($"Player using Fixed Buffered PRESS Move: {bufferedInput}");
+                Dev_Logger.Debug($"Player using Fixed Buffered PRESS Move: {bufferedInput}");
             }
             // If no button down presses buffered, check current axis being held down.
             else
@@ -522,7 +522,7 @@ public class Script_PlayerMovement : MonoBehaviour
                     else if (dirVector.x < 0f)
                         bufferedInput = Directions.Left;
                     
-                    Debug.Log($"Player using Fixed Buffered HOLD Move: {bufferedInput}; dirVector {dirVector}");
+                    Dev_Logger.Debug($"Player using Fixed Buffered HOLD Move: {bufferedInput}; dirVector {dirVector}");
                 }
             }
             
@@ -719,7 +719,7 @@ public class Script_PlayerMovement : MonoBehaviour
                     
                     if (exitInfo.Type == Script_Exits.ExitType.StairsUp)
                     {
-                        Debug.Log("HandleStairsExitAnimation()");
+                        Dev_Logger.Debug("HandleStairsExitAnimation()");
                         HandleStairsExitAnimation();
                     }
 
@@ -890,7 +890,7 @@ public class Script_PlayerMovement : MonoBehaviour
     /// </summary>
     public void EnteredElevatorEvent()
     {
-        Debug.Log("Calling this Enter Elevator EVENT!!!");
+        Dev_Logger.Debug("Calling this Enter Elevator EVENT!!!");
         Script_PlayerEventsManager.EnteredElevator();
     }
 

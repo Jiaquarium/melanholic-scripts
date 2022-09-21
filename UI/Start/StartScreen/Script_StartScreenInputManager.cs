@@ -19,7 +19,7 @@ public class Script_StartScreenInputManager : MonoBehaviour
 
         if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame())
         {
-            Debug.Log("HandleEnterInput(): StartOptionsOpen() UI Submit input detected");
+            Dev_Logger.Debug("HandleEnterInput(): StartOptionsOpen() UI Submit input detected");
             
             mainController.StartOptionsOpen(isFadeIn: true);
             

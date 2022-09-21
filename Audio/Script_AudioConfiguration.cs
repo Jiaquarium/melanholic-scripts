@@ -35,7 +35,7 @@ public class Script_AudioConfiguration : MonoBehaviour
     /// </summary>
     private void OnAudioConfigurationChanged(bool deviceWasChanged)
     {
-        Debug.Log($"Device was changed {deviceWasChanged}");
+        Dev_Logger.Debug($"Device was changed {deviceWasChanged}");
 
         if (deviceWasChanged)
         {

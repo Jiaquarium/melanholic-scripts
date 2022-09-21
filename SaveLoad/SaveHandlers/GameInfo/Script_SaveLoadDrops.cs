@@ -12,14 +12,14 @@ public class Script_SaveLoadDrops : MonoBehaviour
         data.drops = dropsData;
 
         foreach (Model_PersistentDrop drop in dropsData)
-            Debug.Log(drop.itemId);
+            Dev_Logger.Debug(drop.itemId);
     }
 
     public void LoadDrops(Model_SaveData data)
     {
         if (data.drops == null)
         {
-            if (Debug.isDebugBuild) Debug.Log("No drops data to load.");
+            if (Debug.isDebugBuild) Dev_Logger.Debug("No drops data to load.");
             return;
         }
 
@@ -32,7 +32,7 @@ public class Script_SaveLoadDrops : MonoBehaviour
             
             if (game.InstantiateDropById(drop.itemId, location, dropLevelBehavior))
             {
-                Debug.Log($"Successful load of persistent drop {drop.itemId}");
+                Dev_Logger.Debug($"Successful load of persistent drop {drop.itemId}");
             }
             else
             {

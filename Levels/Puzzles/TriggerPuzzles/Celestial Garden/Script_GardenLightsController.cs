@@ -10,7 +10,7 @@ public class Script_GardenLightsController : Script_TriggerPuzzleController
     
     public override void TriggerActivated(string Id, Collider other)
     {
-        Debug.Log($"Garden trigger {Id} activated with {other.transform.parent.GetComponent<Script_CollectibleObject>().Item}");
+        Dev_Logger.Debug($"Garden trigger {Id} activated with {other.transform.parent.GetComponent<Script_CollectibleObject>().Item}");
 
         Script_Item itemDropped = other.transform.parent.GetComponent<Script_CollectibleObject>()?.Item;
         if (itemDropped == requiredItem)
@@ -21,7 +21,7 @@ public class Script_GardenLightsController : Script_TriggerPuzzleController
 
     public override void TriggerReactivated(string Id, Collider other)
     {
-        Debug.Log($"Garden trigger {Id} activated with {other.transform.parent.GetComponent<Script_CollectibleObject>().Item}");
+        Dev_Logger.Debug($"Garden trigger {Id} activated with {other.transform.parent.GetComponent<Script_CollectibleObject>().Item}");
 
         Script_Item itemDropped = other.transform.parent.GetComponent<Script_CollectibleObject>()?.Item;
         if (itemDropped == requiredItem)
@@ -32,7 +32,7 @@ public class Script_GardenLightsController : Script_TriggerPuzzleController
 
     public override void TriggerDeactivated(string Id, Collider other)
     {
-        Debug.Log($"Garden trigger {Id} deactivated with {other.transform.parent.GetComponent<Script_CollectibleObject>().Item}");
+        Dev_Logger.Debug($"Garden trigger {Id} deactivated with {other.transform.parent.GetComponent<Script_CollectibleObject>().Item}");
 
         Script_Item itemDropped = other.transform.parent.GetComponent<Script_CollectibleObject>()?.Item;
         if (itemDropped == requiredItem)

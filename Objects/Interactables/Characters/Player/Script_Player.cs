@@ -182,7 +182,7 @@ public class Script_Player : Script_Character
         get => playerMovementHandler.IsPassive;
         set
         {
-            Debug.Log($"Setting IsPassive: {IsPassive}");
+            Dev_Logger.Debug($"Setting IsPassive: {IsPassive}");
             playerMovementHandler.IsPassive = value;
         }
     }
@@ -305,7 +305,7 @@ public class Script_Player : Script_Character
     public void SetIsInteract()
     {
         SetState(Const_States_Player.Interact);
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void EndOfFrameSetIsInteract()
@@ -317,7 +317,7 @@ public class Script_Player : Script_Character
             yield return new WaitForEndOfFrame();
 
             SetState(Const_States_Player.Interact);
-            Debug.Log($"Player state set to {state}!");
+            Dev_Logger.Debug($"Player state set to {state}!");
         }
     }
 
@@ -325,21 +325,21 @@ public class Script_Player : Script_Character
     {
         SetState(Const_States_Player.Dialogue);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsViewing()
     {
         SetState(Const_States_Player.Viewing);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsPickingUp(Script_Item item)
     {
         SetState(Const_States_Player.PickingUp);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
         
         SetItemShown(item);
     }
@@ -348,56 +348,56 @@ public class Script_Player : Script_Character
     {
         SetState(Const_States_Player.Inventory);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsAttacking()
     {
         SetState(Const_States_Player.Attack);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsStandby()
     {
         SetState(Const_States_Player.Standby);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsPuppeteer()
     {
         SetState(Const_States_Player.Puppeteer);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsPuppeteerNull()
     {
         SetState(Const_States_Player.PuppeteerNull);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsEffect()
     {
         SetState(Const_States_Player.Effect);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsLastElevatorEffect()
     {
         SetState(Const_States_Player.LastElevatorEffect);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     public void SetIsMelancholyPianoEffect()
     {
         SetState(Const_States_Player.MelancholyPiano);
         StopMoving();
-        Debug.Log($"Player state set to {state}!");
+        Dev_Logger.Debug($"Player state set to {state}!");
     }
 
     protected bool IsNotMovingState()
@@ -570,7 +570,7 @@ public class Script_Player : Script_Character
     /// </summary>
     public void HandleEndItemDescriptionDialogue()
     {
-        Debug.Log($"{name}: HandleEndItemDescriptionDialogue() itemShown: {playerActionHandler.itemShown}");
+        Dev_Logger.Debug($"{name}: HandleEndItemDescriptionDialogue() itemShown: {playerActionHandler.itemShown}");
         playerActionHandler.HandleEndItemDescriptionDialogue(playerActionHandler.itemShown);
     }
 
@@ -622,7 +622,7 @@ public class Script_Player : Script_Character
     /// </summary>
     public override void ForcePush(Directions dir)
     {
-        Debug.Log($"Player is force pushed dir {dir}");
+        Dev_Logger.Debug($"Player is force pushed dir {dir}");
         
         playerMovementHandler.Move(dir);
     }
@@ -660,7 +660,7 @@ public class Script_Player : Script_Character
         
         SwitchLight(IsLightOn);
 
-        Debug.Log($"Player initialized at position: {adjustedSpawnLocation.x}, {adjustedSpawnLocation.y}, {adjustedSpawnLocation.z}");
+        Dev_Logger.Debug($"Player initialized at position: {adjustedSpawnLocation.x}, {adjustedSpawnLocation.y}, {adjustedSpawnLocation.z}");
     }
     
     public void Setup(

@@ -93,7 +93,7 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
             && Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
         )
         {
-            Debug.Log("Playing timeline on input");
+            Dev_Logger.Debug("Playing timeline on input");
             
             ResumeAction.SafeInvoke();
             sequenceController.Play();
@@ -104,7 +104,7 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
 
     private void OnTypingDone()
     {
-        Debug.Log("Notify timeline to start next action");
+        Dev_Logger.Debug("Notify timeline to start next action");
         
         onTypingDoneAction.SafeInvoke();
         

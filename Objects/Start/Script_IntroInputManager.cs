@@ -20,7 +20,7 @@ public class Script_IntroInputManager : MonoBehaviour
             && !isDisabled
         )
         {
-            Debug.Log($"{name} HandleEnterInput() skipping to Start Screen");
+            Dev_Logger.Debug($"{name} HandleEnterInput() skipping to Start Screen");
             introController.SkipToStartScreen();
         }
     }

@@ -71,7 +71,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
         {
-            Debug.Log("interactable objects count: " + interactableObjects.Count);
+            Dev_Logger.Debug("interactable objects count: " + interactableObjects.Count);
         }
     }
 
@@ -122,7 +122,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
         {
-            Debug.Log("interactable objects count: " + interactableObjects.Count);
+            Dev_Logger.Debug("interactable objects count: " + interactableObjects.Count);
         }
     }
 
@@ -268,7 +268,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
         Object[] allText = GameObject.FindObjectsOfType(typeof(Script_InteractableObjectText));
         foreach (Script_InteractableObjectText t in allText)
         {
-            Debug.Log(t.name);
+            Dev_Logger.Debug(t.name);
         }
     }
 }

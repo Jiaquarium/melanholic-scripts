@@ -38,7 +38,7 @@ public class Script_SpriteCopyEditor : EditorWindow {
     void CopyPivotsAndSlices()
     {
         if (!copyFrom || !copyTo) {
-            Debug.Log("Missing one object");
+            Dev_Logger.Debug("Missing one object");
 
         return;
     }

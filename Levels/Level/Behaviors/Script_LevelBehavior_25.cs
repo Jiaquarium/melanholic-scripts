@@ -563,7 +563,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     
     public void OnElleniaDidTalk()
     {
-        Debug.Log($"{name} OnElleniaDidTalk()");
+        Dev_Logger.Debug($"{name} OnElleniaDidTalk()");
         Script_EventCycleManager.Control.SetElleniaDidTalkCountdownMax();
     }
 

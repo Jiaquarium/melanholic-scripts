@@ -56,7 +56,7 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
     {
         if (IsDone)     return;
 
-        Debug.Log("PUZZLE IS DONE!!!!!!!!! BOTH TARGETS ON PLATFORM");
+        Dev_Logger.Debug("PUZZLE IS DONE!!!!!!!!! BOTH TARGETS ON PLATFORM");
         Script_PuzzlesEventsManager.PuzzleSuccess(PuzzleId);
         
         IsDone = true;
@@ -189,7 +189,7 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
     // Timeline Signals
     public void OnPuzzleTransformDone(bool isInitialize = false)
     {
-        Debug.Log("ON PUZZLE TRANSFORM DONE CALLED ON TIMELINE END!!!!!!!");
+        Dev_Logger.Debug("ON PUZZLE TRANSFORM DONE CALLED ON TIMELINE END!!!!!!!");
         
         isWallsMoving = false;
         

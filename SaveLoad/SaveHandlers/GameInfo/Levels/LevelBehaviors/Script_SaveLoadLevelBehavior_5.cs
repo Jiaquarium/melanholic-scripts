@@ -20,7 +20,7 @@ public class Script_SaveLoadLevelBehavior_5 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_5 lvlModel = data.levelsData.LB5;
         LB5.didOnEntranceDialogue = lvlModel.didOnEntranceDialogue;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

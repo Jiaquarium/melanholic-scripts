@@ -21,13 +21,13 @@ public class Script_SaveLoadLevelBehavior_26 : Script_SaveLoadLevelBehavior
     {
         if (data.levelsData == null)
         {
-            Debug.Log("There is no levels state data to load.");
+            Dev_Logger.Debug("There is no levels state data to load.");
             return;
         }
 
         if (data.levelsData.LB26 == null)
         {
-            Debug.Log("There is no LB26 state data to load.");
+            Dev_Logger.Debug("There is no LB26 state data to load.");
             return;
         }
 
@@ -36,7 +36,7 @@ public class Script_SaveLoadLevelBehavior_26 : Script_SaveLoadLevelBehavior
         LB26.didActivateDramaticThoughts    = lvlModel.didActivateDramaticThoughts;
         LB26.gotIceSpikeSticker             = lvlModel.gotIceSpikeSticker;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

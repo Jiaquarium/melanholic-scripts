@@ -23,12 +23,12 @@ public class Script_SavedGameTitleControl : MonoBehaviour
                 Model_SavedGameTitleData data = (Model_SavedGameTitleData)bf.Deserialize(file);
                 file.Close();
 
-                if (Debug.isDebugBuild) Debug.Log("Successful title load at: " + filePath);
+                if (Debug.isDebugBuild) Dev_Logger.Debug("Successful title load at: " + filePath);
                 return data;
             }
             else
             {
-                if (Debug.isDebugBuild) Debug.Log("Did not load; file not found.");
+                if (Debug.isDebugBuild) Dev_Logger.Debug("Did not load; file not found.");
                 return null;
             }
         }

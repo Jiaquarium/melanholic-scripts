@@ -30,7 +30,7 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("Failed to equip sticker");
+            Dev_Logger.Debug("Failed to equip sticker");
             GetComponent<Script_InventoryManager>().ErrorDullSFX();
             return false;
         }

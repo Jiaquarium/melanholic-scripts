@@ -82,7 +82,7 @@ public class Script_Pushable : Script_InteractableObject
         transform.position = spawnLocation;
         SetActive(true);
 
-        Debug.Log($"Pushable {this.name} respawned at {spawnLocation}");
+        Dev_Logger.Debug($"Pushable {this.name} respawned at {spawnLocation}");
     }
 
     void Move()

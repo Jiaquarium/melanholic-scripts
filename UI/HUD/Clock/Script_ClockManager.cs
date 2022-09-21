@@ -92,7 +92,7 @@ public class Script_ClockManager : MonoBehaviour
 
     public void TimesUp()
     {
-        Debug.Log("TIMES UP@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        Dev_Logger.Debug("TIMES UP@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         clock.CurrentTime = Script_Clock.EndTime;
         

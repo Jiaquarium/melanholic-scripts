@@ -20,7 +20,7 @@ public class Script_SaveLoadEquipment : MonoBehaviour
     {
         if (data.equipmentIds == null)
         {
-            if (Debug.isDebugBuild) Debug.Log("No sticker items to load.");
+            if (Debug.isDebugBuild) Dev_Logger.Debug("No sticker items to load.");
             return;
         }
 

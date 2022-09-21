@@ -19,7 +19,7 @@ public class Script_OnEnableShowFullArt : MonoBehaviour
     {
         if (isDone)     return;
         
-        Debug.Log($"{this.name} setting full art animation triggers to prepare entrance from right");
+        Dev_Logger.Debug($"{this.name} setting full art animation triggers to prepare entrance from right");
 
         Script_FullArtManager.Control.ShowFullArt(
             fullArt,

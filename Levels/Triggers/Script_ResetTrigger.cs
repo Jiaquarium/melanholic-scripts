@@ -25,7 +25,7 @@ public class Script_ResetTrigger : Script_Trigger
                 return;
             }
 
-            Debug.Log("Reset trigger firing event.");
+            Dev_Logger.Debug("Reset trigger firing event.");
             Script_PuzzlesEventsManager.PuzzleReset();
         }
     }
@@ -33,7 +33,7 @@ public class Script_ResetTrigger : Script_Trigger
     void ResetSFX()
     {
         AudioClip clip = _clip == null ? clip = Script_SFXManager.SFX.resetSFX : clip = _clip;
-        Debug.Log($"ResetTrigger playing clip {clip.name}");
+        Dev_Logger.Debug($"ResetTrigger playing clip {clip.name}");
 
         GetComponent<AudioSource>().PlayOneShot(clip, Script_SFXManager.SFX.resetSFXVol);
     }

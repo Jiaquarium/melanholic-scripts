@@ -129,7 +129,7 @@ public class Script_SettingsController : MonoBehaviour
     // UI Settings Overview: Controls Button
     public void ToControls()
     {
-        Debug.Log("ToControls()");
+        Dev_Logger.Debug("ToControls()");
 
         overviewCanvasGroup.Close();
         

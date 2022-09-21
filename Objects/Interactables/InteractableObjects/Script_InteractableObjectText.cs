@@ -59,7 +59,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
     {
         if (CheckDisabled())
         {
-            Debug.Log($"{name} is disabled");
+            Dev_Logger.Debug($"{name} is disabled");
             return;
         }
         
@@ -96,7 +96,7 @@ public class Script_InteractableObjectText : Script_InteractableObject
     {
         if (dialogueManager.IsDialogueSkippable())
         {
-            Debug.Log("Attempting to skip typing sentence via IOText");
+            Dev_Logger.Debug("Attempting to skip typing sentence via IOText");
             dialogueManager.SkipTypingSentence();
         }
         else

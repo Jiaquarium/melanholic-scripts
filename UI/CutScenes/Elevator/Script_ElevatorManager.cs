@@ -92,7 +92,7 @@ public class Script_ElevatorManager : MonoBehaviour
     {
         ExitBehavior();
         
-        Debug.Log("@@@@@@@@@ {name} CURRENT EXIT DATA @@@@@@@@@");
+        Dev_Logger.Debug("@@@@@@@@@ {name} CURRENT EXIT DATA @@@@@@@@@");
         Script_Utils.DebugToConsole(currentExitData);
         
         /// Set up the new level in the background
@@ -120,7 +120,7 @@ public class Script_ElevatorManager : MonoBehaviour
             Script_LevelBehavior currentLevelBehavior = Script_Game.Game.levelBehavior;
             if (currentLevelBehavior.HasField(elevatorName))
             {
-                Debug.Log($"Setting initial state of: {elevatorName}");
+                Dev_Logger.Debug($"Setting initial state of: {elevatorName}");
 
                 currentElevator = currentLevelBehavior.GetField<Script_Elevator>(elevatorName);
                 
@@ -135,7 +135,7 @@ public class Script_ElevatorManager : MonoBehaviour
             {
                 currentElevator = null;
                 
-                Debug.Log($"You are not exposing a public {elevatorName} property on current Level Behavior");
+                Dev_Logger.Debug($"You are not exposing a public {elevatorName} property on current Level Behavior");
             }
         }
     }
@@ -148,7 +148,7 @@ public class Script_ElevatorManager : MonoBehaviour
         elevatorCanvasGroupController.Close();
 
         /// Animate doors closed
-        Debug.Log("Done opening UI elevator doors; animate World elevator doors closing");
+        Dev_Logger.Debug("Done opening UI elevator doors; animate World elevator doors closing");
         
         // If there exists a World Elevator start animating it
         if (currentElevator != null)
@@ -157,7 +157,7 @@ public class Script_ElevatorManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"{name} There is no current World Elevator, changing state to interact");
+            Dev_Logger.Debug($"{name} There is no current World Elevator, changing state to interact");
             
             game.ChangeStateInteract();
         }
@@ -168,7 +168,7 @@ public class Script_ElevatorManager : MonoBehaviour
         // When entering Bay v1 from Last Elevator, the BGM will be paused via Behavior.
         if (!bgm.IsPlaying)
         {
-            Debug.Log("Start BGM from Elevator Manager");
+            Dev_Logger.Debug("Start BGM from Elevator Manager");
             game.StartBgMusicNoFade();
         }
         

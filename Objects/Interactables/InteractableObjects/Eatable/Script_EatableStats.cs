@@ -19,7 +19,7 @@ public class Script_EatableStats : Script_CharacterStats
         currentHp -= dmg;
         currentHp = Mathf.Clamp(currentHp, 0, int.MaxValue);
         
-        Debug.Log($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
+        Dev_Logger.Debug($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
         
         // Show a different spirte depending on how hurt the Interactable is
         HandleHurtGraphics(currentHp);
@@ -31,7 +31,7 @@ public class Script_EatableStats : Script_CharacterStats
 
     protected override void Die(Script_GameOverController.DeathTypes deathType)
     {
-        Debug.Log("**** EATABLE DIE() ****");
+        Dev_Logger.Debug("**** EATABLE DIE() ****");
         gameObject.SetActive(false);
     }
 

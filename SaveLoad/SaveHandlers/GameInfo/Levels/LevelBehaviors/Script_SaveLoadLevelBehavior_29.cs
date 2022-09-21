@@ -17,7 +17,7 @@ public class Script_SaveLoadLevelBehavior_29 : Script_SaveLoadLevelBehavior
     {
         Model_LevelBehavior_29 lvlModel     = data.levelsData.LB29;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

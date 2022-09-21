@@ -19,20 +19,20 @@ public class Script_SaveLoadLevelBehavior_31 : Script_SaveLoadLevelBehavior
     {
         if (data.levelsData == null)
         {
-            Debug.Log("There is no levels state data to load.");
+            Dev_Logger.Debug("There is no levels state data to load.");
             return;
         }
 
         if (data.levelsData.LB31 == null)
         {
-            Debug.Log("There is no LB31 state data to load.");
+            Dev_Logger.Debug("There is no LB31 state data to load.");
             return;
         }
 
         Model_LevelBehavior_31 lvlModel     = data.levelsData.LB31;
         LB31.isDone                         = lvlModel.isDone;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

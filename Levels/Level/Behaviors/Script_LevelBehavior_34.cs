@@ -27,7 +27,7 @@ public class Script_LevelBehavior_34 : Script_LevelBehavior
 
         void PauseBgmForElevator()
         {
-            Debug.Log($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
+            Dev_Logger.Debug($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
 
             // Only stop Bgm if the elevator manager hasn't already restarted it.
             // This happens on same frame but after Bgm Start on InitLevel.
@@ -57,7 +57,7 @@ public class Script_LevelBehavior_34Tester : Editor
         if (GUILayout.Button("Test for elevator Field"))
         {
             string TestField = "elevator";
-            Debug.Log($"Has field {TestField}: {lb.HasField(TestField)}");
+            Dev_Logger.Debug($"Has field {TestField}: {lb.HasField(TestField)}");
         }
     }
 }

@@ -19,7 +19,7 @@ public class Script_MovingNPCCreator : MonoBehaviour
         
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
         {
-            Debug.Log("NPCs Count: " + NPCs.Count + ", MovingNPCs Count: " + movingNPCs.Count);
+            Dev_Logger.Debug("NPCs Count: " + NPCs.Count + ", MovingNPCs Count: " + movingNPCs.Count);
         }
 
         if (isInitialize)

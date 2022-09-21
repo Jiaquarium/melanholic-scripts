@@ -21,13 +21,13 @@ public class Script_SaveLoadLevelBehavior_24 : Script_SaveLoadLevelBehavior
     {
         if (data.levelsData == null)
         {
-            Debug.Log("There is no levels state data to load.");
+            Dev_Logger.Debug("There is no levels state data to load.");
             return;
         }
 
         if (data.levelsData.LB24 == null)
         {
-            Debug.Log("There is no LB24 state data to load.");
+            Dev_Logger.Debug("There is no LB24 state data to load.");
             return;
         }
 
@@ -36,7 +36,7 @@ public class Script_SaveLoadLevelBehavior_24 : Script_SaveLoadLevelBehavior
         LB24.didPickUpSpringStone           = lvlModel.didPickUpSpringStone;
         LB24.didPlayFaceOff                 = lvlModel.didPlayFaceOff;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

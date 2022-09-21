@@ -18,7 +18,7 @@ public class Script_SavedGameInputManager : Script_ExitViewInputManager
     {
         if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
         {
-            Debug.Log($"SavedGameInputManager: Cancel called, firing ExitFileActionsMode event");
+            Dev_Logger.Debug($"SavedGameInputManager: Cancel called, firing ExitFileActionsMode event");
             Script_StartEventsManager.ExitFileActions();
         }
     }

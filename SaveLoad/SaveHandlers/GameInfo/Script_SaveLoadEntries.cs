@@ -31,7 +31,7 @@ public class Script_SaveLoadEntries : MonoBehaviour
     {
         if (data.entriesData == null)
         {
-            if (Debug.isDebugBuild) Debug.Log("No entries data to load.");
+            if (Debug.isDebugBuild) Dev_Logger.Debug("No entries data to load.");
             return;
         }
 

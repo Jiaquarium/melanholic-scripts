@@ -27,7 +27,7 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
         LB42.isMooseQuestDone                   = lvlModel.isMooseQuestDone;
         LB42.didPlayFaceOff                     = lvlModel.didPlayFaceOff;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

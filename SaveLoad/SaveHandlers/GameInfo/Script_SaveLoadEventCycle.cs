@@ -21,7 +21,7 @@ public class Script_SaveLoadEventCycle : MonoBehaviour
     {
         if (data.eventCycleData == null)
         {
-            Debug.Log($"There is no {this} state data to load.");
+            Dev_Logger.Debug($"There is no {this} state data to load.");
             return;
         }
 
@@ -35,7 +35,7 @@ public class Script_SaveLoadEventCycle : MonoBehaviour
         eventCycleManager.IdsPositiveInteractionCount = eventCycle.idsPositiveInteractionCount;
         eventCycleManager.DidTalkToEllenia = eventCycle.didTalkToElleniaCountdown;
         
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(eventCycle);
     }
 }

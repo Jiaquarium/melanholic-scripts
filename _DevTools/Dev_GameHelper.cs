@@ -9,6 +9,15 @@ using UnityEditor;
 
 public class Dev_GameHelper : MonoBehaviour
 {
+    public static readonly string[] ScriptingDefineSymbolsDev = {
+        "UNITY_POST_PROCESSING_STACK_V2",
+        "ENABLE_LOGS"
+    };
+
+    public static readonly string[] ScriptingDefineSymbolsProd = {
+        "UNITY_POST_PROCESSING_STACK_V2",
+    };
+    
     [SerializeField] private bool isDisableHUD;
     [SerializeField] private bool isStartAwareTime;
     [SerializeField] private bool isStartWarningTime;
@@ -260,28 +269,44 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(LabyrinthEntrance);
     }
 
+    public void AddLogs()
+    {
+        PlayerSettings.SetScriptingDefineSymbols(
+            UnityEditor.Build.NamedBuildTarget.Standalone,
+            ScriptingDefineSymbolsDev
+        );
+    }
+
+    public void RemoveLogs()
+    {
+        PlayerSettings.SetScriptingDefineSymbols(
+            UnityEditor.Build.NamedBuildTarget.Standalone,
+            ScriptingDefineSymbolsProd
+        );
+    }
+
     public void BuildSetup()
     {
         runsManager.StartWeekdayCycle();
         Script_Game.LevelsInactivate();
 
-        Debug.Log("Build Setup/ Setting GameObjects active states");
+        Dev_Logger.Debug("Build Setup/ Setting GameObjects active states");
         
         if (!settings.activeInHierarchy)
         {
-            Debug.Log($"<color=red>Settings being set to: {true}</color>");
+            Dev_Logger.Debug($"<color=red>Settings being set to: {true}</color>");
             settings.gameObject.SetActive(true);
         }
         
         if (HUD.activeInHierarchy)
         {
-            Debug.Log($"<color=red>HUD being set to: {false}</color>");
+            Dev_Logger.Debug($"<color=red>HUD being set to: {false}</color>");
             HUD.gameObject.SetActive(false);
         }
 
         if (endings.activeInHierarchy)
         {
-            Debug.Log($"<color=red>endings being set to: {false}</color>");
+            Dev_Logger.Debug($"<color=red>endings being set to: {false}</color>");
             endings.gameObject.SetActive(false);
         }
 
@@ -760,6 +785,28 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Build Setup", GUILayout.Height(32)))
                 {
                     t.BuildSetup();
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
+                }
+
+                if (GUILayout.Button("Add Logs (Add ENABLE_LOGS)", GUILayout.Height(32)))
+                {
+                    t.AddLogs();
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
+                }
+
+                if (GUILayout.Button("Remove Logs (Remove ENABLE_LOGS)", GUILayout.Height(32)))
+                {
+                    t.RemoveLogs();
 
                     if (GUI.changed)
                     {

@@ -26,7 +26,7 @@ public class Script_Hint : MonoBehaviour
 
     public void Show()
     {
-        Debug.Log("Show hint");
+        Dev_Logger.Debug("Show hint");
         Script_HintManager.Control.FadeIn(this);
     }
     

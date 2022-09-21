@@ -50,7 +50,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     private void Start()
     {
-        Debug.Log($"{name} didStartThought: {didStartThought}");
+        Dev_Logger.Debug($"{name} didStartThought: {didStartThought}");
         
         if (!didStartThought)
         {
@@ -59,7 +59,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
             Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             game.StopBgMusic();
             
-            Debug.Log($"**** {name} starting wells cut scene ****");
+            Dev_Logger.Debug($"**** {name} starting wells cut scene ****");
             Script_PRCSManager.Control.OpenPRCSNoFade(wellJustOpened);
         }
     }

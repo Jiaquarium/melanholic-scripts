@@ -31,7 +31,7 @@ public class Script_SaveLoadNames : MonoBehaviour
     {
         if (data.namesData == null)
         {
-            Debug.Log("There is no names state data to load.");
+            Dev_Logger.Debug("There is no names state data to load.");
             return;
         }
 
@@ -56,7 +56,7 @@ public class Script_SaveLoadNames : MonoBehaviour
 
         Script_Names.LoadNames(names);
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(names);
     }
 }

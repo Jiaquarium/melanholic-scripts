@@ -27,7 +27,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     /// Ensure initializing comes before OnSelect
     void OnEnable()
     {
-        Debug.Log($"{name} onEnable");
+        Dev_Logger.Debug($"{name} onEnable");
         InitializeState();
         HandleSlowAwakeOnEnable();
     }
@@ -45,7 +45,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     
     public virtual void OnSelect(BaseEventData e)
     {
-        Debug.Log($"OnSelect {name}");
+        Dev_Logger.Debug($"OnSelect {name}");
         
         bool isSlowAwakeState = EventSystem.current != null
             && EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>() != null
@@ -65,7 +65,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         if (IsPaused)
             return;
         
-        Debug.Log($"OnDeselect {name}");
+        Dev_Logger.Debug($"OnDeselect {name}");
         HighlightOutline(false);
 
         if (itemHighlighter != null)
@@ -74,7 +74,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
 
     public void Select()
     {
-        Debug.Log($"Select {name}");
+        Dev_Logger.Debug($"Select {name}");
         HighlightOutline(true);
     }
 
@@ -100,7 +100,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
             && EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>() != null
         )
         {
-            Debug.Log($"{name} HandleSlowAwakeOnEnable");
+            Dev_Logger.Debug($"{name} HandleSlowAwakeOnEnable");
             HandleHighlight(false);
         }
     }
@@ -132,7 +132,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
 
     protected virtual void HighlightOutline(bool isOn)
     {
-        if (isOn)   Debug.Log($"{name}: HighlightOutline {isOn}");
+        if (isOn)   Dev_Logger.Debug($"{name}: HighlightOutline {isOn}");
 
         // Slow Awake: Handled by HandleSlowAwake
         HandleHighlight(isOn);

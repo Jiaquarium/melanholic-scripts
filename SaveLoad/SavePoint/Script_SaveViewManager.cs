@@ -123,7 +123,7 @@ public class Script_SaveViewManager : MonoBehaviour
         // // Cancel
         // else if (Id == 1)
         // {
-        //     Debug.Log("Cancelling save entry input!");
+        //     Dev_Logger.Debug("Cancelling save entry input!");
         //     dm.NextDialogueNode(1);
         // }
         // EndEntryMode();

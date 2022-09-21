@@ -188,14 +188,14 @@ public class Script_Clock : MonoBehaviour
         {
             if (hideColons != lastHideColons)
             {
-                Debug.Log($"mod {(CurrentTime * 2) % (TimeMultiplier * 2)} time: {Time.time - blinkTimer}");
+                Dev_Logger.Debug($"mod {(CurrentTime * 2) % (TimeMultiplier * 2)} time: {Time.time - blinkTimer}");
 
                 blinkTimer = Time.time;
                 lastHideColons = hideColons;
             }
             else
             {
-                Debug.Log($"mod {(CurrentTime * 2) % (TimeMultiplier * 2)}");
+                Dev_Logger.Debug($"mod {(CurrentTime * 2) % (TimeMultiplier * 2)}");
             }
             isClose = true;
         }

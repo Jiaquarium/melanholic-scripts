@@ -239,7 +239,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         Script_FrozenWell destroyedFrozenWell = iceStats.GetComponent<Script_FrozenWell>();
 
-        Debug.Log($"Frozen Well destroyed: {destroyedFrozenWell}");
+        Dev_Logger.Debug($"Frozen Well destroyed: {destroyedFrozenWell}");
 
         if (destroyedFrozenWell == null)
             return;
@@ -250,7 +250,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             frozenWell => frozenWell == destroyedFrozenWell
         );
 
-        Debug.Log($"Matching Frozen Well destroyed: {matchingFrozenWell}");
+        Dev_Logger.Debug($"Matching Frozen Well destroyed: {matchingFrozenWell}");
 
         if (matchingFrozenWell != null)
         {
@@ -260,7 +260,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
                 if (matchingFrozenWell == frozenWell)
                     continue;
 
-                Debug.Log($"Setting frozenWell inactive: {frozenWell.gameObject.name}");
+                Dev_Logger.Debug($"Setting frozenWell inactive: {frozenWell.gameObject.name}");
                 frozenWell.gameObject.SetActive(false);
             }
         }
@@ -319,14 +319,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void GiveSticker()
     {
-        Debug.Log("-------- MOOSE GIVES PLAYER AESTHETIC STICKER --------");
+        Dev_Logger.Debug("-------- MOOSE GIVES PLAYER AESTHETIC STICKER --------");
 
         Script_DialogueManager.DialogueManager.StartDialogueNode(OnMooseGiveItemDoneNode);
     }
 
     public void UpdateMooseName()
     {
-        Debug.Log("-------- UPDATING MOOSE NAME --------");
+        Dev_Logger.Debug("-------- UPDATING MOOSE NAME --------");
         Script_Names.UpdateMoose();
     }
 

@@ -23,7 +23,7 @@ public class Script_TriggerEnterOnce : Script_Trigger
             || other.tag == Const_Tags.Player
         )
         {
-            Debug.Log($"{name} detected other <{other.gameObject.name}> with tag <{other.tag}>");
+            Dev_Logger.Debug($"{name} detected other <{other.gameObject.name}> with tag <{other.tag}>");
             OnEnter(other);
         }
     }
@@ -47,7 +47,7 @@ public class Script_TriggerEnterOnce : Script_Trigger
         // For entering once.
         else if (game.ActivateTrigger(Id))
         {
-            Debug.Log($"{name} Entered: <{other.gameObject.name}> Setting inactive");
+            Dev_Logger.Debug($"{name} Entered: <{other.gameObject.name}> Setting inactive");
             this.gameObject.SetActive(false);
         }
         

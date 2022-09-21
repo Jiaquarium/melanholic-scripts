@@ -19,7 +19,7 @@ public class Script_ItemChoicesInputManager : Script_InventoryViewInputManager
     
     protected override void ExitView()
     {
-        Debug.Log("Caught Exit Input: Exiting submenu from ItemChoicesInputManager");
+        Dev_Logger.Debug("Caught Exit Input: Exiting submenu from ItemChoicesInputManager");
 
         // exit item choices and go back to inventory
         gameObject.SetActive(false);

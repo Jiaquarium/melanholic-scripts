@@ -220,7 +220,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             Script_BackgroundMusicManager.Control.FadeOutMed(null, Const_AudioMixerParams.ExposedBGVolume);
 
             Script_TransitionManager.Control.TimelineFadeIn(timelineFaderFadeInTime, () => {
-                Debug.Log($"Faded in Timeline Under after t {timelineFaderFadeInTime} sec");
+                Dev_Logger.Debug($"Faded in Timeline Under after t {timelineFaderFadeInTime} sec");
                 
                 Script_Player p = game.GetPlayer();
                 
@@ -316,7 +316,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
     public void TimelineSetup()
     {
-        Debug.Log($"{name} Setup from Timeline");
+        Dev_Logger.Debug($"{name} Setup from Timeline");
         
         Ids.gameObject.SetActive(false);
     }

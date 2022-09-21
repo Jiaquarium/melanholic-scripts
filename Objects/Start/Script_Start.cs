@@ -67,18 +67,18 @@ public class Script_Start : MonoBehaviour
         switch(startState)
         {
             case (StartStates.GameOver):
-                Debug.Log("Script_Start in Start() loading Game Over");
+                Dev_Logger.Debug("Script_Start in Start() loading Game Over");
                 mainController.InitializeGameOverState();
                 mainController.ToGameOver(deathType);
                 break;
 
             case (StartStates.BackToMainMenu):
-                Debug.Log("Coming back from Game, No Intro Start Screen");
+                Dev_Logger.Debug("Coming back from Game, No Intro Start Screen");
                 mainController.InitializeIntroSimple(isForceInitedSimple: true);
                 break;
 
             default:
-                Debug.Log("Default Start Screeen");
+                Dev_Logger.Debug("Default Start Screeen");
                 mainController.InitializeIntroSimple();
                 break;
         }

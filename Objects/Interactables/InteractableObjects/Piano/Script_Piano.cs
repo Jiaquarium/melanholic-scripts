@@ -38,7 +38,7 @@ public class Script_Piano : Script_InteractableObjectText
     {
         get
         {
-            Debug.Log($"MapNameField {MapNameField} for {pianoData.levelBehavior}");
+            Dev_Logger.Debug($"MapNameField {MapNameField} for {pianoData.levelBehavior}");
             
             if (pianoData.levelBehavior.HasField(MapNameField))
             {
@@ -53,7 +53,7 @@ public class Script_Piano : Script_InteractableObjectText
     {
         if (CheckDisabled())
         {
-            Debug.Log($"{name} is disabled");
+            Dev_Logger.Debug($"{name} is disabled");
             return;     
         }
 
@@ -91,7 +91,7 @@ public class Script_PianoTester : Editor
         Script_Piano t = (Script_Piano)target;
         if (GUILayout.Button("Test MapFieldName"))
         {
-            Debug.Log(t.MapName);
+            Dev_Logger.Debug(t.MapName);
         }
     }
 }

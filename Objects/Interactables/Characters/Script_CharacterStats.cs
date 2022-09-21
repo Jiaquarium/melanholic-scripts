@@ -28,7 +28,7 @@ public class Script_CharacterStats : MonoBehaviour
         // reduce health
         currentHp -= dmg;
         currentHp = Mathf.Clamp(currentHp, 0, int.MaxValue);
-        Debug.Log($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
+        Dev_Logger.Debug($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
 
         if (currentHp == 0)
         {
@@ -44,7 +44,7 @@ public class Script_CharacterStats : MonoBehaviour
         int hpActuallyHealed = Mathf.Min(healHp, maxHpToHeal);
         currentHp += hpActuallyHealed;
 
-        Debug.Log($"Heal healed {hpActuallyHealed}");
+        Dev_Logger.Debug($"Heal healed {hpActuallyHealed}");
 
         return hpActuallyHealed;
     }
@@ -53,7 +53,7 @@ public class Script_CharacterStats : MonoBehaviour
     {
         int maxHpToHeal = stats.maxHp.GetVal() - currentHp;
         
-        Debug.Log($"Full Heal heals {maxHpToHeal}");
+        Dev_Logger.Debug($"Full Heal heals {maxHpToHeal}");
 
         return Heal(maxHpToHeal);
     }

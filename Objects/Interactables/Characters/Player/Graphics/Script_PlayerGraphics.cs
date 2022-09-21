@@ -63,7 +63,7 @@ public class Script_PlayerGraphics : MonoBehaviour
 
     public void SetHidden(bool isHidden)
     {
-        Debug.Log($"Disabling graphics {name}");
+        Dev_Logger.Debug($"Disabling graphics {name}");
         graphics.enabled = !isHidden;
     }
 }

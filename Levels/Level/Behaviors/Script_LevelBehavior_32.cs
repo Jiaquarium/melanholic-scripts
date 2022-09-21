@@ -260,7 +260,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         // Check Cipher
         bool isSuccessfulSubmit = CheckCCTVCode(CCTVcodeInput);
         
-        Debug.Log($"------------ Result: {isSuccessfulSubmit} ------------");
+        Dev_Logger.Debug($"------------ Result: {isSuccessfulSubmit} ------------");
 
         // Call Interactable Object
         if (isSuccessfulSubmit)
@@ -337,7 +337,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // InteractableObject UnityEvents
     public void OnTryToExitFrontDoor()
     {
-        Debug.Log("Move camera to hotel camera cut scene!!!");
+        Dev_Logger.Debug("Move camera to hotel camera cut scene!!!");
 
         game.ChangeStateCutScene();
         
@@ -354,21 +354,21 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         switch (game.ActiveEnding)
         {
             case (Script_TransitionManager.Endings.Good):
-                Debug.Log("@@@@@@@@@ GOOD ENDING, remove door @@@@@@@@@");
+                Dev_Logger.Debug("@@@@@@@@@ GOOD ENDING, remove door @@@@@@@@@");
 
                 game.EndingCutScene(Script_TransitionManager.Endings.Good);
 
                 break;
             
             case (Script_TransitionManager.Endings.True):
-                Debug.Log("@@@@@@@@@ TRUE ENDING, remove door @@@@@@@@@");
+                Dev_Logger.Debug("@@@@@@@@@ TRUE ENDING, remove door @@@@@@@@@");
 
                 game.EndingCutScene(Script_TransitionManager.Endings.True);
 
                 break;
 
             case (Script_TransitionManager.Endings.Dream):
-                Debug.Log("@@@@@@@@@ DREAM ENDING, remove door @@@@@@@@@");
+                Dev_Logger.Debug("@@@@@@@@@ DREAM ENDING, remove door @@@@@@@@@");
 
                 game.EndingCutScene(Script_TransitionManager.Endings.Dream);
 
@@ -553,7 +553,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         switch (game.ActiveEnding)
         {
             case (Script_TransitionManager.Endings.True):
-                Debug.Log("------ SETTING UP TRUE ENDING, remove door ------");
+                Dev_Logger.Debug("------ SETTING UP TRUE ENDING, remove door ------");
                 HandleEndingExitState(true);
                 goodEndingExitPrompter.gameObject.SetActive(false);
                 break;
@@ -594,7 +594,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             {
                 bool result = t.CheckCCTVCode(t.DEVELOPMENT_CCTVCodeInput);
 
-                Debug.Log($"------------ Result: {result} ------------");
+                Dev_Logger.Debug($"------------ Result: {result} ------------");
             }
 
             GUILayout.Space(8);

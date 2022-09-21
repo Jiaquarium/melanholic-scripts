@@ -23,7 +23,7 @@ public class Script_SaveLoadLevelBehavior_48 : Script_SaveLoadLevelBehavior
         LB48.IsDone                             = lvlModel.isDone;
         LB48.IsFinalRound                       = lvlModel.isFinalRound;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

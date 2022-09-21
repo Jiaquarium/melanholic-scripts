@@ -19,20 +19,20 @@ public class Script_SaveLoadLevelBehavior_22 : Script_SaveLoadLevelBehavior
     {
         if (data.levelsData == null)
         {
-            Debug.Log("There is no levels state data to load.");
+            Dev_Logger.Debug("There is no levels state data to load.");
             return;
         }
 
         if (data.levelsData.LB22 == null)
         {
-            Debug.Log("There is no LB22 state data to load.");
+            Dev_Logger.Debug("There is no LB22 state data to load.");
             return;
         }
 
         Model_LevelBehavior_22 lvlModel = data.levelsData.LB22;
         LB22.isUrsieCutsceneDone        = lvlModel.isUrsieCutsceneDone;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

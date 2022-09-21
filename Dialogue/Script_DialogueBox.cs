@@ -8,7 +8,7 @@ public class Script_DialogueBox : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] TMPs;
     
     public void Clear() {
-        Debug.Log("<><><><><><><><><><><> Clearing all TMP children on enable <><><><><><><><><><><>");
+        Dev_Logger.Debug("<><><><><><><><><><><> Clearing all TMP children on enable <><><><><><><><><><><>");
         foreach (TextMeshProUGUI TMP in TMPs)
         {
             TMP.text = string.Empty;

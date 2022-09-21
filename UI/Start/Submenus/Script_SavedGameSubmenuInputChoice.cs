@@ -31,7 +31,7 @@ public class Script_SavedGameSubmenuInputChoice : Script_UIChoice
 
     public void HandleSubmenuCancel()
     {
-        Debug.Log($"Firing ExitSubmenu() from choice");
+        Dev_Logger.Debug($"Firing ExitSubmenu() from choice");
         Script_StartEventsManager.ExitSubmenu();
     }
 }

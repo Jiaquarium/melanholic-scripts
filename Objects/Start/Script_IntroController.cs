@@ -34,7 +34,7 @@ public class Script_IntroController : Script_TimelineSequenceController
         
         if (!director.playableGraph.IsPlaying())
         {
-            Debug.Log($"{name} Playable is currently Paused");
+            Dev_Logger.Debug($"{name} Playable is currently Paused");
             Play();
         }
 

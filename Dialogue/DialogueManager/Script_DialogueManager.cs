@@ -191,7 +191,7 @@ public class Script_DialogueManager : MonoBehaviour
             && currentNode == prevNode
         )
         {
-            Debug.Log("WaitToTryCantUnderstandDialogue: Set game to Cut Scene.");
+            Dev_Logger.Debug("WaitToTryCantUnderstandDialogue: Set game to Cut Scene.");
             isInputDisabled = true;
             Script_Game.Game.GetPlayer().SetIsTalking();
             game.ChangeStateCutScene();
@@ -245,7 +245,7 @@ public class Script_DialogueManager : MonoBehaviour
         Script_Interactable talkingInteractive = null
     )
     {
-        Debug.Log($"Starting dialogue node. isInputDisabled: {isInputDisabled}");
+        Dev_Logger.Debug($"Starting dialogue node. isInputDisabled: {isInputDisabled}");
         
         if (isInputDisabled)
             return;
@@ -299,7 +299,7 @@ public class Script_DialogueManager : MonoBehaviour
             || !IsActive()
         )
         {   
-            Debug.Log(
+            Dev_Logger.Debug(
                 $"could not continue dialogue " +
                 $"isRenderingDialogueSection: {isRenderingDialogueSection} " +
                 $"isInputMode: {isInputMode} " +
@@ -357,7 +357,7 @@ public class Script_DialogueManager : MonoBehaviour
             // If the current full art and last are the same, then no need to do anything with Full Art
             if (currentNode.data.fullArt == lastFullArt)
             {
-                Debug.Log($"Full Art {currentNode.data.fullArt} same as Last Full Art {lastFullArt}");
+                Dev_Logger.Debug($"Full Art {currentNode.data.fullArt} same as Last Full Art {lastFullArt}");
                 DisplayNextDialoguePortionNextFrame();
             }
             else
@@ -391,7 +391,7 @@ public class Script_DialogueManager : MonoBehaviour
             /// Only remove if DialogueManager is the controller of the fullArtCanvas atm
             if (fullArtManager.state == Script_FullArtManager.FullArtState.DialogueManager)
             {
-                Debug.Log("Calling HideFullArt() from DialogueManager");
+                Dev_Logger.Debug("Calling HideFullArt() from DialogueManager");
                 fullArtManager.HideFullArt(lastFullArt, lastFadeOutSpeed, () =>
                 {
                     DisplayNextDialoguePortionNextFrame();
@@ -534,7 +534,7 @@ public class Script_DialogueManager : MonoBehaviour
         
         ShowDialogue();
 
-        Debug.Log("Fade In dialogue canvas");
+        Dev_Logger.Debug("Fade In dialogue canvas");
         
         if (SFXOn && !isSilentTyping)
         {
@@ -668,8 +668,8 @@ public class Script_DialogueManager : MonoBehaviour
         // to-date textInfo.characterCount)
         textUI.ForceMeshUpdate(true);
         
-        Debug.Log($"FormattedSentence <{formattedSentence}>");
-        Debug.Log($"characterCount <{textUI.textInfo.characterCount}> maxVisibleCharacters <{textUI.maxVisibleCharacters}>");
+        Dev_Logger.Debug($"FormattedSentence <{formattedSentence}>");
+        Dev_Logger.Debug($"characterCount <{textUI.textInfo.characterCount}> maxVisibleCharacters <{textUI.maxVisibleCharacters}>");
         
         // Must wait a frame so TMP can update for new hidden text.
         yield return null;
@@ -880,7 +880,7 @@ public class Script_DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("EndInputMode > HandleEndDialogue");
+            Dev_Logger.Debug("EndInputMode > HandleEndDialogue");
             
             HandleEndDialogue();
         }
@@ -919,7 +919,7 @@ public class Script_DialogueManager : MonoBehaviour
         // actually end dialogue
         else
         {
-            Debug.Log("OnEndDialogueSections > HandleEndDialogue");
+            Dev_Logger.Debug("OnEndDialogueSections > HandleEndDialogue");
             
             // HandDialogueNodeAction() handled later
             HandleEndDialogue();
@@ -1024,7 +1024,7 @@ public class Script_DialogueManager : MonoBehaviour
                 var NPC = activeInteractable as Script_StaticNPC;
                 if (NPC != null)
                 {
-                    Debug.Log($"{activeInteractable} State {NPC.State}");
+                    Dev_Logger.Debug($"{activeInteractable} State {NPC.State}");
                     NPC.State = Script_StaticNPC.States.Interact;
                 }
 
@@ -1057,7 +1057,7 @@ public class Script_DialogueManager : MonoBehaviour
         {
             yield return null;
             
-            Debug.Log("OnCantUnderstandDialogueDone: Set game to Interact");
+            Dev_Logger.Debug("OnCantUnderstandDialogueDone: Set game to Interact");
             game.ChangeStateInteract();
         }
     }
@@ -1086,7 +1086,7 @@ public class Script_DialogueManager : MonoBehaviour
             // Dialogue Icon needs this as well (to know to continue blinking).
             isKeepingDialogueUp = true;
 
-            Debug.Log($"Keep current dialogue up isKeepingDialogueUp: {isKeepingDialogueUp}");
+            Dev_Logger.Debug($"Keep current dialogue up isKeepingDialogueUp: {isKeepingDialogueUp}");
             return true;
         }
 
@@ -1097,7 +1097,7 @@ public class Script_DialogueManager : MonoBehaviour
     {
         if (dialogueSection.isUnskippable)  return;
         
-        Debug.Log("Skipping typing sentence");
+        Dev_Logger.Debug("Skipping typing sentence");
 
         // replace all dialogue portions
         if (isRenderingDialogueSection)
@@ -1132,8 +1132,8 @@ public class Script_DialogueManager : MonoBehaviour
                 // Stop dialogue typing SFX.
                 Script_SFXManager.SFX.StopDialogueTyping();
                 
-                Debug.Log($"SkipTypingSentence() activeCanvasText.text {activeCanvasText.text}");
-                Debug.Log($"SkipTypingSentence() activeCanvasText.maxVisibleCharacters {activeCanvasText.maxVisibleCharacters} activeCanvasText.textInfo.characterCount {activeCanvasText.textInfo.characterCount}");
+                Dev_Logger.Debug($"SkipTypingSentence() activeCanvasText.text {activeCanvasText.text}");
+                Dev_Logger.Debug($"SkipTypingSentence() activeCanvasText.maxVisibleCharacters {activeCanvasText.maxVisibleCharacters} activeCanvasText.textInfo.characterCount {activeCanvasText.textInfo.characterCount}");
             }
 
             lines.Clear();
@@ -1173,12 +1173,12 @@ public class Script_DialogueManager : MonoBehaviour
             && currentNode.data.isKeepLastDialogueUp
         )
         {
-            Debug.Log("SetupCanvases(): not clearing all canvases, only disabling non-written ones");
+            Dev_Logger.Debug("SetupCanvases(): not clearing all canvases, only disabling non-written ones");
             canvasHandler.DisableOnlyEmptyCanvases();
         }
         else
         {
-            Debug.Log("SetupCanvases(): clearing all canvases now");
+            Dev_Logger.Debug("SetupCanvases(): clearing all canvases now");
             ClearAllCanvasTexts();
             canvasHandler.DisableCanvases();
         }
@@ -1250,7 +1250,7 @@ public class Script_DialogueManager : MonoBehaviour
 
     private void SetupName(string name)
     {
-        Debug.Log("Attempting to set up name now");
+        Dev_Logger.Debug("Attempting to set up name now");
 
         if (nameText == null)
             return;
@@ -1296,7 +1296,7 @@ public class Script_DialogueManager : MonoBehaviour
 
     public void Initialize()
     {
-        Debug.Log($"{name} INITIALIZED");
+        Dev_Logger.Debug($"{name} INITIALIZED");
         
         if (DialogueManager == null)
         {

@@ -91,7 +91,7 @@ public class Script_MenuController : Script_UIState
 
     public void ChangeStateToInventoryView()
     {
-        Debug.Log($"MenuController inventoryState before stickers view: {InventoryState}");
+        Dev_Logger.Debug($"MenuController inventoryState before stickers view: {InventoryState}");
         InventoryState = InventoryStates.Inventory;
     }
 
@@ -397,7 +397,7 @@ public class Script_MenuController : Script_UIState
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
         {
-            Debug.Log("<b>SBook</b> enabled by default for debugging.");
+            Dev_Logger.Debug("<b>SBook</b> enabled by default for debugging.");
             isSBookDisabled = false;
         }
     }

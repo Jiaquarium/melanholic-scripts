@@ -116,7 +116,7 @@ public class Script_SceneManager : MonoBehaviour
         // https://docs.unity3d.com/ScriptReference/AsyncOperation-allowSceneActivation.html 
         while (!asyncLoad.isDone)
         {
-            Debug.Log($"load progress: {asyncLoad.progress}");
+            Dev_Logger.Debug($"load progress: {asyncLoad.progress}");
             SM.HandleDuckMasksProgress(asyncLoad.progress);
 
             // Progress will be maintained at .9f as well until allowSceneActivation is set to true
@@ -140,7 +140,7 @@ public class Script_SceneManager : MonoBehaviour
         }
 
         // Called after new Scene is loaded
-        Debug.Log("End of LoadSceneAsync, Closing loading screen");
+        Dev_Logger.Debug("End of LoadSceneAsync, Closing loading screen");
         SM.InitialState();
     }
 
@@ -156,11 +156,11 @@ public class Script_SceneManager : MonoBehaviour
 
     private void CleanUpLoadingCoroutines()
     {
-        Debug.Log("Attempting to clean up forceDucksActiveCo");
+        Dev_Logger.Debug("Attempting to clean up forceDucksActiveCo");
         
         if (SM.forceDucksActiveCo != null)
         {
-            Debug.Log("Cleaned up forceDucksActiveCo");
+            Dev_Logger.Debug("Cleaned up forceDucksActiveCo");
             
             StopCoroutine(SM.forceDucksActiveCo);
             SM.forceDucksActiveCo = null;

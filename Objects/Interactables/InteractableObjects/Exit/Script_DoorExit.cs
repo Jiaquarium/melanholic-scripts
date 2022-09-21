@@ -49,7 +49,7 @@ public class Script_DoorExit : Script_InteractableObjectExit
 
     protected override void ActionDefault()
     {
-        Debug.Log($"No action defined for {name} by interaction. Move into {name} for interaction.");
+        Dev_Logger.Debug($"No action defined for {name} by interaction. Move into {name} for interaction.");
     }
     
     protected override void SetActive()

@@ -277,7 +277,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // Last Timeline Teletype Reveal of Awakening Timeline
     public void OnAwakeningTimelineDone()
     {
-        Debug.Log("OnAwakeningTimelineDone Event called from Teletype Reveal Done Typing handler");
+        Dev_Logger.Debug("OnAwakeningTimelineDone Event called from Teletype Reveal Done Typing handler");
         
         game.ChangeStateCutScene();
 
@@ -296,7 +296,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             
             Script_PRCSManager.Control.SetAwakeningActive(false);
             
-            Debug.Log("Waiting for next part in sequence!!!");
+            Dev_Logger.Debug("Waiting for next part in sequence!!!");
 
             // Wait a few seconds for black screen to stay up and then fade out.
             EquipLastElevatorMaskBackground();
@@ -357,7 +357,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     {
         game.ChangeStateCutScene();
         
-        Debug.Log($"Cracked Ice Block <{ice}>");
+        Dev_Logger.Debug($"Cracked Ice Block <{ice}>");
 
         if (ice == iceBlockStatsLeft)
             mynesGrandMirror.SetMirrorGraphics(false, 0);   
@@ -397,7 +397,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     public void PlayRevealNewWorldTimeline(Script_CrackableStats iceStats)
     {
-        Debug.Log($"Reacting to IceCrackingTimelineDone event with iceStats <{iceStats}>");
+        Dev_Logger.Debug($"Reacting to IceCrackingTimelineDone event with iceStats <{iceStats}>");
         
         currentIceBlockStats = iceStats;
 
@@ -544,11 +544,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         if (!isWearingMyMask)
         {
-            Debug.Log("Not wearing My Mask, cannot interact.");
+            Dev_Logger.Debug("Not wearing My Mask, cannot interact.");
             return;
         }
         
-        Debug.Log("Playing Mask Reveal Timeline!!!");
+        Dev_Logger.Debug("Playing Mask Reveal Timeline!!!");
         
         game.ChangeStateCutScene();
 
@@ -572,7 +572,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     {
         var exittingDir = game.GetPlayer().FacingDirection;
         
-        Debug.Log($"HandleExitWindZone exittingDir {exittingDir}");
+        Dev_Logger.Debug($"HandleExitWindZone exittingDir {exittingDir}");
         
         // Only trigger this reaction if exiting with forward direction
         if (exittingDir == Directions.Up && !isExitingWindZone)
@@ -638,7 +638,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // True Ending Mask Reveal Timeline: True Ending Underworld Pan Timeline
     public void SetUnderworldFinalTrueEndingTimeline()
     {
-        Debug.Log($"Setting Underworld.IsFinalTrueEndingTimeline {Underworld.IsFinalTrueEndingTimeline} to true");
+        Dev_Logger.Debug($"Setting Underworld.IsFinalTrueEndingTimeline {Underworld.IsFinalTrueEndingTimeline} to true");
         Underworld.IsFinalTrueEndingTimeline = true;
     }
 
@@ -703,7 +703,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     private void PauseBgmForElevator()
     {
-        Debug.Log($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
+        Dev_Logger.Debug($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
 
         // Only stop Bgm if the elevator manager hasn't already restarted it.
         // This happens on same frame but after Bgm Start on InitLevel.

@@ -28,7 +28,7 @@ public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelec
         Script_InventoryManager.Types type
     )
     {
-        Debug.Log($"HighlightAndShowDescription({isOn}, {isUpdateDescription}, {type})");
+        Dev_Logger.Debug($"HighlightAndShowDescription({isOn}, {isUpdateDescription}, {type})");
         
         foreach (Image img in outlines)
         {
@@ -47,7 +47,7 @@ public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelec
     /// <param name="e"></param>
     public override void OnSelect(BaseEventData e)
     {
-        Debug.Log("Slot OnSelect()");
+        Dev_Logger.Debug("Slot OnSelect()");
         // after itemChoices, active will return after "Enter" sequence
         HighlightAndShowDescription(true, true, type);
         isEnterPressed = false;
@@ -56,7 +56,7 @@ public class Script_ItemSlotButtonHighlighter : Script_ButtonHighlighter, ISelec
     {
         if (!isEnterPressed)
         {
-            Debug.Log("Slot Deselect()");
+            Dev_Logger.Debug("Slot Deselect()");
             HighlightAndShowDescription(false, false, type);
         }
     }

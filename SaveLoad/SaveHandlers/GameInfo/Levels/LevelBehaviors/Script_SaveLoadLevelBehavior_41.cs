@@ -20,7 +20,7 @@ public class Script_SaveLoadLevelBehavior_41 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_41 lvlModel         = data.levelsData.LB41;
         LB41.didPickUpMelancholyPianoSticker    = lvlModel.didPickUpMelancholyPianoSticker;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

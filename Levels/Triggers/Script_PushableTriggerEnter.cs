@@ -15,7 +15,7 @@ public class Script_PushableTriggerEnter : Script_Trigger
     {
         if (other.tag == Const_Tags.Pushable)
         {
-            Debug.Log($"trigger activated: {Id}, other col: {other.transform.parent}");
+            Dev_Logger.Debug($"trigger activated: {Id}, other col: {other.transform.parent}");
             triggerController.TriggerActivated(Id, other);
 
             if (isDeactivatePushable)

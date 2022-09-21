@@ -75,7 +75,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     {
         if (spokenWithUrsie)    return;
         
-        Debug.Log("OnDeclinedUrsieQuest() switching out Ursie's dialogue nodes now**********");
+        Dev_Logger.Debug("OnDeclinedUrsieQuest() switching out Ursie's dialogue nodes now**********");
         Ursie.SwitchPsychicNodes(psychicNodesTalked);
 
         spokenWithUrsie = true;

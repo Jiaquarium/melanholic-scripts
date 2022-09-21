@@ -10,7 +10,7 @@ public class Script_MenuEventsManager : MonoBehaviour
     {
         if (OnExitSubmenu != null)
         {
-            Debug.Log("ExitSubmenu event");
+            Dev_Logger.Debug("ExitSubmenu event");
             OnExitSubmenu();
         }
     }
@@ -21,7 +21,7 @@ public class Script_MenuEventsManager : MonoBehaviour
     {
         if (OnExitMenu != null)
         {
-            Debug.Log("ExitMenu event");
+            Dev_Logger.Debug("ExitMenu event");
             OnExitMenu();
         }
     }

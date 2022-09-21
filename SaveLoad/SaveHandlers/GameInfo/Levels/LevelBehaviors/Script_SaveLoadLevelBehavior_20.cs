@@ -24,13 +24,13 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
     {
         if (data.levelsData == null)
         {
-            Debug.Log("There is no levels state data to load.");
+            Dev_Logger.Debug("There is no levels state data to load.");
             return;
         }
 
         if (data.levelsData.LB20 == null)
         {
-            Debug.Log("There is no LB20 state data to load.");
+            Dev_Logger.Debug("There is no LB20 state data to load.");
             return;
         }
 
@@ -42,7 +42,7 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
         LB20.didPickUpMasterKey         = lvlModel.didPickUpMasterKey;
         LB20.didUnlockMasterLock        = lvlModel.didUnlockMasterLock;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

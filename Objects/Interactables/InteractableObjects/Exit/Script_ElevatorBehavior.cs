@@ -6,6 +6,6 @@ public class Script_ElevatorBehavior : MonoBehaviour
 {
     public virtual void Effect()
     {
-        Debug.Log($"{name} Effect()");
+        Dev_Logger.Debug($"{name} Effect()");
     }
 }

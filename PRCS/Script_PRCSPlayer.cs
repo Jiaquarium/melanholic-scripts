@@ -94,7 +94,7 @@ public class Script_PRCSPlayer : MonoBehaviour
 
         void FireDoneEvent()
         {
-            Debug.Log($"!!!Firing PRCS Done for Director {director}, this: {this}");
+            Dev_Logger.Debug($"!!!Firing PRCS Done for Director {director}, this: {this}");
             Script_PRCSEventsManager.PRCSDone(this);
             isDone = true;
         }
@@ -102,7 +102,7 @@ public class Script_PRCSPlayer : MonoBehaviour
     
     public void Play(Action cb = null)
     {
-        Debug.Log("Play(): Starting PRCS Scene!!!");
+        Dev_Logger.Debug("Play(): Starting PRCS Scene!!!");
 
         isDone              = false;
         isNodesDone         = false;
@@ -114,7 +114,7 @@ public class Script_PRCSPlayer : MonoBehaviour
             Script_PRCSManager.Control.ShowPRCS(PRCS, fadeInSpeed, cb);
         }
         
-        Debug.Log($"Playing myTimeline asset: {myTimeline}");
+        Dev_Logger.Debug($"Playing myTimeline asset: {myTimeline}");
         director.Play(myTimeline);
     }
 

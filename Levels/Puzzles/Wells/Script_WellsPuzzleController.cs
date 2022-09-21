@@ -52,7 +52,7 @@ public class Script_WellsPuzzleController : Script_PuzzleController
         
         if (well.Id == keyWells[currentWellIdx].Id)
         {
-            Debug.Log($"CORRECT Well! {well}");
+            Dev_Logger.Debug($"CORRECT Well! {well}");
 
             // On Last Well
             if (currentWellIdx == KeyWellsCount - 1)    ProgressNotification(true);
@@ -62,7 +62,7 @@ public class Script_WellsPuzzleController : Script_PuzzleController
         }
         else
         {
-            Debug.Log($"WRONG Well! {well}... Restarting currentWellIdx");
+            Dev_Logger.Debug($"WRONG Well! {well}... Restarting currentWellIdx");
 
             currentWellIdx = 0;
         }
@@ -72,7 +72,7 @@ public class Script_WellsPuzzleController : Script_PuzzleController
     {
         base.CompleteState();
 
-        Debug.Log($"PUZZLE COMPLETE!!!!!!!!!!!!!!!!!!!!!!!!");
+        Dev_Logger.Debug($"PUZZLE COMPLETE!!!!!!!!!!!!!!!!!!!!!!!!");
 
         Script_PuzzlesEventsManager.PuzzleSuccess(PuzzleId);
 

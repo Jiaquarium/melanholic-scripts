@@ -125,7 +125,7 @@ public class Script_LanternFollower : MonoBehaviour
     // Before destroying level we need to clear this.
     private void HideOnLevelDestroy()
     {
-        Debug.Log($"{name} reacts to LevelBeforeDestroy");
+        Dev_Logger.Debug($"{name} reacts to LevelBeforeDestroy");
         
         // Only hide Graphics if is Active so we can still detect the OnPlayerSetupOnLevel event.
         graphics.gameObject.SetActive(false);
@@ -133,7 +133,7 @@ public class Script_LanternFollower : MonoBehaviour
 
     private void UnhideOnPlayerSetup()
     {
-        Debug.Log($"{name} reacts to PlayerSetupOnLevel");
+        Dev_Logger.Debug($"{name} reacts to PlayerSetupOnLevel");
         
         if (state == States.Active)
         {

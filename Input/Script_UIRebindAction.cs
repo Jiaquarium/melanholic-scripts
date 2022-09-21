@@ -126,7 +126,7 @@ public class Script_UIRebindAction : MonoBehaviour
                     if (candidate.path == inputAction.controls[0].path)
                         continue;
                     
-                    Debug.Log($"Matched Exclusion: candidate.path {candidate.path} action.controls[0] {action.controls[0]}");
+                    Dev_Logger.Debug($"Matched Exclusion: candidate.path {candidate.path} action.controls[0] {action.controls[0]}");
                     isTaken = true;
                 }
             }

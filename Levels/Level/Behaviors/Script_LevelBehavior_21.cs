@@ -139,7 +139,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     // RevealPW Node
     public void OnFinishedTalking()
     {
-        Debug.Log("OnFinishedTalking() switching out Eileen's dialogue nodes now...");
+        Dev_Logger.Debug("OnFinishedTalking() switching out Eileen's dialogue nodes now...");
         spokenWithEileen = true;
         didSpeakWithEileenToday = true;
         Eileen.MyDialogueState = Script_DemonNPC.DialogueState.Talked;
@@ -154,7 +154,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     // Auto Choice Action
     public void OnDidTalkToEllenia(OnNextNodeChoiceArgs modifiableEventArgs)
     {
-        Debug.Log("Spoken with Ellenia: " + LB25.spokenWithEllenia);
+        Dev_Logger.Debug("Spoken with Ellenia: " + LB25.spokenWithEllenia);
 
         if (LB25.spokenWithEllenia)     modifiableEventArgs.choice = 1;
         else                            modifiableEventArgs.choice = 0;
@@ -215,7 +215,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         {
             yield return new WaitForSeconds(onEntranceAttackFreezeTime);
 
-            Debug.Log("Safe set to interact after OnEntranceAttack");
+            Dev_Logger.Debug("Safe set to interact after OnEntranceAttack");
 
             if (isOnEntranceAttackFrozen)
                 OnEntranceAttackDone();
@@ -318,10 +318,10 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             audio.UnPause();
         
         // Handle coming from Eileen Mind painting
-        Debug.Log($"LB21: Last LB is {game.LastLevelBehavior}");
+        Dev_Logger.Debug($"LB21: Last LB is {game.LastLevelBehavior}");
         if (game.LastLevelBehavior == LB26)
         {
-            Debug.Log("Player coming from LB26_EileensMind");
+            Dev_Logger.Debug("Player coming from LB26_EileensMind");
             PlayerEntranceFromEileenMind();
         }
 

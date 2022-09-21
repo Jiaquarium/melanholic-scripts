@@ -33,7 +33,7 @@ public class Script_TreasureChestLocked : Script_TreasureChest
     {
         if (CheckDisabledDirections())
         {
-            Debug.Log($"{name}: Action default from Disabled Direction");
+            Dev_Logger.Debug($"{name}: Action default from Disabled Direction");
             return;
         }
         

@@ -39,7 +39,7 @@ public class Script_AlphaInputUtils : MonoBehaviour
         {
             if (Input.GetKeyDown(alphaKeyCodes[i]))
             {
-                Debug.Log($"{alphaKeyCodes[i]} pressed");
+                Dev_Logger.Debug($"{alphaKeyCodes[i]} pressed");
                 return true;
             }
         }

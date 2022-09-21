@@ -57,12 +57,12 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         
         if (isBgmPaused)
         {
-            Debug.Log($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
+            Dev_Logger.Debug($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
             Play(-1);
             return;
         }
 
-        Debug.Log($"StartLevelBgmNoFade bgmIndex {bgmIndex}, isBgmPaused {isBgmPaused}");
+        Dev_Logger.Debug($"StartLevelBgmNoFade bgmIndex {bgmIndex}, isBgmPaused {isBgmPaused}");
         
         Play(bgmIndex);
     }
@@ -83,7 +83,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         // If Bgm Index is silent, a BG Speaker might be present instead, so do default behavior.
         else if (isBgmPaused || bgmIndex == -1)
         {
-            Debug.Log($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
+            Dev_Logger.Debug($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
             // Set volume back to 1, since it'll be 0 from Fade Out
             SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
             Play(-1);
@@ -133,7 +133,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     /// <param name="levelToGo">The new upcoming level exiting to</param>
     public void HandleStopLevelBgmFade(int levelToGo)
     {
-        Debug.Log("Handle Fade Out BGM");
+        Dev_Logger.Debug("Handle Fade Out BGM");
 
         int newBgmIndex = game.GetLevelBgmIndex(levelToGo);
         
@@ -146,7 +146,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public void HandleStopLevelBgmNoFade(int levelToGo)
     {
-        Debug.Log("Handle Fade Out BGM No Fade");
+        Dev_Logger.Debug("Handle Fade Out BGM No Fade");
         
         int newBgmIndex = game.GetLevelBgmIndex(levelToGo);
         
@@ -234,7 +234,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     public void Pause()
     {
-        Debug.Log("~~~~ Pausing BGM ~~~~");
+        Dev_Logger.Debug("~~~~ Pausing BGM ~~~~");
         
         float lastVol = Source.volume;
         Source.volume = 0f; // to avoid any ripping noise

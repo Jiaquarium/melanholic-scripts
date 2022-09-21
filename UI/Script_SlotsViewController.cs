@@ -70,10 +70,10 @@ public class Script_SlotsViewController : MonoBehaviour
     {
         if (lastSelected == null)
         {
-            Debug.Log("Can't rehydrate. Initializing Slots state.");
+            Dev_Logger.Debug("Can't rehydrate. Initializing Slots state.");
             InitializeState();
         }
-        Debug.Log($"SlotsViewController: Rehydrating with lastSelected: {lastSelected}");
+        Dev_Logger.Debug($"SlotsViewController: Rehydrating with lastSelected: {lastSelected}");
         EventSystem.current.SetSelectedGameObject(lastSelected.gameObject);
     }
 

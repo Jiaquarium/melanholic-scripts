@@ -27,7 +27,7 @@ public class Script_PianoChoiceText : MonoBehaviour
         if (pianoManager?.GetPianoIsRemembered(Id) ?? false)
         {
             string mapName = pianoManager.GetPianoMapName(Id);
-            Debug.Log($"Id: {Id}, mapName: {mapName}");
+            Dev_Logger.Debug($"Id: {Id}, mapName: {mapName}");
             
             TMP.text = string.IsNullOrEmpty(mapName) ? DefaultText : mapName;
         }

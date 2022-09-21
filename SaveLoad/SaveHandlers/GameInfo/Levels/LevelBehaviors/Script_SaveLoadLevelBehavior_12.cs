@@ -20,13 +20,13 @@ public class Script_SaveLoadLevelBehavior_12 : Script_SaveLoadLevelBehavior
     {
         if (data.levelsData == null)
         {
-            Debug.Log("There is no levels state data to load.");
+            Dev_Logger.Debug("There is no levels state data to load.");
             return;
         }
 
         if (data.levelsData.LB12 == null)
         {
-            Debug.Log("There is no LB12 state data to load.");
+            Dev_Logger.Debug("There is no LB12 state data to load.");
             return;
         }
 
@@ -34,7 +34,7 @@ public class Script_SaveLoadLevelBehavior_12 : Script_SaveLoadLevelBehavior
         LB12.isDone             = lvlModel.isDone;
         LB12.isCutSceneDone     = lvlModel.isCutSceneDone;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

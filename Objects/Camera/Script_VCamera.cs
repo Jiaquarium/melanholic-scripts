@@ -39,7 +39,7 @@ public class Script_VCamera : MonoBehaviour
     {
         if (isFollowPlayer)
         {
-            Debug.Log($"{name} Set to follow Player");
+            Dev_Logger.Debug($"{name} Set to follow Player");
             SetFollow();
             transform.position = OffsetTargetPosition;
         }

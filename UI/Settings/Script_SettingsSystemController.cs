@@ -104,7 +104,7 @@ public class Script_SettingsSystemController : MonoBehaviour
 
     public void SetResolution(Script_SettingsResolutionChoice resolutionChoice)
     {
-        Debug.Log($"Setting resolution to x: {resolutionChoice.resolution.x}, y: {resolutionChoice.resolution.y}");
+        Dev_Logger.Debug($"Setting resolution to x: {resolutionChoice.resolution.x}, y: {resolutionChoice.resolution.y}");
 
         DisplayInfo currentWindow = Screen.mainWindowDisplayInfo;
         
@@ -347,7 +347,7 @@ public class Script_SettingsSystemController : MonoBehaviour
 
             if (GUILayout.Button("Print Master Volume (Float)"))
             {
-                Debug.Log(t.AudioListenerMasterVolume);
+                Dev_Logger.Debug($"{t.AudioListenerMasterVolume}");
             }
         }
     }

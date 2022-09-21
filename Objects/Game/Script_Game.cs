@@ -402,13 +402,13 @@ public class Script_Game : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void OnBeforeSceneLoadRuntimeMethod()
     {
-        Debug.Log("~~~~~~~~ TASKS RIGHT AFTER GAME SCENE LOAD ~~~~~~~~");
+        Dev_Logger.Debug("~~~~~~~~ TASKS RIGHT AFTER GAME SCENE LOAD ~~~~~~~~");
         LevelsInactivate();
     }
 
     public static void LevelsInactivate(bool isOnBeforeScene = true)
     {
-        Debug.Log("~~~~~~~~ Disabling all level grids; ensure these are inactive in prod ~~~~~~~~");
+        Dev_Logger.Debug("~~~~~~~~ Disabling all level grids; ensure these are inactive in prod ~~~~~~~~");
 
         Script_LevelGrid[] lvls = (Script_LevelGrid[])GameObject.FindObjectsOfType(typeof(Script_LevelGrid));
         foreach (Script_LevelGrid lvl in lvls)
@@ -417,7 +417,7 @@ public class Script_Game : MonoBehaviour
             if (lvl.gameObject.activeSelf && isOnBeforeScene)
             {
                 string s = $"{lvl.name} is active. You need to set this inactive at game load for prod.";
-                if (Const_Dev.IsDevMode)    Debug.Log(s);
+                if (Const_Dev.IsDevMode)    Dev_Logger.Debug(s);
                 else                        Debug.LogWarning($"<color=red>{s}</color>");
             }
             
@@ -574,7 +574,7 @@ public class Script_Game : MonoBehaviour
 
             Dev_GameHelper gameHelper = GetComponent<Dev_GameHelper>();
             level = gameHelper.level;
-            Debug.Log("DEV/Setting level to "+ level);
+            Dev_Logger.Debug("DEV/Setting level to "+ level);
             
             Tilemap tileMap = Levels.levelsData[level].tileMap;
             GameObject grid = Levels.levelsData[level].grid;
@@ -582,7 +582,7 @@ public class Script_Game : MonoBehaviour
             Vector3 tileLocation = gameHelper.playerSpawn + gridOffset;
             
             // Vector3 tileLocation = tileMap.CellToWorld(gameHelper.playerSpawn);
-            Debug.Log($"player dev spawn tileLocation: {tileLocation} on Tilemap: {tileMap}");
+            Dev_Logger.Debug($"player dev spawn tileLocation: {tileLocation} on Tilemap: {tileMap}");
 
             SetPlayerState(new Model_PlayerState(
                     (int)tileLocation.x,
@@ -637,7 +637,7 @@ public class Script_Game : MonoBehaviour
     {
         if (level > tutorialEndLevel)
         {
-            Debug.Log($"Enabling S-book because we loaded after level {tutorialEndLevel}");
+            Dev_Logger.Debug($"Enabling S-book because we loaded after level {tutorialEndLevel}");
             EnableSBook(true);
         }
         else
@@ -657,7 +657,7 @@ public class Script_Game : MonoBehaviour
 
     public void ChangeStateCutScene()
     {
-        Debug.Log($"Game.state changed to: {Const_States_Game.CutScene}");
+        Dev_Logger.Debug($"Game.state changed to: {Const_States_Game.CutScene}");
         lastState = state;
         
         if (lastState == Const_States_Game.Inventory)
@@ -671,14 +671,14 @@ public class Script_Game : MonoBehaviour
 
     public void ChangeStateCutSceneNPCMoving()
     {
-        Debug.Log($"Game.state changed to: {Const_States_Game.CutSceneNPCMoving}; Game.lastState before this = {lastState}");
+        Dev_Logger.Debug($"Game.state changed to: {Const_States_Game.CutSceneNPCMoving}; Game.lastState before this = {lastState}");
         lastState = state;
         state = Const_States_Game.CutSceneNPCMoving;
     }
 
     public void ChangeStateInteract()
     {
-        Debug.Log($"Game.state changed to: {Const_States_Game.Interact}; Game.lastState before this = {lastState}");
+        Dev_Logger.Debug($"Game.state changed to: {Const_States_Game.Interact}; Game.lastState before this = {lastState}");
         lastState = state;
         state = Const_States_Game.Interact;
     }
@@ -691,7 +691,7 @@ public class Script_Game : MonoBehaviour
         {
             yield return null;
             
-            Debug.Log($"NEXT FRAME Game.state changed to: {Const_States_Game.Interact}; Game.lastState before this = {lastState}");
+            Dev_Logger.Debug($"NEXT FRAME Game.state changed to: {Const_States_Game.Interact}; Game.lastState before this = {lastState}");
             
             lastState = state;
             state = Const_States_Game.Interact;
@@ -700,14 +700,14 @@ public class Script_Game : MonoBehaviour
 
     public void ChangeStateToInventory()
     {
-        Debug.Log($"Game.state changed to: {Const_States_Game.Inventory}; Game.lastState before this = {lastState}");
+        Dev_Logger.Debug($"Game.state changed to: {Const_States_Game.Inventory}; Game.lastState before this = {lastState}");
         lastState = state;
         state = Const_States_Game.Inventory;
     }
 
     public void ChangeStateDDR()
     {
-        Debug.Log($"Game.state changed to: {Const_States_Game.DDR}; Game.lastState before this = {lastState}");
+        Dev_Logger.Debug($"Game.state changed to: {Const_States_Game.DDR}; Game.lastState before this = {lastState}");
         lastState = state;
         state = Const_States_Game.DDR;
     }
@@ -722,7 +722,7 @@ public class Script_Game : MonoBehaviour
         string prevLastState = newLastState ?? lastState;
         state = lastState;
         lastState = prevLastState;
-        Debug.Log($"ChangeStateLastState(): Game.state changed to: {state}; Game.lastState now = {lastState}");
+        Dev_Logger.Debug($"ChangeStateLastState(): Game.state changed to: {state}; Game.lastState now = {lastState}");
     }
 
     public void InitiateLevel()
@@ -1032,7 +1032,7 @@ public class Script_Game : MonoBehaviour
 
         CameraTargetFollower.MatchPlayer();
 
-        Debug.Log("---- ---- PLAYER SETUP ON LEVEL EVENT ---- ----");
+        Dev_Logger.Debug("---- ---- PLAYER SETUP ON LEVEL EVENT ---- ----");
         Script_GameEventsManager.PlayerSetupOnLevel();   
     }
 
@@ -1915,7 +1915,7 @@ public class Script_Game : MonoBehaviour
     {
         if (npcBgThemePlayer == null)
         {
-            Debug.Log("No npcBgThemePlayer object exists to UnPause.");
+            Dev_Logger.Debug("No npcBgThemePlayer object exists to UnPause.");
             return null;
         }
         npcBgThemePlayer.GetComponent<AudioSource>().UnPause();
@@ -1986,7 +1986,7 @@ public class Script_Game : MonoBehaviour
         
         var target = t ?? GetPlayer().transform;
         
-        Debug.Log($"Snapping activeVCam <{activeVCam}> to <{target}>");
+        Dev_Logger.Debug($"Snapping activeVCam <{activeVCam}> to <{target}>");
         
         // https://forum.unity.com/threads/cameras-no-longer-snapping-after-being-disabled-enabled.729242/#post-6276506
         activeVCam.OnTargetObjectWarped(target.transform, target.transform.position - prevPos);
@@ -2094,7 +2094,7 @@ public class Script_Game : MonoBehaviour
                 break;
         }
         
-        Debug.Log($"Follow up passed to ExitsHandler is {followUp}");
+        Dev_Logger.Debug($"Follow up passed to ExitsHandler is {followUp}");
         
         exitsHandler.Exit(
             level,
@@ -2244,7 +2244,7 @@ public class Script_Game : MonoBehaviour
             activeEnding = Script_TransitionManager.Endings.True;
         }
         
-        Debug.Log($"@@@@@@@@@@@@@@@ ACTIVE ENDING CHANGED TO {activeEnding} @@@@@@@@@@@@@@@");
+        Dev_Logger.Debug($"@@@@@@@@@@@@@@@ ACTIVE ENDING CHANGED TO {activeEnding} @@@@@@@@@@@@@@@");
     }
 
     private void SaveWaitRestart(bool isLobbySpawn = true)
@@ -2286,12 +2286,12 @@ public class Script_Game : MonoBehaviour
 
     public bool IsAllQuestsDoneToday()
     {
-        Debug.Log($"Ids Done: {IdsRoomBehavior.isCurrentPuzzleComplete}");
-        Debug.Log($"Ursie Done: {KTVRoom2Behavior.IsCurrentPuzzleComplete}");
-        Debug.Log($"Ellenia Done: {ElleniasRoomBehavior.isCurrentPuzzleComplete}");
-        Debug.Log($"Eileen Done: {EileensMindBehavior.isCurrentPuzzleComplete}");
-        Debug.Log($"Moose Done: {WellsWorldBehavior.isCurrentMooseQuestComplete}");
-        Debug.Log($"Kaffe Latte Done: {GardenLabyrinthBehavior.isCurrentPuzzleComplete}");
+        Dev_Logger.Debug($"Ids Done: {IdsRoomBehavior.isCurrentPuzzleComplete}");
+        Dev_Logger.Debug($"Ursie Done: {KTVRoom2Behavior.IsCurrentPuzzleComplete}");
+        Dev_Logger.Debug($"Ellenia Done: {ElleniasRoomBehavior.isCurrentPuzzleComplete}");
+        Dev_Logger.Debug($"Eileen Done: {EileensMindBehavior.isCurrentPuzzleComplete}");
+        Dev_Logger.Debug($"Moose Done: {WellsWorldBehavior.isCurrentMooseQuestComplete}");
+        Dev_Logger.Debug($"Kaffe Latte Done: {GardenLabyrinthBehavior.isCurrentPuzzleComplete}");
         
         return IdsRoomBehavior.isCurrentPuzzleComplete
             && KTVRoom2Behavior.IsCurrentPuzzleComplete

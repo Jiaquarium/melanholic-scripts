@@ -23,7 +23,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
     
     public override void TriggerActivated(string Id, Collider other)
     {
-        Debug.Log($"Activating with collectible {Id}; collider {other}");
+        Dev_Logger.Debug($"Activating with collectible {Id}; collider {other}");
         
         /// If it's a success case, we'll handle the season change here instead
         /// to be sure to prevent any race cases
@@ -82,7 +82,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
             transform.GetChildren<Script_CollectibleTriggerStay>()
         )
         {
-            Debug.Log("CHECKING SUCCESS, TRIGGER NOT ALL OCCUPIED");
+            Dev_Logger.Debug("CHECKING SUCCESS, TRIGGER NOT ALL OCCUPIED");
             if (!trigger.isOn)  return false;
         }
 
@@ -96,7 +96,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
     {
         for (int i = 0; i < triggers.Length; i++)
         {
-            Debug.Log($"checking trigger[{i}]");
+            Dev_Logger.Debug($"checking trigger[{i}]");
 
             int IdDiff;
             int currIdx = i;
@@ -106,7 +106,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
             if (triggers[currIdx].GetComponent<Script_CollectibleTriggerStay>().collectibles.Count > 1)
                 return false;
 
-            Debug.Log($"current trigger collectible: " + triggers[currIdx].GetComponent<Script_CollectibleTriggerStay>());
+            Dev_Logger.Debug($"current trigger collectible: " + triggers[currIdx].GetComponent<Script_CollectibleTriggerStay>());
             string currId = triggers[currIdx]
                 .GetComponent<Script_CollectibleTriggerStay>().collectibles[0].Item.id;
             string nextId = triggers[nextIdx]
@@ -129,7 +129,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
             else if (IdDiff != 1)    return false;
         }
         
-        Debug.Log("CHECKING SUCCESS, STONES ORDERED CORRECTLY");
+        Dev_Logger.Debug("CHECKING SUCCESS, STONES ORDERED CORRECTLY");
         return true;
     }
 
@@ -138,7 +138,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
     /// </summary>
     private bool CheckForSeasonsChange()
     {
-        Debug.Log("Checking for Season Change animation FEEDBACK");
+        Dev_Logger.Debug("Checking for Season Change animation FEEDBACK");
         /// Map the stones to the array that corresponds to the triggers [S, W, N, E]
         stoneIds = new List<int>{-1, -1, -1, -1};
         if (triggers.Length != stoneIds.Count) Debug.LogError("You need to match trigger length with number of stoneIds");
@@ -184,7 +184,7 @@ public class Script_SeasonStonesPuzzleController : Script_TriggerPuzzleControlle
         {
             int currentShouldBe = HandleLastOutOfIndex(stoneIds[i - 1] + 1);
             
-            Debug.Log($"currentShouldBe: {currentShouldBe}; actually: {stoneIds[i]}");
+            Dev_Logger.Debug($"currentShouldBe: {currentShouldBe}; actually: {stoneIds[i]}");
 
             if (currentShouldBe != stoneIds[i])     return false;
         }

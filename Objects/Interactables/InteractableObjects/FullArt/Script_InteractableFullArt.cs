@@ -53,7 +53,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         {
             if (isFullArtMode)
             {
-                Debug.Log($"OnDialogueEnd Event -> OnMyDialogueEnd(): dialogueManager.currentNode: {dialogueManager.currentNode}");
+                Dev_Logger.Debug($"OnDialogueEnd Event -> OnMyDialogueEnd(): dialogueManager.currentNode: {dialogueManager.currentNode}");
                 RemoveFullArt();
             }
 
@@ -224,13 +224,13 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     {
         var game = Script_Game.Game;
         
-        Debug.Log($"RemoveFullArt called with state {game.fullArtManager.state}");
+        Dev_Logger.Debug($"RemoveFullArt called with state {game.fullArtManager.state}");
         
         // whoever opens the fullArt get priority to remove it; otherwise there are multiple calls to remove it
         if (game.fullArtManager.state != Script_FullArtManager.FullArtState.InteractableObject)
             return;
         
-        Debug.Log("RemoveFullArt(): end dialogue event caught by FullArt");
+        Dev_Logger.Debug("RemoveFullArt(): end dialogue event caught by FullArt");
         
         isInputDisabled = true;
         var player = game.GetPlayer();

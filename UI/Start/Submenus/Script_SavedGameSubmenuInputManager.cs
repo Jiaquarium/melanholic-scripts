@@ -23,7 +23,7 @@ public class Script_SavedGameSubmenuInputManager : Script_ExitViewInputManager
         
         if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
         {
-            Debug.Log($"SavedGameSubmenuInputManager: Cancel called, firing exitSubmenu event");
+            Dev_Logger.Debug($"SavedGameSubmenuInputManager: Cancel called, firing exitSubmenu event");
             Script_StartEventsManager.ExitSubmenu();
         }
     }

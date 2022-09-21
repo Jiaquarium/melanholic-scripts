@@ -114,7 +114,7 @@ public class Script_FullArtManager : MonoBehaviour
         Action cb
     )
     {
-        Debug.Log("HideFullArt() called");
+        Dev_Logger.Debug("HideFullArt() called");
         // fade out global bg
         Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
         bg.FadeOut(fadeOutSpeed, () => bg.gameObject.SetActive(false));

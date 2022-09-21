@@ -80,7 +80,7 @@ public class Script_PlayerInputManager : MonoBehaviour
             // Check & validate the control path
             var isValidControl = GetKeyboardControl(overridePath) != null;
             
-            Debug.Log($"GetKeyboardControl: {GetKeyboardControl(overridePath)}, isValidControl: {isValidControl}");
+            Dev_Logger.Debug($"GetKeyboardControl: {GetKeyboardControl(overridePath)}, isValidControl: {isValidControl}");
 
             if (!String.IsNullOrEmpty(overridePath) && isValidControl)
             {
@@ -110,7 +110,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         
         if (keyBinds == null)
         {
-            Debug.Log("Key Rebinds settings null");
+            Dev_Logger.Debug("Key Rebinds settings null");
             return;
         }
         
@@ -133,7 +133,7 @@ public class Script_PlayerInputManager : MonoBehaviour
             // Check & validate the control path
             var isValidControl = GetKeyboardControl(keyBindsPaths[i]) != null;
             
-            Debug.Log($"GetKeyboardControl: {GetKeyboardControl(keyBindsPaths[0])}, isValidControl: {isValidControl}");
+            Dev_Logger.Debug($"GetKeyboardControl: {GetKeyboardControl(keyBindsPaths[0])}, isValidControl: {isValidControl}");
 
             if (!String.IsNullOrEmpty(loadedOverridePath) && isValidControl)
             {

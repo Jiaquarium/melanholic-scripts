@@ -21,7 +21,7 @@ public class Script_MenuInputManager : Script_ExitViewInputManager
     {
         if (masterUIState != null && masterUIState.state == UIState.Disabled)
         {
-            Debug.Log($"{name} Cannot exit; masterUI.state: {masterUIState.state}");
+            Dev_Logger.Debug($"{name} Cannot exit; masterUI.state: {masterUIState.state}");
             return;
         }
 
@@ -32,7 +32,7 @@ public class Script_MenuInputManager : Script_ExitViewInputManager
             || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
         )
         {
-            Debug.Log("{name} Exit menu input detected");
+            Dev_Logger.Debug("{name} Exit menu input detected");
             Script_MenuEventsManager.ExitMenu();
         }
     }

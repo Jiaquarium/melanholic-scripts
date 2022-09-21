@@ -16,7 +16,7 @@ public class Script_FrozenWellCrackableStats : Script_CrackableStats
         currentHp -= dmg;
         currentHp = Mathf.Clamp(currentHp, 0, int.MaxValue);
         
-        Debug.Log($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
+        Dev_Logger.Debug($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
         
         if (currentHp == 0)
         {

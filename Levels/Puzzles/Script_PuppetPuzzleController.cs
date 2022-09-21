@@ -47,7 +47,7 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
     {
         if (!IsDone)
         {
-            Debug.Log($"{name} OnPuppeteerActivate");
+            Dev_Logger.Debug($"{name} OnPuppeteerActivate");
             
             game.ChangeStateCutScene();
             
@@ -62,7 +62,7 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
     {
         if (!IsDone)
         {
-            Debug.Log($"{name} OnPuppeteerDeactivate");
+            Dev_Logger.Debug($"{name} OnPuppeteerDeactivate");
             
             game.ChangeStateCutScene();
             

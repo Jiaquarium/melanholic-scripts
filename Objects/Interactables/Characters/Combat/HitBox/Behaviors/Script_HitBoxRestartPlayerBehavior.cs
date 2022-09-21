@@ -16,7 +16,7 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
         if (col.tag == Const_Tags.Player)
         {
             print($"{name} Player hit: {col}");
-            Debug.Log($"Time Left (s): {Script_ClockManager.Control.TimeLeft}");
+            Dev_Logger.Debug($"Time Left (s): {Script_ClockManager.Control.TimeLeft}");
             
             if (Const_Dev.IsDevMode && Debug.isDebugBuild)
                 return;

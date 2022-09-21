@@ -19,7 +19,7 @@ public class Script_CanvasGroupController_Thoughts : Script_CanvasGroupControlle
 
     void HandleThoughtsState()
     {
-        Debug.Log($"Thoughts count on opening thoughts inventory: {game.GetThoughtsCount()}");
+        Dev_Logger.Debug($"Thoughts count on opening thoughts inventory: {game.GetThoughtsCount()}");
         
         if (game.GetThoughtsCount() > 0)    ShowThoughts();
         else                                ShowEmptyState();

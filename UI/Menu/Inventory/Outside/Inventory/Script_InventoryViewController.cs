@@ -13,7 +13,7 @@ public class Script_InventoryViewController : Script_SBookViewController
 
     void OnDisable()
     {
-        Debug.Log("InventoryViewController OnDisable();");
+        Dev_Logger.Debug("InventoryViewController OnDisable();");
         inventoryManager.SetItemDescription(itemDescription, false);
     }
 

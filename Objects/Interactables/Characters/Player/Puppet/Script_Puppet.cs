@@ -54,7 +54,7 @@ public class Script_Puppet : Script_PlayerCopy
 
     void Start()
     {
-        Debug.Log($"My animator: {MyAnimator}");
+        Dev_Logger.Debug($"My animator: {MyAnimator}");
         inactiveAnimatorController = MyAnimator.runtimeAnimatorController as RuntimeAnimatorController;
         
         SetAnimatorControllerActive(false);

@@ -33,7 +33,7 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
                 return false;
             }
 
-            Debug.Log($"tileWorldLocation: {tileWorldLocation} NOT in World Tile Maps");
+            Dev_Logger.Debug($"tileWorldLocation: {tileWorldLocation} NOT in World Tile Maps");
             return true;
         }
 

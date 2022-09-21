@@ -143,7 +143,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
         var isWeekend = game.RunCycle == Script_RunsManager.Cycle.Weekend;
         var isDisabled = isActivated || isWeekend || base.CheckDisabled();
 
-        Debug.Log($"{name} isActivated: <{isActivated}>, isWeekend: <{isWeekend}>, Base Disabled? {base.CheckDisabled()}");
+        Dev_Logger.Debug($"{name} isActivated: <{isActivated}>, isWeekend: <{isWeekend}>, Base Disabled? {base.CheckDisabled()}");
         
         return isDisabled;
     }
@@ -230,7 +230,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public virtual void End()
     {
-        Debug.Log("End Myne dialogue");
+        Dev_Logger.Debug("End Myne dialogue");
         
         // Fade out BG Theme Player
         Script_BackgroundMusicManager.Control.FadeOutMed(() => {
@@ -255,7 +255,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     /// </summary>
     public void OnInteractionDialogueDone()
     {
-        Debug.Log("Interaction Node done, do HintNode");
+        Dev_Logger.Debug("Interaction Node done, do HintNode");
         
         Script_DialogueManager.DialogueManager.StartDialogueNode(HintNode, SFXOn: false);
     }

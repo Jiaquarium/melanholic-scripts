@@ -13,7 +13,7 @@ public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, I
     
     void OnEnable()
     {
-        Debug.Log($"{name} {this.GetType()} OnEnable");
+        Dev_Logger.Debug($"{name} {this.GetType()} OnEnable");
     }
     
     void Awake()
@@ -27,7 +27,7 @@ public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, I
 
     public virtual void OnSelect(BaseEventData e)
     {
-        Debug.Log($"{name} {this.GetType()} OnSelect");
+        Dev_Logger.Debug($"{name} {this.GetType()} OnSelect");
         
         SelectSFX();
     }

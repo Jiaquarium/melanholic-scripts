@@ -39,7 +39,7 @@ public class Script_PlayerEffect : MonoBehaviour
     )
     {
         SpriteRenderer sprite = playerRenderer as SpriteRenderer; 
-        Debug.Log($"alpha: {alpha}, sprite.color.a: {sprite.color.a}, fadeTime: {fadeTime}");
+        Dev_Logger.Debug($"alpha: {alpha}, sprite.color.a: {sprite.color.a}, fadeTime: {fadeTime}");
 
         if (alpha > sprite.color.a)
         {

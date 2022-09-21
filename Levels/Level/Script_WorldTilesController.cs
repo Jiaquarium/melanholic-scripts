@@ -56,7 +56,7 @@ public class Script_WorldTilesController : MonoBehaviour
     private void SetCurrentWorldTileAsOrigin()
     {
         var currentPlayerWorldTile = Script_Game.Game.GetPlayer().GetCurrentWorldTile();
-        Debug.Log($"Current World Tile {currentPlayerWorldTile}");
+        Dev_Logger.Debug($"Current World Tile {currentPlayerWorldTile}");
         
         if (currentPlayerWorldTile != null)
             SetNewOriginWorldTile(currentPlayerWorldTile);

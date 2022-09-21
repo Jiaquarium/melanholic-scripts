@@ -18,7 +18,7 @@ public class Script_InteractableObjectExitCreator : MonoBehaviour
             if (isInitialize)   InitializeExitObject(exit);
         }
 
-        if (Debug.isDebugBuild && Const_Dev.IsDevMode)  Debug.Log("interactable objects count: " + interactableObjects.Count);
+        if (Debug.isDebugBuild && Const_Dev.IsDevMode)  Dev_Logger.Debug("interactable objects count: " + interactableObjects.Count);
 
         void InitializeExitObject(Script_InteractableObjectExit iObj)
         {

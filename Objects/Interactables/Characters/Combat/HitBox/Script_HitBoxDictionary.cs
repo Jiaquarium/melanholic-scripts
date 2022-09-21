@@ -25,7 +25,7 @@ public class Script_HitBoxDictionary : MonoBehaviour
         for (int i = 0; i < Mathf.Min(noNullsHitBoxIds.Length, noNullsHitBoxMetadaatas.Length); i++)
         {
             myDictionary.Add(noNullsHitBoxIds[i], noNullsHitBoxMetadaatas[i]);
-            // Debug.Log($"itemDict key: {hitBoxIds[i]}, value: {myDictionary[hitBoxIds[i]]}");
+            // Dev_Logger.Debug($"itemDict key: {hitBoxIds[i]}, value: {myDictionary[hitBoxIds[i]]}");
         }
 
         if (HitBoxDictionary == null)

@@ -279,7 +279,7 @@ public class Script_PRCSManager : MonoBehaviour
 
         void FadeInStartTimeline()
         {
-            Debug.Log("Setting glitch manager to default, blend 0");
+            Dev_Logger.Debug("Setting glitch manager to default, blend 0");
             glitchManager.SetDefault();
             glitchManager.SetBlend(0f);
             

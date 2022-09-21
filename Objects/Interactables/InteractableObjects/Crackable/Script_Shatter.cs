@@ -23,7 +23,7 @@ public class Script_Shatter : MonoBehaviour
     
     public void Shatter()
     {
-        Debug.Log($"{name} Shatter");
+        Dev_Logger.Debug($"{name} Shatter");
         
         // Hide fulls
         fulls.ForEach(full => full.SetActive(false));
@@ -41,7 +41,7 @@ public class Script_Shatter : MonoBehaviour
     /// </summary>
     public void DiagonalCut()
     {
-        Debug.Log($"{name} Diagonal Cut");
+        Dev_Logger.Debug($"{name} Diagonal Cut");
         
         // Hide fulls
         fulls.ForEach(full => full.SetActive(false));

@@ -20,13 +20,13 @@ public class Script_SaveLoadLevelBehavior_21 : Script_SaveLoadLevelBehavior
     {
         if (data.levelsData == null)
         {
-            Debug.Log("There is no levels state data to load.");
+            Dev_Logger.Debug("There is no levels state data to load.");
             return;
         }
 
         if (data.levelsData.LB21 == null)
         {
-            Debug.Log("There is no LB21 state data to load.");
+            Dev_Logger.Debug("There is no LB21 state data to load.");
             return;
         }
 
@@ -34,7 +34,7 @@ public class Script_SaveLoadLevelBehavior_21 : Script_SaveLoadLevelBehavior
         LB21.spokenWithEileen             = lvlModel.spokenWithEileen;
         LB21.didOnEntranceAttack          = lvlModel.didOnEntranceAttack;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

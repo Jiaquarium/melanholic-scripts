@@ -114,7 +114,7 @@ public class Script_MovingNPC : Script_StaticNPC
         
         if (didContinue == false)
         {
-            Debug.Log($"{this.name} returning my state to {States.Interact}");
+            Dev_Logger.Debug($"{this.name} returning my state to {States.Interact}");
 
             State = States.Interact;
         }
@@ -142,7 +142,7 @@ public class Script_MovingNPC : Script_StaticNPC
         if (didContinue == false && defaultFacingDirection != Directions.None)
         {
             FaceDefaultDirection();
-            Debug.Log($"MovingNPC returning to default direction: {defaultFacingDirection}");
+            Dev_Logger.Debug($"MovingNPC returning to default direction: {defaultFacingDirection}");
         }
     }
 
@@ -353,7 +353,7 @@ public class Script_MovingNPC : Script_StaticNPC
     public void FacePlayer()
     {
         Directions directionToPlayer = transform.GetMyDirectionToTarget(game.GetPlayer().transform);
-        Debug.Log($"{name} facing player in Direction: {directionToPlayer}");
+        Dev_Logger.Debug($"{name} facing player in Direction: {directionToPlayer}");
 
         FaceDirection(directionToPlayer);
     }

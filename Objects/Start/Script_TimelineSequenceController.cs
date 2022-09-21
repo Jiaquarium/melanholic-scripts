@@ -33,11 +33,11 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
             && Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
         )
         {
-            Debug.Log($"{name} Playing timeline on input");
+            Dev_Logger.Debug($"{name} Playing timeline on input");
 
             if (markerActionIndex > -1)
             {
-                Debug.Log("Invoking Resume Acton.");
+                Dev_Logger.Debug("Invoking Resume Acton.");
                 resumeActions[markerActionIndex].SafeInvoke();
                 markerActionIndex = -1;
             }
@@ -59,7 +59,7 @@ public class Script_TimelineSequenceController : MonoBehaviour, INotificationRec
         {
             if (tm.isPauseTimelineWaitForInput)
             {
-                Debug.Log($"{name} Pausing timeline at TimelineControlMarker");
+                Dev_Logger.Debug($"{name} Pausing timeline at TimelineControlMarker");
                 
                 if (tm.pauseActionIndex > -1 && tm.isAction)
                 {

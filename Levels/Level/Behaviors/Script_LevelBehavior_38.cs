@@ -53,7 +53,7 @@ public class Script_LevelBehavior_38 : Script_LevelBehavior
 
     public void OnTriggerWallTransition()
     {
-        Debug.Log("Change wall sprites");
+        Dev_Logger.Debug("Change wall sprites");
     }
 
     public void ScareSFX()

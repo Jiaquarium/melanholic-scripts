@@ -40,7 +40,7 @@ public class Script_SaveLoadInventory : MonoBehaviour
     {
         if (data.stickersIds == null)
         {
-            if (Debug.isDebugBuild) Debug.Log($"{name} No Sticker inventory items to load.");
+            if (Debug.isDebugBuild) Dev_Logger.Debug($"{name} No Sticker inventory items to load.");
         }
         else
         {
@@ -50,7 +50,7 @@ public class Script_SaveLoadInventory : MonoBehaviour
             {
                 if (stickersIds[i] == null)    continue;
                 
-                Debug.Log($"Adding Sticker by id: {stickersIds[i]}, to slot: {i}");
+                Dev_Logger.Debug($"Adding Sticker by id: {stickersIds[i]}, to slot: {i}");
 
                 Script_Game.Game.AddItemInSlotById(stickersIds[i], i);
             }
@@ -58,7 +58,7 @@ public class Script_SaveLoadInventory : MonoBehaviour
 
         if (data.itemsIds == null)
         {
-            if (Debug.isDebugBuild) Debug.Log($"{name} No Items inventory items to load.");
+            if (Debug.isDebugBuild) Dev_Logger.Debug($"{name} No Items inventory items to load.");
         }
         else
         {
@@ -68,7 +68,7 @@ public class Script_SaveLoadInventory : MonoBehaviour
             {
                 if (itemsIds[i] == null)    continue;
                 
-                Debug.Log($"Adding Item by id: {itemsIds[i]}, to slot: {i}");
+                Dev_Logger.Debug($"Adding Item by id: {itemsIds[i]}, to slot: {i}");
                 
                 Script_Game.Game.AddItemInSlotById(itemsIds[i], i);
             }

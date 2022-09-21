@@ -84,10 +84,10 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         Script_PuzzlesEventsManager.OnPuzzleProgress += OnPuzzleProgress;
         Script_PuzzlesEventsManager.OnPuzzleSuccess += OnPuzzleComplete;
 
-        Debug.Log("LB12: enabled");
+        Dev_Logger.Debug("LB12: enabled");
         if (!isDone)
         {
-            Debug.Log("LB12: Changing camera now");
+            Dev_Logger.Debug("LB12: Changing camera now");
             CutScenesDoneCamera();
         }
     }
@@ -345,7 +345,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
         playerMovesNeededToReachMirror = (int)Mathf.Abs(game.GetPlayer().transform.position.z
             - cutScenePlayerTargetDestination.position.z);
         
-        Debug.Log($"playerMovesNeededToReachMirror: {playerMovesNeededToReachMirror}");
+        Dev_Logger.Debug($"playerMovesNeededToReachMirror: {playerMovesNeededToReachMirror}");
         HandleMovePlayerToMirror(playerMovesNeededToReachMirror);
     }
 

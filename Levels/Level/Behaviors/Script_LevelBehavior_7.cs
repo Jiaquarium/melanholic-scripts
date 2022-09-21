@@ -135,7 +135,6 @@ public class Script_LevelBehavior_7 : Script_LevelBehavior
 
         void NameplateTimeline()
         {
-            Debug.Log("Starting Melz nameplate cut scene ");
             game.ChangeStateCutScene();
             
             namePlatePRCSPlayer.Play();

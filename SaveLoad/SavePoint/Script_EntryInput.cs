@@ -121,7 +121,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             // Set cursor to end when we initialize with existing entry (this already happens on deselect).
             TMPInputField.caretPosition = caretPositionZeroAlways ? 0 : TMPInputField.text.Length;
             
-            Debug.Log($@"Setting caret position to: {TMPInputField?.caretPosition}
+            Dev_Logger.Debug($@"Setting caret position to: {TMPInputField?.caretPosition}
                 with blinkrate {TMPInputField?.caretBlinkRate}");
         }
 
@@ -139,7 +139,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         // ensure it's active. Sometimes the caret doesn't show.
         if (!TMPInputField.gameObject.activeInHierarchy && isOn)
         {
-            Debug.Log("Setting TMPInputField active before setting Caret properties");
+            Dev_Logger.Debug("Setting TMPInputField active before setting Caret properties");
             TMPInputField.gameObject.SetActive(true);
         }
 

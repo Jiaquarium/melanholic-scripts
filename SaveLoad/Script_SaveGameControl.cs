@@ -54,8 +54,8 @@ public class Script_SaveGameControl : MonoBehaviour
         saveFilePath                = $"{path}/{saveFileName}";
         savedGameTitleDataPath      = $"{path}/{savedGameTitleDataFileName}";
 
-        Debug.Log($"Persistent path is: {Application.persistentDataPath}");
-        Debug.Log($"Currently using path: {path}");
+        Dev_Logger.Debug($"Persistent path is: {Application.persistentDataPath}");
+        Dev_Logger.Debug($"Currently using path: {path}");
     }
 
     /// <param name="type">SavePoint saves within Kelsingor</param>
@@ -88,7 +88,7 @@ public class Script_SaveGameControl : MonoBehaviour
             bf.Serialize(titleFile, savedGameTitleData);
             titleFile.Close();
 
-            if (Debug.isDebugBuild) Debug.Log("Save successful at: " + saveFilePath);
+            if (Debug.isDebugBuild) Dev_Logger.Debug("Save successful at: " + saveFilePath);
         }
         catch (System.Exception e)
         {
@@ -155,12 +155,12 @@ public class Script_SaveGameControl : MonoBehaviour
                 mynesMirrorHandler.LoadMynesMirror(data);
                 pianosHandler.LoadPianos(data);
 
-                if (Debug.isDebugBuild) Debug.Log("Successful load at: " + saveFilePath);
+                if (Debug.isDebugBuild) Dev_Logger.Debug("Successful load at: " + saveFilePath);
                 return true;
             }
             else
             {
-                if (Debug.isDebugBuild) Debug.Log("Did not load; file not found.");
+                if (Debug.isDebugBuild) Dev_Logger.Debug("Did not load; file not found.");
                 return false;
             }
         }
@@ -181,22 +181,22 @@ public class Script_SaveGameControl : MonoBehaviour
             if (File.Exists(saveFilePath))
             {
                 File.Delete(saveFilePath);
-                if (Debug.isDebugBuild) Debug.Log($"Save Info file deleted at: {saveFilePath}.");
+                if (Debug.isDebugBuild) Dev_Logger.Debug($"Save Info file deleted at: {saveFilePath}.");
             }
             else
             {
-                if (Debug.isDebugBuild) Debug.Log($"Could not delete Save Info; not found at: {saveFilePath}.");
+                if (Debug.isDebugBuild) Dev_Logger.Debug($"Could not delete Save Info; not found at: {saveFilePath}.");
             }
             
             // delete Saved Game Title Data Info
             if (File.Exists(savedGameTitleDataPath))
             {
                 File.Delete(savedGameTitleDataPath);
-                if (Debug.isDebugBuild) Debug.Log($"Saved Game Title Data file deleted at: {savedGameTitleDataPath}.");
+                if (Debug.isDebugBuild) Dev_Logger.Debug($"Saved Game Title Data file deleted at: {savedGameTitleDataPath}.");
             }
             else
             {
-                if (Debug.isDebugBuild) Debug.Log($"Could not delete Save Game Title Data; not found at: {savedGameTitleDataPath}.");
+                if (Debug.isDebugBuild) Dev_Logger.Debug($"Could not delete Save Game Title Data; not found at: {savedGameTitleDataPath}.");
             }
 
             return true;
@@ -227,11 +227,11 @@ public class Script_SaveGameControl : MonoBehaviour
             var newFilePath = $"{path}/{newFileName}";
             var newTitleDataFilePath = $"{path}/{newTitleDataFileName}";
 
-            Debug.Log($"From File Path: {fromFilePath}");
-            Debug.Log($"To File Path: {newFilePath}");
+            Dev_Logger.Debug($"From File Path: {fromFilePath}");
+            Dev_Logger.Debug($"To File Path: {newFilePath}");
 
-            Debug.Log($"From Title Data File Path: {fromTitleDataFilePath}");
-            Debug.Log($"To Title Data File Path: {newTitleDataFilePath}");
+            Dev_Logger.Debug($"From Title Data File Path: {fromTitleDataFilePath}");
+            Dev_Logger.Debug($"To Title Data File Path: {newTitleDataFilePath}");
 
             if (File.Exists(fromFilePath))
             {

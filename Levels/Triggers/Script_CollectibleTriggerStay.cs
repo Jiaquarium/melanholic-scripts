@@ -52,7 +52,7 @@ public class Script_CollectibleTriggerStay : Script_Trigger
             }
             else
             {
-                Debug.Log($"reactivating trigger: {Id} on initialization");
+                Dev_Logger.Debug($"reactivating trigger: {Id} on initialization");
                 triggerPuzzleController.TriggerReactivated(Id, other);
             }
         }
@@ -76,7 +76,7 @@ public class Script_CollectibleTriggerStay : Script_Trigger
             /// Don't notify if the deactivation is a result of tearing down level
             if (!isDisabled)    triggerPuzzleController.TriggerDeactivated(Id, other);
 
-            foreach(Script_CollectibleObject obj in collectibles)   Debug.Log(obj);
+            foreach(Script_CollectibleObject obj in collectibles)   Dev_Logger.Debug(obj.name);
         }
     }
 }

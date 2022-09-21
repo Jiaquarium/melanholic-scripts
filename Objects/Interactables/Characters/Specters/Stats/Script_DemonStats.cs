@@ -10,7 +10,7 @@ public class Script_DemonStats : Script_CharacterStats
 {
     protected override void Die(Script_GameOverController.DeathTypes deathType)
     {
-        Debug.Log($"{transform.name} DEMON OVERRIDE Die() called");
+        Dev_Logger.Debug($"{transform.name} DEMON OVERRIDE Die() called");
         GetComponent<Script_Demon>().Die();
     }
 }

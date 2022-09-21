@@ -20,7 +20,7 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
     
     public override void Effect()
     {
-        Debug.Log($"{name} Effect()");
+        Dev_Logger.Debug($"{name} Effect()");
 
         var game = Script_Game.Game;
         game.ChangeStateCutScene();

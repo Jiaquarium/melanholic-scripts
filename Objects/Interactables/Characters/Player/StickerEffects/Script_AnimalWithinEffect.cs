@@ -12,7 +12,7 @@ public class Script_AnimalWithinEffect : Script_StickerEffect
     
     public override void Effect()
     {
-        Debug.Log($"{name} Effect()");
+        Dev_Logger.Debug($"{name} Effect()");
 
         eatAttack.Eat(player.FacingDirection);
 

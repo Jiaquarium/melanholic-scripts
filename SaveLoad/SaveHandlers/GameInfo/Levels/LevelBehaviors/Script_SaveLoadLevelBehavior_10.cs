@@ -21,7 +21,7 @@ public class Script_SaveLoadLevelBehavior_10 : Script_SaveLoadLevelBehavior
 
         LB10.gotBoarNeedle                  = lvlModel.gotBoarNeedle;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

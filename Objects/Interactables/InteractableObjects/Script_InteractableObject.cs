@@ -90,11 +90,11 @@ public class Script_InteractableObject : Script_Interactable
     {
         if (CheckDisabled())
         {
-            Debug.Log($"{name} is disabled");
+            Dev_Logger.Debug($"{name} is disabled");
             return;
         }
 
-        Debug.Log($"{name} Action default called in InteractableObject");
+        Dev_Logger.Debug($"{name} Action default called in InteractableObject");
         MyAction.SafeInvoke();
     }
 

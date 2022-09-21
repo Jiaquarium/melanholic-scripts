@@ -13,7 +13,7 @@ public class Script_DemonNPCStats : Script_DemonStats
         Script_Player player = hitBox.transform.GetParentRecursive<Script_Player>();
         if (player != null)
         {
-            Debug.Log($"Player trying to attack {this.gameObject.name}");
+            Dev_Logger.Debug($"Player trying to attack {this.gameObject.name}");
             // recursively find the Script_Attack
             player.onAttackDone = () => AttackedByPlayerReaction();
         }

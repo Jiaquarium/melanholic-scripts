@@ -663,7 +663,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // Unity Events
     public void PlayIdsDeadPRCS()
     {
-        Debug.Log("Play Ids dead PRCS");
+        Dev_Logger.Debug("Play Ids dead PRCS");
 
         if (isIdsDeadPRCSDone)
             return;
@@ -1083,9 +1083,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
             if (time >= songMoves.leftMoveTimes[leftMoveCount])
             {
-                Debug.Log($"IDS FACING LEFT: Time {time}");
-                Debug.Log($"Time {time}");
-                Debug.Log($"songMoves.leftMoveTimes[leftMoveCount] {songMoves.leftMoveTimes[leftMoveCount]}");
+                Dev_Logger.Debug($"IDS FACING LEFT: Time {time}");
+                Dev_Logger.Debug($"Time {time}");
+                Dev_Logger.Debug($"songMoves.leftMoveTimes[leftMoveCount] {songMoves.leftMoveTimes[leftMoveCount]}");
                 
                 Ids.FaceDirection(Directions.Left);
                 leftMoveCount++;
@@ -1099,9 +1099,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
             if (time >= songMoves.downMoveTimes[downMoveCount])
             {
-                Debug.Log($"IDS FACING DOWN: Time {time}");
-                Debug.Log($"Time {time}");
-                Debug.Log($"songMoves.downMoveTimes[downMoveCount] {songMoves.downMoveTimes[downMoveCount]}");
+                Dev_Logger.Debug($"IDS FACING DOWN: Time {time}");
+                Dev_Logger.Debug($"Time {time}");
+                Dev_Logger.Debug($"songMoves.downMoveTimes[downMoveCount] {songMoves.downMoveTimes[downMoveCount]}");
                 
                 Ids.FaceDirection(Directions.Down);
                 downMoveCount++;
@@ -1115,8 +1115,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
             if (time >= songMoves.upMoveTimes[upMoveCount])
             {
-                Debug.Log($"IDS FACING UP: Time {time}");
-                Debug.Log($"songMoves.upMoveTimes[upMoveCount] {songMoves.upMoveTimes[upMoveCount]}");
+                Dev_Logger.Debug($"IDS FACING UP: Time {time}");
+                Dev_Logger.Debug($"songMoves.upMoveTimes[upMoveCount] {songMoves.upMoveTimes[upMoveCount]}");
                 
                 Ids.FaceDirection(Directions.Up);
                 upMoveCount++;
@@ -1130,8 +1130,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
             if (time >= songMoves.rightMoveTimes[rightMoveCount])
             {
-                Debug.Log($"IDS FACING RIGHT: Time {time}");
-                Debug.Log($"songMoves.rightMoveTimes[rightMoveCount] {songMoves.rightMoveTimes[rightMoveCount]}");
+                Dev_Logger.Debug($"IDS FACING RIGHT: Time {time}");
+                Dev_Logger.Debug($"songMoves.rightMoveTimes[rightMoveCount] {songMoves.rightMoveTimes[rightMoveCount]}");
                 
                 Ids.FaceDirection(Directions.Right);
                 rightMoveCount++;
@@ -1187,14 +1187,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         // Ensure to blend back to Main Cam on both Success and Fail cases.
         if (DDRManager.didFail)
         {
-            Debug.Log($"**** OnDDRDone starting Bad Node ****");
+            Dev_Logger.Debug($"**** OnDDRDone starting Bad Node ****");
             DDRFinish(badDanceOutroNode);
             
             SwitchFromDanceCamToAfterDanceCam(false);
         }
         else
         {
-            Debug.Log($"**** OnDDRDone starting Good Node ****");
+            Dev_Logger.Debug($"**** OnDDRDone starting Good Node ****");
             
             var node = game.RunCycle == Script_RunsManager.Cycle.Weekend
                 ? goodDanceOutroNodeWeekend

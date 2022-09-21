@@ -64,11 +64,11 @@ public class Script_StaticNPC : Script_Interactable
     {
         if (action == Const_KeyCodes.Interact)
         {
-            Debug.Log($"CHECKING DISABLED DIRECTIONS: {CheckDisabledDirections()}");
+            Dev_Logger.Debug($"CHECKING DISABLED DIRECTIONS: {CheckDisabledDirections()}");
             
             if (isDialogueCoolDown || CheckDisabledDirections() || dialogueManager.isInputDisabled)
             {
-                Debug.Log($"No interact {name}, isDialogueCoolDown {isDialogueCoolDown}, isInputDisabled {dialogueManager.isInputDisabled} or cooldown");
+                Dev_Logger.Debug($"No interact {name}, isDialogueCoolDown {isDialogueCoolDown}, isInputDisabled {dialogueManager.isInputDisabled} or cooldown");
                 return;
             }
             
@@ -111,7 +111,7 @@ public class Script_StaticNPC : Script_Interactable
         {
             State = States.Dialogue;
             
-            Debug.Log($"{name} Dialogue idx: {dialogueIndex}");
+            Dev_Logger.Debug($"{name} Dialogue idx: {dialogueIndex}");
 
             dialogueManager.StartDialogueNode(
                 dialogueNodes[dialogueIndex],
@@ -120,7 +120,7 @@ public class Script_StaticNPC : Script_Interactable
                 this
             );
             
-            Debug.Log($"TriggerDialogue, incrementing dialogue index from {dialogueIndex} to {dialogueIndex + 1}");
+            Dev_Logger.Debug($"TriggerDialogue, incrementing dialogue index from {dialogueIndex} to {dialogueIndex + 1}");
             HandleIncrementDialogueNodeIndex();
         }
     }

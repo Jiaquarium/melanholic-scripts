@@ -34,7 +34,7 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
 
             if (fullArt.nextFullArt == null)
             {
-                Debug.Log($"End fullart detected; {this.name} attempting to hide collectible full art");
+                Dev_Logger.Debug($"End fullart detected; {this.name} attempting to hide collectible full art");
 
                 Script_Game.Game.fullArtManager.HideFullArt(fullArt, collectible.fadeOutSpeed, () =>
                 {

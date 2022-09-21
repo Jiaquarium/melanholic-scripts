@@ -28,7 +28,7 @@ public class Script_SaveLoadPlayer : MonoBehaviour
         );
         game.SetPlayerState(p);
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(p);
     }
 }

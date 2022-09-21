@@ -268,7 +268,7 @@ public class Script_TransitionManager : MonoBehaviour
         FinalNotifications type = FinalNotifications.Default
     )
     {
-        Debug.Log($"{name} Check for All Puzzles Done Cut Scene");
+        Dev_Logger.Debug($"{name} Check for All Puzzles Done Cut Scene");
         
         if (game.IsAllQuestsDoneToday() && !didPlayAllPuzzlesDoneCutScene)
         {
@@ -494,7 +494,7 @@ public class Script_TransitionManager : MonoBehaviour
 
     public void FadeInRestartPrompt()
     {
-        Debug.Log("Show prompt to player on how they would like to restart");
+        Dev_Logger.Debug("Show prompt to player on how they would like to restart");
         
         restartPrompt.Close();
         restartPrompt.FadeIn();
@@ -502,7 +502,7 @@ public class Script_TransitionManager : MonoBehaviour
 
     public void FadeOutRestartPrompt()
     {
-        Debug.Log("Show prompt to player on how they would like to restart");
+        Dev_Logger.Debug("Show prompt to player on how they would like to restart");
         
         restartPrompt.FadeOut(default, () => {
             restartPrompt.Close();

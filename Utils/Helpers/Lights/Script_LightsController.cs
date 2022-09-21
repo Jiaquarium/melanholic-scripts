@@ -71,12 +71,12 @@ public class Script_LightsController : MonoBehaviour
     {
         if (fadeOutCoroutine != null)
         {
-            Debug.Log("Finishing light fade out, since coroutine didn't finish on disable");
+            Dev_Logger.Debug("Finishing light fade out, since coroutine didn't finish on disable");
             intensity = minIntensity;
         }
         if (fadeInCoroutine != null)
         {
-            Debug.Log("Finishing light fade in, since coroutine didn't finish on disable");
+            Dev_Logger.Debug("Finishing light fade in, since coroutine didn't finish on disable");
             intensity = maxIntensity;
         }
 

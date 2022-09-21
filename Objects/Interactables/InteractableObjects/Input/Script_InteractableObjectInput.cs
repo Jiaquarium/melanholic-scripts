@@ -38,7 +38,7 @@ public class Script_InteractableObjectInput : Script_InteractableObject
     // Called from Level Behavior
     public void OnSubmitSuccess()
     {
-        Debug.Log($"{name} Reaction to Success");
+        Dev_Logger.Debug($"{name} Reaction to Success");
         
         EndInput();
 
@@ -50,7 +50,7 @@ public class Script_InteractableObjectInput : Script_InteractableObject
     // Called from Level Behavior
     public void OnSubmitFailure()
     {
-        Debug.Log($"{name} Reaction to Failure");
+        Dev_Logger.Debug($"{name} Reaction to Failure");
         
         EndInput();
 

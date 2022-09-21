@@ -10,7 +10,7 @@ public class Script_InteractableObjectExit : Script_InteractableObject
     
     protected override void ActionDefault()
     {
-        Debug.Log("Exit Object Interaction!");
+        Dev_Logger.Debug("Exit Object Interaction!");
         
         if (CheckDisabledDirections())
             return;

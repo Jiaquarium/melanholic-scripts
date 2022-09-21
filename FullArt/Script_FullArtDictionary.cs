@@ -29,7 +29,7 @@ public class Script_FullArtDictionary : MonoBehaviour
         for (int i = 0; i < Mathf.Min(noNullsfullArtIds.Length, noNullsfullArtPrefabs.Length); i++)
         {
             myDictionary.Add(noNullsfullArtIds[i], noNullsfullArtPrefabs[i]);
-            Debug.Log($"fullArtDict key: {fullArtIds[i]}, value: {myDictionary[fullArtIds[i]]}");
+            Dev_Logger.Debug($"fullArtDict key: {fullArtIds[i]}, value: {myDictionary[fullArtIds[i]]}");
         }
     }
 }

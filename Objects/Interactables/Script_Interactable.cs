@@ -94,10 +94,10 @@ public class Script_Interactable : MonoBehaviour
             bool isPlayerInUpBox = disablerController.GetPlayerInBox(Directions.Up);
             bool isPlayerInDownBox = disablerController.GetPlayerInBox(Directions.Down);
             
-            Debug.Log($"Left {isPlayerInLeftBox}");
-            Debug.Log($"Right {isPlayerInRightBox}");
-            Debug.Log($"Up {isPlayerInUpBox}");
-            Debug.Log($"Down {isPlayerInDownBox}");
+            Dev_Logger.Debug($"Left {isPlayerInLeftBox}");
+            Dev_Logger.Debug($"Right {isPlayerInRightBox}");
+            Dev_Logger.Debug($"Up {isPlayerInUpBox}");
+            Dev_Logger.Debug($"Down {isPlayerInDownBox}");
             
             return (
                 (isPlayerInLeftBox && DisableL)

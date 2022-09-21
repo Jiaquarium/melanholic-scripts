@@ -75,12 +75,12 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         // If player x position > Flan's, then is entering Trigger from right side (exiting rooms)
         if (isExiting)
         {
-            Debug.Log($"Player x distance from Flan: {xDistanceFromFlan}, isExiting: {isExiting}");
+            Dev_Logger.Debug($"Player x distance from Flan: {xDistanceFromFlan}, isExiting: {isExiting}");
             OnEndGuardDialogueUnblock();
             return;
         }
         
-        Debug.Log("Triggering Flan convo");
+        Dev_Logger.Debug("Triggering Flan convo");
         game.ChangeStateCutScene();
         
         Flan.FaceDirection(Flan.transform.position.GetDirectionToTarget(playerPos));
@@ -95,7 +95,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         if (game.GetPlayer().location != noBarrierOnTalkLocation.Position)
             barrier.gameObject.SetActive(true);
         
-        Debug.Log("OnEndGuardDialogueBlock: Set game to Interact.");
+        Dev_Logger.Debug("OnEndGuardDialogueBlock: Set game to Interact.");
         game.ChangeStateInteract();
 
         // must set back to nonconfirm state to force Guard to speak up next time

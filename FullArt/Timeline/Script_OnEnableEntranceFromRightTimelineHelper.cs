@@ -14,7 +14,7 @@ public class Script_OnEnableEntranceFromRightTimelineHelper : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log($"{this.name} setting full art animation triggers to prepare entrance from right");
+        Dev_Logger.Debug($"{this.name} setting full art animation triggers to prepare entrance from right");
 
         Script_FullArtManager.Control.EntranceFromRight(fullArt);
     }

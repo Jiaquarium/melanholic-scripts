@@ -29,7 +29,7 @@ public class Script_CutSceneActionHandler : MonoBehaviour
     {
         Script_Item item = itemObject.Item;
         
-        Debug.Log($"{name} Adding item: {item}");
+        Dev_Logger.Debug($"{name} Adding item: {item}");
         bool pickUpSuccess = game.AddItem(item);
 
         if (!pickUpSuccess)
@@ -56,7 +56,7 @@ public class Script_CutSceneActionHandler : MonoBehaviour
         
         if (!itemObject.showTyping)
         {
-            Debug.Log("Skipping typing item initial description on receiving item");
+            Dev_Logger.Debug("Skipping typing item initial description on receiving item");
             Script_Game.Game.dialogueManager.SkipTypingSentence();
         }
     }

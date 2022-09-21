@@ -163,7 +163,7 @@ public class Script_DemonNPC : Script_MovingNPC
         bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId)
             || isPsychicNPC
             || Script_Game.Game.IsPsychicRoom;
-        Debug.Log($"{name}: HandlePsychicDuck() isPsychicDuckActive: {isPsychicDuckActive}");
+        Dev_Logger.Debug($"{name}: HandlePsychicDuck() isPsychicDuckActive: {isPsychicDuckActive}");
 
         if (isPsychicDuckActive)
         {
@@ -196,14 +196,14 @@ public class Script_DemonNPC : Script_MovingNPC
             // if previously talked psychic, then need to switch and reset idx
             if (didLastTalkPsychic)
             {
-                Debug.Log($"No Psychic Duck; resetting defaultNode");
+                Dev_Logger.Debug($"No Psychic Duck; resetting defaultNode");
                 SwitchDialogueNodes(defaultNodes, isReset: true);
                 didLastTalkPsychic = false;
             }
             else
             {
                 // don't reset idx if staying in defaultNodes
-                Debug.Log($"No Psychic Duck; using defaultNode[{dialogueIndex}]: {defaultNodes[dialogueIndex]}");
+                Dev_Logger.Debug($"No Psychic Duck; using defaultNode[{dialogueIndex}]: {defaultNodes[dialogueIndex]}");
                 SwitchDialogueNodes(defaultNodes, false);
             }
         }
@@ -217,7 +217,7 @@ public class Script_DemonNPC : Script_MovingNPC
             // Skip the first Psychic node if we prepended it already to the Intro Node.
             if (didTalkPrependedIntroNode)
             {
-                Debug.Log($"didTalkPrependedIntroNode, incrementing dialogue index from {dialogueIndex} to {dialogueIndex + 1}");
+                Dev_Logger.Debug($"didTalkPrependedIntroNode, incrementing dialogue index from {dialogueIndex} to {dialogueIndex + 1}");
 
                 HandleIncrementDialogueNodeIndex();
                 didTalkPrependedIntroNode = false;
@@ -270,7 +270,7 @@ public class Script_DemonNPC : Script_MovingNPC
     
     private void OnPastQuestDone()
     {
-        Debug.Log($"{name} doing OnQuestStateDone() actions");
+        Dev_Logger.Debug($"{name} doing OnQuestStateDone() actions");
 
         // specify quest state done behavior
     }

@@ -67,7 +67,7 @@ public class Script_Arrow : MonoBehaviour
         // continue to move arrow off screen when done lerping
         if (progress1 >= 1f)
         {
-            Debug.Log($"{this} {type} arrow reached end at time {conductor.SongPosition} TOTAL TIME: {currentTime}");
+            Dev_Logger.Debug($"{this} {type} arrow reached end at time {conductor.SongPosition} TOTAL TIME: {currentTime}");
             
             isPassingOutline = true;
             startLocation = GetComponent<RectTransform>().localPosition;
@@ -112,7 +112,7 @@ public class Script_Arrow : MonoBehaviour
         {
             if (!isClicked)
             {
-                Debug.Log($"Reporting no click from arrow {this} at TOTAL TIME 2: {currentTime}");
+                Dev_Logger.Debug($"Reporting no click from arrow {this} at TOTAL TIME 2: {currentTime}");
 
                 DDRManager.ReportArrowTier(this);
                 if (type == "left")             DDRManager.nextLeftArrowIndex++;

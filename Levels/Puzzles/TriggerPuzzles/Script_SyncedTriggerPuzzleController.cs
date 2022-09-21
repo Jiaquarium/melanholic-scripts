@@ -97,13 +97,13 @@ public class Script_SyncedTriggerPuzzleController : Script_TriggerPuzzleControll
         currentSuccessCount = successCount;
 
         // return fire back to normal
-        Debug.Log($"Checking if method name exists: {initializeFireMethodName}");
+        Dev_Logger.Debug($"Checking if method name exists: {initializeFireMethodName}");
         if (
             myLevelBehavior != null
             && myLevelBehavior.HasMethod(initializeFireMethodName)
         )
         {
-            Debug.Log($"Invoking: {initializeFireMethodName}");
+            Dev_Logger.Debug($"Invoking: {initializeFireMethodName}");
             myLevelBehavior.InvokeMethod(initializeFireMethodName);
         }
         
@@ -175,7 +175,7 @@ public class Script_SyncedTriggerPuzzleController : Script_TriggerPuzzleControll
 
     private void NonprogressSFX()
     {
-        Debug.Log("Nonprogress SFX()");
+        Dev_Logger.Debug("Nonprogress SFX()");
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.fireLightUp,
             Script_SFXManager.SFX.fireLightUpVol
@@ -184,7 +184,7 @@ public class Script_SyncedTriggerPuzzleController : Script_TriggerPuzzleControll
 
     private void ProgressSFX()
     {
-        Debug.Log("ProgressSFX()");
+        Dev_Logger.Debug("ProgressSFX()");
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.fireLightUp2,
             Script_SFXManager.SFX.fireLightUp2Vol

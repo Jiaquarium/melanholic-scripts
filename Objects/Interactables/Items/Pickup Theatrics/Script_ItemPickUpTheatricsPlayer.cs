@@ -66,7 +66,7 @@ public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
             )
         )
         {
-            Debug.Log("Detected enter or space!!!!!");    
+            Dev_Logger.Debug("Detected enter or space!!!!!");    
             isEnterOrSpacePressed = true;
             isDetectingEnter = false;
         }
@@ -94,7 +94,7 @@ public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
             FadeBgMusicIn();
             isDone = true;
 
-            Debug.Log($"!!!Firing ItemPickUpTheatricDone Done for Director {director}, this: {this}");
+            Dev_Logger.Debug($"!!!Firing ItemPickUpTheatricDone Done for Director {director}, this: {this}");
             Script_ItemsEventsManager.ItemPickUpTheatricDone(this);
         }
 
@@ -118,14 +118,14 @@ public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
         }
         
         /// Changes State to Cut Scene and will revert to previous state afterwards
-        Debug.Log("Play(): Starting ItemPickUp Theatric!!!");
+        Dev_Logger.Debug("Play(): Starting ItemPickUp Theatric!!!");
 
         isDone = false;
         isTimelineDone = false;
 
         Script_ItemPickUpTheatricsManager.Control.ShowItemPickUpTheatric(Theatric);
         
-        Debug.Log($"Playing myTimeline asset: {myTimeline}");
+        Dev_Logger.Debug($"Playing myTimeline asset: {myTimeline}");
         director.Play(myTimeline);
     }
 

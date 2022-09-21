@@ -30,7 +30,7 @@ public class Script_PuzzlesEventsManager : MonoBehaviour
     {
         if (OnPuzzleSuccess != null)
         {
-            Debug.Log("Puzzle success event triggered----------------------------------");
+            Dev_Logger.Debug("Puzzle success event triggered----------------------------------");
             OnPuzzleSuccess(arg);
         }
     }

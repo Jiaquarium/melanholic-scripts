@@ -21,7 +21,7 @@ public class Script_SaveLoadScarletCipher : MonoBehaviour
     {
         if (data.scarletCipherData == null)
         {
-            Debug.Log("There is no ScarletCipher state data to load.");
+            Dev_Logger.Debug("There is no ScarletCipher state data to load.");
             return;
         }
 

@@ -18,7 +18,7 @@ public class Script_MovingNPCFacePlayerOnAwake : MonoBehaviour
                 Script_Game.Game.GetPlayer().transform.position
             );
             
-            Debug.Log($"npc {npc.name} face {faceDirection}");
+            Dev_Logger.Debug($"npc {npc.name} face {faceDirection}");
             npc.FaceDirection(faceDirection);
         }
         this.gameObject.SetActive(false);

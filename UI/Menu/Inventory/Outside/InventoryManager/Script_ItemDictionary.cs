@@ -27,7 +27,7 @@ public class Script_ItemDictionary : MonoBehaviour
         for (int i = 0; i < Mathf.Min(noNullsitemIds.Length, noNullsItemPrefabs.Length); i++)
         {
             myDictionary.Add(noNullsitemIds[i], noNullsItemPrefabs[i]);
-            Debug.Log($"itemDict key: {itemIds[i]}, value: {myDictionary[itemIds[i]]} added to ItemDictionary");
+            Dev_Logger.Debug($"itemDict key: {itemIds[i]}, value: {myDictionary[itemIds[i]]} added to ItemDictionary");
         }
     }
 }

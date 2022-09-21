@@ -15,7 +15,7 @@ public class Script_UsablesInventoryHandler : MonoBehaviour
         switch (usable)
         {
             case Script_UsableKey key:
-                Debug.Log($"Usable case matched (type:key): {key}");
+                Dev_Logger.Debug($"Usable case matched (type:key): {key}");
                 isUsed = Script_Game.Game.GetPlayer().UseUsableKey(key);
 
                 break;
@@ -32,7 +32,7 @@ public class Script_UsablesInventoryHandler : MonoBehaviour
         switch(usable)
         {
             case Script_UsableKey key:
-                Debug.Log("YOU JUST USED A KEY... PLAY KEY SFX");
+                Dev_Logger.Debug("YOU JUST USED A KEY... PLAY KEY SFX");
                 GetComponent<AudioSource>().PlayOneShot(
                     Script_SFXManager.SFX.useKey, Script_SFXManager.SFX.useKeyVol
                 );

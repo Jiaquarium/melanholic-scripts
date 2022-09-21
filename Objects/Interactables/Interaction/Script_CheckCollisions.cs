@@ -25,23 +25,23 @@ public class Script_CheckCollisions : MonoBehaviour
 
         if (CheckNotOffTilemap(tileWorldLocation))
         {
-            Debug.Log($"{name} Tilemap Collision at tileWorldLocation {tileWorldLocation}");
+            Dev_Logger.Debug($"{name} Tilemap Collision at tileWorldLocation {tileWorldLocation}");
             return true;
         }
 
         if (CheckInteractableBlocking(dir))
         {
-            Debug.Log($"{name} Interactable Collision at dir {dir}");
+            Dev_Logger.Debug($"{name} Interactable Collision at dir {dir}");
             return true;
         }
         if (CheckPushableBlocking(dir))
         {
-            Debug.Log($"{name} Pushable Collision at dir {dir}");
+            Dev_Logger.Debug($"{name} Pushable Collision at dir {dir}");
             return true;
         }
         if (CheckUniqueBlocking(dir))
         {
-            Debug.Log($"{name} Unique Collision at dir {dir}");
+            Dev_Logger.Debug($"{name} Unique Collision at dir {dir}");
             return true;
         }
 
@@ -84,7 +84,7 @@ public class Script_CheckCollisions : MonoBehaviour
             
             if (uniqueBlocking.Count > 0)
             {
-                Debug.Log($"{name} Detected unique blocking with tag {tag}");
+                Dev_Logger.Debug($"{name} Detected unique blocking with tag {tag}");
                 return true;    
             }
         }

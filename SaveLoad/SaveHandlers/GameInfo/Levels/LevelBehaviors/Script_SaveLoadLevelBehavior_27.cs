@@ -21,7 +21,7 @@ public class Script_SaveLoadLevelBehavior_27 : Script_SaveLoadLevelBehavior
 
         LB27.GotPsychicDuck                 = lvlModel.gotPsychicDuck;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

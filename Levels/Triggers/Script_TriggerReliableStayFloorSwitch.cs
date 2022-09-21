@@ -10,7 +10,7 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
 
     protected override void HandleUpState(bool SFXOn)
     {
-        Debug.Log($"{name} HandleUpState()");
+        Dev_Logger.Debug($"{name} HandleUpState()");
         
         base.HandleUpState(SFXOn);
 

@@ -61,6 +61,6 @@ public class Script_Tracker : Script_Interactable
     {
         transform.position = origin.position + (trackable.startingPosFromOrigin * trackingMultipler);
         startPos = transform.position;
-        Debug.Log($"Tracker pos: {startPos}");
+        Dev_Logger.Debug($"Tracker pos: {startPos}");
     }
 }

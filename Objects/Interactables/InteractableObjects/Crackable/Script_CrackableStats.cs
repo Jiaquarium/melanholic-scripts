@@ -79,7 +79,7 @@ public class Script_CrackableStats : Script_CharacterStats
         currentHp -= dmg;
         currentHp = Mathf.Clamp(currentHp, 0, int.MaxValue);
         
-        Debug.Log($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
+        Dev_Logger.Debug($"{transform.name} took damage {dmg}. currentHp: {currentHp}");
         
         if (currentHp == 0)
         {
@@ -127,7 +127,7 @@ public class Script_CrackableStats : Script_CharacterStats
 
     protected virtual void HideIce()
     {
-        Debug.Log($"{name} HideIce, isIcePersists: {isIcePersists}");
+        Dev_Logger.Debug($"{name} HideIce, isIcePersists: {isIcePersists}");
         if (!isIcePersists)
             gameObject.SetActive(false);
     }
@@ -159,7 +159,7 @@ public class Script_CrackableStats : Script_CharacterStats
     // Default to be called at end of Timeline Shatter.
     public void OnIceBlockDiagonalCutShatterTimelineDone(Script_CrackableStats ice)
     {
-        Debug.Log($"OnIceBlockCrackingTimelineDone ice <{ice}>");
+        Dev_Logger.Debug($"OnIceBlockCrackingTimelineDone ice <{ice}>");
         
         Script_InteractableObjectEventsManager.IceCrackingTimelineDone(this);
 
@@ -171,7 +171,7 @@ public class Script_CrackableStats : Script_CharacterStats
     // This will signal Level Behavior to move onto the next 
     public void OnMynesLairShatterTimelineDone(Script_CrackableStats ice)
     {
-        Debug.Log($"OnIceBlockCrackingTimelineDone ice <{ice}>");
+        Dev_Logger.Debug($"OnIceBlockCrackingTimelineDone ice <{ice}>");
         
         Script_InteractableObjectEventsManager.IceCrackingTimelineDone(this);
 
@@ -181,7 +181,7 @@ public class Script_CrackableStats : Script_CharacterStats
 
     public void OnUnfreezeEffect(Script_CrackableStats ice)
     {
-        Debug.Log($"OnUnfreezeEffect <{ice}>");
+        Dev_Logger.Debug($"OnUnfreezeEffect <{ice}>");
         
         Script_InteractableObjectEventsManager.UnfreezeEffect(this);
     }

@@ -109,7 +109,7 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
     // Timeline Signals Start
     public void EndPlayerIceSpikeFromTimeline()
     {
-        Debug.Log($"{name} EndPlayerIceSpikeFromTimeline() called from Timeline signal");
+        Dev_Logger.Debug($"{name} EndPlayerIceSpikeFromTimeline() called from Timeline signal");
         
         HideSpikes();
         isInUse = false;

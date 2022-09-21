@@ -23,7 +23,7 @@ public class Script_SaveLoadLevelBehavior_46 : Script_SaveLoadLevelBehavior
         LB46.isPuzzleComplete                   = lvlModel.isPuzzleComplete;
         LB46.didPlayFaceOff                     = lvlModel.didPlayFaceOff;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

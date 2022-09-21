@@ -25,7 +25,7 @@ public class Script_AudioMixerFader : MonoBehaviour
             currentTime += Time.deltaTime;
             float newVol = Mathf.Lerp(currentVol, clampedVol, currentTime / fadeTime);
             
-            Debug.Log($"New vol: {newVol}");
+            Dev_Logger.Debug($"New vol: {newVol}");
             audioMixer.SetFloat(exposedParam, newVol.ConvertFloatToDecibel());
 
             yield return null;

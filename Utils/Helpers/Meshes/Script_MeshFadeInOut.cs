@@ -25,7 +25,7 @@ public class Script_MeshFadeInOut : MonoBehaviour
 
     public IEnumerator FadeOutCo(Action cb, float? t = null, float minAlpha = 0f)
     {
-        Debug.Log("FadeOutCo called");
+        Dev_Logger.Debug("FadeOutCo called");
         fadeOutTime = t ?? fadeOutTime;
         
         MeshRenderer meshRenderer;
@@ -78,7 +78,7 @@ public class Script_MeshFadeInOut : MonoBehaviour
 
     public IEnumerator FadeInCo(Action cb, float? t = null, float maxAlpha = 1f)
     {
-        Debug.Log("FadeInCo called");
+        Dev_Logger.Debug("FadeInCo called");
         fadeInTime = t ?? fadeInTime;
         MeshRenderer meshRenderer;
         Color tmpColor;

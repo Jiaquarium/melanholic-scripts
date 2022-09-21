@@ -13,10 +13,10 @@ public class Script_LevelBehavior_11 : Script_LevelBehavior
 
     protected override void OnEnable()
     {
-        Debug.Log($"LastLevelBehavior: {game.LastLevelBehavior}");
+        Dev_Logger.Debug($"LastLevelBehavior: {game.LastLevelBehavior}");
         if (game.LastLevelBehavior == LB10)
         {
-            Debug.Log("Player coming from LB10_IdsRoom");
+            Dev_Logger.Debug("Player coming from LB10_IdsRoom");
             // Pause bg music until after
             game.PauseBgMusic();
             Script_GameEventsManager.OnLevelInitComplete += DoorLock;
@@ -27,7 +27,7 @@ public class Script_LevelBehavior_11 : Script_LevelBehavior
     {
         if (game.LastLevelBehavior == LB10)
         {
-            Debug.Log("Player came from LB10_IdsRoom, removing event Handler");
+            Dev_Logger.Debug("Player came from LB10_IdsRoom, removing event Handler");
             Script_GameEventsManager.OnLevelInitComplete -= DoorLock;
         }
     }

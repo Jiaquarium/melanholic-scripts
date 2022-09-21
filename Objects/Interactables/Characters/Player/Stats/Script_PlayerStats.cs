@@ -26,12 +26,12 @@ public class Script_PlayerStats : Script_CharacterStats
         
         if (Const_Dev.IsNoTimeHurt)
         {
-            Debug.Log($"DEV MODE (IsNoTimeHurt): Player {name} would take damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime}");
+            Dev_Logger.Debug($"DEV MODE (IsNoTimeHurt): Player {name} would take damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime}");
         }
         else
         {
             HandleTakeDamage(sec);
-            Debug.Log($"Player {name} took damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime}");
+            Dev_Logger.Debug($"Player {name} took damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime}");
         }
 
         return sec;

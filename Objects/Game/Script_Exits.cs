@@ -140,14 +140,14 @@ public class Script_Exits : MonoBehaviour
         {
             case (FollowUp.CutSceneNoFade):
             {
-                Debug.Log("Changing Level without Fade");
+                Dev_Logger.Debug("Changing Level without Fade");
                 Script_BackgroundMusicManager.Control.HandleStopLevelBgmNoFade(levelToGo);
                 HandleChangeLevelNoFade();
                 break;
             }
             case (FollowUp.SaveAndRestart):
             {
-                Debug.Log("SaveAndRestart Exit Follow Up");
+                Dev_Logger.Debug("SaveAndRestart Exit Follow Up");
                 Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
@@ -160,21 +160,21 @@ public class Script_Exits : MonoBehaviour
             }
             case (FollowUp.SaveAndStartWeekendCycle):
             {
-                Debug.Log("SaveAndStartWeekendCycle Exit Follow Up");
+                Dev_Logger.Debug("SaveAndStartWeekendCycle Exit Follow Up");
                 Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
             }
             case (FollowUp.SaveAndRestartOnLevel):
             {
-                Debug.Log("SaveAndRestartOnLevel Exit Follow Up");
+                Dev_Logger.Debug("SaveAndRestartOnLevel Exit Follow Up");
                 Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
             }
             default:
             {
-                Debug.Log("Default Fading Out");
+                Dev_Logger.Debug("Default Fading Out");
                 Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
                 StartFadeOut();
                 break;
@@ -269,14 +269,14 @@ public class Script_Exits : MonoBehaviour
                 }
                 case (FollowUp.SaveAndRestart):
                 {
-                    Debug.Log("------------ SAVE STATE AND RESTART ------------");
+                    Dev_Logger.Debug("------------ SAVE STATE AND RESTART ------------");
                     game.ShowSaveAndRestartMessageDefault();
                     game.NextRunSaveInitialize();
                     break;
                 }
                 case (FollowUp.SaveAndStartWeekendCycle):
                 {
-                    Debug.Log("------------ SAVE STATE AND START WEEKEND CYCLE ------------");
+                    Dev_Logger.Debug("------------ SAVE STATE AND START WEEKEND CYCLE ------------");
                     
                     exitToWeekendCutScene.Play();
                     
@@ -284,7 +284,7 @@ public class Script_Exits : MonoBehaviour
                 }
                 case (FollowUp.SaveAndRestartOnLevel):
                 {
-                    Debug.Log("------------ SAVE STATE AND RESTART ON LEVEL ------------");
+                    Dev_Logger.Debug("------------ SAVE STATE AND RESTART ON LEVEL ------------");
                     game.ShowSaveAndRestartMessageDefault();
                     game.NextRunSaveInitialize(isLobbySpawn: false);
                     break;
@@ -393,7 +393,7 @@ public class Script_Exits : MonoBehaviour
             // leave the state as cut scene if the exit FollowUp is a cut scene though
             if (game.state == Const_States_Game.InitiateLevel)
             {
-                Debug.Log($"{name} OnDoneExitingTransition currentFollowUp: {currentFollowUp}");
+                Dev_Logger.Debug($"{name} OnDoneExitingTransition currentFollowUp: {currentFollowUp}");
                 
                 switch(currentFollowUp)
                 {

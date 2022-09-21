@@ -9,7 +9,7 @@ public class Script_InputCodeHandler : Script_InputHandler
 
     public override void SetValidation(TMP_InputField TMPInputField)
     {
-        Debug.Log($"Setting input validation to {TMPInputCodeValidator}");
+        Dev_Logger.Debug($"Setting input validation to {TMPInputCodeValidator}");
         TMPInputField.inputValidator = TMPInputCodeValidator;
     }
     

@@ -339,13 +339,13 @@ public class Script_RunsManagerTester : Editor
 
         if (GUILayout.Button("Print Cycle By Run Idx"))
         {
-            Debug.Log($"mon {t.GetCycleByRunIds(0)}");
-            Debug.Log($"tue {t.GetCycleByRunIds(1)}");
-            Debug.Log($"wed {t.GetCycleByRunIds(2)}");
-            Debug.Log($"thu {t.GetCycleByRunIds(3)}");
-            Debug.Log($"fri {t.GetCycleByRunIds(4)}");
-            Debug.Log($"sat {t.GetCycleByRunIds(5)}");
-            Debug.Log($"sun {t.GetCycleByRunIds(6)}");
+            Dev_Logger.Debug($"mon {t.GetCycleByRunIds(0)}");
+            Dev_Logger.Debug($"tue {t.GetCycleByRunIds(1)}");
+            Dev_Logger.Debug($"wed {t.GetCycleByRunIds(2)}");
+            Dev_Logger.Debug($"thu {t.GetCycleByRunIds(3)}");
+            Dev_Logger.Debug($"fri {t.GetCycleByRunIds(4)}");
+            Dev_Logger.Debug($"sat {t.GetCycleByRunIds(5)}");
+            Dev_Logger.Debug($"sun {t.GetCycleByRunIds(6)}");
         }
 
         GUILayout.Space(12);

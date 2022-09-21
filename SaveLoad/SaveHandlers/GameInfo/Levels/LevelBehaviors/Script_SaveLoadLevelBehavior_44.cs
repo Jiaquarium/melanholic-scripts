@@ -20,7 +20,7 @@ public class Script_SaveLoadLevelBehavior_44 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_44 lvlModel = data.levelsData.LB44;
         LB44.didIntro = lvlModel.didIntro;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

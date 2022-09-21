@@ -161,7 +161,7 @@ public class Script_VCamManager : MonoBehaviour
         {
             if (vCam.Priority != i)
             {
-                Debug.Log($"{vCam.name} != {i}; priority: {vCam.Priority} ");
+                Dev_Logger.Debug($"{vCam.name} != {i}; priority: {vCam.Priority} ");
             }
         }
     }

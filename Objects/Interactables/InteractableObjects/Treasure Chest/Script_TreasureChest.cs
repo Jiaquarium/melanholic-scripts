@@ -61,11 +61,11 @@ public class Script_TreasureChest : Script_InteractableObject
 
     protected override void ActionDefault()
     {
-        Debug.Log($"{name}: Action default called in TreasureChest");
+        Dev_Logger.Debug($"{name}: Action default called in TreasureChest");
         
         if (CheckDisabledDirections())
         {
-            Debug.Log($"{name}: Action default from Disabled Direction");
+            Dev_Logger.Debug($"{name}: Action default from Disabled Direction");
             return;
         }
         
@@ -88,7 +88,7 @@ public class Script_TreasureChest : Script_InteractableObject
     {
         if (item.Item.id == itemId)
         {
-            Debug.Log("ON STASH ITEM called from treasure chest");
+            Dev_Logger.Debug("ON STASH ITEM called from treasure chest");
         }
     }
 

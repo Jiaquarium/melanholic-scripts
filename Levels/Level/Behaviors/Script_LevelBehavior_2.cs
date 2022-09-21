@@ -158,7 +158,7 @@ public class Script_LevelBehavior_2 : Script_LevelBehavior
     /// </summary>============================================================
     public void NameplateTimeline()
     {
-        Debug.Log("Calling from node");
+        Dev_Logger.Debug("Calling from node");
         game.ChangeStateCutScene();
         namePlatePRCSPlayer.Play();
     }

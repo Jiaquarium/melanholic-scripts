@@ -20,7 +20,7 @@ public class Script_SaveLoadLevelBehavior_49 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_49 lvlModel = data.levelsData.LB49;
         LB49.didActivateDoubts = lvlModel.didActivateDoubts;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

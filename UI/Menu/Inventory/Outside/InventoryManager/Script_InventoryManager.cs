@@ -161,12 +161,12 @@ public class Script_InventoryManager : MonoBehaviour
     {
         if (item is Script_Sticker)
         {
-            Debug.Log($"{name} Trying to add item {item} to stickers inventory");
+            Dev_Logger.Debug($"{name} Trying to add item {item} to stickers inventory");
             return inventory.AddItem(item);
         }
         else
         {
-            Debug.Log($"{name} Trying to add item {item} to items inventory");
+            Dev_Logger.Debug($"{name} Trying to add item {item} to items inventory");
             return items.AddItem(item);
         }
     }
@@ -186,7 +186,7 @@ public class Script_InventoryManager : MonoBehaviour
         Types type
     )
     {
-        Debug.Log($"HighlightItem: {i}");
+        Dev_Logger.Debug($"HighlightItem: {i}");
         
         switch(type)
         {
@@ -204,7 +204,7 @@ public class Script_InventoryManager : MonoBehaviour
         // call to replace itemDescription text
         if (isOn && isUpdateDescription)
         {
-            Debug.Log($"Show item description text: {i}");
+            Dev_Logger.Debug($"Show item description text: {i}");
             HandleItemDescription(i, type);
         }
     }
@@ -272,7 +272,7 @@ public class Script_InventoryManager : MonoBehaviour
                 break;
         }
 
-        Debug.Log("no item in slot");
+        Dev_Logger.Debug("no item in slot");
         ErrorDullSFX();
         return false;
         
@@ -288,7 +288,7 @@ public class Script_InventoryManager : MonoBehaviour
                         itemChoices = stickerChoices;
                         break;
                     default:
-                        Debug.Log("Error. Did not match a type for this item.");
+                        Dev_Logger.Debug("Error. Did not match a type for this item.");
                         break;
                 }
 
@@ -310,7 +310,7 @@ public class Script_InventoryManager : MonoBehaviour
                 // SBook Controller will handle EventSystem, setting active
                 Script_Item item = items.GetItemInSlot(itemSlotId);
                 
-                Debug.Log($"ITEM IS TYPE: {item.GetType()}");
+                Dev_Logger.Debug($"ITEM IS TYPE: {item.GetType()}");
                 
                 switch(item)
                 {
@@ -321,7 +321,7 @@ public class Script_InventoryManager : MonoBehaviour
                         itemChoices = usableChoices;
                         break;
                     default:
-                        Debug.Log("Error. Did not match a type for this item.");
+                        Dev_Logger.Debug("Error. Did not match a type for this item.");
                         break;
                 }
 
@@ -497,7 +497,7 @@ public class Script_InventoryManager : MonoBehaviour
 
     private void Drop(Script_Item item, int itemSlotId)
     {
-        Debug.Log($"Dropping item {item.id}");
+        Dev_Logger.Debug($"Dropping item {item.id}");
         HideItemChoices();
         EnterInventory();
 

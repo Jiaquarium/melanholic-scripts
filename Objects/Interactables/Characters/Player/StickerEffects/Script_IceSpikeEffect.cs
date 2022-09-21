@@ -12,7 +12,7 @@ public class Script_IceSpikeEffect : Script_StickerEffect
     
     public override void Effect()
     {
-        Debug.Log($"{name} Effect()");
+        Dev_Logger.Debug($"{name} Effect()");
         iceSpikeAttack.Spike(player.FacingDirection);
         
         // NOTE Ensure the triggered Effect animation time <= time we remain in Effect state.

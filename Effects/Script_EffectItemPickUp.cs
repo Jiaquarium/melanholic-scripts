@@ -9,7 +9,7 @@ public class Script_EffectItemPickUp : MonoBehaviour
     
     public void ShowItem(Script_Item item)
     {
-        Debug.Log($"Player showing item {item.id}");
+        Dev_Logger.Debug($"Player showing item {item.id}");
         itemImage.sprite = item.sprite;
         itemImage.gameObject.SetActive(true);
         audioSource.PlayOneShot(Script_SFXManager.SFX.ItemPickUp, Script_SFXManager.SFX.ItemPickUpVol);
@@ -17,7 +17,7 @@ public class Script_EffectItemPickUp : MonoBehaviour
 
     public void HideItem()
     {
-        Debug.Log("Hide Item being called");
+        Dev_Logger.Debug("Hide Item being called");
         itemImage.gameObject.SetActive(false);
     }
 

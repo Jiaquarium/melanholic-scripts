@@ -33,7 +33,7 @@ public class Script_PsychicNodesController : MonoBehaviour
         get
         {
             Script_Run currentRun = Script_Game.Game.Run;
-            Debug.Log($"Returning Psychic Nodes for {currentRun.dayId}");
+            Dev_Logger.Debug($"Returning Psychic Nodes for {currentRun.dayId}");
 
             switch (currentRun.dayId)
             {

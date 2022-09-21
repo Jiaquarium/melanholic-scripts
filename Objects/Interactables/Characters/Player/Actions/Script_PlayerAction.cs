@@ -84,7 +84,7 @@ public class Script_PlayerAction : MonoBehaviour
         }
         else if (playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
         {
-            Debug.Log("Open Settings");
+            Dev_Logger.Debug("Open Settings");
             OpenSettings();
         }
         else
@@ -139,22 +139,22 @@ public class Script_PlayerAction : MonoBehaviour
     {
         if (player.MyPlayerInput.actions[Const_KeyCodes.Effect1].WasPressedThisFrame())
         {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect1}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect1}");
             stickerEffectsController.Switch(0);
         }
         else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect2].WasPressedThisFrame())
         {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect2}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect2}");
             stickerEffectsController.Switch(1);
         }
         else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect3].WasPressedThisFrame())
         {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect3}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect3}");
             stickerEffectsController.Switch(2);
         }
         else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect4].WasPressedThisFrame())
         {
-            Debug.Log($"Switch to {Const_KeyCodes.Effect4}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect4}");
             stickerEffectsController.Switch(3);
         }
     }
@@ -206,7 +206,7 @@ public class Script_PlayerAction : MonoBehaviour
                 
                 if (!itemObject.showTyping)
                 {
-                    Debug.Log("Skipping typing item initial description");
+                    Dev_Logger.Debug("Skipping typing item initial description");
                     Script_Game.Game.dialogueManager.SkipTypingSentence();
                 }
                 
@@ -245,7 +245,7 @@ public class Script_PlayerAction : MonoBehaviour
         {
             if (isContinuingDialogue == false)
             {
-                Debug.Log("Stashing Item after pickup dialogue.");
+                Dev_Logger.Debug("Stashing Item after pickup dialogue.");
 
                 player.ItemPickUpEffect(false, null);
                 
@@ -259,12 +259,12 @@ public class Script_PlayerAction : MonoBehaviour
                 if (player.State == Const_States_Player.PickingUp)
                 {
                     player.SetIsInteract();
-                    Debug.Log("player state set to Interact from PlayerActions HandleEndItemDescriptionDialogue()");
+                    Dev_Logger.Debug("player state set to Interact from PlayerActions HandleEndItemDescriptionDialogue()");
                 }
             }
             else
             {
-                Debug.Log("Continuing item pick up dialogue.");
+                Dev_Logger.Debug("Continuing item pick up dialogue.");
             }
             
             return true;
@@ -285,7 +285,7 @@ public class Script_PlayerAction : MonoBehaviour
     public bool UseUsableKey(Script_UsableKey key, Directions dir)
     {
         // check for key
-        Debug.Log($"UseUsableKey() called with key: {key}");
+        Dev_Logger.Debug($"UseUsableKey() called with key: {key}");
         Script_UsableTarget usableTarget = interactionBoxController.GetUsableTarget(dir);
         
         if (usableTarget is Script_UsableKeyTarget)
@@ -294,7 +294,7 @@ public class Script_PlayerAction : MonoBehaviour
             return keyTarget.Unlock(key);
         }
         
-        Debug.Log($"No usable target available for usable key {key}");
+        Dev_Logger.Debug($"No usable target available for usable key {key}");
         
         return false;
     }

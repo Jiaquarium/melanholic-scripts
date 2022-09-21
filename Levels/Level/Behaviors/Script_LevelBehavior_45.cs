@@ -49,7 +49,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     {
         Script_ItemsEventsManager.OnItemPickUp      -= OnItemPickUp;
 
-        Debug.Log($"On Disable: Setting IsFinalTrueEndingTimeline {IsFinalTrueEndingTimeline} to false");
+        Dev_Logger.Debug($"On Disable: Setting IsFinalTrueEndingTimeline {IsFinalTrueEndingTimeline} to false");
         IsFinalTrueEndingTimeline = false;
     }
     

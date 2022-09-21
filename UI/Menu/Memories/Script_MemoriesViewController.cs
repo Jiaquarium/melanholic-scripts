@@ -43,7 +43,7 @@ public class Script_MemoriesViewController : Script_SlotsViewController
     public void OnEntrySelect(string text)
     {
         memoryDetailSelectedView.GetComponent<Script_EntryDetailView>().SetText(text);
-        Debug.Log($"Set entry detail text: {text}.");
+        Dev_Logger.Debug($"Set entry detail text: {text}.");
         
         ShowEntryDetail();
     }
@@ -57,7 +57,7 @@ public class Script_MemoriesViewController : Script_SlotsViewController
             noMemoriesView.gameObject.SetActive(true);
             memoriesView.gameObject.SetActive(false);
             memoryDetailView.gameObject.SetActive(false);
-            Debug.Log("memoryDetailView set inactive UpdateCanvasState()");
+            Dev_Logger.Debug("memoryDetailView set inactive UpdateCanvasState()");
         }
         else
         {
@@ -71,12 +71,12 @@ public class Script_MemoriesViewController : Script_SlotsViewController
         memoryDetailNoneSelectedView.gameObject.SetActive(true);
         memoryDetailSelectedView.gameObject.SetActive(false);
 
-        Debug.Log("HideEntryDetauk() Hiding entriesDetailSelectedView");
+        Dev_Logger.Debug("HideEntryDetauk() Hiding entriesDetailSelectedView");
     }
 
     void ShowEntryDetail()
     {
-        Debug.Log("Show entry detail after setting text.");
+        Dev_Logger.Debug("Show entry detail after setting text.");
         
         memoryDetailSelectedView.gameObject.SetActive(true);
         memoryDetailNoneSelectedView.gameObject.SetActive(false);

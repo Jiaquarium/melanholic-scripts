@@ -29,7 +29,7 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
 
     public override void Effect()
     {
-        Debug.Log($"{name} Effect()");
+        Dev_Logger.Debug($"{name} Effect()");
         
         bool isPaintingEntranceDetected = false;
 
@@ -42,7 +42,7 @@ public class Script_GiantBoarNeedleEffect : Script_StickerEffect
         {
             if (obj is Script_InteractablePaintingEntrance)
             {
-                Debug.Log($"Detected Painting Entrance {obj.name}");
+                Dev_Logger.Debug($"Detected Painting Entrance {obj.name}");
                 var paintingEntrance = (Script_InteractablePaintingEntrance)obj;
                 
                 if (!Const_Dev.IsTrailerMode)

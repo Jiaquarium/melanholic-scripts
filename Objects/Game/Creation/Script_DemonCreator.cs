@@ -38,7 +38,7 @@ public class Script_DemonCreator : MonoBehaviour
 
         if (Debug.isDebugBuild && Const_Dev.IsDevMode)
         {
-            Debug.Log("Demons Count: " + demons.Count);
+            Dev_Logger.Debug("Demons Count: " + demons.Count);
         }
     }
 

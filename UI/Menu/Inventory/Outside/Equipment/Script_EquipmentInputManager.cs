@@ -6,7 +6,7 @@ public class Script_EquipmentInputManager : Script_InventoryViewInputManager
 {
     protected override void ExitView()
     {
-        Debug.Log("ExitView caught from equipment input manager");
+        Dev_Logger.Debug("ExitView caught from equipment input manager");
         
         var controller = inventoryController as Script_SBookOverviewController;
         controller?.ExitEquipmentView();

@@ -21,7 +21,7 @@ public class Script_SaveLoadLevelBehavior_47 : Script_SaveLoadLevelBehavior
         
         LB47.didPickUpPuppeteerSticker                   = lvlModel.didPickUpPuppeteerSticker;
 
-        Debug.Log($"-------- LOADED {name} --------");
+        Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
     }
 }

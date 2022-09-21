@@ -8,7 +8,7 @@ public class Script_SaveLoadGame : MonoBehaviour
 
     public void SaveGameData(Model_SaveData data, Model_GameData gameDataOverride)
     {
-        Debug.Log($"Saving Total Time Played {game.totalPlayTime.FormatTotalPlayTime()}");
+        Dev_Logger.Debug($"Saving Total Time Played {game.totalPlayTime.FormatTotalPlayTime()}");
         
         data.gameData = new Model_GameData(
             gameDataOverride?.runIdx            ?? game.RunIdx,
@@ -28,11 +28,11 @@ public class Script_SaveLoadGame : MonoBehaviour
         game.ActiveEnding   = data.gameData.activeEnding;
         game.faceOffCounter = data.gameData.faceOffCounter;
 
-        Debug.Log($"---- LOADED {data.gameData} ----");
-        Debug.Log($"runIdx:             {data.gameData.runIdx}");
-        Debug.Log($"level:              {data.gameData.level}");
-        Debug.Log($"totalPlayTime:      {data.gameData.totalPlayTime}");
-        Debug.Log($"activeEnding:       {data.gameData.activeEnding}");
+        Dev_Logger.Debug($"---- LOADED {data.gameData} ----");
+        Dev_Logger.Debug($"runIdx:             {data.gameData.runIdx}");
+        Dev_Logger.Debug($"level:              {data.gameData.level}");
+        Dev_Logger.Debug($"totalPlayTime:      {data.gameData.totalPlayTime}");
+        Dev_Logger.Debug($"activeEnding:       {data.gameData.activeEnding}");
     }
 
     public void UpdatePlayTime(Model_SaveData data)

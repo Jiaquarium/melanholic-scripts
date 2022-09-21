@@ -279,7 +279,7 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextLeftMoveTime - timeToRise)
         {
-            Debug.Log($"Start Left Arrow: Time {conductor.SongPosition}");
+            Dev_Logger.Debug($"Start Left Arrow: Time {conductor.SongPosition}");
 
             StartLeftArrow();
             leftMoveCount++;
@@ -295,7 +295,7 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextDownMoveTime - timeToRise)
         {
-            Debug.Log($"Start Down Arrow: Time {conductor.SongPosition}");
+            Dev_Logger.Debug($"Start Down Arrow: Time {conductor.SongPosition}");
             
             StartDownArrow();
             downMoveCount++;
@@ -311,7 +311,7 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextUpMoveTime - timeToRise)
         {
-            Debug.Log($"Start Up Arrow: Time {conductor.SongPosition}");
+            Dev_Logger.Debug($"Start Up Arrow: Time {conductor.SongPosition}");
             
             StartUpArrow();
             upMoveCount++;
@@ -327,7 +327,7 @@ public class Script_DDRManager : MonoBehaviour
         
         if (conductor.SongPosition >= nextRightMoveTime - timeToRise)
         {
-            Debug.Log($"Start Right Arrow: Time {conductor.SongPosition}");
+            Dev_Logger.Debug($"Start Right Arrow: Time {conductor.SongPosition}");
             
             StartRightArrow();
             rightMoveCount++;
@@ -526,7 +526,7 @@ public class Script_DDRManager : MonoBehaviour
             // handle case if it's passed the outline and not tier1
             if (t < 0 && Mathf.Abs(t) > tierNeg1Buffer)
             {
-                Debug.Log($"Reporting non-clicked arrow {arrow.type} with t {t}");
+                Dev_Logger.Debug($"Reporting non-clicked arrow {arrow.type} with t {t}");
                 
                 // report tier3 to game
                 arrow.isClicked = true;

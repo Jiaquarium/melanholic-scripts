@@ -258,7 +258,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         // Ignore if this Hurt Event caused Time to run out
         if (Script_ClockManager.Control.ClockState == Script_Clock.States.Done)
         {
-            Debug.Log($"{name} Ignore trying to restart BGM on Hurt because Time has run out");
+            Dev_Logger.Debug($"{name} Ignore trying to restart BGM on Hurt because Time has run out");
             return;
         }
 
@@ -266,7 +266,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         if (!isDramaDoneTriggerOff)
             return;
 
-        Debug.Log($"OnPlayerRestartHandleBgm() hurtbox tag: {tag}, hitBox tag: {hitBox.tag}");
+        Dev_Logger.Debug($"OnPlayerRestartHandleBgm() hurtbox tag: {tag}, hitBox tag: {hitBox.tag}");
         
         if (tag == Const_Tags.Player)
         {
@@ -316,12 +316,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             }
         }
         
-        Debug.Log($"OnPlayerRestartHandleState, player.State: {game.GetPlayer().State}; isCurrentNodeInMynes: {isCurrentNodeInMynes}");
+        Dev_Logger.Debug($"OnPlayerRestartHandleState, player.State: {game.GetPlayer().State}; isCurrentNodeInMynes: {isCurrentNodeInMynes}");
 
         // Check if player is in dialogue state and currentNode is any of the Myne Nodes
         if (game.GetPlayer().State == Const_States_Player.Dialogue && isCurrentNodeInMynes)
         {
-            Debug.Log($"Handling Restart during Dialogue, Current Node {dialogueManager.currentNode}");
+            Dev_Logger.Debug($"Handling Restart during Dialogue, Current Node {dialogueManager.currentNode}");
             game.ChangeStateCutScene();
         }
 
@@ -457,7 +457,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     public void HidePlayer()
     {
-        Debug.Log($"Hiding player {game.GetPlayer()}");
+        Dev_Logger.Debug($"Hiding player {game.GetPlayer()}");
         game.GetPlayer().SetInvisible(true, 0f);
     }
 

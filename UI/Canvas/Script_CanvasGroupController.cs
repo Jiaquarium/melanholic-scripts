@@ -190,7 +190,7 @@ public class Script_CanvasGroupController : MonoBehaviour
     {
         if (fadeInCoroutine != null)
         {
-            Debug.Log($"Stopping fadeInCoroutine {fadeInCoroutine}");
+            Dev_Logger.Debug($"Stopping fadeInCoroutine {fadeInCoroutine}");
             
             StopCoroutine(fadeInCoroutine);
             fadeInCoroutine = null;
@@ -198,7 +198,7 @@ public class Script_CanvasGroupController : MonoBehaviour
 
         if (fadeOutCoroutine != null)
         {
-            Debug.Log($"Stopping fadeOutCoroutine {fadeOutCoroutine}");
+            Dev_Logger.Debug($"Stopping fadeOutCoroutine {fadeOutCoroutine}");
             
             StopCoroutine(fadeOutCoroutine);
             fadeOutCoroutine = null;

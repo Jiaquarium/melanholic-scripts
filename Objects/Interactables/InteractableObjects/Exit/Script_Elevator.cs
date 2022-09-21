@@ -49,7 +49,7 @@ public class Script_Elevator : Script_InteractableObjectExit
     {
         base.Start();
         
-        Debug.Log($"Setting Elevator IsClosed: {isClosed}");
+        Dev_Logger.Debug($"Setting Elevator IsClosed: {isClosed}");
         // UpdateState();
     }
 
@@ -80,7 +80,7 @@ public class Script_Elevator : Script_InteractableObjectExit
 
     public void SetClosedState(bool _isClosed)
     {
-        Debug.Log($"Setting closed state to {_isClosed}");
+        Dev_Logger.Debug($"Setting closed state to {_isClosed}");
         
         isClosed = _isClosed;
         UpdateState();
@@ -112,7 +112,7 @@ public class Script_Elevator : Script_InteractableObjectExit
     /// </summary>
     public void OnElevatorDoorsClosedArrival()
     {
-        Debug.Log($"{name} OnElevatorDoorsClosedArrival()");
+        Dev_Logger.Debug($"{name} OnElevatorDoorsClosedArrival()");
         game.ChangeStateInteract();
     }
     // Signal Reactions END

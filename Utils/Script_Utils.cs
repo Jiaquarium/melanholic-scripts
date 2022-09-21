@@ -445,7 +445,7 @@ public static class Script_Utils
         {
             if (f)
             {
-                Debug.Log("making font crispy: " + f);
+                Dev_Logger.Debug("making font crispy: " + f);
                 f.material.mainTexture.filterMode = FilterMode.Point;
                 f.material.mainTexture.anisoLevel = 0;
             }
@@ -721,7 +721,7 @@ public static class Script_Utils
     public static void PrintArray<T>(this System.Collections.Generic.IEnumerable<T> list, string label = "array: ")
     {
         if (Debug.isDebugBuild)
-            Debug.Log($"{label}: {String.Join("", new List<T>(list).ConvertAll(i => i?.ToString() ?? "null").ToArray())}");
+            Dev_Logger.Debug($"{label}: {String.Join("", new List<T>(list).ConvertAll(i => i?.ToString() ?? "null").ToArray())}");
     }
 
     public static T[] AddItemToArray<T>(this T[] arr, T item) where T:Component
@@ -776,7 +776,7 @@ public static class Script_Utils
 
     public static bool HasMethod(this object obj, string name)
     {
-        Debug.Log($"Checking for method: {name}; got {obj.GetType().GetMethod(name, BindingFlags.NonPublic)}");
+        Dev_Logger.Debug($"Checking for method: {name}; got {obj.GetType().GetMethod(name, BindingFlags.NonPublic)}");
         return obj.GetType().GetMethod(
             name,
             BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
@@ -883,7 +883,7 @@ public static class Script_Utils
     public static void DebugToConsole(object obj)
     {
         var output = JsonUtility.ToJson(obj, true);
-        Debug.Log(output);
+        Dev_Logger.Debug(output);
     }
 
     public static bool CheckInTags(this List<Const_Tags.Tags> tags, string tag)
@@ -920,8 +920,8 @@ public static class Script_Utils
     {
         int i = 0;
         
-        Debug.Log($"track count: {timeline.outputTrackCount}; obj to bind count: {objectsToBind.Count}");
-        Debug.Log($"Director to bind: {playableDirector}");
+        Dev_Logger.Debug($"track count: {timeline.outputTrackCount}; obj to bind count: {objectsToBind.Count}");
+        Dev_Logger.Debug($"Director to bind: {playableDirector}");
 
         foreach (var track in timeline.outputs)
         {
@@ -936,7 +936,7 @@ public static class Script_Utils
                 break;
             }
             
-            Debug.Log($"track: {track.sourceObject} to bind with: {objectsToBind[i]}, i={i}");
+            Dev_Logger.Debug($"track: {track.sourceObject} to bind with: {objectsToBind[i]}, i={i}");
             playableDirector.SetGenericBinding(track.sourceObject, objectsToBind[i]);
             i++;
         }
