@@ -16,9 +16,9 @@ public class Script_TierComment : MonoBehaviour
         None = 9
     }
     
-    private static int EmphasizeTrigger = Animator.StringToHash("emphasize");
-    private static int PulseTrigger = Animator.StringToHash("pulse");
-    private static string Flash = "TMPro_Emphasize_Flashing";
+    private static readonly int EmphasizeTrigger = Animator.StringToHash("emphasize");
+    private static readonly int PulseTrigger = Animator.StringToHash("pulse");
+    private static readonly int Flash = Animator.StringToHash("TMPro_Emphasize_Flashing");
     
     [SerializeField] private float emphasizeScale = 1.2f;
     [SerializeField] private FadeSpeeds fadeSpeed;
@@ -35,6 +35,7 @@ public class Script_TierComment : MonoBehaviour
     private float activateTimeLength;
     private float emphasizeNonAnimatorTimer;
 
+    public Animator MyTMProAnimator => TMProAnimator;
 
     void LateUpdate()
     {

@@ -11,9 +11,11 @@ using UnityEditor;
 public class Script_DemoNoteController : MonoBehaviour
 {
     [SerializeField] private Script_CanvasGroupController controller;
+    [SerializeField] private Script_CanvasGroupController demoNoteCanvasGroup;
     [SerializeField] private Script_CanvasGroupController demoTextCanvasGroup;
     [SerializeField] private Script_CanvasGroupController choicesCanvasGroup;
     [SerializeField] private Script_CanvasGroupController demoBg;
+    [SerializeField] private float introThemeFadeInTime;
     [SerializeField] private float waitForDemoTextTime;
     [SerializeField] private float waitForChoicesTime;
     [SerializeField] private float waitToRevealScrollingBgTime;
@@ -27,7 +29,7 @@ public class Script_DemoNoteController : MonoBehaviour
 
     public void ActivateDemoText()
     {
-        // Note: Ensure bgm fade out time less than FadeTo time.
+        // Note: Ensure bgm fade out time less than FadeTo time
         float fadeToBlackTime = FadeSpeeds.XXSlow.GetFadeTime();
         float fadeOutBgmTime = Mathf.Clamp(fadeToBlackTime - 1f, 0f, fadeToBlackTime);
 
@@ -35,25 +37,13 @@ public class Script_DemoNoteController : MonoBehaviour
         EileensMindBehavior.IsDemoEnd = true;
         
         var bgm = Script_BackgroundMusicManager.Control;
+        
+        // Fade out Bgm in 4 sec, while simultaneously fading in this CanvasGroup (shown as black BG)
         bgm.FadeOut(bgm.Stop, fadeOutBgmTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
         
+        // Fade in this canvas group in 5 sec (only Black BG will be showing)
+        // On completion fade in new Bgm
         FadeTo(1f, FadeInIntroTheme);
-
-        void FadeInIntroTheme()
-        {
-            // Must set volume to 0 before to avoid Bgm popping.
-            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
-            bgm.PlayFadeIn(
-                i: introThemeIdx,
-                cb: () => {
-                    demoTextCanvasGroup.Open();
-                    HandleScrollingBGReveal();
-                },
-                forcePlay: true,
-                fadeTime: waitForDemoTextTime,
-                outputMixer: Const_AudioMixerParams.ExposedBGVolume
-            );
-        }
 
         void FadeTo(float alpha, Action cb)
         {
@@ -72,9 +62,36 @@ public class Script_DemoNoteController : MonoBehaviour
             controller.FadeIn(fadeToBlackTime, cb);
         }
 
+        // Then fade in new Bgm (intro theme)
+        void FadeInIntroTheme()
+        {
+            // Must set volume to 0 before to avoid Bgm popping
+            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            bgm.PlayFadeIn(
+                i: introThemeIdx,
+                cb: () => StartCoroutine(FadeInText()),
+                forcePlay: true,
+                fadeTime: introThemeFadeInTime,
+                outputMixer: Const_AudioMixerParams.ExposedBGVolume
+            );
+        }
+
+        // Once new Bgm (intro theme) is fully faded in, wait 1 second to fade in text
+        IEnumerator FadeInText()
+        {
+            yield return new WaitForSeconds(waitForDemoTextTime);
+            
+            // Fade in Note Border first, followed by text
+            demoNoteCanvasGroup.FadeIn(FadeSpeeds.Fast.ToFadeTime(), () => {
+                demoTextCanvasGroup.FadeIn(FadeSpeeds.XXSlow.ToFadeTime(), ActivateChoices);
+                HandleScrollingBGReveal();
+            });
+        }
+
+        // Wait 1 second to start fading in the scrolling background
         void HandleScrollingBGReveal()
         {
-            // Hide Eileens Mind to show scrolling BG
+            // Hide Eileens Mind to show scrolling BG.
             EileensMindContainer.SetActive(false);
             EileensMindScrollingBg.SetActive(false);
             Script_Game.Game.GetPlayer().SetInvisible(true);
@@ -94,6 +111,7 @@ public class Script_DemoNoteController : MonoBehaviour
     // ----------------------------------------------------------------------
     // Unity Events
     
+    // - Demo Note Text: OnTypingDone
     public void ActivateChoices()
     {
         StartCoroutine(WaitToShowChoices());
@@ -135,6 +153,7 @@ public class Script_DemoNoteController : MonoBehaviour
     public void InitialState()
     {
         controller.Close();
+        demoNoteCanvasGroup.Close();
         demoTextCanvasGroup.Close();
         choicesCanvasGroup.Close();
         scrollingBG.SetActive(false);

@@ -10,20 +10,33 @@ using UnityEngine;
 [RequireComponent(typeof(Script_SpriteFadeOut))]
 public class Script_SpriteVisibilityController : MonoBehaviour
 {
+    private static readonly float defaultMaxTimer = 0.2f;
+    
     [SerializeField] private Transform target;
     public Vector3 targetLoc;
+    
+    [Tooltip("Define an adjustment to targetLoc used to test for visibility comparison")]
+    [SerializeField] private Vector3 targetLocAdjustment;
+
     public bool isAxisZ = true;
     public float timer;
+    
+    [Tooltip("Interval for testing visibility")]
     public float maxTimer;
-    protected Script_Game g;
+    [SerializeField] private bool isUseDefaultMaxTimer;
+    
+    
     [SerializeField] private bool isParent;
     [Tooltip("Hide until meets the Transform")]
     [SerializeField] private bool isShowOnReachedTarget;
     [SerializeField] private Script_SpriteFadeOut spriteFader;
     [SerializeField] protected FadeSpeeds fadeSpeed;
 
+    protected Script_Game g;
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
+
+    private float MaxTimer => isUseDefaultMaxTimer ? defaultMaxTimer : maxTimer;
     
     void Awake() {
         if (spriteFader == null)    spriteFader = GetComponent<Script_SpriteFadeOut>();
@@ -37,9 +50,9 @@ public class Script_SpriteVisibilityController : MonoBehaviour
         g = Script_Game.Game;
         
         if (targetLoc == Vector3.zero)
-        {
             targetLoc = GetComponent<Transform>().position;
-        }
+
+        targetLoc += targetLocAdjustment;
 
         if (CheckShouldFadeIn())
         {
@@ -64,7 +77,7 @@ public class Script_SpriteVisibilityController : MonoBehaviour
         
         if (timer <= 0f)
         {
-            timer = maxTimer;
+            timer = MaxTimer;
             HandleVisibility();
         }
     }

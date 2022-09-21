@@ -650,7 +650,7 @@ public class Script_DDRManager : MonoBehaviour
         ScriptArrowOutlineUp.FlashBpm();
         ScriptArrowOutlineRight.FlashBpm();
 
-        if (closeNotification.gameObject.activeInHierarchy)
+        if (closeNotification.MyTMProAnimator.gameObject.activeInHierarchy)
             closeNotification.Pulse();
     }
 

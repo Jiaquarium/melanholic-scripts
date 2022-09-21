@@ -42,6 +42,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
     [SerializeField] private Script_ExitMetadataObject EileensMindEntrance;
+    [SerializeField] private Script_ExitMetadataObject EileensMindDoneLoc;
     [SerializeField] private Script_ExitMetadataObject WellsWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject XXXWorldEntrance;
     [SerializeField] private Script_ExitMetadataObject UrselksSaloonHallwayEntrance;
@@ -184,6 +185,11 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(EileensMindEntrance);
     }
 
+    public void ExitToEileensMindDone()
+    {
+        Teleport(EileensMindDoneLoc);
+    }
+
     public void ExitToWellsWorld()
     {
         Teleport(WellsWorldEntrance);
@@ -269,6 +275,7 @@ public class Dev_GameHelper : MonoBehaviour
         Teleport(LabyrinthEntrance);
     }
 
+#if UNITY_EDITOR
     public void AddLogs()
     {
         PlayerSettings.SetScriptingDefineSymbols(
@@ -284,6 +291,7 @@ public class Dev_GameHelper : MonoBehaviour
             ScriptingDefineSymbolsProd
         );
     }
+#endif
 
     public void BuildSetup()
     {
@@ -594,6 +602,11 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Go To: Eileen's Mind"))
                 {
                     t.ExitToEileensMind();
+                }
+
+                if (GUILayout.Button("Go To: Eileen's Mind Done"))
+                {
+                    t.ExitToEileensMindDone();
                 }
 
                 EditorGUILayout.LabelField("Wells World", EditorStyles.miniLabel);

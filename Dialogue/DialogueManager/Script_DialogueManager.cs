@@ -254,7 +254,12 @@ public class Script_DialogueManager : MonoBehaviour
         activeInteractable = talkingInteractive;
 
         /// Dev warning
-        if (activeInteractable == null && game.state == Const_States_Game.Interact)
+        if (
+            activeInteractable == null
+            && game.state == Const_States_Game.Interact
+            // Item dialogues will not come from an interactable and behave as cut scenes 
+            && !(node is Script_ItemDialogueNode)
+        )
             Debug.LogWarning("Ensure to reference the caller for StartDialogueNode()");
 
         SetupTypingSpeed();
