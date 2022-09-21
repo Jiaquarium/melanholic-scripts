@@ -7,11 +7,13 @@ using UnityEngine;
 */
 public class Script_CutSceneNPC : Script_StaticNPC
 {
+    private static readonly int IsFrozen = Animator.StringToHash("isFrozen");
+    
     public int CutSceneNPCId;
 
     public override void Freeze(bool isFrozen)
     {
-        rendererChild.GetComponent<Animator>().SetBool("isFrozen", isFrozen);
+        rendererChild.GetComponent<Animator>().SetBool(IsFrozen, isFrozen);
     }
     
     public override void Setup

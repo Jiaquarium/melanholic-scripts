@@ -11,8 +11,8 @@ public class Script_InteractablePaintingEntrance : Script_QuestPainting
     static readonly private string BoarNeedle = Const_Items.BoarNeedleId; 
     static readonly private float BoarNeedleWaitTime = 0.5f;
 
-    static readonly private string IsActive = "IsActive";
-    static readonly private string Sketch = "Sketch";
+    private static readonly int IsActive = Animator.StringToHash("IsActive");
+    private static readonly int Sketch = Animator.StringToHash("Sketch");
     
     [SerializeField] private Script_ExitMetadataObject exit;
     public Script_DialogueNode[] paintingDialogueNodes;

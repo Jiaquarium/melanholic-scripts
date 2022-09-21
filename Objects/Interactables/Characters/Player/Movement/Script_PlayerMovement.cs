@@ -32,11 +32,11 @@ public class Script_PlayerMovement : MonoBehaviour
     
     // ------------------------------------------------------------------
     // PlayerMovement Animator Controller Params
-    public const string PlayerMovingAnimatorParam   = "PlayerMoving";
-    public const string MoveXAnimatorParam          = "MoveX";
-    public const string MoveZAnimatorParam          = "MoveZ";
-    public const string LastMoveXAnimatorParam      = "LastMoveX";
-    public const string LastMoveZAnimatorParam      = "LastMoveZ";
+    public static readonly int PlayerMovingAnimatorParam   = Animator.StringToHash("PlayerMoving");
+    public static readonly int MoveXAnimatorParam          = Animator.StringToHash("MoveX");
+    public static readonly int MoveZAnimatorParam          = Animator.StringToHash("MoveZ");
+    public static readonly int LastMoveXAnimatorParam      = Animator.StringToHash("LastMoveX");
+    public static readonly int LastMoveZAnimatorParam      = Animator.StringToHash("LastMoveZ");
     
     [SerializeField] private Animator animator;
     

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Script_Glimmer : MonoBehaviour
 {
-    private const string IsGlimmer = "IsGlimmer";
-    
+    private static int IsGlimmer = Animator.StringToHash("IsGlimmer");
+    private static int GlimmerTrigger = Animator.StringToHash("glimmer");
+
     [SerializeField] private bool isGlimmerAlways;
     
     public Animator a;
@@ -21,7 +22,7 @@ public class Script_Glimmer : MonoBehaviour
     
     public void Glimmer()
     {
-        a.SetTrigger("glimmer");
+        a.SetTrigger(GlimmerTrigger);
         audioSource.PlayOneShot(glimmerSFX, glimmerSFXVolScale);
     }
 }

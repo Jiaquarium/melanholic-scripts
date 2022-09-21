@@ -14,8 +14,8 @@ using UnityEditor;
 [RequireComponent(typeof(PlayableDirector))]
 public class Script_Player : Script_Character
 {
-    public const string IsEffectTrigger = "IsEffect";
-    public const string IsEffectHoldBool = "IsEffectHold";
+    public static readonly int IsEffectTrigger = Animator.StringToHash("IsEffect");
+    public static readonly int IsEffectHoldBool = Animator.StringToHash("IsEffectHold");
     
     public Renderer graphics;
     public Action onAttackDone; 

@@ -13,7 +13,7 @@ public class Script_ClockManager : MonoBehaviour
 {
     public static Script_ClockManager Control;
     public static int TimebarIncrements = 60;
-    public static string HurtTrigger = "hurt";
+    public static readonly int HurtTrigger = Animator.StringToHash("hurt");
     
     [SerializeField] private Script_HUDManager HUDManager;
     [SerializeField] private Script_Clock clock;

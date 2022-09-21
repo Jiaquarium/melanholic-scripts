@@ -15,6 +15,11 @@ public delegate void modifierCallback(Vector3Int tileLoc);
 
 public static class Script_Utils
 {
+    private static readonly int LastMoveX = Animator.StringToHash("LastMoveX");
+    private static readonly int LastMoveZ = Animator.StringToHash("LastMoveZ");
+    private static readonly int MoveX = Animator.StringToHash("MoveX");
+    private static readonly int MoveZ = Animator.StringToHash("MoveZ");
+    
     public static List<char> glitchLetters = new List<char>(){
         'Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','×','Ø','Ù','Ú','Û','Ü',
         'Ý','Þ','ß','à','á','â','ã','ä','å','æ','ç','è','é','ê','ë','ì','í','î','ï','ð','ñ','ò','ó','ô','õ','ö','ø',
@@ -191,31 +196,31 @@ public static class Script_Utils
     {
         if (dir == Directions.Up)
         {
-            animator.SetFloat("LastMoveX", 0f);
-            animator.SetFloat("LastMoveZ", 1f);
-            animator.SetFloat("MoveX", 0f);
-            animator.SetFloat("MoveZ", 1f);
+            animator.SetFloat(LastMoveX, 0f);
+            animator.SetFloat(LastMoveZ, 1f);
+            animator.SetFloat(MoveX, 0f);
+            animator.SetFloat(MoveZ, 1f);
         }
         else if (dir == Directions.Down)
         {
-            animator.SetFloat("LastMoveX", 0f);
-            animator.SetFloat("LastMoveZ", -1f);
-            animator.SetFloat("MoveX", 0f);
-            animator.SetFloat("MoveZ", -1f);
+            animator.SetFloat(LastMoveX, 0f);
+            animator.SetFloat(LastMoveZ, -1f);
+            animator.SetFloat(MoveX, 0f);
+            animator.SetFloat(MoveZ, -1f);
         }
         else if (dir == Directions.Left)
         {
-            animator.SetFloat("LastMoveX", -1f);
-            animator.SetFloat("LastMoveZ", 0f);
-            animator.SetFloat("MoveX", -1f);
-            animator.SetFloat("MoveZ", 0f);
+            animator.SetFloat(LastMoveX, -1f);
+            animator.SetFloat(LastMoveZ, 0f);
+            animator.SetFloat(MoveX, -1f);
+            animator.SetFloat(MoveZ, 0f);
         }
         else if (dir == Directions.Right)
         {
-            animator.SetFloat("LastMoveX", 1f);
-            animator.SetFloat("LastMoveZ", 0f);
-            animator.SetFloat("MoveX", 1f);
-            animator.SetFloat("MoveZ", 0f);
+            animator.SetFloat(LastMoveX, 1f);
+            animator.SetFloat(LastMoveZ, 0f);
+            animator.SetFloat(MoveX, 1f);
+            animator.SetFloat(MoveZ, 0f);
         }
     }
 

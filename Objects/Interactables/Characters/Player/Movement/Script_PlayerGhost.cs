@@ -119,12 +119,18 @@ public class Script_PlayerGhost : MonoBehaviour
             || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
             || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f;
         
-        animator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, isMovingAnimation);
+        animator.SetBool(
+            Script_PlayerMovement.PlayerMovingAnimatorParam,
+            isMovingAnimation
+        );
     }
 
     public void StopMoveAnimation()
     {
-        animator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, false);
+        animator.SetBool(
+            Script_PlayerMovement.PlayerMovingAnimatorParam,
+            false
+        );
     }
     
     public void SwitchLight(bool isOn)

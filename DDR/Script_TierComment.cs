@@ -16,8 +16,8 @@ public class Script_TierComment : MonoBehaviour
         None = 9
     }
     
-    private static string EmphasizeTrigger = "emphasize";
-    private static string PulseTrigger = "pulse";
+    private static int EmphasizeTrigger = Animator.StringToHash("emphasize");
+    private static int PulseTrigger = Animator.StringToHash("pulse");
     private static string Flash = "TMPro_Emphasize_Flashing";
     
     [SerializeField] private float emphasizeScale = 1.2f;

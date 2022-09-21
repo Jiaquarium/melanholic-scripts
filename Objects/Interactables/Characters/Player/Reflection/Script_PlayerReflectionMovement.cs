@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Script_PlayerReflectionMovement : MonoBehaviour
 {
-    protected const string PlayerMovingBool = "PlayerMoving";
-    private const string NPCMovingBool = "NPCMoving";
+    protected static readonly int PlayerMovingBool = Animator.StringToHash("PlayerMoving");
+    private static readonly int NPCMovingBool = Animator.StringToHash("NPCMoving");
     
     [SerializeField] protected Animator animator;
     [SerializeField] private float xOffset;

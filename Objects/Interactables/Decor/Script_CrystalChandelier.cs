@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Script_CrystalChandelier : MonoBehaviour
 {
-    [SerializeField]
-    private Animator a; 
+    private static readonly int IsSpinning = Animator.StringToHash("isSpinning");
+    
+    [SerializeField] private Animator a; 
 
     void Awake() {
         a = GetComponent<Animator>();
@@ -13,11 +14,11 @@ public class Script_CrystalChandelier : MonoBehaviour
 
     public void StartSpinning()
     {
-        a.SetBool("isSpinning", true);
+        a.SetBool(IsSpinning, true);
     }
 
     public void StopSpinning()
     {
-        a.SetBool("isSpinning", false);
+        a.SetBool(IsSpinning, false);
     }
 }

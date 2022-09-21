@@ -14,8 +14,8 @@ public class Script_Elevator : Script_InteractableObjectExit
         GrandMirror = 2,
         Effect  = 3,
     }
-    public static string IsClosed                   = "IsClosed";
-    public static string CloseTrigger               = "Close";
+    public static readonly int IsClosed = Animator.StringToHash("IsClosed");
+    public static readonly int CloseTrigger = Animator.StringToHash("Close");
     public static float preDoorCloseWaitTime        = 0.5f;
     
     [SerializeField] private Types type;

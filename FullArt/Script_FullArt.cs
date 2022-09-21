@@ -12,6 +12,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CanvasGroup))]
 public class Script_FullArt : MonoBehaviour
 {
+    private static int IsOffScreen = Animator.StringToHash("IsOffScreen");
+    private static int EntranceFromRightTrigger = Animator.StringToHash("EntranceFromRight");
+    
     public Script_FullArt nextFullArt;
     public FadeSpeeds fadeInSpeed; /// used for Examine
     public FadeSpeeds nextFadeSpeed; /// used for Examine
@@ -76,8 +79,8 @@ public class Script_FullArt : MonoBehaviour
     {
         /// Manager handles making this full art active
         
-        animator.SetBool("IsOffScreen", true);
-        animator.SetTrigger("EntranceFromRight");
+        animator.SetBool(IsOffScreen, true);
+        animator.SetTrigger(EntranceFromRightTrigger);
         
         /// Reveal the canvas group after animation already underway
         fullArtCanvasGroup.alpha = 1f;
@@ -87,7 +90,7 @@ public class Script_FullArt : MonoBehaviour
         IEnumerator WaitToResetAnimator()
         {
             yield return null;
-            animator.SetBool("IsOffScreen", false);
+            animator.SetBool(IsOffScreen, false);
         }
     }
 

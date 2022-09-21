@@ -8,11 +8,11 @@ using UnityEngine.Playables;
 /// </summary>
 public class Script_MovingNPC : Script_StaticNPC
 {
-    public static string LastMoveX  = "LastMoveX";
-    public static string LastMoveZ  = "LastMoveZ";
-    public static string MoveX      = "MoveX";
-    public static string MoveZ      = "MoveZ";
-    public static string NPCMoving  = "NPCMoving";
+    public static readonly int LastMoveX = Animator.StringToHash("LastMoveX");
+    public static readonly int LastMoveZ = Animator.StringToHash("LastMoveZ");
+    public static readonly int MoveX = Animator.StringToHash("MoveX");
+    public static readonly int MoveZ = Animator.StringToHash("MoveZ");
+    public static readonly int NPCMoving = Animator.StringToHash("NPCMoving");
 
     private static string LocalStateInteract = "interact";
     private static string LocalStateMove = "move";

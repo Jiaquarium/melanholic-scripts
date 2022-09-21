@@ -8,6 +8,8 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Script_DoorLock : MonoBehaviour
 {
+    private static readonly int UnlockTrigger = Animator.StringToHash("unlock");
+    
     public int id;
     public float unlockSFXVolScale;
     
@@ -45,7 +47,7 @@ public class Script_DoorLock : MonoBehaviour
 
     public void Unlock()
     {
-        animator.SetTrigger("unlock");
+        animator.SetTrigger(UnlockTrigger);
         audioSource.PlayOneShot(unlockClip, unlockSFXVolScale);
     }
 }

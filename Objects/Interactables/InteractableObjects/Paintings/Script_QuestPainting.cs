@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Script_QuestPainting : Script_InteractableObjectText
 {
-    static readonly private string IsDone = "IsDone";
+    private static readonly int IsDone = Animator.StringToHash("IsDone");
     
     [SerializeField] private Sprite donePainting;
     [SerializeField] private SpriteRenderer questPaintingGraphics;

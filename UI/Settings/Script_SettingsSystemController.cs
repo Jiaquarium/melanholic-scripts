@@ -25,7 +25,7 @@ public class Script_SettingsSystemController : MonoBehaviour
     }
 
     private const float FillIncrement = 10f;
-    private const string ClickTrigger = "click";
+    private static readonly int ClickTrigger = Animator.StringToHash("click");
 
     public SystemState systemState;
     

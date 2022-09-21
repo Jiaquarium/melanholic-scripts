@@ -8,7 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Script_DemonStats))]
 public class Script_Demon : Script_Character
 {
-    public static string SwallowedTrigger = "SwallowedTrigger";
+    public static readonly int SwallowedTrigger = Animator.StringToHash("SwallowedTrigger");
     public int Id;
     public Model_Thought thought;
     public int swallowedFillCount;

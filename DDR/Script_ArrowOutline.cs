@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Script_ArrowOutline : MonoBehaviour
 {
-    private static string Flash = "flash";
+    private static int Flash = Animator.StringToHash("flash");
     
     public Sprite defaultSprite;
     

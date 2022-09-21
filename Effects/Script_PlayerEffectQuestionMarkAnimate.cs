@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Script_PlayerEffectQuestionMarkAnimate : MonoBehaviour
 {
+    private static int QuestionMarkTrigger = Animator.StringToHash("question-mark");
+    private static int QuestionMarkHideTrigger = Animator.StringToHash("question-mark-hide");
+    
     private Animator a;
     private AudioSource audioSource;
     private AudioClip audioClip;
@@ -12,14 +15,14 @@ public class Script_PlayerEffectQuestionMarkAnimate : MonoBehaviour
     public void QuestionMark()
     {
         GetComponent<SpriteRenderer>().enabled = true;
-        a.SetTrigger("question-mark");
+        a.SetTrigger(QuestionMarkTrigger);
         audioSource.PlayOneShot(audioClip, questionMarkSFXVolScale);
     }
 
     public void HideQuestionMark()
     {
         // instantly hides
-        a.SetTrigger("question-mark-hide");
+        a.SetTrigger(QuestionMarkHideTrigger);
         GetComponent<SpriteRenderer>().enabled = false;
     }
 
