@@ -16,7 +16,7 @@ public class Script_ExitViewInputManager : MonoBehaviour
         
         // if (Input.GetButtonDown("Inventory") || Input.GetButtonDown("Cancel"))
         // {
-        //     print("HandleExitInput()");
+        //     Dev_Logger.Debug("HandleExitInput()");
         // }
     }
 }

@@ -872,7 +872,7 @@ public class Script_DialogueManager : MonoBehaviour
         inputManager.gameObject.SetActive(false);
         inputManager.End();
         
-        print("childIdx: " + childIdx);
+        Dev_Logger.Debug("childIdx: " + childIdx);
 
         if (CheckNodeChildren() && childIdx < currentNode.data.children.Length)
         {
@@ -1073,7 +1073,7 @@ public class Script_DialogueManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(currentNode.data.action))
         {
-            print("doing node action: " + currentNode.data.action);
+            Dev_Logger.Debug("doing node action: " + currentNode.data.action);
             game.HandleDialogueNodeAction(currentNode.data.action);
         }
     }

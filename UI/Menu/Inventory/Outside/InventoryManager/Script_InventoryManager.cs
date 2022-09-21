@@ -373,7 +373,7 @@ public class Script_InventoryManager : MonoBehaviour
             default: 
                 HideItemChoices();
                 EnterInventory();
-                print("DEFAULT CASE");
+                Dev_Logger.Debug("DEFAULT CASE");
                 break;
         }
     }

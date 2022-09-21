@@ -19,7 +19,7 @@ public class Script_HurtBox : MonoBehaviour
         
         Script_HurtBoxEventsManager.Hurt(tag, hitBox);
         
-        print($"{this.name} took {dmgActuallyTaken} damage from hitbox ${hitBox.Id}.");
+        Dev_Logger.Debug($"{this.name} took {dmgActuallyTaken} damage from hitbox ${hitBox.Id}.");
 
         return dmgActuallyTaken;
         // consider doing something with state, closing hurtbox?

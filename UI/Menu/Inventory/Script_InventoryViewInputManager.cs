@@ -29,7 +29,7 @@ public class Script_InventoryViewInputManager : Script_ExitViewInputManager
             || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
         )
         {
-            print("HandleExitInput()");
+            Dev_Logger.Debug("HandleExitInput()");
             Script_MenuEventsManager.ExitSubmenu();
         }
     }

@@ -16,7 +16,7 @@ public class Script_InputAnswerHandler : Script_InputHandler
     public override int HandleSubmit(string text)
     {
         // allow game -> level behavior to handle
-        print("give submission to Script_Game: " + text);
+        Dev_Logger.Debug("give submission to Script_Game: " + text);
 
         Script_SFXManager.SFX.PlayUIChoiceSubmit();
 

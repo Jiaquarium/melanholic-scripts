@@ -60,7 +60,7 @@ public class Script_Switch : Script_InteractableObject
 
     protected override void ActionDefault()
     {
-        print("action default called in Switch");
+        Dev_Logger.Debug("action default called in Switch");
         if (isOn)
         {
             if (!isStickyOn)    TurnOff();

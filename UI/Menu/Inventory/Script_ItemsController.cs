@@ -20,7 +20,7 @@ public class Script_ItemsController : Script_InventoryController
 
     public override void EnterInventoryView()
     {
-        print("EnterInventoryView() rehydrating itemsViewController and activating myEventSystem MAIN");
+        Dev_Logger.Debug("EnterInventoryView() rehydrating itemsViewController and activating myEventSystem MAIN");
         myEventSystem.gameObject.SetActive(true);
         itemsViewController.gameObject.SetActive(true);
         itemsViewController.RehydrateState();

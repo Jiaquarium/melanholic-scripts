@@ -118,7 +118,7 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
 
     private void OnPuzzleProgress()
     {
-        print("puzzle progress");
+        Dev_Logger.Debug("puzzle progress");
 
         game.ChangeStateCutScene();
         
@@ -164,7 +164,7 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     /// </summary>
     private void OnPillarsOnCorrectTriggers()
     {
-        print("puzzle progress 2!!! all triggers have pillars on top now!");
+        Dev_Logger.Debug("puzzle progress 2!!! all triggers have pillars on top now!");
         
         game.ChangeStateCutScene();
 

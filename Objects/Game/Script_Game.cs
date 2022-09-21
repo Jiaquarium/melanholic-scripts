@@ -766,7 +766,7 @@ public class Script_Game : MonoBehaviour
         if (levelBehavior == null)
             return;
         
-        print($"level: {level}; levelBehavior: {levelBehavior}... LastLevelBehavior: {LastLevelBehavior}");
+        Dev_Logger.Debug($"level: {level}; levelBehavior: {levelBehavior}... LastLevelBehavior: {LastLevelBehavior}");
         levelBehavior.Setup();
 
         // Set BoundingVolume
@@ -1563,7 +1563,7 @@ public class Script_Game : MonoBehaviour
     public void SetupSavePoint(Script_SavePoint sp, bool isInitialize)
     {
         savePoint = sp;
-        print($"savePoint: {sp}");
+        Dev_Logger.Debug($"savePoint: {sp}");
         savePointCreator.SetupSavePoint(sp, isInitialize);
     }
 
@@ -1718,7 +1718,7 @@ public class Script_Game : MonoBehaviour
 
     public void SetSwitchState(int Id, bool isOn)
     {
-        print($"setting switches state Id: {Id}, isOn: {isOn}");
+        Dev_Logger.Debug($"setting switches state Id: {Id}, isOn: {isOn}");
         levelBehavior.SetSwitchState(Id, isOn);
     }
 
@@ -2049,7 +2049,7 @@ public class Script_Game : MonoBehaviour
     
     public void DisableExits(bool isDisabled, int i)
     {
-        print("game.DisableExits()=================");
+        Dev_Logger.Debug("game.DisableExits()=================");
         exitsHandler.DisableExits(isDisabled, i);
     }
 

@@ -264,7 +264,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
 
     void OnPuzzleProgress()
     {    
-        print("PUZZLE PROGRESS: FIRE BECOMES BIGGER!!!");
+        Dev_Logger.Debug("PUZZLE PROGRESS: FIRE BECOMES BIGGER!!!");
         fireplacePlayer.GrowFire();
         fireplaceMirror.GrowFire();
 
@@ -355,7 +355,7 @@ public class Script_LevelBehavior_12 : Script_LevelBehavior
     /// <param name="aDirector">given from listener</param>
     public override void HandlePlayableDirectorStopped(PlayableDirector aDirector)
     {
-        print($"HandlePlayableDirectorStopped(): Director: {aDirector}, playableAsset: {aDirector.playableAsset}");
+        Dev_Logger.Debug($"HandlePlayableDirectorStopped(): Director: {aDirector}, playableAsset: {aDirector.playableAsset}");
         // no follow up action on puzzle complete player timeline (isDone flag)
         if (aDirector == playerPlayableDirector && !isDone)
             HandleMovePlayerToMirror(playerMovesNeededToReachMirror);

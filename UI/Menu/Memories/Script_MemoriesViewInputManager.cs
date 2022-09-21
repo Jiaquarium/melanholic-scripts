@@ -24,7 +24,7 @@ public class Script_MemoriesViewInputManager : Script_ExitViewInputManager
 
     //     if (Input.GetButtonDown(Const_KeyCodes.Inventory) || Input.GetButtonDown(Const_KeyCodes.Cancel))
     //     {
-    //         print("HandleExitInput()");
+    //         Dev_Logger.Debug("HandleExitInput()");
     //         Script_MenuEventsManager.ExitSubmenu();
     //     }
     // }

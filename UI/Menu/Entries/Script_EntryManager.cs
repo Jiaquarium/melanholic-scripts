@@ -49,7 +49,7 @@ public class Script_EntryManager : MonoBehaviour
         
         int Id = game.entries.Length;
         
-        print($"adding headline: {headline}; my Id: {Id}");
+        Dev_Logger.Debug($"adding headline: {headline}; my Id: {Id}");
         e.Setup(Id, nameId, text, timestamp, headline);
         e.GetComponent<Script_EntryOnSelect>().Setup(entriesViewController);
 

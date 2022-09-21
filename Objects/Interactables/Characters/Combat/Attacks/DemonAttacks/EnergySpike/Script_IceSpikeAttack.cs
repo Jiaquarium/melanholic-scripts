@@ -74,7 +74,7 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
         if (hurtBox != null)
         {
             int dmg = GetAttackStat().GetVal();
-            print($"CollisionedWith with {hurtBox} inflicting dmg: {dmg}");
+            Dev_Logger.Debug($"CollisionedWith with {hurtBox} inflicting dmg: {dmg}");
             
             int dmgActuallyGiven = hurtBox.Hurt(dmg, hitBox);
             if (dmgActuallyGiven > 0)

@@ -108,7 +108,7 @@ public class Script_InteractableObjectCreator : MonoBehaviour
             if (fullArt == null)   continue;
             interactableObjects.Add(fullArt);
             
-            print("fullArt is: " + fullArt);
+            Dev_Logger.Debug("fullArt is: " + fullArt);
             
             if (isInitialize)
             {

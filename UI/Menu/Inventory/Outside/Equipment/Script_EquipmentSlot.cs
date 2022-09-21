@@ -11,7 +11,7 @@ public class Script_EquipmentSlot : Script_Slot
     /// </summary>
     public void OnEnter()
     {
-        print($"{name} Enter is clicked on me");
+        Dev_Logger.Debug($"{name} Enter is clicked on me");
         
         inventoryManager.HandleEquipmentSlotOnEnter(Id);
     }

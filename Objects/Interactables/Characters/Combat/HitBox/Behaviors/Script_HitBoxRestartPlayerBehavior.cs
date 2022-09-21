@@ -12,10 +12,10 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
 
     public override void Hit(Collider col)
     {
-        print(col.tag);
+        Dev_Logger.Debug(col.tag);
         if (col.tag == Const_Tags.Player)
         {
-            print($"{name} Player hit: {col}");
+            Dev_Logger.Debug($"{name} Player hit: {col}");
             Dev_Logger.Debug($"Time Left (s): {Script_ClockManager.Control.TimeLeft}");
             
             if (Const_Dev.IsDevMode && Debug.isDebugBuild)

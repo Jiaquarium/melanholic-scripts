@@ -39,7 +39,7 @@ public class Script_TimelineController : MonoBehaviour
 
             if (playable.state == PlayState.Playing)
             {
-                print($"playable {playable} is playing, stopping now.");
+                Dev_Logger.Debug($"playable {playable} is playing, stopping now.");
                 playable.time = 0f;
                 playable.Stop();
             }
@@ -57,7 +57,7 @@ public class Script_TimelineController : MonoBehaviour
         if (timelines.Count <= timelineIdx)     selectedAsset = timelines[timelines.Count - 1];
         else                                    selectedAsset = timelines[timelineIdx];
 
-        print("playing asset: " + selectedAsset);
+        Dev_Logger.Debug("playing asset: " + selectedAsset);
         playableDirectors[playableDirectorIdx].Play(selectedAsset);
 
         return playableDirectors[playableDirectorIdx];

@@ -43,11 +43,11 @@ public class Script_CollectibleTriggerStay : Script_Trigger
         {
             isOn = true;
             collectibles.Add(other.transform.parent.GetComponent<Script_CollectibleObject>());
-            foreach(Script_CollectibleObject obj in collectibles)   print(obj);
+            foreach(Script_CollectibleObject obj in collectibles)   Dev_Logger.Debug($"{obj}");
 
             if (!isInitializing && !isDisabled)
             {
-                print("activating trigger: " + Id);
+                Dev_Logger.Debug("activating trigger: " + Id);
                 triggerPuzzleController.TriggerActivated(Id, other);
             }
             else
@@ -61,14 +61,14 @@ public class Script_CollectibleTriggerStay : Script_Trigger
     void OnTriggerExit(Collider other)
     {
         Script_ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
-        print("onTriggerExit other.tag" + other.tag);
-        print("onTriggerExit gameObject" + gameObject);
+        Dev_Logger.Debug("onTriggerExit other.tag" + other.tag);
+        Dev_Logger.Debug("onTriggerExit gameObject" + gameObject);
         if (
             other.tag == Const_Tags.ItemObject
             && other.transform.parent.GetComponent<Script_CollectibleObject>() != null
         )
         {
-            print("onTriggerExit other.transform.parent.GetComponent<Script_CollectibleObject>(): "
+            Dev_Logger.Debug("onTriggerExit other.transform.parent.GetComponent<Script_CollectibleObject>(): "
             + other.transform.parent.GetComponent<Script_CollectibleObject>());
             isOn = false;
             collectibles.Remove(other.transform.parent.GetComponent<Script_CollectibleObject>());

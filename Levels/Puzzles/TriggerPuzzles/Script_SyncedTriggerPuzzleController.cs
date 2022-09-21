@@ -50,8 +50,8 @@ public class Script_SyncedTriggerPuzzleController : Script_TriggerPuzzleControll
         if (time < 0f)
         {
             time = 0f;
-            print($"Time.deltaTime: {Time.deltaTime}");
-            print("RAN OUT OF TIME BUFFER ------------------------------; resetting");
+            Dev_Logger.Debug($"Time.deltaTime: {Time.deltaTime}");
+            Dev_Logger.Debug("RAN OUT OF TIME BUFFER ------------------------------; resetting");
             StopTracking();
         }
     }
@@ -75,7 +75,7 @@ public class Script_SyncedTriggerPuzzleController : Script_TriggerPuzzleControll
         bool isPushableIdMatching = activatedPushableIds.Count > 0 && pushableId == activatedPushableIds[activatedPushableIds.Count - 1];
         if (Array.IndexOf(activatedTriggersIds, triggerId) > 0 || !isPushableIdMatching)
         {
-            print($"reinitializing tracking; pushableId: {pushableId}, last pushableId: {activatedPushableIds[activatedPushableIds.Count - 1]}");
+            Dev_Logger.Debug($"reinitializing tracking; pushableId: {pushableId}, last pushableId: {activatedPushableIds[activatedPushableIds.Count - 1]}");
             InitializeTracking(triggerId, pushableId);
         }
         else
@@ -124,7 +124,7 @@ public class Script_SyncedTriggerPuzzleController : Script_TriggerPuzzleControll
                 // we're filling in last trigger
                 if (i == activatedTriggersIds.Length - 1)
                 {
-                    print($"Delay between syncing was: {timeBuffer - time}");
+                    Dev_Logger.Debug($"Delay between syncing was: {timeBuffer - time}");
                     StopTracking();
                     currentSuccessCount--;
 
@@ -133,13 +133,13 @@ public class Script_SyncedTriggerPuzzleController : Script_TriggerPuzzleControll
                     // notify subscribers of success or progress 
                     if (currentSuccessCount == 0)
                     {
-                        print("NOTIFY SUCCESS PUZZLE COMPLETE!!!!!!!!!!!!!!!!!!!!!");
+                        Dev_Logger.Debug("NOTIFY SUCCESS PUZZLE COMPLETE!!!!!!!!!!!!!!!!!!!!!");
                         isComplete = true;
                         Script_PuzzlesEventsManager.PuzzleSuccess(null);
                     }
                     else
                     {
-                        print("NOTIFY PUZZLE PROGRESS!");
+                        Dev_Logger.Debug("NOTIFY PUZZLE PROGRESS!");
                         Script_PuzzlesEventsManager.PuzzleProgress();
                     }
                 }

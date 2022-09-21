@@ -398,7 +398,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     public override void SetSwitchState(int Id, bool isOn)
     {
-        print("override SetSwitchState()");
+        Dev_Logger.Debug("override SetSwitchState()");
         switchHandler.SetSwitchState(switchesState, Id, isOn);
     }
 

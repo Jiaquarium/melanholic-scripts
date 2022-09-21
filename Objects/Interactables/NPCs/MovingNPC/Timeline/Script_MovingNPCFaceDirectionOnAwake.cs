@@ -14,7 +14,7 @@ public class Script_MovingNPCFaceDirectionOnAwake : MonoBehaviour
     {
         foreach (Script_MovingNPC npc in movingNPCs)
         {
-            print($"NPC {npc}facing direction: {faceDirection}");
+            Dev_Logger.Debug($"NPC {npc}facing direction: {faceDirection}");
             npc.FaceDirection(faceDirection);
         }
         this.gameObject.SetActive(false);

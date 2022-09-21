@@ -88,7 +88,7 @@ public class Script_EnergySpikeAttack : Script_Attack
         if (hurtBox != null && !didHit)
         {
             int dmg = GetAttackStat().GetVal();
-            print($"CollisionedWith with {hurtBox} inflicting dmg: {dmg}");
+            Dev_Logger.Debug($"CollisionedWith with {hurtBox} inflicting dmg: {dmg}");
             
             /// Only hit if did damage
             if (hurtBox.Hurt(dmg, hitBox) > 0)

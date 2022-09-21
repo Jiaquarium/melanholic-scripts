@@ -130,7 +130,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     {
         if (!isCurrentPuzzleComplete)
         {
-            print("PUZZLE SUCCESS SCENE!!!");
+            Dev_Logger.Debug("PUZZLE SUCCESS SCENE!!!");
             IsPuzzleComplete        = true;
             isCurrentPuzzleComplete = true;
             

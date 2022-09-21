@@ -53,7 +53,7 @@ public class Script_SBookOverviewController : Script_InventoryController
 
     public override void EnterInventoryView()
     {
-        print("EnterInventoryView() rehydrating inventoryViewController and activating myEventSystem MAIN");
+        Dev_Logger.Debug("EnterInventoryView() rehydrating inventoryViewController and activating myEventSystem MAIN");
         myEventSystem.gameObject.SetActive(true);
         inventoryViewController.gameObject.SetActive(true);
         inventoryViewController.RehydrateState();
@@ -65,7 +65,7 @@ public class Script_SBookOverviewController : Script_InventoryController
     {
         inventoryViewController.gameObject.SetActive(false);
         inventoryController.ChangeStateToOverview();
-        print("setting lastSelectedBeforeExit: " + lastSelectedBeforeExit);
+        Dev_Logger.Debug("setting lastSelectedBeforeExit: " + lastSelectedBeforeExit);
         
         EventSystem.current.SetSelectedGameObject(lastSelectedBeforeExit);
     }

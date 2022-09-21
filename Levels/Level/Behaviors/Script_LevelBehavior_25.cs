@@ -410,7 +410,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     /// Node: "hehehe..."
     public void ElleniaWalksToPaintingsCutScene()
     {
-        print("Ellenia walking to paintings cut scene");
+        Dev_Logger.Debug("Ellenia walking to paintings cut scene");
         game.ChangeStateCutScene();
 
         var VCamManager = Script_VCamManager.VCamMain;

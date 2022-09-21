@@ -38,7 +38,7 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
 
                 Script_Game.Game.fullArtManager.HideFullArt(fullArt, collectible.fadeOutSpeed, () =>
                 {
-                    print("isplayer state interact: " + Script_Game.Game.GetPlayer().State == Const_States_Player.Interact);
+                    Dev_Logger.Debug($"isplayer state interact: {Script_Game.Game.GetPlayer().State == Const_States_Player.Interact}");
                     isInputDisabled = false;
                     mainController.state = UIState.Interact;
                     isFullArtMode = false;
@@ -58,14 +58,14 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
     public void Examine(Script_Collectible _collectible)
     {
         if (isInputDisabled)    return;
-        print("trying to examine:" + _collectible.name);
+        Dev_Logger.Debug("trying to examine:" + _collectible.name);
         collectible = _collectible;
 
         // show full art and set it via out
         if (!fullArtDictionary.myDictionary.TryGetValue(collectible.fullArtId, out fullArt))
         {
             // the key isn't in the dictionary.
-            print("value of fullArt" + fullArt);
+            Dev_Logger.Debug("value of fullArt" + fullArt);
             Debug.LogError($"Key:{collectible.fullArtId} is not in dictionary");
             ItemsController.ExitFullArt();
             return;

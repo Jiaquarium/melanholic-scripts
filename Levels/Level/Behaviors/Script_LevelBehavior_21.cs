@@ -165,7 +165,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     {
         string newPassword = GetComponent<Script_PasswordChooser>().GetRandomWord();
         Script_Names.UpdateElleniaPassword(newPassword);
-        print($"Set ElleniaPassword to {Script_Names.ElleniaPassword}");
+        Dev_Logger.Debug($"Set ElleniaPassword to {Script_Names.ElleniaPassword}");
     }
     
     /// <summary>
