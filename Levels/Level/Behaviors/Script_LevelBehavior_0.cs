@@ -102,7 +102,9 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         // BG Param previously set to 0f 
         game.StartBgMusicNoFade();
-        Script_BackgroundMusicManager.Control.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+        var bgmManager = Script_BackgroundMusicManager.Control;
+        bgmManager.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+        bgmManager.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
     }
     
     public void OnWellCutSceneDone()

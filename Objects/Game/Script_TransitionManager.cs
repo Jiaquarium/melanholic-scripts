@@ -65,7 +65,6 @@ public class Script_TransitionManager : MonoBehaviour
     public const float RestartPlayerFadeOutTime = 1f;
     public const float FadeTimeSlow = 2.0f;
     public const float UnderDialogueFadeTime = 1.5f;
-    public Script_CanvasGroupController restartPrompt;
 
     [Header("Good Endings")]
     [SerializeField] private int endingThemeTrue;
@@ -87,6 +86,8 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController elevatorCanvasGroup;
     [SerializeField] private Script_CanvasGroupController KelsingorCanvasGroup;
     [SerializeField] private Script_CanvasGroupController SealingCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController restartPrompt;
+    [SerializeField] private EventSystem restartPromptEventSystem;
     
     private float timeScaleTimer;
     private Coroutine timeScaleCoroutine;
@@ -498,6 +499,7 @@ public class Script_TransitionManager : MonoBehaviour
         
         restartPrompt.Close();
         restartPrompt.FadeIn();
+        restartPromptEventSystem.SetSelectedGameObject(restartPromptEventSystem.firstSelectedGameObject);   
     }
 
     public void FadeOutRestartPrompt()

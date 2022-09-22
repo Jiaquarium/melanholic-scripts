@@ -11,18 +11,25 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Script_EventSystemLastSelected))]
 public class Script_SlowAwakeEventSystem : MonoBehaviour
 {
-    private static float startUpTime = 1.0f;
+    private static float startUpTime = 0.75f;
     private float timer;
 
-    public float Timer => timer;
+    public bool IsTimerDone { get; set; }
     
     void OnEnable()
     {
+        Dev_Logger.Debug($"OnEnable SlowAwakeEventSystem {name}");
+        
         GetComponent<EventSystem>().sendNavigationEvents = false;
         
         // to ensure we set with Script_EventSystemLastSelected.SetFirstSelected
         GetComponent<Script_EventSystemLastSelected>().enabled = false;
-        timer = startUpTime;
+        InitialState();
+    }
+
+    void OnDisable()
+    {
+        InitialState();      
     }
 
     void Update()
@@ -38,7 +45,15 @@ public class Script_SlowAwakeEventSystem : MonoBehaviour
 
                 // to ensure we set with Script_EventSystemLastSelected.SetFirstSelected
                 GetComponent<Script_EventSystemLastSelected>().enabled = true;
+
+                IsTimerDone = true;
             }
         }
+    }
+
+    private void InitialState()
+    {
+        timer = startUpTime;
+        IsTimerDone = false;
     }
 }

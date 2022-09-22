@@ -171,9 +171,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             // On First Load of subsequent days, play the Day Notification only once.
             Script_DayNotificationManager.Control.PlayDayNotification(() =>
                 {
-                    Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
                     game.StartBgMusicNoFade();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(game.ChangeStateInteract, BGMParam);
+                    var bgmManager = Script_BackgroundMusicManager.Control;
+                    bgmManager.SetVolume(0f, BGMParam);
+                    bgmManager.FadeInSlow(game.ChangeStateInteract, BGMParam);
                 },
                 _isInteractAfter: false
             );
@@ -187,9 +188,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             // On First Load of subsequent days, play the Day Notification only once.
             Script_DayNotificationManager.Control.PlayDayNotification(() =>
                 {
-                    Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
                     game.StartBgMusicNoFade();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
+                    var bgmManager = Script_BackgroundMusicManager.Control;
+                    bgmManager.SetVolume(0f, BGMParam);
+                    bgmManager.FadeInSlow(null, BGMParam);
                 },
                 _isInteractAfter: false,
                 beforeFadeOutCb: () => {
@@ -240,9 +242,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         {
             Script_DayNotificationManager.Control.PlayDayNotification(() =>
                 {
-                    Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
                     game.StartBgMusicNoFade();
-                    Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
+                    var bgmManager = Script_BackgroundMusicManager.Control;
+                    bgmManager.SetVolume(0f, BGMParam);
+                    bgmManager.FadeInSlow(null, BGMParam);
                 },
                 _isInteractAfter: false,
                 beforeFadeOutCb: () => {
@@ -291,9 +294,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // Called from StartNode on New Game.
     public void OnEndStartDialogue()
     {
-        Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
         game.StartBgMusicNoFade();
-        Script_BackgroundMusicManager.Control.FadeInSlow(null, BGMParam);
+        var bgmManager = Script_BackgroundMusicManager.Control;
+        bgmManager.SetVolume(0f, BGMParam);
+        bgmManager.FadeInSlow(null, BGMParam);
         
         // Wait to ZoomOut
         StartCoroutine(WaitToFadeOutDay1());

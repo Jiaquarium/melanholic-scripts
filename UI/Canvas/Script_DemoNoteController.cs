@@ -111,7 +111,6 @@ public class Script_DemoNoteController : MonoBehaviour
     // ----------------------------------------------------------------------
     // Unity Events
     
-    // - Demo Note Text: OnTypingDone
     public void ActivateChoices()
     {
         StartCoroutine(WaitToShowChoices());

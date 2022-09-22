@@ -74,6 +74,17 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         set => MyCanvasScaler.scaleFactor = value;
     }
 
+    private Script_GraphicsManager GraphicsManager
+    {
+        get
+        {
+            if (graphics == null)
+                graphics = Script_GraphicsManager.Control;
+            
+            return graphics;
+        }
+    }
+
     void Awake()
     {
         SetupCanvasAdjusters();
@@ -191,16 +202,16 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         try
         {
             if (isOnlyUpscaled)
-                targetScaleFactor = graphics.Zoom;
+                targetScaleFactor = GraphicsManager.Zoom;
             else
             {
                 targetScaleFactor = isOnlyUseDefaultVCamScaling
-                    ? graphics.UIDefaultScaleFactorAdjustedZoomCam
-                    : graphics.UIDefaultScaleFactor;
+                    ? GraphicsManager.UIDefaultScaleFactorAdjustedZoomCam
+                    : GraphicsManager.UIDefaultScaleFactor;
             }
 
             if (IsCustomScaling)
-                targetScaleFactor = GetScaleFactorByViewportHeight(graphics.PixelScreenSize.y);
+                targetScaleFactor = GetScaleFactorByViewportHeight(GraphicsManager.PixelScreenSize.y);
             
             // Will result in the canvas being hidden from view.
             hiddenScaleFactor = targetScaleFactor + 1;
@@ -215,7 +226,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
                 // Otherwise, it will never be adjusted because UI Aspect Ratio Enforcer will override it.
                 var UIAspectRatioEnforcer = canvasAdjuster.GetComponent<Script_UIAspectRatioEnforcer>();
                 if (UIAspectRatioEnforcer == null)
-                    canvasAdjuster.AdjustPosition(scaleFactor, graphics.PixelScreenSize.y, Vector3.zero, false);
+                    canvasAdjuster.AdjustPosition(scaleFactor, GraphicsManager.PixelScreenSize.y, Vector3.zero, false);
             }
         }
         catch (System.Exception error)
