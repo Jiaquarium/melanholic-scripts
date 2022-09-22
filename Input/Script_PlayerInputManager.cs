@@ -175,6 +175,10 @@ public class Script_PlayerInputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This will delete the settings file, but on Back, a new one will be created, so
+    /// volume data will be kept.
+    /// </summary>
     public void SetDefault()
     {
         MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap).RemoveAllBindingOverrides();

@@ -36,8 +36,7 @@ public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
 
     public virtual void OnSelect(BaseEventData e)
     {
-        // If the object was selected during Slow Awake, make sure to 
-        // not play SFX
+        // If selected during Slow Awake, make sure to not play SFX
         Script_SlowAwakeEventSystem slowAwakeEventSystem = null;
         if (EventSystem.current != null)
             slowAwakeEventSystem = EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>();

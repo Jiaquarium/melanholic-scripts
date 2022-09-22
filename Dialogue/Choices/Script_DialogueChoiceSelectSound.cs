@@ -28,6 +28,14 @@ public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, I
     public virtual void OnSelect(BaseEventData e)
     {
         Dev_Logger.Debug($"{name} {this.GetType()} OnSelect");
+
+        // If selected during Slow Awake, make sure to not play SFX
+        Script_SlowAwakeEventSystem slowAwakeEventSystem = null;
+        if (EventSystem.current != null)
+            slowAwakeEventSystem = EventSystem.current.GetComponent<Script_SlowAwakeEventSystem>();
+        
+        if (slowAwakeEventSystem != null && !slowAwakeEventSystem.IsTimerDone)
+            return;
         
         SelectSFX();
     }

@@ -39,7 +39,13 @@ public class Script_DemoNoteController : MonoBehaviour
         var bgm = Script_BackgroundMusicManager.Control;
         
         // Fade out Bgm in 4 sec, while simultaneously fading in this CanvasGroup (shown as black BG)
-        bgm.FadeOut(bgm.Stop, fadeOutBgmTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        bgm.FadeOut(
+            // Do not set volume here or popping will occur, just allow the upcoming
+            // coroutine to handle Audio Mixer volume since it'll be 0f at this point anyways.
+            null,
+            fadeOutBgmTime,
+            outputMixer: Const_AudioMixerParams.ExposedBGVolume)
+        ;
         
         // Fade in this canvas group in 5 sec (only Black BG will be showing)
         // On completion fade in new Bgm
@@ -65,7 +71,6 @@ public class Script_DemoNoteController : MonoBehaviour
         // Then fade in new Bgm (intro theme)
         void FadeInIntroTheme()
         {
-            // Must set volume to 0 before to avoid Bgm popping
             bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             bgm.PlayFadeIn(
                 i: introThemeIdx,

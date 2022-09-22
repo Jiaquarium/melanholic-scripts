@@ -367,6 +367,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         void FullCutScene()
         {
             didActivateDramaticThoughts = true;
+
+            // Dramatic Cut Scene timeline should change camera AND call signal 1 frame before
+            // timeline is done for a more seamless transition.
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 1);
             
             StartCoroutine(
@@ -546,6 +549,11 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             if (GUILayout.Button("Move Player 1/2 Spikes 1/2 Trigger"))
             {
                 Script_Game.Game.GetPlayer().Teleport(t.devHalfTriggerHalfSpikesLocation.Position);
+            }
+
+            if (GUILayout.Button("Fade Out Dramatic Music"))
+            {
+                t.FadeOutDramaticMusic();
             }
         }
     }

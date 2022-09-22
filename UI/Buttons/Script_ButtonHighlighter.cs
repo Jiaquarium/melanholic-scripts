@@ -11,6 +11,9 @@ using UnityEngine.UI;
 /// until Slow Awake Event System activated nav events this stays in isLoading state
 /// 
 /// InitializeState() -> HandleSlowAwake()
+/// 
+/// Note: To test the strange EventSystem behavior where EventSystem's currentSelected
+/// is null until after this OnEnable, do dialogue after incrementing day in same session.
 /// </summary>
 public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -91,8 +94,16 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         // If this is slow awakening UI store if this should be highlighted.
         // Basically, we want to call HighlightOutline in two parts with Slow Awake Event System;
         // HandleSlowAwake will handle the call to the other part of Highlight Outline.
-        if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject)
+        Dev_Logger.Debug($"{name} InitializeState() EventSystem is null? {EventSystem.current == null} EventSystem: {EventSystem.current}");
+        
+        if (
+            EventSystem.current != null
+            && EventSystem.current.firstSelectedGameObject == gameObject
+        )
+        {
+            Dev_Logger.Debug("Flagging first selected to be highlighted");
             isHighlighted = true;
+        }
     }
 
     // HandleSlowAwake will handle in Update. This handles before rendering.
