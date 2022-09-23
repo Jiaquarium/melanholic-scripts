@@ -30,7 +30,7 @@ public class Script_SaveViewManager : MonoBehaviour
     [SerializeField] private Script_EntryInput entryInput;
     [SerializeField] private Script_EntryManager entryManager;
     
-    [SerializeField] private TextMeshProUGUI timestampDisplayText;
+    // [SerializeField] private TextMeshProUGUI timestampDisplayText;
     [SerializeField] private TMP_InputValidator TMPInputEntryValidator;
     
     [SerializeField] private float showSavingMinTime;
@@ -38,13 +38,6 @@ public class Script_SaveViewManager : MonoBehaviour
     
     private bool isShowingSaving;
     
-    void Update()
-    {
-        string timestampNow = DateTime.Now.FormatDateTime();
-        if (timestampNow != timestampDisplayText.text)
-            timestampDisplayText.text = timestampNow;
-    }
-
     public void ShowSaveAndRestarMessage()
     {
         saveAndRestartCanvasGroup.FadeIn();

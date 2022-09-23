@@ -96,6 +96,8 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         // HandleSlowAwake will handle the call to the other part of Highlight Outline.
         Dev_Logger.Debug($"{name} InitializeState() EventSystem is null? {EventSystem.current == null} EventSystem: {EventSystem.current}");
         
+        // Note: for Event System's where you may want to start off highlighting not only the first selected,
+        // ensure to set EventSystem.firstSelectedGameObject to None
         if (
             EventSystem.current != null
             && EventSystem.current.firstSelectedGameObject == gameObject

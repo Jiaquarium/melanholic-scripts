@@ -58,14 +58,14 @@ public class Script_EnergySpikeAttack : Script_Attack
         return this.transform.GetComponentsInChildren<Script_EnergySpike>(includeInactive: true);
     }
 
-    private void OnDisable()
+    protected virtual void OnEnable()
     {
         InitialState();
     }
 
-    private void OnEnable()
+    protected virtual void OnDisable()
     {
-        InitialState();    
+        InitialState();
     }
     
     protected virtual void Awake()

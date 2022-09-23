@@ -98,7 +98,6 @@ public class Script_DialogueManager : MonoBehaviour
     // public Canvas ItemDescriptionCanvasTop;
     // public TextMeshProUGUI[] ItemDescriptionCanvasTextsTop;
     
-    public Script_SaveViewManager saveManager;
     public Script_PaintingEntranceManager paintingEntranceManager;
     [SerializeField] private Script_InputManager inputManager;
     [SerializeField] private Script_FullArtManager fullArtManager;
@@ -765,15 +764,7 @@ public class Script_DialogueManager : MonoBehaviour
             }
         }
 
-        if (currentNode is Script_DialogueNode_SavePoint)
-        {
-            // the SavePoint node contains the custom prompt
-            // after pressing space on a SavePoint node, will prompt the saveChoices
-            saveManager.StartSavePromptMode();
-            isInputMode = true;
-            return;
-        }
-        else if (currentNode is Script_DialogueNode_PaintingEntrance)
+        if (currentNode is Script_DialogueNode_PaintingEntrance)
         {
             // 1 child means it is a prompt before the final painting entrance question
             if (currentNode.data.children.Length > 1)

@@ -17,6 +17,9 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
     [SerializeField] private Transform spikeParentsParent;
     [SerializeField] private Script_EnergySpikeParent[] spikeParents;
     [SerializeField] private PlayableDirector director;
+
+    [Tooltip("Set true to save on performance and set hitboxes to Close state when down")]
+    [SerializeField] private bool isCloseHitBoxesOnDown;
     
     protected override void OnValidate()
     {
@@ -30,6 +33,18 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
         {
             hitBoxes[i] = spikeObjs[i].hitBox;
         }
+    }
+
+    protected override void OnEnable() {
+        base.OnEnable();
+
+        Script_CombatEventsManager.OnCombinedSpikeAttackEnd += OnCombinedSpikeAttackTimelineEnd;
+    }
+
+    protected override void OnDisable() {
+        base.OnDisable();
+
+        Script_CombatEventsManager.OnCombinedSpikeAttackEnd -= OnCombinedSpikeAttackTimelineEnd;
     }
     
     public void AlternatingSpikes()
@@ -49,6 +64,15 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
         director.Play();
         
         StartCoroutine(WaitToEndSpike());
+    }
+
+    private void OnCombinedSpikeAttackTimelineEnd()
+    {
+        if (isCloseHitBoxesOnDown)
+        {
+            foreach (var hitBox in hitBoxes)
+                hitBox.StopCheckingCollision();
+        }
     }
 
     public override void CollisionedWith(Collider collider, Script_HitBox hitBox)

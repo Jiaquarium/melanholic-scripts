@@ -61,12 +61,18 @@ public class Script_HitBox : MonoBehaviour
         CheckColliding();
     }
     
+    /// <summary>
+    /// Fill colliders Array with "hit" overlapping colliders.
+    /// </summary>
     void ExposeBox()
     {
         Array.Clear(colliders, 0, colliders.Length);
         int size = Physics.OverlapBoxNonAlloc(transform.position, boxSize, colliders, transform.rotation, layerMask);
     }
 
+    /// <summary>
+    /// Tell the responder (Attack) how to handle the hit.
+    /// </summary>
     void CheckColliding()
     {
         bool isCollision = false;
