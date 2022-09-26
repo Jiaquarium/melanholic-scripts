@@ -203,8 +203,11 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
 
+    // Ids Day 2 Entrance Timeline Done
     public void IdsDialogueDay2()
     {
+        IdsDay2.MyAnimator.ResetAnimator(0);
+        
         Script_DialogueManager.DialogueManager.StartDialogueNode(IdsDay2Nodes[0]);
 
         Script_VCamManager.VCamMain.SetNewVCam(IdsDay2VCam);

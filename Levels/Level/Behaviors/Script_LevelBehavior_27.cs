@@ -120,6 +120,10 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         // Allow Player to interact with Ids from the side after cut scene.
         Ids.DisableL = false;
         Ids.DisableR = false;
+        
+        // Reset Ids animator to begin at beginning of animation loop.
+        Ids.MyAnimator.ResetAnimator(0);
+
         game.ChangeStateInteract();
     }
     

@@ -225,6 +225,17 @@ public static class Script_Utils
     }
 
     /// <summary>
+    /// Useful mainly for end of timeline when trying to connect states seamlessly.
+    /// </summary>
+    /// <param name="animator">The animator to reset</param>
+    /// <param name="layer">Animator layer, 0 is default</param>
+    public static void ResetAnimator(this Animator animator, int layer)
+    {
+        AnimatorStateInfo animatorStateInfo = animator.GetCurrentAnimatorStateInfo(layer);
+        animator.Play(animatorStateInfo.fullPathHash, layer, 0f);
+    }
+
+    /// <summary>
     /// Params for item names defined in Script_ItemStringBuilder
     /// </summary>
     public static string FormatString(

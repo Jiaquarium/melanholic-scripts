@@ -744,52 +744,68 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             Script_Game.Game.GetPlayer().transform.position
         );
     }
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_25))]
-public class Script_LevelBehavior_25Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    private void DevElleniaTimeline()
+    {
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 9);
+    }
 
-        Script_LevelBehavior_25 lb = (Script_LevelBehavior_25)target;
-        
-        if (GUILayout.Button("Ellenia Tour"))
-        {
-            lb.ElleniaWalksToPaintingsCutScene();
-        }
+    [CustomEditor(typeof(Script_LevelBehavior_25))]
+    public class Script_LevelBehavior_25Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        GUILayout.Space(12);
-        
-        if (GUILayout.Button("Set New Ellenia Password"))
-        {
-            lb.devLB21.SetNewElleniaPassword();
-        }
-        
-        if (GUILayout.Button("Ellenia Intro Done DialogueNodes"))
-        {
-            lb.ElleniaIntroDoneDialogueNodes();
-        }
+            Script_LevelBehavior_25 lb = (Script_LevelBehavior_25)target;
+            
+            if (GUILayout.Button("Ellenia Tour"))
+            {
+                lb.ElleniaWalksToPaintingsCutScene();
+            }
 
-        GUILayout.Space(12);
+            GUILayout.Space(12);
+            
+            if (GUILayout.Button("Set New Ellenia Password"))
+            {
+                lb.devLB21.SetNewElleniaPassword();
+            }
+            
+            if (GUILayout.Button("Ellenia Intro Done DialogueNodes"))
+            {
+                lb.ElleniaIntroDoneDialogueNodes();
+            }
 
-        if (GUILayout.Button("Ellenia On Correct"))
-        {
-            lb.ElleniaOnCorrect();
-        }
+            GUILayout.Space(12);
 
-        GUILayout.Space(12);
+            if (GUILayout.Button("Ellenia On Correct"))
+            {
+                lb.ElleniaOnCorrect();
+            }
 
-        if (GUILayout.Button("Hide Player"))
-        {
-            lb.HidePlayer();
-        }
-        
-        if (GUILayout.Button("Unhide Player"))
-        {
-            lb.UnhidePlayer();
+            GUILayout.Space(12);
+
+            if (GUILayout.Button("Hide Player"))
+            {
+                lb.HidePlayer();
+            }
+            
+            if (GUILayout.Button("Unhide Player"))
+            {
+                lb.UnhidePlayer();
+            }
+
+            if (GUILayout.Button("Unhide Player"))
+            {
+                lb.UnhidePlayer();
+            }
+
+            if (GUILayout.Button("Test Ellenia Timeline"))
+            {
+                lb.DevElleniaTimeline();
+            }
         }
     }
-}
 #endif
+}
+
