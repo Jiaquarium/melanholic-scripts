@@ -12,6 +12,8 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	[SerializeField] private float fpsRefreshTimer;
 
 	[SerializeField] private bool isSingleLineDisplay;
+
+	[SerializeField] private Dev_GameHelper gameHelper;
 	
 	private float fps;
 	private float frameTimeMs;
@@ -37,7 +39,11 @@ public class Dev_SpecsDisplay : MonoBehaviour
 			timer = fpsRefreshTimer;
 		}
 
-		HandleDevInput();
+		if (Const_Dev.IsTrailerMode)
+			HandleTrailerDevInput();
+		
+		if (Const_Dev.IsDevMode)
+			HandleDevInput();
 	}
  
 	void OnGUI()
@@ -210,11 +216,8 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 		return $"Display {displayIdx}, {info.name} {info.width}x{info.height}";
 	}
 
-	private void HandleDevInput()
+	private void HandleTrailerDevInput()
 	{
-		if (!Const_Dev.IsTrailerMode)
-			return;
-		
 		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
 		{
 			if (Script_Game.Game != null)
@@ -234,5 +237,23 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 		{
 			isHidden = !isHidden;
 		}
+	}
+
+	private void HandleDevInput()
+	{
+		if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.B))
+		{
+			if (Script_SaveGameControl.control != null)
+			{
+				Script_SaveGameControl.control.Save();
+				ShowSavedNotification();
+			}
+		}
+	}
+
+	private void ShowSavedNotification()
+	{
+		if (gameHelper != null)
+			gameHelper.ShowSaveDevCanvas();
 	}
 }

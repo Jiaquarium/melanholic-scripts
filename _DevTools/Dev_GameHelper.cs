@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,6 +18,8 @@ public class Dev_GameHelper : MonoBehaviour
     public static readonly string[] ScriptingDefineSymbolsProd = {
         "UNITY_POST_PROCESSING_STACK_V2",
     };
+    
+    private static float notificationDuration = 1f;
     
     [SerializeField] private bool isDisableHUD;
     [SerializeField] private bool isStartAwareTime;
@@ -98,8 +101,17 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject endings;
 
+    // ----------------------------------------------------------------------
+    // Dev Canvases
+    [SerializeField] private Script_CanvasGroupController saveDevCanvas;
+
     private bool didSetWeekend;
 
+    void Awake()
+    {
+        saveDevCanvas.Close();
+    }
+    
     void Start()
     {
         if (isDisableHUD && Debug.isDebugBuild)
@@ -318,6 +330,12 @@ public class Dev_GameHelper : MonoBehaviour
             endings.gameObject.SetActive(false);
         }
 
+        if (saveDevCanvas.gameObject.activeInHierarchy)
+        {
+            Dev_Logger.Debug($"<color=red>save dev canvas being set to: {false}</color>");
+            saveDevCanvas.gameObject.SetActive(false);
+        }
+
         // Notify on state of World Tiles
         bool isAllWellWorldActive = true;
         WellsWorldTiles.ForEach(worldTile => {
@@ -492,6 +510,42 @@ public class Dev_GameHelper : MonoBehaviour
         Script_Game.Game.IsHideHUD = !isActive;
     }
 
+    public void ShowSaveDevCanvas()
+    {
+        saveDevCanvas.Open();
+
+        StartCoroutine(WaitToClose());
+
+        IEnumerator WaitToClose()
+        {
+            yield return new WaitForSeconds(notificationDuration);
+
+            saveDevCanvas.Close();
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Checks
+    
+    private void CheckAnimatorsNotRootMotion()
+    {
+        Debug.Log("Looking for animators...");
+
+        List<Animator> animators = FindObjectsOfType<Animator>(true)
+            .Where(animator => animator.applyRootMotion).ToList();
+
+        if (animators.Count == 0)
+        {
+            Debug.Log("<color=lime>All good!</color>");
+            return;
+        }
+        
+        animators.ForEach(animator => {
+            if (animator.applyRootMotion)
+                Debug.Log(animator);
+        });
+    }
+
     // ----------------------------------------------------------------------
 
     #if UNITY_EDITOR
@@ -504,6 +558,7 @@ public class Dev_GameHelper : MonoBehaviour
         private static bool showBuildSettings;
         private static bool showLightSettings;
         private static bool showUISettings;
+        private static bool showQAChecks;
         
         public override void OnInspectorGUI() {
             DrawDefaultInspector();
@@ -851,6 +906,15 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Unhide UI / Unpause Clock"))
                 {
                     t.SetUIActive(true);
+                }
+            }
+
+            showQAChecks = EditorGUILayout.Foldout(showQAChecks, "Final QA Checks", style);
+            if (showQAChecks)
+            {
+                if (GUILayout.Button("Check Animators Root Motion"))
+                {
+                    t.CheckAnimatorsNotRootMotion();
                 }
             }
         }
