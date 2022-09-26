@@ -31,6 +31,8 @@ public class Script_PlayerGraphics : MonoBehaviour
         }
     }
 
+    public Material PlayerGraphicsSharedMaterial => graphics.sharedMaterial;
+
     public void ChangeMaterial(Materials materialType)
     {
         switch (materialType)

@@ -110,6 +110,8 @@ public class Script_Player : Script_Character
         set => playerGraphics.PlayerGraphicsMaterial = value;
     }
 
+    public Material MySharedMaterial => playerGraphics.PlayerGraphicsSharedMaterial;
+
     public Transform FocalPoint
     {
         get => focalPoint;
