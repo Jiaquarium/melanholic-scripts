@@ -16,8 +16,10 @@ public class Script_ImageDistorterController : MonoBehaviour
     [SerializeField] private float oscillateYMagnitude;
 
     [SerializeField] private List<Image> smearOutlines;
+    [SerializeField] private List<Image> smearForceOutlines;
     [SerializeField] private bool smearOn;
     [SerializeField] private float smearTime;
+
 
     private Vector3 outlineXInitialLocation;
     private float oscillateXTimer;
@@ -31,15 +33,24 @@ public class Script_ImageDistorterController : MonoBehaviour
 
     private float smearTimer;
     private int smearCount;
+    private float smearForceTimer;
+    private int smearForceCount;
+
+    public bool SmearForceOn { get; set; }
     
-    // Start is called before the first frame update
+    void Awake()
+    {
+        outlineXInitialLocation = outlineX.rectTransform.anchoredPosition;
+        outlineYInitialLocation = outlineY.rectTransform.anchoredPosition;
+    }
+    
     void OnEnable()
     {
         InitialState();
     }
 
-    // Update is called once per frame
-    void Update()
+    // Do calcs in LateUpdate in case canvases need to be adjusted beforehand.
+    void LateUpdate()
     {
         if (oscillateXOn)
             HandleOscillateX();
@@ -49,6 +60,9 @@ public class Script_ImageDistorterController : MonoBehaviour
 
         if (smearOn)
             HandleSmear();
+
+        if (SmearForceOn)
+            HandleSmearForce();
     }
 
     /// <summary>
@@ -129,16 +143,42 @@ public class Script_ImageDistorterController : MonoBehaviour
         }        
     }
 
+    /// <summary>
+    /// Callable to start smearing via script instead of OnEnable
+    /// </summary>
+    public void HandleSmearForce()
+    {
+        if (smearForceCount >= smearForceOutlines.Count)
+            return;
+        
+        smearForceTimer -= Time.unscaledDeltaTime;
+
+        if (smearForceTimer <= 0f)
+        {
+            smearForceTimer = smearTime;
+            smearForceOutlines[smearForceCount].gameObject.SetActive(true);
+            smearForceCount++;
+        }        
+    }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+    
+    public void StartSmearForceOn()
+    {
+        SmearForceOn = true;
+    }
+
+    // ------------------------------------------------------------------
+
     private void InitialState()
     {
-        outlineXInitialLocation = outlineX.rectTransform.anchoredPosition;
         isOscillateXSwitchDir = 1f;
         oscillateXCount = 0;
 
         if (oscillateXOn && outlineX != null)
             outlineX.gameObject.SetActive(true);
 
-        outlineYInitialLocation = outlineY.rectTransform.anchoredPosition;
         isOscillateYSwitchDir = 1f;
         oscillateYCount = 0;
 
@@ -148,5 +188,10 @@ public class Script_ImageDistorterController : MonoBehaviour
         smearTimer = smearTime;
         smearCount = 0;
         smearOutlines.ForEach(outline => outline.gameObject.SetActive(false));
+        
+        smearForceTimer = smearTime;
+        smearForceCount = 0;
+        smearForceOutlines.ForEach(outline => outline.gameObject.SetActive(false));
+        SmearForceOn = false;
     }
 }
