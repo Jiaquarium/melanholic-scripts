@@ -82,6 +82,11 @@ public class Script_Interactable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// If using Disable Controller, the bools DisableX determine which directions to
+    /// check for.
+    /// </summary>
+    /// <returns>True if disabled</returns>
     public bool CheckDisabledDirections()
     {
         if (disablerController != null) return GetDisablerControllerPlayerCollision();

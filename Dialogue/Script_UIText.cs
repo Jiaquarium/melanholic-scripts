@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-09-21 17:37:17
+// Last created by UI Exporter at 2022-09-28 14:25:51
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1825,7 +1825,14 @@ public class Script_UIText
     "demo-end_note",
     new Model_LanguagesUI
     {
-        EN = @"Dear {2},<br><br>You’ve reached the end of the demo, and with that, you’ve put an end to the Night Loops...... for now. Thank you so much for playing! I’m hard at work putting the final touches on the full version, which will be released soon.<br><br>If you liked what you saw and would like to be notified once it’s released, please consider wishlisting “Night Loops” on Steam :). I hope you enjoy the full version of the game, see you then!<br><br>Sincerely,<br>Jia G."
+        EN = @"Dear {2},
+
+You’ve reached the end of the demo, and with that, you’ve put an end to the Night Loops...... for now. Thank you so much for playing! I’m hard at work putting the final touches on the full version, which will be released soon.
+
+If you liked what you saw, please consider wishlisting “Night Loops” on Steam :). I hope you enjoy the full version of the game, see you then!
+
+Sincerely,
+Jia"
     }
 },
 {

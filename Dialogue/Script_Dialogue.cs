@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-09-20 15:50:17
+// Last created by Dialogue Exporter at 2022-09-28 13:38:26
 
 using System.Collections;
 using System.Collections.Generic;
@@ -236,6 +236,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"The backside of the piano. Its surface is very shiny, no dust!",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
+// Treasure Chest
+{
+    "treasure-chest_default_locked",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Eh, it won’t budge...",
         },
         
     }

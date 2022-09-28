@@ -10,6 +10,9 @@ using UnityEditor;
 public class Script_TreasureChestLocked : Script_TreasureChest
 {
     [SerializeField] private bool _isLocked = true;
+    
+    [Tooltip("Dialogue object to react to object when locked.")]
+    [SerializeField] private Script_InteractableObjectText objectText;
 
     public bool IsLocked
     {
@@ -21,7 +24,18 @@ public class Script_TreasureChestLocked : Script_TreasureChest
     {
         base.OnEnable();
 
-        if (IsOpen)     IsLocked = false;
+        if (IsOpen)
+            IsLocked = false;
+        
+        if (objectText != null)
+        {
+            // Ensure the object text is disabled, so it doesn't react to interaction events.
+            objectText.SetInteractionActive(false);
+
+            // Warn if text object is on the same object to avoid it eating up interactions meant for this.
+            if (objectText.GetComponent<Script_TreasureChestLocked>() != null)
+                Debug.LogWarning("You need to move object text further down the hierarchy to avoid handling actions");
+        }
     }
 
     public void UnlockWithKey()
@@ -41,7 +55,7 @@ public class Script_TreasureChestLocked : Script_TreasureChest
         {
             var myKey = GetComponent<Script_UsableKeyTarget>().MyKey;
             
-            if (game.TryUseKey(myKey) && !IsOpen)
+            if (!IsOpen && game.TryUseKey(myKey))
             {
                 // If there is an item, Item receive will play its SFX instead.
                 if (IsEmpty)
@@ -56,6 +70,11 @@ public class Script_TreasureChestLocked : Script_TreasureChest
                 IsLocked = false;
 
                 Script_ItemsEventsManager.Unlock(myKey, myKey.id);
+            }
+            else if (!IsOpen && !game.TryUseKey(myKey))
+            {
+                if (objectText != null)
+                    objectText.ForceAction();
             }
 
             return;
