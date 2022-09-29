@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-09-28 14:25:51
+// Last created by UI Exporter at 2022-09-28 21:44:11
 
 using System.Collections;
 using System.Collections.Generic;
@@ -923,7 +923,7 @@ public class Script_UIText
     "usable_super-small-key",
     new Model_LanguagesUI
     {
-        EN = @"A̸ @@SuperSmallKey s̸p̷e̵c̷i̵f̵i̶c̸a̴l̸l̸y̴ ̶m̴a̴d̷e̴ ̵f̴o̸r̷ ̶r̸e̶g̸u̵l̶a̶r̷ ̸s̷i̸z̸e̴d̴ ̶k̶e̶y̶h̵o̷l̶e̷s̶.̷"
+        EN = @"A key specifically made for regular sized keyholes. {9} <b>items</b> have a knack for fading away."
     }
 },
 // ------------------------------------------------------------------
@@ -939,7 +939,7 @@ public class Script_UIText
     "collectible_last-spell-recipe-book",
     new Model_LanguagesUI
     {
-        EN = @"D̴o̷e̶s̴ ̷t̷h̶e̷r̸e̴ ̸h̸a̵v̷e̷ ̴t̶o̴ ̸b̵e̴ ̸a̵ ̶l̵a̵s̸t̶ ̴o̷n̵e̸?̵"
+        EN = @"Does there have to be a last one?"
     }
 },
 {
@@ -947,6 +947,15 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The spirits within this seal give you haste. Hold @@SpeedKey to run. Its effects only work when you are not wearing a @@Sticker_Bold (your former self)."
+    }
+},
+// ------------------------------------------------------------------
+// Tags
+{
+    "item_tag_impermanent",
+    new Model_LanguagesUI
+    {
+        EN = @"【IMPERMANENT】"
     }
 },
 // ------------------------------------------------------------------
@@ -1232,6 +1241,41 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"SAVING GAME... Please do not turn off power."
+    }
+},
+{
+    "saving_progress_default0",
+    new Model_LanguagesUI
+    {
+        EN = @"SAVING PROGRESS"
+    }
+},
+{
+    "saving_progress_default1",
+    new Model_LanguagesUI
+    {
+        EN = @"SAVING PROGRESS."
+    }
+},
+{
+    "saving_progress_default2",
+    new Model_LanguagesUI
+    {
+        EN = @"SAVING PROGRESS.."
+    }
+},
+{
+    "saving_progress_default3",
+    new Model_LanguagesUI
+    {
+        EN = @"SAVING PROGRESS..."
+    }
+},
+{
+    "saving_complete_default",
+    new Model_LanguagesUI
+    {
+        EN = @"SAVED GAME"
     }
 },
 // ------------------------------------------------------------------
@@ -1847,6 +1891,13 @@ Jia"
     new Model_LanguagesUI
     {
         EN = @"Quit to Desktop"
+    }
+},
+{
+    "demo-end_choice2",
+    new Model_LanguagesUI
+    {
+        EN = @"Wishlist on Steam"
     }
 },
 // ------------------------------------------------------------------

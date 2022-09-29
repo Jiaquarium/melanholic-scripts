@@ -1484,7 +1484,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             DrawDefaultInspector();
 
             Script_LevelBehavior_10 t = (Script_LevelBehavior_10)target;
-            if (GUILayout.Button("Ids DDR Success Quest Done"))
+            if (GUILayout.Button("DDR Quest Done / Give Key"))
             {
                 t.IdsGivesSmallKey();
             }

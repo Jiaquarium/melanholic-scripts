@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,6 +21,8 @@ public class Script_InventoryManager : MonoBehaviour
         Items,
         Equipment,
     }
+
+    private const string ImpermanentId = "item_tag_impermanent";
     
     [SerializeField] private Script_MenuController menuController;
     
@@ -47,10 +50,13 @@ public class Script_InventoryManager : MonoBehaviour
     [SerializeField] private Script_ItemChoicesInputManager itemsChoicesInputManager;
     
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
+    
     private Script_StickersInventoryHandler stickersHandler;
     private Script_CollectiblesInventoryHandler collectiblesHandler;
     private Script_UsablesInventoryHandler usablesHandler;
     private Script_ItemChoices itemChoices;
+
+    public static string ImpermanentTag;
 
     // ------------------------------------------------------------------
     // Getters
@@ -252,7 +258,9 @@ public class Script_InventoryManager : MonoBehaviour
                 return;
             }
             
-            itemDescription.Name = item.name;
+            bool isNotPersistent = type == Types.Items && !item.IsSpecial;
+
+            itemDescription.Name = isNotPersistent ? FormatImpermanentItem(item.name) : item.name;
             itemDescription.Text = item.Description;
             SetItemDescription(itemDescription, true);
         }
@@ -665,6 +673,19 @@ public class Script_InventoryManager : MonoBehaviour
         );
     }
 
+    private void PopulateItemTags()
+    {
+        ImpermanentTag = Script_UIText.Text[ImpermanentId].GetProp<string>(Const_Dev.Lang) ?? string.Empty;
+    }
+
+    private string FormatImpermanentItem(string itemName)
+    {
+        if (String.IsNullOrEmpty(ImpermanentTag))
+            PopulateItemTags();
+        
+        return $"{itemName}{ImpermanentTag}";
+    }
+
     public void Setup()
     {
         stickersHandler = GetComponent<Script_StickersInventoryHandler>();
@@ -680,6 +701,8 @@ public class Script_InventoryManager : MonoBehaviour
         usableChoices.gameObject.SetActive(false);
         stickersChoicesInputManager.gameObject.SetActive(false);
         itemsChoicesInputManager.gameObject.SetActive(false);
+
+        PopulateItemTags();
     }
 
 #if UNITY_EDITOR

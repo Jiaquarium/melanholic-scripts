@@ -434,6 +434,22 @@ public class Script_StartOverviewController : Script_UIState
         );
     }
 
+    /// <summary>
+    /// - Title Screen: Wishlist on Steam
+    /// </summary>
+    public void WishlistSFX()
+    {
+        Script_SFXManager.SFX.PlaySubmitTransition();
+    }
+
+    /// <summary>
+    /// - Title Screen: Wishlist on Steam
+    /// </summary>
+    public void GoToWishlist()
+    {
+        Application.OpenURL(Script_Utils.SteamClientStoreURL);
+    }
+
     // ----------------------------------------------------------------------
 
     public void InitializeGameOverState()

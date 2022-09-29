@@ -15,6 +15,7 @@ public class Script_SaveViewManager : MonoBehaviour
     
     [SerializeField] private Script_CanvasGroupController saveAndRestartCanvasGroup;
     [SerializeField] private Script_CanvasGroupController saveAndStartWeekendCanvasGroup;
+    [SerializeField] private List<Script_SaveMessage> saveMessages;
     
     [SerializeField] private CanvasGroup saveChoiceCanvas;
     [SerializeField] private CanvasGroup saveEntryCanvas;
@@ -46,6 +47,11 @@ public class Script_SaveViewManager : MonoBehaviour
     public void ShowSaveAndStartWeekendMessage()
     {
         saveAndStartWeekendCanvasGroup.FadeIn();
+    }
+
+    public void SetSaveMessagesDoneState()
+    {
+        saveMessages.ForEach(saveMessage => saveMessage.Done());
     }
     
     public void StartSavePromptMode()

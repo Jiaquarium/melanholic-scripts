@@ -2279,6 +2279,10 @@ public class Script_Game : MonoBehaviour
             );
             
             yield return new WaitForSeconds(transitionManager.RestartGameTimeOnSave);
+
+            saveManager.SetSaveMessagesDoneState();
+            
+            yield return new WaitForSeconds(transitionManager.RestartGameShowCompleteMessageTime);
             
             RestartGame();
         }
@@ -2301,6 +2305,9 @@ public class Script_Game : MonoBehaviour
             && GardenLabyrinthBehavior.isCurrentPuzzleComplete;
     }
 
+    /// <summary>
+    /// Handle default save message behavior
+    /// </summary>
     public void ShowSaveAndRestartMessageDefault()
     {
         saveManager.ShowSaveAndRestarMessage();

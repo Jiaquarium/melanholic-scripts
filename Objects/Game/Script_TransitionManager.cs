@@ -39,6 +39,7 @@ public class Script_TransitionManager : MonoBehaviour
     // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
     // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
     [SerializeField] private float restartGameTimeOnSave;
+    [SerializeField] private float restartGameShowCompleteMessageTime;
     
     [Tooltip("Ensure is less than restartGameTimeOnSave to avoid clicking when changing Scenes.")]
     [SerializeField] private float fadeOutMusicTimeOnSave;
@@ -97,6 +98,8 @@ public class Script_TransitionManager : MonoBehaviour
     private bool didPlayAllPuzzlesDoneCutScene = false;
     
     public float RestartGameTimeOnSave => restartGameTimeOnSave;
+
+    public float RestartGameShowCompleteMessageTime => restartGameShowCompleteMessageTime;
 
     public float FadeOutMusicTimeOnSave => fadeOutMusicTimeOnSave;
 

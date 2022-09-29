@@ -19,6 +19,9 @@ public static class Script_Utils
     private static readonly int LastMoveZ = Animator.StringToHash("LastMoveZ");
     private static readonly int MoveX = Animator.StringToHash("MoveX");
     private static readonly int MoveZ = Animator.StringToHash("MoveZ");
+
+    public const string AppId = "1826060";
+    public static readonly string SteamClientStoreURL = $"steam://store/{AppId}";
     
     public static List<char> glitchLetters = new List<char>(){
         'Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','×','Ø','Ù','Ú','Û','Ü',
@@ -283,7 +286,7 @@ public static class Script_Utils
             Script_Names.Urselk,                        // {6}
             Script_Names.Urselks,                       // {7}
             Script_Names.Owner,                         // {8}
-            Script_Names.Aenimals,                      // {9}
+            Script_Names.ImpermanentUpper,              // {9}
             Script_Names.Myne,                          // {10}
             Script_Names.Eileen,                        // {11}  
             Script_Names.Ellenia,                       // {12}

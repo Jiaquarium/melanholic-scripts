@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-09-28 13:38:26
+// Last created by Dialogue Exporter at 2022-09-28 19:34:24
 
 using System.Collections;
 using System.Collections.Generic;
@@ -6837,8 +6837,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "NA",
         EN = new string[]
         {
-                @"Y̵o̴u̵ ̴f̵o̶u̶n̷d̷ ̸t̵h̸e̴ @@SuperSmallKey!",
-                @"I̴t̸ ̵i̵s̷ ̷m̴a̷d̶e̸ ̴s̴p̸e̶c̴i̷f̵i̴c̴a̵l̸l̶y̸ ̶f̴o̵r̸ ̵r̶e̴g̷u̴l̷a̷r̴ ̶s̴i̵z̶e̵d̸ ̴k̶e̸y̸h̴o̵l̷e̸s̸.̸",
+                @"You found the @@SuperSmallKey!",
+                @"It is made specifically for regular sized keyholes.",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -6883,8 +6883,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "NA",
         EN = new string[]
         {
-                @"Y̵o̴u̵ ̴f̵o̶u̶n̷d̷ ̸t̵h̸e̴ @@LastSpellRecipeBook!",
-                @"D̴o̷e̶s̴ ̷t̷h̶e̷r̸e̴ ̸h̸a̵v̷e̷ ̴t̶o̴ ̸b̵e̴ ̸a̵ ̶l̵a̵s̸t̶ ̴o̷n̵e̸?̵",
+                @"You found the @@LastSpellRecipeBook!",
+                @"Does there have to be a last one?",
         },
         metadata = new Model_Languages.Metadata[]
         {

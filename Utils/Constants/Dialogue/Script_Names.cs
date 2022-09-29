@@ -48,7 +48,7 @@ public class Script_Names: MonoBehaviour
     public const string Urselk                          = "<b>Urselk</b>";                      // {6}
     public const string Urselks                         = "<b>Urselks</b>";                     // {7}
     public const string Owner                           = "<b>owner</b>";                       // {8}
-    public const string Aenimals                        = "<b>ænimals</b>";                     // {9}
+    public const string ImpermanentUpper                = "<b>Impermanent</b>";                  // {9}
     
     public static string Myne                                                                    // {10}
     {

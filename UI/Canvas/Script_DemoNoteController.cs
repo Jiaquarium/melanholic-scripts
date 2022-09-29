@@ -147,6 +147,14 @@ public class Script_DemoNoteController : MonoBehaviour
         );
     }
 
+    /// <summary>
+    /// Wishlist on Steam
+    /// </summary>
+    public void GoToWishlist()
+    {
+        Application.OpenURL(Script_Utils.SteamClientStoreURL);
+    }
+
     // ----------------------------------------------------------------------
     
     private void DisableInput()
