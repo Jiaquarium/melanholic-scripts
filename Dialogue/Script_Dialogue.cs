@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-09-28 19:34:24
+// Last created by Dialogue Exporter at 2022-09-29 21:56:58
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3211,8 +3211,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Why... Why do you want to talk?",
-                @"I don’t think it’s a good idea, sorry. Let’s just please leave it at that...",
+                @"Why... Why do you still want to talk?",
+                @"It’s not a good idea sorry, please leave it at that...",
         },
         
     }
@@ -3224,7 +3224,6 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"I really don’t want to trouble anyone...",
                 @"This place, I know it’s dangerous... For the mind especially it seems...",
         },
         
@@ -3237,7 +3236,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Ahem, well, you see, that’s not really possible for me.",
+                @"Ahem, well you see, that wouldn’t solve anything...",
         },
         choiceText = "Why don’t you get moving and just leave already?",
         
@@ -3250,10 +3249,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"Well, the thing is... they’ve always been there... It doesn’t matter where I go. They follow me like a shadow.",
-                @"You can probably see yourself, up, down, up, down, all day and night long.",
-                @"It’s a little hard to put into words... But it makes me feel like I don’t have too long to take a breath, so I’m always taking these short breaths... am I even making any sense anymore?",
-                @"Did I really just say all that out loud...",
+                @"It’s... not very clear to me...",
+                @"I suppose it started about the same time when <b><i>they</i></b> first arrived...",
+                @"Now it doesn’t matter where I go anymore... It all just follows me like a shadow.",
+                @"...Am I even making any sense anymore...",
         },
         choiceText = "Where did these spikes come from?",
         
@@ -3307,7 +3306,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"She’s always been a little rough on the edges...",
+                @"She’s always been a bit stubborn...",
                 @"Oh no, um... I don’t mean that in a bad sense or anything.",
         },
         
@@ -3322,21 +3321,70 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It’s just something tells me that... how should I put this...?",
                 @"On her current path...| she won’t ever <i>find</i> the image of the {8}.",
-                @"It’s all actually a thing of fables...",
+                @"In fact, it’s all a thing of fables...",
                 @"...No one’s ever really seen the {8}...",
-                @"But it seems to me, it’s one of those instances where when you see it, you’ll know it.",
-                @"It’s something she’s been doing ever since I can remember, but to tell the truth... I’m getting more worried than usual these days.",
-                @"Well, it’s just that... sometimes when painters lose confidence, they’ll try to plan out every detail of the final piece, all the lines, shapes, all of it. It’s absolutely fine when you already know what your final piece is supposed to look like... but...",
+        },
+        
+    }
+},
+{
+    "eileens-room_eileen_psychic2_b_a_ab_a_a_choices",
+    new Model_Languages
+    {
+        speaker = "{11}",
+        EN = new string[]
+        {
+                @"It’s something she’s been trying ever since I can remember, but to tell the truth... I’m getting more worried than usual these days.",
+        },
+        
+    }
+},
+{
+    "eileens-room_eileen_psychic2_b_a_ab_a_a_a",
+    new Model_Languages
+    {
+        speaker = "{11}",
+        EN = new string[]
+        {
+                @"Well, it’s just that...",
+                @"...Sometimes when painters lose confidence they’ll try to plan out every detail of the final piece, all the lines, shapes, all of it...",
+                @"It’s completely fine, I mean when you already know what your final piece is supposed to look like.",
                 @"But I-I’ve been thinking... what if what you’re painting has no physical form?",
                 @"What if what she’s really trying to paint is|.|.|.|| <b><i>{14}</b></i>.",
-                @"Sigh...| I really should just keep this to myself...",
+                @"Sigh... What am I even saying...",
         },
+        choiceText = "What do you mean...?",
         metadata = new Model_Languages.Metadata[]
         {
                 null,
                 null,
                 null,
                 null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                null,
+        }
+    }
+},
+{
+    "eileens-room_eileen_psychic2_b_a_ab_a_a_b",
+    new Model_Languages
+    {
+        speaker = "{11}",
+        EN = new string[]
+        {
+                @"I suppose you haven’t noticed either...",
+                @"...but I can see it, that over time her subject has slowly shifted...",
+                @"It’s fine, it’s absolutely fine, there’s no use holding onto the past, right?",
+                @"But she thinks she’s still capturing the {8}.",
+                @"What if what she’s really painting now is|.|.|.|| <b><i>{14}</b></i>.",
+                @"Sigh... Maybe you’re right, what am I even saying...",
+        },
+        choiceText = "It’s all in your head.",
+        metadata = new Model_Languages.Metadata[]
+        {
                 null,
                 null,
                 null,
@@ -3358,8 +3406,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"I think she needs to hear it from...| from someone else.",
                 @"That she’s in fact painting| <b><i>{14}</b></i>.",
-                @"She would never listen to me...",
-                @"Please, I think it’s better you leave here... I’m far too exhausted just thinking about all this.",
+                @"She would never listen to me though...",
         },
         
     }
@@ -3373,8 +3420,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You’re still here?| Not many are left here these days.",
                 @"Well, I believe, if {12} truly wants to capture the {8}...",
-                @"...she needs to try and visualize...| <b><i>{14}</b></i>.",
-                @"...or else she’ll be missing a vital part...",
+                @"...she needs to first understand the subject of...| <b><i>{14}</b></i>.",
+                @"I’m far too exhausted just thinking about all this.",
         },
         
     }
@@ -3403,7 +3450,6 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"In my opinion, the most difficult thing... would be to paint myself.",
                 @"I mean, it’s just the thought of picking myself apart...",
                 @"...and then putting all of it on a canvas for everyone to pick apart again...",
-                @"It makes me anxious just thinking about it.",
         },
         
     }
