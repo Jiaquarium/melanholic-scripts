@@ -194,7 +194,7 @@ public class Script_Names: MonoBehaviour
     public const string ControllableSpecters            = "<b>Controllable Specters</b>";       // {73}
     public const string Unknown                         = "<b>???</b>";                         // {74}
     public const string XXXWorld                        = "<b>XXX World</b>";                   // {75}
-    public const string OtherSide                       = "<b>Other Side</b>";                  // {76}
+    public const string OtherSide                       = "<b>other side</b>";                  // {76}
     public const string NauticalDawn                    = "<b>Nautical Dawn</b>";               // {77}
     public const string DarkDarkHall                    = "<b>Dark Dark Hall</b>";              // {78}
     

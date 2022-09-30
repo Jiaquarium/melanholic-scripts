@@ -50,6 +50,8 @@ public class Script_DemonNPC : Script_MovingNPC
     [Tooltip("Make the intro node's child the first Psychic Node")]
     // This is useful if you want to show the Psychic Node no matter what
     [SerializeField] bool _shouldPrependIntroNode;
+    [Tooltip("Specify a different node to append psychic nodes on intro to (e.g. when intro node has children)")]
+    [SerializeField] Script_DialogueNode customPrependIntroNode;
     
     private Script_DialogueNode[] defaultNodes;
     
@@ -105,10 +107,9 @@ public class Script_DemonNPC : Script_MovingNPC
         set => psychicNodes = value;
     }
 
-    public Script_DialogueNode IntroPsychicNode
-    {
-        get => _introPsychicNode;
-    }
+    public Script_DialogueNode IntroPsychicNode => _introPsychicNode;
+
+    public Script_DialogueNode CustomPrependIntroNode => customPrependIntroNode;
 
     public bool IsIntroPsychicNodes
     {
@@ -252,7 +253,12 @@ public class Script_DemonNPC : Script_MovingNPC
         
         if (ShouldPrependIntroNode)
         {
-            IntroPsychicNode.data.children = introNodeChild;
+            // Attach psychic nodes to a different intro node if specified (e.g. the intro node has children
+            // or links to another node via next node action)
+            if (CustomPrependIntroNode != null)
+                CustomPrependIntroNode.data.children = introNodeChild;
+            else
+                IntroPsychicNode.data.children = introNodeChild;
         }
         
         // Switch the current dialogue node to the intro Psychic one 
