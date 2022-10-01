@@ -11,6 +11,8 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Script_EventSystemLastSelected))]
 public class Script_SlowAwakeEventSystem : MonoBehaviour
 {
+    [SerializeField] private Script_EntryInput entryInput;
+
     private static float startUpTime = 0.75f;
     private float timer;
 
@@ -25,6 +27,11 @@ public class Script_SlowAwakeEventSystem : MonoBehaviour
         // to ensure we set with Script_EventSystemLastSelected.SetFirstSelected
         GetComponent<Script_EventSystemLastSelected>().enabled = false;
         InitialState();
+
+        if (entryInput != null)
+        {
+            entryInput.InitializeSlowAwakeTMPInputField();
+        }
     }
 
     void OnDisable()
@@ -46,6 +53,12 @@ public class Script_SlowAwakeEventSystem : MonoBehaviour
                 // to ensure we set with Script_EventSystemLastSelected.SetFirstSelected
                 GetComponent<Script_EventSystemLastSelected>().enabled = true;
 
+                // If there is a specified Entry Input, set it active now.
+                if (entryInput != null)
+                {
+                    entryInput.ActivateTMPInputField();
+                }
+                
                 IsTimerDone = true;
             }
         }

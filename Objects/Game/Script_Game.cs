@@ -470,6 +470,9 @@ public class Script_Game : MonoBehaviour
 
         Script_Utils.MakeFontsCrispy(fonts);
         
+        // Give time for all content to adjust to screen size.
+        transitionManager.InitialHideScreen();
+        
         ChangeStateToInitiateLevel();
 
         // Setup Singletons, Dicts, Managers and Canvases
@@ -548,6 +551,8 @@ public class Script_Game : MonoBehaviour
 
         timeManager.Setup();
         clockManager.Setup(); // needs to happen after level is set so we know if we're in lobby or not
+
+        transitionManager.InitialUnhideScreen();
     }
 
     private void DevCleanup()

@@ -100,6 +100,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private GameObject HUD;
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject endings;
+    [SerializeField] private GameObject initFader;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -310,11 +311,11 @@ public class Dev_GameHelper : MonoBehaviour
         runsManager.StartWeekdayCycle();
         Script_Game.LevelsInactivate();
 
-        Dev_Logger.Debug("Build Setup/ Setting GameObjects active states");
+        Dev_Logger.Debug("Build Setup: Setting GameObjects active states now!");
         
         if (!settings.activeInHierarchy)
         {
-            Dev_Logger.Debug($"<color=red>Settings being set to: {true}</color>");
+            Dev_Logger.Debug($"<color=red>SETTINGS being set to: {true}</color>");
             settings.gameObject.SetActive(true);
         }
         
@@ -326,14 +327,20 @@ public class Dev_GameHelper : MonoBehaviour
 
         if (endings.activeInHierarchy)
         {
-            Dev_Logger.Debug($"<color=red>endings being set to: {false}</color>");
+            Dev_Logger.Debug($"<color=red>ENDINGS being set to: {false}</color>");
             endings.gameObject.SetActive(false);
         }
 
         if (saveDevCanvas.gameObject.activeInHierarchy)
         {
-            Dev_Logger.Debug($"<color=red>save dev canvas being set to: {false}</color>");
+            Dev_Logger.Debug($"<color=red>SAVE DEV canvas being set to: {false}</color>");
             saveDevCanvas.gameObject.SetActive(false);
+        }
+
+        if (initFader.gameObject.activeInHierarchy)
+        {
+            Dev_Logger.Debug($"<color=red>INIT FADER being set to: {false}</color>");
+            initFader.gameObject.SetActive(false);
         }
 
         // Notify on state of World Tiles

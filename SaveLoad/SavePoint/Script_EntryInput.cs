@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.InputSystem;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// For entry inputs handled by inputManager, use SetValidation to fill in vaidator
 /// Because separate canvas for savePoint, manually assign that
@@ -34,10 +38,22 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     [SerializeField] private Script_InputManager inputManager;
 
-    private TMP_InputField TMPInputField;
+    private TMP_InputField _TMPInputField;  
     private TextMeshProUGUI TMPGUI;
     private float caretBlinkRate;
     private Color caretColor;
+
+    private TMP_InputField TMPInputField
+    {
+        get
+        {
+            if (_TMPInputField == null)
+                _TMPInputField = GetComponent<TMP_InputField>();
+            
+            return _TMPInputField;
+        }
+        set => _TMPInputField = value;
+    }
 
     void OnValidate()
     {
@@ -47,7 +63,6 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     void Awake()
     {
         TMPGUI = GetComponent<TextMeshProUGUI>();
-        TMPInputField = GetComponent<TMP_InputField>();
         
         TMPInputField.onFocusSelectAll = isSelectAllOnFocus;
 
@@ -184,6 +199,20 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             : defaultValue;
     }
 
+    public void ActivateTMPInputField()
+    {
+        TMPInputField.enabled = true;
+        TMPInputField.interactable = true;
+        EventSystem.current.SetSelectedGameObject(TMPInputField.gameObject);
+        TMPInputField.ActivateInputField();
+    }
+
+    public void InitializeSlowAwakeTMPInputField()
+    {
+        TMPInputField.interactable = false;
+        TMPInputField.enabled = false;
+    }
+
     public void InitializeState(string text)
     {
         TMPInputField = GetComponent<TMP_InputField>();
@@ -194,4 +223,21 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_EntryInput))]
+    public class Script_EntryInputTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_EntryInput t = (Script_EntryInput)target;
+            
+            if (GUILayout.Button("Activate TMP Input Field"))
+            {
+                t.ActivateTMPInputField();
+            }
+        }
+    }
+#endif
 }

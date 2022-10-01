@@ -236,6 +236,9 @@ public class Script_StartOverviewController : Script_UIState
         
         void HandleEntryPoint()
         {
+            // As a precaution, ensure the Init Fader is closed
+            Script_Start.Main.CloseInitFader();
+            
             // If coming from Saved Games > Back or Game Settings > Quit to Main Menu,
             // have start options immediately available.
             if (isFromBack)

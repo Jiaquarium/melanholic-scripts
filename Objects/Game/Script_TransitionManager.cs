@@ -58,6 +58,9 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController timelineFaderOver;
     [SerializeField] private Script_CanvasGroupController timelineFaderOverWhite;
     [SerializeField] private Script_CanvasGroupController faderOverWhite;
+
+    [Tooltip("Canvas only used for hiding screen on startup (to avoid FOUC e.g. HUD)")]
+    [SerializeField] private Script_CanvasGroupController initFader;
     
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_TimeManager timeManager;
@@ -569,6 +572,11 @@ public class Script_TransitionManager : MonoBehaviour
     }
 
     // ------------------------------------
+    // Initializing
+
+    public void InitialHideScreen() => initFader.Open();
+
+    public void InitialUnhideScreen() => initFader.Close();
 
     public void InitialState()
     {

@@ -42,7 +42,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		if (Const_Dev.IsTrailerMode)
 			HandleTrailerDevInput();
 		
-		if (Const_Dev.IsDevMode)
+		if (Const_Dev.IsDevMode || Debug.isDebugBuild)
 			HandleDevInput();
 	}
  
@@ -248,6 +248,24 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 				Script_SaveGameControl.control.Save();
 				ShowSavedNotification();
 			}
+		}
+		else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.N))
+		{
+			Script_Game game = Script_Game.Game;
+                    
+			Model_Exit exitData = new Model_Exit(
+				game.level,
+				game.GetPlayer().transform.position,
+				game.GetPlayer().FacingDirection
+			);
+			
+			game.ElevatorCloseDoorsCutScene(
+				null,
+				null,
+				Script_Elevator.Types.Last,
+				exitData,
+				Script_Exits.ExitType.SaveAndRestartOnLevel
+			);
 		}
 	}
 

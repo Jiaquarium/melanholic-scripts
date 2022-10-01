@@ -30,6 +30,7 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_SettingsController settingsController;
     [SerializeField] private Script_SaveSettingsControl saveSettingsControl;
     [SerializeField] private Script_AudioConfiguration audioConfiguration;
+    [SerializeField] private Script_CanvasGroupController initFader;
     
     private void Awake()
     {
@@ -43,6 +44,9 @@ public class Script_Start : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        // To cover red bars on opening on mac.
+        initFader.Open();
 
         savedGameTitleControl.Setup();
         saveSettingsControl.Setup();
@@ -68,17 +72,20 @@ public class Script_Start : MonoBehaviour
         {
             case (StartStates.GameOver):
                 Dev_Logger.Debug("Script_Start in Start() loading Game Over");
+                CloseInitFader();
                 mainController.InitializeGameOverState();
                 mainController.ToGameOver(deathType);
                 break;
 
             case (StartStates.BackToMainMenu):
                 Dev_Logger.Debug("Coming back from Game, No Intro Start Screen");
+                CloseInitFader();
                 mainController.InitializeIntroSimple(isForceInitedSimple: true);
                 break;
 
             default:
                 Dev_Logger.Debug("Default Start Screeen");
+                // Simple Intro Timeline will handle closing InitFader
                 mainController.InitializeIntroSimple();
                 break;
         }
@@ -92,6 +99,17 @@ public class Script_Start : MonoBehaviour
     public void CrunchTransitionUp()
     {
         crunchTimelineCtrl.PlayableDirectorPlayFromTimelines(0, 1);
+    }
+
+    // ----------------------------------------------------------------------
+    // Timeline Signals
+    
+    /// <summary>
+    /// - Simple Intro Timeline
+    /// </summary>
+    public void CloseInitFader()
+    {
+        initFader.Close();
     }
 }
 

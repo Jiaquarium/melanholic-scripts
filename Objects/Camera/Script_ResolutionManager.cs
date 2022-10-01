@@ -9,12 +9,12 @@ public class Script_ResolutionManager : MonoBehaviour
     
     void OnApplicationQuit()
     {
-        PlayerPrefs.DeleteAll();    
+        
     }
     
     void Awake()
     {
-        PlayerPrefs.DeleteAll();
+        
     }
     
     // Start is called before the first frame update
