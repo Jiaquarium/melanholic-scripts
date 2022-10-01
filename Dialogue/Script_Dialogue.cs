@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-09-30 15:29:12
+// Last created by Dialogue Exporter at 2022-09-30 21:05:45
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3251,10 +3251,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"It’s... not very clear to me...",
+                @"To tell the truth, it’s not very clear to me anymore...",
                 @"I suppose it started about the same time when <b><i>they</i></b> first arrived...",
-                @"Now it doesn’t matter where I go anymore... It all just follows me like a shadow.",
-                @"...Am I even making any sense anymore...",
+                @"It’s a little hard to put into words... But it makes me feel like I don’t have too long to take each breath, so sometimes I catch myself only taking these short breaths...",
+                @"Why am I even telling you all this...?",
         },
         choiceText = "Where did these spikes come from?",
         
@@ -3336,7 +3336,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"It’s something she’s been trying ever since I can remember, but to tell the truth... I’m getting more worried than usual these days.",
+                @"It’s something she’s been doing ever since I can remember... but I mean... there’s just something <i>off</i> these days...",
         },
         
     }
@@ -3351,7 +3351,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Well, it’s just that...",
                 @"...Sometimes when painters lose confidence they’ll try to plan out every detail of the final piece, all the lines, shapes, all of it...",
                 @"It’s completely fine, I mean when you already know what your final piece is supposed to look like.",
-                @"But I-I’ve been thinking... what if what you’re painting has no physical form?",
+                @"But I-I’ve been thinking... what if your subject has no physical form?",
                 @"What if what she’s really trying to paint is|.|.|.|| <b><i>{14}</b></i>.",
                 @"Sigh... What am I even saying...",
         },
@@ -3377,14 +3377,14 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{11}",
         EN = new string[]
         {
-                @"I suppose you haven’t noticed either...",
-                @"...but I can see it, that over time her subject has slowly shifted...",
-                @"It’s fine, it’s absolutely fine, there’s no use holding onto the past, right?",
-                @"But she thinks she’s still capturing the {8}.",
-                @"What if what she’s really painting now is|.|.|.|| <b><i>{14}</b></i>.",
+                @"I-I’ve been known to do that...",
+                @"But look... sometimes when painters lose confidence they’ll try to grasp onto a past image they’re familiar with, perhaps by retracing their steps or copying old references.",
+                @"It’s completely fine, I mean when you already know what your final piece is supposed to look like.",
+                @"But suppose if... your subject never seizes to stop changing forms?",
+                @"What if what she’s really trying to paint is|.|.|.|| <b><i>{14}</b></i>.",
                 @"Sigh... Maybe you’re right, what am I even saying...",
         },
-        choiceText = "It’s all in your head.",
+        choiceText = "Could this all be in your head?",
         metadata = new Model_Languages.Metadata[]
         {
                 null,
@@ -3422,7 +3422,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You’re still here?| Not many are left here these days.",
                 @"Well, I believe, if {12} truly wants to capture the {8}...",
-                @"...she needs to first understand the subject of...| <b><i>{14}</b></i>.",
+                @"...she needs to first fully understand...| <b><i>{14}</b></i>.",
                 @"I’m far too exhausted just thinking about all this.",
         },
         
