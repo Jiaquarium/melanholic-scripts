@@ -14,12 +14,14 @@ public class Script_InputNameHandler : Script_InputHandler
     
     public override int HandleSubmit(string text)
     {
-        if (text.Length == 0)
+        var stripped = text.Trim();
+        
+        if (stripped.Length == 0)
             return -1;
 
-        Script_Names.Player = text;
+        Script_Names.Player = stripped;
 
-        Dev_Logger.Debug("Saving name: " + text);
+        Dev_Logger.Debug("Saving name: " + stripped);
 
         Script_SFXManager.SFX.PlayContractSign();
         

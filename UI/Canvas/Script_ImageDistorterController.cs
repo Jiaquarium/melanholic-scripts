@@ -20,7 +20,6 @@ public class Script_ImageDistorterController : MonoBehaviour
     [SerializeField] private bool smearOn;
     [SerializeField] private float smearTime;
 
-
     private Vector3 outlineXInitialLocation;
     private float oscillateXTimer;
     private float isOscillateXSwitchDir;
@@ -36,17 +35,25 @@ public class Script_ImageDistorterController : MonoBehaviour
     private float smearForceTimer;
     private int smearForceCount;
 
+    private Script_CanvasAdjuster canvasAdjusterX;
+    private Script_CanvasAdjuster canvasAdjusterY;
+
     public bool SmearForceOn { get; set; }
     
     void Awake()
     {
-        outlineXInitialLocation = outlineX.rectTransform.anchoredPosition;
-        outlineYInitialLocation = outlineY.rectTransform.anchoredPosition;
+        canvasAdjusterX = outlineX.GetComponent<Script_CanvasAdjuster>();
+        canvasAdjusterY = outlineY.GetComponent<Script_CanvasAdjuster>();
     }
     
     void OnEnable()
     {
         InitialState();
+    }
+
+    void OnDisable()
+    {
+        ResetOutlines();
     }
 
     // Do calcs in LateUpdate in case canvases need to be adjusted beforehand.
@@ -70,6 +77,11 @@ public class Script_ImageDistorterController : MonoBehaviour
     /// </summary>
     private void HandleOscillateX()
     {
+        // Uses the canvas adjuster position when available
+        Vector3 xLocation = canvasAdjusterX == null
+            ? outlineXInitialLocation
+            : canvasAdjusterX.MyPosition;
+        
         oscillateXTimer += Time.unscaledDeltaTime;
         
         if (oscillateXTimer >= oscillateXTime)
@@ -77,9 +89,9 @@ public class Script_ImageDistorterController : MonoBehaviour
             oscillateXCount++;
             oscillateXTimer = 0f;
             outlineX.rectTransform.anchoredPosition = new Vector3(
-                outlineXInitialLocation.x + (oscillateXMagnitude * isOscillateXSwitchDir),
-                outlineXInitialLocation.y,
-                outlineXInitialLocation.z
+                xLocation.x + (oscillateXMagnitude * isOscillateXSwitchDir),
+                xLocation.y,
+                xLocation.z
             );
 
             // Switch direction
@@ -91,15 +103,20 @@ public class Script_ImageDistorterController : MonoBehaviour
             float xDelta = (oscillateXTimer / oscillateXTime) * oscillateXMagnitude;
             
             outlineX.rectTransform.anchoredPosition = new Vector3(
-                outlineXInitialLocation.x + (xDelta * isOscillateXSwitchDir),
-                outlineXInitialLocation.y,
-                outlineXInitialLocation.z
+                xLocation.x + (xDelta * isOscillateXSwitchDir),
+                xLocation.y,
+                xLocation.z
             );
         }
     }
 
     private void HandleOscillateY()
     {
+        // Uses the canvas adjuster position when available
+        Vector3 yLocation = canvasAdjusterY == null
+            ? outlineYInitialLocation
+            : canvasAdjusterY.MyPosition;
+        
         oscillateYTimer += Time.unscaledDeltaTime;
         
         if (oscillateYTimer >= oscillateYTime)
@@ -107,9 +124,9 @@ public class Script_ImageDistorterController : MonoBehaviour
             oscillateYCount++;
             oscillateYTimer = 0f;
             outlineY.rectTransform.anchoredPosition = new Vector3(
-                outlineYInitialLocation.x,
-                outlineYInitialLocation.y + (oscillateYMagnitude * isOscillateYSwitchDir),
-                outlineYInitialLocation.z
+                yLocation.x,
+                yLocation.y + (oscillateYMagnitude * isOscillateYSwitchDir),
+                yLocation.z
             );
 
             // Switch direction
@@ -121,9 +138,9 @@ public class Script_ImageDistorterController : MonoBehaviour
             float yDelta = (oscillateYTimer / oscillateYTime) * oscillateYMagnitude;
             
             outlineY.rectTransform.anchoredPosition = new Vector3(
-                outlineYInitialLocation.x,
-                outlineYInitialLocation.y + (yDelta * isOscillateYSwitchDir),
-                outlineYInitialLocation.z
+                yLocation.x,
+                yLocation.y + (yDelta * isOscillateYSwitchDir),
+                yLocation.z
             );
         }
     }
@@ -171,6 +188,18 @@ public class Script_ImageDistorterController : MonoBehaviour
 
     // ------------------------------------------------------------------
 
+    private void SetOutlines()
+    {
+        outlineXInitialLocation = outlineX.rectTransform.anchoredPosition;
+        outlineYInitialLocation = outlineY.rectTransform.anchoredPosition;
+    }
+    
+    private void ResetOutlines()
+    {
+        outlineX.rectTransform.anchoredPosition = outlineXInitialLocation;
+        outlineY.rectTransform.anchoredPosition = outlineYInitialLocation;
+    }
+    
     private void InitialState()
     {
         isOscillateXSwitchDir = 1f;
@@ -193,5 +222,7 @@ public class Script_ImageDistorterController : MonoBehaviour
         smearForceCount = 0;
         smearForceOutlines.ForEach(outline => outline.gameObject.SetActive(false));
         SmearForceOn = false;
+
+        SetOutlines();
     }
 }
