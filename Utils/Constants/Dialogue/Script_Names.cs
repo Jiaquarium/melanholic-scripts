@@ -84,7 +84,7 @@ public class Script_Names: MonoBehaviour
         set => Names._Tedwich = value;
     }
     
-    public const string Tedward                         = "<b>Tedward</b>";                     // {17}
+    public const string FlanShort                       = "<b>Flan</b>";                        // {17}
     public const string Kelsingor                       = "<b>Kelsingør</b>";                   // {18}
     public const string Specters                        = "<b>Specters</b>";                    // {19}
     public const string Aenimal                         = "<b>ænimal</b>";                      // {20}

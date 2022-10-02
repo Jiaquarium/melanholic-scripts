@@ -10,6 +10,8 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	[SerializeField] private Script_GraphicsManager graphics;
 	[SerializeField] private PixelPerfectCamera pixelPerfectCamera;
 	[SerializeField] private float fpsRefreshTimer;
+	[SerializeField] private bool isFixedBigFont;
+	[SerializeField] private int fixedFontSize;
 
 	[SerializeField] private bool isSingleLineDisplay;
 
@@ -55,7 +57,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
  
 		GUIStyle style = new GUIStyle();
  
-		int fontSize = h * 1 / 75;
+		int fontSize = isFixedBigFont ? fixedFontSize : h * 1 / 75;
 		Rect rect = new Rect(0, 0, w, fontSize * 2);
 		style.alignment = TextAnchor.UpperRight;
 		style.fontSize = fontSize;

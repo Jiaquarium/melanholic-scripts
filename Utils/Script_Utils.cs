@@ -294,7 +294,7 @@ public static class Script_Utils
             Script_Names.ElleniaPassword,               // {14}
             Script_Names.Tedmunch,                      // {15}
             Script_Names.Tedwich,                       // {16}
-            Script_Names.Tedward,                       // {17}
+            Script_Names.FlanShort,                     // {17}
             Script_Names.Kelsingor,                     // {18}
             Script_Names.Specters,                      // {19}
             Script_Names.Aenimal,                       // {20}

@@ -489,6 +489,10 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(CloseMenu, CloseMenuVol);
     }
 
+    public void PlayBookReverseMenuExit()
+    {
+        SFXSource.PlayOneShot(OpenCloseBookReverse, OpenCloseBookReverseVol);
+    }
     
     // Continuous SFX
     public void StartDialogueTyping(AudioClip clip = null)

@@ -49,6 +49,8 @@ public class Script_SBookOverviewController : Script_InventoryController
         inventoryController.ChangeStateToOverview();
 
         EventSystem.current.SetSelectedGameObject(lastSelectedBeforeExit);
+
+        Script_SFXManager.SFX.PlayBookReverseMenuExit();
     }
 
     public override void EnterInventoryView()
@@ -68,6 +70,8 @@ public class Script_SBookOverviewController : Script_InventoryController
         Dev_Logger.Debug("setting lastSelectedBeforeExit: " + lastSelectedBeforeExit);
         
         EventSystem.current.SetSelectedGameObject(lastSelectedBeforeExit);
+
+        Script_SFXManager.SFX.PlayBookReverseMenuExit();
     }
 
     public void EnterItemChoices(Script_ItemChoices _itemChoices)
