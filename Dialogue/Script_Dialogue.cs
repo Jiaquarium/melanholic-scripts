@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-02 03:00:19
+// Last created by Dialogue Exporter at 2022-10-02 23:09:59
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1029,7 +1029,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"If I may say so, the best solution for you is to find the nearest exit and get some rest, trust me, dear.",
                 @"And please, refrain from returning.| It is for your own good.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                null,
+                null,
+                null,
+        }
     }
 },
 // ------------------------------------------------------------------
@@ -2875,7 +2887,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"The {22}? We must, how else will we stop the {42}...?",
-                @"Uh-huh, some worry we’ll lose touch with the outside world for eternity.",
+                @"Yes, of course, some are worried...| They say we might lose touch with the outside world for eternity.",
                 @"Still, it’s best we stay. I met {39} in here...| Ah yes, over at the <b>gardens</b>...| We were still young then...",
                 @"When all’s said and done, I have faith in the {83}. Don’t you?",
         },
@@ -3120,7 +3132,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{64}",
         EN = new string[]
         {
-                @"{17} here at the sisters’ humble service. No <b>outsiders</b> at this hour...",
+                @"Stop! {17} here at your humble service. No <b>outsiders</b> at this hour...",
                 @"Oh, you are able to understand me!| Forgive me!",
                 @"The older one’s room is just <b>down this hall</b>, and the younger one’s is through this <b>north door<b>.",
                 @"Safe travels, young one. I am here to serve.",
@@ -3870,7 +3882,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"I’ve scraped all that I can out of myself already... <b>There’s nothing else left for me here</b>,| nope.",
                 @"It’s time I leave for good.",
                 @"......",
-                @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anyways... So here take it, it’s yours...",
+                @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anymore... So here take it, it’s yours...",
         },
         
     }
@@ -3882,7 +3894,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"I know it’s probably the greatest gift you’ve ever received in your miserable life, ha!| Consider it a <b>piece of me</b>!",
+                @"It’s one-of-a-kind, so you better like it!",
                 @"Okay enough small talk! It’s time for me to make a name for {18} once and for all!",
                 @"Bye!",
         },

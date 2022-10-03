@@ -11,6 +11,7 @@ using UnityEditor;
 public class Script_DemoNoteController : MonoBehaviour
 {
     [SerializeField] private Script_CanvasGroupController controller;
+    [SerializeField] private Script_CanvasGroupController headerCanvasGroup;
     [SerializeField] private Script_CanvasGroupController demoNoteCanvasGroup;
     [SerializeField] private Script_CanvasGroupController demoTextCanvasGroup;
     [SerializeField] private Script_CanvasGroupController choicesCanvasGroup;
@@ -49,9 +50,9 @@ public class Script_DemoNoteController : MonoBehaviour
         
         // Fade in this canvas group in 5 sec (only Black BG will be showing)
         // On completion fade in new Bgm
-        FadeTo(1f, FadeInIntroTheme);
+        FadeIn(1f, FadeInIntroTheme);
 
-        void FadeTo(float alpha, Action cb)
+        void FadeIn(float alpha, Action cb)
         {
             gameObject.SetActive(true);
             
@@ -86,11 +87,16 @@ public class Script_DemoNoteController : MonoBehaviour
         {
             yield return new WaitForSeconds(waitForDemoTextTime);
             
-            // Fade in Note Border first, followed by text
-            demoNoteCanvasGroup.FadeIn(FadeSpeeds.Fast.ToFadeTime(), () => {
+            // Fade in Header and Note Border first, followed by text
+            var fadeTimeFast = FadeSpeeds.Fast.ToFadeTime();
+
+            headerCanvasGroup.FadeIn(fadeTimeFast);
+            demoNoteCanvasGroup.FadeIn(fadeTimeFast, () => {
                 demoTextCanvasGroup.FadeIn(FadeSpeeds.XXSlow.ToFadeTime(), ActivateChoices);
                 HandleScrollingBGReveal();
             });
+
+            Script_SFXManager.SFX.PlaySubmitTransition();
         }
 
         // Wait 1 second to start fading in the scrolling background
@@ -168,6 +174,7 @@ public class Script_DemoNoteController : MonoBehaviour
         demoNoteCanvasGroup.Close();
         demoTextCanvasGroup.Close();
         choicesCanvasGroup.Close();
+        headerCanvasGroup.Close();
         scrollingBG.SetActive(false);
 
         demoBg.Open();

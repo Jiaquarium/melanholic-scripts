@@ -890,6 +890,12 @@ public class Dev_GameHelper : MonoBehaviour
                     }
                 }
 
+                if (GUILayout.Button("Delete Player Prefs", GUILayout.Height(24)))
+                {
+                    PlayerPrefs.DeleteAll();
+                    Debug.Log("<color=lime>Deleted Player Prefs</color>");
+                }
+
                 if (GUILayout.Button("Build Dev Explore Setup"))
                 {
                     t.BuildDevExploreSetup();
