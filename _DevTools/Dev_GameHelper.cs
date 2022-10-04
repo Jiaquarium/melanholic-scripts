@@ -101,6 +101,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject endings;
     [SerializeField] private GameObject initFader;
+    [SerializeField] private CanvasGroup fullArtCanvasGroup;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -313,35 +314,7 @@ public class Dev_GameHelper : MonoBehaviour
 
         Dev_Logger.Debug("Build Setup: Setting GameObjects active states now!");
         
-        if (!settings.activeInHierarchy)
-        {
-            Dev_Logger.Debug($"<color=red>SETTINGS being set to: {true}</color>");
-            settings.gameObject.SetActive(true);
-        }
-        
-        if (HUD.activeInHierarchy)
-        {
-            Dev_Logger.Debug($"<color=red>HUD being set to: {false}</color>");
-            HUD.gameObject.SetActive(false);
-        }
-
-        if (endings.activeInHierarchy)
-        {
-            Dev_Logger.Debug($"<color=red>ENDINGS being set to: {false}</color>");
-            endings.gameObject.SetActive(false);
-        }
-
-        if (saveDevCanvas.gameObject.activeInHierarchy)
-        {
-            Dev_Logger.Debug($"<color=red>SAVE DEV canvas being set to: {false}</color>");
-            saveDevCanvas.gameObject.SetActive(false);
-        }
-
-        if (initFader.gameObject.activeInHierarchy)
-        {
-            Dev_Logger.Debug($"<color=red>INIT FADER being set to: {false}</color>");
-            initFader.gameObject.SetActive(false);
-        }
+        SetCanvasStates();
 
         // Notify on state of World Tiles
         bool isAllWellWorldActive = true;
@@ -370,6 +343,45 @@ public class Dev_GameHelper : MonoBehaviour
         
         if (!isAllXXXWorldActive)
             Debug.LogWarning($"<color=orange>NOT ALL XXX WORLD TILES ARE ACTIVE</color>");
+
+        void SetCanvasStates()
+        {
+            if (!settings.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>SETTINGS should be ACTIVE</color>");
+                settings.gameObject.SetActive(true);
+            }
+            
+            if (HUD.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>HUD should be INACTIVE</color>");
+                HUD.gameObject.SetActive(false);
+            }
+
+            if (endings.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>ENDINGS should be INACTIVE</color>");
+                endings.gameObject.SetActive(false);
+            }
+
+            if (saveDevCanvas.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>SAVE DEV CANVAS should be INACTIVE</color>");
+                saveDevCanvas.gameObject.SetActive(false);
+            }
+
+            if (initFader.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>INIT FADER should be INACTIVE</color>");
+                initFader.gameObject.SetActive(false);
+            }
+
+            if (!fullArtCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>FULL CANVASGROUP should be ACTIVE</color>");
+                fullArtCanvasGroup.gameObject.SetActive(true);
+            }
+        }
     }
 
     public void BuildDevExploreSetup()

@@ -67,6 +67,9 @@ public class Script_SceneManager : MonoBehaviour
         SceneManager.LoadScene(TitleScene);
     }
 
+    /// <summary>
+    /// Note: Currently not in use!
+    /// </summary>
     public static void ToGameOver(Script_GameOverController.DeathTypes deathType)
     {
         Script_Start.startState     = Script_Start.StartStates.GameOver;

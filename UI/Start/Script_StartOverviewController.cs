@@ -180,14 +180,19 @@ public class Script_StartOverviewController : Script_UIState
     }
 
     // Will be called whenever a confirm key is pressed on Start Options (via Start Screen Controller).
-    public void StartOptionsOpen(bool isFadeIn = false)
+    public void StartOptionsOpen(bool isFadeIn = false, bool isFadeInDemo = false)
     {
         Dev_Logger.Debug("StartOptionsOpen");
         
         startScreenCTA.Close();
         
         if (Const_Dev.IsDemo)
-            demoHeader.Open();
+        {
+            if (isFadeInDemo)
+                demoHeader.FadeIn(buttonFadeInTime);
+            else
+                demoHeader.Open();
+        }
         else
             demoHeader.Close();
 
@@ -230,8 +235,6 @@ public class Script_StartOverviewController : Script_UIState
         startScreenEventSystem.gameObject.SetActive(true);
         introCanvasGroup.gameObject.SetActive(false);
 
-        startScreenController.FadeInTitle();
-        
         HandleEntryPoint();
         
         void HandleEntryPoint()
@@ -243,8 +246,6 @@ public class Script_StartOverviewController : Script_UIState
             // have start options immediately available.
             if (isFromBack)
             {
-                StartOptionsOpen();
-                
                 // If coming from Game, we'll need to play BGM
                 if (!bgmManager.IsPlaying)
                 {
@@ -252,15 +253,32 @@ public class Script_StartOverviewController : Script_UIState
                     PlayBgm();
                 }
 
-                Dev_Logger.Debug($"Setting start screen controller active instantly, isFromBack {isFromBack}");
-                startScreenController.gameObject.SetActive(true);
-
                 // Must mark CTADone or Start Screen Input Manager will try to activate start options
                 // and close other canvases on confirm key.
+                // Note: Start Screen Controller does nothing.
                 startScreenInputManager.IsCTADone = true;
+                startScreenController.gameObject.SetActive(true);
+                
+                // Fix for Windows Bug (Demo 0.13.0 Build Id 9640356):
+                // Windows build fails to show first few frames on new Scene, so fade in Start Options
+                // first and wait to fade in Title (visually looks okay for Start Options to not fade in)
+                if (Script_Start.startState == Script_Start.StartStates.BackToMainMenu)
+                {
+                    StartOptionsOpen(isFadeIn: true, isFadeInDemo: true);
+                    StartCoroutine(WaitToFadeInTitle());
+                }
+                else
+                {
+                    StartOptionsOpen();
+                    startScreenController.FadeInTitle();
+                }
+
+                Script_Start.startState = Script_Start.StartStates.Start;
             }
             else
             {
+                startScreenController.FadeInTitle();
+                
                 startScreenCTA.Close();
                 demoHeader.Close();
                 
@@ -269,6 +287,14 @@ public class Script_StartOverviewController : Script_UIState
                 // Give Player some time to look at Title before showing CTA.
                 StartCoroutine(WaitToShowCTA());
             }
+        }
+
+        IEnumerator WaitToFadeInTitle()
+        {
+            // Wait for Start Options to fully fade in.
+            yield return new WaitForSeconds(buttonFadeInTime);
+            
+            startScreenController.FadeInTitle();
         }
 
         IEnumerator WaitToShowCTA()
