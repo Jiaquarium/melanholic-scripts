@@ -36,6 +36,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     
     public bool[] switchesState;
     public bool isCurrentPuzzleComplete;
+    
+    [SerializeField] private Script_SpritesChildrenController lightsParentSpritesController;
     [SerializeField] private Transform switchParent;
     
     [SerializeField] private Script_LevelAttackController attackController;
@@ -435,6 +437,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         
         // Make Attack instantly after cut scene is done.
         attackController.Timer = 0.001f;
+        lightsParentSpritesController.SetAlpha = 1f;
     }
     
     public void OnEileensMindPaintingTimelineDone()

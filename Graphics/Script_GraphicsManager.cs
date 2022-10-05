@@ -10,6 +10,9 @@ using Cinemachine;
 /// </summary>
 public class Script_GraphicsManager : MonoBehaviour
 {
+    /// <summary>
+    /// Note: Singleton GraphicsManager should only be set for Game.
+    /// </summary>
     public static Script_GraphicsManager Control;
     public const int AssetsPPU = 36;
     
@@ -133,6 +136,9 @@ public class Script_GraphicsManager : MonoBehaviour
         zoom = Math.Max(1, Math.Min(verticalZoom, horizontalZoom));
     }
     
+    /// <summary>
+    /// Note: Setup should ONLY be called in Game Scene (Start Scene must manually ref necessary fields).
+    /// </summary>
     public void Setup()
     {
         if (Control == null)

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Experimental.Rendering.Universal;
 using System;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,6 +16,12 @@ using UnityEditor;
 [RequireComponent(typeof(CanvasScaler))]
 public class Script_CanvasConstantPixelScaler : MonoBehaviour
 {
+    public enum MyScenes
+    {
+        Game = 0,
+        Start = 1
+    }
+    
     private static float scaleAnimateTime = 0.5f;
     private static float onScaleDonePauseTime = 0.25f;
 
@@ -35,6 +42,8 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     [Header("Custom Scaling Bounds")]
     [SerializeField] private Script_ScalingBounds bounds;
     [SerializeField] private Script_CanvasAdjuster[] canvasAdjusters;
+
+    [SerializeField] private MyScenes mySceneBehavior;
 
     private Script_ScalingBounds defaultBounds;
     private bool isScaling;
@@ -78,6 +87,19 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     {
         get
         {
+            // For Start Scene Constant Pixel Scalers, the GraphicsManager reference
+            // will be lost when going from Title > Game > Title, so always grab Start's reference.
+            if (
+                mySceneBehavior == MyScenes.Start
+                && SceneManager.GetActiveScene().name == Script_SceneManager.TitleScene
+            )
+            {
+                if (graphics == null)
+                    graphics = Script_Start.Main.StartGraphicsManager;
+
+                return graphics;
+            }
+            
             if (graphics == null)
                 graphics = Script_GraphicsManager.Control;
             

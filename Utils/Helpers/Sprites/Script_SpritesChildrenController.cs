@@ -7,6 +7,15 @@ public class Script_SpritesChildrenController : MonoBehaviour
     [SerializeField] private float alpha;
     [SerializeField] SpriteRenderer[] childrenSprites;
     
+    public float SetAlpha
+    {
+        set
+        {
+            alpha = value;
+            UpdateAlpha();
+        }
+    }
+    
     void OnValidate()
     {
         childrenSprites = transform.GetComponentsInChildren<SpriteRenderer>(true);
