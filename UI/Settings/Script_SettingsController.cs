@@ -186,8 +186,6 @@ public class Script_SettingsController : MonoBehaviour
                     ExitMenuSFX();
                 }
                 
-                Script_SaveSettingsControl.Instance.Save();
-                
                 break;
             case (States.System):
                 OpenOverview(1);

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-02 23:09:59
+// Last created by Dialogue Exporter at 2022-10-05 01:20:54
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3894,7 +3894,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"It’s one-of-a-kind, so you better like it!",
+                @"It’s not like I care if you use it or not...",
                 @"Okay enough small talk! It’s time for me to make a name for {18} once and for all!",
                 @"Bye!",
         },

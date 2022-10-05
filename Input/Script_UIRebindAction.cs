@@ -223,6 +223,8 @@ public class Script_UIRebindAction : MonoBehaviour
             UpdateBehavior();
             inputAction.Enable();
             
+            Script_SaveSettingsControl.Instance.Save();
+
             rebindingHighlight.SetActive(false);
 
             Script_SettingsController.Instance.OnDoneRebindProcess();
