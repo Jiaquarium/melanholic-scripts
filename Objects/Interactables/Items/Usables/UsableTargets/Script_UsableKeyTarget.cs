@@ -20,6 +20,9 @@ public class Script_UsableKeyTarget : Script_UsableTarget
         
         if (key == myKey)
         {
+            if (myTreasureChest != null && myTreasureChest.CheckDisabledDirections())
+                return false;
+            
             Script_Game.Game.CloseInventory(noSFX: true);
             OnUnlock(key);
             return true;
