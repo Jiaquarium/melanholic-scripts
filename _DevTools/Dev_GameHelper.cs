@@ -100,7 +100,6 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private GameObject HUD;
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject endings;
-    [SerializeField] private GameObject initFader;
     [SerializeField] private CanvasGroup fullArtCanvasGroup;
 
     // ----------------------------------------------------------------------
@@ -368,12 +367,6 @@ public class Dev_GameHelper : MonoBehaviour
             {
                 Debug.Log($"<color=red>SAVE DEV CANVAS should be INACTIVE</color>");
                 saveDevCanvas.gameObject.SetActive(false);
-            }
-
-            if (initFader.gameObject.activeInHierarchy)
-            {
-                Debug.Log($"<color=red>INIT FADER should be INACTIVE</color>");
-                initFader.gameObject.SetActive(false);
             }
 
             if (!fullArtCanvasGroup.gameObject.activeInHierarchy)

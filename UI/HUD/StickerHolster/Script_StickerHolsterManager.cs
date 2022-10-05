@@ -16,6 +16,7 @@ public class Script_StickerHolsterManager : MonoBehaviour
     [SerializeField] private Script_HUDManager HUDManager;
 
     private FadeSpeeds defaultFadeSpeed;
+    private Script_CanvasGroupController stickerHolsterCanvasGroup;
 
     public Script_Sticker[] Stickers
     {
@@ -48,11 +49,9 @@ public class Script_StickerHolsterManager : MonoBehaviour
         
         if (IsHolsterShowing)
         {
-            var canvasGroupController = stickerHolster.GetComponent<Script_CanvasGroupController>();
-
-            if (!stickerHolster.gameObject.activeInHierarchy || canvasGroupController.MyCanvasGroup.alpha < 1f)
+            if (!stickerHolster.gameObject.activeInHierarchy || stickerHolsterCanvasGroup.MyCanvasGroup.alpha < 1f)
             {
-                stickerHolster.GetComponent<Script_CanvasGroupController>().FadeIn(
+                stickerHolsterCanvasGroup.FadeIn(
                     FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
                 );
             }
@@ -61,7 +60,7 @@ public class Script_StickerHolsterManager : MonoBehaviour
         {
             if (stickerHolster.gameObject.activeInHierarchy)
             {
-                stickerHolster.GetComponent<Script_CanvasGroupController>().FadeOut(
+                stickerHolsterCanvasGroup.FadeOut(
                     FadeSpeed.ToFadeTime(), null, isUnscaledTime: true
                 );
             }
@@ -110,5 +109,9 @@ public class Script_StickerHolsterManager : MonoBehaviour
         }
 
         defaultFadeSpeed = FadeSpeed;
+        
+        stickerHolsterCanvasGroup = stickerHolster.GetComponent<Script_CanvasGroupController>();
+        // To avoid HUD showing up on Load
+        stickerHolsterCanvasGroup.Close();
     }
 }

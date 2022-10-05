@@ -30,6 +30,8 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private float defaultInputDisabledTime;
     [SerializeField] private float waitBeforeFadeInCTATime;
     [SerializeField] private float buttonFadeInTime;
+    [SerializeField] private float waitBeforeFadeInOnBackFromGame;
+    [SerializeField] private float waitBeforeFadeInTitleOnBackFromGame;
 
     [SerializeField] private float transitionExitFadeTime;
     
@@ -184,7 +186,7 @@ public class Script_StartOverviewController : Script_UIState
     {
         Dev_Logger.Debug("StartOptionsOpen");
         
-        startScreenCTA.Close();
+        SetupStartOptionsOpen();
         
         if (Const_Dev.IsDemo)
         {
@@ -196,9 +198,6 @@ public class Script_StartOverviewController : Script_UIState
         else
             demoHeader.Close();
 
-        settingsController.Close();
-        controlsCanvasGroup.Close();
-        
         if (isFadeIn)
         {
             startOptionsCanvasGroup.Close();
@@ -208,6 +207,13 @@ public class Script_StartOverviewController : Script_UIState
         {
             startOptionsCanvasGroup.Open();
         }
+    }
+
+    private void SetupStartOptionsOpen()
+    {
+        startScreenCTA.Close();
+        settingsController.Close();
+        controlsCanvasGroup.Close();
     }
 
     // ----------------------------------------------------------------------
@@ -264,8 +270,9 @@ public class Script_StartOverviewController : Script_UIState
                 // first and wait to fade in Title (visually looks okay for Start Options to not fade in)
                 if (Script_Start.startState == Script_Start.StartStates.BackToMainMenu)
                 {
-                    StartOptionsOpen(isFadeIn: true, isFadeInDemo: true);
-                    StartCoroutine(WaitToFadeInTitle());
+                    demoHeader.Close();
+                    SetupStartOptionsOpen();
+                    StartCoroutine(WaitToFadeInStartScreen());
                 }
                 else
                 {
@@ -289,11 +296,12 @@ public class Script_StartOverviewController : Script_UIState
             }
         }
 
-        IEnumerator WaitToFadeInTitle()
+        IEnumerator WaitToFadeInStartScreen()
         {
-            // Wait for Start Options to fully fade in.
-            yield return new WaitForSeconds(buttonFadeInTime);
+            yield return new WaitForSeconds(waitBeforeFadeInOnBackFromGame);
+            StartOptionsOpen(isFadeIn: true, isFadeInDemo: true);
             
+            yield return new WaitForSeconds(waitBeforeFadeInTitleOnBackFromGame);
             startScreenController.FadeInTitle();
         }
 

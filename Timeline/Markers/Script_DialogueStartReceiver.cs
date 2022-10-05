@@ -19,7 +19,7 @@ public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
         if (dm != null)
         {
             double time = origin.IsValid() ? origin.GetTime() : 0.0;
-            Debug.LogFormat("Received dialogue start notification of type {0} at time {1}", dm.GetType(), time);
+            // Dev_Logger.Debug($"Received dialogue start notification of type {dm.GetType()} at time {time}");
 
             Script_DialogueNode node = nodes[dm.dialogueNodeIndex];
             bool isSFXOn = !dm.isSilent;

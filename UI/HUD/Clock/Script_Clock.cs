@@ -230,5 +230,6 @@ public class Script_Clock : MonoBehaviour
     {
         InitialState();
         State = _State;
+        DisplayTime();
     }
 }

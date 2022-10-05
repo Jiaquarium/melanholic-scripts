@@ -112,6 +112,10 @@ public class Script_HUDManager : MonoBehaviour
         }
         
         HUDCanvasGroup.gameObject.SetActive(true);
+        
+        // To avoid HUD showing up on Load. Note, must call Close (to set alpha) or the clock canvas will
+        // cut appear in Lobby first initialization.
+        timeCanvasGroup.Close();
 
         defaultFadeSpeed = FadeSpeed;
         timeHUDdefaultSortingOrder = TimeHUDSortingOrder;
