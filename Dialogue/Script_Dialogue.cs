@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-05 01:20:54
+// Last created by Dialogue Exporter at 2022-10-10 18:16:30
 
 using System.Collections;
 using System.Collections.Generic;
@@ -6388,7 +6388,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "NA",
         EN = new string[]
         {
-                @"Now would you like to enter me?",
+                @"<b>Beware, there is no turning back once one is inside</b>.<br><br>Now would you like to enter me?",
         },
         
     }
