@@ -18,7 +18,11 @@ public class Script_CanvasGroupFadeInOut : MonoBehaviour
         CanvasGroup cg = GetComponent<CanvasGroup>();
         float alpha = cg.alpha;
 
-        if (t <= 0)     cg.alpha = maxAlpha;
+        if (t <= 0)
+        {
+            Dev_Logger.Debug($"{name} fadeTime = 0f, setting alpha to maxAlpha");
+            cg.alpha = maxAlpha;
+        }
 
         while (cg.alpha < maxAlpha)
         {
@@ -45,7 +49,11 @@ public class Script_CanvasGroupFadeInOut : MonoBehaviour
         CanvasGroup cg = GetComponent<CanvasGroup>();
         float alpha = cg.alpha;
 
-        if (t <= 0)     cg.alpha = 0f;
+        if (t <= 0)
+        {
+            Dev_Logger.Debug($"{name} fadeTime = 0f, setting alpha to 0f");
+            cg.alpha = 0f;
+        }
 
         while (cg.alpha > 0f)
         {

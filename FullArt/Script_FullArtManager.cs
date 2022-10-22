@@ -45,6 +45,7 @@ public class Script_FullArtManager : MonoBehaviour
     
     [SerializeField] private float bgAlpha;
     [SerializeField] private Transform[] fullArtParentsToSetActive;
+    [SerializeField] private Script_CanvasGroupController bgForceBlack;
     
     void Awake()
     {
@@ -144,6 +145,21 @@ public class Script_FullArtManager : MonoBehaviour
         });
     }
 
+    public void OpenBgForceBlack()
+    {
+        bgForceBlack.Open();
+    }
+
+    public void CloseBgForceBlack()
+    {
+        bgForceBlack.Close();
+    }
+
+    public void SetForceBlackAlpha(float alpha)
+    {
+        bgForceBlack.Alpha = alpha;
+    }
+
     /// <summary>
     /// Use to prepare full art for right entrance
     /// </summary>
@@ -190,6 +206,7 @@ public class Script_FullArtManager : MonoBehaviour
         
         Hide(FadeSpeeds.None, null);
         fullArtBgCanvasGroup.gameObject.SetActive(true);
+        bgForceBlack.Close();
         
         foreach (Script_FullArtBgCanvasGroup bg in bgs)
         {

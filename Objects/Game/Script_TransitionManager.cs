@@ -157,6 +157,16 @@ public class Script_TransitionManager : MonoBehaviour
         canvasGroupController.Close();
     }
 
+    public void TimelineUnderHUDBlackScreenOpen()
+    {
+        timelineUnderHUD.Open();
+    }
+
+    public void TimelineUnderHUDBlackScreenClose()
+    {
+        timelineUnderHUD.Close();
+    }
+
     public void TimelineFadeIn(float t, Action action, bool isOver = false)
     {
         var canvasGroupController = isOver ? timelineFaderOver : timelineFaderUnder;

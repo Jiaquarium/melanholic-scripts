@@ -76,7 +76,7 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip heartBeat;
     [Range(0f, 1f)] public float heartBeatVol;
-    
+
     public AudioClip fireLightUp;
     [Range(0f, 1f)] public float fireLightUpVol;
     

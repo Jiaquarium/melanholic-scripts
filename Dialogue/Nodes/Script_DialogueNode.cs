@@ -62,6 +62,19 @@ public class Script_DialogueNode : MonoBehaviour
                     
                     if (metadata[i] != null && metadata[i].waitForTimeline != null)
                         data.dialogue.sections[i].waitForTimeline = (bool)metadata[i].waitForTimeline;
+                    
+                    if (metadata[i] != null && metadata[i].autoNext != null)
+                    {
+                        bool isAutoNext = (bool)metadata[i].autoNext;
+                        data.dialogue.sections[i].autoNext = isAutoNext;
+                        
+                        // If autoNext is true, the node should also be unskippable and no continuation icon.
+                        if (isAutoNext)
+                        {
+                            data.dialogue.sections[i].isUnskippable = true;
+                            data.dialogue.sections[i].noContinuationIcon = true;
+                        }
+                    }
                 }
             }
 

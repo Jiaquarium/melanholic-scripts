@@ -107,9 +107,8 @@ public class Script_EventCycleManager : MonoBehaviour
         && clockManager.ClockTime >= Script_Clock.R2IdsDeadTime;
     
     // After 5:10 Ellenia Hurt
-    public bool IsElleniaHurt() => false;
-        // game.RunCycle == Script_RunsManager.Cycle.Weekend
-        // && clockManager.ClockTime >= Script_Clock.R2CursedTime;
+    public bool IsElleniaHurt() => game.RunCycle == Script_RunsManager.Cycle.Weekend
+        && clockManager.ClockTime >= Script_Clock.R2CursedTime;
 
     // ------------------------------------------------------------------
     // Weekend Handlers

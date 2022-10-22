@@ -24,6 +24,7 @@ public class Script_DialogueManager : MonoBehaviour
 {
     public const float pauseLength = 0.475f;
     public const char DefaultDemonNPCChar = '�';
+    public const float autoNextWaitTime = 0.05f;
     
     public enum States
     {
@@ -249,6 +250,10 @@ public class Script_DialogueManager : MonoBehaviour
         if (isInputDisabled)
             return;
         
+        Script_FullArt lastFullArt = null;
+        if (currentNode != null)
+            lastFullArt = currentNode.data.fullArt;
+        
         currentNode = node;
         activeInteractable = talkingInteractive;
 
@@ -272,6 +277,33 @@ public class Script_DialogueManager : MonoBehaviour
         
         if (currentNode.data.fullArt != null)
         {
+            // In the case last dialogue node isKeepThisDialogue == true and was a different full art,
+            // ensure to remove it
+            // Note: Uses the current node's Fade In speed to always match.
+            if (isKeepingDialogueUp && lastFullArt != null)
+            {
+                if (lastFullArt != currentNode.data.fullArt)
+                {
+                    Dev_Logger.Debug("Fading out last full art");
+                    fullArtManager.TransitionOutFullArt(lastFullArt, currentNode.data.fadeIn, null);
+                    StartDialogueWithFullArt();
+                }
+                else
+                    StartDialogue(currentNode.data.dialogue, type ?? currentNode.data.type, SFXOn);
+
+                return;
+            }
+            
+            StartDialogueWithFullArt();
+        }
+        else
+        {
+            StartDialogue(currentNode.data.dialogue, type ?? currentNode.data.type, SFXOn);
+        }
+
+        void StartDialogueWithFullArt()
+        {
+            Dev_Logger.Debug("Fading in new full art");
             fullArtManager.ShowFullArt(
                 currentNode.data.fullArt,
                 currentNode.data.fadeIn, () => {
@@ -279,10 +311,6 @@ public class Script_DialogueManager : MonoBehaviour
                 },
                 Script_FullArtManager.FullArtState.DialogueManager
             );
-        }
-        else
-        {
-            StartDialogue(currentNode.data.dialogue, type ?? currentNode.data.type, SFXOn);
         }
     }
 
@@ -506,10 +534,13 @@ public class Script_DialogueManager : MonoBehaviour
         bool SFXOn = true
     )
     {
+        Dev_Logger.Debug($"Start Dialogue Id {currentNode.Id}");
+
         bool noFadeIn = isKeepingDialogueUp || (
             currentNode.data.isCustomDialogueFadeIn
             && currentNode.data.dialogueFadeInSpeed == FadeSpeeds.None
         );
+
         isInputDisabled = false;
         isKeepingDialogueUp = false;
         
@@ -634,6 +665,23 @@ public class Script_DialogueManager : MonoBehaviour
         {
             lineCount++;
             DisplayNextLine();
+
+            // Look at current line, if is Auto Skip, call Continue Dialogue
+            if (dialogueSection.autoNext)
+            {
+                // Disable and continue so can still read
+                isInputDisabled = true;
+                
+                StartCoroutine(WaitToContinue());
+            }
+        }
+
+        IEnumerator WaitToContinue()
+        {
+            yield return new WaitForSeconds(autoNextWaitTime);
+
+            isInputDisabled = false;
+            ContinueDialogue();
         }
     }
 
@@ -1283,7 +1331,7 @@ public class Script_DialogueManager : MonoBehaviour
             shouldCantUnderstandReaction = true;
     }
 
-    private void InitialState()
+    public void InitialState()
     {
         HideDialogue();
         ClearAllCanvasTexts();

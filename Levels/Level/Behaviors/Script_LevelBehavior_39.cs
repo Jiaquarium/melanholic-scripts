@@ -28,6 +28,11 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
 
     [SerializeField] private Script_DialogueNode EileenReminderDialogue;
 
+    [SerializeField] private float waitBeforeFadeOutBlackTime;
+    [SerializeField] private float backToHallwayFadeInTime;
+    [SerializeField] private Script_TileMapExitEntrance exitToElleniasRoom;
+    [SerializeField] private Script_InteractableObjectText exitReactionText;
+
     private bool didGuardConfirm;
     private bool didMapNotification;
     private bool didEileenReminder;
@@ -163,10 +168,34 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         }
     }
 
+    // Called via Ellenia's Room Ellenia Hurt Cut Scene
+    public void ElleniasHurtTransition()
+    {
+        StartCoroutine(WaitBeforeInteract());
+        
+        IEnumerator WaitBeforeInteract()
+        {
+            yield return new WaitForSeconds(waitBeforeFadeOutBlackTime);
+            
+            StartCoroutine(game.TransitionFadeOut(backToHallwayFadeInTime, () => {
+                // Disable Exit to Ellenia's Room and activate dialogue reaction
+                exitToElleniasRoom.IsDisabled = true;
+                exitReactionText.gameObject.SetActive(true);
+
+                game.ChangeStateInteract();
+            }));
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Next Node Actions
     
     public void OnEileenReminderDone()
+    {
+        game.ChangeStateInteract();
+    }
+
+    public void OnDisabledExitReactionDone()
     {
         game.ChangeStateInteract();
     }

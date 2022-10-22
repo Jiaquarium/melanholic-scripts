@@ -4,6 +4,10 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Should only be called from manager as it will set the BG
 /// Serves as a Canvas Group Controller
@@ -19,11 +23,18 @@ public class Script_FullArt : MonoBehaviour
     public FadeSpeeds fadeInSpeed; /// used for Examine
     public FadeSpeeds nextFadeSpeed; /// used for Examine
     public Script_FullArtManager.Bgs bg;
+    [SerializeField] private Script_CanvasGroupController myBg;
     [SerializeField] private Animator animator;
 
     [Tooltip("Option to specify a custom bounds for this UI object. Can be Set by parent with FullArtBoundsParent.")]
     [SerializeField] private Script_ScalingBounds customBounds;
     private Script_CanvasConstantPixelScaler canvasScaler;
+    
+    void OnEnable()
+    {
+        if (myBg != null)
+            myBg.Close();
+    }
     
     void Awake()
     {
@@ -94,8 +105,35 @@ public class Script_FullArt : MonoBehaviour
         }
     }
 
+    public void FadeInMyBg(float t, float alpha = 1f)
+    {
+        // Ensure Image is fully opaque before fading CanvasGroup
+        Image myBgImg = myBg.GetComponent<Image>();
+        var myBgColor = myBgImg.color;
+        myBgImg.color = new Color(myBgColor.r, myBgColor.g, myBgColor.b, 1f);
+        
+        myBg.FadeIn(t, isForceMaxAlpha: true, fadeToAlpha: alpha);
+    }
+
     public virtual void Setup()
     {
         GetComponent<Script_CanvasGroupFadeInOut>().Initialize();
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_FullArt))]
+    public class Script_FullArtTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_FullArt t = (Script_FullArt)target;
+            
+            if (GUILayout.Button("Fade In My BG"))
+            {
+                t.FadeInMyBg(2f);
+            }
+        }
+    }
+#endif
 }

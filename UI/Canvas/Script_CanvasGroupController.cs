@@ -78,7 +78,13 @@ public class Script_CanvasGroupController : MonoBehaviour
     public Script_Canvas canvasChild
     {
         get => GetComponentInChildren<Script_Canvas>(true);
-    } 
+    }
+
+    public float Alpha
+    {
+        get => MyCanvasGroup.alpha;
+        set => MyCanvasGroup.alpha = value;
+    }
     
     public virtual void Open()
     {
@@ -99,7 +105,9 @@ public class Script_CanvasGroupController : MonoBehaviour
     public virtual void FadeIn(
         float t = DefaultFadeTime,
         Action onFadedIn = null,
-        bool isUnscaledTime = false
+        bool isUnscaledTime = false,
+        bool isForceMaxAlpha = false,
+        float fadeToAlpha = 0f
     )
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
@@ -125,7 +133,9 @@ public class Script_CanvasGroupController : MonoBehaviour
                 if (onFadedIn != null)
                     onFadedIn();
             },
-            maxAlpha: isUseMaxAlpha ? maxAlpha : 1f,
+            maxAlpha: (isUseMaxAlpha || isForceMaxAlpha)
+                ? (fadeToAlpha > 0f ? fadeToAlpha : maxAlpha)
+                : 1f,
             isUnscaledTime: isUnscaledTime
         ));
     }

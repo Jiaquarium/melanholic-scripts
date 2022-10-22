@@ -23,6 +23,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     
     // Tracks if need to do the Ellenia intro.
     public bool spokenWithEllenia;
+    public bool didStabCutScene;
 
     /* ======================================================================= */
     
@@ -70,20 +71,49 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     
     [SerializeField] private Script_InteractableFullArt dirtyMagazine;
 
-    [SerializeField] private Script_PRCSPlayer ElleniasHandPRCSPlayer;
-    [SerializeField] private Script_DialogueNode onElleniasPRCSDoneNode;
-    [SerializeField] private Script_VCamera followElleniaHurtVCam;
-    [SerializeField] private float onStartElleniaHurtCutSceneWaitTime;
-    [SerializeField] private float cutSceneFadeInTime;
-    [SerializeField] private float elleniaHurtCutSceneWaitToFadeInTime;
-    [SerializeField] private Script_Marker playerTeleportPos;
-    
     [SerializeField] private float waitBeforeSelfRealizationTime;
     [SerializeField] private Script_DialogueNode selfRealizationDialogue;
 
     // ------------------------------------------------------------------
     // Painting Entrances
+
     [SerializeField] private Script_InteractablePaintingEntrance paintingEntranceMid;
+    
+    // ------------------------------------------------------------------
+    // Hurt Ellenia
+    [Header("Hurt Ellenia")]
+    [SerializeField] private Script_TriggerPlayerStay elleniaHurtTrigger;
+
+    [SerializeField] private float ElleniasHurtBgmTargetVol;
+    [SerializeField] private float ElleniasHurtBgmTargetVolFadeTime;
+    [SerializeField] private float blackScreenBeforeHurtSceneTime;
+    [SerializeField] private Script_PRCSPlayer ElleniasArtPRCSPlayer;
+    [SerializeField] private Script_DialogueNode cutSceneStartNode;
+    [SerializeField] private Script_DialogueNode onElleniasPRCSDoneNode;
+    [SerializeField] private Script_VCamera followElleniaHurtVCam;
+    [SerializeField] private float onStartElleniaHurtCutSceneWaitTime;
+    [SerializeField] private float cutSceneFadeInTime;
+    [SerializeField] private Script_Marker playerTeleportPos;
+    
+    [SerializeField] private Script_FullArt ElleniaCenterFullArt;
+    [SerializeField] private Script_DialogueNode[] cursedNodes;
+    [SerializeField] private float[] waitForCursedDialogueTimes;
+
+    [SerializeField] private Script_BgThemePlayer creepyBgmPlayer;
+    [SerializeField] private Script_BgThemePlayer creepyIntenseBgmPlayer;
+    [SerializeField] private float creepyIntenseFadeInTime;
+    [SerializeField] private Script_BgThemePlayer heartbeatsPlayer;
+    [SerializeField] private int ElleniasArtHeartBeatsSettings;
+    [SerializeField] private int intensestHeartBeatsSettings;
+
+    [SerializeField] private Script_FullArt ElleniaCloseUpMadFullArt;
+    [SerializeField] private PlayableDirector ElleniaStabsDirector;
+    [SerializeField] private Script_CanvasGroupController ElleniaStabsCanvasGroup;
+    [SerializeField] private float waitAfterInSilenceTime;
+
+    [SerializeField] private float blackScreenBeforeStabTimeShortScene;
+
+    // ------------------------------------------------------------------
     
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
@@ -112,30 +142,28 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
-        ElleniaDirector.stopped                         += OnElleniaPlayableDone;    
-        Script_PRCSEventsManager.OnPRCSDone             += OnElleniasHandPRCSDone;
+        ElleniaDirector.stopped                         += OnElleniaPlayableDone;
+        Script_PRCSEventsManager.OnPRCSDone             += OnElleniasArtPRCSDone;
         
         if (Script_EventCycleManager.Control.IsElleniaHurt())
         {
+            elleniaHurtTrigger.gameObject.SetActive(true);
             Script_GameEventsManager.OnLevelInitComplete    += HandleStartCheckingElleniaHurtCutScene;
             isElleniaHurtToday = true;
         }
+        else
+            elleniaHurtTrigger.gameObject.SetActive(false);
     }
 
     protected override void OnDisable()
     {
         ElleniaDirector.stopped                         -= OnElleniaPlayableDone;    
-        Script_PRCSEventsManager.OnPRCSDone             -= OnElleniasHandPRCSDone;
+        Script_PRCSEventsManager.OnPRCSDone             -= OnElleniasArtPRCSDone;
         Script_GameEventsManager.OnLevelInitComplete    -= HandleStartCheckingElleniaHurtCutScene;
     }
 
     protected override void Update()
     {
-        if (isCheckingPsychicDuckElleniaHurtCutScene && !isCurrentPuzzleComplete)
-        {
-            HandleElleniaHurtCutScene();
-        }
-
         devPasswordDisplay = Script_Names.ElleniaPassword; // FOR TESTING PURPOSES ONLY
     }
 
@@ -276,32 +304,70 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         isCheckingPsychicDuckElleniaHurtCutScene = true;
     }
     
-    private void HandleElleniaHurtCutScene()
+    // ----------------------------------------------------------------------
+    // Ellenia Hurt Cut Scene
+    
+    /// <summary>
+    /// Five Sections to Cut Scene
+    /// (Short Version cuts to section #5 Stab Cut Scene)
+    /// 
+    /// 1. Ellenia talks about a word
+    ///     0.5vol heartbeat, fade in black BG after each node
+    /// 2. Show ElleniasArt PRCS
+    ///     1.0vol heartbeat, 1.0vol creepy BGM start
+    /// 3. Ellenia debates whether to talk about Eileen's condition
+    ///     0.5-1.0vol 1.0-1.8pitch heartbeat, 1.0vol creepy BGM
+    /// 4. Ellenia madly talks about pain
+    ///     1.0vol 1.8pitch heartbeat, 1.0vol INTENSE creepy BGM
+    /// 5. Stab Cut Scene
+    ///     Stop all music on stab
+    /// </summary>
+    
+    // Trigger
+    public void HandleElleniaHurtCutScene()
     {
-        // Ensure Psychic Duck is the active sticker and we haven't already played this cut scene.
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
-        
-        if (!isPsychicDuckActive || isElleniaHurtCutSceneActivated)
-            return;
-        
+        if (
+            isCheckingPsychicDuckElleniaHurtCutScene
+            && !isCurrentPuzzleComplete
+        )
+        {
+            // Ensure Psychic Duck is the active sticker and we haven't already played this cut scene.
+            bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
+            
+            if (!isPsychicDuckActive || isElleniaHurtCutSceneActivated)
+                return;
+            
+            StartElleniaHurtCutScene();
+        }
+    }
+    
+    private void StartElleniaHurtCutScene()
+    {
         isElleniaHurtCutSceneActivated                  = true;
         isCheckingPsychicDuckElleniaHurtCutScene        = false;
 
         game.ChangeStateCutScene();
+
+        var bgm = Script_BackgroundMusicManager.Control;
         
-        Script_BackgroundMusicManager bgm = Script_BackgroundMusicManager.Control;
-
-        bgm.FadeOutFast(() => {
-            bgm.Stop();
-            bgm.SetVolume(1f, BGMParam);
-        }, BGMParam);
-
+        // If already did cut scene, only show the stabbing portion.
+        if (didStabCutScene)
+        {
+            StartCoroutine(StartStabCutSceneShort());
+            return;
+        }
+        
+        // Fade out bgm a bit so can hear heartbeats clearly.
+        // BGM will be reset to 0f when Creepy Music starts on PRCS.
+        bgm.FadeOut(null, ElleniasHurtBgmTargetVolFadeTime, BGMParam, ElleniasHurtBgmTargetVol);
+        
         StartCoroutine(WaitForElleniaHurtCutScene());
 
         IEnumerator WaitForElleniaHurtCutScene()
         {
             yield return new WaitForSeconds(onStartElleniaHurtCutSceneWaitTime);
 
+            // Fade to Black and focus camera on Ellenia (Hurt)
             StartCoroutine(game.TransitionFadeIn(cutSceneFadeInTime, () => {
                 // Teleport player.
                 game.GetPlayer().Teleport(playerTeleportPos.transform.position);
@@ -310,48 +376,190 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
                 // Face camera to Ellenia (Hurt).
                 SwitchVCamElleniaHurt();
                 
-                StartCoroutine(WaitForElleniaDialogue());
+                ShowElleniaFullArtInBg();
             }));
         }
 
-        IEnumerator WaitForElleniaDialogue()
+        // Do Framing and show Ellenia FA in BG
+        void ShowElleniaFullArtInBg()
         {
-            yield return new WaitForSeconds(elleniaHurtCutSceneWaitToFadeInTime);
-
-            StartCoroutine(game.TransitionFadeOut(cutSceneFadeInTime, () => {
-                PlayElleniasHandPRCS();
-            }));
-        }
-
-        void PlayElleniasHandPRCS()
-        {
-            game.ChangeStateCutScene();
-            
             Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
                 isOpen: true,
                 framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
-                cb: OnFramingAnimationDone
+                cb: () => Script_FullArtManager.Control.ShowFullArt(
+                    ElleniaCenterFullArt,
+                    FadeSpeeds.None,
+                    () => StartCoroutine(StartElleniaHurtCutSceneDialogue()),
+                    Script_FullArtManager.FullArtState.DialogueManager
+                ),
+                t: 0.01f
             );
+        }
 
-            void OnFramingAnimationDone()
-            {
-                ElleniasHandPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
-            }
+        IEnumerator StartElleniaHurtCutSceneDialogue()
+        {
+            // Ensure cam has enough time to cut
+            yield return new WaitForSeconds(blackScreenBeforeHurtSceneTime);
+            
+            // Fade out fader to reveal just Ellenia and start Dialogue
+            StartCoroutine(game.TransitionFadeOut(FadeSpeeds.XFast.ToFadeTime(), () => {
+                Script_DialogueManager.DialogueManager.StartDialogueNode(
+                    cutSceneStartNode,
+                    SFXOn: false
+                );
+            }));
+        }
+
+        // Short Cut Scene
+        // Note: The fading in transition will be exactly the same as default cut scene EXCEPT
+        // the blackScreenBeforeStabTimeShortScene which should be longer in the short version
+        // because the transition needs to be more dramatic.
+        IEnumerator StartStabCutSceneShort()
+        {
+            bgm.FadeOut(null, onStartElleniaHurtCutSceneWaitTime, Const_AudioMixerParams.ExposedBGVolume);
+            
+            yield return new WaitForSeconds(onStartElleniaHurtCutSceneWaitTime);
+
+            // Fade to Black and focus camera on Ellenia (Hurt)
+            StartCoroutine(game.TransitionFadeIn(cutSceneFadeInTime, () => {
+                StartCoroutine(WaitToStartStabCutSceneShort());
+            }));
+        }
+
+        // Short Cut Scene
+        IEnumerator WaitToStartStabCutSceneShort()
+        {
+            yield return new WaitForSeconds(blackScreenBeforeStabTimeShortScene);
+            
+            StartCoroutine(game.TransitionFadeOut(0f, () => {
+                // Skip to most intense heartbeat settings
+                var pitchShifter = heartbeatsPlayer.GetComponent<Script_AudioSourcePitchShifter>();
+                
+                // Must explicitly change starting vol; otherwise, starts at 0.5f (for default cut scene)
+                pitchShifter.StartingVolume = 1f;
+                pitchShifter.SwitchMySettings(intensestHeartBeatsSettings);
+                heartbeatsPlayer.gameObject.SetActive(true);
+
+                creepyIntenseBgmPlayer.gameObject.SetActive(true);
+                creepyIntenseBgmPlayer.Play();
+                
+                PlayElleniaStabsHandTimeline();
+            }));
         }
     }
 
-    private void OnElleniasHandPRCSDone(Script_PRCSPlayer prcs)
+    // Alone7 Node
+    public void ShowElleniasArtPRCSInBg()
     {
-        if (prcs == ElleniasHandPRCSPlayer)
+        // Remove framing same frame
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
+            isNoAnimation: true
+        );
+
+        // Open Fader (Under HUD) to ensure we have a black BG (since it's not guaranteed if not using frame)
+        Script_TransitionManager.Control.TimelineUnderHUDBlackScreenOpen();
+
+        ElleniasArtPRCSPlayer.gameObject.SetActive(true);
+        ElleniasArtPRCSPlayer.PlayCustom(Script_PRCSManager.CustomTypes.ElleniasHand);
+    }
+
+    // Load Ellenia Center FA behind ElleniasHandPRCS and wait to reveal by removing ElleniasHandPRCS
+    private void OnElleniasArtPRCSDone(Script_PRCSPlayer prcs)
+    {
+        if (prcs == ElleniasArtPRCSPlayer)
         {
-            // Remove ElleniasHandPRCS
-            ElleniasHandPRCSPlayer.CloseCustom(Script_PRCSManager.CustomTypes.ElleniasHand, () => {
-                Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
-                    isOpen: false,
-                    framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
-                    cb: () => Script_DialogueManager.DialogueManager.StartDialogueNode(onElleniasPRCSDoneNode)
-                );
-            });
+            // Set heartbeats back to default
+            heartbeatsPlayer.GetComponent<Script_AudioSourcePitchShifter>().SwitchMySettings(0);
+            
+            // Open Ellenia FullArt behind ElleniasHandPRCS
+            Script_FullArt firstFullArt = onElleniasPRCSDoneNode.data.fullArt;
+            Script_FullArtManager.Control.ShowFullArt(
+                firstFullArt,
+                FadeSpeeds.None,
+                null,
+                Script_FullArtManager.FullArtState.DialogueManager
+            );
+            
+            // Remove ElleniasHandPRCS and with same speed reopen framing
+            ElleniasArtPRCSPlayer.CloseCustom(Script_PRCSManager.CustomTypes.ElleniasHand, null);
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
+                cb: () => {
+                    Script_DialogueManager.DialogueManager.StartDialogueNode(
+                        onElleniasPRCSDoneNode,
+                        SFXOn: false
+                    );
+
+                    // Once framing is present, remove the black BG underneath
+                    Script_TransitionManager.Control.TimelineUnderHUDBlackScreenClose();
+                },
+                t: FadeSpeeds.XFast.GetFadeTime()
+            );
+        }
+    }
+
+    // Last Node in Cut Scene
+    public void PlayElleniaStabsHandTimeline()
+    {
+        // Framing for short version
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
+            isNoAnimation: true
+        );
+        
+        // Remove Dialogue Box & FA in the full cut scene version, if short version,
+        // must skip since Full Art would be inactive.
+        if (ElleniaCloseUpMadFullArt.gameObject.activeInHierarchy)
+        {
+            Script_DialogueManager.DialogueManager.InitialState();
+            Script_FullArtManager.Control.HideFullArt(ElleniaCloseUpMadFullArt, FadeSpeeds.None, null);
+        }
+
+        ElleniaStabsCanvasGroup.Open();
+        ElleniaStabsDirector.Play();
+    }
+    
+    public void OnStab()
+    {
+        creepyBgmPlayer.SoftStop();
+        creepyIntenseBgmPlayer.SoftStop();
+        heartbeatsPlayer.SoftStop();
+    }
+    
+    public void OnStabDone()
+    {
+        // Put up black screen
+        StartCoroutine(game.TransitionFadeIn(0, () => {
+            SwitchVCamPlayer();
+            ElleniaStabsCanvasGroup.Close();
+            Script_FullArtManager.Control.CloseBgForceBlack();
+
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: false,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ElleniasHand,
+                isNoAnimation: true
+            );
+        }));
+    }
+    
+    // Ellenia Stabs Timeline Done
+    public void OnEndElleniaHurtCutScene()
+    {
+        Dev_Logger.Debug("OnEndElleniaHurtCutScene");
+
+        didStabCutScene = true;
+
+        // Wait in silence before teleporting to Hallway and BGM starting again
+        StartCoroutine(WaitToTeleport());
+        
+        IEnumerator WaitToTeleport()
+        {
+            yield return new WaitForSeconds(waitAfterInSilenceTime);
+            game.ElleniaHurtEndTransition();
         }
     }
 
@@ -577,12 +785,6 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaHurtVCam);        
     }
 
-    public void OnEndElleniaHurtCutScene()
-    {
-        SwitchVCamPlayer();
-        game.ChangeStateInteract();
-    }
-
     private void OnElleniaExitsDone()
     {
         Script_VCamManager.VCamMain.SwitchToMainVCam(followElleniaVCam);
@@ -594,6 +796,81 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     public void OnSelfRealizationDone()
     {
         onSelfRealizationDoneAction();
+    }
+
+    // After Hurt First Node
+    public void StartHeartbeats()
+    {
+        heartbeatsPlayer.GetComponent<Script_AudioSourcePitchShifter>().SwitchMySettings(0);
+        heartbeatsPlayer.gameObject.SetActive(true);
+    }
+
+    // On ElleniasArtPRCS Start
+    public void StartIntenseHeartBeatsOnElleniasArt()
+    {
+        heartbeatsPlayer.GetComponent<Script_AudioSourcePitchShifter>().SwitchMySettings(ElleniasArtHeartBeatsSettings);
+
+        Script_BackgroundMusicManager bgm = Script_BackgroundMusicManager.Control;
+        float fadeTime = FadeSpeeds.Fast.GetFadeTime();
+        bgm.FadeOut(() => {
+                bgm.SetVolume(0f, BGMParam);
+                bgm.Stop();
+                bgm.SetVolume(1f, BGMParam);
+            },
+            fadeTime,
+            BGMParam
+        );
+
+        StartCreepyMusic(fadeTime);
+    }
+    
+    // Cursed Nodes
+    public void StartCursedDialogue(int i)
+    {
+        float waitTime = waitForCursedDialogueTimes[i];
+        
+        StartCoroutine(WaitToTalk());
+
+        IEnumerator WaitToTalk()
+        {
+            yield return new WaitForSeconds(waitTime);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(cursedNodes[i], SFXOn: false);
+        }
+    }
+
+    // Cursed Node
+    public void FadeInFullArtBg(float alpha)
+    {
+        Script_FullArtManager.Control.SetForceBlackAlpha(alpha);
+    }
+
+    // Cursed Node
+    public void StartCreepyMusic(float fadeTime)
+    {
+        creepyBgmPlayer.gameObject.SetActive(true);
+        creepyBgmPlayer.FadeInPlay(null, fadeTime);
+    }
+
+    // Cursed Node
+    public void SwitchHeartbeatPitchSettings(int i)
+    {
+        heartbeatsPlayer.GetComponent<Script_AudioSourcePitchShifter>().SwitchMySettings(i);
+    }
+
+    // Cursed Node
+    public void StartCreepyMusicIntense()
+    {
+        creepyBgmPlayer.FadeOutStop(null, creepyIntenseFadeInTime);
+        creepyIntenseBgmPlayer.gameObject.SetActive(true);
+        creepyIntenseBgmPlayer.FadeInPlay(null, creepyIntenseFadeInTime);
+    }
+
+    // Cursed Node Alone0 when Bg FA is faded in all the way
+    public void OpenBgForceBlack()
+    {
+        Script_FullArtManager.Control.OpenBgForceBlack();
+        Script_FullArtManager.Control.SetForceBlackAlpha(0f);
     }
 
     /// NextNodeAction END ==================================================
@@ -696,6 +973,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         
         game.SetupInteractableObjectsText(textParent, isInitialization);
         game.SetupInteractableFullArt(fullArtParent, isInitialization);
+        
+        ElleniasArtPRCSPlayer.gameObject.SetActive(false);
         
         // PG Version
         if (Const_Dev.IsPGVersion)  dirtyMagazine.gameObject.SetActive(false);
@@ -803,6 +1082,18 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             if (GUILayout.Button("Test Ellenia Timeline"))
             {
                 lb.DevElleniaTimeline();
+            }
+
+            GUILayout.Space(12);
+
+            if (GUILayout.Button("Ellenia Hurt Cut Scene"))
+            {
+                lb.StartElleniaHurtCutScene();
+            }
+
+            if (GUILayout.Button("Ellenia Stabs Timeline"))
+            {
+                lb.PlayElleniaStabsHandTimeline();
             }
         }
     }

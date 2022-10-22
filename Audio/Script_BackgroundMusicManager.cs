@@ -291,7 +291,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void FadeOut(
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
-        string outputMixer = Const_AudioMixerParams.ExposedGameVolume
+        string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
+        float targetVolume = 0f
     )
     {
         EndCurrentCoroutines();
@@ -300,7 +301,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
                 audioMixer,
                 outputMixer,
                 fadeTime,
-                0f,
+                targetVolume,
                 () => {
                     if (cb != null)     cb();
                 }
@@ -311,7 +312,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void FadeIn(
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
-        string outputMixer = Const_AudioMixerParams.ExposedGameVolume
+        string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
+        float targetVolume = 1f
     )
     {
         EndCurrentCoroutines();
@@ -320,7 +322,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
                 audioMixer,
                 outputMixer,
                 fadeTime,
-                1f,
+                targetVolume,
                 () => {
                     if (cb != null)     cb();
                 }

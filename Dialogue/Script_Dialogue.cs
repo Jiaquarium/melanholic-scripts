@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-10 18:16:30
+// Last created by Dialogue Exporter at 2022-10-22 00:12:26
 
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +19,7 @@ public class Model_Languages
         public bool? isUnskippable;
         public bool? noContinuationIcon;
         public bool? waitForTimeline;
+        public bool? autoNext;
     }
 }
 
@@ -3178,6 +3179,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         
     }
 },
+{
+    "urselks-hall_ellenia-hurt_disabled-exit_reaction",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s locked shut...",
+                @"You hear heavy breathing...",
+        },
+        
+    }
+},
 // ------------------------------------------------------------------
 // Eileen's Room
 {
@@ -3601,10 +3615,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "ellenias-room_easle_angry",
     new Model_Languages
     {
-        speaker = "{12}",
+        speaker = "{0}",
         EN = new string[]
         {
-                @"Hey! Don’t look, it’s not finished yet!",
+                @"You can’t seem to get a clear view from here...",
         },
         
     }
@@ -4111,132 +4125,333 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 // ------------------------------------------------------------------
 // Hurt
 {
-    "ellenias-room_ellenia-weekend_psychic_hurt",
+    "ellenias-room_ellenia-weekend_psychic_hurt_default",
     new Model_Languages
     {
         speaker = "{12}",
         EN = new string[]
         {
-                @"It’s nothing really... sorry for taking up your time.",
+                @"What’s wrong with me?",
         },
         
     }
 },
 {
-    "ellenias-room_player_ellenia-hurt-reaction",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                @"Hey {12}! This isn't like you.",
-        },
-        
-    }
-},
-{
-    "ellenias-room_ellenia-weekend_psychic_hurt_choices",
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone0",
     new Model_Languages
     {
         speaker = "{12}",
         EN = new string[]
         {
-                @"Sorry, do I know you? I really don’t mean to be a nuisance.",
+                @"Ugh it’s getting on my nerves!",
         },
         
     }
 },
 {
-    "ellenias-room_ellenia-weekend_psychic_hurt_choices_a",
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone1",
     new Model_Languages
     {
         speaker = "{12}",
         EN = new string[]
         {
-                @"It’s really not worth the story. I wouldn’t want to burden you with it.",
-                @"Sorry for taking up your time.",
+                @"I can’t remember that face anymore...",
         },
-        choiceText = "What happened here?",
         
     }
 },
 {
-    "ellenias-room_ellenia-weekend_psychic_hurt_choices_b",
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone2",
     new Model_Languages
     {
         speaker = "{12}",
         EN = new string[]
         {
-                @"Well good-bye.",
-                @"Sorry for taking up your time.",
-        },
-        choiceText = "I should really get going.",
-        
-    }
-},
-{
-    "ellenias-room_player_ellenia-hurt-reaction_choices",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-                @"(You realize {12} can no longer paint with an injury like that.)",
+                @"It’s all way too fuzzy.",
         },
         
     }
 },
 {
-    "ellenias-room_player_ellenia-hurt-reaction_choices_a",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-
-        },
-        choiceText = "It’s okay.",
-        
-    }
-},
-{
-    "ellenias-room_ellenia-weekend_psychic_story",
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone3",
     new Model_Languages
     {
         speaker = "{12}",
         EN = new string[]
         {
-                @"Okay... well, I began having my doubts, in painting the {8}...",
-                @"So I went and found a job over at the {35} in {75}.",
-                @"You know how it is,| we need to make a living in the end,| and| long story short...",
-                @"This happened.| It’s about time I face reality.",
-                @"It’s really my own fault this happened. I knew I wasn’t really good at anything...",
+                @"You know I’m not normally into this sentimental crap.",
         },
         
     }
 },
 {
-    "ellenias-room_player_ellenia-hurt-reaction_choices_b",
-    new Model_Languages
-    {
-        speaker = "{0}",
-        EN = new string[]
-        {
-
-        },
-        choiceText = "I should leave.",
-        
-    }
-},
-{
-    "ellenias-room_ellenia-weekend_ellenia-hurt-reaction_choices_b_a",
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone4",
     new Model_Languages
     {
         speaker = "{12}",
         EN = new string[]
         {
-                @"Well good-bye.",
-                @"I’ll be okay, don’t worry about me.",
+                @"It’s just there’s something they told me about my work...",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone5",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"...That really stayed with me...ha, I know this sounds dumb.",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone6",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"But actually all my new paintings have been about it...",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_alone7",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"Here, I don’t care, take a look if you want.",
+                @"Go ahead already!",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_choices_a_rewind0",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"I’ve been working on this new one for a while now.",
+                @"C’mon now! What do you think?",
+                @"Give me one word that describes its essence!",
+                @"Ha... you pleb, what do you know...",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+        }
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_painting-comment",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"Y̶̦̐o̸͔̍u̵͔̾ ̸̦̌l̷͍̿i̶̟͘k̸̡̐e̵̛͎ ̶͓̾ḭ̶͠t̷̖͗ ̷̺̃r̵͈͛i̵͇͊g̵̭͛h̴̯͑t̸̝̓?̸̟̕",
+                @"Obviously it’s about being alone...hehehe.",
+                @"I’d say it’s even a bit autobiographical.",
+                @"You can relate too, I’m sure, right!?",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_hesitate0",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"I know I know, I’m not truly alone...",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_hesitate1",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"I’ll still always have {11}.",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_hesitate2",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"......",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_hesitate3",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"But you know with her condition and all...",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_hesitate4",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"...Maybe I shouldn’t even be saying this.",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_hesitate5",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"Just between me and you though...",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_hesitate6",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"......",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_choices_a_choices_a1_0",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"She’s probably just being dramatic.",
+                @"I mean the spikes and all? C’mon...",
+                @"You know, pulling the sympathy card?",
+                @"Like if I’m going to be honest......",
+        },
+        
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_choices_a_choices_a1_1",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"<size=14>All she ever wants is fucking attention. It makes me sick.</size>",
+                @"<size=16>Look at her always playing the victim.</size>",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+        }
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_dissociation",
+    new Model_Languages
+    {
+        speaker = "{74}",
+        EN = new string[]
+        {
+                @"<size=18>Why have <b>you</b> been talking to <b>ourselves</b>?</size>",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+        }
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_choices_a_choices_a2",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"<size=20>HONESTLY THE WORLD’S BETTER OFF–</size>",
+                @"<size=20><b>SHE HAS NO IDEA WHAT IT MEANS TO| FEEL| REAL|| P||A||I||N.|||</b></size>",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+        }
+    }
+},
+{
+    "ellenias-room_ellenia-weekend_psychic_hurt_choices_a_choices_a3",
+    new Model_Languages
+    {
+        speaker = "{12}",
+        EN = new string[]
+        {
+                @"I... I think I’m going to puke.",
         },
         
     }

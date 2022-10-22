@@ -37,6 +37,7 @@ public class Script_PRCSManager : MonoBehaviour
 
     [UnityEngine.Serialization.FormerlySerializedAs("TimelinePRCSCanvasGroup")]
     [SerializeField] private Script_CanvasGroupController KingsIntroCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController ElleniaStabsCanvasGroup;
     [SerializeField] private Script_AwakeningCanvasGroupController AwakeningCanvasGroup;
     [SerializeField] private Script_AwakeningCanvasGroupController AwakeningFinalCanvasGroup;
     [SerializeField] private Script_FaceOffCanvasGroupController[] FaceOffCanvasGroups;
@@ -206,11 +207,10 @@ public class Script_PRCSManager : MonoBehaviour
         {
             case CustomTypes.MynesMirror:
                 MynesMirrorCanvasGroup.FadeOut(FadeSpeeds.Slow.ToFadeTime(), cb);
-                
                 break;
             
             case CustomTypes.ElleniasHand:
-                HidePRCS(ElleniasHandPRCS, FadeSpeeds.Slow, cb);
+                HidePRCS(ElleniasHandPRCS, FadeSpeeds.XFast, cb);
                 break;
             
             case CustomTypes.ToWeekend:
@@ -428,7 +428,10 @@ public class Script_PRCSManager : MonoBehaviour
         wellsJustOpenedPRCS.gameObject.SetActive(false);
 
         customCanvasesParent.gameObject.SetActive(true);
-        foreach (Canvas c in customCanvases)    c.gameObject.SetActive(true);
+        
+        // Ensure Custom Canvases are showing
+        foreach (Canvas c in customCanvases)
+            c.gameObject.SetActive(true);
 
         Script_PRCS []allPRCS = PRCSCanvasGroup.GetComponentsInChildren<Script_PRCS>(true);
         foreach (Script_PRCS prcs in allPRCS)
@@ -445,6 +448,9 @@ public class Script_PRCSManager : MonoBehaviour
         // Initialize purely customized PRCS
         KingsIntroCanvasGroup.InitialState();
         KingsIntroCanvasGroup.gameObject.SetActive(true);
+
+        ElleniaStabsCanvasGroup.InitialState();
+        ElleniaStabsCanvasGroup.gameObject.SetActive(false);
 
         AwakeningCanvasGroup.InitialState();
         AwakeningCanvasGroup.gameObject.SetActive(false);

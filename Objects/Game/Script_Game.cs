@@ -67,6 +67,7 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_26 EileensMindBehavior;
     public Script_LevelBehavior_33 bayV1Behavior;
     public Script_LevelBehavior_34 bayV2Behavior;
+    public Script_LevelBehavior_39 UrselksHallBehavior;
     public Script_LevelBehavior_42 WellsWorldBehavior;
     public Script_LevelBehavior_46 GardenLabyrinthBehavior;
     public Script_LevelBehavior_48 grandMirrorRoomBehavior;
@@ -75,6 +76,7 @@ public class Script_Game : MonoBehaviour
     // Level Behavior Exits & Entrances
     [SerializeField] private Script_ExitMetadataObject XXXWorldSaloonExit;
     [SerializeField] private Script_ExitMetadataObject grandMirrorRoomEntrance;
+    [SerializeField] private Script_ExitMetadataObject UrselksHallElleniasRoomExit;
 
     // ------------------------------------------------------------------
     // Managers
@@ -2144,6 +2146,13 @@ public class Script_Game : MonoBehaviour
     {
         grandMirrorRoomBehavior.IsFinalRound = true;
         TeleportBackground(grandMirrorRoomEntrance);
+    }
+
+    public void ElleniaHurtEndTransition()
+    {
+        TeleportBackground(UrselksHallElleniasRoomExit);
+
+        UrselksHallBehavior.ElleniasHurtTransition();
     }
 
     public void SetBayV1ToSaveState(Script_LevelBehavior_33.State saveState)

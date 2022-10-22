@@ -20,6 +20,11 @@ public class Script_ImageDistorterController : MonoBehaviour
     [SerializeField] private bool smearOn;
     [SerializeField] private float smearTime;
 
+    [Tooltip("Turn on to randomize oscillating X and Y directions")]
+    [SerializeField] private bool isRandomOscillateOn;
+    [Tooltip("Example: 3 is one third change, higher value, less probability")]
+    [SerializeField] private int randomProbabilityDivisor;
+
     private Vector3 outlineXInitialLocation;
     private float oscillateXTimer;
     private float isOscillateXSwitchDir;
@@ -39,6 +44,10 @@ public class Script_ImageDistorterController : MonoBehaviour
     private Script_CanvasAdjuster canvasAdjusterY;
 
     public bool SmearForceOn { get; set; }
+    public float OscillateXTime { get => oscillateXTime; }
+    public float OscillateXMagnitude { get => oscillateXMagnitude; }
+    public float OscillateYTime { get => oscillateYTime; }
+    public float OscillateYMagnitude { get => oscillateYMagnitude; }
     
     void Awake()
     {
@@ -59,6 +68,9 @@ public class Script_ImageDistorterController : MonoBehaviour
     // Do calcs in LateUpdate in case canvases need to be adjusted beforehand.
     void LateUpdate()
     {
+        if (isRandomOscillateOn)
+            HandleOscillateSwitch();
+        
         if (oscillateXOn)
             HandleOscillateX();
         
@@ -74,6 +86,8 @@ public class Script_ImageDistorterController : MonoBehaviour
 
     /// <summary>
     /// Will oscillate in +X direction once, then -X direction twice to give staticy effect.
+    /// The oscillation works by moving incrementally up to the X mag. Then back to almost center
+    /// (center + 1 frame of movement)
     /// </summary>
     private void HandleOscillateX()
     {
@@ -178,6 +192,38 @@ public class Script_ImageDistorterController : MonoBehaviour
         }        
     }
 
+    public void SwitchSettings(Vector3 xProps, Vector3 yProps)
+    {
+        oscillateXTime = xProps.x;
+        oscillateXMagnitude = xProps.y;
+        oscillateYTime = yProps.x;
+        oscillateYMagnitude = yProps.y;
+    }
+
+    /// <summary>
+    /// When the Image has moved to one extreme (e.g. all the way to the right) it will
+    /// do the probability test to switch directions.
+    /// </summary>
+    private void HandleOscillateSwitch()
+    {
+        if (oscillateXOn && oscillateXTimer == 0)
+        {
+            if (UnityEngine.Random.Range(0, randomProbabilityDivisor) == 0)
+            {
+                oscillateXOn = false;
+                oscillateYOn = true;
+            }
+        }
+        else if (oscillateYOn && oscillateYTimer == 0)
+        {
+            if (UnityEngine.Random.Range(0, randomProbabilityDivisor) == 0)
+            {
+                oscillateXOn = true;
+                oscillateYOn = false;
+            }
+        }
+    }
+
     // ------------------------------------------------------------------
     // Timeline Signals
     
@@ -185,7 +231,6 @@ public class Script_ImageDistorterController : MonoBehaviour
     {
         SmearForceOn = true;
     }
-
     // ------------------------------------------------------------------
 
     private void SetOutlines()
