@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-22 00:12:26
+// Last created by Dialogue Exporter at 2022-10-22 20:30:37
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3486,12 +3486,11 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     "eileens-room_eileen_psychic_ellenia-hurt",
     new Model_Languages
     {
-        speaker = "{11}",
+        speaker = "{0}",
         EN = new string[]
         {
-                @"It’s fate.",
-                @"There’s really no use.",
-                @"I guess no one can really escape it.",
+                @"She seems to be in a deep sleep...",
+                @"How long has she been like this for?",
         },
         
     }

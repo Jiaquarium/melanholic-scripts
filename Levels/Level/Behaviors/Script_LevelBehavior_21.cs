@@ -31,6 +31,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     
     [SerializeField] private Script_DemonNPC Eileen;
     [SerializeField] private Script_DemonNPC EileenElleniaHurt;
+    [SerializeField] private Script_Bed EileensBed;
     
     /// <summary>
     /// This room uses a global BgThemePlayer to not be too repetitive when entering / exiting.
@@ -253,6 +254,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         if (LB26.isCurrentPuzzleComplete)
         {
             HandleEileenDefault(isPuzzleDone: true);
+            EileensBed.SwitchToBedIsOccupied(isOccupied: false);
         }
         else
         {
@@ -269,12 +271,20 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             // Eileen Ellenia Hurt Event Cycle.
             if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
             {
-                HandleEileenWeekend(Script_EventCycleManager.Control.IsElleniaHurt());
+                var isElleniaHurt = Script_EventCycleManager.Control.IsElleniaHurt();
+                
+                HandleEileenWeekend(isElleniaHurt);
+                EileensBed.SwitchToBedIsOccupied(isOccupied: isElleniaHurt);
             }
+            else
+                EileensBed.SwitchToBedIsOccupied(isOccupied: false);
         }
         
         isInitialize = false;
 
+        /// <summary>
+        /// After Weekend Cursed Time, Eileen should be sleeping.
+        /// </summary>
         void HandleEileenWeekend(bool isElleniaHurt)
         {
             Eileen.gameObject.SetActive(!isElleniaHurt);
