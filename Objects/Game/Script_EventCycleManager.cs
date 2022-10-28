@@ -97,7 +97,7 @@ public class Script_EventCycleManager : MonoBehaviour
     // ------------------------------------------------------------------
     // Weekend Cycle Event Conditions
     
-    // 5:10-5:35 Ids in Rock Garden
+    // 5:30-5:44:59 Ids in Rock Garden
     public bool IsIdsInSanctuary() => game.RunCycle == Script_RunsManager.Cycle.Weekend
         && clockManager.ClockTime >= Script_Clock.R2CursedTime
         && clockManager.ClockTime < Script_Clock.R2IdsDeadTime;

@@ -289,7 +289,7 @@ public class Script_DialogueManager : MonoBehaviour
                     StartDialogueWithFullArt();
                 }
                 else
-                    StartDialogue(currentNode.data.dialogue, type ?? currentNode.data.type, SFXOn);
+                    StartDialogueNoFullArt();
 
                 return;
             }
@@ -298,19 +298,41 @@ public class Script_DialogueManager : MonoBehaviour
         }
         else
         {
-            StartDialogue(currentNode.data.dialogue, type ?? currentNode.data.type, SFXOn);
+            StartDialogueNoFullArt();
         }
 
+        // Note: When starting dialogue with FA, need to set Player state synchronously (as is the case in StartDialogue);
+        // otherwise, Player can still move away as FA fades in.
         void StartDialogueWithFullArt()
         {
             Dev_Logger.Debug("Fading in new full art");
+            string currentType = type ?? currentNode.data.type;
+            HandlePlayerState(currentType);
+            
             fullArtManager.ShowFullArt(
                 currentNode.data.fullArt,
                 currentNode.data.fadeIn, () => {
-                    StartDialogue(currentNode.data.dialogue, type ?? currentNode.data.type, SFXOn);
+                    StartDialogue(currentNode.data.dialogue, currentType, SFXOn);
                 },
                 Script_FullArtManager.FullArtState.DialogueManager
             );
+        }
+
+        void StartDialogueNoFullArt()
+        {
+            string currentType = type ?? currentNode.data.type;
+            HandlePlayerState(currentType);
+
+            StartDialogue(currentNode.data.dialogue, currentType, SFXOn);
+        }
+
+        // This tells dialogue continuation how to continue.
+        // For Item types, player will be in picking-up state, which
+        // follows a different dialogue pattern.
+        void HandlePlayerState(string currentType)
+        {
+            if (currentType != Const_DialogueTypes.Type.Item)
+                Script_Game.Game.GetPlayer().SetIsTalking();
         }
     }
 
@@ -561,12 +583,6 @@ public class Script_DialogueManager : MonoBehaviour
         else
             isSilentTyping = false;
 
-        // This tells dialogue continuation how to continue.
-        // For Item types, player will be in picking-up state, which
-        // follows a different dialogue pattern.
-        if (type != Const_DialogueTypes.Type.Item)
-            Script_Game.Game.GetPlayer().SetIsTalking();
-        
         ShowDialogue();
 
         Dev_Logger.Debug("Fade In dialogue canvas");

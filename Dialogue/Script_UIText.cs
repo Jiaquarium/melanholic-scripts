@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-09-28 21:44:11
+// Last created by UI Exporter at 2022-10-24 22:03:04
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1003,7 +1003,15 @@ public class Script_UIText
     "notes_ids_leave-me",
     new Model_LanguagesUI
     {
-        EN = @"Need to be alone.<br><br>Went to the {87} at {93}<br><br>Don’t worry, coming back at {94}"
+        EN = @"At half past five I
+
+Saw him at the Fields of Sin.
+
+I already knew
+
+That at fifteen before dawn
+
+I would hide these tears with blood."
     }
 },
 // ------------------------------------------------------------------

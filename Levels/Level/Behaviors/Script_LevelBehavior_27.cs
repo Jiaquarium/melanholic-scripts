@@ -89,6 +89,8 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
 
         IEnumerator WaitToGivePsychicDuck()
         {
+            game.ChangeStateCutScene();
+            
             yield return new WaitForSeconds(waitToGivePsychicDuckTime);
 
             game.HandleItemReceive(PsychicDuck);

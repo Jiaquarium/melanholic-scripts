@@ -15,7 +15,8 @@ using UnityEditor;
 /// Uses MoveSets for approaching player
 /// 
 /// Events:
-/// Ids should only be here on Sunday
+/// 5:30 - 5:44:59: Ids in Sanctuary
+/// 5:45 and later: Ids dead
 /// 
 /// Audio Tests:
 /// - Seamless BGM when going from LB9 to LB10

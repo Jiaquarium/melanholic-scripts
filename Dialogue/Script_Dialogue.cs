@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-22 20:30:37
+// Last created by Dialogue Exporter at 2022-10-24 22:01:10
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2237,7 +2237,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"I could spend all my nights looking, and what if I <b>still</b> never find it.",
                 @"What kind of a life is that?",
         },
-        choiceText = "No, it’s nothing",
+        choiceText = "No, it’s nothing.",
         
     }
 },
@@ -5462,7 +5462,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Well, thanks for listening, I’ll probably head back to my room now.",
+                @"Well, thanks for listening, I’ll probably be heading back sooner or later.",
                 @"Just give me a sec.",
         },
         

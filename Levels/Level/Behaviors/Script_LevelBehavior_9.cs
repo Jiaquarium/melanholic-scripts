@@ -40,8 +40,13 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
 
         if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
         {
+            OnCursedTimeFadeOutSpeaker();
+        }
+
+        void OnCursedTimeFadeOutSpeaker()
+        {
             var eventCycleManager = Script_EventCycleManager.Control;
-            
+                
             if (
                 speaker != null
                 && speaker.gameObject.activeInHierarchy
@@ -78,9 +83,10 @@ public class Script_LevelBehavior_9 : Script_LevelBehavior
     public override void Setup()
     {
         if (!didFadeOutSpeaker)
+        {
             HandleSpeakerRegen();
-        
-        HandleSpeaker();
+            HandleSpeaker();
+        }
 
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
         {
