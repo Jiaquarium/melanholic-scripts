@@ -75,6 +75,7 @@ public class Script_TransitionManager : MonoBehaviour
     // Should completely fade out by the Ending Label (4.5s)
     [SerializeField] private float fadeOutMainMelodyTime;
     [SerializeField] private float fadeOutEndingTime;
+    [SerializeField] private float fadeOceanBgmBackTime;
     [SerializeField] private Script_CanvasGroupController endingsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController goodEndingCanvasGroup;
     [SerializeField] private Script_CanvasGroupController trueEndingCanvasGroup;
@@ -441,10 +442,15 @@ public class Script_TransitionManager : MonoBehaviour
     }
 
     // Called from Ending Timeline, so the The End screen just has Ocean Vibes.
-    public void FadeOutEndingMelody()
+    public void TrueEndingFadeOutEndingMelody()
     {
         var bgm = Script_BackgroundMusicManager.Control;
         bgm.FadeOut(bgm.Stop, fadeOutMainMelodyTime, Const_AudioMixerParams.ExposedBGVolume);
+    }
+
+    public void RestartOceanBgThemePlayer()
+    {
+        oceanBgThemePlayer.FadeInPlay(fadeTime: fadeOceanBgmBackTime);
     }
 
     // After played proper ending cut scene.
@@ -486,6 +492,33 @@ public class Script_TransitionManager : MonoBehaviour
         }
     }
 
+    public void GoodEndingFadeOutBackToMainMenu()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        
+        // Fade out Ocean SFX
+        if (oceanBgThemePlayer?.gameObject.activeInHierarchy ?? false)
+            oceanBgThemePlayer.FadeOutStop(null, fadeOutEndingTime);
+
+        // Ensure BGM is Stopped
+        bgm.Stop();        
+
+        // Fade Out to black
+        TimelineFadeIn(fadeOutEndingTime, () => {
+            goodEndingCanvasGroup.gameObject.SetActive(false);
+            trueEndingCanvasGroup.gameObject.SetActive(false);
+
+            StartCoroutine(NextFrameToTitleScreen());
+        }, isOver: true);
+        
+        IEnumerator NextFrameToTitleScreen()
+        {
+            yield return null;
+            
+            ToTitleScreen();
+        }   
+    }
+
     // Sealing Timeline
     public void PlayTheSealingBgm()
     {
@@ -506,6 +539,11 @@ public class Script_TransitionManager : MonoBehaviour
 
     // ------------------------------------------------------------------
 
+    public void FadeOutOceanBgm(float t)
+    {
+        oceanBgThemePlayer.FadeOutStop(fadeTime: t);
+    }
+    
     public void FadeInRestartPrompt()
     {
         Dev_Logger.Debug("Show prompt to player on how they would like to restart");

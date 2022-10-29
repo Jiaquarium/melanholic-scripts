@@ -20,10 +20,20 @@ public class Script_ImageDistorterController : MonoBehaviour
     [SerializeField] private bool smearOn;
     [SerializeField] private float smearTime;
 
+    [Space]
+    [Header("Randomizer")]
     [Tooltip("Turn on to randomize oscillating X and Y directions")]
     [SerializeField] private bool isRandomOscillateOn;
     [Tooltip("Example: 3 is one third change, higher value, less probability")]
     [SerializeField] private int randomProbabilityDivisor;
+    [Space]
+    [Header("Interval")]
+    [SerializeField] private bool isInterval;
+    [SerializeField] private float intervalDisabledTime;
+    [SerializeField] private float intervalActiveTime;
+    [SerializeField] private List<Script_TMProRandomizer> TMProRandomizers;
+    private float intervalTimer;
+    private bool isActiveInterval;
 
     private Vector3 outlineXInitialLocation;
     private float oscillateXTimer;
@@ -68,6 +78,9 @@ public class Script_ImageDistorterController : MonoBehaviour
     // Do calcs in LateUpdate in case canvases need to be adjusted beforehand.
     void LateUpdate()
     {
+        if (isInterval && HandleIntervalDisable())
+            return;
+        
         if (isRandomOscillateOn)
             HandleOscillateSwitch();
         
@@ -224,6 +237,42 @@ public class Script_ImageDistorterController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns true if currently this distorter should be disabled.
+    /// </summary>
+    private bool HandleIntervalDisable()
+    {
+        intervalTimer -= Time.unscaledDeltaTime;
+        
+        if (intervalTimer <= 0f)
+        {
+            intervalTimer = 0f;
+            isActiveInterval = !isActiveInterval;
+
+            if (isActiveInterval)
+            {
+                // Handle setting outlines active for an active interval
+                OutlinesInitialState();
+                intervalTimer = intervalActiveTime;
+
+                if (TMProRandomizers.Count > 0)
+                    TMProRandomizers.ForEach(randomizer => randomizer.enabled = true);
+            }
+            // if last wasn't disabled, then isIntervalDisabled set to true, disable outlines,
+            else
+            {
+                outlineX.gameObject.SetActive(false);
+                outlineY.gameObject.SetActive(false);
+                intervalTimer = intervalDisabledTime;
+
+                if (TMProRandomizers.Count > 0)
+                    TMProRandomizers.ForEach(randomizer => randomizer.enabled = false);
+            }
+        }
+        
+        return !isActiveInterval;
+    }
+
     // ------------------------------------------------------------------
     // Timeline Signals
     
@@ -245,7 +294,7 @@ public class Script_ImageDistorterController : MonoBehaviour
         outlineY.rectTransform.anchoredPosition = outlineYInitialLocation;
     }
     
-    private void InitialState()
+    private void OutlinesInitialState()
     {
         isOscillateXSwitchDir = 1f;
         oscillateXCount = 0;
@@ -269,5 +318,13 @@ public class Script_ImageDistorterController : MonoBehaviour
         SmearForceOn = false;
 
         SetOutlines();
+    }
+    
+    private void InitialState()
+    {
+        OutlinesInitialState();
+
+        intervalTimer = 0f;
+        isActiveInterval = false;
     }
 }

@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-10-24 22:03:04
+// Last created by UI Exporter at 2022-10-29 01:16:49
 
 using System.Collections;
 using System.Collections.Generic;
@@ -318,7 +318,42 @@ public class Script_UIText
     "good-ending_the-end_type",
     new Model_LanguagesUI
     {
-        EN = @"『 G̸̟͑O̶̯̒O̵̦͑D̷͍̄ ̷̙̂Ḛ̶̎N̵̘̆D̵͍͑Ì̶̼N̸͗ͅǴ̸͔ 』"
+        EN = @"Ğ̶Ŏ̶Ø̷Ð̸ ̷Ę̸Ň̸Ð̷Î̸Ň̸Ĝ̷"
+    }
+},
+{
+    "good-ending_the-end_type1",
+    new Model_LanguagesUI
+    {
+        EN = @"I TRUSTED YOU"
+    }
+},
+{
+    "good-ending_the-end_type_zalgo0",
+    new Model_LanguagesUI
+    {
+        EN = @"G̸̟͑O̶̯̒O̵̦͑D̷͍̄ ̷̙̂Ḛ̶̎N̵̘̆D̵͍͑Ì̶̼N̸͗ͅǴ̸͔"
+    }
+},
+{
+    "good-ending_the-end_type_zalgo1",
+    new Model_LanguagesUI
+    {
+        EN = @"G̶̲͙͊̌O̵̺̼̒̉O̴͈͒̾D̴̲͉̈ ̷̨͇̈́̍E̷͔̅̊N̵̯̈́Ḏ̷̠̅̓Ĩ̶̱N̸̛̙G̸̹̞͑̂"
+    }
+},
+{
+    "good-ending_the-end_type_zalgo2",
+    new Model_LanguagesUI
+    {
+        EN = @"G̵̻͊͝Ǫ̸̀̒Ó̷̪̍ͅD̵̥̰͌ ̸̖̹̈E̴̜̿N̶̥̐̚D̶̦̍Ȋ̵͕̆N̷̜̈G̸̡̘͋̌"
+    }
+},
+{
+    "good-ending_the-end_type_zalgo3",
+    new Model_LanguagesUI
+    {
+        EN = @"G̶̞̏O̵͇̒͠O̵̼̼͛͌D̵̥̏ ̸̠͌E̶̡̕N̵͓̾D̵̳̖͒I̴̥͒ͅǸ̷̫͝Ğ̷͉̻"
     }
 },
 {
@@ -751,21 +786,21 @@ public class Script_UIText
     "credits_playtesters_name5",
     new Model_LanguagesUI
     {
-        EN = @"Moe"
+        EN = @"Lynette"
     }
 },
 {
     "credits_playtesters_name6",
     new Model_LanguagesUI
     {
-        EN = @"Nathan"
+        EN = @"Melos"
     }
 },
 {
     "credits_playtesters_name7",
     new Model_LanguagesUI
     {
-        EN = @"Randy"
+        EN = @"Moe"
     }
 },
 {
@@ -779,28 +814,28 @@ public class Script_UIText
     "credits_playtesters_name8",
     new Model_LanguagesUI
     {
-        EN = @"Stephen"
+        EN = @"Nathan"
     }
 },
 {
     "credits_playtesters_name9",
     new Model_LanguagesUI
     {
-        EN = @"Steven"
+        EN = @"Randy"
     }
 },
 {
     "credits_playtesters_name10",
     new Model_LanguagesUI
     {
-        EN = @"Tedmund"
+        EN = @"Stephen"
     }
 },
 {
     "credits_playtesters_name11",
     new Model_LanguagesUI
     {
-        EN = @"Tim"
+        EN = @"Steven"
     }
 },
 {
@@ -814,21 +849,21 @@ public class Script_UIText
     "credits_playtesters_name12",
     new Model_LanguagesUI
     {
-        EN = @"???"
+        EN = @"Tedmund"
     }
 },
 {
     "credits_playtesters_name13",
     new Model_LanguagesUI
     {
-        EN = @"???"
+        EN = @"Tim"
     }
 },
 {
     "credits_thank-you_title",
     new Model_LanguagesUI
     {
-        EN = @"THANK YOU FOR PLAYING"
+        EN = @"And a very special thanks to you."
     }
 },
 {
@@ -842,7 +877,7 @@ public class Script_UIText
     "credits_thank-you_text1",
     new Model_LanguagesUI
     {
-        EN = @"To the shiteater inside all of us."
+        EN = @"“There’s a shiteater in all of us.”"
     }
 },
 // ------------------------------------------------------------------
@@ -1988,25 +2023,11 @@ Jia"
     "faceoff_ren-myne_quest0_block0_1",
     new Model_LanguagesUI
     {
-        EN = @"{0}, allow me to be blunt..."
+        EN = @"{0}, I’m only doing this because it’s in <i>our</i> best interest."
     }
 },
 {
     "faceoff_ren-myne_quest0_block0_2",
-    new Model_LanguagesUI
-    {
-        EN = @"You’re poking your nose around where it doesn’t belong."
-    }
-},
-{
-    "faceoff_ren-myne_quest0_block1_0",
-    new Model_LanguagesUI
-    {
-        EN = @"You know, I’m doing this because it’s in <i>our</i> best interest."
-    }
-},
-{
-    "faceoff_ren-myne_quest0_block1_1",
     new Model_LanguagesUI
     {
         EN = @"So don’t you go around acting like a saint."
@@ -2030,7 +2051,7 @@ Jia"
     "faceoff_ren-myne_quest0_block2_2",
     new Model_LanguagesUI
     {
-        EN = @"<b>Including yourself.</b>"
+        EN = @"Including yourself."
     }
 },
 {
@@ -2058,7 +2079,7 @@ Jia"
     "faceoff_ren-myne_quest0_block3_3",
     new Model_LanguagesUI
     {
-        EN = @"<b>It’s the same as me.</b>"
+        EN = @"It’s the same as me."
     }
 },
 {
@@ -2072,21 +2093,21 @@ Jia"
     "faceoff_ren-myne_quest0_block4_1",
     new Model_LanguagesUI
     {
-        EN = @"<b>Without me, there is no you.</b>"
+        EN = @"Without me, there is no you."
     }
 },
 {
     "faceoff_ren-myne_quest0_block4_2",
     new Model_LanguagesUI
     {
-        EN = @"I brought you here for one purpose| – to assist| <i>u|s</i>| – but..."
+        EN = @"You were summoned here for one purpose| – to assist| <i>u|s</i>|,"
     }
 },
 {
     "faceoff_ren-myne_quest0_block4_3",
     new Model_LanguagesUI
     {
-        EN = @"<b>You are well past expired now, dear.</b>"
+        EN = @"But you are well past expired now, dear."
     }
 },
 {

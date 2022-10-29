@@ -101,6 +101,8 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject endings;
     [SerializeField] private CanvasGroup fullArtCanvasGroup;
+    [SerializeField] private CanvasGroup menuCanvasGroup;
+    [SerializeField] private List<CanvasGroup> faceOffCanvasGroups;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -374,6 +376,20 @@ public class Dev_GameHelper : MonoBehaviour
                 Debug.Log($"<color=red>FULL CANVASGROUP should be ACTIVE</color>");
                 fullArtCanvasGroup.gameObject.SetActive(true);
             }
+
+            if (menuCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>MENU CANVASGROUP should be INACTIVE</color>");
+                menuCanvasGroup.gameObject.SetActive(false);
+            }
+
+            faceOffCanvasGroups.ForEach(faceOffCanvasGroup => {
+                if (faceOffCanvasGroup.gameObject.activeInHierarchy)
+                {
+                    Debug.Log($"<color=red>{faceOffCanvasGroup.name} should be INACTIVE</color>");
+                    faceOffCanvasGroup.gameObject.SetActive(false);
+                }
+            });
         }
     }
 

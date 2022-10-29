@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-24 22:01:10
+// Last created by Dialogue Exporter at 2022-10-29 02:49:46
 
 using System.Collections;
 using System.Collections.Generic;
@@ -706,6 +706,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Someone left drawings inside arranged in a particular order.",
+        },
+        
+    }
+},
+{
+    "hotel-lobby_CCTV-disabled_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"The feeling of being watched is finally gone.",
         },
         
     }
@@ -6159,6 +6171,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"(. ﾟーﾟ)",
+        },
+        
+    }
+},
+{
+    "xxx-world_flower-E_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"An innocent kind of flower.",
         },
         
     }

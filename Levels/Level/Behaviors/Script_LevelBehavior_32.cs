@@ -49,9 +49,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode[] frontDoorNodes;
 
     [SerializeField] private Script_InteractableObjectInput CCTVAdminComputer;
+    [SerializeField] private Script_InteractableObjectText CCTVAdminComputerDisabled;
 
     [SerializeField] private Script_InteractableObject hotelFrontDoor;
     [SerializeField] private Script_InteractableObject CCTVCamera;
+    [SerializeField] private GameObject outsideLight;
 
     // ------------------------------------------------------------------
     // Dynamic Environment
@@ -337,6 +339,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         game.GetPlayer().FaceDirection(Directions.Down);
     }
 
+    // disableSurveillanceNode, need to force cooldown so won't accidentally continue dialogue
+    public void OnDisabledSurveillanceDialogueDone()
+    {
+        game.ChangeStateInteract();
+        CCTVAdminComputerDisabled.StartDialogueCoolDown();
+    }
+
     // ------------------------------------------------------------------
     // InteractableObject UnityEvents
     public void OnTryToExitFrontDoor()
@@ -480,7 +489,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     private void HandleEndingExitState(bool isOpen)
     {
         hotelFrontDoor.gameObject.SetActive(!isOpen);
+        outsideLight.gameObject.SetActive(isOpen);
         CCTVCamera.gameObject.SetActive(!isOpen);
+
+        CCTVAdminComputer.gameObject.SetActive(!isOpen);
+        CCTVAdminComputerDisabled.gameObject.SetActive(isOpen);
         
         // Remove barrier to allow player to step on Ending Cut Scene Trigger.
         invisibleBarrier.gameObject.SetActive(!isOpen);

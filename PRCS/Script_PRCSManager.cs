@@ -406,9 +406,14 @@ public class Script_PRCSManager : MonoBehaviour
             
             game.TeleportToGrandMirrorBackgroundR2();
 
+            // On Initiate Level, Game will call transitionManager.InitialStateExcludingLevelFader()
+            // which will reinit the Timeline Black Under Dialogue, so need to recover that canvas state.
+            Script_TransitionManager transitionManager = Script_TransitionManager.Control;
+            transitionManager.TimelineBlackScreen();
+
             yield return new WaitForSeconds(waitTimeAfterMyMaskTeleport);
 
-            Script_TransitionManager.Control.TimelineFadeOut(
+            transitionManager.TimelineFadeOut(
                 Script_TransitionManager.FadeTimeSlow,
                 () => {
                     glitchManager.BlendTo(0f, glitchFadeOutTime);

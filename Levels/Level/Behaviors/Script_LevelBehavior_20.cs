@@ -109,20 +109,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
 
         SetupCycleConditions();
-
-        if (
-            game.IsEileensMindQuestDone
-            && game.RunCycle == Script_RunsManager.Cycle.Weekday
-        )
-        {
-            Script_GlitchFXManager.Control.SetBlend(1f);
-            isGlitched = true;
-            
-            // Only change Bgm to "disturbing" when actually in this room, not from outside cut scene
-            // (e.g. Grand Mirror Cut Scene Timeline)
-            if (game.levelBehavior == this)
-                Script_BackgroundMusicManager.Control.Play(isGlitchedBGM);
-        }
     }
 
     protected override void OnDisable()
@@ -372,7 +358,24 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         }
         else
         {
-            SetDynamicSpectersActive(true);
+            // Handle glitch state where after returning to Ballroom after completing spike room
+            // forbode something ominous.
+            if (game.IsEileensMindQuestDone)
+            {
+                SetDynamicSpectersActive(false);
+                
+                Script_GlitchFXManager.Control.SetBlend(1f);
+                isGlitched = true;
+                
+                // Only change Bgm to "disturbing" when actually in this room, not from outside cut scene
+                // (e.g. Grand Mirror Cut Scene Timeline)
+                if (game.levelBehavior == this)
+                    Script_BackgroundMusicManager.Control.Play(isGlitchedBGM);
+            }
+            else
+            {
+                SetDynamicSpectersActive(true);
+            }
             
             // Ignore setting entrances to disabled if we're in Grand Mirror room, meaning
             // we're in the middle of the World Painting Reveal cut scene.
