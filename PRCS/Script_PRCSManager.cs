@@ -218,7 +218,7 @@ public class Script_PRCSManager : MonoBehaviour
                 break;
             
             case CustomTypes.IdsDead:
-                HidePRCS(IdsDeadPRCS, FadeSpeeds.Slow, cb);
+                HidePRCS(IdsDeadPRCS, FadeSpeeds.None, cb);
                 break;
                 
             default:

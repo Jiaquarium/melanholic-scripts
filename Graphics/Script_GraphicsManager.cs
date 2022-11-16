@@ -15,6 +15,7 @@ public class Script_GraphicsManager : MonoBehaviour
     /// </summary>
     public static Script_GraphicsManager Control;
     public const int AssetsPPU = 36;
+    public const int CamCanvasPlaneDistance = 20;
     
     [SerializeField] private float TargetOrthoSize = 7.5f;
 

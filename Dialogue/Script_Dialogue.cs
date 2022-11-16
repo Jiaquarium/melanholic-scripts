@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-10-29 02:49:46
+// Last created by Dialogue Exporter at 2022-11-15 19:32:24
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2084,12 +2084,16 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Alrightty, well where was I then...",
-                @"Oh right, y’know down here I’ve had a lot of time to think.",
-                @"So really what does it matter if I can never find whatever <i>I’ve lost</i>.",
-                @"I’m starting to think that <i>thing</i> was actually just a <i>part</i> of myself.",
-                @"But if I can’t even remember that part of myself, what’s the point really?",
-                @"Just gotta look on the bright side of things I guess.",
+                @"Well y’know... I’ve been doing some thinking lately...",
+                @"You remember my theory, right?",
+                @"Long story short I really thought I was part of <i>you</i>.",
+                @"That you’re my true owner...",
+                @"But no, it can’t be you.",
+                @"Or I wouldn’t still be stranded here...",
+                @"See every time, I get so close!",
+                @"But then it feels like I start over at nothing.",
+                @"That’s right, kiddo, zero. Zilch.",
+                @"What’s the point of all this anymore?",
         },
         choiceText = "No, it’s nothing.",
         
@@ -2243,11 +2247,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Y’know down here I’ve had a lot of time to think.",
-                @"So really what does it matter if I can’t remember what <i>I’ve lost</i>.",
-                @"Hey, maybe that’s a sign that I’ve found it already.",
-                @"It’s time I just gotta tell myself, stop looking. No one else can do it for me.",
-                @"I could spend all my nights looking, and what if I <b>still</b> never find it.",
-                @"What kind of a life is that?",
+                @"Maybe it’s time I call it quits. Maybe I gotta just bite down real hard and tell myself, |s|t|o|p.",
+                @"No one else can do it for me.",
+                @"I could spend all my nights looking, and what if I <b><i>still</i></b> never find it.",
+                @"Yep, that’d be something huh?",
         },
         choiceText = "No, it’s nothing.",
         

@@ -21,6 +21,7 @@ public class Script_GlitchFXManager : MonoBehaviour
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings lowSettings;
 
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings UIDayNotificationSettings;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings MCDrowningSettings;
     
     [SerializeField] private GlitchImageEffect glitchFeature;
 
@@ -88,6 +89,18 @@ public class Script_GlitchFXManager : MonoBehaviour
             SetBlend(lastBlend);
         else
             UpdateGlitchFXState();   
+    }
+
+    public void SetMCDrowning(bool useCurrentBlend = false)
+    {
+        float lastBlend = currentSettings.blend;
+        
+        SaveSettings(currentSettings, MCDrowningSettings);
+        
+        if (useCurrentBlend)
+            SetBlend(lastBlend);
+        else
+            UpdateGlitchFXState();
     }
 
     private void UpdateGlitchFXState()

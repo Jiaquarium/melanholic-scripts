@@ -194,9 +194,19 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     [SerializeField] private Script_DialogueNode[] IdsNRoomWeekendDay2TalkedDialogue;
     [SerializeField] private Script_DialogueNode weekendDay2RetalkNRoomDialogue;
+
+    // ------------------------------------------------------------------------------------
+    // Ids Dead
+    [Header("Ids Dead PRCS")]
+    [SerializeField] private float waitBeforeStartIdsDeadPRCSTime;
+    [SerializeField] private float blackScreenAfterMCDrownCutSceneTime;
+    [SerializeField] private Script_Trigger IdsDeadTrigger;
+    [SerializeField] private Script_Trigger SlowWalkTrigger;
+
+    // ------------------------------------------------------------------------------------
     
     private bool didIdsLeaveWeekend;
-    private bool isIdsDeadPRCSDone;
+    private bool didIdsDeadPRCS;
     private bool didInteractPositiveWithIds;
     private bool isWeekendDay2Retalk;
     
@@ -662,28 +672,57 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     // ------------------------------------------------------------------------------------
     // Unity Events
-    public void PlayIdsDeadPRCS()
+    
+    // Slow Walk Trigger
+    public void OnSlowWalkTriggerPlayerEnter()
     {
-        Dev_Logger.Debug("Play Ids dead PRCS");
+        var player = game.GetPlayer();
+        
+        player.IsEmphasizeWalk = true;
+    }
 
-        if (isIdsDeadPRCSDone)
+    // Slow Walk Trigger
+    public void OnSlowWalkTriggerPlayerExit()
+    {
+        var player = game.GetPlayer();
+        
+        player.IsEmphasizeWalk = false;
+    }
+    
+    // Ids Dead Trigger
+    public void OnIdsDeadTrigger()
+    {
+        if (didIdsDeadPRCS)
             return;
         
+        didIdsDeadPRCS = true;
+
+        PlayIdsDeadPRCS();
+
+        IdsDeadTrigger.gameObject.SetActive(false);
+        SlowWalkTrigger.gameObject.SetActive(false);
+        game.GetPlayer().IsEmphasizeWalk = false;
+    }
+    
+    private void PlayIdsDeadPRCS()
+    {
         game.ChangeStateCutScene();
         
         Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
             isOpen: true,
             framing: Script_UIAspectRatioEnforcerFrame.Framing.IdsDead,
-            cb: OnFramingAnimationDone
+            cb: () => StartCoroutine(OnFramingAnimationDone())
         );
         
-        void OnFramingAnimationDone()
+        IEnumerator OnFramingAnimationDone()
         {
-            Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.IdsDead);
-
             Script_BackgroundMusicManager.Control.PauseAll();
-            
             Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+
+            // Wait for Player to register Ids is dead
+            yield return new WaitForSeconds(waitBeforeStartIdsDeadPRCSTime);
+
+            Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.IdsDead);
         }
     }
     
@@ -802,22 +841,38 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // Called from PlayIdsDeadPRCS Timeline.
     public void OnIdsDeadPRCSDone()
     {
-        Script_BackgroundMusicManager.Control.FadeOutMed(() => {
-                Script_BackgroundMusicManager.Control.UnPauseAll();
-                Script_BackgroundMusicManager.Control.FadeInSlow(null, Const_AudioMixerParams.ExposedBGVolume);
-            },
-            Const_AudioMixerParams.ExposedBGVolume
-        );
-        
-        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.IdsDead, () => {
-            isIdsDeadPRCSDone = true;
-            
+        // Put up black screen & stop BGM
+        Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+        StartCoroutine(game.TransitionFadeIn(0, () => {
+
+            // Reset framing instantly (no animation)
             Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
                 isOpen: false,
                 framing: Script_UIAspectRatioEnforcerFrame.Framing.IdsDead,
-                cb: game.ChangeStateInteract
+                isNoAnimation: true
             );
-        });    
+
+            // Close PRCS
+            Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.IdsDead, () => {
+                // Wait in black screen
+                StartCoroutine(WaitToFadeBlackScreenOut());
+            });
+        }));
+
+        // Wait to fade back in BGM & fade out black screen
+        IEnumerator WaitToFadeBlackScreenOut()
+        {
+            yield return new WaitForSeconds(blackScreenAfterMCDrownCutSceneTime);
+
+            float fadeInTime = FadeSpeeds.XSlow.ToFadeTime();
+            
+            Script_BackgroundMusicManager.Control.UnPauseAll();
+            Script_BackgroundMusicManager.Control.FadeIn(null, fadeInTime, Const_AudioMixerParams.ExposedBGVolume);
+
+            StartCoroutine(game.TransitionFadeOut(fadeInTime, () => {
+                game.ChangeStateInteract();
+            }));
+        }
     }
 
     // Final Awakening Timeline
@@ -1297,6 +1352,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     void HandleIdsInRoom()
     {
+        IdsDeadTrigger.gameObject.SetActive(false);
+        SlowWalkTrigger.gameObject.SetActive(false);
+        
         if (game.RunCycle == Script_RunsManager.Cycle.Weekday)
         {
             if (Script_EventCycleManager.Control.IsIdsHome())
@@ -1363,6 +1421,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             
             foreach (Script_Trigger t in triggers)
                 t.gameObject.SetActive(false);
+            
+            if (!didIdsDeadPRCS)
+            {
+                IdsDeadTrigger.gameObject.SetActive(true);
+                SlowWalkTrigger.gameObject.SetActive(true);
+            }
         }
 
         void HandleDDRDone()

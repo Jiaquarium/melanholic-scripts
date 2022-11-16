@@ -22,6 +22,7 @@ public class Script_GoodEndingController : MonoBehaviour
         // Change canvas to Screen Space - Camera
         endingsCanvas.renderMode = RenderMode.ScreenSpaceCamera;
         endingsCanvas.worldCamera = mainCamera;
+        endingsCanvas.planeDistance = Script_GraphicsManager.CamCanvasPlaneDistance;
 
         // Start static high screen FX
         glitchFXManager.SetHigh(useCurrentBlend: true);
