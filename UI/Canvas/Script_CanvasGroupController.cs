@@ -25,7 +25,7 @@ public class Script_CanvasGroupController : MonoBehaviour
     [Tooltip("Enable using a maximum alpha")]
     [SerializeField] bool isUseMaxAlpha;
     [SerializeField] float maxAlpha;
-    
+
     private Coroutine fadeOutCoroutine;
     private Coroutine fadeInCoroutine;
 
@@ -85,7 +85,7 @@ public class Script_CanvasGroupController : MonoBehaviour
         get => MyCanvasGroup.alpha;
         set => MyCanvasGroup.alpha = value;
     }
-    
+
     public virtual void Open()
     {
         CanvasGroup c = GetComponent<CanvasGroup>();

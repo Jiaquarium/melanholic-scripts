@@ -103,6 +103,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private CanvasGroup fullArtCanvasGroup;
     [SerializeField] private CanvasGroup menuCanvasGroup;
     [SerializeField] private List<CanvasGroup> faceOffCanvasGroups;
+    [SerializeField] private CanvasGroup DDRCanvasGroup;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -390,6 +391,12 @@ public class Dev_GameHelper : MonoBehaviour
                     faceOffCanvasGroup.gameObject.SetActive(false);
                 }
             });
+
+            if (DDRCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>{DDRCanvasGroup.name} should be INACTIVE</color>");
+                DDRCanvasGroup.gameObject.SetActive(false);
+            }
         }
     }
 

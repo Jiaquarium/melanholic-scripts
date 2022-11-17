@@ -133,6 +133,11 @@ public class Script_DialogueManager : MonoBehaviour
     private bool isForceUpdateNPCState;
 
     // ------------------------------------------------------------------
+    // Dialogue Box Modifiers
+    
+    [SerializeField] private Script_ImageDistorterController defaultDialogueImageDistorter;
+    
+    // ------------------------------------------------------------------
     // Player Feedback to First Interactions
     [SerializeField] private Script_DialogueNode cantUnderstandReactionNode;
     [SerializeField] private float beforeCantUnderstandReactionWaitTime;
@@ -571,7 +576,7 @@ public class Script_DialogueManager : MonoBehaviour
         SetupCanvases(dialogue, type);
         // Must disable dialogue continuation icon until after fade-ins
         activeCanvas.canvasChild.DisableContinuationIcon();
-        
+
         // Specify silent typing dialogue types
         if (
             type == Const_DialogueTypes.Type.Read
@@ -1121,6 +1126,19 @@ public class Script_DialogueManager : MonoBehaviour
             game.ChangeStateInteract();
         }
     }
+    // ------------------------------------------------------------------
+    // Other Unity Events
+
+    public void TurnOnDefaultDialogueBoxShake()
+    {
+        defaultDialogueImageDistorter.enabled = true;
+    }
+
+    public void TurnOffDefaultDialogueBoxShake()
+    {
+        defaultDialogueImageDistorter.enabled = false;
+    }
+
     // ------------------------------------------------------------------
 
     // actions will be activated after "space" is pressed to move to next dialogue
