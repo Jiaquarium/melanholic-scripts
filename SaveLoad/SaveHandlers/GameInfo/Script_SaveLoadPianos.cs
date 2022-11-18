@@ -22,7 +22,9 @@ public class Script_SaveLoadPianos : MonoBehaviour
     {
         for (int i = 0; i < Script_PianoManager.NumPianos; i++)
         {
-            bool isRemembered = data.pianosStateData != null && data.pianosStateData[i].isRemembered;
+            bool isRemembered = data.pianosStateData != null
+                && i < data.pianosStateData.Length
+                && data.pianosStateData[i].isRemembered;
             pianoManager.Pianos[i].IsRemembered = isRemembered;
         }
     }

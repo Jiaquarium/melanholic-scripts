@@ -65,12 +65,21 @@ public class Script_PuppeteerEffect : Script_StickerEffect
 
     private void StartEffectHold()
     {
-        // Puppet Master will react to this event and set itself as Script_Game.Game.PuppetMaster.
-        Script_PlayerEventsManager.PuppeteerActivate();
+        var game = Script_Game.Game;
+        bool inAOE = true;
         
         player.AnimatorEffectHold = true;
+        
+        // Check AOE for specified Level Behaviors
+        if (game.levelBehavior == game.UrsaSaloonHallwayBehavior)
+            inAOE = game.UrsaSaloonHallwayBehavior.CheckInsidePuppeteerAreaOfEffect();
 
-        if (Script_Game.Game.PuppetMaster == null)
+        // Puppet Master will react to this event and set itself as Script_Game.Game.PuppetMaster.
+        // PuzzlePuppetController reacts to start timeline.
+        if (inAOE)
+            Script_PlayerEventsManager.PuppeteerActivate();
+        
+        if (game.PuppetMaster == null || !inAOE)
             player.SetIsPuppeteerNull();
         else
             player.SetIsPuppeteer();
@@ -80,8 +89,16 @@ public class Script_PuppeteerEffect : Script_StickerEffect
     
     private void StopEffectHold()
     {
+        var game = Script_Game.Game;
+        bool inAOE = true;
+        
+        // Check AOE for specified Level Behaviors
+        if (game.levelBehavior == game.UrsaSaloonHallwayBehavior)
+            inAOE = game.UrsaSaloonHallwayBehavior.CheckInsidePuppeteerAreaOfEffect();
+
         // Puppet Master will react to this and reset Script_Game.Game.Puppeteer.
-        Script_PlayerEventsManager.PuppeteerDeactivate();
+        if (inAOE)
+            Script_PlayerEventsManager.PuppeteerDeactivate();
         
         // If we are coming from the Puppeteer state, we want to wait until the PuppeteerDeactivate
         // Timeline is done before stopping the Player's Effect Hold animation (arms in the air).

@@ -27,4 +27,12 @@ public class Script_PlayerEventsManager : MonoBehaviour
         if (OnPuppeteerDeactivate != null)
             OnPuppeteerDeactivate();
     }
+
+    public delegate void OnPuppeteerSwitchAnimatorDelegate();
+    public static event OnPuppeteerSwitchAnimatorDelegate OnPuppeteerSwitchAnimator;
+    public static void PuppeteerSwitchAnimator()
+    {
+        if (OnPuppeteerSwitchAnimator != null)
+            OnPuppeteerSwitchAnimator();
+    }
 }

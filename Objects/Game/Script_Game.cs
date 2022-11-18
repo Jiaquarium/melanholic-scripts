@@ -62,6 +62,7 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_20 BallroomBehavior;
     public Script_LevelBehavior_21 EileensRoomBehavior;
     public Script_LevelBehavior_22 SaloonBehavior;
+    public Script_LevelBehavior_29 UrsaSaloonHallwayBehavior;
     public Script_LevelBehavior_24 KTVRoom2Behavior;
     public Script_LevelBehavior_25 ElleniasRoomBehavior;
     public Script_LevelBehavior_26 EileensMindBehavior;

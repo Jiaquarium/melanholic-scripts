@@ -297,7 +297,7 @@ public static class Script_Utils
             Script_Names.FlanShort,                     // {17}
             Script_Names.Kelsingor,                     // {18}
             Script_Names.Specters,                      // {19}
-            Script_Names.Aenimal,                       // {20}
+            Script_Names.CatwalkInTheSky,               // {20}
             Script_Names.Sheepluff,                     // {21}
             Script_Names.Sealing,                       // {22}
             Script_Names.Action1, // SPACE              // {23}
@@ -306,7 +306,7 @@ public static class Script_Utils
             Script_Names.InventoryKeyCode,              // {26}
             Script_Names.Escape,                        // {27}
             Script_Names.Skip,                          // {28}
-            Script_Names.Tedmas,                        // {29}
+            Script_Names.UrsaSaloonHallway,             // {29}
             Script_Names.Sieve,                         // {30}
             Script_Names.Master,                        // {31}
             Script_Names.Inventory,                     // {32}

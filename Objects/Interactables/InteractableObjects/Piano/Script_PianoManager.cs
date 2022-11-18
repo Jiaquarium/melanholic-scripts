@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class Script_PianoManager : MonoBehaviour
 {
     public static Script_PianoManager Control;
-    public const int NumPianos = 3;
+    public const int NumPianos = 5;
 
     [SerializeField] private Script_Piano[] pianos = new Script_Piano[NumPianos];
     
-    [SerializeField] Script_CanvasGroupController pianosCanvasGroup;
-    
+    [SerializeField] private Script_CanvasGroupController pianosCanvasGroup;
+    [SerializeField] private Image choicesR1;
+    [SerializeField] private Image choicesR2;
+    [SerializeField] private GameObject choicesR1FirstSelected;
+    [SerializeField] private GameObject choicesR2FirstSelected;
+    [SerializeField] private EventSystem choicesEventSystem;
+
     [SerializeField] Script_Game game;
 
     private AudioSource audioSource;
@@ -39,6 +46,15 @@ public class Script_PianoManager : MonoBehaviour
     {
         if (isActive)
         {
+            bool isR2 = game.RunCycle == Script_RunsManager.Cycle.Weekend;
+
+            choicesR1.gameObject.SetActive(!isR2);
+            choicesR2.gameObject.SetActive(isR2);
+
+            choicesEventSystem.firstSelectedGameObject = isR2
+                ? choicesR2FirstSelected
+                : choicesR1FirstSelected;
+
             pianosCanvasGroup.Open();
         }
         else

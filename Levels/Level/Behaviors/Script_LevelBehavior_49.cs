@@ -9,6 +9,8 @@ using UnityEditor;
 
 public class Script_LevelBehavior_49 : Script_LevelBehavior
 {
+    public const string MapName = Script_Names.CatwalkInTheSky;
+    
     /* =======================================================================
         STATE DATA
     ======================================================================= */

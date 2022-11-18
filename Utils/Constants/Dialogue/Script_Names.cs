@@ -87,7 +87,7 @@ public class Script_Names: MonoBehaviour
     public const string FlanShort                       = "<b>Flan</b>";                        // {17}
     public const string Kelsingor                       = "<b>Kelsingør</b>";                   // {18}
     public const string Specters                        = "<b>Specters</b>";                    // {19}
-    public const string Aenimal                         = "<b>ænimal</b>";                      // {20}
+    public const string CatwalkInTheSky                 = "<b>Catwalk in the Sky</b>";          // {20}
     public const string Sheepluff                       = "<b>Sheepluff</b>";                   // {21}
     public const string Sealing                         = "<b>Sealing</b>";                     // {22}
     public const string Action1                         = "<b><i>SPACE or ENTER</i></b>";       // {23}
@@ -96,7 +96,7 @@ public class Script_Names: MonoBehaviour
     public const string InventoryKeyCode                = "<b><i>I</i></b>";                    // {26}
     public const string Escape                          = "<b><i>ESC</i></b>";                  // {27}
     public const string Skip                            = "<b><i>SPACE or ENTER</i></b>";       // {28}
-    public const string Tedmas                          = "<b>Tedmas</b>";                      // {29}
+    public const string UrsaSaloonHallway               = "<b>Ursa Saloon Hallway</b>";         // {29}
     public const string Sieve                           = "<b>Sieve</b>";                       // {30}
     public const string Master                          = "<b>Master</b>";                      // {31}
     public const string Inventory                       = "<b>Inventory</b>";                   // {32}

@@ -8,6 +8,12 @@ using System;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// The Puppeteer Activate and Deactivate Timeline:
+/// 1. Activate / Deactivate Signal
+/// 2. Switch Animator Signal
+/// 3. Done Signal
+/// </summary>
 public class Script_Puppet : Script_PlayerCopy
 {
     protected enum PuppetStates
@@ -27,12 +33,15 @@ public class Script_Puppet : Script_PlayerCopy
     [SerializeField] private UnityEvent onPuppeteerActivate;
     [SerializeField] private UnityEvent onPuppeteerDeactivate;
 
+    private PuppetStates currentState;
+
     protected override void OnEnable()
     {
         base.OnEnable();
         
         Script_PlayerEventsManager.OnPuppeteerActivate          += OnPuppeteerActivate;
         Script_PlayerEventsManager.OnPuppeteerDeactivate        += OnPuppeteerDeactivate;
+        Script_PlayerEventsManager.OnPuppeteerSwitchAnimator    += OnPuppeteerSwitchAnimator;
         Script_GameEventsManager.OnLevelBeforeDestroy           += OnPuppeteerDeactivate;
     }
 
@@ -42,6 +51,7 @@ public class Script_Puppet : Script_PlayerCopy
         
         Script_PlayerEventsManager.OnPuppeteerActivate          -= OnPuppeteerActivate;
         Script_PlayerEventsManager.OnPuppeteerDeactivate        -= OnPuppeteerDeactivate;
+        Script_PlayerEventsManager.OnPuppeteerSwitchAnimator    -= OnPuppeteerSwitchAnimator;
         Script_GameEventsManager.OnLevelBeforeDestroy           -= OnPuppeteerDeactivate;
     }
 
@@ -131,28 +141,41 @@ public class Script_Puppet : Script_PlayerCopy
 
     protected virtual void OnPuppeteerActivate()
     {
-        // Wait to set active on next frame, so we don't take in the input for the current frame
-        // (e.g. the input for switching to Puppeteer mode) and call PlayerStickerEffect() on same frame.
-        StartCoroutine(WaitNextFrameSwitchState());
-        
-        IEnumerator WaitNextFrameSwitchState()
-        {
-            yield return null;
-            
-            puppetState = PuppetStates.Active;
-            
-            SetAnimatorControllerActive(true);
-
-            onPuppeteerActivate.SafeInvoke();
-        }
+        currentState = PuppetStates.Active;
     }
 
     protected virtual void OnPuppeteerDeactivate()
     {
-        puppetState = PuppetStates.Inactive;
-        SetAnimatorControllerActive(false);
+        currentState = PuppetStates.Inactive;
+    }
 
-        onPuppeteerDeactivate.SafeInvoke();
+    // Reaction to Timeline Signal > Event
+    protected virtual void OnPuppeteerSwitchAnimator()
+    {
+        puppetState = currentState;
+        
+        if (puppetState == PuppetStates.Active)
+            StartCoroutine(WaitNextFrameSwitch(true));
+        else
+            StartCoroutine(WaitNextFrameSwitch(false));
+
+        // To fix bug of unupdated animator state, must wait for next frame
+        // for unknown reason.
+        IEnumerator WaitNextFrameSwitch(bool isActive)
+        {
+            yield return null;
+
+            if (isActive)
+            {
+                SetAnimatorControllerActive(true);
+                onPuppeteerActivate.SafeInvoke();
+            }
+            else
+            {
+                SetAnimatorControllerActive(false);
+                onPuppeteerDeactivate.SafeInvoke();
+            }
+        }
     }
 }
 

@@ -13,6 +13,8 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_29 : Script_LevelBehavior
 {
+    public const string MapName = Script_Names.UrsaSaloonHallway;
+    
     [SerializeField] private Script_PuppetMaster puppetMaster;
     [SerializeField] private Script_Marker puppetMasterSpawn;
 
@@ -28,6 +30,8 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
     
     // Needed to initialize "Player" copy.
     [SerializeField] private Script_LevelGrid levelGrid;
+
+    [SerializeField] private Script_PhysicsBox puppeteerAreaOfEffect;
     
     private Script_DemonNPC MelbaDemonNPC;
     private bool isInitialized = false;
@@ -54,6 +58,22 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
         if (MelbaDemonNPC == null)
             Debug.LogWarning($"PuppetMaster <{puppetMaster}> does not have DemonNPC component");
+    }
+
+    public bool CheckInsidePuppeteerAreaOfEffect()
+    {
+        // Check if Player is within the Physics Box
+        List<Script_Player> players = new List<Script_Player>();
+        
+        puppeteerAreaOfEffect.ExposeBox();
+
+        foreach (Collider col in puppeteerAreaOfEffect.Colliders)
+        {
+            if (col != null && col.transform.GetParentRecursive<Script_Player>() != null)
+                players.Add(col.transform.GetParentRecursive<Script_Player>());
+        }
+
+        return players.Count > 0;
     }
 
     // Only switch if they are different nodes. Maintain the talking state.
@@ -180,6 +200,11 @@ public class Script_LevelBehavior_29Tester : Editor
         if (GUILayout.Button("HandleMelbaFlipX"))
         {
             t.HandleMelbaFlipX();
+        }
+
+        if (GUILayout.Button("CheckInsidePuppeteerAreaOfEffect"))
+        {
+            t.CheckInsidePuppeteerAreaOfEffect();
         }
     }
 }
