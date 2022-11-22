@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 /// <summary>
 /// Test Cases for Day Notifications:
@@ -53,7 +55,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     [SerializeField] private Script_InteractableObject hotelFrontDoor;
     [SerializeField] private Script_InteractableObject CCTVCamera;
-    [SerializeField] private GameObject outsideLight;
+    [SerializeField] private GameObject outsideTrueEnding;
+    [SerializeField] private GameObject outsideGoodEnding;
 
     // ------------------------------------------------------------------
     // Dynamic Environment
@@ -69,8 +72,17 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // ------------------------------------------------------------------
     // Endings
     [SerializeField] private Script_Interactable invisibleBarrier;
+    [SerializeField] private float walkingOutTimeScale;
+    
+    // Good Ending
     [SerializeField] private Script_DoorExit goodEndingExitPrompter;
     [SerializeField] private Script_DialogueNode goodEndingPrompt;
+
+    // True Ending
+    [SerializeField] private Script_DoorExit trueEndingExitPrompter;
+    [SerializeField] private Script_DialogueNode trueEndingPrompt;
+    [SerializeField] private Script_DemonNPC trueEndingIds;
+    [SerializeField] private TimelineAsset playerWalkOutTimeline;
     
     // ------------------------------------------------------------------
     // Day Notifications
@@ -328,11 +340,35 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);        
     }
 
+    // Good Ending Prompt > Yes
     public void OnGoodEndingPromptConfirm()
     {
-        game.GetPlayer().TimelineMoveUp();
+        // Bind Player to Timeline
+        Script_Player player = Script_Game.Game.GetPlayer();
+        PlayableDirector playerPlayableDirector = player.Director;
+        var playerObjsToBind = new List<GameObject>();
+        
+        // Player Transform Track
+        playerObjsToBind.Add(player.gameObject);
+        // Player Signal Receiver Track
+        playerObjsToBind.Add(player.gameObject);
+
+        playerPlayableDirector.BindTimelineTracks(playerWalkOutTimeline, playerObjsToBind);
+        
+        // Player walks out timeline & call EndingCutScene to fade out with Black
+        Time.timeScale = walkingOutTimeScale;
+        playerPlayableDirector.Play(playerWalkOutTimeline);
+        game.EndingCutScene(Script_TransitionManager.Endings.Good);
     }
 
+    // True Ending Prompt > Yes
+    public void OnTrueEndingPromptConfirm()
+    {
+        // Play True Ending Follow Ids Timeline
+        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+    }
+
+    // Good/True Ending Prompt > No
     public void OnGoodEndingPromptCancel()
     {
         game.ChangeStateInteract();
@@ -362,41 +398,18 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         IncrementFrontDoorDialogueIndex();
     }
 
-    public void EndingCutScene()
-    {
-        switch (game.ActiveEnding)
-        {
-            case (Script_TransitionManager.Endings.Good):
-                Dev_Logger.Debug("@@@@@@@@@ GOOD ENDING, remove door @@@@@@@@@");
-
-                game.EndingCutScene(Script_TransitionManager.Endings.Good);
-
-                break;
-            
-            case (Script_TransitionManager.Endings.True):
-                Dev_Logger.Debug("@@@@@@@@@ TRUE ENDING, remove door @@@@@@@@@");
-
-                game.EndingCutScene(Script_TransitionManager.Endings.True);
-
-                break;
-
-            case (Script_TransitionManager.Endings.Dream):
-                Dev_Logger.Debug("@@@@@@@@@ DREAM ENDING, remove door @@@@@@@@@");
-
-                game.EndingCutScene(Script_TransitionManager.Endings.Dream);
-
-                break;
-
-            default:
-                break;
-        }
-    }
-
     public void GoodEndingExitPrompt()
     {
         game.ChangeStateCutScene();
         game.GetPlayer().FaceDirection(Directions.Up);
         Script_DialogueManager.DialogueManager.StartDialogueNode(goodEndingPrompt);
+    }
+
+    public void TrueEndingExitPrompt()
+    {
+        game.ChangeStateCutScene();
+        game.GetPlayer().FaceDirection(Directions.Up);
+        Script_DialogueManager.DialogueManager.StartDialogueNode(trueEndingPrompt);
     }
 
     // ------------------------------------------------------------------
@@ -448,13 +461,33 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public void OnDisableSurveillanceWhiteScreen()
     {
-        HandleEndingExitState(true);
-        goodEndingExitPrompter.gameObject.SetActive(true);
+        HandleEndingExitState(Script_TransitionManager.Endings.Good);
     }
 
     public void OnDisableSurveillanceDone()
     {
         Script_DialogueManager.DialogueManager.StartDialogueNode(onDisabledSurveillanceNode);
+    }
+
+    // Hotel Lobby True Ending Follow Ids Timeline
+    public void TrueEndingPlayerFollowIds()
+    {
+        // Bind Player to Timeline
+        Script_Player player = Script_Game.Game.GetPlayer();
+        PlayableDirector playerPlayableDirector = player.Director;
+        var playerObjsToBind = new List<GameObject>();
+        
+        // Player Transform Track
+        playerObjsToBind.Add(player.gameObject);
+        // Player Signal Receiver Track
+        playerObjsToBind.Add(player.gameObject);
+
+        playerPlayableDirector.BindTimelineTracks(playerWalkOutTimeline, playerObjsToBind);
+        
+        // Player walks out timeline & play TrueEndingFadeToWhiteTimeline
+        Time.timeScale = walkingOutTimeScale;
+        playerPlayableDirector.Play(playerWalkOutTimeline);
+        game.EndingCutScene(Script_TransitionManager.Endings.True);
     }
 
     // ------------------------------------------------------------------
@@ -486,17 +519,55 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         });
     }
     
-    private void HandleEndingExitState(bool isOpen)
+    private void HandleEndingExitState(Script_TransitionManager.Endings ending)
     {
-        hotelFrontDoor.gameObject.SetActive(!isOpen);
-        outsideLight.gameObject.SetActive(isOpen);
-        CCTVCamera.gameObject.SetActive(!isOpen);
+        switch (ending)
+        {
+            case (Script_TransitionManager.Endings.True):
+                hotelFrontDoor.gameObject.SetActive(false);
+                outsideTrueEnding.gameObject.SetActive(true);
+                outsideGoodEnding.gameObject.SetActive(false);
+                CCTVCamera.gameObject.SetActive(false);
 
-        CCTVAdminComputer.gameObject.SetActive(!isOpen);
-        CCTVAdminComputerDisabled.gameObject.SetActive(isOpen);
-        
-        // Remove barrier to allow player to step on Ending Cut Scene Trigger.
-        invisibleBarrier.gameObject.SetActive(!isOpen);
+                CCTVAdminComputer.gameObject.SetActive(false);
+                CCTVAdminComputerDisabled.gameObject.SetActive(true);
+
+                goodEndingExitPrompter.gameObject.SetActive(false);
+                trueEndingExitPrompter.gameObject.SetActive(true);
+                
+                // Remove barrier to allow player to step on Ending Cut Scene Trigger.
+                invisibleBarrier.gameObject.SetActive(false);
+                break;
+            case (Script_TransitionManager.Endings.Good):
+                hotelFrontDoor.gameObject.SetActive(false);
+                outsideTrueEnding.gameObject.SetActive(false);
+                outsideGoodEnding.gameObject.SetActive(true);
+                CCTVCamera.gameObject.SetActive(false);
+
+                CCTVAdminComputer.gameObject.SetActive(false);
+                CCTVAdminComputerDisabled.gameObject.SetActive(true);
+
+                goodEndingExitPrompter.gameObject.SetActive(true);
+                trueEndingExitPrompter.gameObject.SetActive(false);
+                
+                // Remove barrier to allow player to step on Ending Cut Scene Trigger.
+                invisibleBarrier.gameObject.SetActive(false);
+                break;
+            default:
+                hotelFrontDoor.gameObject.SetActive(true);
+                outsideTrueEnding.gameObject.SetActive(false);
+                outsideGoodEnding.gameObject.SetActive(false);
+                CCTVCamera.gameObject.SetActive(true);
+
+                CCTVAdminComputer.gameObject.SetActive(true);
+                CCTVAdminComputerDisabled.gameObject.SetActive(false);
+
+                goodEndingExitPrompter.gameObject.SetActive(false);
+                trueEndingExitPrompter.gameObject.SetActive(false);
+                
+                invisibleBarrier.gameObject.SetActive(true);
+                break;
+        }
     }
 
     private void IncrementFrontDoorDialogueIndex()
@@ -552,6 +623,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         HandleDayEnvironment();
         notesTallyTracker.UpdateNotesTallyUI();
+        trueEndingIds.gameObject.SetActive(false);
         
         // Cover screen with Black to prevent flash of Lobby on reloads.
         if (isFirstLoad)
@@ -571,18 +643,16 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         {
             case (Script_TransitionManager.Endings.True):
                 Dev_Logger.Debug("------ SETTING UP TRUE ENDING, remove door ------");
-                HandleEndingExitState(true);
-                goodEndingExitPrompter.gameObject.SetActive(false);
+                HandleEndingExitState(Script_TransitionManager.Endings.True);
                 break;
 
             // State changes will happen via Timeline.
             case (Script_TransitionManager.Endings.Good):
-                HandleEndingExitState(true);
-                goodEndingExitPrompter.gameObject.SetActive(true);
+                HandleEndingExitState(Script_TransitionManager.Endings.Good);
                 break;
 
             default:
-                goodEndingExitPrompter.gameObject.SetActive(false);
+                HandleEndingExitState(Script_TransitionManager.Endings.None);
                 break;
         }
 
@@ -590,12 +660,12 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         if (Const_Dev.IsTrueEnding)
         {
             game.ActiveEnding = Script_TransitionManager.Endings.True;
-            HandleEndingExitState(true);
+            HandleEndingExitState(game.ActiveEnding);
         }
         else if (Const_Dev.IsGoodEnding)
         {
             game.ActiveEnding = Script_TransitionManager.Endings.Good;
-            HandleEndingExitState(true);
+            HandleEndingExitState(game.ActiveEnding);
         }
     }
 
@@ -622,17 +692,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.Good;
                 t.DisableSurveillanceSequence();
             }
-            
-            if (GUILayout.Button("Good Ending"))
-            {
-                Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.Good;
-                t.EndingCutScene();
-            }
 
-            if (GUILayout.Button("True Ending"))
+            if (GUILayout.Button("Player Walk Out"))
             {
-                Script_Game.Game.ActiveEnding = Script_TransitionManager.Endings.True;
-                t.EndingCutScene();
+                t.TrueEndingPlayerFollowIds();
             }
         }
     }

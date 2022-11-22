@@ -68,18 +68,19 @@ public class Script_TransitionManager : MonoBehaviour
     public const float UnderDialogueFadeTime = 1.5f;
 
     [Header("Good Endings")]
-    [SerializeField] private int endingThemeTrue;
     [SerializeField] private int endingThemeGood;
     [SerializeField] private Script_BgThemePlayer oceanBgThemePlayer;
-    
-    // Should completely fade out by the Ending Label (4.5s)
-    [SerializeField] private float fadeOutMainMelodyTime;
     [SerializeField] private float fadeOutEndingTime;
     [SerializeField] private float fadeOceanBgmBackTime;
     [SerializeField] private Script_CanvasGroupController endingsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController goodEndingCanvasGroup;
-    [SerializeField] private Script_CanvasGroupController trueEndingCanvasGroup;
     [SerializeField] private Script_CanvasGroupController endingsBgCanvasGroup;
+
+    [Header("True Ending Only")]
+    [SerializeField] private int endingThemeTrue;
+    [SerializeField] private float fadeOutMainMelodyTime;
+    [SerializeField] private int thankYouThemeTrue;
+    [SerializeField] private Script_CanvasGroupController trueEndingCanvasGroup;
 
     [Header("Bad Ending")]
     [SerializeField] private float dieTimeScale;
@@ -258,7 +259,8 @@ public class Script_TransitionManager : MonoBehaviour
     /// </summary>
     public void StartEndingSequence(Endings endingOverride = Endings.None)
     {
-        if (endingOverride != Endings.None)     game.ActiveEnding = endingOverride;
+        if (endingOverride != Endings.None)
+            game.ActiveEnding = endingOverride;
 
         game.ChangeStateCutScene();
 
@@ -269,7 +271,10 @@ public class Script_TransitionManager : MonoBehaviour
                 var bgm = Script_BackgroundMusicManager.Control;
                 bgm.FadeOutSlow(bgm.Stop);
 
-                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
+                if (endingOverride == Endings.True)
+                    GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 11);
+                else
+                    GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 2);
             }
         );
     }
@@ -490,6 +495,13 @@ public class Script_TransitionManager : MonoBehaviour
             TimelineRemoveBlackScreen(isOver: true);
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 3);
         }
+    }
+
+    // Credits Timeline
+    public void ThankYouMelody()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.Play(thankYouThemeTrue);
     }
 
     public void GoodEndingFadeOutBackToMainMenu()

@@ -633,6 +633,12 @@ public class Script_Player : Script_Character
     {
         return playerMovementHandler.GetCurrentWorldTile(location);
     }
+
+    public void ChangeMaterialFromTimeline(int materialIdx)
+    {
+        Script_PlayerGraphics.Materials material = (Script_PlayerGraphics.Materials)materialIdx;
+        playerGraphics.ChangeMaterial(material);
+    }
     
     // ------------------------------------------------------------------
     // Spawning

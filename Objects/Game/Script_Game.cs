@@ -843,6 +843,9 @@ public class Script_Game : MonoBehaviour
     {
         LevelsInactivate(isOnBeforeScene: false);
         SetPlayerActive(false);
+        
+        // Reset timescale that may have been changed in LB32.TrueEndingPlayerFollowIds
+        Time.timeScale = 1f;
     }
     
     public void DieEffects(Script_GameOverController.DeathTypes deathType)

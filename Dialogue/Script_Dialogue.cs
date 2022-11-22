@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-11-15 19:32:24
+// Last created by Dialogue Exporter at 2022-11-19 12:33:22
 
 using System.Collections;
 using System.Collections.Generic;
@@ -187,6 +187,24 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Are you sure you want to leave?",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "hotel-lobby_true-ending_exit_prompt",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Take the final step?",
         },
         metadata = new Model_Languages.Metadata[]
         {
