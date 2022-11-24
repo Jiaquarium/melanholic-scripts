@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-11-19 12:33:22
+// Last created by Dialogue Exporter at 2022-11-22 11:48:48
 
 using System.Collections;
 using System.Collections.Generic;
@@ -168,7 +168,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Faint images of {19} begin to fill your thoughts.",
+                @"Faint images of {19} fill your thoughts. Where are they?",
         },
         metadata = new Model_Languages.Metadata[]
         {

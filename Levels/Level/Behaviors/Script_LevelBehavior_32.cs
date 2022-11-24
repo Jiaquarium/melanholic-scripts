@@ -697,6 +697,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             {
                 t.TrueEndingPlayerFollowIds();
             }
+
+            if (GUILayout.Button("Good Ending"))
+            {
+                Script_TransitionManager.Control.StartEndingSequence(Script_TransitionManager.Endings.Good);
+            }
         }
     }
     #endif

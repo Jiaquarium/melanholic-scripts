@@ -16,7 +16,13 @@ public class Script_GoodEndingController : MonoBehaviour
     [SerializeField] private Script_TMProRandomizer TMProRandomizer;
     [SerializeField] private Script_ImageDistorterController theEndImageDistorter;
     [SerializeField] private string newTMProRandomizerId;
+
+    [SerializeField] private List<Script_CanvasGroupController> slashOverlays;
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
     
+    // Good Ending Timeline - Realization Text Ending
     public void StartStaticFX()
     {
         // Change canvas to Screen Space - Camera
@@ -29,6 +35,7 @@ public class Script_GoodEndingController : MonoBehaviour
         glitchFXManager.BlendTo(1f);
     }
 
+    // Good Ending Timeline - Realization Text Ending
     public void StopStaticFX()
     {
         // Switch Camera render mode back to default
@@ -37,6 +44,7 @@ public class Script_GoodEndingController : MonoBehaviour
         glitchFXManager.BlendTo(0f);
     }
 
+    // Good Ending Timeline - Realization Text Ending
     public void FadeOutMainMelody()
     {
         var bgm = Script_BackgroundMusicManager.Control;
@@ -52,6 +60,12 @@ public class Script_GoodEndingController : MonoBehaviour
     {
         TMProRandomizer.DefaultId = newTMProRandomizerId;
         theEndImageDistorter.enabled = true;
+    }
+
+    // Good Ending Timeline Start
+    public void InitialState()
+    {
+        slashOverlays.ForEach(slashOverlay => slashOverlay.Close());
     }
 
     #if UNITY_EDITOR

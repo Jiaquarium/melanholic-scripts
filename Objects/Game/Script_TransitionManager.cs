@@ -68,6 +68,7 @@ public class Script_TransitionManager : MonoBehaviour
     public const float UnderDialogueFadeTime = 1.5f;
 
     [Header("Good Endings")]
+    [SerializeField] private Script_GoodEndingController goodEndingController;
     [SerializeField] private int endingThemeGood;
     [SerializeField] private Script_BgThemePlayer oceanBgThemePlayer;
     [SerializeField] private float fadeOutEndingTime;
@@ -425,6 +426,7 @@ public class Script_TransitionManager : MonoBehaviour
         switch (game.ActiveEnding)
         {
             case (Endings.Good):
+                goodEndingController.InitialState();
                 GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
                 break;
             case (Endings.True):

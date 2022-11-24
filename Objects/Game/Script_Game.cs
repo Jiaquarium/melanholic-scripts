@@ -134,6 +134,7 @@ public class Script_Game : MonoBehaviour
 
     [SerializeField] private Script_PianoManager pianoManager;
     [SerializeField] private Script_NotesTallyTracker notesTallyTracker;
+    [SerializeField] private Script_QuestPaintingsManager questPaintingsManager;
 
     [SerializeField] private Script_DemoNoteController demoNoteController;
 
@@ -523,6 +524,7 @@ public class Script_Game : MonoBehaviour
         pianoManager.Setup();
         notesTallyTracker.Setup();
         demoNoteController.Setup();
+        questPaintingsManager.Setup();
 
         settingsController.Setup();
         audioConfiguration.Setup();
@@ -2303,19 +2305,14 @@ public class Script_Game : MonoBehaviour
 
     public bool IsAllQuestsDoneToday()
     {
-        Dev_Logger.Debug($"Ids Done: {IdsRoomBehavior.isCurrentPuzzleComplete}");
-        Dev_Logger.Debug($"Ursie Done: {KTVRoom2Behavior.IsCurrentPuzzleComplete}");
         Dev_Logger.Debug($"Ellenia Done: {ElleniasRoomBehavior.isCurrentPuzzleComplete}");
+        Dev_Logger.Debug($"Ids Done: {IdsRoomBehavior.isCurrentPuzzleComplete}");
         Dev_Logger.Debug($"Eileen Done: {EileensMindBehavior.isCurrentPuzzleComplete}");
         Dev_Logger.Debug($"Moose Done: {WellsWorldBehavior.isCurrentMooseQuestComplete}");
         Dev_Logger.Debug($"Kaffe Latte Done: {GardenLabyrinthBehavior.isCurrentPuzzleComplete}");
+        Dev_Logger.Debug($"Ursie Done: {KTVRoom2Behavior.IsCurrentPuzzleComplete}");
         
-        return IdsRoomBehavior.isCurrentPuzzleComplete
-            && KTVRoom2Behavior.IsCurrentPuzzleComplete
-            && ElleniasRoomBehavior.isCurrentPuzzleComplete
-            && EileensMindBehavior.isCurrentPuzzleComplete
-            && WellsWorldBehavior.isCurrentMooseQuestComplete
-            && GardenLabyrinthBehavior.isCurrentPuzzleComplete;
+        return questPaintingsManager.GetIsAllQuestsDoneToday();
     }
 
     /// <summary>

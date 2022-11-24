@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-10-29 01:16:49
+// Last created by UI Exporter at 2022-11-22 11:48:51
 
 using System.Collections;
 using System.Collections.Generic;
@@ -185,28 +185,28 @@ public class Script_UIText
     "good-ending_narrator_monologue11",
     new Model_LanguagesUI
     {
-        EN = @"And <i>him</i>."
+        EN = @"Unfinished paintings..."
     }
 },
 {
     "good-ending_narrator_monologue12",
     new Model_LanguagesUI
     {
-        EN = @"Am I really losing it?"
+        EN = @"You and <i>him</i>."
     }
 },
 {
     "good-ending_narrator_monologue12_0",
     new Model_LanguagesUI
     {
-        EN = @"But then why do they feel so familiar?"
+        EN = @"Am I really losing it?"
     }
 },
 {
     "good-ending_narrator_monologue12_1",
     new Model_LanguagesUI
     {
-        EN = @"Like pieces of me."
+        EN = @"But then why does it all feel so familiar?"
     }
 },
 {
@@ -248,7 +248,7 @@ public class Script_UIText
     "good-ending_narrator_monologue15_0",
     new Model_LanguagesUI
     {
-        EN = @"Y̵o̴u̴ ̵k̸e̴p̶t̶ ̸t̵a̶k̷i̶n̸g̵ ̴m̶e̸ ̵d̴o̶w̶n̸ ̷t̵h̵e̸r̷e̴.̵.̴.̴ ̷a̵n̷d̷ ̵f̴o̵r̴ ̶w̵h̶a̷t̵?̴"
+        EN = @"Y̵o̴u̴ ̵k̸e̴p̶t̶ ̸t̵a̶k̷i̶n̸g̵ ̴m̶e̸ ̵d̴o̶w̶n̸ ̷t̵h̵e̸r̷e̴ ̷a̵n̷d̷ ̵f̴o̵r̴ ̶w̵h̶a̷t̵?̴"
     }
 },
 {
