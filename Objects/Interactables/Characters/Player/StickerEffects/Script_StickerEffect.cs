@@ -99,12 +99,16 @@ public abstract class Script_StickerEffect : MonoBehaviour
     {
         AnimatorStateInfo animatorStateInfo = playerMovement.MyAnimator.GetCurrentAnimatorStateInfo(Script_PlayerMovement.Layer);
 
+        int prevHash = animatorStateInfo.fullPathHash;
+        float prevNormalizedTime = animatorStateInfo.normalizedTime;
+        
         playerMovement.MyAnimator.runtimeAnimatorController = playerMovement.DefaultAnimatorController;
 
         playerMovement.SyncAnimatorState(animatorStateInfo);
 
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
 
-        Script_StickerEffectEventsManager.Unequip(sticker);
+        // Pass in the previous Animator State data, so other animators can match Player Default state if needed.
+        Script_StickerEffectEventsManager.Unequip(sticker, prevHash, prevNormalizedTime);
     }
 }

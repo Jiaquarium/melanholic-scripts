@@ -78,6 +78,11 @@ public class Script_Player : Script_Character
         get => playerMovementHandler.MyAnimator;
     }
 
+    public RuntimeAnimatorController DefaultAnimator
+    {
+        get => playerMovementHandler.DefaultAnimatorController;
+    }
+
     public bool IsMoving
     {
         get => playerMovementHandler.IsMoving;

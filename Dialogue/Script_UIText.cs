@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-11-22 11:48:51
+// Last created by UI Exporter at 2022-11-28 09:59:43
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1055,21 +1055,39 @@ I would hide these tears with blood."
     "notes_ursie_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"Howdy <b></b>,<br><br>It’s been a long time coming, but I’ve come<br>to my senses; proving myself inside these <br><b>{18}</b> walls means nothing. Why<br>continue to punish myself?<br><br>What’s the point of keeping a promise<br>that my past self made to my past self?<br>It’s about time I give myself permission to move on..."
+        EN = @"Howdy {0},
+
+It’s been a long time coming, but I’ve come
+to my senses; proving myself inside these
+<b>{18}</b> walls means nothing. Why
+continue to punish myself?
+
+What’s the point of keeping a promise
+that my past self made to my past self?
+It’s about time I give myself permission to
+move on..."
     }
 },
 {
     "notes_ursie_thank-you1",
     new Model_LanguagesUI
     {
-        EN = @"{61}, {62} and I have hit the<br>old dusty trail. There’s bigger fish out<br>there for us to fry.<br><br>Thank you for assisting us even at<br>such lows. I’m not sure how I’ll repay you,<br>how about we name a cocktail after you. How’s the <b></b> <b>Spritz</b> sound?"
+        EN = @"{61}, {62} and I have hit the
+old dusty trail. There’s bigger fish out
+there for us to fry.
+
+Thank you for assisting us even at
+such lows. I’m not sure how I’ll repay you,
+how about we name a cocktail after you.
+How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 {
     "notes_ursie_thank-you_name",
     new Model_LanguagesUI
     {
-        EN = @"Sincerely,<br>{33}"
+        EN = @"Sincerely,
+{33}"
     }
 },
 // ------------------------------------------------------------------

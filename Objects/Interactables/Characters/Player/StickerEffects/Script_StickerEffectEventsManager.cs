@@ -12,12 +12,12 @@ public class Script_StickerEffectEventsManager : MonoBehaviour
             OnEquip(sticker);
     }
 
-    public delegate void OnUnequipDelegate(Script_Sticker sticker);
+    public delegate void OnUnequipDelegate(Script_Sticker sticker, int prevHash, float prevNormalizedTime);
     public static event OnUnequipDelegate OnUnequip;
-    public static void Unequip(Script_Sticker sticker)
+    public static void Unequip(Script_Sticker sticker, int prevHash, float prevNormalizedTime)
     {
         if (OnUnequip != null)
-            OnUnequip(sticker);
+            OnUnequip(sticker, prevHash, prevNormalizedTime);
     }
 
     // For mimicing animation.

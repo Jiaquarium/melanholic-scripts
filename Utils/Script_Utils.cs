@@ -244,7 +244,8 @@ public static class Script_Utils
     public static string FormatString(
         this string unformattedString,
         bool isFormatInventoryKey = false,
-        bool isFormatSpeedKey = false
+        bool isFormatSpeedKey = false,
+        bool isFormatMaskCommandKey = false
     )
     {
         string itemFormattedStr = ReplaceParams(
@@ -264,6 +265,9 @@ public static class Script_Utils
             
             if (isFormatSpeedKey)
                 Script_DynamicStringBuilder.BuildSpeedParam();
+            
+            if (isFormatMaskCommandKey)
+                Script_DynamicStringBuilder.BuildMaskCommandParam();
 
             itemAndDynamicFormattedStr = ReplaceParams(
                 itemFormattedStr,

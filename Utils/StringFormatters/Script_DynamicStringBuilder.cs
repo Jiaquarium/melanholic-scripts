@@ -11,8 +11,10 @@ public class Script_DynamicStringBuilder : MonoBehaviour
 
     public static string InventoryKey = "@@InventoryKey";
     public static string SpeedKey = "@@SpeedKey";
+    public static string MaskCommandKey = "@@MaskCommandKey";
     public static string DefaultInventoryBinding = "<b>INVENTORY</b>";
     public static string DefaultSpeedBinding = "<b>???</b>";
+    public static string DefaultMaskCommandBinding = "<b>MASK COMMAND</b>";
     
     /// <summary>
     /// Need to be in Start so we have reference to Singletons
@@ -54,15 +56,27 @@ public class Script_DynamicStringBuilder : MonoBehaviour
             BuildDefaultDynamicKeys();
     }
 
+    public static void BuildMaskCommandParam()
+    {
+        if (Script_PlayerInputManager.Instance != null)
+            Params.Add(MaskCommandKey, $"<b>{Script_PlayerInputManager.Instance.GetHumanReadableBindingPath(Const_KeyCodes.MaskEffect)}</b>");
+        else
+            BuildDefaultDynamicKeys();
+    }
+
     private static void BuildDefaultDynamicKeys()
     {
         string inventoryOutput;
         string speedOutput;
+        string maskOutput;
 
         if (!Params.TryGetValue(InventoryKey, out inventoryOutput))
             Params.Add(InventoryKey, DefaultInventoryBinding);
         
         if (!Params.TryGetValue(SpeedKey, out speedOutput))
             Params.Add(SpeedKey, DefaultSpeedBinding);
+        
+        if (!Params.TryGetValue(MaskCommandKey, out maskOutput))
+            Params.Add(MaskCommandKey, DefaultMaskCommandBinding);
     }
 }

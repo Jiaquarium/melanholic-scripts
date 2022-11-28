@@ -663,7 +663,8 @@ public class Script_DialogueManager : MonoBehaviour
         formattedLine = Script_Utils.FormatString(
             unformattedLine,
             isFormatInventoryKey: currentNode.data.isFormatInventoryKey,
-            isFormatSpeedKey: currentNode.data.isFormatSpeedKey
+            isFormatSpeedKey: currentNode.data.isFormatSpeedKey,
+            isFormatMaskCommandKey: currentNode.data.isFormatMaskCommandKey
         );
 
         HandleTeletypeReveal(formattedLine, activeCanvasText);
@@ -1195,7 +1196,8 @@ public class Script_DialogueManager : MonoBehaviour
                     string _formattedLine = Script_Utils.FormatString(
                         unformattedLine,
                         isFormatInventoryKey: currentNode.data.isFormatInventoryKey,
-                        isFormatSpeedKey: currentNode.data.isFormatSpeedKey
+                        isFormatSpeedKey: currentNode.data.isFormatSpeedKey,
+                        isFormatMaskCommandKey: currentNode.data.isFormatMaskCommandKey
                     );
                     
                     // Remove pause indicators

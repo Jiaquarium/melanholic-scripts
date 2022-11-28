@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-11-22 11:48:48
+// Last created by Dialogue Exporter at 2022-11-28 12:21:17
 
 using System.Collections;
 using System.Collections.Generic;
@@ -6900,7 +6900,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@PsychicDuck @@Sticker_Bold!|<br>The @@Sticker_Bold contains the sealed spirit of a {13}.",
                 @"@@Stickers_Bold allow you to inhabit the body of the mask’s original owner.",
-                @"Press @@InventoryKey to open your {32} and set it to {82} in the @@Stickers_Bold Screen.",
+                @"Press @@InventoryKey to open your {32} and set it to {82} by selecting it in the @@Stickers_Bold Screen.",
                 @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
@@ -6932,7 +6932,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"You got the @@AnimalWithin @@Sticker_Bold!|<br>Its original owner had a penchant for eating souls.",
-                @"Use its {79} while wearing the @@Sticker_Bold to chomp through edible obstacles.",
+                @"Use its {79} by pressing @@MaskCommandKey while wearing the @@Sticker_Bold to chomp through edible obstacles.",
                 @"Wear the @@Sticker_Bold with {82}. Press {82} again to return to your former self.",
         },
         metadata = new Model_Languages.Metadata[]
