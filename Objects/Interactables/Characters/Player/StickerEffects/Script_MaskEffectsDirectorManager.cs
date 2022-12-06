@@ -18,18 +18,22 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     public static Script_MaskEffectsDirectorManager Instance;
 
     [SerializeField] private Script_TimelineController timelineController;
+    [SerializeField] private Script_Game game;
+    
+    [Header("My Mask Timeline")]
+    [SerializeField] private Script_LevelBehavior_48 GrandMirror;
     [SerializeField] private List<GameObject> myMaskInitialBindings;
     [SerializeField] private bool isMyMaskMutationOff;
-
-    [SerializeField] private Script_Game game;
+    [SerializeField] private float myMaskBgmFadeOutTime;
+    [SerializeField] private float myMaskBgmFadeInTime;
+    [SerializeField] private Vector3 screenShakeVals;
+    [SerializeField] private Script_CameraShake activeZoomCamera;
 
     public bool IsMyMaskMutationOff
     {
         get => isMyMaskMutationOff;
         set => isMyMaskMutationOff = value;
     }
-
-    public bool IsForceSheepFaceDirection { get; set; }
 
     public void PlayMyMaskEffect(List<GameObject> bindings)
     {
@@ -49,6 +53,11 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         timelineController.PlayableDirectorPlayFromTimelines(directorIdx, myMaskIdx);
     }
 
+    public void StopForceSheepFaceDirection()
+    {
+        Script_StickerEffectEventsManager.MyMaskStopFaceDir();
+    }
+
     // ------------------------------------------------------------------
     // Timeline Signals
 
@@ -57,14 +66,48 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         game.GetPlayer().MyMaskEquipEffectTimeline();
     }
 
-    public void MyMaskEffectTimelineDone()
+    // Mask Effect timeline: very beginning
+    public void MyMaskFadeOutBgm()
     {
-        game.ChangeStateInteract();
+        GrandMirror.StopSheepBleats(Directions.None);
+        
+        Script_BackgroundMusicManager.Control.FadeOut(
+            null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBGVolume
+        );
+        Script_BackgroundMusicManager.Control.FadeOut(
+            null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBG2Volume
+        );
+    }
+
+    public void StartScreenShake()
+    {
+        activeZoomCamera.Shake(screenShakeVals.x, screenShakeVals.y, screenShakeVals.z, null);
+    }
+
+    public void StopScreenShake()
+    {
+        activeZoomCamera.InitialState();
+    }
+
+    // Mask Effect timeline: towards the end
+    public void MyMaskFadeInBgm()
+    {
+        Script_BackgroundMusicManager.Control.FadeIn(
+            null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBGVolume
+        );
+        Script_BackgroundMusicManager.Control.FadeIn(
+            null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBG2Volume
+        );
     }
 
     public void ForceSheepFaceDirection()
     {
-        IsForceSheepFaceDirection = true;
+        Script_StickerEffectEventsManager.MyMaskForceFaceDir(Directions.Up);
+    }
+
+    public void MyMaskEffectTimelineDone()
+    {
+        game.ChangeStateInteract();
     }
 
     // ------------------------------------------------------------------
@@ -92,6 +135,16 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
             if (GUILayout.Button("Equip Effect Timeline"))
             {
                 t.MyMaskEquipEffectTimeline();
+            }
+
+            if (GUILayout.Button("Force Sheep Face Direction"))
+            {
+                t.ForceSheepFaceDirection();
+            }
+
+            if (GUILayout.Button("Stop Sheep Face Direction"))
+            {
+                t.StopForceSheepFaceDirection();
             }
         }
     }

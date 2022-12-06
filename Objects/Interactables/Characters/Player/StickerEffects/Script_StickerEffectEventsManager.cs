@@ -37,4 +37,20 @@ public class Script_StickerEffectEventsManager : MonoBehaviour
         if (OnAnimatorEffectHold != null)
             OnAnimatorEffectHold(isActive);
     }
+
+    public delegate void OnMyMaskForceFaceDirDelegate(Directions dir);
+    public static event OnMyMaskForceFaceDirDelegate OnMyMaskForceFaceDir;
+    public static void MyMaskForceFaceDir(Directions dir)
+    {
+        if (OnMyMaskForceFaceDir != null)
+            OnMyMaskForceFaceDir(dir);
+    }
+
+    public delegate void OnMyMaskStopFaceDirDelegate();
+    public static event OnMyMaskStopFaceDirDelegate OnMyMaskStopFaceDir;
+    public static void MyMaskStopFaceDir()
+    {
+        if (OnMyMaskStopFaceDir != null)
+            OnMyMaskStopFaceDir();
+    }
 }

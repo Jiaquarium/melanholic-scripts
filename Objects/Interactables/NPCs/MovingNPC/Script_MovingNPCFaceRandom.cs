@@ -8,14 +8,24 @@ public class Script_MovingNPCFaceRandom : MonoBehaviour
     [SerializeField] private float changeDirectionTime;
     [SerializeField] private bool isFaceDirectionOnMyMask;
 
-    [SerializeField] private Directions faceDirectionOnMyMask;
-
     private Script_MovingNPC npc;
     private Script_ActiveStickerManager activeStickerManager;
     
     private float timer;
-    private bool isFacingMyMaskDirection;
+    private bool isForceFaceDirection;
 
+    void OnEnable()
+    {
+        Script_StickerEffectEventsManager.OnMyMaskForceFaceDir += FaceForcedDirection;
+        Script_StickerEffectEventsManager.OnMyMaskStopFaceDir += ResumeFaceRandomDirection;
+    }
+
+    void OnDisable()
+    {
+        Script_StickerEffectEventsManager.OnMyMaskForceFaceDir -= FaceForcedDirection;
+        Script_StickerEffectEventsManager.OnMyMaskStopFaceDir -= ResumeFaceRandomDirection;
+    }
+    
     void Awake()
     {
         npc = GetComponent<Script_MovingNPC>();
@@ -24,25 +34,8 @@ public class Script_MovingNPCFaceRandom : MonoBehaviour
     
     void Update()
     {
-        if (isFaceDirectionOnMyMask)
-        {
-            var maskEffectsManager = Script_MaskEffectsDirectorManager.Instance;
-            var forceFaceDirection = maskEffectsManager.IsForceSheepFaceDirection;
-            
-            if (forceFaceDirection)
-            {
-                npc.FaceDirection(faceDirectionOnMyMask);
-                isFacingMyMaskDirection = true;
-                return;
-            }
-
-            // Immediately face another direction if coming out of Facing My Mask state.
-            if (!forceFaceDirection && isFacingMyMaskDirection)
-            {
-                timer = 0f;
-                isFacingMyMaskDirection = false;
-            }
-        }
+        if (isFaceDirectionOnMyMask && isForceFaceDirection)
+            return;
         
         timer = Mathf.Max(0, timer - Time.deltaTime);
         
@@ -51,6 +44,20 @@ public class Script_MovingNPCFaceRandom : MonoBehaviour
             FaceRandomDirection();
             timer = changeDirectionTime;
         }
+    }
+
+    private void FaceForcedDirection(Directions dir)
+    {
+        npc.FaceDirection(dir);
+        timer = 0f;
+        isForceFaceDirection = true;
+    }
+
+    private void ResumeFaceRandomDirection()
+    {
+        FaceRandomDirection();
+        timer = changeDirectionTime;
+        isForceFaceDirection = false;
     }
 
     private void FaceRandomDirection()

@@ -35,6 +35,6 @@ public class Script_MyMaskEffect : Script_StickerEffect
         OnUnequipControllerSynced();
 
         Script_MaskEffectsDirectorManager.Instance.IsMyMaskMutationOff = false;
-        Script_MaskEffectsDirectorManager.Instance.IsForceSheepFaceDirection = false;
+        Script_StickerEffectEventsManager.MyMaskStopFaceDir();
     }
 }

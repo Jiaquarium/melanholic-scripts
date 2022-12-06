@@ -24,16 +24,20 @@ public class Script_SFXLoopSpeaker : Script_ProximitySpeaker
         set => interval = value;
     }
 
+    public bool IsPaused { get; set; }
+
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        offsetTimer = offsetStartTime;
-        timer = 0f;
+        InitialState();
     }
 
     protected override void Update()
     {
+        if (IsPaused)
+            return;
+        
         base.Update();
 
         if (offsetTimer > 0f)
@@ -49,5 +53,22 @@ public class Script_SFXLoopSpeaker : Script_ProximitySpeaker
             PlaySFX(clip);
             timer = interval;
         }
+    }
+
+    public void StopLoop()
+    {
+        IsPaused = true;
+        InitialState();
+    }
+
+    public void ForcePlay()
+    {
+        IsPaused = false;
+    }
+
+    private void InitialState()
+    {
+        offsetTimer = offsetStartTime;
+        timer = 0f;
     }
 }

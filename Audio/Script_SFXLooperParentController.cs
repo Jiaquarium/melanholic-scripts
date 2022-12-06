@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Script_SFXLooperParentController : MonoBehaviour
 {
@@ -42,5 +43,17 @@ public class Script_SFXLooperParentController : MonoBehaviour
             foreach (var speaker in speakers)
                 speaker.MaxVol = maxVol;
         }
+    }
+
+    public void StopChildren()
+    {
+        foreach (var speaker in speakers)
+            speaker.StopLoop();
+    }
+
+    public void PlayChildren()
+    {
+        foreach (var speaker in speakers)
+            speaker.ForcePlay();
     }
 }

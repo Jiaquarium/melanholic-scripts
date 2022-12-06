@@ -83,6 +83,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode onEntranceR2Node;
     [SerializeField] private Script_DialogueNode onPushBackDoneR2Node;
     [SerializeField] private float onPushBackDoneR2WaitTime;
+    [SerializeField] private List<Script_SFXLooperParentController> sfxLooperParents;
+    [SerializeField] private float sheepBleatsFadeOutTime;
  
     [SerializeField] private Script_LevelBehavior_45 Underworld;
 
@@ -131,6 +133,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone += PlayRevealNewWorldTimeline;
         Script_InteractableObjectEventsManager.OnUnfreezeEffect += ActivateGrandMirrorBreathing;
         Script_InteractableObjectEventsManager.OnDiagonalCut += OnDiagonalCut;
+        Script_StickerEffectEventsManager.OnMyMaskForceFaceDir += StopSheepBleats;
+        Script_StickerEffectEventsManager.OnMyMaskStopFaceDir += ResumeSheepBleats;
 
         currentTargetBlend = 0f;
         glitchManager.InitialState();
@@ -157,6 +161,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnIceCrackingTimelineDone -= PlayRevealNewWorldTimeline;
         Script_InteractableObjectEventsManager.OnUnfreezeEffect -= ActivateGrandMirrorBreathing;
         Script_InteractableObjectEventsManager.OnDiagonalCut -= OnDiagonalCut;
+        Script_StickerEffectEventsManager.OnMyMaskForceFaceDir -= StopSheepBleats;
+        Script_StickerEffectEventsManager.OnMyMaskStopFaceDir -= ResumeSheepBleats;
 
         InitialState();
     }
@@ -737,6 +743,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         // This happens on same frame but after Bgm Start on InitLevel.
         if (!elevatorManager.IsBgmOn)
             Script_BackgroundMusicManager.Control.Stop();
+    }
+
+    public void StopSheepBleats(Directions dir)
+    {
+        sfxLooperParents.ForEach(parent => parent.StopChildren());
+    }
+
+    private void ResumeSheepBleats()
+    {
+        sfxLooperParents.ForEach(parent => parent.PlayChildren());
     }
 
     private void OnLevelInitCompleteEvent()

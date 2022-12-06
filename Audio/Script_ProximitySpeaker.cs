@@ -32,7 +32,7 @@ public class Script_ProximitySpeaker : Script_Speaker
         get => maxVol;
         set => maxVol = value;
     }
-    
+
     protected override void OnDisable()
     {
         base.OnDisable();
