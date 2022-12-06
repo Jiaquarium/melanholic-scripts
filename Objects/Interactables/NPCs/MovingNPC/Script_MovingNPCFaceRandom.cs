@@ -26,8 +26,10 @@ public class Script_MovingNPCFaceRandom : MonoBehaviour
     {
         if (isFaceDirectionOnMyMask)
         {
-            var isMyMaskActive = activeStickerManager.ActiveSticker?.id == Const_Items.MyMaskId;
-            if (isMyMaskActive)
+            var maskEffectsManager = Script_MaskEffectsDirectorManager.Instance;
+            var forceFaceDirection = maskEffectsManager.IsForceSheepFaceDirection;
+            
+            if (forceFaceDirection)
             {
                 npc.FaceDirection(faceDirectionOnMyMask);
                 isFacingMyMaskDirection = true;
@@ -35,7 +37,7 @@ public class Script_MovingNPCFaceRandom : MonoBehaviour
             }
 
             // Immediately face another direction if coming out of Facing My Mask state.
-            if (!isMyMaskActive && isFacingMyMaskDirection)
+            if (!forceFaceDirection && isFacingMyMaskDirection)
             {
                 timer = 0f;
                 isFacingMyMaskDirection = false;

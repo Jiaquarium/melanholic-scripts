@@ -938,7 +938,8 @@ public static class Script_Utils
     public static void BindTimelineTracks(
         this PlayableDirector playableDirector,
         TimelineAsset timeline,
-        List<GameObject> objectsToBind
+        List<GameObject> objectsToBind,
+        bool isIgnoreNullBindings = false
     )
     {
         int i = 0;
@@ -960,7 +961,12 @@ public static class Script_Utils
             }
             
             Dev_Logger.Debug($"track: {track.sourceObject} to bind with: {objectsToBind[i]}, i={i}");
-            playableDirector.SetGenericBinding(track.sourceObject, objectsToBind[i]);
+            
+            // Option to leave track binding as it is if we pass in a null object
+            if (isIgnoreNullBindings && objectsToBind[i] == null)
+                Dev_Logger.Debug($"track: {track.sourceObject} leave as is.");
+            else
+                playableDirector.SetGenericBinding(track.sourceObject, objectsToBind[i]);
             i++;
         }
     }

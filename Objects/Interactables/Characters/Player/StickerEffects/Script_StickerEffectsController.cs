@@ -58,7 +58,7 @@ public class Script_StickerEffectsController : MonoBehaviour
 
         if (player.IsFinalRound)
         {
-            if (Script_ActiveStickerManager.Control.ActiveSticker?.id == Const_Items.MyMaskId)
+            if (Script_MaskEffectsDirectorManager.Instance.IsMyMaskMutationOff)
             {
                 mutationTimer = 0f;
                 return;
@@ -84,7 +84,7 @@ public class Script_StickerEffectsController : MonoBehaviour
         /// Disable for when in Hotel
         var game = Script_Game.Game;
         
-        if (game.IsInHotel() || game.IsHideHUD)
+        if (game.IsInHotel() || game.IsHideHUD || game.IsDisableMasksOnly)
         {
             NullSFX();    
             return;
@@ -112,7 +112,9 @@ public class Script_StickerEffectsController : MonoBehaviour
                 SwitchActionSticker();
             }
 
-            if (!isBackground)
+            // If is force called in BG needs to be silent.
+            // My Mask switch SFX will be handled later.
+            if (!isBackground && stickerToSwitch.id != Const_Items.MyMaskId)
                 SwitchSFX();
 
             coolDownTimer = coolDown;
@@ -130,7 +132,8 @@ public class Script_StickerEffectsController : MonoBehaviour
         void SwitchActionSticker()
         {
             // If there is an existing Action Sticker, call its Unequip Effect.
-            if (activeSticker != null)  EquipEffect(activeSticker, Script_StickerEffect.EquipType.UnequipSwitch);
+            if (activeSticker != null)
+                EquipEffect(activeSticker, Script_StickerEffect.EquipType.UnequipSwitch);
 
             Script_ActiveStickerManager.Control.AddSticker(stickerToSwitch, i);
             
@@ -160,6 +163,7 @@ public class Script_StickerEffectsController : MonoBehaviour
     public void Effect(Directions dir)
     {
         Script_Sticker activeSticker = Script_ActiveStickerManager.Control.ActiveSticker;
+
         if (activeSticker == null || player.IsFinalRound)
         {
             NullSFX();
@@ -263,7 +267,14 @@ public class Script_StickerEffectsController : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Final Round
-    
+
+    // My Mask will not do equip effects when switching via key input; instead, will play timeline
+    // that sends a signal to do the actual switch effect.
+    public void MyMaskEquipEffectTimeline()
+    {
+        myMaskEffect.EquipEffectTimeline();
+    }
+
     /// <summary>
     /// Rotates the player's controller.
     /// </summary>

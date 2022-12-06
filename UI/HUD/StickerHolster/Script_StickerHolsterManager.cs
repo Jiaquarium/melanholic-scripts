@@ -39,7 +39,8 @@ public class Script_StickerHolsterManager : MonoBehaviour
                 || game.GetPlayer().State == Const_States_Player.MelancholyPiano
             )
             && Script_ClockManager.Control.ClockState != Script_Clock.States.Done
-            && !game.IsHideHUD;
+            && !game.IsHideHUD
+            && !game.IsDisableMasksOnly;
     }
 
     void Update()

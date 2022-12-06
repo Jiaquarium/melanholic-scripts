@@ -135,6 +135,8 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_PianoManager pianoManager;
     [SerializeField] private Script_NotesTallyTracker notesTallyTracker;
     [SerializeField] private Script_QuestPaintingsManager questPaintingsManager;
+    
+    [SerializeField] private Script_MaskEffectsDirectorManager maskEffectsDirectorManager;
 
     [SerializeField] private Script_DemoNoteController demoNoteController;
 
@@ -211,6 +213,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_SavePoint savePoint; // max 1 per Level
 
     [SerializeField] private bool isHideHUD;
+    [SerializeField] private bool isDisableMasksOnly;
     
     // ------------------------------------------------------------------
     // State Properties
@@ -384,6 +387,12 @@ public class Script_Game : MonoBehaviour
         set => isHideHUD = value;
     }
 
+    public bool IsDisableMasksOnly
+    {
+        get => isDisableMasksOnly;
+        set => isDisableMasksOnly = value;
+    }
+
     public int BgmIndex => Levels.levelsData[level].bgMusicAudioClipIndex;
 
     // ------------------------------------------------------------------
@@ -525,6 +534,7 @@ public class Script_Game : MonoBehaviour
         notesTallyTracker.Setup();
         demoNoteController.Setup();
         questPaintingsManager.Setup();
+        maskEffectsDirectorManager.Setup();
 
         settingsController.Setup();
         audioConfiguration.Setup();

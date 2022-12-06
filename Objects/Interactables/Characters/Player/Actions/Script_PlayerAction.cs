@@ -399,6 +399,11 @@ public class Script_PlayerAction : MonoBehaviour
         stickerEffectsController.Effect(dir);
     }
 
+    public void MyMaskEquipEffectTimeline()
+    {
+        stickerEffectsController.MyMaskEquipEffectTimeline();
+    }
+
     private void OpenSettings()
     {
         game.OpenSettings();

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-11-28 12:21:17
+// Last created by Dialogue Exporter at 2022-12-05 14:18:38
 
 using System.Collections;
 using System.Collections.Generic;
@@ -4555,6 +4555,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Everything is mixed up.",
                 @"You can’t seem to stop switching between your past selves.",
+        },
+        
+    }
+},
+{
+    "grand-mirror-room_finale_on-pushback-done",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Hey, what are you waiting for?!",
         },
         
     }

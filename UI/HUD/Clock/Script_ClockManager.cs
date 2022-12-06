@@ -164,7 +164,7 @@ public class Script_ClockManager : MonoBehaviour
         else if (Control != this)
         {
             Destroy(this.gameObject);
-        }   
+        }
 
         InitialState();
     }

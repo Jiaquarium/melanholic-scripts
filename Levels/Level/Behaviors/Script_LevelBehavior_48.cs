@@ -81,7 +81,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     
     [SerializeField] private float awakeningR2EntranceExtraWaitTime;
     [SerializeField] private Script_DialogueNode onEntranceR2Node;
-
+    [SerializeField] private Script_DialogueNode onPushBackDoneR2Node;
+    [SerializeField] private float onPushBackDoneR2WaitTime;
+ 
     [SerializeField] private Script_LevelBehavior_45 Underworld;
 
     [SerializeField] private float finaleLightsIntensity;
@@ -89,6 +91,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_ElevatorManager elevatorManager;
 
     [SerializeField] private Script_LevelBehavior_0 Woods;
+    [SerializeField] private Script_ClockManager clockManager;
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
@@ -97,6 +100,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     private float currentTargetBlend;
     private bool isExitingWindZone;
+    private bool didR2PushBackDoneDialogue;
 
     // ------------------------------------------------------------------
     // Trailer Only
@@ -140,7 +144,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         {
             // In Final Round set the time to 5:59:55am so in sync with
             // MaskRevealTimeline.
-            Script_ClockManager.Control.SetFinalRoundGrandMirrorTime();
+            clockManager.SetFinalRoundGrandMirrorTime();
+            game.IsDisableMasksOnly = true;
         }
     }
 
@@ -533,6 +538,23 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         if (player.IsPassive)
         {
             player.IsPassive = false;
+
+            if (game.IsDisableMasksOnly && !didR2PushBackDoneDialogue)
+            {
+                didR2PushBackDoneDialogue = true;
+
+                game.ChangeStateCutScene();
+
+                // Wait before yelling at Player
+                StartCoroutine(WaitToReactToPushBackDone());
+            }
+        }
+
+        IEnumerator WaitToReactToPushBackDone()
+        {
+            yield return new WaitForSeconds(onPushBackDoneR2WaitTime);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(onPushBackDoneR2Node);
         }
     }
 
@@ -676,9 +698,15 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     }
 
     // onEntranceR2Node
-    public void onEntranceR2DialogueDone()
+    public void OnEntranceR2DialogueDone()
     {
         game.ChangeStateInteract();
+    }
+
+    public void OnPushBackDoneR2DialogueDone()
+    {
+        game.ChangeStateInteract();
+        game.IsDisableMasksOnly = false;
     }
 
     // ------------------------------------------------------------------

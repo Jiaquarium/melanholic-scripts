@@ -440,6 +440,11 @@ public class Script_Player : Script_Character
         playerActionHandler.HandleForceStickerSwitchBackground(i);
     }
 
+    public void MyMaskEquipEffectTimeline()
+    {
+        playerActionHandler.MyMaskEquipEffectTimeline();
+    }
+
     // ------------------------------------------------------------------
     // Combat
     public int FullHeal()
