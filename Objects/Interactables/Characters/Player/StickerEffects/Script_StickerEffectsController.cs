@@ -36,6 +36,7 @@ public class Script_StickerEffectsController : MonoBehaviour
 
     private float coolDownTimer;
     private float mutationTimer;
+    private Script_PlayerMutation playerMutation;
 
     public bool IsLanternLightOn
     {
@@ -289,6 +290,24 @@ public class Script_StickerEffectsController : MonoBehaviour
         playerMovement.SyncAnimatorState(animatorStateInfo);
 
         playerMovement.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+
+        if (player.IsFinalRound)
+        {
+            if (playerMutation == null)
+                playerMutation = Script_Game.Game.grandMirrorRoomBehavior.PlayerMutation;
+            
+            var _randomEffectIdx = Random.Range(0, effects.Count);
+            var _currentEffect = effects[_randomEffectIdx];
+            RuntimeAnimatorController _animatorController = _currentEffect.StickerAnimatorController;
+
+            playerMutation.MyAnimator.runtimeAnimatorController = _animatorController;
+            playerMutation.SyncAnimatorState(animatorStateInfo);
+            
+            playerMutation.MyAnimator.AnimatorSetDirection(playerMovement.FacingDirection);
+            
+            bool isMoving = playerMovement.MyAnimator.GetBool(Script_PlayerMovement.PlayerMovingAnimatorParam);
+            playerMutation.MyAnimator.SetBool(Script_PlayerMovement.PlayerMovingAnimatorParam, isMoving);
+        }
     }
     
     // ------------------------------------------------------------------

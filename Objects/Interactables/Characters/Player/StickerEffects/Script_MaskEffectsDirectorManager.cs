@@ -64,6 +64,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     public void MyMaskEquipEffectTimeline()
     {
         game.GetPlayer().MyMaskEquipEffectTimeline();
+        GrandMirror.SetPlayerMutationActive(false);
     }
 
     // Mask Effect timeline: very beginning
@@ -74,7 +75,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         Script_BackgroundMusicManager.Control.FadeOut(
             null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBGVolume
         );
-        Script_BackgroundMusicManager.Control.FadeOut(
+        Script_BackgroundMusicManager.Control.FadeOutExtra(
             null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBG2Volume
         );
     }
@@ -95,7 +96,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         Script_BackgroundMusicManager.Control.FadeIn(
             null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBGVolume
         );
-        Script_BackgroundMusicManager.Control.FadeIn(
+        Script_BackgroundMusicManager.Control.FadeInExtra(
             null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBG2Volume
         );
     }

@@ -76,6 +76,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [Header("R2 Only")]
     [SerializeField] private float fadeToBlackTime;
+    [SerializeField] private Script_PlayerMutation playerMutation;
     [SerializeField] private Transform playerReflectionMyne;
     [SerializeField] private Script_BgThemePlayer drumBuildUpBgPlayer;
     
@@ -124,6 +125,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         get => isFinalRound;
         set => isFinalRound = value;
     }
+
+    public Script_PlayerMutation PlayerMutation { get => playerMutation; }
 
     protected override void OnEnable()
     {
@@ -752,8 +755,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     private void ResumeSheepBleats()
     {
+        SetPlayerMutationActive(true);
         sfxLooperParents.ForEach(parent => parent.PlayChildren());
     }
+
+    public void SetPlayerMutationActive(bool isActive) => PlayerMutation.gameObject.SetActive(isActive);
 
     private void OnLevelInitCompleteEvent()
     {

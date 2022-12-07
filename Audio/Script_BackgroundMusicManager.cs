@@ -330,6 +330,48 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         );
     }
 
+    // Identical as above, but you must keep track of coroutines
+    public void FadeOutExtra(
+        Action cb,
+        float fadeTime = Script_AudioEffectsManager.fadeMedTime,
+        string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
+        float targetVolume = 0f
+    )
+    {
+        StartCoroutine(
+            Script_AudioMixerFader.Fade(
+                audioMixer,
+                outputMixer,
+                fadeTime,
+                targetVolume,
+                () => {
+                    if (cb != null)     cb();
+                }
+            )
+        );
+    }
+
+    // Identical as above, but you must keep track of coroutines
+    public void FadeInExtra(
+        Action cb,
+        float fadeTime = Script_AudioEffectsManager.fadeMedTime,
+        string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
+        float targetVolume = 1f
+    )
+    {
+        StartCoroutine(
+            Script_AudioMixerFader.Fade(
+                audioMixer,
+                outputMixer,
+                fadeTime,
+                targetVolume,
+                () => {
+                    if (cb != null)     cb();
+                }
+            )
+        );
+    }
+
     public void FadeOutXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
     {
         FadeOut(cb, Script_AudioEffectsManager.fadeXFastTime, outputMixer);
