@@ -170,6 +170,16 @@ public class Script_ClockManager : MonoBehaviour
     }
 
     // ------------------------------------------------------------------
+    // Timeline Signals
+
+    // Mask Reveal Timeline - Clock Reaches 6:00am
+    public void FillTimebarCompletely()
+    {
+        clock.CurrentTime = Script_Clock.EndTime;
+        timebar.Fill = 1f;
+    }
+    
+    // ------------------------------------------------------------------
     // Dev only
     public void DangerTime()
     {
@@ -248,6 +258,11 @@ public class Script_ClockManagerTester : Editor
         if (GUILayout.Button("Fast Forward Time 1 min"))
         {
             t.FastForwardTime(60);
+        }
+
+        if (GUILayout.Button("Fill timebar completely"))
+        {
+            t.FillTimebarCompletely();
         }
     }
 }

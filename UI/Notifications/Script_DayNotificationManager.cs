@@ -100,12 +100,19 @@ public class Script_DayNotificationManager : MonoBehaviour
     public void PlayDawnSFX()
     {
         var SFXManager = Script_SFXManager.SFX;
-        var isWeekend = game.RunCycle == Script_RunsManager.Cycle.Weekend;
         
-        if (isWeekend)
-            SFXManager.PlayDawnWeekend();
-        else
-            SFXManager.PlayDawn();
+        switch (game.RunCycle)
+        {
+            case Script_RunsManager.Cycle.Weekday:
+                SFXManager.PlayDawn();
+                break;
+            case Script_RunsManager.Cycle.Weekend:
+                SFXManager.PlayDawnWeekend();
+                break;
+            case Script_RunsManager.Cycle.Sunday:
+                // TBD
+                break;
+        }
     }
 
     // Call 0.5 sec (15 frames) before fully fading out.

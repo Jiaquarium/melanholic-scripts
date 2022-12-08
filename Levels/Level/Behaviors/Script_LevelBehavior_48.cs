@@ -96,6 +96,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_LevelBehavior_0 Woods;
     [SerializeField] private Script_ClockManager clockManager;
 
+    [SerializeField] private float WaitBeforeFinalSaveTime;
+
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
     private Script_GlitchFXManager glitchManager;
@@ -659,11 +661,18 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         Script_UIAspectRatioEnforcerFrame.Control.MatchBorders();
     }
 
+    // Save Game and start on Sunday.
     public void OnMaskRevealDone()
     {
-        // Save Game and start on Sunday.
-        game.ShowSaveAndRestartMessageDefault();
-        game.StartSundayCycleSaveInitialize();
+        StartCoroutine(WaitToStartSunday());
+        
+        IEnumerator WaitToStartSunday()
+        {
+            yield return new WaitForSeconds(WaitBeforeFinalSaveTime);
+
+            game.ShowSaveAndRestartMessageDefault();
+            game.StartSundayCycleSaveInitialize();
+        }   
     }
     
     // True Ending Mask Reveal Timeline: True Ending Underworld Pan Timeline
@@ -862,6 +871,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             if (GUILayout.Button("Set Woods Well PRCS Done"))
             {
                 t.Woods.didStartThought = true;
+            }
+
+            if (GUILayout.Button("On Mask Reveal Timeline Done"))
+            {
+                t.OnMaskRevealDone();
             }
         }
     }

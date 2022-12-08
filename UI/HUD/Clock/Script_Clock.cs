@@ -43,6 +43,7 @@ public class Script_Clock : MonoBehaviour
     [SerializeField] private TextMeshProUGUI display;
 
     [SerializeField] private Script_ClockManager clockManager;
+    [SerializeField] private Script_Game game;
     
     private float sundayTimer;
     private float sundayClockStartBlinkingTimeStamp;
@@ -228,6 +229,18 @@ public class Script_Clock : MonoBehaviour
 
     public void InitialState()
     {
+        // For Dev, without this if booting up game from Grand Mirror,
+        // the clock will not be at final round time
+        if (
+            Debug.isDebugBuild
+            && game.levelBehavior == game.grandMirrorRoomBehavior
+            && game.grandMirrorRoomBehavior.IsFinalRound
+        )
+        {
+            clockManager.SetFinalRoundGrandMirrorTime();
+            return;
+        }
+            
         CurrentTime = StartTime;
     }
 
