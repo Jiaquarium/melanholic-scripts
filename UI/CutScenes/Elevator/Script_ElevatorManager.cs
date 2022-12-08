@@ -32,6 +32,12 @@ public class Script_ElevatorManager : MonoBehaviour
 
     [SerializeField] private bool isBgmOn = true;
 
+    [Header("Last Elevator Effect")]
+    [SerializeField] private float waitBeforeSaveDialogueTime;
+    [SerializeField] private Script_ExitMetadataObject lobbySpawn;
+    [SerializeField] private int bayV1BgmIdx;
+    [SerializeField] private float bgmFadeInTime;
+
     public bool IsBgmOn
     {
         get => isBgmOn;
@@ -187,6 +193,38 @@ public class Script_ElevatorManager : MonoBehaviour
         Script_Game.Game.ChangeStateInteract();
     }
 
+    // Note: Do not do at beginning of timeline because bgm still needs time to fade out
+    public void OnEffectYesFadeInBgm()
+    {
+        bgm.PlayFadeIn(bayV1BgmIdx, fadeTime: bgmFadeInTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+    }
+
+    public void OnEffectYesTimelineDone()
+    {
+        var exitType = Script_Exits.ExitType.SaveAndRestart;
+        
+        if (game.IsLastElevatorSaveAndStartWeekendCycle())
+            exitType = Script_Exits.ExitType.SaveAndStartWeekendCycle;
+        
+        StartCoroutine(WaitBeforeSave());
+        
+        IEnumerator WaitBeforeSave()
+        {
+            yield return new WaitForSeconds(waitBeforeSaveDialogueTime);
+
+            // Note: On save, player state is overriden anyways in game.NextRunSaveInitialize, so
+            // actually don't need to pass in lobbySpawn here.
+            game.Exit(
+                lobbySpawn.data.level,
+                lobbySpawn.data.playerSpawn,
+                lobbySpawn.data.facingDirection,
+                isExit: false,
+                isSilent: true,
+                exitType
+            );
+        }
+    }
+
     // ------------------------------------------------------------------
     // Unity Events
     
@@ -207,8 +245,12 @@ public class Script_ElevatorManager : MonoBehaviour
     // LastElevatorPrompt UI Yes
     public void LastElevatorConfirmedTimeline()
     {
+        var blackFadeInTime = FadeSpeeds.Med.GetFadeTime();
+        
+        bgm.FadeOut(null, blackFadeInTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        
         // Fade Screen to Black
-        Script_TransitionManager.Control.TimelineFadeIn(FadeSpeeds.Med.GetFadeTime(), () => {
+        Script_TransitionManager.Control.TimelineFadeIn(blackFadeInTime, () => {
             // Remove prompt
             lastElevatorPromptController.Close();
             lastElevatorPromptChoicesController.Close();
@@ -219,7 +261,10 @@ public class Script_ElevatorManager : MonoBehaviour
             // Note: Fader takes 0.25 seconds to fade out, ensure Timeline has at least this much
             // of a pause before showing an event.
             // Play Yes Timeline
-            elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 4);
+            if (game.IsLastElevatorSaveAndStartWeekendCycle())
+                elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 6);
+            else
+                elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 4);
         }, isOver: true);
     }
 

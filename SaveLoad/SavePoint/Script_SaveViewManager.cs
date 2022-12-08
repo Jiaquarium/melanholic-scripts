@@ -36,7 +36,7 @@ public class Script_SaveViewManager : MonoBehaviour
     
     [SerializeField] private float showSavingMinTime;
     [SerializeField] private float showSavingCompleteTime;
-    
+
     private bool isShowingSaving;
     
     public void ShowSaveAndRestarMessage()

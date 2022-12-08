@@ -189,6 +189,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip TVChannelChangeStatic;
     [Range(0f, 1f)] public float TVChannelChangeStaticVol;
     public float TVChannelChangeStaticDuration = 0.275f;
+
+    public AudioClip ElevatorDoneDing;
+    [Range(0f, 1f)] public float ElevatorDoneDingVol;
     
     [Space]
 
@@ -394,6 +397,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayWindZonePushBack()
     {
         SFXSource.PlayOneShot(WindPushBack, WindPushBackVol);
+    }
+
+    public void PlayElevatorDoneDing()
+    {
+        SFXSource.PlayOneShot(ElevatorDoneDing, ElevatorDoneDingVol);
     }
 
     public void PlaySubmitTransition()
