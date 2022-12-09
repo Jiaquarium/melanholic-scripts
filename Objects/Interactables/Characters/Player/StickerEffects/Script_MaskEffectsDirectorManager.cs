@@ -28,6 +28,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     [SerializeField] private float myMaskBgmFadeInTime;
     [SerializeField] private Vector3 screenShakeVals;
     [SerializeField] private Script_CameraShake activeZoomCamera;
+    [SerializeField] private float myMaskDoneSongStartTime;
 
     public bool IsMyMaskMutationOff
     {
@@ -72,12 +73,10 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     {
         GrandMirror.StopSheepBleats(Directions.None);
         
-        Script_BackgroundMusicManager.Control.FadeOut(
-            null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBGVolume
-        );
-        Script_BackgroundMusicManager.Control.FadeOutExtra(
-            null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBG2Volume
-        );
+        var bgm = Script_BackgroundMusicManager.Control;
+
+        bgm.FadeOut(null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBGVolume);
+        bgm.FadeOutExtra(null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBG2Volume);
     }
 
     public void StartScreenShake()
@@ -93,12 +92,13 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     // Mask Effect timeline: towards the end
     public void MyMaskFadeInBgm()
     {
-        Script_BackgroundMusicManager.Control.FadeIn(
-            null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBGVolume
-        );
-        Script_BackgroundMusicManager.Control.FadeInExtra(
-            null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBG2Volume
-        );
+        var bgm = Script_BackgroundMusicManager.Control;
+        
+        bgm.Stop();
+        bgm.Play(bgm.CurrentClipIndex, true, myMaskDoneSongStartTime);
+        
+        bgm.FadeIn(null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBGVolume);
+        bgm.FadeInExtra(null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBG2Volume);
     }
 
     public void ForceSheepFaceDirection()

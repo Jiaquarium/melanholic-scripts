@@ -23,6 +23,8 @@ public class Script_AnimatorPositionAdjuster : MonoBehaviour
     private Vector3 originalLocalPosition;
     private Transform myTransform;
 
+    public bool IsDisabled { get; set; }
+
     void Awake()
     {
         myTransform = GetComponent<Transform>();
@@ -31,7 +33,7 @@ public class Script_AnimatorPositionAdjuster : MonoBehaviour
 
     public void Adjust(Directions dir)
     {
-        if (myTransform == null)
+        if (myTransform == null || IsDisabled)
             return;
         
         myTransform.localPosition = originalLocalPosition;
@@ -57,5 +59,10 @@ public class Script_AnimatorPositionAdjuster : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void InitialState()
+    {
+        myTransform.localPosition = originalLocalPosition;
     }
 }

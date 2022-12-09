@@ -82,7 +82,8 @@ public class Script_PlayerStepsSFX : MonoBehaviour
         // with animators being chosen at random.
         if (
             (
-                player.IsFinalRound
+                player != null
+                && player.IsFinalRound
                 && Script_ActiveStickerManager.Control.ActiveSticker?.id != Const_Items.MyMaskId
             ) || Script_Game.Game.state == Const_States_Game.DDR
         )

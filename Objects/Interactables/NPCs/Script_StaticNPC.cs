@@ -44,6 +44,8 @@ public class Script_StaticNPC : Script_Interactable
         set => defaultFacingDirection = value;
     }
 
+    public Directions FacingDirection { get => facingDirection; }
+
     protected virtual void OnEnable()
     {
         InitialState();
