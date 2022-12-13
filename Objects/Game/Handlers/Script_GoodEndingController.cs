@@ -45,6 +45,7 @@ public class Script_GoodEndingController : MonoBehaviour
     }
 
     // Good Ending Timeline - Realization Text Ending
+    // Fade out after "my eyes feel incredibly heavy"
     public void FadeOutMainMelody()
     {
         var bgm = Script_BackgroundMusicManager.Control;

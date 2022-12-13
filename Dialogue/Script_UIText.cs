@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-11-28 09:59:43
+// Last created by UI Exporter at 2022-12-12 18:09:27
 
 using System.Collections;
 using System.Collections.Generic;
@@ -108,6 +108,13 @@ public class Script_UIText
     "good-ending_narrator_monologue1",
     new Model_LanguagesUI
     {
+        EN = @"How are one of these notes supposed to go anyways?"
+    }
+},
+{
+    "good-ending_narrator_monologue1_0",
+    new Model_LanguagesUI
+    {
         EN = @"Needless to say, I’ll never see {18} ever again."
     }
 },
@@ -115,14 +122,14 @@ public class Script_UIText
     "good-ending_narrator_monologue2",
     new Model_LanguagesUI
     {
-        EN = @"It’s strange to think now,"
+        EN = @"I never imagined it to all go like this..."
     }
 },
 {
     "good-ending_narrator_monologue3",
     new Model_LanguagesUI
     {
-        EN = @"That my life revolved around that place for so long."
+        EN = @"My life revolved around that place for so long."
     }
 },
 {
@@ -136,7 +143,7 @@ public class Script_UIText
     "good-ending_narrator_monologue5",
     new Model_LanguagesUI
     {
-        EN = @"Soon it’ll be tough to even tell if it happened or not."
+        EN = @"As if it never even happened."
     }
 },
 {
@@ -164,7 +171,7 @@ public class Script_UIText
     "good-ending_narrator_monologue8",
     new Model_LanguagesUI
     {
-        EN = @"To think this would be good for my head..."
+        EN = @"To think I could actually escape..."
     }
 },
 {
@@ -199,21 +206,21 @@ public class Script_UIText
     "good-ending_narrator_monologue12_0",
     new Model_LanguagesUI
     {
-        EN = @"Am I really losing it?"
+        EN = @"A self-portrait."
     }
 },
 {
     "good-ending_narrator_monologue12_1",
     new Model_LanguagesUI
     {
-        EN = @"But then why does it all feel so familiar?"
+        EN = @"Am I really losing it?"
     }
 },
 {
     "good-ending_narrator_monologue13",
     new Model_LanguagesUI
     {
-        EN = @"Maybe some questions aren’t meant to be answered."
+        EN = @"Maybe some questions are better left alone."
     }
 },
 {
@@ -252,17 +259,31 @@ public class Script_UIText
     }
 },
 {
+    "good-ending_narrator_monologue15a_0",
+    new Model_LanguagesUI
+    {
+        EN = @"I don’t blame you."
+    }
+},
+{
+    "good-ending_narrator_monologue15a_1",
+    new Model_LanguagesUI
+    {
+        EN = @"There’s nothing you could do."
+    }
+},
+{
     "good-ending_narrator_monologue15_1",
     new Model_LanguagesUI
     {
-        EN = @"Is this all there is?"
+        EN = @"Finally, this weight on my shoulders..."
     }
 },
 {
     "good-ending_narrator_monologue15_2",
     new Model_LanguagesUI
     {
-        EN = @"I guess it really doesn’t matter."
+        EN = @"No more halfway."
     }
 },
 {
@@ -276,7 +297,7 @@ public class Script_UIText
     "good-ending_narrator_monologue15_b",
     new Model_LanguagesUI
     {
-        EN = @"<b>I’ve had enough.</b>"
+        EN = @"<b>It’s {49}</b>"
     }
 },
 {
@@ -290,7 +311,14 @@ public class Script_UIText
     "good-ending_narrator_monologue17",
     new Model_LanguagesUI
     {
-        EN = @"The sun is coming up."
+        EN = @"It’s beautiful."
+    }
+},
+{
+    "good-ending_narrator_monologue17_1",
+    new Model_LanguagesUI
+    {
+        EN = @"The sky is separating from the sea."
     }
 },
 {
@@ -304,7 +332,7 @@ public class Script_UIText
     "good-ending_narrator_monologue19",
     new Model_LanguagesUI
     {
-        EN = @"Finally, I can sleep now."
+        EN = @"I knew it."
     }
 },
 {
@@ -474,14 +502,14 @@ public class Script_UIText
     "true-ending_narrator_monologue6_0",
     new Model_LanguagesUI
     {
-        EN = @"I’ve always feared becoming <i>only them</i> though..."
+        EN = @"I’ve always feared becoming <i>only them</i>..."
     }
 },
 {
     "true-ending_narrator_monologue6_1",
     new Model_LanguagesUI
     {
-        EN = @"Like I’d be forever a night in winter."
+        EN = @"The same hour on a winter night."
     }
 },
 {
@@ -2076,7 +2104,7 @@ Jia"
     "faceoff_ren-myne_quest0_block3_0",
     new Model_LanguagesUI
     {
-        EN = @"But I get it. You’ve always liked hurting people."
+        EN = @"But I get it. You’ve always liked hurting others."
     }
 },
 {
@@ -2146,7 +2174,7 @@ Jia"
     "faceoff_ren-myne_quest0_block7_0",
     new Model_LanguagesUI
     {
-        EN = @"This world is better off without you."
+        EN = @"Our world is better off without you."
     }
 },
 // ------------------------------------------------------------------
@@ -2211,7 +2239,7 @@ Jia"
     "faceoff_ren-myne_quest1_block2_1",
     new Model_LanguagesUI
     {
-        EN = @"You waltz in here, making everyone suffer again and again..."
+        EN = @"You waltz in here, making us suffer again and again..."
     }
 },
 {
@@ -2225,7 +2253,7 @@ Jia"
     "faceoff_ren-myne_quest1_block3_0",
     new Model_LanguagesUI
     {
-        EN = @"I think about you when I touch myself. I know you do too."
+        EN = @"I think about you when I xxxxx xxxxxx. I know you do too."
     }
 },
 {
@@ -2246,18 +2274,25 @@ Jia"
     "faceoff_ren-myne_quest1_block4_1",
     new Model_LanguagesUI
     {
-        EN = @"You’ll self sabotage and take us all down with you soon enough."
+        EN = @"You’ve always been one to self sabotage."
     }
 },
 {
     "faceoff_ren-myne_quest1_block4_2",
     new Model_LanguagesUI
     {
-        EN = @"How about you go back up to your floor before that happens."
+        EN = @"You’ll take us all down with you soon enough."
     }
 },
 {
     "faceoff_ren-myne_quest1_block4_3",
+    new Model_LanguagesUI
+    {
+        EN = @"How about you go back up to your floor before that happens."
+    }
+},
+{
+    "faceoff_ren-myne_quest1_block4_4",
     new Model_LanguagesUI
     {
         EN = @"And we can forget about all of this."
