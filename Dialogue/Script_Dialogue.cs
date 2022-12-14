@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-12-13 17:34:44
+// Last created by Dialogue Exporter at 2022-12-14 13:06:34
 
 using System.Collections;
 using System.Collections.Generic;
@@ -4820,9 +4820,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"<b>You came looking for me after all.</b>",
-                @"And it appears you expelled the last of my residents...",
+                @"And it appears you’ve expelled the last of my residents...",
                 @"...",
-                @"So|.|.|.| It’s just you and me that remain then...",
+                @"It’s just you and me that remain then.",
                 @"You know, my dear, it should never have come to this.",
                 @"He-he...",
                 @"You might think you despise me at this point...",
@@ -4832,16 +4832,36 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"......",
                 @"You see...",
                 @"You created me, {0}...",
-                @"...As a projection of your own sense of Self.",
+                @"...long ago...",
+                @"...to see your own sense of Self.",
                 @"In other words|.|.|.|",
-                @"I <i>am</i> you.",
-                @"And now let me ask you...",
+                @"I <i>|a|m|</i> y|o|u|.",
+                @"So now allow me to propose this...",
                 @"How can you hate your very own ideal of Self?",
-                @"But I’m not here to pose theoretical riddles for you, {0}...",
+                @"How can you despise someone that helps| “find you”?",
                 @"......",
+                @"But I’m afraid to tell you,| my dear {0}...",
+                @"My purpose hasn’t been to help you simply| “find yourself”| for quite some time now...",
+                @"No...| things aren’t that simple anymore...",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -4932,21 +4952,46 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{10}",
         EN = new string[]
         {
-                @"What I’m really here for...",
-                @"Is to save you...",
-                @"<b>From your fate at {49}</b>",
+                @"What I’m really here for|.|.|.|",
+                @"Is to save you from|.|.|.|",
+                @"||<b>From your fate at {49}</b>",
                 @"......",
-                @"I know exactly what will happen to you, me... all of this... at the moment...",
-                @"So please, let’s quit these petty little games...",
+                @"At that moment...",
+                @"I know exactly what will happen to us...",
+                @"You,| me...",
+                @"All this we’ve built...",
+                @"Together...",
+                @"So please,| let’s quit these petty little games...",
                 @"Will you return to the hotel?",
                 @"And put all this behind you?",
                 @"......",
                 @"You see...",
-                @"This cycle is <i>our</i> only way of surviving...",
-                @"I too have run out of choices.",
+                @"This cycle is <i>our</i> only way...",
+                @"<b>...to survive.</b>",
+                @"<b>I too have run out of choices.</b>",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 

@@ -240,7 +240,8 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
                         cb();
                         didPlayFaceOff = true;
                     });
-                });
+                },
+                isFaceOff: true);
             }
             else
             {

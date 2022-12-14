@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-12-12 18:09:27
+// Last created by UI Exporter at 2022-12-14 13:06:32
 
 using System.Collections;
 using System.Collections.Generic;
@@ -276,7 +276,7 @@ public class Script_UIText
     "good-ending_narrator_monologue15_1",
     new Model_LanguagesUI
     {
-        EN = @"Finally, this weight on my shoulders..."
+        EN = @"Everyone gets what they wanted."
     }
 },
 {
@@ -288,6 +288,13 @@ public class Script_UIText
 },
 {
     "good-ending_narrator_monologue15_3",
+    new Model_LanguagesUI
+    {
+        EN = @"Finally, this weight on my shoulders..."
+    }
+},
+{
+    "good-ending_narrator_monologue15_4",
     new Model_LanguagesUI
     {
         EN = @"My eyes... they feel incredibly heavy."
@@ -460,7 +467,7 @@ public class Script_UIText
     "true-ending_narrator_monologue3_3",
     new Model_LanguagesUI
     {
-        EN = @"And watch myself in third person."
+        EN = @"You wouldn’t even have recognized me."
     }
 },
 {
@@ -488,14 +495,7 @@ public class Script_UIText
     "true-ending_narrator_monologue5_2",
     new Model_LanguagesUI
     {
-        EN = @"In the past, I would’ve locked them away,"
-    }
-},
-{
-    "true-ending_narrator_monologue5_3",
-    new Model_LanguagesUI
-    {
-        EN = @"But they’re parts of me."
+        EN = @"In the past, I would’ve locked them away."
     }
 },
 {

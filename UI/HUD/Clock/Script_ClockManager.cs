@@ -30,7 +30,6 @@ public class Script_ClockManager : MonoBehaviour
     [SerializeField] private Script_Game game;
     
     private bool didFireDoneEvent;
-    private bool didSetSunEndTime;
     
     public float ClockTime
     {
@@ -58,16 +57,13 @@ public class Script_ClockManager : MonoBehaviour
         get => clock.TimeState;
     }
 
-    public bool DidSetSunEndTime { get => didSetSunEndTime; }
+    public bool DidSetSunEndTime { get; set; }
     public bool DidSetGoodEndingEndTime { get; set; }
 
     public float DelayBeforeClockBlinkSunday { get => delayBeforeClockBlinkSunday; }
 
     void Update()
     {
-        if (!DidSetSunEndTime)
-            HandleSundayTime();
-        
         if (clock.State == Script_Clock.States.Done)
         {
             if (!didFireDoneEvent)
@@ -145,19 +141,22 @@ public class Script_ClockManager : MonoBehaviour
 
     public void SetGoodEndingEndTime()
     {
-        ClockState = Script_Clock.States.Paused;
         SetEndTime();
+        ClockState = Script_Clock.States.Paused;
         DidSetGoodEndingEndTime = true;
+        
+        clock.DisplayTime(forceDefault: true);
     }
 
     private void HandleSundayTime()
     {
-        if (game.RunCycle == Script_RunsManager.Cycle.Sunday)
-        {
-            ClockState = Script_Clock.States.Paused;
-            SetEndTime();
-            didSetSunEndTime = true;
-        }
+        DidSetSunEndTime = true;
+        
+        clock.SundayTimer = DelayBeforeClockBlinkSunday;
+        SetEndTime();
+        ClockState = Script_Clock.States.Paused;
+        
+        clock.DisplayTime(forceDefault: true);
     }
 
     /// <summary>
@@ -175,6 +174,9 @@ public class Script_ClockManager : MonoBehaviour
         }
 
         InitialState();
+
+        if (game.RunCycle == Script_RunsManager.Cycle.Sunday && !DidSetSunEndTime)
+            HandleSundayTime();
     }
 
     // ------------------------------------------------------------------

@@ -45,7 +45,6 @@ public class Script_Clock : MonoBehaviour
     [SerializeField] private Script_ClockManager clockManager;
     [SerializeField] private Script_Game game;
     
-    private float sundayTimer;
     private float sundayClockStartBlinkingTimeStamp;
     private bool isSundayClockStartBlinkingTimeStampSet;
     
@@ -78,11 +77,8 @@ public class Script_Clock : MonoBehaviour
     {
         get => timeState;
     }
-    
-    void Start()
-    {
-        sundayTimer = clockManager.DelayBeforeClockBlinkSunday;
-    }
+
+    public float SundayTimer { get; set; }
     
     // Update is called once per frame
     void Update()
@@ -125,11 +121,11 @@ public class Script_Clock : MonoBehaviour
 
         if (clockManager.DidSetSunEndTime && !isSundayClockStartBlinkingTimeStampSet)
         {
-            sundayTimer -= Time.deltaTime;
+            SundayTimer -= Time.deltaTime;
             
-            if (sundayTimer <= 0)
+            if (SundayTimer <= 0)
             {
-                sundayTimer = 0f;
+                SundayTimer = 0f;
                 
                 sundayClockStartBlinkingTimeStamp = Time.time;
                 isSundayClockStartBlinkingTimeStampSet = true;
@@ -158,7 +154,7 @@ public class Script_Clock : MonoBehaviour
         }
     }
     
-    private void DisplayTime(bool forceDefault = false)
+    public void DisplayTime(bool forceDefault = false)
     {
         bool isClose                = CurrentTime >= WarningTime && !forceDefault;
         bool hideColons;
@@ -173,7 +169,7 @@ public class Script_Clock : MonoBehaviour
             }
             else
             {
-                var isSundayBlinking = sundayTimer <= 0f;
+                var isSundayBlinking = SundayTimer <= 0f;
                 var normalizedTime = Time.time - sundayClockStartBlinkingTimeStamp;
                 hideColons = isSundayBlinking
                     && (int)Mathf.Floor(normalizedTime * 2) % 2 == 0;

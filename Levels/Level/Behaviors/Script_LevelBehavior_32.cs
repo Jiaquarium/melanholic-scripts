@@ -699,7 +699,6 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         switch (game.ActiveEnding)
         {
             case (Script_TransitionManager.Endings.True):
-                Dev_Logger.Debug("------ SETTING UP TRUE ENDING, remove door ------");
                 HandleEndingExitState(Script_TransitionManager.Endings.True);
                 break;
 

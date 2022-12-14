@@ -44,6 +44,13 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private float glitchFadeInTime = 5f;
     [SerializeField] private float glitchFadeOutTime = 2f;
     
+    // ------------------------------------------------------------------
+    // Face Off Only
+    
+    [SerializeField] private Script_BgThemePlayer faceOffBgThemePlayer;
+    
+    // ------------------------------------------------------------------
+    
     [SerializeField] private Transform customCanvasesParent;
     [SerializeField] private Canvas[] customCanvases;
     
@@ -58,6 +65,7 @@ public class Script_PRCSManager : MonoBehaviour
 
     [SerializeField] private Script_TimelineController faceOffTimelineController;
     [SerializeField] private Script_TimelineController awakeningFinalTimelineController;
+    [SerializeField] private float waitTimeAfterFaceOffHold;
     [SerializeField] private float waitTimeAfterFaceOff;
     [SerializeField] private float waitTimeAfterAwakeningFinal;
     
@@ -260,9 +268,28 @@ public class Script_PRCSManager : MonoBehaviour
 
     // Gives option to either use callback at beginning of fading out
     // or when fading is completely done.
-    public void TalkingSelfSequence(Action cb, Action doneFadingCb = null)
+    public void TalkingSelfSequence(
+        Action cb,
+        Action doneFadingCb = null,
+        bool isFaceOff = false
+    )
     {
         glitchManager.SetHigh();
+        
+        var bgm = Script_BackgroundMusicManager.Control;
+
+        // For FaceOff, fade out BGM in 5 sec
+        if (isFaceOff)
+        {
+            bgm.FadeOut(
+                () => {
+                    game.PauseBgMusic();
+                    game.PauseBgThemeSpeakers();
+                },
+                glitchFadeInTime,
+                Const_AudioMixerParams.ExposedBGVolume
+            );
+        }
         
         // 5 sec of glitch
         glitchManager.BlendTo(
@@ -293,6 +320,13 @@ public class Script_PRCSManager : MonoBehaviour
             // Optional callback when fading starts
             if (cb != null)
                 cb();
+            
+            // Myne's Mirror Bg Player comes in at beginning of Face Off Timeline
+            if (isFaceOff)
+            {
+                bgm.SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+                faceOffBgThemePlayer.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -347,8 +381,24 @@ public class Script_PRCSManager : MonoBehaviour
 
         IEnumerator WaitToFadeOut()
         {
+            // Wait 1 sec before fading out bgm
+            yield return new WaitForSeconds(waitTimeAfterFaceOffHold);
+            
+            // Fade out bgThemePlayer while waiting to fade out Black Screen
+            Script_BackgroundMusicManager.Control.FadeOut(
+                () => faceOffBgThemePlayer.gameObject.SetActive(false),
+                waitTimeAfterFaceOff,
+                Const_AudioMixerParams.ExposedBGVolume
+            );
+            
             yield return new WaitForSeconds(waitTimeAfterFaceOff);
 
+            // Fade back in level bgm
+            Script_BackgroundMusicManager.Control.UnPauseAll();
+            Script_BackgroundMusicManager.Control.FadeIn(
+                null, Script_TransitionManager.FadeTimeSlow, Const_AudioMixerParams.ExposedBGVolume
+            );
+            
             Script_TransitionManager.Control.TimelineFadeOut(
                 Script_TransitionManager.FadeTimeSlow,
                 () => {
