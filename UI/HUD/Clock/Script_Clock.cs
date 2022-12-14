@@ -136,7 +136,8 @@ public class Script_Clock : MonoBehaviour
             }
         }
 
-        DisplayTime(clockManager.DidSetSunEndTime);
+        bool isForceDefaultFormat = clockManager.DidSetSunEndTime || clockManager.DidSetGoodEndingEndTime;
+        DisplayTime(isForceDefaultFormat);
     }
 
     public void FastForwardTime(int sec, bool isRoundDownToMinute = false)
@@ -159,17 +160,24 @@ public class Script_Clock : MonoBehaviour
     
     private void DisplayTime(bool forceDefault = false)
     {
-        // On Sunday, show the normal clock at 6am.
         bool isClose                = CurrentTime >= WarningTime && !forceDefault;
         bool hideColons;
 
-        // On Sunday, with normal time, blink every half second.
-        if (clockManager.DidSetSunEndTime)
+        // On Sunday, show the normal clock format but at 6am, blink every half second.
+        if (forceDefault)
         {
-            var isSundayBlinking = sundayTimer <= 0f;
-            var normalizedTime = Time.time - sundayClockStartBlinkingTimeStamp;
-            hideColons = isSundayBlinking
-                && (int)Mathf.Floor(normalizedTime * 2) % 2 == 0;
+            // On Good Ending, freeze colon blinking (as if time is frozen at 6am).
+            if (clockManager.DidSetGoodEndingEndTime)
+            {
+                hideColons = false;
+            }
+            else
+            {
+                var isSundayBlinking = sundayTimer <= 0f;
+                var normalizedTime = Time.time - sundayClockStartBlinkingTimeStamp;
+                hideColons = isSundayBlinking
+                    && (int)Mathf.Floor(normalizedTime * 2) % 2 == 0;
+            }
         }
         else
         {

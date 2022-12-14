@@ -72,6 +72,21 @@ public class Script_ScarletCipherManager : MonoBehaviour
         get => _scarletCipherNotification;
     }
 
+    public int ScarletCipherRemainingCount
+    {
+        get
+        {
+            int count = 0;
+            foreach (bool isVisible in ScarletCipherVisibility)
+            {
+                if (isVisible)
+                    count++;
+            }
+
+            return ScarletCipher.Length - count;
+        }
+    }
+
     /// <summary>
     /// Use this to reveal pieces of Scarlet Cipher
     /// </summary>

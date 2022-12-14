@@ -30,6 +30,10 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         STATE DATA
     ======================================================================= */
     public bool didStartThought;
+    public bool didOpeningThoughtFaceOff0;
+    public bool didOpeningThoughtFaceOff1;
+    public bool didOpeningThoughtCodeRemains0;
+    public bool didOpeningThoughtCodeRemains1;
     /* ======================================================================= */
     
     [SerializeField] private Script_DialogueNode startNode;
@@ -47,6 +51,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode wedR1Node;
     [SerializeField] private Script_DialogueNode monR2Node;
     [SerializeField] private Script_DialogueNode satWeekendStartNode;
+    [SerializeField] private Script_DialogueNode faceOff0DoneNode;
+    [SerializeField] private Script_DialogueNode faceOff1DoneNode;
+    [SerializeField] private Script_DialogueNode almostDoneNode;
     
     [SerializeField] private Script_DialogueNode[] frontDoorNodes;
 
@@ -57,6 +64,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_InteractableObject CCTVCamera;
     [SerializeField] private GameObject outsideTrueEnding;
     [SerializeField] private GameObject outsideGoodEnding;
+
+    [SerializeField] private Script_ScarletCipherManager scarletCipherManager;
+    [SerializeField] private Script_ClockManager clockManager;
 
     // ------------------------------------------------------------------
     // Dynamic Environment
@@ -174,6 +184,52 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         )
         {
             HandleOpeningDialogueSetup(satWeekendStartNode);
+        }
+
+        // Almost done dialogue is most impactful so should take priority over Face Off done dialogue
+        else if (
+            scarletCipherManager.ScarletCipherRemainingCount == 0
+            && game.RunCycle == Script_RunsManager.Cycle.Weekend
+            && !didOpeningThoughtCodeRemains0
+            && isFirstLoad
+        )
+        {
+            didOpeningThoughtCodeRemains0 = true;
+            HandleOpeningDialogueSetup(almostDoneNode);
+        }
+
+        // Almost done dialogue is most impactful so should take priority over Face Off done dialogue
+        else if (
+            scarletCipherManager.ScarletCipherRemainingCount == 1
+            && game.RunCycle == Script_RunsManager.Cycle.Weekend
+            && !didOpeningThoughtCodeRemains1
+            && isFirstLoad
+        )
+        {
+            didOpeningThoughtCodeRemains1 = true;
+            HandleOpeningDialogueSetup(almostDoneNode);
+        }
+
+        else if (
+            game.RunCycle == Script_RunsManager.Cycle.Weekend
+            && game.faceOffCounter == 1
+            && !didOpeningThoughtFaceOff0
+            && isFirstLoad
+        )
+        {
+            didOpeningThoughtFaceOff0 = true;
+            HandleOpeningDialogueSetup(faceOff0DoneNode);
+        }
+
+        else if (
+            game.RunCycle == Script_RunsManager.Cycle.Weekend
+            && game.faceOffCounter == 2
+            && !didOpeningThoughtFaceOff1
+            && isFirstLoad
+        )
+        {
+            didOpeningThoughtFaceOff1 = true;
+            HandleOpeningDialogueSetup(faceOff1DoneNode);
         }
 
         // Sunday, don't do typewriting for Map Name
@@ -299,7 +355,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public bool CheckCCTVCode(string CCTVcodeInput)
     {
-        return Script_ScarletCipherManager.Control.CheckCCTVCode(CCTVcodeInput);
+        return scarletCipherManager.CheckCCTVCode(CCTVcodeInput);
     }
 
     // ------------------------------------------------------------------
@@ -461,6 +517,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     public void OnDisableSurveillanceWhiteScreen()
     {
+        clockManager.SetGoodEndingEndTime();
         HandleEndingExitState(Script_TransitionManager.Endings.Good);
     }
 

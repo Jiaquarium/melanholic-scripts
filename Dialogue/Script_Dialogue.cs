@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-12-13 13:21:35
+// Last created by Dialogue Exporter at 2022-12-13 17:34:44
 
 using System.Collections;
 using System.Collections.Generic;
@@ -845,6 +845,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"You should really get back to work.",
+        },
+        
+    }
+},
+{
+    "hotel-bay-v1_elevator_good-ending_disabled_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"There’s no use taking the elevator anymore.",
         },
         
     }
@@ -4819,13 +4831,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"He-he-he...",
                 @"......",
                 @"You see...",
-                @"You created me, {1}...",
+                @"You created me, {0}...",
                 @"...As a projection of your own sense of Self.",
                 @"In other words|.|.|.|",
                 @"I <i>am</i> you.",
                 @"And now let me ask you...",
                 @"How can you hate your very own ideal of Self?",
-                @"But I’m not here to pose theoretical riddles for you, {1}...",
+                @"But I’m not here to pose theoretical riddles for you, {0}...",
                 @"......",
         },
         metadata = new Model_Languages.Metadata[]

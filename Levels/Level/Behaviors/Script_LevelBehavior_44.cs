@@ -14,6 +14,7 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     // State Data
 
     public bool didIntro;
+    public bool didDontKnowMeThought;
     
     // ==================================================================
 
@@ -22,8 +23,11 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
 
     [SerializeField] private Script_ScarletCipherPiece[] scarletCipherPieces;
 
+    [SerializeField] private Script_Trigger[] stageTriggers;
+
     [SerializeField] private float waitBeforeIntroTime;
     [SerializeField] private Script_DialogueNode introNode;
+    [SerializeField] private Script_DialogueNode dontKnowMeNode;
 
     private bool didMapNotification;
 
@@ -104,10 +108,32 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
 
+    public void OnDontKnowMeThoughtDone()
+    {
+        game.ChangeStateInteract();
+    }
+
+    // ------------------------------------------------------------------
+    // Unity Event Triggers
+    
+    // PlayerEnterOnce DontKnowMe Trigger
+    public void DontKnowMeThought()
+    {
+        if (!didDontKnowMeThought)
+        {
+            didDontKnowMeThought = true;
+            game.ChangeStateCutScene();
+            Script_DialogueManager.DialogueManager.StartDialogueNode(dontKnowMeNode);
+        }
+    }
+
     // ------------------------------------------------------------------
     
     public override void Setup()
     {
         base.Setup();
+
+        foreach (var trigger in stageTriggers)
+            trigger.gameObject.SetActive(!didDontKnowMeThought);
     }
 }

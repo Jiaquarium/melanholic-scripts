@@ -22,6 +22,7 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
     [SerializeField] private Script_TileMapExitEntrance exitToLobby;
     [SerializeField] private Script_InteractableObjectText elevatorDisabledText;
     [SerializeField] private Script_InteractableObjectText elevatorSundayDisabledText;
+    [SerializeField] private Script_InteractableObjectText elevatorGoodEndingDisabledText;
 
     [SerializeField] private Script_ElevatorManager elevatorManager;
 
@@ -85,8 +86,9 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
     private void HandleElevatorStateDefault()
     {
         var isSunday = game.IsRunDay(Script_Run.DayId.sun);
+        var isGoodEnding = game.ActiveEnding == Script_TransitionManager.Endings.Good;
         
-        if (isSunday)
+        if (isSunday || isGoodEnding)
             elevator.State = Script_InteractableObject.States.Disabled;
         else
             elevator.State = Script_InteractableObject.States.Active;
@@ -97,9 +99,26 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         if (elevator.State == Script_InteractableObject.States.Disabled)
         {
             bool isSunday = game.IsRunDay(Script_Run.DayId.sun);
+            bool isGoodEnding = game.ActiveEnding == Script_TransitionManager.Endings.Good;
             
-            elevatorSundayDisabledText.gameObject.SetActive(isSunday);
-            elevatorDisabledText.gameObject.SetActive(!isSunday);
+            if (isSunday)
+            {
+                elevatorDisabledText.gameObject.SetActive(false);
+                elevatorSundayDisabledText.gameObject.SetActive(true);
+                elevatorGoodEndingDisabledText.gameObject.SetActive(false);
+            }
+            else if (isGoodEnding)
+            {
+                elevatorDisabledText.gameObject.SetActive(false);
+                elevatorSundayDisabledText.gameObject.SetActive(false);
+                elevatorGoodEndingDisabledText.gameObject.SetActive(true);
+            }
+            else
+            {
+                elevatorDisabledText.gameObject.SetActive(true);
+                elevatorSundayDisabledText.gameObject.SetActive(false);
+                elevatorGoodEndingDisabledText.gameObject.SetActive(false);
+            }
         }
         else
         {

@@ -9,7 +9,8 @@ public class Script_SaveLoadLevelBehavior_44 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_44 lvlModel = new Model_LevelBehavior_44(
-            _didIntro : LB44.didIntro
+            _didIntro : LB44.didIntro,
+            _didDontKnowMeThought : LB44.didDontKnowMeThought
         );
         
         data.levelsData.LB44 = lvlModel;
@@ -18,7 +19,9 @@ public class Script_SaveLoadLevelBehavior_44 : Script_SaveLoadLevelBehavior
     public override void Load(Model_RunData data)
     {
         Model_LevelBehavior_44 lvlModel = data.levelsData.LB44;
+        
         LB44.didIntro = lvlModel.didIntro;
+        LB44.didDontKnowMeThought = lvlModel.didDontKnowMeThought;
 
         Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);

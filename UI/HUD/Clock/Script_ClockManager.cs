@@ -59,6 +59,7 @@ public class Script_ClockManager : MonoBehaviour
     }
 
     public bool DidSetSunEndTime { get => didSetSunEndTime; }
+    public bool DidSetGoodEndingEndTime { get; set; }
 
     public float DelayBeforeClockBlinkSunday { get => delayBeforeClockBlinkSunday; }
 
@@ -140,6 +141,13 @@ public class Script_ClockManager : MonoBehaviour
     public void SetEndTime()
     {
         clock.CurrentTime = Script_Clock.EndTime;
+    }
+
+    public void SetGoodEndingEndTime()
+    {
+        ClockState = Script_Clock.States.Paused;
+        SetEndTime();
+        DidSetGoodEndingEndTime = true;
     }
 
     private void HandleSundayTime()

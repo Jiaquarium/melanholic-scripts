@@ -9,7 +9,11 @@ public class Script_SaveLoadLevelBehavior_32 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_32 lvlModel = new Model_LevelBehavior_32(
-            _didStartThought           : LB32.didStartThought
+            _didStartThought : LB32.didStartThought,
+            _didOpeningThoughtFaceOff0 : LB32.didOpeningThoughtFaceOff0,
+            _didOpeningThoughtFaceOff1 : LB32.didOpeningThoughtFaceOff1,
+            _didOpeningThoughtCodeRemains0 : LB32.didOpeningThoughtCodeRemains0,
+            _didOpeningThoughtCodeRemains1 : LB32.didOpeningThoughtCodeRemains1
         );
         
         data.levelsData.LB32 = lvlModel;
@@ -31,6 +35,10 @@ public class Script_SaveLoadLevelBehavior_32 : Script_SaveLoadLevelBehavior
 
         Model_LevelBehavior_32 lvlModel     = data.levelsData.LB32;
         LB32.didStartThought                = lvlModel.didStartThought;
+        LB32.didOpeningThoughtFaceOff0      = lvlModel.didOpeningThoughtFaceOff0;
+        LB32.didOpeningThoughtFaceOff1      = lvlModel.didOpeningThoughtFaceOff1;
+        LB32.didOpeningThoughtCodeRemains0  = lvlModel.didOpeningThoughtCodeRemains0;
+        LB32.didOpeningThoughtCodeRemains1  = lvlModel.didOpeningThoughtCodeRemains1;
 
         Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
