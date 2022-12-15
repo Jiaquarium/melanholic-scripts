@@ -1264,17 +1264,17 @@ public class Script_Game : MonoBehaviour
         return menuController.UnequipAll(excludes);
     }
 
-    public void EquipLastElevatorMaskBackground(bool isGive = false)
+    public void EquipMaskBackground(string maskId, bool isGive = false)
     {
-        UnequipAll(new string[]{ Const_Items.LastElevatorId });
+        UnequipAll(new string[]{ maskId });
 
         if (isGive)
-            AddItemById(Const_Items.LastElevatorId);
+            AddItemById(maskId);
 
         UnequipAll();
         
         // Set as Prepped Mask in background.
-        StickStickerBackground(Const_Items.LastElevatorId);
+        StickStickerBackground(maskId);
 
         // Set as active in background.
         GetPlayer().ForceStickerSwitchBackground(0);

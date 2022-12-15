@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-12-14 13:06:34
+// Last created by Dialogue Exporter at 2022-12-15 16:58:59
 
 using System.Collections;
 using System.Collections.Generic;
@@ -4826,26 +4826,31 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You know, my dear, it should never have come to this.",
                 @"He-he...",
                 @"You might think you despise me at this point...",
-                @"Perhaps you think I’m nothing but a monster...",
+                @"Perhaps you think I’m nothing more than a monster...",
                 @"On the contrary, dear, the truth is far from it...",
                 @"He-he-he...",
                 @"......",
                 @"You see...",
-                @"You created me, {0}...",
-                @"...long ago...",
-                @"...to see your own sense of Self.",
+                @"I was created...",
+                @"To serve as a mere shield...",
+                @"...created so you could nurture your own sense of Self.",
+                @"...in your very own vision.",
                 @"In other words|.|.|.|",
-                @"I <i>|a|m|</i> y|o|u|.",
-                @"So now allow me to propose this...",
-                @"How can you hate your very own ideal of Self?",
-                @"How can you despise someone that helps| “find you”?",
+                @"<b>You <i>|m|a|d|e|</i> me.</b>",
+                @"{0}...",
+                @"So now allow me to ask you this...",
+                @"How can you hate your very own ideal?",
+                @"How can you despise the only one who can help| “find you”?",
                 @"......",
-                @"But I’m afraid to tell you,| my dear {0}...",
-                @"My purpose hasn’t been to help you simply| “find yourself”| for quite some time now...",
-                @"No...| things aren’t that simple anymore...",
+                @"<b>How can you hate me?</b>",
+                @"When my one true purpose...",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -4952,9 +4957,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{10}",
         EN = new string[]
         {
-                @"What I’m really here for|.|.|.|",
+                @"When what I’m really here for|.|.|.|",
                 @"Is to save you from|.|.|.|",
-                @"||<b>From your fate at {49}</b>",
+                @"|||<b>Your own fate at {49}</b>",
                 @"......",
                 @"At that moment...",
                 @"I know exactly what will happen to us...",
@@ -4968,10 +4973,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You see...",
                 @"This cycle is <i>our</i> only way...",
                 @"<b>...to survive.</b>",
+                @"|.|.|.|",
                 @"<b>I too have run out of choices.</b>",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 

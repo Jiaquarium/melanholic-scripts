@@ -353,7 +353,7 @@ public class Script_PRCSManager : MonoBehaviour
 
     private void SwitchLastElevatorMaskBackground()
     {
-        game.EquipLastElevatorMaskBackground(isGive: false);
+        game.EquipMaskBackground(Const_Items.LastElevatorId, isGive: false);
     }
 
     // ----------------------------------------------------------------------

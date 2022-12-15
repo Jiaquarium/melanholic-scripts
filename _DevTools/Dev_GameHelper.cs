@@ -73,6 +73,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_LevelBehavior_0 woodsBehavior;
     [SerializeField] private Script_LevelBehavior_4 hallwayWithSecretBehavior;
     [SerializeField] private Script_LevelBehavior_10 IdsRoomBehavior;
+    [SerializeField] private Script_LevelBehavior_20 BallroomBehavior;
     [SerializeField] private Script_LevelBehavior_21 EileensRoomBehavior;
     [SerializeField] private Script_LevelBehavior_25 ElleniasRoomBehavior;
     [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;
@@ -265,6 +266,23 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToGrandMirrorFrontOfMirror()
     {
         Teleport(GrandMirrorFrontOfMirror);
+    }
+
+    public void ExitToGrandMirrorFrontOfMirrorR2()
+    {
+        Script_Game.Game.grandMirrorRoomBehavior.IsFinalRound = true;
+        Teleport(GrandMirrorFrontOfMirror);
+    }
+
+    public void HandleGrandMirrorR2Mask()
+    {
+        var game = Script_Game.Game;
+        int slot;
+        
+        game.IsDisableMasksOnly = false;
+        game.IsHideHUD = false;
+        var hasMyMask = game.GetItemsStickerItem(Const_Items.MyMaskId, out slot) != null;
+        game.EquipMaskBackground(Const_Items.MyMaskId, !hasMyMask);
     }
 
     public void ExitToCelestialGardens()
@@ -469,7 +487,19 @@ public class Dev_GameHelper : MonoBehaviour
         // Set Items for Weekend Cycle.
         inventoryTester.WeekendCycle();
         
+        // Set Level states
         ToGrandMirrorState();
+
+        // Set Scarlet Cipher visibility
+        var scarletCipherManager = Script_ScarletCipherManager.Control;
+        scarletCipherManager.RevealScarletCipherSlot(0);
+        scarletCipherManager.RevealScarletCipherSlot(1);
+        scarletCipherManager.RevealScarletCipherSlot(2);
+
+        // Set Piano states
+        Script_PianoManager.Control.Pianos[0].IsRemembered = true;
+        Script_PianoManager.Control.Pianos[1].IsRemembered = true;
+        Script_PianoManager.Control.Pianos[2].IsRemembered = true;
 
         MynesGrandMirrorRoomBehavior.IsDone = true;
 
@@ -504,6 +534,8 @@ public class Dev_GameHelper : MonoBehaviour
         // Set State at this point in game.
         woodsBehavior.didStartThought                               = true;
         
+        BallroomBehavior.isKingIntroCutSceneDone                    = true;
+
         hallwayWithSecretBehavior.didPickUpMelancholyPianoSticker   = true;
 
         IdsRoomBehavior.gotBoarNeedle                               = true;
@@ -642,6 +674,16 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Go To: Grand Mirror R2"))
                 {
                     Script_Game.Game.TeleportToGrandMirrorBackgroundR2();
+                }
+
+                if (GUILayout.Button("Go To: Grand Mirror R2 (Front of Mirror)"))
+                {
+                    t.ExitToGrandMirrorFrontOfMirrorR2();
+                }
+
+                if (GUILayout.Button("Equip MyMask BG R2"))
+                {
+                    t.HandleGrandMirrorR2Mask();
                 }
                 
                 EditorGUILayout.LabelField("Intro Rooms", EditorStyles.miniLabel);

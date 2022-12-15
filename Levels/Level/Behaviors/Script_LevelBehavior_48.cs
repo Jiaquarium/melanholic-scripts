@@ -331,7 +331,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     private void EquipLastElevatorMaskBackground()
     {
-        game.EquipLastElevatorMaskBackground(true);
+        game.EquipMaskBackground(Const_Items.LastElevatorId, true);
     }
     
     // ------------------------------------------------------------------
