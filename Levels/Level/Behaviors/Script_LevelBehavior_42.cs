@@ -417,7 +417,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             }, 
             defaultCb: () =>
             {
-                HandlePlayFaceOff(game.ChangeStateInteract);
+                HandlePlayFaceOff(OnSuccessDone);
             }
         );
 
@@ -440,6 +440,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             {
                 cb();
             }
+        }
+
+        void OnSuccessDone()
+        {
+            // Fade back in level bgm unless it's KTV2 puzzle
+            var bgm = Script_BackgroundMusicManager.Control;
+            bgm.UnPause();
+            bgm.FadeIn(game.ChangeStateInteract, Script_TransitionManager.FadeTimeSlow, Const_AudioMixerParams.ExposedBGVolume);
         }
     }
     // ----------------------------------------------------------------------

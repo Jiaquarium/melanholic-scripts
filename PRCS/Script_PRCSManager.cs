@@ -384,7 +384,7 @@ public class Script_PRCSManager : MonoBehaviour
             // Wait 1 sec before fading out bgm
             yield return new WaitForSeconds(waitTimeAfterFaceOffHold);
             
-            // Fade out bgThemePlayer while waiting to fade out Black Screen
+            // Fade out Myne's Mirror FaceOff bgThemePlayer while waiting to fade out Black Screen
             Script_BackgroundMusicManager.Control.FadeOut(
                 () => faceOffBgThemePlayer.gameObject.SetActive(false),
                 waitTimeAfterFaceOff,
@@ -392,12 +392,6 @@ public class Script_PRCSManager : MonoBehaviour
             );
             
             yield return new WaitForSeconds(waitTimeAfterFaceOff);
-
-            // Fade back in level bgm
-            Script_BackgroundMusicManager.Control.UnPauseAll();
-            Script_BackgroundMusicManager.Control.FadeIn(
-                null, Script_TransitionManager.FadeTimeSlow, Const_AudioMixerParams.ExposedBGVolume
-            );
             
             Script_TransitionManager.Control.TimelineFadeOut(
                 Script_TransitionManager.FadeTimeSlow,

@@ -41,6 +41,9 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     
     [SerializeField] private Script_BgThemePlayer heartBeatBgThemePlayerPrefab;
     
+    // After success, BGM should change to sound like hotel.
+    [SerializeField] private int onSuccessDoneBgmIdx;
+    
     [SerializeField] private Script_LevelBehavior_23 LB23;
     [SerializeField] private SpriteRenderer alchemistCircle;
     
@@ -135,7 +138,9 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             isCurrentPuzzleComplete = true;
             
             // stop heartbeat bg music and stop pulsing animation of pillars
-            if (heartBeatBgThemePlayer != null) DestroyBgThemePlayer();
+            if (heartBeatBgThemePlayer != null)
+                DestroyBgThemePlayer();
+
             foreach (Script_Tracker tracker in pillars)
                 tracker.Done();
             
@@ -160,7 +165,8 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     {
         transformingRock.gameObject.SetActive(false);
 
-        if (heartBeatBgThemePlayer != null) DestroyBgThemePlayer();
+        if (heartBeatBgThemePlayer != null)
+            DestroyBgThemePlayer();
         
         triggersPuzzleController.CompleteState();
         LB23.CompletedState();
@@ -223,7 +229,7 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
                 {
                     isTimelineControlled = false;
                     
-                    HandlePlayFaceOff(game.ChangeStateInteract);
+                    HandlePlayFaceOff(OnSuccessDone);
                 }
             );
         }
@@ -247,6 +253,18 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             {
                 cb();
             }
+        }
+
+        // Fade in Lobby Bgm to foreshadow the final event there
+        void OnSuccessDone()
+        {
+            Script_BackgroundMusicManager.Control.PlayFadeIn(
+                onSuccessDoneBgmIdx,
+                game.ChangeStateInteract,
+                forcePlay: true,
+                Script_TransitionManager.FadeTimeSlow,
+                Const_AudioMixerParams.ExposedBGVolume
+            );
         }
     }
 
