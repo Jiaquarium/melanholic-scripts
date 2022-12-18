@@ -317,6 +317,24 @@ public class Script_Names: MonoBehaviour
         Flan                    = names.Flan;
     }
 
+    // Dev only
+    // Note: Moose is ??? until finish her quest in Wells World.
+    public static void UpdateR1Names()
+    {
+        UpdateIds();
+        UpdateMyne();
+        UpdateEileen();
+        UpdateEllenia();
+        UpdateUrsie();
+        UpdateKaffe();
+        UpdateLatte();
+        UpdateKingEclaire();
+        UpdateSuzette();
+        UpdatePeche();
+        UpdateMelba();
+        UpdateFlan();
+    }
+
     public void Setup()
     {
         if (Names == null)

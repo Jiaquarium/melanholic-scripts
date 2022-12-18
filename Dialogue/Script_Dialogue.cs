@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-12-15 16:58:59
+// Last created by Dialogue Exporter at 2022-12-17 16:15:47
 
 using System.Collections;
 using System.Collections.Generic;
@@ -143,8 +143,11 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You feel as if you were getting close to something...",
-                @"Okay no time to dwell on it, you’re set on making this last hour count!",
+                @"So close to something...",
+                @"There’s been a change, you can feel it.",
+                @"But what is it?",
+                @"Something inside?",
+                @"Okay no time to dwell on it, just one more hour!",
                 @"Everything should be okay after...",
                 @"You’re sure of it!",
         },
@@ -203,9 +206,23 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"There’s really no reason to stay at this point...",
                 @"...",
-                @"How long has it been {49} for?",
+                @"Is it already {49}?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -215,10 +232,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Faint images of {19} fill your thoughts. What do they want from you?",
+                @"Faint images of {19} fill your thoughts.",
+                @"It feels like they still might need something from you?",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -233,7 +255,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Are you sure you want to do this?",
+                @"Are you sure you want to leave?",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -752,7 +774,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"The book on the <b>coffee table</b>... Don’t remember ever having a book like that here|.|.|.| You’re certain.",
+                @"But first,| the book on the <b>coffee table</b>...| Don’t remember ever having a book like that here|.|.|.|",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -4832,11 +4854,11 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"......",
                 @"You see...",
                 @"I was created...",
-                @"To serve as a mere shield...",
-                @"...created so you could nurture your own sense of Self.",
-                @"...in your very own vision.",
+                @"...in your very own vision...",
+                @"...created for you to finally see your True Self.",
+                @"To be|| your mirror.",
                 @"In other words|.|.|.|",
-                @"<b>You <i>|m|a|d|e|</i> me.</b>",
+                @"<size=16><b>I <i>|a|m</i> ||y|o|u|.</b></size>",
                 @"{0}...",
                 @"So now allow me to ask you this...",
                 @"How can you hate your very own ideal?",
@@ -4957,24 +4979,24 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{10}",
         EN = new string[]
         {
-                @"When what I’m really here for|.|.|.|",
-                @"Is to save you from|.|.|.|",
-                @"|||<b>Your own fate at {49}</b>",
-                @"......",
-                @"At that moment...",
-                @"I know exactly what will happen to us...",
-                @"You,| me...",
-                @"All this we’ve built...",
-                @"Together...",
-                @"So please,| let’s quit these petty little games...",
-                @"Will you return to the hotel?",
-                @"And put all this behind you?",
-                @"......",
-                @"You see...",
-                @"This cycle is <i>our</i> only way...",
-                @"<b>...to survive.</b>",
-                @"|.|.|.|",
-                @"<b>I too have run out of choices.</b>",
+                @"<size=16>When what I’m really here for|.|.|.|</size>",
+                @"<size=16>Is to save you from|.|.|.|</size>",
+                @"<size=16>|||<b>Your own fate at {49}</b></size>",
+                @"<size=16>......</size>",
+                @"<size=16>At that moment...</size>",
+                @"<size=16>I know exactly what will happen to us...</size>",
+                @"<size=16>You,| me...</size>",
+                @"<size=16>All this we’ve built...</size>",
+                @"<size=16>Together...</size>",
+                @"<size=16>So please,| let’s quit these petty little games...</size>",
+                @"<size=16>Will you return to the hotel?</size>",
+                @"<size=16>And put all this behind you?</size>",
+                @"<size=16>......</size>",
+                @"<size=16>You see...</size>",
+                @"<size=16>This cycle is <i>our</i> only way...</size>",
+                @"<size=16><b>...to survive.</b></size>",
+                @"<size=16>|.|.|.|</size>",
+                @"<size=16><b>I too have run out of choices.</b></size>",
         },
         metadata = new Model_Languages.Metadata[]
         {
@@ -6070,7 +6092,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"There’s no way you would do <i>that</i> again.",
+                @"There’s no way you’re thinking about <i>that</i> again.",
                 @"That voice! Annoying!",
                 @"Keep it together, {0}!",
                 @"Solid land!",
@@ -6085,9 +6107,9 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You really think you know me?!",
-                @"Give me a break.",
-                @"Not this time please.",
+                @"Wait what is this place?",
+                @"You wouldn’t know, would you?",
+                @"You aren’t going to be much use anymore, are you?",
         },
         
     }

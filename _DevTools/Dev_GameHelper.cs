@@ -501,6 +501,9 @@ public class Dev_GameHelper : MonoBehaviour
         Script_PianoManager.Control.Pianos[1].IsRemembered = true;
         Script_PianoManager.Control.Pianos[2].IsRemembered = true;
 
+        // Update names
+        Script_Names.UpdateR1Names();
+
         MynesGrandMirrorRoomBehavior.IsDone = true;
 
         Script_Game.Game.StartWeekendCycleSaveInitialize();

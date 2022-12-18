@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-12-14 13:06:32
+// Last created by UI Exporter at 2022-12-17 16:04:09
 
 using System.Collections;
 using System.Collections.Generic;
@@ -143,7 +143,7 @@ public class Script_UIText
     "good-ending_narrator_monologue5",
     new Model_LanguagesUI
     {
-        EN = @"As if it never even happened."
+        EN = @"To be locked away like the rest."
     }
 },
 {
@@ -276,21 +276,21 @@ public class Script_UIText
     "good-ending_narrator_monologue15_1",
     new Model_LanguagesUI
     {
-        EN = @"Everyone gets what they wanted."
+        EN = @"Finally, this weight on my shoulders..."
     }
 },
 {
     "good-ending_narrator_monologue15_2",
     new Model_LanguagesUI
     {
-        EN = @"No more halfway."
+        EN = @"Everyone gets what they wanted this way."
     }
 },
 {
     "good-ending_narrator_monologue15_3",
     new Model_LanguagesUI
     {
-        EN = @"Finally, this weight on my shoulders..."
+        EN = @"No more halfway."
     }
 },
 {
@@ -467,7 +467,7 @@ public class Script_UIText
     "true-ending_narrator_monologue3_3",
     new Model_LanguagesUI
     {
-        EN = @"You wouldn’t even have recognized me."
+        EN = @"And change my face for the sake of others."
     }
 },
 {
@@ -2323,7 +2323,7 @@ Jia"
     "faceoff_ren-myne_quest1_block6_0",
     new Model_LanguagesUI
     {
-        EN = @"<b>You are a nobody.</b>"
+        EN = @"<b>You are nobody.</b>"
     }
 },
 // ------------------------------------------------------------------
