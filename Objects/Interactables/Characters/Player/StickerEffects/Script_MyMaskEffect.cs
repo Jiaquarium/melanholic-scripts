@@ -36,5 +36,6 @@ public class Script_MyMaskEffect : Script_StickerEffect
 
         Script_MaskEffectsDirectorManager.Instance.IsMyMaskMutationOff = false;
         Script_StickerEffectEventsManager.MyMaskStopFaceDir();
+        Script_NPCEventsManager.NPCRandomAnimatorStopForceDefault();
     }
 }

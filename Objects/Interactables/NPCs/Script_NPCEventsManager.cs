@@ -27,4 +27,20 @@ public class Script_NPCEventsManager : MonoBehaviour
         if (OnNPCRandomAnimatorDefault != null)
             OnNPCRandomAnimatorDefault();
     }
+
+    public delegate void NPCRandomAnimatorForceDefaultDelegate();
+    public static event NPCRandomAnimatorForceDefaultDelegate OnNPCRandomAnimatorForceDefault;
+    public static void NPCRandomAnimatorForceDefault()
+    {
+        if (OnNPCRandomAnimatorForceDefault != null)
+            OnNPCRandomAnimatorForceDefault();
+    }
+
+    public delegate void NPCRandomAnimatorStopForceDefaultDelegate();
+    public static event NPCRandomAnimatorStopForceDefaultDelegate OnNPCRandomAnimatorStopForceDefault;
+    public static void NPCRandomAnimatorStopForceDefault()
+    {
+        if (OnNPCRandomAnimatorStopForceDefault != null)
+            OnNPCRandomAnimatorStopForceDefault();
+    }
 }

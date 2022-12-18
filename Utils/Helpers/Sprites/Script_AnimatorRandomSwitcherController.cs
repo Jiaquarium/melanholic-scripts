@@ -8,29 +8,40 @@ using UnityEditor;
 
 public class Script_AnimatorRandomSwitcherController : MonoBehaviour
 {
-    [SerializeField] private bool isManualStart;
+    [SerializeField] private bool isForceDefault;
     
     [SerializeField] private Vector2 interval;
     [SerializeField] private Vector2 duration;
     [SerializeField] private float startUpDelay;
 
-    private float intervalTimer;
-    private float durationTimer;
+    private float switchAnimatorTimer;
+    private float defaultAnimatorTimer;
     private float startUpDelayTimer;
     
     private bool isSwitched;
 
     void OnEnable()
     {
-        intervalTimer = GetRandomInterval();
+        switchAnimatorTimer = GetRandomInterval();
         startUpDelayTimer = startUpDelay;
         isSwitched = false;
+        Script_NPCEventsManager.OnNPCRandomAnimatorForceDefault += ForceDefault;
+        Script_NPCEventsManager.OnNPCRandomAnimatorStopForceDefault += StopForceDefault;
+    }
+
+    void OnDisable()
+    {
+        Script_NPCEventsManager.OnNPCRandomAnimatorForceDefault -= ForceDefault;
+        Script_NPCEventsManager.OnNPCRandomAnimatorStopForceDefault -= StopForceDefault;
     }
     
     // Update is called once per frame
     void Update()
     {
-        if (startUpDelayTimer > 0f || isManualStart)
+        if (isForceDefault)
+            return;
+        
+        if (startUpDelayTimer > 0f)
         {
             startUpDelayTimer -= Time.deltaTime;
             return;
@@ -38,41 +49,33 @@ public class Script_AnimatorRandomSwitcherController : MonoBehaviour
         
         if (!isSwitched)
         {
-            intervalTimer -= Time.deltaTime;
+            switchAnimatorTimer -= Time.deltaTime;
             
-            if (intervalTimer <= 0f)
-                HandleStartDuration();
+            if (switchAnimatorTimer <= 0f)
+                HandleSwitch();
         }
         else
         {
-            durationTimer -= Time.deltaTime;
+            defaultAnimatorTimer -= Time.deltaTime;
 
-            if (durationTimer <= 0f)
-                HandleStartInterval();
+            if (defaultAnimatorTimer <= 0f)
+                HandleDefault();
         }
     }
 
-    public void StartSwitching()
+    private void HandleSwitch()
     {
-        isManualStart = false;
-        startUpDelayTimer = 0f;
-
-        HandleStartDuration();
-    }
-
-    private void HandleStartDuration()
-    {
-        intervalTimer = 0f;
+        switchAnimatorTimer = 0f;
         SwitchAnimator();
-        durationTimer = GetRandomDuration();
+        defaultAnimatorTimer = GetRandomDuration();
         isSwitched = true;
     }
 
-    private void HandleStartInterval()
+    private void HandleDefault()
     {
-        durationTimer = 0f;
+        defaultAnimatorTimer = 0f;
         DefaultAnimator();
-        intervalTimer = GetRandomInterval();
+        switchAnimatorTimer = GetRandomInterval();
         isSwitched = false;
     }
     
@@ -84,6 +87,17 @@ public class Script_AnimatorRandomSwitcherController : MonoBehaviour
     private void DefaultAnimator()
     {
         Script_NPCEventsManager.NPCRandomAnimatorDefault();
+    }
+
+    private void ForceDefault()
+    {
+        isForceDefault = true;
+        HandleDefault();
+    }
+
+    private void StopForceDefault()
+    {
+        isForceDefault = false;
     }
 
     private float GetRandomInterval() => Random.Range(interval.x, interval.y);

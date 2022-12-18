@@ -104,6 +104,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     public void ForceSheepFaceDirection()
     {
         Script_StickerEffectEventsManager.MyMaskForceFaceDir(Directions.Up);
+        Script_NPCEventsManager.NPCRandomAnimatorForceDefault();
     }
 
     public void MyMaskEffectTimelineDone()
