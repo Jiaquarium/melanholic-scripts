@@ -391,6 +391,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
 
+    // satWeekendStartNode
+    public void SatWeekendStartNodeDone()
+    {
+        GameInteract();
+        // Script_AchievementsManager.Instance.UnlockAct2();
+    }
+
     public void PanToCCTVCamera()
     {
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);        

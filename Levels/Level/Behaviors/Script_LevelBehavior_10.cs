@@ -871,6 +871,11 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
             StartCoroutine(game.TransitionFadeOut(fadeInTime, () => {
                 game.ChangeStateInteract();
+                
+                // Track Ids Cursed cut scene for Achievement after black fades out
+                Script_AchievementsManager.Instance.UpdateCursedCutScene(
+                    Script_AchievementsManager.CursedCutScenes.Ids
+                );
             }));
         }
     }
@@ -1275,6 +1280,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         TearDownBgTransitions();
 
         dm.StartDialogueNode(node);
+
+        // 100% dance moves achievement
+        if (DDRManager.Mistakes == 0)
+            Script_AchievementsManager.Instance.UnlockDancePerfect();
     }
 
     void SwitchLightsInAnimation()

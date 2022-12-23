@@ -278,7 +278,14 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             bgm.PlayFadeIn(
                 bgm.CurrentClipIndex,
-                game.ChangeStateInteract,
+                () => {
+                    game.ChangeStateInteract();
+                    
+                    // Track Elder Intro Cursed cut scene for Achievement cut scene finishes up
+                    Script_AchievementsManager.Instance.UpdateCursedCutScene(
+                        Script_AchievementsManager.CursedCutScenes.ElderEclaire
+                    );
+                },
                 outputMixer: Const_AudioMixerParams.ExposedBGVolume
             );
         });

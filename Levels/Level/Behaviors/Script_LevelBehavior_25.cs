@@ -926,7 +926,12 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         
         IEnumerator WaitForSelfRealizationDialogue()
         {
-            onSelfRealizationDoneAction = () => HandleFadeInBgm(game.ChangeStateInteract);
+            onSelfRealizationDoneAction = () => HandleFadeInBgm(() => {
+                game.ChangeStateInteract();
+                
+                // Word achievement
+                Script_AchievementsManager.Instance.UnlockWord();
+            });
             
             yield return new WaitForSeconds(waitBeforeSelfRealizationTime);
             

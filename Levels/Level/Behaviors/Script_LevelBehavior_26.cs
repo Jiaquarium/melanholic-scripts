@@ -54,7 +54,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private float beforePaintingDoneCutSceneWaitTime;
 
     [SerializeField] private Script_DialogueManager dialogueManager;
-
+    [SerializeField] private int hitCounter;
     
     [Space][Header("Myne's Challenge Settings")][Space]
     [SerializeField] private Script_DialogueNode[] mynesStopDialogue;
@@ -89,12 +89,19 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         set => isDemoEnd = value;
     }
 
+    public int HitCounter
+    {
+        get => hitCounter;
+        set => hitCounter = value;
+    }
+
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete        += OnLevelInitCompleteEvent;
 
         Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
         Script_HurtBoxEventsManager.OnPlayerRestart         += OnPlayerRestartHandleState;
+        Script_HurtBoxEventsManager.OnPlayerRestartTeleport += OnPlayerRestartTeleport;
         Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
         Script_InteractableObjectEventsManager.OnInteractAfterShatter += OnInteractAfterShatter;
@@ -106,6 +113,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         
         Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
         Script_HurtBoxEventsManager.OnPlayerRestart         -= OnPlayerRestartHandleState;
+        Script_HurtBoxEventsManager.OnPlayerRestartTeleport -= OnPlayerRestartTeleport;
         Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
         Script_InteractableObjectEventsManager.OnInteractAfterShatter -= OnInteractAfterShatter;
@@ -203,6 +211,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             {
                 isDramaDoneTriggerOff = true;
                 FadeOutDramaticMusic();
+
+                HandleSpikePerfectAchievement();                
             }
 
             return false;
@@ -244,6 +254,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         }
 
         return false;
+
+        void HandleSpikePerfectAchievement()
+        {
+            if (HitCounter == 0)
+                Script_AchievementsManager.Instance.UnlockSpikePerfect();
+        }
     }
 
     private void PlayMynesStopDialogue(int i)
@@ -302,6 +318,12 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         }
     }
 
+    // When Player is hit by Spike, count number of hits
+    private void OnPlayerRestartTeleport(Collider col)
+    {
+        HitCounter++;
+    }
+    
     /// <summary>
     /// Handle the case where player is left in Talking state from Myne Dialogue and is
     /// hit in during the Dialogue.
@@ -492,6 +514,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             giantFinalIce.IsIcePersists = true;
             demoNoteController.ActivateDemoText();
         }
+
+        // Break first ice achievement (this happens a few moments after diagonal cut and ice shatter)
+        Script_AchievementsManager.Instance.UnlockBreakIce();
     }
 
     // ----------------------------------------------------------------------

@@ -7,7 +7,8 @@ public class Script_Well : Script_InteractableObject
 {
     protected override void ActionDefault()
     {
-        if (CheckDisabled())  return;
+        if (CheckDisabled())
+            return;
 
         WellSFX();
 

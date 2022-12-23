@@ -196,6 +196,10 @@ public class Script_ScarletCipherManager : MonoBehaviour
         
         player.SetIsInteract();
         game.ChangeStateInteract();
+
+        // Handle CCTV Code achievement
+        if (ScarletCipherRemainingCount == 0)
+            Script_AchievementsManager.Instance.UnlockCctvCode();
     }
 
     public void PlayTakeNote()

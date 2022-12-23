@@ -138,6 +138,8 @@ public class Script_Game : MonoBehaviour
     
     [SerializeField] private Script_MaskEffectsDirectorManager maskEffectsDirectorManager;
 
+    [SerializeField] private Script_AchievementsManager achievementsManager;
+
     [SerializeField] private Script_DemoNoteController demoNoteController;
 
     // ------------------------------------------------------------------
@@ -563,6 +565,7 @@ public class Script_Game : MonoBehaviour
 
         timeManager.Setup();
         clockManager.Setup(); // needs to happen after level is set so we know if we're in lobby or not
+        achievementsManager.Setup();
     }
 
     private void DevCleanup()
@@ -2202,6 +2205,8 @@ public class Script_Game : MonoBehaviour
     {
         return persistentDropsContainer.GetPersistentDropModels();
     }
+
+    public void SaveAchievements() => saveGameControl.SaveAchievements();
 
     /* =========================================================================
         _RESTARTING_

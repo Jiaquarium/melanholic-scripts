@@ -183,6 +183,11 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
                 exitReactionText.gameObject.SetActive(true);
 
                 game.ChangeStateInteract();
+
+                // Track Ellenia Cursed cut scene for Achievement after reset back in Urselks Hall
+                Script_AchievementsManager.Instance.UpdateCursedCutScene(
+                    Script_AchievementsManager.CursedCutScenes.Ellenia
+                );
             }));
         }
     }

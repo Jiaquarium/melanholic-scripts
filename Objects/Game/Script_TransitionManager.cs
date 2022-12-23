@@ -360,6 +360,9 @@ public class Script_TransitionManager : MonoBehaviour
 
         // Prompt Player
         FadeInRestartPrompt();
+
+        // The Sealing achievement
+        Script_AchievementsManager.Instance.UnlockSealing();
     }
 
     // Also called at end of AllPuzzlesDoneNotification Timeline before fade back in.
@@ -460,6 +463,12 @@ public class Script_TransitionManager : MonoBehaviour
         oceanBgThemePlayer.FadeInPlay(fadeTime: fadeOceanBgmBackTime);
     }
 
+    // TrueEndingAchievement signal from True Ending Timeline on the final pause waiting for key input
+    public void TrueEndingAchievement()
+    {
+        Script_AchievementsManager.Instance.UnlockNauticalDawn();
+    }
+    
     // After played proper ending cut scene.
     public void RollCredits()
     {

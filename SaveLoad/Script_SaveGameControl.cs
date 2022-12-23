@@ -43,6 +43,7 @@ public class Script_SaveGameControl : MonoBehaviour
     [SerializeField] private Script_SaveLoadMynesMirror mynesMirrorHandler;
 
     [SerializeField] private Script_SaveLoadPianos pianosHandler;
+    [SerializeField] private Script_SaveLoadAchievements achievementsHandler;
 
     public static void SetPath()
     {
@@ -108,14 +109,7 @@ public class Script_SaveGameControl : MonoBehaviour
             eventCycleHandler.SaveEventCycle(data);
             mynesMirrorHandler.SaveMynesMirror(data);
             pianosHandler.SavePianos(data);
-        }
-
-        void WriteSaveDataFile(BinaryFormatter bf, string filePath, Model_SaveData data)
-        {
-            // will overwrite existing file
-            FileStream gameFile = File.Create(filePath);
-            bf.Serialize(gameFile, data);
-            gameFile.Close();
+            achievementsHandler.SaveAchievements(data);
         }
 
         void OverridePlayerData(Model_SaveData data, Model_PlayerState playerState)
@@ -154,6 +148,7 @@ public class Script_SaveGameControl : MonoBehaviour
                 eventCycleHandler.LoadEventCycle(data);
                 mynesMirrorHandler.LoadMynesMirror(data);
                 pianosHandler.LoadPianos(data);
+                achievementsHandler.LoadAchievements(data);
 
                 if (Debug.isDebugBuild) Dev_Logger.Debug("Successful load at: " + saveFilePath);
                 return true;
@@ -251,6 +246,52 @@ public class Script_SaveGameControl : MonoBehaviour
             Debug.LogError("Failed Copy with exception: " + e.ToString());
             return false;
         }
+    }
+
+    public bool SaveAchievements()
+    {
+        SetPath();
+        
+        try 
+        {
+            if (File.Exists(saveFilePath))
+            {
+                // Load save file
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Open(saveFilePath, FileMode.Open);
+                Model_SaveData data = (Model_SaveData)bf.Deserialize(file);
+                file.Close();
+
+                // Save achievements
+                achievementsHandler.SaveAchievements(data);
+                WriteSaveDataFile(bf, saveFilePath, data);
+
+                if (Debug.isDebugBuild)
+                    Dev_Logger.Debug($"Successfully saved achievements at existing file: {saveFilePath}");
+
+                return true;
+            }
+            else
+            {
+                if (Debug.isDebugBuild)
+                    Dev_Logger.Debug("Did not save; file not found.");
+
+                return false;
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Failed Load with exception: " + e.ToString());
+            return false;
+        }
+    }
+
+    private void WriteSaveDataFile(BinaryFormatter bf, string filePath, Model_SaveData data)
+    {
+        // will overwrite existing file
+        FileStream gameFile = File.Create(filePath);
+        bf.Serialize(gameFile, data);
+        gameFile.Close();
     }
 
     public void Setup()

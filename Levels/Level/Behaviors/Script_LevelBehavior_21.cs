@@ -58,7 +58,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     private PlayableDirector playerPlayableDirector;
     
     private bool isInitialize = true;
-    
+    private bool isElleniaHurt;
     private bool isTimelineControlled = false;
 
     // ------------------------------------------------------------------
@@ -78,13 +78,13 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
     protected override void OnEnable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    += OnEntranceAttack;
+        Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
         Script_CombatEventsManager.OnEnemyAttackEnd     += HandleOnEntranceAttackDone;
         
         playerPlayableDirector = game.GetPlayer().GetComponent<PlayableDirector>();
         playerPlayableDirector.stopped                  += OnDropTimelineDone;
         
-        // The first time player enters, need to trigger the OnEntranceAttack sequence
+        // The first time player enters, need to trigger the Attack sequence
         if (!didOnEntranceAttack)
         {
             Script_HUDManager.Control.IsForceUp = true;
@@ -97,7 +97,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
     protected override void OnDisable()
     {
-        Script_GameEventsManager.OnLevelInitComplete    -= OnEntranceAttack;
+        Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
         Script_CombatEventsManager.OnEnemyAttackEnd     -= HandleOnEntranceAttackDone;
         
         playerPlayableDirector.stopped -= OnDropTimelineDone;
@@ -196,8 +196,16 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     }
 
     // Initial spike attack when Player first enters
-    private void OnEntranceAttack()
+    private void OnLevelInitCompleteEvent()
     {
+        if (isElleniaHurt)
+        {
+            // Track Eileen Cursed for Achievement after level init (black fade out) is done
+            Script_AchievementsManager.Instance.UpdateCursedCutScene(
+                Script_AchievementsManager.CursedCutScenes.Eileen
+            );
+        }
+        
         if (didOnEntranceAttack)
             return;
         
@@ -216,7 +224,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         {
             yield return new WaitForSeconds(onEntranceAttackFreezeTime);
 
-            Dev_Logger.Debug("Safe set to interact after OnEntranceAttack");
+            Dev_Logger.Debug("Safe set to interact after Attack");
 
             if (isOnEntranceAttackFrozen)
                 OnEntranceAttackDone();
@@ -271,7 +279,7 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
             // Eileen Ellenia Hurt Event Cycle.
             if (game.RunCycle == Script_RunsManager.Cycle.Weekend)
             {
-                var isElleniaHurt = Script_EventCycleManager.Control.IsElleniaHurt();
+                isElleniaHurt = Script_EventCycleManager.Control.IsElleniaHurt();
                 
                 HandleEileenWeekend(isElleniaHurt);
                 EileensBed.SwitchToBedIsOccupied(isOccupied: isElleniaHurt);

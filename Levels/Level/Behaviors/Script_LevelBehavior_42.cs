@@ -80,8 +80,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            += OnScarletCipherPickUp;
 
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  += OnFrozenWellDie;
-
         Script_InteractableObjectEventsManager.OnShatter                        += OnShatter;
+        Script_InteractableObjectEventsManager.OnWellInteraction                += OnWellInteraction;
     }
 
     protected override void OnDisable()
@@ -94,8 +94,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp            -= OnScarletCipherPickUp;
 
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  -= OnFrozenWellDie;
-
         Script_InteractableObjectEventsManager.OnShatter                        -= OnShatter;
+        Script_InteractableObjectEventsManager.OnWellInteraction                -= OnWellInteraction;
     }
 
     void Awake()
@@ -478,6 +478,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         foreach (var Suzette in Suzettes)
             Suzette.gameObject.SetActive(isActive);
+    }
+
+    private void OnWellInteraction(Script_Well well)
+    {
+        // Handle Well achievement
+        var achievementsManager = Script_AchievementsManager.Instance;
+        if (!achievementsManager.achievementsState.achWell)
+            Script_AchievementsManager.Instance.UnlockWell();
     }
 
     // ------------------------------------------------------------------

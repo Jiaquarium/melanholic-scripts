@@ -52,7 +52,7 @@ public class Script_DemonNPC : Script_MovingNPC
     [SerializeField] bool _shouldPrependIntroNode;
     [Tooltip("Specify a different node to append psychic nodes on intro to (e.g. when intro node has children)")]
     [SerializeField] Script_DialogueNode customPrependIntroNode;
-    
+
     private Script_DialogueNode[] defaultNodes;
     
     // Tracks just talked Psychic.
@@ -65,6 +65,8 @@ public class Script_DemonNPC : Script_MovingNPC
     
     // Tracks if has ever talked Psychic, not just last.
     private bool hasTalkedPsychicLocal;
+
+    private Script_Ids Ids;
 
     public DialogueState MyDialogueState
     {
@@ -121,6 +123,13 @@ public class Script_DemonNPC : Script_MovingNPC
         get => _shouldPrependIntroNode;
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Ids = GetComponent<Script_Ids>(); 
+    }
+    
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -160,13 +169,13 @@ public class Script_DemonNPC : Script_MovingNPC
     {
         var psychicNPC = GetComponent<Script_PsychicNPC>();
         bool isPsychicNPC = psychicNPC != null && psychicNPC.IsAlwaysPsychic;
+        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId);
         
-        bool isPsychicDuckActive = Script_ActiveStickerManager.Control.IsActiveSticker(Const_Items.PsychicDuckId)
-            || isPsychicNPC
-            || Script_Game.Game.IsPsychicRoom;
-        Dev_Logger.Debug($"{name}: HandlePsychicDuck() isPsychicDuckActive: {isPsychicDuckActive}");
+        bool isPsychic = isPsychicDuckActive || isPsychicNPC || Script_Game.Game.IsPsychicRoom;
+        
+        Dev_Logger.Debug($"{name}: HandlePsychicDuck() isPsychic: {isPsychic}");
 
-        if (isPsychicDuckActive)
+        if (isPsychic)
         {
             // Switch to specified Psychic nodes if not already done.
             if (IsIntroPsychicNodes && IntroPsychicNode != null)
@@ -184,11 +193,18 @@ public class Script_DemonNPC : Script_MovingNPC
                 didTalkPsychicIntro = false;
             }
             
-            if (!hasTalkedPsychicLocal)    OnInitialPsychicTalkAction();
+            if (!hasTalkedPsychicLocal)
+                OnInitialPsychicTalkAction();
             
             IsIntroPsychicNodes             = false;
             didLastTalkPsychic              = true;
             hasTalkedPsychicLocal           = true;
+
+            // Psychic connection achievement; exclude DemonNPCs that are Ids
+            // Ensure Psychic Duck is equipped.
+            var achievementsManager = Script_AchievementsManager.Instance;
+            if (!achievementsManager.achievementsState.achPsyConn && Ids == null && isPsychicDuckActive)
+                achievementsManager.UnlockPsyConn();
         }
         else
         {

@@ -127,6 +127,12 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         }
     }
 
+    // Rave Stage Trigger
+    public void HandleRaveAchievement()
+    {
+        Script_AchievementsManager.Instance.UnlockRaveStage();
+    }
+
     // ------------------------------------------------------------------
     
     public override void Setup()

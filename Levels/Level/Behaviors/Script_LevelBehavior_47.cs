@@ -57,6 +57,7 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
         if (!didMapNotification)
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+
             didMapNotification = true;
         }
     }
@@ -84,6 +85,12 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
         }
     }
 
+    // Talk to Ids when he is there from 5:30-5:45
+    public void OnTalkToIds()
+    {
+        Script_AchievementsManager.Instance.UnlockSin();
+    }
+    
     // ------------------------------------------------------------------
     // Trailer Only
 
