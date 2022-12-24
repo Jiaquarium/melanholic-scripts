@@ -203,7 +203,7 @@ public class Script_DemonNPC : Script_MovingNPC
             // Psychic connection achievement; exclude DemonNPCs that are Ids
             // Ensure Psychic Duck is equipped.
             var achievementsManager = Script_AchievementsManager.Instance;
-            if (!achievementsManager.achievementsState.achPsyConn && Ids == null && isPsychicDuckActive)
+            if (Ids == null && isPsychicDuckActive)
                 achievementsManager.UnlockPsyConn();
         }
         else

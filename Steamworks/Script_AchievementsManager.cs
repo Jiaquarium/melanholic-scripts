@@ -7,6 +7,15 @@ using Steamworks;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// Reference: https://github.com/rlabrecque/Steamworks.NET-Example/blob/master/Assets/Scripts/SteamStatsAndAchievements.cs
+/// We keep a local state version of the achievements that is the source of truth.
+/// On Update() Steamworks API calls are made to match this state, and we set currentAchievements
+/// to match this, despite if the API calls worked or not
+/// 
+/// (e.g. Game is up with Steam not running, achievements will be stored locally but nothing will happen in Steamworks;
+/// then, next time Game is running with Steam, once this Manager's Update() runs, API calls will be made to match local state.)
+/// </summary>
 public class Script_AchievementsManager : MonoBehaviour
 {
     private const int Interval = 4;
@@ -24,6 +33,22 @@ public class Script_AchievementsManager : MonoBehaviour
     public const string ACH_SEALING = "ACH_SEALING";
     public const string ACH_SADIST = "ACH_SADIST";
 
+    public static string[] achievementIds = new string[]
+    {
+        ACH_PSY_CONN,
+        ACH_WORD,
+        ACH_DANCE_PERFECT,
+        ACH_SPIKE_PERFECT,
+        ACH_BREAK_ICE,
+        ACH_WELL,
+        ACH_SIN,
+        ACH_RAVE_STAGE,
+        ACH_CCTV_CODE,
+        ACH_NAUTICAL_DAWN,
+        ACH_SEALING,
+        ACH_SADIST
+    };
+
     public static Script_AchievementsManager Instance;
 
     public enum CursedCutScenes
@@ -39,28 +64,57 @@ public class Script_AchievementsManager : MonoBehaviour
 
     [SerializeField] private Script_Game game;
 
-    private CGameID gameID;
-    private bool isStoreStatsThisFrame;
-    private bool isStoreLocalStatsThisFrame;
+    private bool m_bStoreStats;
 
-    protected Callback<UserAchievementStored_t> userAchievementStored;
+	private CGameID m_GameID;
+    private bool m_bRequestedStats;
+    private bool m_bStatsValid;
+    
+    protected Callback<UserStatsReceived_t> m_UserStatsReceived;
+    protected Callback<UserAchievementStored_t> m_UserAchievementStored;
 
     void OnEnable()
     {
 		if (!SteamManager.Initialized)
         {
-            Debug.LogError($"{name} SteamManager is not inited");
+            Debug.LogWarning($"{name} SteamManager is not inited");
 			return;
         }
 
 		// Cache the GameID for use in the Callbacks
-		gameID = new CGameID(SteamUtils.GetAppID());
+		m_GameID = new CGameID(SteamUtils.GetAppID());
 
-		userAchievementStored = Callback<UserAchievementStored_t>.Create(OnAchievementStored);
+		m_UserStatsReceived = Callback<UserStatsReceived_t>.Create(OnUserStatsReceived);
+        m_UserAchievementStored = Callback<UserAchievementStored_t>.Create(OnAchievementStored);
 	}
 
     void Update()
     {
+        if (!SteamManager.Initialized)
+			return;
+
+        if (!m_bRequestedStats)
+        {
+			// Is Steam Loaded? if no, can't get stats, done.
+			if (!SteamManager.Initialized)
+            {
+				m_bRequestedStats = true;
+				return;
+			}
+			
+			// If yes, request our stats.
+			bool bSuccess = SteamUserStats.RequestCurrentStats();
+
+			// This function should only return false if we weren't logged in, and we already checked that.
+			// But handle it being false again anyway, just ask again later.
+			m_bRequestedStats = bSuccess;
+		}
+        
+        // Do not start updating Steamworks' Achievements state until we've received the stats
+        // callback, since Achievement API calls will not work until then.
+        if (!m_bStatsValid)
+            return;
+        
         if (achievementsState.achPsyConn && !currentAchievements.achPsyConn)
         {
             currentAchievements.achPsyConn = true;
@@ -138,11 +192,17 @@ public class Script_AchievementsManager : MonoBehaviour
         // Throttle to every 4 frames; Steamworks recommends to rate limit.
         // https://partner.steamgames.com/doc/api/ISteamUserStats#StoreStats
         if (Time.frameCount % Interval == 0)
-            HandleSavingSteam();
+        {
+            // If SteamManager is not inited, keep on trying on interval.
+            if (m_bStoreStats)
+            {
+                bool bSuccess = SteamUserStats.StoreStats();
+                
+                // If this failed, we never sent anything to the server, try again later.
+                m_bStoreStats = !bSuccess;
+            }
+        }
         
-        // Local state can save immediately since we only try once
-        HandleSavingLocalState();
-
         // Keeps currentAchievements in sync with achievementState when loading achievements from state
         // (Note: currentAchievements cursed cut scene states aren't ever used, only achievementState's
         // are used to check for sadist achievement)
@@ -155,18 +215,113 @@ public class Script_AchievementsManager : MonoBehaviour
         }
     }
 
-    public void UnlockPsyConn() => achievementsState.achPsyConn = true;
-    public void UnlockWord() => achievementsState.achWord = true;
-    public void UnlockDancePerfect() => achievementsState.achDancePerfect = true;
-    public void UnlockSpikePerfect() => achievementsState.achSpikePerfect = true;
-    public void UnlockBreakIce() => achievementsState.achBreakIce = true;
-    public void UnlockWell() => achievementsState.achWell = true;
-    public void UnlockSin() => achievementsState.achSin = true;
-    public void UnlockRaveStage() => achievementsState.achRaveStage = true;
-    public void UnlockCctvCode() => achievementsState.achCctvCode = true;
-    public void UnlockNauticalDawn() => achievementsState.achNauticalDawn = true;
-    public void UnlockSealing() => achievementsState.achSealing = true;
-    public void UnlockSadist() => achievementsState.achSadist = true;
+    public void UnlockPsyConn()
+    {
+        if (!achievementsState.achPsyConn)
+        {
+            achievementsState.achPsyConn = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockWord()
+    {
+        if (!achievementsState.achWord)
+        {
+            achievementsState.achWord = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockDancePerfect()
+    {
+        if (!achievementsState.achDancePerfect)
+        {
+            achievementsState.achDancePerfect = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockSpikePerfect()
+    {
+        if (!achievementsState.achSpikePerfect)
+        {
+            achievementsState.achSpikePerfect = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockBreakIce()
+    {
+        if (!achievementsState.achBreakIce)
+        {
+            achievementsState.achBreakIce = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockWell()
+    {
+        if (!achievementsState.achWell)
+        {
+            achievementsState.achWell = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockSin()
+    {
+        if (!achievementsState.achSin)
+        {
+            achievementsState.achSin = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockRaveStage()
+    {
+        if (!achievementsState.achRaveStage)
+        {
+            achievementsState.achRaveStage = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockCctvCode()
+    {
+        if (!achievementsState.achCctvCode)
+        {
+            achievementsState.achCctvCode = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockNauticalDawn()
+    {
+        if (!achievementsState.achNauticalDawn)
+        {
+            achievementsState.achNauticalDawn = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockSealing()
+    {
+        if (!achievementsState.achSealing)
+        {
+            achievementsState.achSealing = true;
+            SaveLocal();
+        }
+    }
+    
+    public void UnlockSadist()
+    {
+        if (!achievementsState.achSadist)
+        {
+            achievementsState.achSadist = true;
+            SaveLocal();
+        }
+    }
 
     // Set the Cursed Cut Scene, and save Achievements to keep up to date
     public void UpdateCursedCutScene(CursedCutScenes cutScene)
@@ -226,42 +381,64 @@ public class Script_AchievementsManager : MonoBehaviour
         }
     }
     
-    private void HandleSavingSteam()
-    {
-        if (isStoreStatsThisFrame)
-        {
-			bool bSuccess = SteamUserStats.StoreStats();
-			
-            // If this failed, we never sent anything to the server, try again later.
-			isStoreStatsThisFrame = !bSuccess;
-		}
-    }
-    
-    private void HandleSavingLocalState()
-    {
-        if (isStoreLocalStatsThisFrame)
-        {
-            // Keep local state in sync with Steam, just try once, since not vital to have
-            // this perfectly up to date (since the Achievement will be saved in Steamworks).
-            game.SaveAchievements();
-            isStoreLocalStatsThisFrame = false;
-        }
-    }
+    // Keep local state as source of truth.
+    private void SaveLocal() => game.SaveAchievements();
     
     private void UnlockAchievement(string achievementId)
     {
-        Dev_Logger.Debug($"Unlocking Achievement: {achievementId}");
+        Dev_Logger.Debug($"Unlocking Achievement: {achievementId}, SteamManager.Initialized {SteamManager.Initialized}");
         
-        SteamUserStats.SetAchievement(achievementId);
+        if (SteamManager.Initialized)
+        {
+            SteamUserStats.SetAchievement(achievementId);
+        }
+        
         SaveNextAvailableFrame();
     }
 
     private void SaveNextAvailableFrame()
     {
-        isStoreStatsThisFrame = true;
-        isStoreLocalStatsThisFrame = true;
+        m_bStoreStats = true;
     }
 
+    private void OnUserStatsReceived(UserStatsReceived_t pCallback) {
+        if (!SteamManager.Initialized)
+        	return;
+
+        // We may get callbacks for other games' stats arriving, ignore them.
+        if ((ulong)m_GameID == pCallback.m_nGameID)
+        {
+        	if (EResult.k_EResultOK == pCallback.m_eResult)
+            {
+        		Dev_Logger.Debug("Received stats and achievements from Steam\n");
+
+        		m_bStatsValid = true;
+
+        		if (Debug.isDebugBuild && Const_Dev.IsDevMode)
+                {
+                    // Load and print achievements
+                    foreach (var achId in achievementIds)
+                    {
+                        bool isAchieved = false;
+                        bool ret = SteamUserStats.GetAchievement(achId, out isAchieved);
+                        
+                        if (ret)
+                        {
+                            string achName = SteamUserStats.GetAchievementDisplayAttribute(achId, "name");
+                            Dev_Logger.Debug($"Achievement {achName}: {isAchieved}");
+                        }
+                        else
+                            Debug.LogWarning($"SteamUserStats.GetAchievement failed for Achievement {achId} \nIs it registered in the Steam Partner site?");
+                    }
+                }
+        	}
+        	else
+            {
+        		Dev_Logger.Debug($"RequestStats - failed, {pCallback.m_eResult}");
+        	}
+        }
+	}
+    
     // Dev only
     private void OnAchievementStored(UserAchievementStored_t pCallback)
     {
@@ -269,7 +446,7 @@ public class Script_AchievementsManager : MonoBehaviour
             return;
         
         // We may get callbacks for other games' stats arriving, ignore them
-		if ((ulong)gameID == pCallback.m_nGameID) {
+		if ((ulong)m_GameID == pCallback.m_nGameID) {
 			if (0 == pCallback.m_nMaxProgress) {
 				Dev_Logger.Debug($"Name: {pCallback.m_rgchAchievementName}");
 			}

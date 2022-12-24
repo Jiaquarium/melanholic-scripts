@@ -484,8 +484,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         // Handle Well achievement
         var achievementsManager = Script_AchievementsManager.Instance;
-        if (!achievementsManager.achievementsState.achWell)
-            Script_AchievementsManager.Instance.UnlockWell();
+        Script_AchievementsManager.Instance.UnlockWell();
     }
 
     // ------------------------------------------------------------------
