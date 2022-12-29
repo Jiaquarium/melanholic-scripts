@@ -10,16 +10,27 @@ public class Script_HandlePlayerGraphicsMaterial : MonoBehaviour
     
     void OnEnable()
     {
-        var player = Script_Game.Game.GetPlayer();
-        
-        startingMaterial = player.MyMaterial;
-        player.ChangeMaterial(levelMaterial);
+        try
+        {
+            var player = Script_Game.Game?.GetPlayer();
+            
+            if (player != null)
+            {
+                startingMaterial = player.MyMaterial;
+                player.ChangeMaterial(levelMaterial);
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
     
     void OnDisable()
     {
-        var player = Script_Game.Game.GetPlayer();
+        var player = Script_Game.Game?.GetPlayer();
 
-        player.MyMaterial = startingMaterial;
+        if (player != null)
+            player.MyMaterial = startingMaterial;
     }
 }

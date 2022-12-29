@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-12-17 16:15:47
+// Last created by Dialogue Exporter at 2022-12-28 12:25:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -6432,6 +6432,54 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"An innocent kind of flower.",
+        },
+        
+    }
+},
+{
+    "xxx-world_flower-E_saloon-entrance_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s managed to grow out from a crack in the ground.",
+        },
+        
+    }
+},
+{
+    "xxx-world_flower-N_stage_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"A flower of sin.",
+        },
+        
+    }
+},
+{
+    "xxx-world_flower-S_dance-floor_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Why plant flowers here?",
+        },
+        
+    }
+},
+{
+    "xxx-world_polyhedron_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Doesn’t this remind you of that Dürer engraving you used to like?",
         },
         
     }

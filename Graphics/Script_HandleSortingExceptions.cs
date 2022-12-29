@@ -13,6 +13,10 @@ public class Script_HandleSortingExceptions : MonoBehaviour
     [SerializeField] private Material playerStencil;
     [SerializeField] private Transform myTransform;
     [SerializeField] private Vector3 myComparisonLoc;
+
+    [Tooltip("Define the World Tile to save performance. Only make calls when Player is on the specified World Tile")]
+    [SerializeField] private Script_WorldTile worldTile;
+    private bool isMyWorldTile;
     
     private Material playerDefaultMaterial;
     private Material myDefaultMaterial;
@@ -49,6 +53,14 @@ public class Script_HandleSortingExceptions : MonoBehaviour
     {
         if (directionToPlayer == Directions.None)
             return;
+
+        // Check if current world tile is active to make calls
+        if (worldTile != null)
+        {
+            isMyWorldTile = worldTile.WorldTilesController.OriginWorldTile == worldTile;
+            if (!isMyWorldTile)
+                return;
+        }
         
         var player = Script_Game.Game.GetPlayer();
         myComparisonLoc = myTransform.position;

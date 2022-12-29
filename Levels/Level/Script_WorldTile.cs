@@ -19,6 +19,8 @@ public class Script_WorldTile : MonoBehaviour
     {
         get => tileMap;
     }
+
+    public Script_WorldTilesController WorldTilesController { get => worldTilesController; }
     
     void Awake()
     {
