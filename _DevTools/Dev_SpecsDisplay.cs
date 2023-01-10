@@ -12,6 +12,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	[SerializeField] private float fpsRefreshTimer;
 	[SerializeField] private bool isFixedBigFont;
 	[SerializeField] private int fixedFontSize;
+	[SerializeField] private bool isStartHidden;
 
 	[SerializeField] private bool isSingleLineDisplay;
 
@@ -29,6 +30,8 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		this.enabled = Const_Dev.IsSpecsDisplayOn || Const_Dev.IsPublisherSpecsOn;
 
 		version = Version();
+
+		isHidden = isStartHidden;
     }
 	
 	void Update()
@@ -40,6 +43,8 @@ public class Dev_SpecsDisplay : MonoBehaviour
 			RefreshFrameData();
 			timer = fpsRefreshTimer;
 		}
+
+		HandleSpecsDevInput();
 
 		if (Const_Dev.IsTrailerMode)
 			HandleTrailerDevInput();
@@ -218,14 +223,16 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 		return $"Display {displayIdx}, {info.name} {info.width}x{info.height}";
 	}
 
+	private void HandleSpecsDevInput()
+	{
+		if (Input.GetButtonDown(Const_KeyCodes.SpecsDisplay))
+		{
+			isHidden = !isHidden;
+		}
+	}
+	
 	private void HandleTrailerDevInput()
 	{
-		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
-		{
-			if (Script_Game.Game != null)
-				Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
-		}
-
 		if (Input.GetButtonDown(Const_KeyCodes.PlayerVisibility))
 		{
 			if (Script_Game.Game != null)
@@ -235,9 +242,10 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 			}			
 		}
 
-		if (Input.GetButtonDown(Const_KeyCodes.SpecsDisplay))
+		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
 		{
-			isHidden = !isHidden;
+			if (Script_Game.Game != null)
+				Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
 		}
 	}
 

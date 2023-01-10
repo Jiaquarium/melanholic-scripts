@@ -460,7 +460,8 @@ public class Script_PRCSManager : MonoBehaviour
             transitionManager.TimelineFadeOut(
                 Script_TransitionManager.FadeTimeSlow,
                 () => {
-                    glitchManager.BlendTo(0f, glitchFadeOutTime);
+                    // Don't do anything to glitch setting here, since Grand Mirror R2 will
+                    // modify it via Glitch Zone call to IncreaseGlitchBlend.
                 }
             );
         }

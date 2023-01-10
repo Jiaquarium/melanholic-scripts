@@ -106,6 +106,8 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private List<CanvasGroup> faceOffCanvasGroups;
     [SerializeField] private CanvasGroup DDRCanvasGroup;
     [SerializeField] private CanvasGroup EndingsCanvasGroup;
+    [SerializeField] private CanvasGroup KingsIntroCanvasGroup;
+    [SerializeField] private CanvasGroup ElleniaStabCanvasGroup;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -421,6 +423,18 @@ public class Dev_GameHelper : MonoBehaviour
             {
                 Debug.Log($"<color=red>{EndingsCanvasGroup.name} should be INACTIVE</color>");
                 EndingsCanvasGroup.gameObject.SetActive(false);
+            }
+
+            if (!KingsIntroCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>{KingsIntroCanvasGroup.name} should be ACTIVE</color>");
+                KingsIntroCanvasGroup.gameObject.SetActive(true);
+            }
+
+            if (ElleniaStabCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>{ElleniaStabCanvasGroup.name} should be INACTIVE</color>");
+                ElleniaStabCanvasGroup.gameObject.SetActive(false);
             }
         }
     }
