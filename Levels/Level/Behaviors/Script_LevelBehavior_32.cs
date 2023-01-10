@@ -34,6 +34,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     public bool didOpeningThoughtFaceOff1;
     public bool didOpeningThoughtCodeRemains0;
     public bool didOpeningThoughtCodeRemains1;
+    public bool didCantSwimDialogue;
     /* ======================================================================= */
     
     [SerializeField] private Script_DialogueNode startNode;
@@ -75,6 +76,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Transform WedBooks;
     [SerializeField] private Transform WeekendBooks;
     [SerializeField] private Script_DialogueNode weekendNewBookTriggerNode;
+    [SerializeField] private Script_DialogueNode cantSwimNode;
 
     [SerializeField] private Transform WeekdayWalls;
     [SerializeField] private Transform WeekendWalls;
@@ -489,11 +491,39 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         Script_DialogueManager.DialogueManager.StartDialogueNode(weekendNewBookTriggerNode);
     }
 
+    // Cant Swim Dialogue
+    // Should play on Day 3 but in the case Player did R1 in 2 days,
+    // do in R2 Day1
+    public void CantSwimDialogue()
+    {
+        bool isDoCantSwimR1 = game.RunCycle == Script_RunsManager.Cycle.Weekday
+            && game.IsRunDay(Script_Run.DayId.wed)
+            && !didCantSwimDialogue;
+        bool isDoCantSwimR2 = game.RunCycle == Script_RunsManager.Cycle.Weekend
+            && !didCantSwimDialogue;
+        
+        // If weekday and Day 3
+        // Or if didn't reach Day 3, if weekend
+        if (isDoCantSwimR1 || isDoCantSwimR2)
+        {
+            game.ChangeStateCutScene();
+            Script_DialogueManager.DialogueManager.StartDialogueNode(cantSwimNode);
+
+            didCantSwimDialogue = true;
+        }
+    }
+
     // ------------------------------------------------------------------
     // Next Node Actions
     
     // weekendNewBookTriggerNode
     public void OnNoticeNewBookDone()
+    {
+        game.ChangeStateInteract();
+    }
+
+    // cantSwimDialogueTrigger node done
+    public void OnCantSwimDialogueDone()
     {
         game.ChangeStateInteract();
     }

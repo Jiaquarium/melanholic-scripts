@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2022-12-28 12:25:15
+// Last created by Dialogue Exporter at 2023-01-09 23:14:10
 
 using System.Collections;
 using System.Collections.Generic;
@@ -85,7 +85,29 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Everything will be okay after that.",
                 @"You’re sure of it.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
     }
 },
 {
@@ -113,7 +135,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It’s why you wanted this job in the first place, to <b>clear your mind</b>.",
                 @"Sometimes you can even smell the sea from here...| So why leave it all?",
                 @"...It’s pointless to think these things... <b>Tonight’s</b> your <b>last</b> night anyways...",
-                @"Only one more hour until it’s all finally over...",
+                @"Only one more hour until it’s finally {49}",
                 @"If you can just make it until then...",
                 @"Everything will be okay after that.",
                 @"You’re sure of it.",
@@ -155,6 +177,34 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
+    "hotel-lobby_player-internal_cant-swim_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"A draft of that unmistakable sea air again.",
+                @"You find it a bit funny actually...",
+                @"How the water calms you even though you never learned to swim.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
     "hotel-lobby_player-internal_world-1-done_thought",
     new Model_Languages
     {
@@ -177,10 +227,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"You’ve always been dependable...",
+                @"You’ve always been dependable.",
                 @"But who are you anyways?",
-                @"I guess you aren’t human, are you?",
-                @"Well stop it already!",
+                @"I guess you aren’t human...",
+                @"When will it all stop...",
         },
         
     }
@@ -593,8 +643,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"You’ve spent time researching the natural phenomenon known as {77}...",
-                @"It was particularly important for seafarers... Since before this time, when looking out at the sea, it’s just a black void.",
-                @"According to your calculations, today {77} should be at {49}.",
+                @"It was particularly important for seafarers... Since before this time, when looking out at sea, it’s just a black void.",
+                @"According to your calculations here, today {77} should be at {49}.",
                 @"Which is exactly when your shift <b>ends</b>...| is it fate?",
         },
         

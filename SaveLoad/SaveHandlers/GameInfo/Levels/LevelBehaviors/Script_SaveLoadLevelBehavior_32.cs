@@ -13,7 +13,8 @@ public class Script_SaveLoadLevelBehavior_32 : Script_SaveLoadLevelBehavior
             _didOpeningThoughtFaceOff0 : LB32.didOpeningThoughtFaceOff0,
             _didOpeningThoughtFaceOff1 : LB32.didOpeningThoughtFaceOff1,
             _didOpeningThoughtCodeRemains0 : LB32.didOpeningThoughtCodeRemains0,
-            _didOpeningThoughtCodeRemains1 : LB32.didOpeningThoughtCodeRemains1
+            _didOpeningThoughtCodeRemains1 : LB32.didOpeningThoughtCodeRemains1,
+            _didCantSwimDialogue: LB32.didCantSwimDialogue
         );
         
         data.levelsData.LB32 = lvlModel;
@@ -39,6 +40,7 @@ public class Script_SaveLoadLevelBehavior_32 : Script_SaveLoadLevelBehavior
         LB32.didOpeningThoughtFaceOff1      = lvlModel.didOpeningThoughtFaceOff1;
         LB32.didOpeningThoughtCodeRemains0  = lvlModel.didOpeningThoughtCodeRemains0;
         LB32.didOpeningThoughtCodeRemains1  = lvlModel.didOpeningThoughtCodeRemains1;
+        LB32.didCantSwimDialogue            = lvlModel.didCantSwimDialogue;
 
         Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
