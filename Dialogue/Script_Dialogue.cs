@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-09 23:14:10
+// Last created by Dialogue Exporter at 2023-01-10 12:17:53
 
 using System.Collections;
 using System.Collections.Generic;
@@ -402,6 +402,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"Alone with your thoughts again...",
+        },
+        
+    }
+},
+{
+    "woods_intro_sea_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It seems a little closer finally.",
+                @"From here...",
+                @"It looks like it hasn’t changed a bit.",
         },
         
     }

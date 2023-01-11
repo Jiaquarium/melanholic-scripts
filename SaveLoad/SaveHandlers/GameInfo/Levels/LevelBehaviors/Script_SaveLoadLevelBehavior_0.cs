@@ -9,9 +9,10 @@ public class Script_SaveLoadLevelBehavior_0 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_0 lvlModel = new Model_LevelBehavior_0(
-            LB0.didStartThought,
-            LB0.demonSpawns,
-            LB0.isDone
+            _didStartThought:               LB0.didStartThought,
+            _didStartThoughtSea:            LB0.didStartThoughtSea,
+            _demonSpawns:                   LB0.demonSpawns,
+            _isDone:                        LB0.isDone
         );
         
         data.levelsData.LB0 = lvlModel;
@@ -32,7 +33,9 @@ public class Script_SaveLoadLevelBehavior_0 : Script_SaveLoadLevelBehavior
         }
 
         Model_LevelBehavior_0 lvlModel  = data.levelsData.LB0;
+
         LB0.didStartThought             = lvlModel.didStartThought;
+        LB0.didStartThoughtSea          = lvlModel.didStartThoughtSea;
         LB0.demonSpawns                 = lvlModel.demonSpawns;
         LB0.isDone                      = lvlModel.isDone;
 

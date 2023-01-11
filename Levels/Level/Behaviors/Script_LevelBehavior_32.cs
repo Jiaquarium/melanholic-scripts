@@ -78,6 +78,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode weekendNewBookTriggerNode;
     [SerializeField] private Script_DialogueNode cantSwimNode;
 
+    // Act 1 Day 2 start with Ocean Bgm
+    [SerializeField] private Script_BgThemePlayer oceanBgThemePlayer;
+
     [SerializeField] private Transform WeekdayWalls;
     [SerializeField] private Transform WeekendWalls;
 
@@ -155,7 +158,11 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             && isFirstLoad
         )
         {
-            HandleOpeningDialogueSetup(tueR1Node);
+            HandleOpeningDialogueSetup(
+                tueR1Node,
+                isNoBgm: true,
+                customBehavior: () => oceanBgThemePlayer.gameObject.SetActive(true)
+            );
         }
         
         // Wed R1 Rin speaks about "Hardening"
@@ -310,10 +317,20 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
             }
         }
 
-        void HandleOpeningDialogueSetup(Script_DialogueNode dialogueNode)
+        void HandleOpeningDialogueSetup(
+            Script_DialogueNode dialogueNode,
+            bool isNoBgm = false,
+            Action customBehavior = null
+        )
         {
             Script_DayNotificationManager.Control.PlayDayNotification(() =>
                 {
+                    if (customBehavior != null)
+                        customBehavior();
+                    
+                    if (isNoBgm)
+                        return;
+
                     game.StartBgMusicNoFade();
                     var bgmManager = Script_BackgroundMusicManager.Control;
                     bgmManager.SetVolume(0f, BGMParam);
@@ -391,6 +408,23 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     public void GameInteract()
     {
         game.ChangeStateInteract();
+    }
+
+    // Tue Node (Act 1 Day 2)
+    public void SwitchBgmToDefault()
+    {
+        if (oceanBgThemePlayer.IsPlaying)
+            oceanBgThemePlayer.FadeOutStop(FadeInBgm);
+        else
+            FadeInBgm();
+
+        void FadeInBgm()
+        {
+            game.StartBgMusicNoFade();
+            var bgmManager = Script_BackgroundMusicManager.Control;
+            bgmManager.SetVolume(0f, BGMParam);
+            bgmManager.FadeInSlow(null, BGMParam);
+        }
     }
 
     // satWeekendStartNode

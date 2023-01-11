@@ -319,7 +319,8 @@ public class Script_Exits : MonoBehaviour
         /// </summary>
         void HandleCustomLevelWait(Script_LevelBehavior behavior)
         {
-            // Slow, dramatic on the default Woods entrance
+            // Slow, dramatic on the default Woods entrance. Do default wait time if is
+            // opening PRCS.
             if (game.IsDefaultWoodsEntranceFromHotel)
                 currentWaitToFadeInLevelTime = woodsFromHotelWaitTime;
             else

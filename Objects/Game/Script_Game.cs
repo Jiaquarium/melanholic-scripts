@@ -377,7 +377,10 @@ public class Script_Game : MonoBehaviour
     }
 
     public bool IsDefaultWoodsEntranceFromHotel => levelBehavior == WoodsBehavior
-        && WoodsBehavior.didStartThought
+        && (
+            (WoodsBehavior.didStartThought && RunCycle == Script_RunsManager.Cycle.Weekday)
+            || (WoodsBehavior.didStartThoughtSea && RunCycle == Script_RunsManager.Cycle.Weekend)
+        )
         && LastLevelBehavior == bayV2Behavior;
 
     /// <summary>

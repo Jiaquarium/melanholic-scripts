@@ -29,6 +29,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         ConstantThin = 5,
         TheSealing = 6,
         ConstantDefault = 7,
+        SeaVignette = 8,
     }
     
     public static Script_UIAspectRatioEnforcerFrame Control;
@@ -49,9 +50,10 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     [SerializeField] private Script_CanvasConstantPixelScaler endingsCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler maskRevealCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler elderIntroCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler theSealingCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler ElleniasHandCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler IdsDeadCanvasScaler;
-    [SerializeField] private Script_CanvasConstantPixelScaler theSealingCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler seaVignetteCanvasScaler;
     
     [Tooltip("Border heights as a percent of Rect")]
     [SerializeField] private float minBorderHeight;
@@ -126,6 +128,10 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
                 minBorderHeight = minBorderHeightDefault;
                 canvasScaler = theSealingCanvasScaler;
                 break;
+            case (Framing.SeaVignette):
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = seaVignetteCanvasScaler;
+                break;    
             
             // No dynamic sizing needed for framing
             // Useful for non-Full Screen Full Art where it's unnecessary to match up to an implied

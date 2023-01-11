@@ -14,6 +14,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     // =======================================================================
     //  STATE DATA
     public bool didStartThought;
+    public bool didStartThoughtSea;
     public bool[] demonSpawns;
     public bool isDone;
     // =======================================================================
@@ -23,7 +24,21 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     
     [SerializeField] private Script_Hint hint; 
     
-    [SerializeField] private Script_PRCS wellJustOpened; 
+    [Space]
+    [Header("Opening PRCS")]
+    [Space]
+    
+    [SerializeField] private Script_PRCS wellJustOpened;
+    [SerializeField] private Script_PRCS seaVignette;
+    [SerializeField] private Script_BgThemePlayer seaBgThemePlayer;
+    [SerializeField] private Script_TransitionManager transitionManager;
+    [SerializeField] private Script_PostProcessingSettings postProcessingSettings;
+    [SerializeField] private Script_GlitchFXManager glitchFXManager;
+    [SerializeField] private float seaBgmFadeInTime;
+    [SerializeField] private float seaBgmFadeOutTime;
+    [SerializeField] private float waitBeforeSeaBgmTime;
+    [SerializeField] private float waitBeforeSeaPRCSTime;
+    [SerializeField] private float waitAfterSeaVignetteDoneTime;
 
     [Space]
     [Header("Ids Cut Scenes")]
@@ -50,9 +65,13 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     private void Start()
     {
-        Dev_Logger.Debug($"{name} didStartThought: {didStartThought}");
+        Dev_Logger.Debug($"{name} didStartThought: {didStartThought}; didStartThoughtSea: {didStartThoughtSea}");
         
-        if (!didStartThought)
+        // Handle Well PRCS
+        if (
+            !didStartThought
+            && game.RunCycle == Script_RunsManager.Cycle.Weekday
+        )
         {
             // On Initial Opening, pause BGM, fade in after Dialogue.
             // Note: Must set volume to 0 before Stop, or will pop on Play again
@@ -61,6 +80,43 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
             
             Dev_Logger.Debug($"**** {name} starting wells cut scene ****");
             Script_PRCSManager.Control.OpenPRCSNoFade(wellJustOpened);
+        }
+        // Handle Sea PRCS
+        else if (
+            !didStartThoughtSea
+            && game.RunCycle == Script_RunsManager.Cycle.Weekend
+        )
+        {
+            Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            game.StopBgMusic();
+            
+            // Put up frame
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.SeaVignette,
+                isNoAnimation: true
+            );
+            
+            // Timeline will take over control of Under Dialogue Fader afterwards
+            transitionManager.TimelineBlackScreen(isOver: false);
+            
+            StartCoroutine(WaitToStartSeaBgm());
+            StartCoroutine(WaitToPlaySeaPRCS());
+        }
+        
+        IEnumerator WaitToStartSeaBgm()
+        {
+            yield return new WaitForSeconds(waitBeforeSeaBgmTime);
+            
+            seaBgThemePlayer.gameObject.SetActive(false);
+            seaBgThemePlayer.FadeInPlay(null, seaBgmFadeInTime);
+        }
+        
+        IEnumerator WaitToPlaySeaPRCS()
+        {
+            yield return new WaitForSeconds(waitBeforeSeaPRCSTime);
+
+            Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.Sea);
         }
     }
     
@@ -74,11 +130,26 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     public override void OnLevelInitComplete()
     {
-        if (!didStartThought)
+        if (
+            !didStartThought
+            && game.RunCycle == Script_RunsManager.Cycle.Weekday
+        )
         {
             game.ChangeStateCutScene();
             /// Start Timeline fading in the well light
             wellJustOpened.PlayMyTimeline();
+        }
+        // After exit canvas fades out in Script_Exits.defaultLevelFadeInTime time
+        // begin handling the sea vignette PRCS and black screen under dialogue
+        else if (
+            !didStartThoughtSea
+            && game.RunCycle == Script_RunsManager.Cycle.Weekend
+        )
+        {
+            game.ChangeStateCutScene();
+
+            // seaVignette coroutine should already be running here from Start() so
+            // no need to play the PRCS here.
         }
         else
         {
@@ -98,6 +169,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
     /// Next Node Actions
+    
     public void OnWellOpeningDialogueDone()
     {
         // BG Param previously set to 0f 
@@ -106,10 +178,12 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         bgmManager.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
         bgmManager.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
     }
+
+    public void OnWellCutSceneDone() {}
     
-    public void OnWellCutSceneDone()
+    public void OnSeaVignetteDialogueDone()
     {
-        
+        seaBgThemePlayer.FadeOutStop(null, seaBgmFadeOutTime);
     }
 
     // IdsDay1Node
@@ -187,6 +261,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     
     // ------------------------------------------------------------------
     // Timeline Signals
+
     public void OnWellJustOpenedDone()
     {
         Script_PRCSManager.Control.HidePRCS(wellJustOpened, FadeSpeeds.Slow, () => {
@@ -195,6 +270,53 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
             HandleIdsMonWedIntro();
         });
+    }
+
+    // SeaVignetteTimeline Start
+    public void OnSeaVignetteStart()
+    {
+        // Set Vignette; from testing this should be set on same frame as signal but to be safe,
+        // wait 1 frame in timeline to ensure it updates
+        postProcessingSettings.Vignette(true);
+    }
+    
+    // SeaVignetteTimeline GlitchOn
+    public void StartGlitch()
+    {
+        glitchFXManager.SetXHigh();
+        glitchFXManager.SetBlend(1f);
+    }
+    
+    // SeaVignetteTimeline End
+    public void OnSeaVignetteDone()
+    {
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.SeaVignette,
+            isNoAnimation: true
+        );
+        
+        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.Sea, () => {
+            glitchFXManager.SetBlend(0f);
+            postProcessingSettings.Vignette(false);
+
+            game.StartBgMusicNoFade();
+            var bgmManager = Script_BackgroundMusicManager.Control;
+            bgmManager.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            bgmManager.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+            
+            StartCoroutine(WaitToInteract());
+            
+            didStartThoughtSea = true;
+        });
+        
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSeconds(waitAfterSeaVignetteDoneTime);
+
+            game.ChangeStateInteract();
+            HandleIdsMonWedIntro();
+        }        
     }
 
     // Ids Intro Woods Run

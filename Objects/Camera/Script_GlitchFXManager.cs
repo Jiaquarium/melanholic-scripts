@@ -17,6 +17,7 @@ public class Script_GlitchFXManager : MonoBehaviour
     
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings currentSettings;
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings defaultSettings;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings xHighSettings;
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings highSettings;
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings lowSettings;
 
@@ -55,6 +56,18 @@ public class Script_GlitchFXManager : MonoBehaviour
             UpdateGlitchFXState();
     }
 
+    public void SetXHigh(bool useCurrentBlend = false)
+    {
+        float lastBlend = currentSettings.blend;
+
+        SaveSettings(currentSettings, xHighSettings);
+        
+        if (useCurrentBlend)
+            SetBlend(lastBlend);
+        else
+            UpdateGlitchFXState();
+    }
+    
     public void SetHigh(bool useCurrentBlend = false)
     {
         float lastBlend = currentSettings.blend;

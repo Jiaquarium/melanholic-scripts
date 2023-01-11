@@ -28,6 +28,7 @@ public class Script_PRCSManager : MonoBehaviour
         ElleniasHand,
         ToWeekend,
         IdsDead,
+        Sea
     }
     
     public static Script_PRCSManager Control;
@@ -60,6 +61,7 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_PRCS ElleniasHandPRCS;
     [SerializeField] private Script_PRCS toWeekendPRCS;
     [SerializeField] private Script_PRCS IdsDeadPRCS;
+    [SerializeField] private Script_PRCS seaVignettePRCS;
 
     [SerializeField] private Script_GlitchFXManager glitchManager;
 
@@ -73,6 +75,7 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private float waitTimeAfterMyMaskReceive;
     [SerializeField] private float waitTimeAfterMyMaskTeleport;
 
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private Script_Game game;
 
     private Action onFaceOffTimelineDoneAction;
@@ -133,13 +136,26 @@ public class Script_PRCSManager : MonoBehaviour
         });
     }
 
-    public void OpenPRCSNoFade(Script_PRCS PRCS)
+    public void OpenPRCSNoFade(
+        Script_PRCS PRCS,
+        bool isCustom = false,
+        RenderMode renderMode = RenderMode.ScreenSpaceOverlay
+    )
     {
+        // Handle the PRCS Canvas if need to change in context
+        if (!isCustom)
+            HandlePRCSCanvasRenderMode(renderMode);
+        
         PRCSCanvasGroup.alpha = 1f;
         PRCSCanvasGroup.gameObject.SetActive(true);
 
         PRCS.Setup();
-        PRCS.Open();   
+        PRCS.Open();
+    }
+
+    public void InitializePRCSCanvasRenderMode()
+    {
+        HandlePRCSCanvasRenderMode(RenderMode.ScreenSpaceOverlay);
     }
 
     public void ClosePRCSNoFade(Script_PRCS PRCS)
@@ -203,6 +219,15 @@ public class Script_PRCSManager : MonoBehaviour
                 IdsDeadPRCS.Open();
                 IdsDeadPRCS.PlayTimeline(0);
                 break;
+            
+            case CustomTypes.Sea:
+                PRCSCanvasGroup.alpha = 1f;
+                PRCSCanvasGroup.gameObject.SetActive(true);
+                
+                seaVignettePRCS.Setup();
+                seaVignettePRCS.Open();
+                seaVignettePRCS.PlayTimeline(0);
+                break;
 
             default:
                 break;
@@ -228,7 +253,11 @@ public class Script_PRCSManager : MonoBehaviour
             case CustomTypes.IdsDead:
                 HidePRCS(IdsDeadPRCS, FadeSpeeds.None, cb);
                 break;
-                
+            
+            case CustomTypes.Sea:
+                HidePRCS(seaVignettePRCS, FadeSpeeds.None, cb);
+                break;
+
             default:
                 break;
         }
@@ -356,6 +385,19 @@ public class Script_PRCSManager : MonoBehaviour
         game.EquipMaskBackground(Const_Items.LastElevatorId, isGive: false);
     }
 
+    private void HandlePRCSCanvasRenderMode(RenderMode renderMode = RenderMode.ScreenSpaceOverlay)
+    {
+        PRCSCanvas.renderMode = renderMode;
+
+        switch (renderMode)
+        {
+            case RenderMode.ScreenSpaceCamera:
+                PRCSCanvas.worldCamera = mainCamera;
+                PRCSCanvas.planeDistance = Script_GraphicsManager.CamCanvasPlaneDistance;
+                break;
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Timeline Signals
 
@@ -475,7 +517,10 @@ public class Script_PRCSManager : MonoBehaviour
         PRCSCanvasGroup.gameObject.SetActive(false);
         PRCSCanvasGroup.alpha = 0f;
         PRCSCanvas.gameObject.SetActive(true);
+        InitializePRCSCanvasRenderMode();
+
         wellsJustOpenedPRCS.gameObject.SetActive(false);
+        wellsJustOpenedPRCS.Setup();
 
         customCanvasesParent.gameObject.SetActive(true);
         
