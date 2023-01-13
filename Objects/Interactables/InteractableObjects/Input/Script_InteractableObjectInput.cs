@@ -20,7 +20,8 @@ public class Script_InteractableObjectInput : Script_InteractableObject
     
     protected override void ActionDefault()
     {
-        if (CheckDisabled())  return;
+        if (CheckDisabled())
+            return;
 
         if (Script_Game.Game.GetPlayer().State != Const_States_Player.Dialogue)
         {
@@ -28,6 +29,8 @@ public class Script_InteractableObjectInput : Script_InteractableObject
 
             // Must specify this so Dialogue Input Manager knows to not accept cut scene inputs.
             Script_DialogueManager.DialogueManager.isInputMode = true;
+            
+            MyAction.SafeInvoke();
             
             // Set input canvas active
             inputManager.Initialize(inputMode, inputField, inputManager.CCTVInputCanvasGroup);

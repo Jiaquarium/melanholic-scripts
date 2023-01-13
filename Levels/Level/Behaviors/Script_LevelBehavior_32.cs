@@ -43,6 +43,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private float beforeInternalThoughtWaitTime;
     
     [SerializeField] private Script_DialogueNode newGameNode;
+    [SerializeField] private float waitToStartStaticTime;
+    [SerializeField] private Script_CCTVUtil cctvCpu;
+    [SerializeField] private float waitToInteractAfterStartStaticTime;
     [SerializeField] private Script_DialogueNode onDisabledSurveillanceNode;
     
     [SerializeField] private float cameraPanDoneWaitTime;
@@ -483,6 +486,13 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
     // InteractableObject UnityEvents
+    
+    // On Action Default for CCTV object
+    public void StopStaticTimeline()
+    {
+        cctvCpu.StopStaticTimeline();
+    }
+    
     public void OnTryToExitFrontDoor()
     {
         Dev_Logger.Debug("Move camera to hotel camera cut scene!!!");
@@ -549,6 +559,25 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
     // Next Node Actions
+    
+    // Day 1 Node Done
+    public void OnDay1OpeningDialogueDone()
+    {
+        StartCoroutine(WaitToStartStatic());
+
+        IEnumerator WaitToStartStatic()
+        {
+            yield return new WaitForSeconds(waitToStartStaticTime);
+
+            cctvCpu.SpeakerForceOnNonInteractState(true);
+            cctvCpu.PlayStaticTimeline();
+
+            yield return new WaitForSeconds(waitToInteractAfterStartStaticTime);
+
+            cctvCpu.SpeakerForceOnNonInteractState(false);
+            game.ChangeStateInteract();
+        }
+    }
     
     // weekendNewBookTriggerNode
     public void OnNoticeNewBookDone()

@@ -37,7 +37,7 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         Params.Add("@@Run", $"<b>{Script_Game.Game?.Run.dayName.FormatRun() ?? "?"}</b>");
         Params.Add("@@CycleCount", $"<b>{Script_Game.Game?.CycleCount.ToString() ?? "?"}</b>");
         
-        Params.Add("@@DDRCurrentTry", $"<b>{Script_Game.Game?.IdsRoomBehavior.CurrentTry.ToString() ?? "?"}</b>");
+        Params.Add("@@DDRCurrentTry", $"<b>{(Script_Game.Game?.IdsRoomBehavior.CurrentTry ?? 0 + 1).ToString() ?? "?"}</b>");
     }
 
     public static void BuildInventoryParam()

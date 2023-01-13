@@ -44,6 +44,7 @@ public class Script_SaveGameControl : MonoBehaviour
 
     [SerializeField] private Script_SaveLoadPianos pianosHandler;
     [SerializeField] private Script_SaveLoadAchievements achievementsHandler;
+    [SerializeField] private Script_SaveLoadAutoSaves autoSavesHandler;
 
     public static void SetPath()
     {
@@ -110,6 +111,7 @@ public class Script_SaveGameControl : MonoBehaviour
             mynesMirrorHandler.SaveMynesMirror(data);
             pianosHandler.SavePianos(data);
             achievementsHandler.SaveAchievements(data);
+            autoSavesHandler.SaveAutoSaves(data);
         }
 
         void OverridePlayerData(Model_SaveData data, Model_PlayerState playerState)
@@ -149,6 +151,7 @@ public class Script_SaveGameControl : MonoBehaviour
                 mynesMirrorHandler.LoadMynesMirror(data);
                 pianosHandler.LoadPianos(data);
                 achievementsHandler.LoadAchievements(data);
+                autoSavesHandler.LoadAutoSaves(data);
 
                 if (Debug.isDebugBuild) Dev_Logger.Debug("Successful load at: " + saveFilePath);
                 return true;
@@ -281,7 +284,45 @@ public class Script_SaveGameControl : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed Load with exception: " + e.ToString());
+            Debug.LogError("Failed SaveAchievements with exception: " + e.ToString());
+            return false;
+        }
+    }
+
+    public bool SaveAutoSaves()
+    {
+        SetPath();
+        
+        try 
+        {
+            if (File.Exists(saveFilePath))
+            {
+                // Load save file
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Open(saveFilePath, FileMode.Open);
+                Model_SaveData data = (Model_SaveData)bf.Deserialize(file);
+                file.Close();
+
+                // Save autoSaves
+                autoSavesHandler.SaveAutoSaves(data);
+                WriteSaveDataFile(bf, saveFilePath, data);
+
+                if (Debug.isDebugBuild)
+                    Dev_Logger.Debug($"Successfully saved autoSaves at existing file: {saveFilePath}");
+
+                return true;
+            }
+            else
+            {
+                if (Debug.isDebugBuild)
+                    Dev_Logger.Debug("Did not save; file not found.");
+
+                return false;
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Failed SaveAutoSaves with exception: " + e.ToString());
             return false;
         }
     }

@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2022-12-17 16:04:09
+// Last created by UI Exporter at 2023-01-11 20:10:08
 
 using System.Collections;
 using System.Collections.Generic;
@@ -928,7 +928,7 @@ public class Script_UIText
     "sticker_animal-within",
     new Model_LanguagesUI
     {
-        EN = @"Use its {79} to chomp away edible obstacles."
+        EN = @"Use its {79} (@@MaskCommandKey) to chomp away edible obstacles."
     }
 },
 {

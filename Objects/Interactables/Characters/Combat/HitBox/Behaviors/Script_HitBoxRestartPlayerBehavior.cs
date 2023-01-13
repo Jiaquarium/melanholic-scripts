@@ -26,7 +26,9 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
                 Script_ClockManager.Control.ClockState == Script_Clock.States.Done
                 || Script_ClockManager.Control.TimeLeft == 0
             )
+            {
                 return;
+            }
             
             Script_Game.Game.ChangeStateCutScene();
             Script_HUDManager.Control.IsForceUp = true;

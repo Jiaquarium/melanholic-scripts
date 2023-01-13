@@ -2210,6 +2210,8 @@ public class Script_Game : MonoBehaviour
     }
 
     public void SaveAchievements() => saveGameControl.SaveAchievements();
+    
+    public void SaveAutoSaves() => saveGameControl.SaveAutoSaves();
 
     /* =========================================================================
         _RESTARTING_

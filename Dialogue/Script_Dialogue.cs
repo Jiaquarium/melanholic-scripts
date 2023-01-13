@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-10 12:17:53
+// Last created by Dialogue Exporter at 2023-01-12 00:21:28
 
 using System.Collections;
 using System.Collections.Generic;
@@ -169,7 +169,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"There’s been a change, you can feel it.",
                 @"But what is it?",
                 @"Something inside?",
-                @"Okay no time to dwell on it, just one more hour!",
+                @"Okay no time to dwell on it, just one more hour till {49}!",
                 @"Everything should be okay after...",
                 @"You’re sure of it!",
         },
@@ -1465,6 +1465,31 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
+// HM Hallway
+{
+    "hm-hallway_notes_first-pickup",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You take note of this.",
+                @"To view your {44}, press @@InventoryKey to open your {32} and navigate to the {44} screen.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+// ------------------------------------------------------------------
 // Halls
 {
     "mirror-halls_paintings_on-entrance_thought",
@@ -1959,7 +1984,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{3}",
         EN = new string[]
         {
-                @"Not like I’m counting or anything, but that was attempt No. @@DDRCurrentTry. <b>Wanna try again?</b>",
+                @"Not like I’m counting or anything, but this will be attempt No. @@DDRCurrentTry. <b>Wanna try again?</b>",
         },
         
     }
@@ -3002,10 +3027,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It came to me in a dream,| no,| a vision.| From the divine <b>other side</b>.",
                 @"I have already made the proper preparations.",
-                @"<b>At exactly</b> {49}<b>, it will be complete.</b>",
+                @"...",
+                @"<size=14><b>Once the clock strikes |6:00|.|.|.|</b></size>",
+                @"<size=14><b>It will be complete.</b></size>",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 

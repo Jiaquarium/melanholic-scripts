@@ -15,6 +15,7 @@ public class Script_ProximitySpeaker : Script_Speaker
     public AudioSource audioSource;
     [SerializeField] protected float maxDistance;
     public float maxVol;
+    [SerializeField] protected bool isSilentNonInteractState;
     
     [SerializeField] private Transform speakerLocationOverride;
     [SerializeField] private bool isSFXSpeaker;
@@ -32,6 +33,9 @@ public class Script_ProximitySpeaker : Script_Speaker
         get => maxVol;
         set => maxVol = value;
     }
+
+    public bool IsDisabled { get; set; }
+    public bool IsForceOnNonInteractState { get; set; }
 
     protected override void OnDisable()
     {
@@ -65,13 +69,29 @@ public class Script_ProximitySpeaker : Script_Speaker
 
     protected void AdjustVolume()
     {   
-        if (Script_Game.Game == null || !Script_Game.Game.GetPlayerIsSpawned())
+        var game = Script_Game.Game;
+        
+        if (
+            game == null
+            || !game.GetPlayerIsSpawned()
+            || IsDisabled
+            || (
+                isSilentNonInteractState
+                && !IsForceOnNonInteractState
+                && (
+                    game.state != Const_States_Game.Interact
+                    || game.GetPlayer().State != Const_States_Player.Interact
+                )
+            )
+        )
         {
             audioSource.volume = 0f;
             return;
         }
         
-        var speakerLocation = speakerLocationOverride == null ? transform.position : speakerLocationOverride.position;
+        var speakerLocation = speakerLocationOverride == null
+            ? transform.position
+            : speakerLocationOverride.position;
         currentDistance = Vector3.Distance(Script_Game.Game.GetPlayerLocation(), speakerLocation);
         
         if (currentDistance >= maxDistance)

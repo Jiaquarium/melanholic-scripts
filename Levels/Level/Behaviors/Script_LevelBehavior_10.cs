@@ -108,6 +108,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     
     [SerializeField] private int mistakesAllowed;
     [SerializeField] private int maxMistakesAllowed;
+    
+    [Tooltip("On every multiple of this adds a mistake allowed (e.g. if 3, then every 3rd try adds a mistake allowed)")]
     [SerializeField] private int increaseAllotmentInterval;
     [SerializeField] private int currentTry;
 
@@ -403,10 +405,10 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 Debug.LogError("Max mistakes need to equal total number of mistake crosses available");
             }
             
-            HandleIncreaseMistakesAllowed();
+            int currentMistakesAllowed = GetMistakesAllowed();
             
             DDRManager.Activate(
-                mistakesAllowed,
+                currentMistakesAllowed,
                 playerSongMoves,
                 () => {
                     DDRManager.StartMusic();
@@ -417,15 +419,19 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             
             game.ChangeStateDDR();
 
-            void HandleIncreaseMistakesAllowed()
+            int GetMistakesAllowed()
             {
-                if (currentTry > 0 && currentTry % increaseAllotmentInterval == 0)
-                    mistakesAllowed++;
+                currentTry++;
+                
+                int extraMistakesAllowed = Mathf.FloorToInt(currentTry / increaseAllotmentInterval);
+                var currentMistakesAlloted = mistakesAllowed + extraMistakesAllowed;
                 
                 if (!Const_Dev.IsDevMode)
-                    mistakesAllowed = Mathf.Min(mistakesAllowed, maxMistakesAllowed);
-            
-                currentTry++;
+                    currentMistakesAlloted = Mathf.Min(currentMistakesAlloted, maxMistakesAllowed);
+
+                Dev_Logger.Debug($"currentTry {currentTry}; currentMistakesAlloted {currentMistakesAlloted}; extraMistakesAllowed {extraMistakesAllowed }");
+
+                return currentMistakesAlloted;
             }
         }
     }

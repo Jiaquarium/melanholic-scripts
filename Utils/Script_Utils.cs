@@ -325,7 +325,7 @@ public static class Script_Utils
             Script_Names.Menu,                          // {41}
             Script_Names.CursedOnes,                    // {42}
             Script_Names.CursedOne,                     // {43}
-            Script_Names.HouseMaster,                   // {44}
+            Script_Names.Notes,                         // {44}
             Script_Names.Thoughts,                      // {45}
             Script_Names.HeartsCapacity,                // {46}
             Script_Names.Vx,                            // {47}

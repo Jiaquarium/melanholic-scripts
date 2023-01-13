@@ -26,6 +26,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
 
     [SerializeField] private Script_ScarletCipherNotification _scarletCipherNotification;
     [SerializeField] private PlayableDirector _notificationDirector;
+    [SerializeField] private Script_DialogueNode _firstPickUpTutorialNode;
     
     public int[] ScarletCipher
     {
@@ -84,6 +85,21 @@ public class Script_ScarletCipherManager : MonoBehaviour
             }
 
             return ScarletCipher.Length - count;
+        }
+    }
+
+    public int ScarletCipherVisibilityCount
+    {
+        get
+        {
+            int count = 0;
+            foreach (bool isVisible in ScarletCipherVisibility)
+            {
+                if (isVisible)
+                    count++;
+            }
+
+            return count;
         }
     }
 
@@ -195,8 +211,18 @@ public class Script_ScarletCipherManager : MonoBehaviour
         var player = game.GetPlayer();
         
         player.SetIsInteract();
-        game.ChangeStateInteract();
-
+        
+        Dev_Logger.Debug($"ScarletCipherVisibilityCount {ScarletCipherVisibilityCount}");
+        
+        // If this is the first note, then play tutorial node.
+        if (ScarletCipherVisibilityCount <= 1)
+        {
+            game.ChangeStateCutScene();
+            Script_DialogueManager.DialogueManager.StartDialogueNode(_firstPickUpTutorialNode);
+        }
+        else
+            game.ChangeStateInteract();
+        
         // Handle CCTV Code achievement
         if (ScarletCipherRemainingCount == 0)
             Script_AchievementsManager.Instance.UnlockCctvCode();
@@ -204,13 +230,23 @@ public class Script_ScarletCipherManager : MonoBehaviour
 
     public void PlayTakeNote()
     {
+        Dev_Logger.Debug($"PlayTakeNote() ScarletCipherVisibilityCount {ScarletCipherVisibilityCount}");
+        
         var SFX = Script_SFXManager.SFX;
         
         SFX.PlayTakeNote();
     }
 
     // ------------------------------------------------------------------
+    // Next Node Actions
+
+    public void OnFirstPickUpTutorialDone()
+    {
+        Script_Game.Game.ChangeStateInteract();
+    }
     
+    // ------------------------------------------------------------------
+
     public void InitialState()
     {
         ResetMynesMirrors();
@@ -256,6 +292,7 @@ public class Script_ScarletCipherEditor : Editor
 {
     private SerializedProperty scarletCipherNotification;
     private SerializedProperty notificationDirector;
+    private SerializedProperty firstPickUpTutorialNode;
     private SerializedProperty scarletCipher;
     private SerializedProperty scarletCipherVisibility;
     private SerializedProperty mynesMirrorsActivationStates;
@@ -264,6 +301,7 @@ public class Script_ScarletCipherEditor : Editor
 
     private const string ScarletCipherNotificationName      = "_scarletCipherNotification";
     private const string NotificationDirector               = "_notificationDirector";
+    private const string FirstPickUpTutorialNode            = "_firstPickUpTutorialNode";
     private const string ScarletCipherName                  = "_scarletCipher";
     private const string ScarletCipherVisibilityName        = "_scarletCipherVisibility";
     private const string DialoguesName                      = "dialogues";
@@ -274,6 +312,7 @@ public class Script_ScarletCipherEditor : Editor
     {
         scarletCipherNotification       = serializedObject.FindProperty(ScarletCipherNotificationName);
         notificationDirector            = serializedObject.FindProperty(NotificationDirector);
+        firstPickUpTutorialNode         = serializedObject.FindProperty(FirstPickUpTutorialNode);
         scarletCipher                   = serializedObject.FindProperty(ScarletCipherName);
         scarletCipherVisibility         = serializedObject.FindProperty(ScarletCipherVisibilityName);
         mynesMirrorsActivationStates    = serializedObject.FindProperty(MynesMirrorsActivationStatesName);
@@ -287,6 +326,7 @@ public class Script_ScarletCipherEditor : Editor
         
         EditorGUILayout.PropertyField(scarletCipherNotification, new GUIContent("Notification"));
         EditorGUILayout.PropertyField(notificationDirector, new GUIContent("Director"));
+        EditorGUILayout.PropertyField(firstPickUpTutorialNode, new GUIContent("First Pick Up Tutorial Node"));
         
         for (int i = 0; i < Script_ScarletCipherManager.QuestionCount; i++)
         {

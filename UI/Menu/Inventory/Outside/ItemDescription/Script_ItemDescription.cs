@@ -30,6 +30,8 @@ public class Script_ItemDescription : MonoBehaviour
     public string Text
     {
         get { return DescriptionTMP.text; }
+        // Although the isFormatX args are expensive it's okay to use here because
+        // Text is not set every frame.
         set {
             if (string.IsNullOrEmpty(value))
                 DescriptionTMP.text = nullDescription;
@@ -37,7 +39,8 @@ public class Script_ItemDescription : MonoBehaviour
                 DescriptionTMP.text = Script_Utils.FormatString(
                     value,
                     isFormatInventoryKey: true,
-                    isFormatSpeedKey: true
+                    isFormatSpeedKey: true,
+                    isFormatMaskCommandKey: true
                 );
         }
     }

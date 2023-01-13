@@ -37,17 +37,20 @@ public class Script_PlayerStats : Script_CharacterStats
         return sec;
     }
 
-    /// <summary>
-    /// TODO: Reduce current time
-    /// Return the new time
-    /// </summary>
-    private float HandleTakeDamage(int secAfterDef)
+    private void HandleTakeDamage(int secAfterDef)
     {
         // Reduce time
         Script_ClockManager.Control.FastForwardTime(secAfterDef);
-        
-        // Return the new Time
-        return Script_ClockManager.Control?.ClockTime ?? 0f;
+
+        if (
+            Script_ClockManager.Control.ClockState == Script_Clock.States.Done
+            || Script_ClockManager.Control.TimeLeft == 0
+        )
+        {
+            // Event to notify time has hit 0 because of a Fast Forward (Hit)
+            Dev_Logger.Debug($"{name} Reaching time from hit");
+            Script_ClockEventsManager.FastForwardTimesUp();
+        }
     }
 
     public override int Heal(int healHp)

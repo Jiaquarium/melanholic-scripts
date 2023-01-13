@@ -128,7 +128,7 @@ public class Script_Names: MonoBehaviour
     public const string Menu                            = "<b>Menu</b>";                        // {41}
     public const string CursedOnes                      = "<b>Cursed Specters</b>";             // {42}
     public const string CursedOne                       = "<b>Cursed Specter</b>";              // {43}
-    public const string HouseMaster                     = "<b>House Master</b>";                // {44}
+    public const string Notes                           = "<b>Notes</b>";                       // {44}
     public const string Thoughts                        = "<b>Thoughts</b>";                    // {45}
     public const string HeartsCapacity                  = "<b>Hearts Capacity</b>";             // {46}
     public const string Vx                              = "<b>Vx</b>";                          // {47}

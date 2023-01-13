@@ -10,4 +10,12 @@ public class Script_ClockEventsManager : MonoBehaviour
     {
         if (OnTimesUp != null)   OnTimesUp();
     }
+
+    public delegate void OnFastForwardTimesUpDelegate();
+    public static event OnFastForwardTimesUpDelegate OnFastForwardTimesUp;
+    public static void FastForwardTimesUp()
+    {
+        if (OnFastForwardTimesUp != null)
+            OnFastForwardTimesUp();
+    }
 }

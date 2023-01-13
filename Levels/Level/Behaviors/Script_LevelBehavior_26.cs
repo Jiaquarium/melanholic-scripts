@@ -32,6 +32,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     public bool isPuzzleComplete;
     public bool didActivateDramaticThoughts;
     public bool gotIceSpikeSticker;
+    
+    // ----------------------------------------------------------------------
+    // Auto Saves
+    public int spikeRoomTryCounterAutoUpdate;
     /* ======================================================================= */
     
     public bool[] switchesState;
@@ -54,6 +58,18 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [SerializeField] private float beforePaintingDoneCutSceneWaitTime;
 
     [SerializeField] private Script_DialogueManager dialogueManager;
+    
+    [Space][Header("Level Attack Controller Settings")][Space]
+    
+    // Must be >1 because because the spike animation lasts 1 sec (30 frames)
+    // 1.9s is very tight 8 moves; 1.95s is reasonable
+    // 23 frames at 30 fps, the hitbox is exposed (0.7666 sec) meaning 1.95 - 0.7666 = 1.1833
+    // So Player has 1.1833s to move 8 spaces (with default speed 8 spaces takes 1.0666 sec)
+    // They have .11666 margin for error (~7 frames)
+    // We can make it easier by increasing it by .125 (+.1 is still semi-tight), up to a max of 2.25.
+    [Range(1.80f, 2.50f)][SerializeField] private float initialAttackInterval;
+    [Range(0.10f, 0.125f)][SerializeField] private float attackIntervalDifficultyInterval;
+    [SerializeField] private float attackIntervalMax;
     [SerializeField] private int hitCounter;
     
     [Space][Header("Myne's Challenge Settings")][Space]
@@ -83,6 +99,10 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     private bool isInitialize = true;
     private bool isDemoEnd;
 
+    // Difficulty Flags
+    // Flag to track if crossed drama trigger regardless if short or full cut scene
+    private bool didActivateDramaTriggerInRoom;
+
     public bool IsDemoEnd
     {
         get => isDemoEnd;
@@ -95,6 +115,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         set => hitCounter = value;
     }
 
+    public bool DidDieFromSpike { get; set; }
+
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete        += OnLevelInitCompleteEvent;
@@ -105,6 +127,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_HurtBoxEventsManager.OnHurt                  += OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              += OnItemPickUp;
         Script_InteractableObjectEventsManager.OnInteractAfterShatter += OnInteractAfterShatter;
+        Script_ClockEventsManager.OnFastForwardTimesUp      += OnFastForwardTimesUp;
     }
 
     protected override void OnDisable()
@@ -117,6 +140,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         Script_HurtBoxEventsManager.OnHurt                  -= OnPlayerRestartHandleBgm;
         Script_ItemsEventsManager.OnItemPickUp              -= OnItemPickUp;
         Script_InteractableObjectEventsManager.OnInteractAfterShatter -= OnInteractAfterShatter;
+        Script_ClockEventsManager.OnFastForwardTimesUp      -= OnFastForwardTimesUp;
 
         bgThemePlayer.gameObject.SetActive(false);
 
@@ -318,10 +342,19 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         }
     }
 
-    // When Player is hit by Spike, count number of hits
+    // Event when Player is hit by Spike and the screen has finished fading to black (same frame where
+    // player teleports)
     private void OnPlayerRestartTeleport(Collider col)
     {
         HitCounter++;
+
+        // If have gotten to very end on this run, then set new difficulty level
+        if (didActivateDramaTriggerInRoom)
+        {
+            float rawAttackInterval = initialAttackInterval + (attackIntervalDifficultyInterval * spikeRoomTryCounterAutoUpdate);
+            float newAttackInterval = Mathf.Min(rawAttackInterval, attackIntervalMax);
+            attackController.AttackInterval = newAttackInterval;
+        }
     }
     
     /// <summary>
@@ -381,6 +414,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         if (isDramaticThoughts)
         {
             isDramaCutSceneActivated = true;
+            didActivateDramaTriggerInRoom = true;
 
             if (!didActivateDramaticThoughts)
                 FullCutScene();
@@ -436,6 +470,18 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             BGMParam,
             1f
         );   
+    }
+
+    // Reaction to times up from Fast Forwarding time (Spike Hit)
+    private void OnFastForwardTimesUp()
+    {
+        if (!DidDieFromSpike)
+        {
+            spikeRoomTryCounterAutoUpdate++;
+            game.SaveAutoSaves();
+        }
+        
+        DidDieFromSpike = true;
     }
 
     // ----------------------------------------------------------------------
@@ -536,6 +582,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             switchesState,
             isInitialize
         );
+
+        attackController.AttackInterval = initialAttackInterval;
+        didActivateDramaTriggerInRoom = false;
         
         // Should always start with Default music.
         // If the player comes back, they would have already triggered FadeOutDramaticMusic
