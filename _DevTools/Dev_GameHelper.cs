@@ -12,11 +12,13 @@ public class Dev_GameHelper : MonoBehaviour
 {
     public static readonly string[] ScriptingDefineSymbolsDev = {
         "UNITY_POST_PROCESSING_STACK_V2",
+        "STEAMWORKS_NET",
         "ENABLE_LOGS"
     };
 
     public static readonly string[] ScriptingDefineSymbolsProd = {
         "UNITY_POST_PROCESSING_STACK_V2",
+        "STEAMWORKS_NET"
     };
     
     private static float notificationDuration = 1f;
