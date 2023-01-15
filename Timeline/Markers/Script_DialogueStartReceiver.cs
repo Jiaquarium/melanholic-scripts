@@ -9,6 +9,8 @@ using UnityEngine.Playables;
 public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
 {
     [SerializeField] private Script_DialogueNode[] nodes;
+    [SerializeField] private bool isControlAnimators;
+    [SerializeField] private Animator[] animators;
     
     private PlayableDirector director;
 
@@ -29,6 +31,12 @@ public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
 
             if (dm.isPauseTimeline)
             {
+                if (isControlAnimators)
+                {
+                    foreach (var animator in animators)
+                        animator.enabled = false;
+                }
+                
                 director = (origin.GetGraph().GetResolver() as PlayableDirector);
                 director.Pause();
             }
@@ -43,5 +51,11 @@ public class Script_DialogueStartReceiver : MonoBehaviour, INotificationReceiver
 
         director.Play();
         director = null;
+
+        if (isControlAnimators)
+        {
+            foreach (var animator in animators)
+                animator.enabled = true;
+        }
     }
 }

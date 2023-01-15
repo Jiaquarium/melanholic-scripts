@@ -28,7 +28,6 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     [SerializeField] private float myMaskBgmFadeInTime;
     [SerializeField] private Vector3 screenShakeVals;
     [SerializeField] private Script_CameraShake activeZoomCamera;
-    [SerializeField] private float myMaskDoneSongStartTime;
 
     public bool IsMyMaskMutationOff
     {
@@ -95,7 +94,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         var bgm = Script_BackgroundMusicManager.Control;
         
         bgm.Stop();
-        bgm.Play(bgm.CurrentClipIndex, true, myMaskDoneSongStartTime);
+        bgm.Play(bgm.CurrentClipIndex, true, bgm.myMaskDoneSongStartTime);
         
         bgm.FadeIn(null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBGVolume);
         bgm.FadeInExtra(null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBG2Volume);

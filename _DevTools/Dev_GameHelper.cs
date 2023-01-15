@@ -110,6 +110,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private CanvasGroup EndingsCanvasGroup;
     [SerializeField] private CanvasGroup KingsIntroCanvasGroup;
     [SerializeField] private CanvasGroup ElleniaStabCanvasGroup;
+    [SerializeField] private CanvasGroup AwakeningPortraitsCanvasGroup;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -437,6 +438,12 @@ public class Dev_GameHelper : MonoBehaviour
             {
                 Debug.Log($"<color=red>{ElleniaStabCanvasGroup.name} should be INACTIVE</color>");
                 ElleniaStabCanvasGroup.gameObject.SetActive(false);
+            }
+
+            if (AwakeningPortraitsCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>{AwakeningPortraitsCanvasGroup.name} should be INACTIVE</color>");
+                AwakeningPortraitsCanvasGroup.gameObject.SetActive(false);
             }
         }
     }

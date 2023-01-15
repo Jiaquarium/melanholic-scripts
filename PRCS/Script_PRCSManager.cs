@@ -38,6 +38,7 @@ public class Script_PRCSManager : MonoBehaviour
 
     [UnityEngine.Serialization.FormerlySerializedAs("TimelinePRCSCanvasGroup")]
     [SerializeField] private Script_CanvasGroupController KingsIntroCanvasGroup;
+    [SerializeField] private Script_AwakeningPortraitsController AwakeningPortraitsController;
     [SerializeField] private Script_CanvasGroupController ElleniaStabsCanvasGroup;
     [SerializeField] private Script_AwakeningCanvasGroupController AwakeningCanvasGroup;
     [SerializeField] private Script_AwakeningCanvasGroupController AwakeningFinalCanvasGroup;
@@ -543,6 +544,8 @@ public class Script_PRCSManager : MonoBehaviour
         // Initialize purely customized PRCS
         KingsIntroCanvasGroup.InitialState();
         KingsIntroCanvasGroup.gameObject.SetActive(true);
+
+        AwakeningPortraitsController.Setup();
 
         ElleniaStabsCanvasGroup.InitialState();
         ElleniaStabsCanvasGroup.gameObject.SetActive(false);

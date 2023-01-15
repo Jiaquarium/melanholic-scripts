@@ -30,6 +30,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         TheSealing = 6,
         ConstantDefault = 7,
         SeaVignette = 8,
+        AwakeningPortraits = 9
     }
     
     public static Script_UIAspectRatioEnforcerFrame Control;
@@ -54,6 +55,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     [SerializeField] private Script_CanvasConstantPixelScaler ElleniasHandCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler IdsDeadCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler seaVignetteCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler awakeningPortraitsCanvasScaler;
     
     [Tooltip("Border heights as a percent of Rect")]
     [SerializeField] private float minBorderHeight;
@@ -131,7 +133,11 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
             case (Framing.SeaVignette):
                 minBorderHeight = minBorderHeightDefault;
                 canvasScaler = seaVignetteCanvasScaler;
-                break;    
+                break;
+            case (Framing.AwakeningPortraits):
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = awakeningPortraitsCanvasScaler;
+                break;
             
             // No dynamic sizing needed for framing
             // Useful for non-Full Screen Full Art where it's unnecessary to match up to an implied

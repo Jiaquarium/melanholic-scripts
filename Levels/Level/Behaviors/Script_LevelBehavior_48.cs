@@ -44,9 +44,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     [SerializeField] private Script_MynesGrandMirror mynesGrandMirror;
     
-    [Header("R1 Only")]
+    [Space][Header("R1 Only")][Space]
     [SerializeField] private float fadeInMynesMirrorVibesTime;
-    [SerializeField] private float mynesMirrorBgmStartTime;
     
     [SerializeField] private Script_CrackableStats iceBlockStatsLeft;
     [SerializeField] private Script_CrackableStats iceBlockStatsMid;
@@ -73,8 +72,22 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
 
     [SerializeField] private List<Collider> grandMirrorColliders;
+    
+    // ------------------------------------------------------------------
+    // Awakening Portraits
 
-    [Header("R2 Only")]
+    [SerializeField] private Script_AwakeningPortraitsController awakeningPortraitsController;
+    
+    // Note: Source from BGM 2 so fading will work.
+    [SerializeField] private Script_BgThemePlayer scribbleBgThemePlayer;
+    // Note: Used by Timeline
+    [SerializeField] private Script_BgThemePlayer scribbleIntenseBgThemePlayer;
+    [SerializeField] private float scribbleFadeInTime;
+    [SerializeField] private Script_Marker teleportLocationAfterAwakening;
+
+    // ------------------------------------------------------------------
+
+    [Space][Header("R2 Only")][Space]
     [SerializeField] private float fadeToBlackTime;
     [SerializeField] private Script_PlayerMutation playerMutation;
     [SerializeField] private Transform playerReflectionMyne;
@@ -275,7 +288,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
                 forcePlay: true,
                 fadeInMynesMirrorVibesTime,
                 Const_AudioMixerParams.ExposedBGVolume,
-                mynesMirrorBgmStartTime
+                bgm.r1AwakeningMynesMirrorStartTime
             );
         }
     }
@@ -290,6 +303,23 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         awakeningDirector.Pause();
     }
 
+    // Awakening Portraits Timeline
+    // Fade out Myne's Mirror theme and fade in Scribble Bgm simultaneously
+    public void FadeInScribbleBgm()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        var bgmParam = Const_AudioMixerParams.ExposedBGVolume;
+
+        bgm.FadeOut(() => {
+            bgm.SetVolume(0f, bgmParam);
+            bgm.Stop();
+            bgm.SetVolume(1f, bgmParam);
+        }, scribbleFadeInTime, bgmParam);
+
+        // On Source BG2
+        scribbleBgThemePlayer.FadeInPlay(null, scribbleFadeInTime);
+    }
+    
     // Last Timeline Teletype Reveal of Awakening Timeline
     public void OnAwakeningTimelineDone()
     {
@@ -304,7 +334,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             yield return new WaitForSeconds(waitBeforeAwakeningCutTime);
             
             // Set Fade Canvas Active
-            Script_TransitionManager.Control.TimelineBlackScreen();
+            Script_TransitionManager.Control.TimelineUnderHUDBlackScreenOpen();
 
             // Stop the previously paused Awakening Timeline
             var awakeningDirector = timelineController.playableDirectors[1];
@@ -314,19 +344,68 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             
             Dev_Logger.Debug("Waiting for next part in sequence!!!");
 
-            // Wait a few seconds for black screen to stay up and then fade out.
-            EquipLastElevatorMaskBackground();
-
-            glitchManager.SetLow();
-            glitchManager.SetBlend(1f);
-
+            // Wait a few seconds in black screen before Awakening Portraits
             yield return new WaitForSeconds(waitTimeAfterAwakening);
 
-            Script_TransitionManager.Control.TimelineFadeOut(
-                Script_TransitionManager.FadeTimeSlow,
-                () => Script_DialogueManager.DialogueManager.StartDialogueNode(lastElevatorMaskDialogue)
-            );
+            PlayAwakeningPortraitsTimeline();
         }
+    }
+
+    private void PlayAwakeningPortraitsTimeline()
+    {
+        // For editor call
+        game.ChangeStateCutScene();
+
+        EquipLastElevatorMaskBackground();
+        
+        var player = game.GetPlayer();
+        player.Teleport(teleportLocationAfterAwakening.Position);
+        player.FaceDirection(Directions.Down);
+        
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.AwakeningPortraits,
+            isNoAnimation: true
+        );
+        
+        // Play AwakeningPortraitsTimeline
+        awakeningPortraitsController.OpenAwakeningPortraits();
+        Script_TransitionManager.Control.TimelineUnderHUDBlackScreenClose();
+        timelineController.PlayableDirectorPlayFromTimelines(3, 3);
+    }
+
+    // Awakening Portraits Timeline: StopScribbleBgm when canvas goes black on last portrait
+    public void StopScribbleBgm()
+    {
+        scribbleBgThemePlayer.SoftStop();
+    }
+
+    // AwakeningPortraitsTimeline Done
+    public void OnAwakeningPortraitsTimelineDone()
+    {
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.AwakeningPortraits,
+            isNoAnimation: true
+        );
+        
+        // Leave glitch setting on for remainder of day
+        glitchManager.SetLow();
+        glitchManager.SetBlend(1f);
+        
+        Script_TransitionManager.Control.TimelineBlackScreen();
+        awakeningPortraitsController.CloseAwakeningPortraits();
+
+        Script_BackgroundMusicManager.Control.Play(
+            i: mynesMirrorBgm,
+            forcePlay: true,
+            forceNewStartTime: true
+        );
+
+        Script_TransitionManager.Control.TimelineFadeOut(
+            Script_TransitionManager.FadeTimeSlow,
+            () =>  Script_DialogueManager.DialogueManager.StartDialogueNode(lastElevatorMaskDialogue)
+        );
     }
 
     private void EquipLastElevatorMaskBackground()
@@ -829,6 +908,10 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         R1Objects.ForEach(obj => obj.SetActive(!IsFinalRound));
         windManager.IsFinalRound = IsFinalRound;
         game.GetPlayer().IsFinalRound = IsFinalRound;
+        
+        // Awakening Portraits Cut Scene Setup
+        scribbleBgThemePlayer.gameObject.SetActive(false);
+        scribbleIntenseBgThemePlayer.gameObject.SetActive(false);
 
         if (isFinalRound)
         {
@@ -866,6 +949,16 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             if (GUILayout.Button("On Awakening Timeline Done"))
             {
                 t.OnAwakeningTimelineDone();
+            }
+
+            if (GUILayout.Button("Play Awakening Portraits Timeline"))
+            {
+                t.PlayAwakeningPortraitsTimeline();
+            }
+
+            if (GUILayout.Button("On Awakening Portraits Timeline Done"))
+            {
+                t.OnAwakeningPortraitsTimelineDone();
             }
 
             if (GUILayout.Button("Set Woods Well PRCS Done"))

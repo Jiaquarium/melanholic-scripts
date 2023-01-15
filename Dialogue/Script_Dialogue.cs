@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-12 00:21:28
+// Last created by Dialogue Exporter at 2023-01-14 22:03:12
 
 using System.Collections;
 using System.Collections.Generic;
@@ -4894,6 +4894,93 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Why am I being so nice to you?| Well it’s simple, my dear.| You might be of some use to me.",
                 @"Well bye now.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_awakening-portraits_portrait0",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Hey, what are you doing?!",
+                @"That’s not you...",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_awakening-portraits_portrait1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Wait, this isn’t your face...",
+                @"There’s no way you could have forgotten...",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_awakening-portraits_portrait2",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"That’s not it either...",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "grand-mirror-room_awakening-portraits_portrait3",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"No|.|.|.|what is this...?",
+                @"It can’t be...",
         },
         metadata = new Model_Languages.Metadata[]
         {

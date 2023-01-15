@@ -14,6 +14,9 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public AudioSource AudioSource;
     public AudioClip[] AudioClips;
 
+    public float myMaskDoneSongStartTime;
+    public float r1AwakeningMynesMirrorStartTime;
+
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Script_BgThemeSpeakersController bgThemeSpeakersController;
 
@@ -161,7 +164,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         int i,
         bool forcePlay = false,
         float startTime = 0f,
-        bool didLoadClip = false
+        bool didLoadClip = false,
+        bool forceNewStartTime = false
     )
     {
         if (i == -1)
@@ -185,7 +189,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             return;
         }
         
-        if (startTime > 0f)
+        if (startTime > 0f || forceNewStartTime)
             Source.time = startTime;
         
         Source.Play();
