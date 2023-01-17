@@ -25,6 +25,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
     [SerializeField] private bool[] _mynesMirrorsSolved = new bool[QuestionCount];
 
     [SerializeField] private Script_ScarletCipherNotification _scarletCipherNotification;
+    [SerializeField] private Script_ScarletCipherLastOnes _scarletCipherLastOnes;
     [SerializeField] private PlayableDirector _notificationDirector;
     [SerializeField] private Script_DialogueNode _firstPickUpTutorialNode;
     
@@ -42,6 +43,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
 
     /// <summary>
     /// The current viewable state of the Scarlet Cipher in which the Player can see.
+    /// Hidden values will be returned as -1.
     /// </summary>
     public int[] ScarletCipherPublic
     {
@@ -72,6 +74,8 @@ public class Script_ScarletCipherManager : MonoBehaviour
     {
         get => _scarletCipherNotification;
     }
+
+    public Script_ScarletCipherLastOnes ScarletCipherLastOnes => _scarletCipherLastOnes;
 
     public int ScarletCipherRemainingCount
     {
@@ -220,6 +224,12 @@ public class Script_ScarletCipherManager : MonoBehaviour
             game.ChangeStateCutScene();
             Script_DialogueManager.DialogueManager.StartDialogueNode(_firstPickUpTutorialNode);
         }
+        // With 1 or 0 left, play ominous Last Ones Timeline
+        else if (ScarletCipherRemainingCount <= 1)
+        {
+            game.ChangeStateCutScene();
+            ScarletCipherLastOnes.PlayLastOnesTimeline();
+        }
         else
             game.ChangeStateInteract();
         
@@ -282,7 +292,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
         }
 
         _scarletCipherNotification.Setup();
-
+        _scarletCipherLastOnes.Setup();
     }
 }
 
@@ -291,6 +301,7 @@ public class Script_ScarletCipherManager : MonoBehaviour
 public class Script_ScarletCipherEditor : Editor
 {
     private SerializedProperty scarletCipherNotification;
+    private SerializedProperty scarletCipherLastOnes;
     private SerializedProperty notificationDirector;
     private SerializedProperty firstPickUpTutorialNode;
     private SerializedProperty scarletCipher;
@@ -300,6 +311,7 @@ public class Script_ScarletCipherEditor : Editor
     private static bool[] showItemSlots = new bool[Script_ScarletCipherManager.QuestionCount];
 
     private const string ScarletCipherNotificationName      = "_scarletCipherNotification";
+    private const string ScarletCipherLastOnesName          = "_scarletCipherLastOnes";
     private const string NotificationDirector               = "_notificationDirector";
     private const string FirstPickUpTutorialNode            = "_firstPickUpTutorialNode";
     private const string ScarletCipherName                  = "_scarletCipher";
@@ -311,6 +323,7 @@ public class Script_ScarletCipherEditor : Editor
     private void OnEnable()
     {
         scarletCipherNotification       = serializedObject.FindProperty(ScarletCipherNotificationName);
+        scarletCipherLastOnes           = serializedObject.FindProperty(ScarletCipherLastOnesName);
         notificationDirector            = serializedObject.FindProperty(NotificationDirector);
         firstPickUpTutorialNode         = serializedObject.FindProperty(FirstPickUpTutorialNode);
         scarletCipher                   = serializedObject.FindProperty(ScarletCipherName);
@@ -325,6 +338,7 @@ public class Script_ScarletCipherEditor : Editor
         serializedObject.Update();
         
         EditorGUILayout.PropertyField(scarletCipherNotification, new GUIContent("Notification"));
+        EditorGUILayout.PropertyField(scarletCipherLastOnes, new GUIContent("Last Ones Notification"));
         EditorGUILayout.PropertyField(notificationDirector, new GUIContent("Director"));
         EditorGUILayout.PropertyField(firstPickUpTutorialNode, new GUIContent("First Pick Up Tutorial Node"));
         

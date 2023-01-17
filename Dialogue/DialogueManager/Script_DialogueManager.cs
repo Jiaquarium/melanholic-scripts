@@ -793,6 +793,8 @@ public class Script_DialogueManager : MonoBehaviour
     )
     {
         var stringBuilder = new StringBuilder(sentence);
+        
+        // Note: should this actually be textUI.textInfo.characterCount + 1?
         int totalVisible = textUI.textInfo.characterCount;
         char zalgoLetter;
 

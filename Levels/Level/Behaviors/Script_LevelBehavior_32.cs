@@ -477,11 +477,18 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         game.GetPlayer().FaceDirection(Directions.Down);
     }
 
-    // disableSurveillanceNode, need to force cooldown so won't accidentally continue dialogue
+    // disableSurveillanceNode1, need to force cooldown so won't accidentally continue dialogue
     public void OnDisabledSurveillanceDialogueDone()
     {
         game.ChangeStateInteract();
         CCTVAdminComputerDisabled.StartDialogueCoolDown();
+        Script_HUDManager.Control.IsForceUp = false;
+    }
+
+    // disableSurveillanceNode1, show time when dialogue refers to it
+    public void OnMentionTime()
+    {
+        Script_HUDManager.Control.IsForceUp = true;
     }
 
     // ------------------------------------------------------------------
@@ -619,6 +626,12 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         clockManager.SetGoodEndingEndTime();
         HandleEndingExitState(Script_TransitionManager.Endings.Good);
+    }
+
+    // Disable Surveillance White Screen
+    public void PlayExplosionSFX()
+    {
+        Script_SFXManager.SFX.PlayExplosion();
     }
 
     public void OnDisableSurveillanceDone()

@@ -11,7 +11,15 @@ using UnityEditor;
 /// </summary>
 public class Script_Start : MonoBehaviour
 {
+    /* =======================================================================
+        STATE DATA
+    ======================================================================= */
+    public string curse;
+    /* ======================================================================= */
+    
     public static Script_Start Main; // can't take namespace Start
+    
+    private const string StartOptionsStartCurseId = "start_options_start_curse";
     public static StartStates startState;
     public static Script_GameOverController.DeathTypes deathType;
     public Script_StartOverviewController mainController;
@@ -33,6 +41,12 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController initFader;
     [SerializeField] private Script_GraphicsManager startGraphicsManager;
     
+    [Space][Header("Good Ending Curse")][Space]
+    [SerializeField] private Script_SaveCurseControl saveCurseControl;
+    [SerializeField] private Script_TMProPopulator startTMProPopulator;
+    [SerializeField] private Script_TMProRandomizer TMProRandomizer;
+    [SerializeField] private Script_ImageDistorterController TMProRandomizerController;
+    
     public Script_GraphicsManager StartGraphicsManager => startGraphicsManager;
 
     private void Awake()
@@ -53,6 +67,7 @@ public class Script_Start : MonoBehaviour
 
         savedGameTitleControl.Setup();
         saveSettingsControl.Setup();
+        saveCurseControl.Setup();
         sceneManager.Setup();
         SFXManager.Setup();
         settingsController.Setup();
@@ -67,10 +82,11 @@ public class Script_Start : MonoBehaviour
     {
         Script_PlayerInputManager.Instance.Setup();
         saveSettingsControl.Load();
+        saveCurseControl.Load();
         Script_PlayerInputManager.Instance.UpdateKeyBindingUIs();
-        
         mainController.Setup();
-        
+        HandleCurse();
+
         switch(startState)
         {
             case (StartStates.GameOver):
@@ -104,6 +120,16 @@ public class Script_Start : MonoBehaviour
         crunchTimelineCtrl.PlayableDirectorPlayFromTimelines(0, 1);
     }
 
+    private void HandleCurse()
+    {
+        if (curse == Script_SaveCurseControl.CurseTag)
+        {
+            startTMProPopulator.UpdateTextId(StartOptionsStartCurseId);
+            TMProRandomizer.DefaultId = StartOptionsStartCurseId;
+            TMProRandomizerController.gameObject.SetActive(true);
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Timeline Signals
     
@@ -114,16 +140,21 @@ public class Script_Start : MonoBehaviour
     {
         initFader.Close();
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Script_Start))]
-public class Script_StartTester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    #if UNITY_EDITOR
+    [CustomEditor(typeof(Script_Start))]
+    public class Script_StartTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_Start t = (Script_Start)target;
+            Script_Start t = (Script_Start)target;
+
+            if (GUILayout.Button("Save Curse"))
+            {
+                t.saveCurseControl.Save();
+            }
+        }
     }
+    #endif
 }
-#endif

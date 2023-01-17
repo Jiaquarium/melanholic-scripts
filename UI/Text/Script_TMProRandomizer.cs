@@ -8,6 +8,7 @@ public class Script_TMProRandomizer : MonoBehaviour
 {
     [SerializeField] private List<string> ids;
     [SerializeField] private float timerMax;
+    [SerializeField] private Script_TMProZalgofy tmproZalgofy;
     
     private Script_TMProPopulator TMProPopulator;
     private float timer;
@@ -43,7 +44,11 @@ public class Script_TMProRandomizer : MonoBehaviour
 
         if (timer <= 0f)
         {
-            HandleRandomIdSwitch();
+            if (tmproZalgofy != null)
+                tmproZalgofy.Zalgofy();
+            else
+                HandleRandomIdSwitch();
+
             timer = timerMax;
         }
     }

@@ -61,7 +61,14 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     [SerializeField] private Transform defaultTrees;
     [SerializeField] private Transform finalTrees;
 
+    [Space]
+    [Header("Last Ones Opening")]
+    [Space]
+    [SerializeField] private float waitBeforeLastOnesReveal;
+    [SerializeField] private Script_ScarletCipherLastOnes lastOnes;
+
     private bool didIdsRun;
+    private bool didLastOnes;
 
     private void Start()
     {
@@ -130,6 +137,8 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
 
     public override void OnLevelInitComplete()
     {
+        var scarletCipherManager = Script_ScarletCipherManager.Control;
+        
         if (
             !didStartThought
             && game.RunCycle == Script_RunsManager.Cycle.Weekday
@@ -151,9 +160,35 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
             // seaVignette coroutine should already be running here from Start() so
             // no need to play the PRCS here.
         }
+        // If there 2 or 1 Scarlet Cipher slots left, start off fading in Last Ones
+        else if (
+            !didLastOnes
+            && game.RunCycle == Script_RunsManager.Cycle.Weekend
+            && (
+                scarletCipherManager.ScarletCipherRemainingCount == 2
+                || scarletCipherManager.ScarletCipherRemainingCount == 1
+            )
+        )
+        {
+            game.ChangeStateCutScene();
+            didLastOnes = true;
+            StartCoroutine(WaitToShowLastOnes());
+            
+            IEnumerator WaitToShowLastOnes()
+            {
+                yield return new WaitForSeconds(waitBeforeLastOnesReveal);
+                
+                lastOnes.HandleShow(actionBeforeClosing: () => {
+                    Dev_Logger.Debug($"{name} Last Ones callback");
+                    
+                    game.ChangeStateInteract();
+                    HandleIdsMonWedIntro();
+                });
+            }
+        }
         else
         {
-            HandleIdsMonWedIntro();   
+            HandleIdsMonWedIntro();
         }
     }
     

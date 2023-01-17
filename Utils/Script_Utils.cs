@@ -1062,6 +1062,7 @@ public static class Script_Utils
     public static string SaveFile(int slot) => $"nl_savedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
     public static string SaveTitleDataFile(int slot) => $"nl_titlesavedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
     public static string SettingsFile => $"nl_settings_v{GetMajorVersion(Application.version)}.dat";
+    public static string CurseFile => $"nl_curse_v{GetMajorVersion(Application.version)}.dat";
 
     // Will remove last "." and anything after it.
     public static string RemoveBuildNumber(string version)

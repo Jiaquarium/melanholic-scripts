@@ -55,6 +55,7 @@ public class Script_TransitionManager : MonoBehaviour
     public Script_CanvasGroupFadeInOut fader;
     [SerializeField] private Script_CanvasGroupController timelineUnderHUD;
     [SerializeField] private Script_CanvasGroupController timelineFaderUnder;
+    [SerializeField] private Script_CanvasGroupController timelineFaderUnderWhite;
     [SerializeField] private Script_CanvasGroupController timelineFaderOver;
     [SerializeField] private Script_CanvasGroupController timelineFaderOverWhite;
     [SerializeField] private Script_CanvasGroupController faderOverWhite;
@@ -466,6 +467,7 @@ public class Script_TransitionManager : MonoBehaviour
     // TrueEndingAchievement signal from True Ending Timeline on the final pause waiting for key input
     public void TrueEndingAchievement()
     {
+        Script_SaveCurseControl.Instance.Delete();
         Script_AchievementsManager.Instance.UnlockNauticalDawn();
     }
     
@@ -654,6 +656,7 @@ public class Script_TransitionManager : MonoBehaviour
         underDialogueController.InitialState();
         timelineUnderHUD.InitialState();
         timelineFaderUnder.InitialState();
+        timelineFaderUnderWhite.InitialState();
         timelineFaderOver.InitialState();
         timelineFaderOverWhite.InitialState();
         faderOverWhite.InitialState();
@@ -678,10 +681,12 @@ public class Script_TransitionManager : MonoBehaviour
         SealingCanvasGroup.gameObject.SetActive(false);
         endingsBgCanvasGroup.gameObject.SetActive(false);
 
-        timelineFaderUnder.Close();
         fader.GetComponent<Script_CanvasGroupController>().Close();
+        
+        underDialogueController.Close();
         timelineUnderHUD.Close();
         timelineFaderUnder.Close();
+        timelineFaderUnderWhite.Close();
         timelineFaderOver.Close();
         timelineFaderOverWhite.Close();
         faderOverWhite.Close();

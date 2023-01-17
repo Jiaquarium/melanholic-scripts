@@ -44,6 +44,11 @@ public class Script_GoodEndingController : MonoBehaviour
         glitchFXManager.BlendTo(0f);
     }
 
+    public void SaveCurseData()
+    {
+        Script_SaveCurseControl.Instance.Save();
+    }
+
     // Good Ending Timeline - Realization Text Ending
     // Fade out after "my eyes feel incredibly heavy"
     public void FadeOutMainMelody()
@@ -62,6 +67,8 @@ public class Script_GoodEndingController : MonoBehaviour
         TMProRandomizer.DefaultId = newTMProRandomizerId;
         theEndImageDistorter.enabled = true;
     }
+
+    // ------------------------------------------------------------------
 
     // Good Ending Timeline Start
     public void InitialState()

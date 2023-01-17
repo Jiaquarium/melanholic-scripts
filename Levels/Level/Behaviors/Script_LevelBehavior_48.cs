@@ -649,7 +649,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     }
 
     // From interaction with Myne
-    public void PlayMaskRevealTimeline()
+    public void HandleMaskRevealSequence()
     {
         var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
         var isWearingMyMask = activeMaskId == Const_Items.MyMaskId;
@@ -659,7 +659,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             Dev_Logger.Debug("Not wearing My Mask, cannot interact.");
             return;
         }
-        
+
+        PlayMaskRevealTimeline();
+    }
+    
+    private void PlayMaskRevealTimeline()
+    {
         Dev_Logger.Debug("Playing Mask Reveal Timeline!!!");
         
         game.ChangeStateCutScene();
@@ -936,7 +941,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
                 t.OnNewWorldRevealPaintingDone();
             }
 
-            if (GUILayout.Button("Mask Reveal Timeline"))
+            if (GUILayout.Button("Play Mask Reveal Timeline (Force)"))
             {
                 t.PlayMaskRevealTimeline();
             }

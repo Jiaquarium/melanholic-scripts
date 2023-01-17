@@ -123,6 +123,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_HitBoxDictionary hitBoxDictionary;
     
     [SerializeField] private Script_SaveGameControl saveGameControl;
+    [SerializeField] private Script_SaveCurseControl saveCurseControl;
     [SerializeField] private Script_EventCycleManager eventCycleManager;
 
     [SerializeField] private Script_MapNotificationsManager mapNotificationsManager;
@@ -478,6 +479,7 @@ public class Script_Game : MonoBehaviour
         }
         
         saveGameControl.Setup();
+        saveCurseControl.Setup();
         saveSettingsControl.Setup();
 
         Script_SystemSettings.DisableMouse();

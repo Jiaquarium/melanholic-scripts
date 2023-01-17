@@ -41,6 +41,7 @@ public class Script_HUDManager : MonoBehaviour
         set => fadeSpeed = value;
     }
 
+    // Force Time UI to stay up
     public bool IsForceUp
     {
         get => isForceUp;

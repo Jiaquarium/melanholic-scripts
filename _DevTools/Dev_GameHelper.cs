@@ -111,6 +111,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private CanvasGroup KingsIntroCanvasGroup;
     [SerializeField] private CanvasGroup ElleniaStabCanvasGroup;
     [SerializeField] private CanvasGroup AwakeningPortraitsCanvasGroup;
+    [SerializeField] private CanvasGroup ScarletCipherLastOnesCanvasGroup;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -445,6 +446,12 @@ public class Dev_GameHelper : MonoBehaviour
                 Debug.Log($"<color=red>{AwakeningPortraitsCanvasGroup.name} should be INACTIVE</color>");
                 AwakeningPortraitsCanvasGroup.gameObject.SetActive(false);
             }
+
+            if (ScarletCipherLastOnesCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>{ScarletCipherLastOnesCanvasGroup.name} should be INACTIVE</color>");
+                ScarletCipherLastOnesCanvasGroup.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -472,6 +479,36 @@ public class Dev_GameHelper : MonoBehaviour
         Script_Game.Game.WellsWorldBehavior.isCurrentMooseQuestComplete     = WellsWorldPuzzleDone;
         Script_Game.Game.GardenLabyrinthBehavior.isCurrentPuzzleComplete    = CelestialGardensPuzzleDone;
         Script_Game.Game.KTVRoom2Behavior.IsCurrentPuzzleComplete           = XXXWorldPuzzleDone;
+    }
+
+    public void SetWellsWorldSolved()
+    {
+        var game = Script_Game.Game;
+        game.WellsWorldBehavior.isCurrentMooseQuestComplete = true;
+        game.WellsWorldBehavior.isMooseQuestDone = true;
+        
+        game.faceOffCounter++;
+        game.WellsWorldBehavior.didPlayFaceOff = true;
+    }
+
+    public void SetGardenLabyrinthSolved()
+    {
+        var game = Script_Game.Game;
+        game.GardenLabyrinthBehavior.isCurrentPuzzleComplete = true;
+        game.GardenLabyrinthBehavior.isPuzzleComplete = true;
+        
+        game.faceOffCounter++;
+        game.GardenLabyrinthBehavior.didPlayFaceOff = true;
+    }
+
+    public void SetKTV2Solved()
+    {
+        var game = Script_Game.Game;
+        game.KTVRoom2Behavior.IsCurrentPuzzleComplete = true;
+        game.KTVRoom2Behavior.IsPuzzleComplete = true;
+        
+        game.faceOffCounter++;
+        game.KTVRoom2Behavior.didPlayFaceOff = true;
     }
 
     public void SolveAllMynesMirrors()
@@ -868,6 +905,21 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Quests Done Dynamic Today"))
                 {
                     t.SetQuestsDoneDynamic();
+                }
+
+                if (GUILayout.Button("Solve Wells World & Handle FaceOff"))
+                {
+                    t.SetWellsWorldSolved();
+                }
+
+                if (GUILayout.Button("Solve Labyrinth & Handle FaceOff"))
+                {
+                    t.SetGardenLabyrinthSolved();
+                }
+
+                if (GUILayout.Button("Solve KTV2 & Handle FaceOff"))
+                {
+                    t.SetKTV2Solved();
                 }
             }
 

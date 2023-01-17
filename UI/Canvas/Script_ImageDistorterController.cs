@@ -61,8 +61,11 @@ public class Script_ImageDistorterController : MonoBehaviour
     
     void Awake()
     {
-        canvasAdjusterX = outlineX.GetComponent<Script_CanvasAdjuster>();
-        canvasAdjusterY = outlineY.GetComponent<Script_CanvasAdjuster>();
+        if (outlineX != null)
+            canvasAdjusterX = outlineX.GetComponent<Script_CanvasAdjuster>();
+        
+        if (outlineY != null)
+            canvasAdjusterY = outlineY.GetComponent<Script_CanvasAdjuster>();
     }
     
     void OnEnable()
@@ -104,6 +107,9 @@ public class Script_ImageDistorterController : MonoBehaviour
     /// </summary>
     private void HandleOscillateX()
     {
+        if (outlineX == null)
+            return;
+        
         // Uses the canvas adjuster position when available
         Vector3 xLocation = canvasAdjusterX == null
             ? outlineXInitialLocation
@@ -139,6 +145,9 @@ public class Script_ImageDistorterController : MonoBehaviour
 
     private void HandleOscillateY()
     {
+        if (outlineY == null)
+            return;
+        
         // Uses the canvas adjuster position when available
         Vector3 yLocation = canvasAdjusterY == null
             ? outlineYInitialLocation
@@ -261,8 +270,12 @@ public class Script_ImageDistorterController : MonoBehaviour
             // if last wasn't disabled, then isIntervalDisabled set to true, disable outlines,
             else
             {
-                outlineX.gameObject.SetActive(false);
-                outlineY.gameObject.SetActive(false);
+                if (outlineX != null)
+                    outlineX.gameObject.SetActive(false);
+                
+                if (outlineY != null)
+                    outlineY.gameObject.SetActive(false);
+                
                 intervalTimer = intervalDisabledTime;
 
                 if (TMProRandomizers.Count > 0)
@@ -284,14 +297,20 @@ public class Script_ImageDistorterController : MonoBehaviour
 
     private void SetOutlines()
     {
-        outlineXInitialLocation = outlineX.rectTransform.anchoredPosition;
-        outlineYInitialLocation = outlineY.rectTransform.anchoredPosition;
+        if (outlineX != null)
+            outlineXInitialLocation = outlineX.rectTransform.anchoredPosition;
+        
+        if (outlineY != null)
+            outlineYInitialLocation = outlineY.rectTransform.anchoredPosition;
     }
     
     private void ResetOutlines()
     {
-        outlineX.rectTransform.anchoredPosition = outlineXInitialLocation;
-        outlineY.rectTransform.anchoredPosition = outlineYInitialLocation;
+        if (outlineX != null)
+            outlineX.rectTransform.anchoredPosition = outlineXInitialLocation;
+        
+        if (outlineY != null)
+            outlineY.rectTransform.anchoredPosition = outlineYInitialLocation;
     }
     
     private void OutlinesInitialState()

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-14 22:03:12
+// Last created by Dialogue Exporter at 2023-01-17 12:22:24
 
 using System.Collections;
 using System.Collections.Generic;
@@ -228,9 +228,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"You’ve always been dependable.",
-                @"But who are you anyways?",
-                @"I guess you aren’t human...",
+                @"But what are you anyways?",
+                @"A {13}...?",
                 @"When will it all stop...",
+                @"Okay no more overthinking, one more hour...",
         },
         
     }
@@ -248,18 +249,84 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 {
+    "hotel-lobby_player-internal_white-screen_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Hey, c’mon...",
+                @"...snap out of it already...",
+                @"How long have you been here for?",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
     "hotel-lobby_player-internal_disabled-surveillance",
     new Model_Languages
     {
         speaker = "{0}",
         EN = new string[]
         {
-                @"There’s really no reason to stay at this point...",
-                @"...",
-                @"Is it already {49}?",
+                @"Finally|.|.|.|the feeling of being watched is gone.",
+                @"......",
+                @"The time...",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+        }
+    }
+},
+{
+    "hotel-lobby_player-internal_disabled-surveillance1",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"|||{49}",
+                @"This doesn’t seem real...",
+                @"Your hands start to feel a bit cold.",
+                @"But besides that...",
+                @"Why don’t you feel any different?",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -5039,10 +5106,12 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"He-he-he...",
                 @"......",
                 @"You see...",
-                @"I was created...",
-                @"...in your very own vision...",
-                @"...created for you to finally see your True Self.",
-                @"To be|| your mirror.",
+                @"I am...",
+                @"...but a mere reflection...",
+                @"Created to serve...",
+                @"...created for you to finally see...",
+                @"|Your <b>True Self.</b>",
+                @"......",
                 @"In other words|.|.|.|",
                 @"<size=16><b>I <i>|a|m</i> ||y|o|u|.</b></size>",
                 @"{0}...",
@@ -5051,10 +5120,23 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"How can you despise the only one who can help| “find you”?",
                 @"......",
                 @"<b>How can you hate me?</b>",
-                @"When my one true purpose...",
+                @"......",
+                @"When my sole existence is to|.|.|.|",
         },
         metadata = new Model_Languages.Metadata[]
         {
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, 
+                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 
@@ -5165,10 +5247,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{10}",
         EN = new string[]
         {
-                @"<size=16>When what I’m really here for|.|.|.|</size>",
-                @"<size=16>Is to save you from|.|.|.|</size>",
-                @"<size=16>|||<b>Your own fate at {49}</b></size>",
-                @"<size=16>......</size>",
+                @"<size=16>When my one true purpose is|.|.|.|</size>",
+                @"<size=16>|Is to protect you from|.|.|.|</size>",
+                @"<size=16>||||<b>Your own fate at {49}</b></size>",
+                @"<size=16>.|.|.|.|.|.|</size>",
                 @"<size=16>At that moment...</size>",
                 @"<size=16>I know exactly what will happen to us...</size>",
                 @"<size=16>You,| me...</size>",
@@ -5182,7 +5264,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"<size=16>This cycle is <i>our</i> only way...</size>",
                 @"<size=16><b>...to survive.</b></size>",
                 @"<size=16>|.|.|.|</size>",
-                @"<size=16><b>I too have run out of choices.</b></size>",
+                @"<size=16><b>I too have run out of options.</b></size>",
         },
         metadata = new Model_Languages.Metadata[]
         {

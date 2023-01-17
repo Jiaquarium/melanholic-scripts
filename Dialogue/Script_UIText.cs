@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-01-11 20:10:08
+// Last created by UI Exporter at 2023-01-17 00:31:13
 
 using System.Collections;
 using System.Collections.Generic;
@@ -276,7 +276,7 @@ public class Script_UIText
     "good-ending_narrator_monologue15_1",
     new Model_LanguagesUI
     {
-        EN = @"Finally, this weight on my shoulders..."
+        EN = @"||This weight on my shoulders..."
     }
 },
 {
@@ -339,7 +339,7 @@ public class Script_UIText
     "good-ending_narrator_monologue19",
     new Model_LanguagesUI
     {
-        EN = @"I knew it."
+        EN = @"Finally, no more pain."
     }
 },
 {
@@ -353,7 +353,7 @@ public class Script_UIText
     "good-ending_the-end_type",
     new Model_LanguagesUI
     {
-        EN = @"Ğ̶Ŏ̶Ø̷Ð̸ ̷Ę̸Ň̸Ð̷Î̸Ň̸Ĝ̷"
+        EN = @"RĖŇù Ů×ůĉŚū"
     }
 },
 {
@@ -367,28 +367,28 @@ public class Script_UIText
     "good-ending_the-end_type_zalgo0",
     new Model_LanguagesUI
     {
-        EN = @"G̸̟͑O̶̯̒O̵̦͑D̷͍̄ ̷̙̂Ḛ̶̎N̵̘̆D̵͍͑Ì̶̼N̸͗ͅǴ̸͔"
+        EN = @"Űţýs ĵ×ûŰĖĜ"
     }
 },
 {
     "good-ending_the-end_type_zalgo1",
     new Model_LanguagesUI
     {
-        EN = @"G̶̲͙͊̌O̵̺̼̒̉O̴͈͒̾D̴̲͉̈ ̷̨͇̈́̍E̷͔̅̊N̵̯̈́Ḏ̷̠̅̓Ĩ̶̱N̸̛̙G̸̹̞͑̂"
+        EN = @"ġŉŒŢ Ä×ïÈĳĥ"
     }
 },
 {
     "good-ending_the-end_type_zalgo2",
     new Model_LanguagesUI
     {
-        EN = @"G̵̻͊͝Ǫ̸̀̒Ó̷̪̍ͅD̵̥̰͌ ̸̖̹̈E̴̜̿N̶̥̐̚D̶̦̍Ȋ̵͕̆N̷̜̈G̸̡̘͋̌"
+        EN = @"ŖĀŁő s×šças"
     }
 },
 {
     "good-ending_the-end_type_zalgo3",
     new Model_LanguagesUI
     {
-        EN = @"G̶̞̏O̵͇̒͠O̵̼̼͛͌D̵̥̏ ̸̠͌E̶̡̕N̵͓̾D̵̳̖͒I̴̥͒ͅǸ̷̫͝Ğ̷͉̻"
+        EN = @"ăĲÑĢ E×Ďąõà"
     }
 },
 {
@@ -616,7 +616,7 @@ public class Script_UIText
     "bad-ending_the-end_type",
     new Model_LanguagesUI
     {
-        EN = @"『 BAD ENDING 』"
+        EN = @"『 THE SEALING 』"
     }
 },
 {
@@ -1481,6 +1481,13 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 {
+    "start_options_start_curse",
+    new Model_LanguagesUI
+    {
+        EN = @"S̶͚͗t̴̹̉a̸͎̅r̴̙̐t̴̢͗"
+    }
+},
+{
     "start_options_settings",
     new Model_LanguagesUI
     {
@@ -2260,7 +2267,7 @@ Jia"
     "faceoff_ren-myne_quest1_block3_1",
     new Model_LanguagesUI
     {
-        EN = @"Maybe you’re here to stay, maybe you’ll never truly go away."
+        EN = @"B̸u̸t̵ ̴ ŝa̵Ŷ’̵Þ ̴you s̴e̷e̸?̷ ̶ Ī Ĳu̴ ̵need m̸e̵ ̵t̷o̶ ̸ s̶ěĠøÛÊý."
     }
 },
 {

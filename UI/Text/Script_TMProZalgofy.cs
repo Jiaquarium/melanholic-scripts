@@ -12,6 +12,9 @@ using UnityEditor;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class Script_TMProZalgofy : MonoBehaviour
 {
+    [Tooltip("Set this true if you are planning to call Zalgofy from elsewhere manually")]
+    [SerializeField] private bool isNoUpdate;
+
     private TextMeshProUGUI textUI;
     private bool didZalgofy;
     
@@ -19,13 +22,19 @@ public class Script_TMProZalgofy : MonoBehaviour
     {
         textUI = GetComponent<TextMeshProUGUI>();
         
+        if (isNoUpdate)
+            return;
+        
         // Hide TMP until it is Zalgofied
+        // Note: even if this component is disabled this will still be called.
         textUI.maxVisibleCharacters = 0;
+
+        Dev_Logger.Debug($"{name} Setting max visible characters to 0");
     }
 
     void Update()
     {
-        if (!didZalgofy)
+        if (!didZalgofy && !isNoUpdate)
             Zalgofy();
     }
 
@@ -42,7 +51,9 @@ public class Script_TMProZalgofy : MonoBehaviour
             textUI.text = zalgofied;
 
             // Make TMP fully visible.
-            textUI.maxVisibleCharacters = textUI.textInfo.characterCount + 1;
+            // TBD Note: DialogueManager's zalgofy may be 1 off too short
+            if (!isNoUpdate)
+                textUI.maxVisibleCharacters = textUI.textInfo.characterCount + 1;
 
             didZalgofy = true;
         }

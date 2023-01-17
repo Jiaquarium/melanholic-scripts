@@ -103,6 +103,9 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip FloorSwitchUp;
     [Range(0f, 1f)] public float FloorSwitchUpVol;
+
+    public AudioClip Explosion;
+    [Range(0f, 1f)] public float ExplosionVol;
     
     [Tooltip("Quest Complete")]
     public AudioClip Secret;
@@ -443,6 +446,11 @@ public class Script_SFXManager : MonoBehaviour
             yield return new WaitForSeconds(SFXduration);
             cb();
         }
+    }
+
+    public void PlayExplosion()
+    {
+        SFXSource.PlayOneShot(Explosion, ExplosionVol);
     }
 
     // ------------------------------------------------------------
