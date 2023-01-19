@@ -5,6 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using Cinemachine;
 using System.Linq;
+using UnityEngine.Tilemaps;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,6 +15,11 @@ using UnityEditor;
 /// Player cracks the 3 Ice Blocks covering Myne's Grand Mirror.
 /// Each respective Ice Stats plays their timeline on their "Die"
 /// to reveal the respective world painting.
+/// 
+/// Note on Bound Volumes:
+/// - Bounding Volume shouldn't bound bottom because want camera not to show too much of what
+/// is ahead here
+/// - Bounding Volumes switched out depending on R1 & R2
 /// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_48 : Script_LevelBehavior
@@ -55,6 +61,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private bool isIceBlockMidCracked;
     [SerializeField] private bool isIceBlockRightCracked;
 
+    [SerializeField] private float waitOnDiagonalCutToUnpause;
+    [SerializeField] private float waitOnDiagonalCutToFrameTime;
+
     [SerializeField] private Renderer leftBody;
     [SerializeField] private Renderer middleBody;
     [SerializeField] private Renderer rightBody;
@@ -72,6 +81,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_ItemDialogueNode lastElevatorMaskDialogue;
 
     [SerializeField] private List<Collider> grandMirrorColliders;
+
+    [SerializeField] private GameObject lastSectionSnowParent;
+    [SerializeField] private GameObject nonLastSectionSnowParent;
+
+    [SerializeField] private GameObject boundingVolumeR1Parent;
+    [SerializeField] private Script_BoundingVolume boundingVolumeR1;
     
     // ------------------------------------------------------------------
     // Awakening Portraits
@@ -97,6 +112,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode onEntranceR2Node;
     [SerializeField] private Script_DialogueNode onPushBackDoneR2Node;
     [SerializeField] private float onPushBackDoneR2WaitTime;
+    [SerializeField] private GameObject IdsSpeakersParent;
     [SerializeField] private List<Script_SFXLooperParentController> sfxLooperParents;
     [SerializeField] private float sheepBleatsFadeOutTime;
  
@@ -110,6 +126,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     [SerializeField] private Script_ClockManager clockManager;
 
     [SerializeField] private float WaitBeforeFinalSaveTime;
+
+    [SerializeField] private GameObject boundingVolumeR2Parent;
+    [SerializeField] private Script_BoundingVolume boundingVolumeR2;
 
     private Script_TimelineController timelineController;
     private Script_CrackableStats currentIceBlockStats;
@@ -184,7 +203,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         InitialState();
     }
-    
+
+    void OnValidate()
+    {
+        PopulateIdsSpeakers();
+    }
+
     void Awake()
     {
         glitchManager = Script_GlitchFXManager.Control;
@@ -196,6 +220,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         
         // Initialize World Painting States for Reveal Cut Scenes.
         ballroomBehavior.SetPaintingEntrancesActive(false);
+
+        PopulateIdsSpeakers();
     }
 
     protected override void Update()
@@ -274,7 +300,11 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         }
         else
         {
-            game.ChangeStateInteract();
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: false,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                cb: game.ChangeStateInteract
+            );
         }
 
         void PlayMynesMirrorAtTime(float time)
@@ -423,6 +453,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     /// </summary>
     public void OnDiagonalCut(Script_CrackableStats ice)
     {
+        // Pause timeline for UI Frame
+        ice.CrackingDirector.Pause();
+
+        StartCoroutine(WaitToUnpause());
+        StartCoroutine(WaitToFrame());
+        
         grandMirrorColliders.ForEach(part => {
             // Turn off Box Colliders
             List<BoxCollider> cols = part.GetComponents<BoxCollider>().ToList();
@@ -445,6 +481,26 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             
             if (ice != iceBlockStatsRight)
                 iceBlockStatsRight.Hurt(1, null);
+        }
+
+        // Unpause timeline before framing, since the wait from after framing to shatter
+        // feels too long
+        IEnumerator WaitToUnpause()
+        {
+            yield return new WaitForSeconds(waitOnDiagonalCutToUnpause);
+
+            ice.CrackingDirector.Play();
+        }
+        
+        IEnumerator WaitToFrame()
+        {
+            yield return new WaitForSeconds(waitOnDiagonalCutToFrameTime);
+
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                cb: null
+            );
         }
     }
     
@@ -645,6 +701,38 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             yield return new WaitForSeconds(onPushBackDoneR2WaitTime);
 
             Script_DialogueManager.DialogueManager.StartDialogueNode(onPushBackDoneR2Node);
+        }
+    }
+
+    /// <summary>
+    /// R2 Glitch Zone 2 Trigger
+    /// Set by trigger nearest final torii, to use MyMaskClose values, speeding up player
+    /// </summary>
+    public void SetMyMaskIsClose(bool isR2Close)
+    {
+        windManager.IsR2Close = isR2Close;
+    }
+    
+    public void SetOnlyLastSectionSnow(bool isOnlyLastSectionSnow)
+    {
+        Script_Snow[] snowsLast = lastSectionSnowParent.GetComponentsInChildren<Script_Snow>(true);
+        Script_Snow[] snowsNonLast = nonLastSectionSnowParent.GetComponentsInChildren<Script_Snow>(true);
+        
+        if (isOnlyLastSectionSnow)
+        {
+            foreach (var snow in snowsLast)
+                snow.SetEmissionEnabled(true);
+            
+            foreach (var snow in snowsNonLast)
+                snow.SetEmissionEnabled(false);
+        }
+        else
+        {
+            foreach (var snow in snowsLast)
+                snow.SetEmissionEnabled(true);
+            
+            foreach (var snow in snowsNonLast)
+                snow.SetEmissionEnabled(true);
         }
     }
 
@@ -895,6 +983,36 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
 
+    // Switch environment based on R1 or R2
+    private void HandleEnvironment(bool isR2)
+    {
+        R2Objects.ForEach(obj => obj.SetActive(isR2));
+        R1Objects.ForEach(obj => obj.SetActive(!isR2));
+    }
+
+    // R2's bounding volume is shorter, since its tilemap is shorter than R1.
+    private void HandleBoundingVolumes(bool isR2)
+    {
+        if (isR2)
+        {
+            boundingVolumeR1Parent.SetActive(false);
+            boundingVolumeR2Parent.SetActive(true);
+            BoundingVolume = boundingVolumeR2;
+        }
+        else
+        {
+            boundingVolumeR1Parent.SetActive(true);
+            boundingVolumeR2Parent.SetActive(false);
+            BoundingVolume = boundingVolumeR1;
+        }
+    }
+
+    private void PopulateIdsSpeakers()
+    {
+        var sfxLooperParentsArray = IdsSpeakersParent.GetComponentsInChildren<Script_SFXLooperParentController>(true);
+        sfxLooperParents = sfxLooperParentsArray.ToList();
+    }
+    
     public override void InitialState()
     {
         base.InitialState();
@@ -909,8 +1027,9 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     {
         base.Setup();
 
-        R2Objects.ForEach(obj => obj.SetActive(IsFinalRound));
-        R1Objects.ForEach(obj => obj.SetActive(!IsFinalRound));
+        HandleEnvironment(IsFinalRound);
+        HandleBoundingVolumes(IsFinalRound);
+        
         windManager.IsFinalRound = IsFinalRound;
         game.GetPlayer().IsFinalRound = IsFinalRound;
         
@@ -932,6 +1051,22 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             DrawDefaultInspector();
 
             Script_LevelBehavior_48 t = (Script_LevelBehavior_48)target;
+            
+            GUILayout.Space(8);
+            
+            if (GUILayout.Button("R1 Environment"))
+            {
+                t.HandleEnvironment(false);
+                t.HandleBoundingVolumes(false);
+            }
+
+            if (GUILayout.Button("R2 Environment"))
+            {
+                t.HandleEnvironment(true);
+                t.HandleBoundingVolumes(true);
+            }
+
+            GUILayout.Space(8);
             
             if (GUILayout.Button("Awakening Timeline"))
             {

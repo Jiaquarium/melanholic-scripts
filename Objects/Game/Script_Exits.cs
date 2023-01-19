@@ -229,9 +229,21 @@ public class Script_Exits : MonoBehaviour
         /// </summary>
         void HandleCustomLevelFading(Script_LevelBehavior behavior)
         {
+            var customFadeBehavior = behavior?.GetComponent<Script_LevelCustomFadeBehavior>();
+            
             // Slow, dramatic fade on for default Woods entrances
             if (game.IsDefaultWoodsEntranceFromHotel)
                 currentLevelFadeInTime = woodsFromHotelFadeInTime;
+            else if (
+                customFadeBehavior != null
+                && customFadeBehavior.FadeInTime > 0
+                && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior)
+            )
+            {
+                currentLevelFadeInTime = customFadeBehavior.GetFadeInTime();
+
+                Dev_Logger.Debug($"{behavior.name} using custom fadeTime: {currentLevelFadeInTime}");
+            }
             else
                 currentLevelFadeInTime = defaultLevelFadeInTime;
             
@@ -319,10 +331,22 @@ public class Script_Exits : MonoBehaviour
         /// </summary>
         void HandleCustomLevelWait(Script_LevelBehavior behavior)
         {
+            var customFadeBehavior = behavior?.GetComponent<Script_LevelCustomFadeBehavior>();
+            
             // Slow, dramatic on the default Woods entrance. Do default wait time if is
             // opening PRCS.
             if (game.IsDefaultWoodsEntranceFromHotel)
                 currentWaitToFadeInLevelTime = woodsFromHotelWaitTime;
+            else if (
+                customFadeBehavior != null
+                && customFadeBehavior.WaitInBlackTime > 0
+                && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior)
+            )
+            {
+                currentWaitToFadeInLevelTime = customFadeBehavior.GetWaitInBlackTime();
+
+                Dev_Logger.Debug($"{behavior.name} using custom waitToFade: {currentWaitToFadeInLevelTime}");
+            }
             else
                 currentWaitToFadeInLevelTime = defaultLevelWaitToFadeInTime;
         }

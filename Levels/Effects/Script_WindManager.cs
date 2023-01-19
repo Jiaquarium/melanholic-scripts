@@ -13,7 +13,9 @@ public class Script_WindManager : MonoBehaviour
     [Header("Mask Specific Wind Adjustment Factors")]
     [SerializeField] private WindFactors snowWomanFactors;
     [SerializeField] private WindFactors myMaskFactors;
+    [SerializeField] private WindFactors myMaskFactorsClose;
 
+    [SerializeField] private bool isR2Close;
     [SerializeField] private bool isFinalRound;
 
 
@@ -44,6 +46,12 @@ public class Script_WindManager : MonoBehaviour
         set => isFinalRound = value;
     }
 
+    public bool IsR2Close
+    {
+        get => isR2Close;
+        set => isR2Close = value;
+    }
+
     public float Lateral(string id, bool isRunning)
     {
         float wind;
@@ -52,7 +60,7 @@ public class Script_WindManager : MonoBehaviour
         {
             wind = id switch
             {
-                Const_Items.MyMaskId => myMaskFactors.lateral,
+                Const_Items.MyMaskId => IsR2Close ? myMaskFactorsClose.lateral : myMaskFactors.lateral,
                 _ => isRunning ? defaultRunFactors.lateral : defaultFactors.lateral,
             };
         }
@@ -76,7 +84,7 @@ public class Script_WindManager : MonoBehaviour
         {
             wind = id switch
             {
-                Const_Items.MyMaskId => myMaskFactors.diagonal,
+                Const_Items.MyMaskId => IsR2Close ? myMaskFactorsClose.diagonal : myMaskFactors.diagonal,
                 _ => isRunning ? defaultRunFactors.diagonal : defaultFactors.diagonal,
             };
         }
@@ -100,7 +108,7 @@ public class Script_WindManager : MonoBehaviour
         {
             wind = id switch
             {
-                Const_Items.MyMaskId => myMaskFactors.headwind,
+                Const_Items.MyMaskId => IsR2Close ? myMaskFactorsClose.headwind : myMaskFactors.headwind,
                 _ => isRunning ? defaultRunFactors.headwind : defaultFactors.headwind,
             };
         }
@@ -124,7 +132,7 @@ public class Script_WindManager : MonoBehaviour
         {
             wind = id switch
             {
-                Const_Items.MyMaskId => myMaskFactors.tailwind,
+                Const_Items.MyMaskId => IsR2Close ? myMaskFactorsClose.tailwind : myMaskFactors.tailwind,
                 _ => isRunning ? defaultRunFactors.tailwind : defaultFactors.tailwind,
             };
         }
@@ -148,7 +156,7 @@ public class Script_WindManager : MonoBehaviour
         {
             wind = id switch
             {
-                Const_Items.MyMaskId => myMaskFactors.passive,
+                Const_Items.MyMaskId => IsR2Close ? myMaskFactorsClose.passive : myMaskFactors.passive,
                 _ => isRunning ? defaultRunFactors.passive : defaultFactors.passive,
             };
         }

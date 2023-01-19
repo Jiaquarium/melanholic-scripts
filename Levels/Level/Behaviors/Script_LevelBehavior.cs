@@ -9,6 +9,7 @@ using UnityEngine.Playables;
 public class Script_LevelBehavior : MonoBehaviour
 {
     public Script_Game game;
+    
     [SerializeField] private bool isNoFadeInBgm;
     [SerializeField] private Script_Snow snowEffect;
     [SerializeField] private Script_VCamera levelVCam;
@@ -25,6 +26,7 @@ public class Script_LevelBehavior : MonoBehaviour
     public Script_BoundingVolume BoundingVolume
     {
         get => boundingVolume;
+        set => boundingVolume = value;
     }
 
     // Update is called once per frame

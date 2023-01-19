@@ -32,6 +32,7 @@ public class Script_CrackableStats : Script_CharacterStats
     [SerializeField] private float shakeFreq;
 
     public bool IsCracked { get => currentHp <= 0; }
+    public PlayableDirector CrackingDirector => crackingDirector;
 
     private Coroutine hideIceCoroutine;
     

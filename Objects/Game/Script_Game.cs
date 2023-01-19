@@ -70,6 +70,7 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_34 bayV2Behavior;
     public Script_LevelBehavior_39 UrselksHallBehavior;
     public Script_LevelBehavior_42 WellsWorldBehavior;
+    public Script_LevelBehavior_45 UnderworldBehavior;
     public Script_LevelBehavior_46 GardenLabyrinthBehavior;
     public Script_LevelBehavior_48 grandMirrorRoomBehavior;
     
@@ -77,6 +78,7 @@ public class Script_Game : MonoBehaviour
     // Level Behavior Exits & Entrances
     [SerializeField] private Script_ExitMetadataObject XXXWorldSaloonExit;
     [SerializeField] private Script_ExitMetadataObject grandMirrorRoomEntrance;
+    [SerializeField] private Script_ExitMetadataObject grandMirrorRoomEntranceR2;
     [SerializeField] private Script_ExitMetadataObject UrselksHallElleniasRoomExit;
 
     // ------------------------------------------------------------------
@@ -383,7 +385,7 @@ public class Script_Game : MonoBehaviour
             || (WoodsBehavior.didStartThoughtSea && RunCycle == Script_RunsManager.Cycle.Weekend)
         )
         && LastLevelBehavior == bayV2Behavior;
-
+    
     /// <summary>
     /// Force stickers and clock to be disabled as if were in Hotel.
     /// </summary>
@@ -2169,7 +2171,7 @@ public class Script_Game : MonoBehaviour
     public void TeleportToGrandMirrorBackgroundR2()
     {
         grandMirrorRoomBehavior.IsFinalRound = true;
-        TeleportBackground(grandMirrorRoomEntrance);
+        TeleportBackground(grandMirrorRoomEntranceR2);
     }
 
     public void ElleniaHurtEndTransition()

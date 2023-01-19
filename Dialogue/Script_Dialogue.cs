@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-17 12:22:24
+// Last created by Dialogue Exporter at 2023-01-17 15:22:49
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1761,8 +1761,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"Her ribs are exposed. It’s hard to imagine painting such gore.",
-                @"You’ve always had an aversion towards needles and the sight of internal organs.",
+                @"There’s blood coming from her head. It’s hard to imagine painting such a subject.",
+                @"You’ve always had an aversion towards needles and the sight of blood.",
         },
         
     }

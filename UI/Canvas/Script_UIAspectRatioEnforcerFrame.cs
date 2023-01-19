@@ -405,6 +405,14 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
                 t.EndingsLetterBox(true, framing: Framing.ConstantThin);
             }
 
+            if (GUILayout.Button("Open Letter Box (Default Thin)"))
+            {
+                if (!Application.isPlaying)
+                    return;
+                
+                t.EndingsLetterBox(true, framing: Framing.ConstantDefault);
+            }
+
             if (GUILayout.Button("Close Letter Box (Constant Thin)"))
             {
                 if (!Application.isPlaying)
