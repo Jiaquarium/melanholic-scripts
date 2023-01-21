@@ -20,6 +20,7 @@ public class Script_MapNotificationsManager : MonoBehaviour
     private bool shouldInteractAfter;
     private Action onCloseAction;
     private float currentDuration;
+    private bool isWorldPaintingIntro;
     
     /// <summary>
     /// NOTE: Ensure this happens before other cut scenes if any in rooms
@@ -31,7 +32,8 @@ public class Script_MapNotificationsManager : MonoBehaviour
         bool isInteractAfter = true,
         float customDuration = -1f,
         bool isSFXOn = false,
-        AudioClip sfx = null
+        AudioClip sfx = null,
+        bool _isWorldPaintingIntro = false
     )
     {
         game.ChangeStateCutScene();
@@ -46,6 +48,7 @@ public class Script_MapNotificationsManager : MonoBehaviour
         onCloseAction = cb;
 
         currentDuration = customDuration > 0f ? customDuration : duration;
+        isWorldPaintingIntro = _isWorldPaintingIntro;
     }
 
     // ----------------------------------------------------------------------
@@ -53,6 +56,14 @@ public class Script_MapNotificationsManager : MonoBehaviour
 
     public void OnTeletypeDone()
     {
+        Script_TransitionsEventsManager.MapNotificationTeletypeDone(isWorldPaintingIntro);
+        
+        if (isWorldPaintingIntro)
+        {
+            isWorldPaintingIntro = false;
+            return;
+        }
+        
         StartCoroutine(WaitToEndNotification());
 
         IEnumerator WaitToEndNotification()

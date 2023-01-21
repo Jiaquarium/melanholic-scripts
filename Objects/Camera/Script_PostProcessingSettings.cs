@@ -24,6 +24,11 @@ public class Script_PostProcessingSettings : MonoBehaviour
             vignette.active = isActive;
     }
 
+    public void InitialState()
+    {
+        volume.weight = 1f;
+    }
+
     #if UNITY_EDITOR
     [CustomEditor(typeof(Script_PostProcessingSettings))]
     public class Script_PostProcessingSettingsTester : Editor

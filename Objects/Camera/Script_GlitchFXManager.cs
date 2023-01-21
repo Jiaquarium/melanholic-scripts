@@ -22,6 +22,7 @@ public class Script_GlitchFXManager : MonoBehaviour
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings lowSettings;
 
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings UIDayNotificationSettings;
+    [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings ScanlineTransitionSettings;
     [SerializeField] private GlitchImageEffect.GlitchImageEffectSettings MCDrowningSettings;
     
     [SerializeField] private GlitchImageEffect glitchFeature;
@@ -109,6 +110,18 @@ public class Script_GlitchFXManager : MonoBehaviour
         float lastBlend = currentSettings.blend;
         
         SaveSettings(currentSettings, MCDrowningSettings);
+        
+        if (useCurrentBlend)
+            SetBlend(lastBlend);
+        else
+            UpdateGlitchFXState();
+    }
+
+    public void SetScanlineTransition(bool useCurrentBlend = false)
+    {
+        float lastBlend = currentSettings.blend;
+        
+        SaveSettings(currentSettings, ScanlineTransitionSettings);
         
         if (useCurrentBlend)
             SetBlend(lastBlend);

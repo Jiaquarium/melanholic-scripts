@@ -43,7 +43,21 @@ public class Script_Exits : MonoBehaviour
         SaveAndStartWeekendCycle    = 5,
         SaveAndRestartOnLevel       = 6,
     }
+
+    public enum TransitionFades
+    {
+        None = 0,
+        Light = 1,
+        Medium = 2,
+        Heavy = 3,
+        XHeavy = 4
+    }
     
+    public Model_LevelTransitions xHeavyTransitions;
+    public Model_LevelTransitions heavyTransitions;
+    public Model_LevelTransitions medTransitions;
+    public Model_LevelTransitions lightTransitions;
+
     public CanvasGroup canvas;
     [SerializeField] private Script_ExitToWeekendCutScene exitToWeekendCutScene;
 
@@ -230,24 +244,54 @@ public class Script_Exits : MonoBehaviour
         void HandleCustomLevelFading(Script_LevelBehavior behavior)
         {
             var customFadeBehavior = behavior?.GetComponent<Script_LevelCustomFadeBehavior>();
+            float specialCaseFadeInTime = -1f;
+            bool didEventSetSpecial = false;
             
             // Slow, dramatic fade on for default Woods entrances
             if (game.IsDefaultWoodsEntranceFromHotel)
                 currentLevelFadeInTime = woodsFromHotelFadeInTime;
-            else if (
-                customFadeBehavior != null
-                && customFadeBehavior.FadeInTime > 0
-                && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior)
-            )
+            else if (customFadeBehavior != null)
             {
-                currentLevelFadeInTime = customFadeBehavior.GetFadeInTime();
-
-                Dev_Logger.Debug($"{behavior.name} using custom fadeTime: {currentLevelFadeInTime}");
+                if (CheckSpecial())
+                {
+                    currentLevelFadeInTime = specialCaseFadeInTime;
+                    Dev_Logger.Debug($@"{behavior.name} using Special Fade In: {currentLevelFadeInTime}
+                        customFadeBehavior.IsSpecialCase {customFadeBehavior.IsSpecialCase}
+                        customFadeBehavior.DidCheckSpecialCaseFadeIn {customFadeBehavior.DidCheckSpecialCaseFadeIn}
+                        specialCaseFadeInTime {specialCaseFadeInTime}
+                        didEventSetSpecial {didEventSetSpecial}"
+                    );
+                }
+                else if (CheckCustomFadeNonSpecial())
+                {
+                    currentLevelFadeInTime = customFadeBehavior.GetFadeInTime();
+                    Dev_Logger.Debug($@"{behavior.name} using custom Fade In: {currentLevelFadeInTime}
+                        customFadeBehavior.FadeInTime {customFadeBehavior.FadeInTime}
+                        customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior) {customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior)}"
+                    );
+                }
+                else
+                    DefaultFadeInTime();
             }
             else
-                currentLevelFadeInTime = defaultLevelFadeInTime;
+                DefaultFadeInTime();
             
             fadeTimer = currentLevelFadeInTime;
+
+            bool CheckSpecial() => customFadeBehavior.IsSpecialCase
+                && !customFadeBehavior.DidCheckSpecialCaseFadeIn
+                && customFadeBehavior.InvokeSettersFadeInTime(out specialCaseFadeInTime, out didEventSetSpecial)
+                // Checks if fadeInTime & didEventSetSpecial flag were set from the setter invoked by InvokeSettersFadeInTime
+                && specialCaseFadeInTime >= 0f
+                && didEventSetSpecial;
+            
+            bool CheckCustomFadeNonSpecial() => customFadeBehavior.FadeInTime > 0
+                && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior);
+        }
+
+        void DefaultFadeInTime()
+        {
+            currentLevelFadeInTime = defaultLevelFadeInTime;
         }
     }
 
@@ -271,6 +315,8 @@ public class Script_Exits : MonoBehaviour
             fadeTimer = 0f;
             canvas.alpha = 1f;
             isDefaultFadeOut = false;
+
+            Dev_Logger.Debug($"Time: {Time.time}");
             
             switch (currentFollowUp)
             {
@@ -332,23 +378,53 @@ public class Script_Exits : MonoBehaviour
         void HandleCustomLevelWait(Script_LevelBehavior behavior)
         {
             var customFadeBehavior = behavior?.GetComponent<Script_LevelCustomFadeBehavior>();
-            
+            float specialCaseWaitInBlackTime = -1f;
+            bool didEventSetSpecial = false;
+
             // Slow, dramatic on the default Woods entrance. Do default wait time if is
             // opening PRCS.
             if (game.IsDefaultWoodsEntranceFromHotel)
                 currentWaitToFadeInLevelTime = woodsFromHotelWaitTime;
-            else if (
-                customFadeBehavior != null
-                && customFadeBehavior.WaitInBlackTime > 0
-                && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior)
-            )
+            else if (customFadeBehavior != null)
             {
-                currentWaitToFadeInLevelTime = customFadeBehavior.GetWaitInBlackTime();
-
-                Dev_Logger.Debug($"{behavior.name} using custom waitToFade: {currentWaitToFadeInLevelTime}");
+                if (CheckSpecial())
+                {
+                    currentWaitToFadeInLevelTime = specialCaseWaitInBlackTime;
+                    Dev_Logger.Debug($@"{behavior.name} using Special Wait In Black: {currentWaitToFadeInLevelTime}
+                        customFadeBehavior.IsSpecialCase {customFadeBehavior.IsSpecialCase}
+                        customFadeBehavior.DidCheckSpecialCaseWaitInBlack {customFadeBehavior.DidCheckSpecialCaseWaitInBlack}
+                        specialCaseWaitInBlackTime {specialCaseWaitInBlackTime}
+                        didEventSetSpecial {didEventSetSpecial}"
+                    );
+                }
+                else if (CheckCustomFadeNonSpecial())
+                {
+                    currentWaitToFadeInLevelTime = customFadeBehavior.GetWaitInBlackTime();
+                    Dev_Logger.Debug($@"{behavior.name} using custom Wait In Black: {currentWaitToFadeInLevelTime}
+                        customFadeBehavior.WaitInBlackTime {customFadeBehavior.WaitInBlackTime}
+                        customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior) {customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior)}"
+                    );
+                }
+                else
+                    DefaultWaitInBlackTime();
             }
             else
-                currentWaitToFadeInLevelTime = defaultLevelWaitToFadeInTime;
+                DefaultWaitInBlackTime();
+            
+            bool CheckSpecial() => customFadeBehavior.IsSpecialCase
+                && !customFadeBehavior.DidCheckSpecialCaseWaitInBlack
+                && customFadeBehavior.InvokeSettersWaitInBlackTime(out specialCaseWaitInBlackTime, out didEventSetSpecial)
+                // Checks if waitInBlackTime & didEventSetSpecial flag were set from the setter invoked by InvokeSettersFadeInTime
+                && specialCaseWaitInBlackTime >= 0f
+                && didEventSetSpecial;
+
+            bool CheckCustomFadeNonSpecial() => customFadeBehavior.WaitInBlackTime > 0
+                && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior);
+        }
+        
+        void DefaultWaitInBlackTime()
+        {
+            currentWaitToFadeInLevelTime = defaultLevelWaitToFadeInTime;
         }
     }
 

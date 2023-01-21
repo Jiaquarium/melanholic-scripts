@@ -10,7 +10,10 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// When snowing, Player should react to it, hinting at the Fireplace exit.
+/// Player should react to snow on entrance, hinting at the Fireplace exit.
+/// 
+/// Special Intro will play once on first entering, and this will be saved into state
+/// (will only happen once unless Day isn't saved)
 /// </summary>
 [RequireComponent(typeof(Script_TimelineController))]
 [RequireComponent(typeof(Script_WorldTilesController))]
@@ -25,6 +28,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public bool didPickUpSpeedSeal;
     public bool isMooseQuestDone;
     public bool didPlayFaceOff;
+    public bool didSpecialIntro;
     // ==================================================================
     
     public bool isCurrentMooseQuestComplete;
@@ -60,8 +64,32 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private List<Script_WellsWorldBehavior> wellsWorldBehaviors;
 
     // ------------------------------------------------------------------
-    // Trailer Only
+    // Intro Only
     
+    [Space][Header("Intro")][Space]
+    [SerializeField] private float specialCaseFadeInTime;
+    [SerializeField] private float specialCaseWaitInBlackTime;
+    [SerializeField] private float waitToPlayIntroDirectorTime;
+    [SerializeField] private Script_BgThemePlayer droneBgmPlayerIntro;
+    [SerializeField] private float droneFadeInTimeIntro;
+    [SerializeField] private float droneFadeOutTimeIntro;
+    [SerializeField] private float fadeInBgmTimeIntro;
+    [SerializeField] private float waitToFadeInBlackScreenTime;
+    [SerializeField] private float fadeInBlackScreenTimeIntro;
+    [SerializeField] private float blackScreenTimeIntro;
+    [SerializeField] private float fadeOutBlackScreenTimeIntro;
+    [SerializeField] private PlayableDirector introDirector;
+    [SerializeField] private Script_GlitchFXManager glitchFXManager;
+    [SerializeField] private Script_VCamera introZoomOutGameVCam;
+    [SerializeField] private Script_TransitionManager transitionManager;
+    [SerializeField] private Script_MapNotification mapNotification;
+    [SerializeField] private Script_LevelCustomFadeBehavior levelCustomFadeBehavior;
+    public bool IsSpecialIntro => !didSpecialIntro;
+    private bool isSpecialIntroFraming;
+    
+    // ------------------------------------------------------------------
+    // Trailer Only
+    [Space][Header("For Trailer Only")][Space]
     [SerializeField] private PlayableDirector trailerDirector;
     [SerializeField] private float waitToPlayTrailerDirectorTime;
     
@@ -82,6 +110,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  += OnFrozenWellDie;
         Script_InteractableObjectEventsManager.OnShatter                        += OnShatter;
         Script_InteractableObjectEventsManager.OnWellInteraction                += OnWellInteraction;
+
+        Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           += OnMapNotificationTeletypeDone;
     }
 
     protected override void OnDisable()
@@ -96,6 +126,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  -= OnFrozenWellDie;
         Script_InteractableObjectEventsManager.OnShatter                        -= OnShatter;
         Script_InteractableObjectEventsManager.OnWellInteraction                -= OnWellInteraction;
+
+        Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           -= OnMapNotificationTeletypeDone;
     }
 
     void Awake()
@@ -106,6 +138,28 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             SetSmallSnowActive(false);
     }
 
+    void Start()
+    {
+        if (IsSpecialIntro)
+        {
+            Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            game.StopBgMusic();
+            
+            // Put up frame
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantDefault,
+                isNoAnimation: true
+            );
+            isSpecialIntroFraming = true;
+            
+            // Remove this black screen with timeline signal later
+            // Timeline will then use the over canvas (since the Under canvas needs to be controlled
+            // by script later)
+            transitionManager.TimelineBlackScreen(isOver: false);
+        }
+    }
+
     protected override void Update()
     {
         if (Const_Dev.IsTrailerMode)
@@ -114,7 +168,12 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     private void OnLevelInitCompleteEvent()
     {
-        if (!didMapNotification)
+        if (IsSpecialIntro)
+        {
+            game.ChangeStateCutScene();
+            PlaySpecialIntro();
+        }
+        else if (!didMapNotification)
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
                 if (weatherFXManager.IsSnowDay)
@@ -295,7 +354,20 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void SnowReactionDone()
     {
-        game.ChangeStateInteract();
+        if (isSpecialIntroFraming)
+        {
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: false,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantDefault,
+                cb: game.ChangeStateInteract
+            );
+
+            isSpecialIntroFraming = false;
+        }
+        else
+        {
+            game.ChangeStateInteract();
+        }
     }
     
     public void CheckPlayerHasLastSpellRecipeBook()
@@ -362,6 +434,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     // ----------------------------------------------------------------------
     // Timeline Signals
+
     public void FreezeWells()
     {
         // Play SFX Once here and disable for the Wells so all don't play at once.
@@ -450,6 +523,54 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             bgm.FadeIn(game.ChangeStateInteract, Script_TransitionManager.FadeTimeSlow, Const_AudioMixerParams.ExposedBGVolume);
         }
     }
+
+    // ----------------------------------------------------------------------
+    // Timeline Signals - Special Intro Only
+    
+    // Wells World Intro Timeline
+    public void OnFrameAfterStartIntro()
+    {
+        transitionManager.TimelineRemoveBlackScreen(isOver: false);
+    }
+    
+    // Wells World Intro Timeline
+    public void PlayBgmDroneIntro()
+    {
+        droneBgmPlayerIntro.FadeInPlay(null, droneFadeInTimeIntro);
+    }
+    
+    // Wells World Intro Timeline
+    public void SetScanlineTransitionGlitch(bool isOn)
+    {
+        if (isOn)
+        {
+            glitchFXManager.SetScanlineTransition();
+            glitchFXManager.SetBlend(1f);
+        }
+        else
+        {
+            glitchFXManager.SetDefault();
+            glitchFXManager.SetBlend(0f);
+        }
+    }
+
+    // Wells World Intro Timeline
+    // Switch camera
+    public void PlayCustomMapNotification()
+    {
+        Script_MapNotificationsManager.Control.PlayMapNotification(
+            MapName,
+            _isWorldPaintingIntro: true,
+            isSFXOn: true
+        );
+        didMapNotification = true;
+
+        // Set new vcam in background for when timeline ends. Required to remain on the zoomed out shot on timeline end.
+        // Note: introZoomOutGameVCam's custom blend with Main needs to be set to "cut" for transition to
+        // be seamless after timeline
+        introZoomOutGameVCam.SetPriority(2);
+    }
+
     // ----------------------------------------------------------------------
 
     private void SetMapsActive(bool isActive)
@@ -488,6 +609,117 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     }
 
     // ------------------------------------------------------------------
+    // Intro Only
+    
+    /// <summary>
+    /// Fade Special Case, for Intro setup
+    /// To mark it a special case, MUST set custom fade behavior's IsSpecialFadeIn & SpecialCaseFadeInTime
+    /// </summary>
+    public void SpecialCaseFadeIn()
+    {
+        if (IsSpecialIntro)
+        {
+            // Note: MUST SET for custom fade behavior to work properly
+            levelCustomFadeBehavior.SpecialCaseFadeInTime = specialCaseFadeInTime;
+            // Note: MUST SET for custom fade behavior to work properly
+            levelCustomFadeBehavior.IsSpecialFadeIn = true;
+        }
+    }
+    
+    /// <summary>
+    /// Wait In Black Special Case, for Intro setup
+    /// To mark it a special case, MUST set custom fade behavior's IsSpecialWaitInBlack & SpecialCaseWaitInBlackTime
+    /// </summary>
+    public void SpecialCaseWaitInBlack()
+    {
+        if (IsSpecialIntro)
+        {
+            // Note: MUST SET for custom fade behavior to work properly
+            levelCustomFadeBehavior.SpecialCaseWaitInBlackTime = specialCaseWaitInBlackTime;
+            // Note: MUST SET for custom fade behavior to work properly
+            levelCustomFadeBehavior.IsSpecialWaitInBlack = true;
+        }
+    }
+
+    private void PlaySpecialIntro()
+    {
+        Script_BackgroundMusicManager.Control.SetVolume(1f, Const_AudioMixerParams.ExposedBG2Volume);
+        
+        StartCoroutine(WaitToPlay());
+
+        IEnumerator WaitToPlay()
+        {
+            yield return new WaitForSeconds(waitToPlayIntroDirectorTime);
+
+            introDirector.Play();
+
+            Dev_Logger.Debug($"Playing special intro Time: {Time.time}");   
+        }
+    }
+
+    private void OnMapNotificationTeletypeDone(bool isWorldPaintingIntro)
+    {
+        Dev_Logger.Debug($"OnMapNotificationTeletypeDone isWorldPaintingIntro {isWorldPaintingIntro}");
+        
+        if (!isWorldPaintingIntro)
+            return;
+        
+        droneBgmPlayerIntro.FadeOutStop(null, droneFadeOutTimeIntro);
+        
+        StartCoroutine(WaitToFadeInBlackScreen());
+
+        IEnumerator WaitToFadeInBlackScreen()
+        {
+            yield return new WaitForSeconds(waitToFadeInBlackScreenTime);
+            
+            // Fade black screen in
+            transitionManager.TimelineFadeIn(
+                fadeInBlackScreenTimeIntro,
+                () => {
+                    StartCoroutine(WaitToFadeOutBlackScreen());
+                },
+                isOver: false
+            );
+        }
+
+        IEnumerator WaitToFadeOutBlackScreen()
+        {
+            // Revert priority that was set during Intro Timeline
+            introDirector.Stop();
+            introZoomOutGameVCam.SetPriority(0);
+             
+             // Immediately fade in bgm
+            var bgm = Script_BackgroundMusicManager.Control;
+            bgm.PlayFadeIn(
+                bgm.WellsWorldTheme,
+                null,
+                true,
+                fadeInBgmTimeIntro,
+                Const_AudioMixerParams.ExposedBGVolume,
+                startTime: 0f,
+                isForceNewStartTime: true
+            );
+            
+            yield return new WaitForSeconds(blackScreenTimeIntro);
+
+            // Fade black screen out & remove map notification
+            transitionManager.TimelineFadeOut(
+                fadeOutBlackScreenTimeIntro,
+                () => {
+                    mapNotification.Close(() => {
+                        game.ChangeStateInteract();
+                        didSpecialIntro = true;
+                        
+                        if (weatherFXManager.IsSnowDay)
+                            HandleSnowReaction(beforeSnowReactionWaitTime);
+                    });
+                },
+                isOver: false
+            );
+        }
+    }
+
+    // ------------------------------------------------------------------
     // Trailer Only
 
     private void HandleTrailerPan()
@@ -512,6 +744,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public override void Setup()
     {
         wellsPuzzleController.InitialState();
+
+        introZoomOutGameVCam.SetPriority(0);
 
         // Always leave fireplace open
         SetFireplaceExitActive(true);
@@ -584,6 +818,13 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             if (GUILayout.Button("Wells Initial State"))
             {
                 t.WellsInitialState();
+            }
+
+            GUILayout.Space(12);
+
+            if (GUILayout.Button("Play Intro"))
+            {
+                t.PlaySpecialIntro();
             }
         }
     }

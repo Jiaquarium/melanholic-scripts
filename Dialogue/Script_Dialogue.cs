@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-17 15:22:49
+// Last created by Dialogue Exporter at 2023-01-19 18:15:39
 
 using System.Collections;
 using System.Collections.Generic;
@@ -5914,7 +5914,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"The hotel’s day-to-day routine...",
                 @"Maybe it’s still better...",
                 @"Than being lost at sea...",
-                @"Rather not talk about it.",
+                @"You rather not talk about it.",
         },
         
     }

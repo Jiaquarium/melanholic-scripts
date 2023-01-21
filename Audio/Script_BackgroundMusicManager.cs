@@ -14,6 +14,10 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public AudioSource AudioSource;
     public AudioClip[] AudioClips;
 
+    public int WellsWorldTheme;
+    public int CelestialGardensTheme;
+    public int XXXWorldTheme;
+
     public float myMaskDoneSongStartTime;
     public float r1AwakeningMynesMirrorStartTime;
 
@@ -210,7 +214,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         bool forcePlay = true,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
-        float startTime = 0f
+        float startTime = 0f,
+        bool isForceNewStartTime = false
     )
     {
         FadeIn(cb, fadeTime, outputMixer);
@@ -222,7 +227,12 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         {
             yield return null;
             
-            Play(i, forcePlay, startTime);
+            Play(
+                i,
+                forcePlay,
+                startTime,
+                forceNewStartTime: isForceNewStartTime
+            );
         }
     }
 

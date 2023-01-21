@@ -11,4 +11,12 @@ public class Script_TransitionsEventsManager : MonoBehaviour
         if (OnDayNotificationStandaloneFadeOutDone != null)
             OnDayNotificationStandaloneFadeOutDone(); 
     }
+
+    public delegate void MapNotificationTeletypeDoneDelegate(bool isWorldPaintingIntro);
+    public static event MapNotificationTeletypeDoneDelegate OnMapNotificationTeletypeDone;
+    public static void MapNotificationTeletypeDone(bool isWorldPaintingIntro)
+    {
+        if (OnMapNotificationTeletypeDone != null)
+            OnMapNotificationTeletypeDone(isWorldPaintingIntro); 
+    }
 }
