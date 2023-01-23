@@ -35,6 +35,8 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
         base.OnEnable();
         
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone += OnLevelBlackScreenDone;
+        
         Script_ItemsEventsManager.OnItemPickUp          += OnItemPickUp;
     }
 
@@ -43,6 +45,8 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
         base.OnDisable();
 
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone -= OnLevelBlackScreenDone;
+        
         Script_ItemsEventsManager.OnItemPickUp          -= OnItemPickUp;
     }
 
@@ -52,14 +56,18 @@ public class Script_LevelBehavior_47 : Script_LevelBehavior
             HandleTrailerPan();
     }
 
-    private void OnLevelInitCompleteEvent()
+    private void OnLevelBlackScreenDone()
     {
         if (!didMapNotification)
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
-
             didMapNotification = true;
         }
+    }
+    
+    private void OnLevelInitCompleteEvent()
+    {
+        
     }
 
     private void OnItemPickUp(string itemId)

@@ -107,6 +107,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone += OnLevelBlackScreenDone;
 
         SetupCycleConditions();
     }
@@ -114,6 +115,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone -= OnLevelBlackScreenDone;
 
         if (isGlitched)
         {
@@ -138,19 +140,20 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         base.Update();
     }
 
-    public void OnLevelInitCompleteEvent()
+    private void OnLevelBlackScreenDone()
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
-                HandlePlayIdsRunAwayTimeline();
-            });
+            Script_MapNotificationsManager.Control.PlayMapNotification(
+                MapName
+            );
             didMapNotification = true;
         }
-        else
-        {
-            HandlePlayIdsRunAwayTimeline();
-        }
+    }
+    
+    public void OnLevelInitCompleteEvent()
+    {
+        HandlePlayIdsRunAwayTimeline();
 
         // After Map Notification, Ids should lead the way on Tutorial Run.
         void HandlePlayIdsRunAwayTimeline()

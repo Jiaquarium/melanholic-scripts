@@ -29,6 +29,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     public bool isMooseQuestDone;
     public bool didPlayFaceOff;
     public bool didSpecialIntro;
+    public bool didWellTalkInitialDialogue;
     // ==================================================================
     
     public bool isCurrentMooseQuestComplete;
@@ -50,8 +51,9 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     [SerializeField] private Script_DialogueNode OnSnowReactionNode;
     
+    [SerializeField] private float beforeSnowReactionShortTime;
     // A bit longer wait time to give Player time to absorb the snow effect
-    [SerializeField] private float beforeSnowReactionWaitTime;
+    [SerializeField] private float beforeSnowReactionOpeningTime;
     
     [SerializeField] private Script_LevelBehavior_13 CatWalkBehavior;
 
@@ -97,10 +99,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     private bool didMapNotification;
     private bool didSnowReaction;
+    private Script_Well currentWellTalking;
+
+    public Script_WellsPuzzleController WellsPuzzleController => wellsPuzzleController;
 
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete                            += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone                         += OnLevelBlackScreenDone;
         
         Script_PuzzlesEventsManager.OnPuzzleSuccess                             += OnPuzzleSuccess;
         Script_ItemsEventsManager.OnItemPickUp                                  += OnItemPickUp;
@@ -109,7 +115,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  += OnFrozenWellDie;
         Script_InteractableObjectEventsManager.OnShatter                        += OnShatter;
-        Script_InteractableObjectEventsManager.OnWellInteraction                += OnWellInteraction;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           += OnMapNotificationTeletypeDone;
     }
@@ -117,6 +122,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete                            -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone                         -= OnLevelBlackScreenDone;
         
         Script_PuzzlesEventsManager.OnPuzzleSuccess                             -= OnPuzzleSuccess;
         Script_ItemsEventsManager.OnItemPickUp                                  -= OnItemPickUp;
@@ -125,7 +131,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
         Script_InteractableObjectEventsManager.OnFrozenWellDie                  -= OnFrozenWellDie;
         Script_InteractableObjectEventsManager.OnShatter                        -= OnShatter;
-        Script_InteractableObjectEventsManager.OnWellInteraction                -= OnWellInteraction;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           -= OnMapNotificationTeletypeDone;
     }
@@ -166,6 +171,15 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             HandleTrailerPan();
     }
     
+    private void OnLevelBlackScreenDone()
+    {
+        if (!didMapNotification && !IsSpecialIntro)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
+    }
+    
     private void OnLevelInitCompleteEvent()
     {
         if (IsSpecialIntro)
@@ -173,23 +187,19 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             game.ChangeStateCutScene();
             PlaySpecialIntro();
         }
-        else if (!didMapNotification)
-        {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
-                if (weatherFXManager.IsSnowDay)
-                    HandleSnowReaction(beforeSnowReactionWaitTime);
-            });
-            didMapNotification = true;
-        }
         else
         {
             if (weatherFXManager.IsSnowDay)
-                HandleSnowReaction(beforeSnowReactionWaitTime);
+                HandleSnowReaction(beforeSnowReactionOpeningTime);
         }
     }
 
     /// <summary>
     /// Always give hint to find the fireplace if didn't finish Lantern quest.
+    /// This will ALWAYS be accompanied with Map Notification.
+    /// 
+    /// TBD: Need to standardize this wait time wait after Map Notification (since teletype
+    /// time is not standardized)
     /// </summary>
     private bool HandleSnowReaction(float pauseTime)
     {
@@ -451,7 +461,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     /// </summary>
     public void EndFreezeCutScene()
     {
-        if (!HandleSnowReaction(beforeSnowReactionWaitTime))
+        if (!HandleSnowReaction(beforeSnowReactionShortTime))
             game.ChangeStateInteract();
     }
 
@@ -560,7 +570,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         Script_MapNotificationsManager.Control.PlayMapNotification(
             MapName,
-            _isWorldPaintingIntro: true,
+            type: Script_MapNotificationsManager.Type.SpecialIntro,
             isSFXOn: true
         );
         didMapNotification = true;
@@ -599,13 +609,6 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     {
         foreach (var Suzette in Suzettes)
             Suzette.gameObject.SetActive(isActive);
-    }
-
-    private void OnWellInteraction(Script_Well well)
-    {
-        // Handle Well achievement
-        var achievementsManager = Script_AchievementsManager.Instance;
-        Script_AchievementsManager.Instance.UnlockWell();
     }
 
     // ------------------------------------------------------------------
@@ -703,16 +706,24 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             yield return new WaitForSeconds(blackScreenTimeIntro);
 
             // Fade black screen out & remove map notification
+            var mapNotificationManager = Script_MapNotificationsManager.Control;
             transitionManager.TimelineFadeOut(
                 fadeOutBlackScreenTimeIntro,
                 () => {
-                    mapNotification.Close(() => {
-                        game.ChangeStateInteract();
-                        didSpecialIntro = true;
-                        
-                        if (weatherFXManager.IsSnowDay)
-                            HandleSnowReaction(beforeSnowReactionWaitTime);
-                    });
+                    mapNotification.Close(
+                        () => {
+                            // Must reinitiate mapNotification for World Paintings because the default
+                            // OnTeletypeDone is not called when it's a Special Intro
+                            mapNotificationManager.InitialState();
+                            
+                            game.ChangeStateInteract();
+                            didSpecialIntro = true;
+                            
+                            if (weatherFXManager.IsSnowDay)
+                                HandleSnowReaction(beforeSnowReactionShortTime);
+                        },
+                        mapNotificationManager.SpecialIntroFadeOutTime
+                    );
                 },
                 isOver: false
             );

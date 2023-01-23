@@ -17,13 +17,17 @@ public class Script_WellsPuzzleController : Script_PuzzleController
 {
     private const int KeyWellsCount = 3;
     
+    [SerializeField] private Script_LevelBehavior_42 wellWorldBehavior;
     [SerializeField] private Script_Well[] keyWells = new Script_Well[KeyWellsCount];
     
     [SerializeField] private float beforePlaySecretSFXWaitTime;
     [SerializeField] private float afterPlaySecretSFXWaitTime;
+
+    [SerializeField] private Script_DialogueNode wellTalkInitialDialogue;
     
     private int currentWellIdx;
     private bool isDone;
+    private Script_Well currentWellTalking;
 
     [SerializeField] private Script_Game game;
 
@@ -48,15 +52,44 @@ public class Script_WellsPuzzleController : Script_PuzzleController
 
     private void OnWellInteraction(Script_Well well)
     {
-        if (isDone)     return;
+        Dev_Logger.Debug($"{well.name} IsCorrectWell: {IsCorrectWell(well)}");
         
-        if (well.Id == keyWells[currentWellIdx].Id)
+        // Initial well talk, puzzle will be handled by next node action OnWellTalkInitialDialogueDone
+        if (!wellWorldBehavior.didWellTalkInitialDialogue)
+        {
+            game.ChangeStateCutScene();
+
+            currentWellTalking = well;
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(
+                wellTalkInitialDialogue,
+                talkingInteractive: well
+            );
+            
+            wellWorldBehavior.didWellTalkInitialDialogue = true;
+            return;
+        }
+        
+        // do well talk,
+        well.WellTalk(() => {
+            HandlePuzzle(well);
+        });
+    }
+
+    private void HandlePuzzle(Script_Well well)
+    {
+        if (isDone)
+            return;
+    
+        if (IsCorrectWell(well))
         {
             Dev_Logger.Debug($"CORRECT Well! {well}");
 
             // On Last Well
-            if (currentWellIdx == KeyWellsCount - 1)    ProgressNotification(true);
-            else                                        ProgressNotification(false);
+            if (currentWellIdx == KeyWellsCount - 1)
+                ProgressNotification(true);
+            else
+                ProgressNotification(false);
 
             currentWellIdx++;
         }
@@ -67,6 +100,8 @@ public class Script_WellsPuzzleController : Script_PuzzleController
             currentWellIdx = 0;
         }
     }
+
+    public bool IsCorrectWell(Script_Well well) => well.Id == keyWells[currentWellIdx].Id;
 
     public override void CompleteState()
     {
@@ -106,6 +141,28 @@ public class Script_WellsPuzzleController : Script_PuzzleController
                 CompleteState();
         }
     }
+    
+    // ----------------------------------------------------------------------
+    // Next Node Action
+    
+    // After well talk initial dialogue node
+    public void OnWellTalkInitialDialogueDone()
+    {
+        currentWellTalking.WellTalk(() => {
+            HandleWellAchievement();
+
+            HandlePuzzle(currentWellTalking);
+            currentWellTalking = null;
+        });
+        
+        void HandleWellAchievement()
+        {
+            var achievementsManager = Script_AchievementsManager.Instance;
+            Script_AchievementsManager.Instance.UnlockWell();
+        }
+    }
+
+    // ----------------------------------------------------------------------
 }
 
 #if UNITY_EDITOR

@@ -81,6 +81,9 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode weekendNewBookTriggerNode;
     [SerializeField] private Script_DialogueNode cantSwimNode;
 
+    // Act 1 Day 1 start with CCTV CPU static
+    private bool isCCTVCPUStaticOn;
+    
     // Act 1 Day 2 start with Ocean Bgm
     [SerializeField] private Script_BgThemePlayer oceanBgThemePlayer;
 
@@ -126,6 +129,8 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         base.OnEnable();
 
+        Script_InteractableObjectEventsManager.OnCCTVSFXDone += OnCCTVSFXDone;
+
         glitchManager.InitialState();
     }
 
@@ -133,11 +138,15 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     {
         base.OnDisable();
 
+        Script_InteractableObjectEventsManager.OnCCTVSFXDone -= OnCCTVSFXDone;
+
         glitchManager.InitialState();
     }
 
     public override void OnLevelInitComplete()
     {
+        OnReenterRoomDay1HandleCCTV();
+        
         // On New Game, the starting sequence will follow the Day Notification.
         if (!didStartThought && !Const_Dev.IsDevMode)
         {
@@ -498,6 +507,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     public void StopStaticTimeline()
     {
         cctvCpu.StopStaticTimeline();
+        isCCTVCPUStaticOn = false;
     }
     
     public void OnTryToExitFrontDoor()
@@ -583,6 +593,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
             cctvCpu.SpeakerForceOnNonInteractState(false);
             game.ChangeStateInteract();
+            isCCTVCPUStaticOn = true;
         }
     }
     
@@ -758,13 +769,36 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
                 if (cb != null)
                     cb();
             },
-            isInteractAfter: false,
             isSFXOn: true,
-            sfx: Script_SFXManager.SFX.TypewriterTypingSFX
+            sfx: Script_SFXManager.SFX.TypewriterTypingSFX,
+            type: Script_MapNotificationsManager.Type.HotelLobby
         );
         
         didMapNotification = true;
     }
+
+    // ------------------------------------------------------------------
+    // Day 1 Only
+    
+    private void OnCCTVSFXDone(Script_CCTVUtil cctv)
+    {
+        cctvCpu.StopStaticSFX();
+    }
+
+    private void OnReenterRoomDay1HandleCCTV()
+    {
+        if (
+            game.CycleCount == 0
+            && game.Run.dayId == Script_Run.DayId.mon
+            && isCCTVCPUStaticOn
+        )
+        {
+            cctvCpu.PlayStaticTimeline();
+            // No static SFX on reenter, since static SFX would have already played on intro
+            cctvCpu.StopStaticSFX();
+        }
+    }
+    // ------------------------------------------------------------------
 
     private void HandleDayEnvironment()
     {

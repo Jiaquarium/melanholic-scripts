@@ -75,4 +75,12 @@ public class Script_InteractableObjectEventsManager : MonoBehaviour
         if (OnDiagonalCut != null)
             OnDiagonalCut(iceStats);
     }
+
+    public delegate void CCTVSFXDoneDelegate(Script_CCTVUtil cctvUtil);
+    public static event CCTVSFXDoneDelegate OnCCTVSFXDone;
+    public static void CCTVSFXDone(Script_CCTVUtil cctvUtil)
+    {
+        if (OnCCTVSFXDone != null)
+            OnCCTVSFXDone(cctvUtil);
+    }
 }

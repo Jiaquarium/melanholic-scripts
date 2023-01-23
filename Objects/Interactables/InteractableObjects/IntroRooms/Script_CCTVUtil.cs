@@ -32,13 +32,24 @@ public class Script_CCTVUtil : MonoBehaviour
         timelineController.PlayableDirectorPlayFromTimelines(0, 0);
     }
 
-    public void StopStaticTimeline()
+    /// <summary>
+    /// Only want SFX on first time to give lobby a more relaxing feel
+    /// </summary>
+    public void StopStaticSFX()
     {
         timelineSpeaker.IsDisabled = true;
         timelineSpeaker.Pause();
+    }
+
+    public void StopStaticTimeline()
+    {
+        StopStaticSFX();
         timelineController.StopAllPlayables();
     }
     
+    /// <summary>
+    /// Handle speaker state when game is not in Interact state
+    /// </summary>
     public void SpeakerForceOnNonInteractState(bool isOn)
     {
         timelineSpeaker.IsForceOnNonInteractState = isOn;
@@ -48,6 +59,16 @@ public class Script_CCTVUtil : MonoBehaviour
     {
         cctvCpuAnimator.SetBool(IsStaticAnimatorParam, isActive);
     }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+    
+    public void OnSFXDone()
+    {
+        Script_InteractableObjectEventsManager.CCTVSFXDone(this);
+    }
+
+    // ------------------------------------------------------------------
 
     #if UNITY_EDITOR
     [CustomEditor(typeof(Script_CCTVUtil))]

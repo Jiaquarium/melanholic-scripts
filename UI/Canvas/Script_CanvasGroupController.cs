@@ -146,7 +146,8 @@ public class Script_CanvasGroupController : MonoBehaviour
     public virtual void FadeOut(
         float t = DefaultFadeTime,
         Action onFadedOut = null,
-        bool isUnscaledTime = false
+        bool isUnscaledTime = false,
+        bool isForceCanvasRemainOpen = false
     )
     {
         Script_CanvasGroupFadeInOut fader = GetComponent<Script_CanvasGroupFadeInOut>();
@@ -165,7 +166,9 @@ public class Script_CanvasGroupController : MonoBehaviour
             return;
 
         fadeOutCoroutine = StartCoroutine(fader.FadeOutCo(t, () => {
-                fader.gameObject.SetActive(false);
+                if (!isForceCanvasRemainOpen)
+                    fader.gameObject.SetActive(false);
+
                 fadeOutCoroutine = null;
                 
                 if (onFadedOut != null)

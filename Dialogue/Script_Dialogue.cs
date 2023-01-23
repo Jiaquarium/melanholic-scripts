@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-19 18:15:39
+// Last created by Dialogue Exporter at 2023-01-21 14:56:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -5481,6 +5481,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 },
 // ------------------------------------------------------------------
 // Interactables
+{
+    "wells-world_well_initial-dialogue",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"You decide to listen to what the well has to say...",
+        },
+        
+    }
+},
 {
     "wells-world_flower_spring_thought",
     new Model_Languages

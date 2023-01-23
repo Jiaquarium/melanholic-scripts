@@ -3,8 +3,7 @@ using System.Collections;
 
 namespace TMPro.Examples
 {
-
-    public class Script_TMProWavy : MonoBehaviour
+    public class Script_TMProWavy : Script_TMProBehavior
     {
         public float sinTimeRateDivisor;
         public float cosTimeRateDivisor;
@@ -39,6 +38,8 @@ namespace TMPro.Examples
 
         void OnEnable()
         {
+            Dev_Logger.Debug("TMProWavy OnEnable called");
+            
             // Subscribe to event fired when text object has been regenerated.
             TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
             StartCoroutine(AnimateVertices());

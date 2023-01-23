@@ -47,6 +47,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         base.OnEnable();
         
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone += OnLevelBlackScreenDone;
     }
 
     protected override void OnDisable()
@@ -54,6 +55,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
         base.OnDisable();
 
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone -= OnLevelBlackScreenDone;
     }
     
     private void Awake()
@@ -155,13 +157,18 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
 
-    private void OnLevelInitCompleteEvent()
+    private void OnLevelBlackScreenDone()
     {
         if (!didMapNotification)
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
             didMapNotification = true;
         }
+    }
+    
+    private void OnLevelInitCompleteEvent()
+    {
+        
     }
     
     // If you complete the quest Ursie and MelbaPeche will have left, leaving a note.

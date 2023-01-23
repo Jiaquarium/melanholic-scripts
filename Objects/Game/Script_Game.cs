@@ -680,6 +680,26 @@ public class Script_Game : MonoBehaviour
         state = Const_States_Game.InitiateLevel;
     }
 
+    public float GetCurrentFadeInTime()
+    {
+        float fadeTime;
+        
+        // Either get the custom fade or default fade value
+        var customFade = levelBehavior.GetComponent<Script_LevelCustomFadeBehavior>();
+
+        if (customFade != null)
+            fadeTime = customFade.FadeInTime;
+        else
+            fadeTime = exitsHandler.DefaultLevelFadeInTime;
+        
+        return fadeTime;
+    }
+    
+    public void RemoveMapNotification()
+    {
+        mapNotificationsManager.InitialState();
+    }
+
     public void ChangeStateCutScene()
     {
         Dev_Logger.Debug($"Game.state changed to: {Const_States_Game.CutScene}");

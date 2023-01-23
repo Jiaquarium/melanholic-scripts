@@ -29,6 +29,7 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         base.OnEnable();
         
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone += OnLevelBlackScreenDone;
     }
 
     protected override void OnDisable()
@@ -36,6 +37,7 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         base.OnDisable();
         
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone -= OnLevelBlackScreenDone;
     }
 
     // ------------------------------------------------------------------
@@ -65,19 +67,18 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
 
     // ------------------------------------------------------------------
 
-    private void OnLevelInitCompleteEvent()
+    private void OnLevelBlackScreenDone()
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
-                HandlePlayIdsTimeline();
-            });
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
             didMapNotification = true;
         }
-        else
-        {
-            HandlePlayIdsTimeline();
-        }
+    }
+    
+    private void OnLevelInitCompleteEvent()
+    {
+        HandlePlayIdsTimeline();
     }
     
     // After Map Notification, Ids should lead the way until Player gets Animal Within mask

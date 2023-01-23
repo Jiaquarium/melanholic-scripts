@@ -23,6 +23,14 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     [SerializeField] private float waitBeforeQuestSFXTime;
     [SerializeField] private bool didLightsOn;
 
+    // ------------------------------------------------------------------
+    // Nazca Totem
+    [SerializeField] private float totemReactionWaitTime;
+    [SerializeField] private Vector3 screenShakeVals;
+    private Script_CameraShake activeShakeCamera;
+
+    // ------------------------------------------------------------------
+
     // Should not be saved in state because this quest should be repeatable on
     // subsequent runs.
     private bool didPickUpLastSpellRecipeBook;
@@ -51,6 +59,11 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
 
         Dev_Logger.Debug($"On Disable: Setting IsFinalTrueEndingTimeline {IsFinalTrueEndingTimeline} to false");
         IsFinalTrueEndingTimeline = false;
+    }
+
+    void Awake()
+    {
+        activeShakeCamera = Script_VCamManager.VCamMain.CameraShake;
     }
     
     protected override void Update()
@@ -104,7 +117,26 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
 
     public void TotemCry()
     {
-        Script_SFXManager.SFX.PlayTotemCry();
+        game.ChangeStateCutScene();
+
+        StartCoroutine(WaitToReact());
+
+        IEnumerator WaitToReact()
+        {
+            yield return new WaitForSeconds(totemReactionWaitTime);
+
+            StartScreenShake();
+        
+            Script_SFXManager.SFX.PlayTotemCry(() => {
+                StopScreenShake();
+                game.ChangeStateInteract();
+            });
+        }
+
+        void StartScreenShake() => activeShakeCamera.
+            Shake(screenShakeVals.x, screenShakeVals.y, screenShakeVals.z, null);
+
+        void StopScreenShake() => activeShakeCamera.InitialState();
     }
 
     private void HandleLanternLightReaction(bool isLightOn)

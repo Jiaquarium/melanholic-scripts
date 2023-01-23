@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-01-17 00:31:13
+// Last created by UI Exporter at 2023-01-23 10:59:08
 
 using System.Collections;
 using System.Collections.Generic;
@@ -599,24 +599,31 @@ public class Script_UIText
 // ------------------------------------------------------------------
 // Bad Ending
 {
+    "bad-ending_the-end_type",
+    new Model_LanguagesUI
+    {
+        EN = @"『 THE SEALING HAS COMMENCED 』"
+    }
+},
+{
+    "bad-ending_narrator_the-sealing_opening-words",
+    new Model_LanguagesUI
+    {
+        EN = @"At"
+    }
+},
+{
     "bad-ending_narrator_the-sealing",
     new Model_LanguagesUI
     {
-        EN = @"As legend has it, at exactly {49} the {22} commenced."
+        EN = @"{49} the ancient spell of the {22} was said to be cast."
     }
 },
 {
     "bad-ending_narrator_the-sealing1",
     new Model_LanguagesUI
     {
-        EN = @"{18} along with all those inside were locked away, permanently losing touch with the outside world."
-    }
-},
-{
-    "bad-ending_the-end_type",
-    new Model_LanguagesUI
-    {
-        EN = @"『 THE SEALING 』"
+        EN = @"{18} along with all those inside were locked away,<br>permanently losing touch with the outside world."
     }
 },
 {
@@ -637,7 +644,7 @@ public class Script_UIText
     "game-over_choice_0",
     new Model_LanguagesUI
     {
-        EN = @"Start your night over"
+        EN = @"Try this night again"
     }
 },
 {

@@ -13,6 +13,8 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
     /* ======================================================================= */
 
     public bool isInitialized;
+    
+    // Because this will ALWAYS be accompanied by map notification, wait a bit longer.
     [SerializeField] private float beforeInternalThoughtWaitTime;
     [SerializeField] private Script_DialogueNode onEntranceDialogue;
     public Transform[] textParents;
@@ -24,6 +26,7 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
         base.OnEnable();
         
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone += OnLevelBlackScreenDone;
     }
 
     protected override void OnDisable()
@@ -31,6 +34,7 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
         base.OnDisable();
         
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone -= OnLevelBlackScreenDone;
     }
 
     // ------------------------------------------------------------------
@@ -43,21 +47,21 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
     
     // ------------------------------------------------------------------
 
-    private void OnLevelInitCompleteEvent()
+    private void OnLevelBlackScreenDone()
     {
         if (!didMapNotification)
         {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName, () => {
-                HandleEntranceDialogue(onEntranceDialogue);       
-            });
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
             didMapNotification = true;
         }
-        else
-        {
-            HandleEntranceDialogue(onEntranceDialogue);
-        }
+    }
+    
+    private void OnLevelInitCompleteEvent()
+    {
+        HandleEntranceDialogue(onEntranceDialogue);
     }
 
+    /// TBD: Need to standardize this wait time after Map Notification
     private void HandleEntranceDialogue(Script_DialogueNode dialogueNode)
     {
         if (didOnEntranceDialogue)

@@ -120,6 +120,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete        += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone     += OnLevelBlackScreenDone;
 
         Script_InteractableObjectEventsManager.OnSwitchOff  += OnSwitchOff;
         Script_HurtBoxEventsManager.OnPlayerRestart         += OnPlayerRestartHandleState;
@@ -133,6 +134,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete        -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone     -= OnLevelBlackScreenDone;
         
         Script_InteractableObjectEventsManager.OnSwitchOff  -= OnSwitchOff;
         Script_HurtBoxEventsManager.OnPlayerRestart         -= OnPlayerRestartHandleState;
@@ -194,13 +196,18 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         }
     }
 
-    private void OnLevelInitCompleteEvent()
+    private void OnLevelBlackScreenDone()
     {
         if (!didMapNotification)
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
             didMapNotification = true;
         }
+    }
+    
+    private void OnLevelInitCompleteEvent()
+    {
+        
     }
 
     private void OnItemPickUp(string itemId)

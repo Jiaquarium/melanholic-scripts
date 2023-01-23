@@ -12,11 +12,19 @@ using TMPro;
 /// 
 /// Note: For On Input Continue, ensure to give at least 4 frames of buffer (@ 30 fps) to give timeline
 /// some buffer since it will not stop on the exact frame.
+/// 
+/// For Behaviors:
+/// The "Controller" Script_TimelineTeletypeReveal should be the last line revealed in cut, and must be marked 
+/// isFadeOutParentsBehaviors to tell the parent container to fade out / start any fade out behaviors.
+/// For TMP behaviors text to work, need to have TMProBehavior on all TMPs under the Script_TeletypeDialogueContainer
 /// </summary>
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class Script_TimelineTeletypeReveal : MonoBehaviour
 {
+    private static float waitToFadeOutTime = 0.5f;
+    private static float fadeOutTime = 0.25f;
+
     [SerializeField] private Script_TimelineSequenceController sequenceController;
     
     // Give option to wait for Submit input to move Timeline forward, instead of automatically.
@@ -29,6 +37,9 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
     [SerializeField] private bool isGlitchText;
     [SerializeField] private bool isSFXOn;
     [SerializeField] private AudioClip sfxOverride;
+
+    [SerializeField] private bool isFadeOutParentsBehaviors;
+    [SerializeField] private Script_TeletypeDialogueContainer teletypeDialogueContainer;
 
     private bool isListening;
 
@@ -56,6 +67,8 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
 
     void OnEnable()
     {
+        Dev_Logger.Debug($"{name} on enable called");
+        
         var textUI = GetComponent<TextMeshProUGUI>();
         
         // Pause Timeline
@@ -96,9 +109,16 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
             Dev_Logger.Debug("Playing timeline on input");
             
             ResumeAction.SafeInvoke();
-            sequenceController.Play();
-
             isListening = false;
+            
+            if (isFadeOutParentsBehaviors)
+            {
+                FadeOutSetBehavior();
+                
+                return;
+            }
+            
+            sequenceController.Play();
         }
     }
 
@@ -119,6 +139,32 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
         {
             ResumeAction.SafeInvoke();
             sequenceController.Play();
+        }
+    }
+
+    private void FadeOutSetBehavior()
+    {
+        Dev_Logger.Debug("Fade Out Set Behavior");
+        
+        if (teletypeDialogueContainer.IsOnlyTMProBehaviorOnClose)
+            teletypeDialogueContainer.EnableTMProBehaviors(true);
+
+        Dev_Logger.Debug("Starting coroutine wait to fade out");
+        
+        StartCoroutine(WaitToFadeOut());
+
+        IEnumerator WaitToFadeOut()
+        {
+            yield return new WaitForSeconds(waitToFadeOutTime);
+
+            teletypeDialogueContainer.FadeOut(
+                fadeOutTime,
+                () => {
+                    Dev_Logger.Debug("Play sequence controller");
+                    sequenceController.Play();
+                    isListening = false;
+                }
+            );
         }
     }
 }

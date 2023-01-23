@@ -63,6 +63,8 @@ public class Script_VCamManager : MonoBehaviour
         set => GetComponent<CinemachineConfiner>().m_ConfineScreenEdges = value;
     }
 
+    public Script_CameraShake CameraShake => GetComponent<Script_CameraShake>();
+
     void LateUpdate()
     {
         HandleConfineCamera();

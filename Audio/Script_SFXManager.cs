@@ -96,7 +96,10 @@ public class Script_SFXManager : MonoBehaviour
     [Range(0f, 1f)] public float pianoVol;
 
     public AudioClip WellSFX;
+    public float WellSFXDuration;
     [Range(0f, 1f)] public float WellSFXVol;
+    public AudioClip WellCorrectSFX;
+    [Range(0f, 1f)] public float WellCorrectSFXVol;
     
     public AudioClip FloorSwitchDown;
     [Range(0f, 1f)] public float FloorSwitchDownVol;
@@ -187,6 +190,7 @@ public class Script_SFXManager : MonoBehaviour
     [Range(0f, 1f)] public float WindZoneExitVol;
 
     public AudioClip TotemCry;
+    public float TotemCryDuration;
     [Range(0f, 1f)] public float TotemCryVol;
 
     public AudioClip TVChannelChangeStatic;
@@ -417,9 +421,36 @@ public class Script_SFXManager : MonoBehaviour
         SFXSource.PlayOneShot(SubmitTransitionNegative, SubmitTransitionNegativeVol);
     }
 
-    public void PlayTotemCry()
+    public void PlayWellTalk(Action cb = null)
     {
+        float duration = WellSFXDuration;
+        
+        SFXSource.PlayOneShot(WellSFX, WellSFXVol);
+
+        if (cb != null)
+            StartCoroutine(OnSFXDone());
+        
+        IEnumerator OnSFXDone()
+        {
+            yield return new WaitForSeconds(duration);
+            cb();
+        }
+    }
+
+    public void PlayTotemCry(Action cb = null)
+    {
+        float duration = TotemCryDuration;
+        
         SFXSource.PlayOneShot(TotemCry, TotemCryVol);
+
+        if (cb != null)
+            StartCoroutine(OnSFXDone());
+        
+        IEnumerator OnSFXDone()
+        {
+            yield return new WaitForSeconds(duration);
+            cb();
+        }
     }
 
     public void PlayTakeNote()

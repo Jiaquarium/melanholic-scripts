@@ -232,6 +232,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone += OnLevelBlackScreenDone;
         
         IdsDirector.stopped                             += OnIdsMovesDone;    
         Script_DDREventsManager.OnDDRDone               += OnDDRDone;
@@ -244,6 +245,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone -= OnLevelBlackScreenDone;
         
         IdsDirector.stopped                             -= OnIdsMovesDone;
         Script_DDREventsManager.OnDDRDone               -= OnDDRDone;
@@ -277,13 +279,18 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         HandleIdsDanceScene();
     }
 
-    private void OnLevelInitCompleteEvent()
+    private void OnLevelBlackScreenDone()
     {
         if (!didMapNotification)
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
             didMapNotification = true;
         }
+    }
+
+    private void OnLevelInitCompleteEvent()
+    {
+        
     }
 
     // ------------------------------------------------------------------------------------

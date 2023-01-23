@@ -67,6 +67,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     protected override void OnEnable()
     {
         Script_GameEventsManager.OnLevelInitComplete                    += OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone                 += OnLevelBlackScreenDone;
+
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp    += OnScarletCipherPickUp;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone   += OnMapNotificationTeletypeDone;
@@ -75,6 +77,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     protected override void OnDisable()
     {
         Script_GameEventsManager.OnLevelInitComplete                    -= OnLevelInitCompleteEvent;
+        Script_GameEventsManager.OnLevelBlackScreenDone                 -= OnLevelBlackScreenDone;
+
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp    -= OnScarletCipherPickUp;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone   -= OnMapNotificationTeletypeDone;
@@ -102,17 +106,21 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         }    
     }
     
+    private void OnLevelBlackScreenDone()
+    {
+        if (!didMapNotification)
+        {
+            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
+            didMapNotification = true;
+        }
+    }
+    
     private void OnLevelInitCompleteEvent()
     {
         if (IsSpecialIntro)
         {
             game.ChangeStateCutScene();
             PlaySpecialIntro();   
-        }
-        else if (!didMapNotification)
-        {
-            Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
-            didMapNotification = true;
         }
     }
 
@@ -192,7 +200,7 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     {
         Script_MapNotificationsManager.Control.PlayMapNotification(
             MapName,
-            _isWorldPaintingIntro: true,
+            type: Script_MapNotificationsManager.Type.SpecialIntro,
             isSFXOn: true
         );
         didMapNotification = true;
@@ -335,14 +343,22 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
             yield return new WaitForSeconds(blackScreenTimeIntro);
 
             // Fade black screen out & remove map notification
+            var mapNotificationManager = Script_MapNotificationsManager.Control;
             transitionManager.TimelineFadeOut(
                 fadeOutBlackScreenTimeIntro,
                 () => {
-                    mapNotification.Close(() => {
-                        game.ChangeStateInteract();
-                        
-                        HandleIntroReaction();
-                    });
+                    mapNotification.Close(
+                        () => {
+                            // Must reinitiate mapNotification for World Paintings because the default
+                            // OnTeletypeDone is not called when it's a Special Intro
+                            mapNotificationManager.InitialState();
+                            
+                            game.ChangeStateInteract();
+                            
+                            HandleIntroReaction();
+                        },
+                        mapNotificationManager.SpecialIntroFadeOutTime
+                    );
                 },
                 isOver: false
             );

@@ -112,6 +112,7 @@ public class Script_Exits : MonoBehaviour
         + defaultLevelFadeInTime + initiateLevelWaitTime;
 
     public float DefaultLevelFadeOutTime => defaultLevelFadeOutTime;
+    public float DefaultLevelFadeInTime => defaultLevelFadeInTime;
     
     void Update()
     {
@@ -144,6 +145,7 @@ public class Script_Exits : MonoBehaviour
         game.SetPlayerState(
             new Model_PlayerState(x, y, z, playerFacingDirection)
         );
+        game.RemoveMapNotification();
         
         currentFollowUp = followUp;
         levelToGo = level;
@@ -322,7 +324,10 @@ public class Script_Exits : MonoBehaviour
             {
                 case (FollowUp.CutSceneNoFade):
                 {
-                    ChangeLevel();
+                    // 1/22/23 CASE DEPRECATED
+                    // Note: OnDoneExitingTransition() will not be called in this case.
+                    // ChangeLevel();
+                    Debug.LogError("This case should not be in use. Instead HandleChangeLevelNoFade() should be called.");
                     break;
                 }
                 case (FollowUp.SaveAndRestart):
@@ -368,6 +373,10 @@ public class Script_Exits : MonoBehaviour
 
             HandleCustomLevelWait(game.levelBehavior);
             yield return new WaitForSeconds(currentWaitToFadeInLevelTime);
+
+            // Should always be called when changing level, after black screen wait time but before 
+            // OnDoneExitingTransition, telling us the level is ready for fade in or wait to init
+            Script_GameEventsManager.LevelBlackScreenDone();
 
             StartFadeIn();
         }
@@ -436,6 +445,11 @@ public class Script_Exits : MonoBehaviour
     private void HandleChangeLevelNoFade()
     {
         ChangeLevel();
+        
+        // Should always be called when changing level, after black screen wait time but before 
+        // OnDoneExitingTransition, telling us the level is ready for fade in or wait to init
+        Script_GameEventsManager.LevelBlackScreenDone();
+        
         OnDoneExitingTransition();
     }
 

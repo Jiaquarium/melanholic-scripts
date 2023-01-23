@@ -13,7 +13,8 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
             _didPickUpSpeedSeal             : LB42.didPickUpSpeedSeal,            
             _isMooseQuestDone               : LB42.isMooseQuestDone,
             _didPlayFaceOff                 : LB42.didPlayFaceOff,
-            _didSpecialIntro                : LB42.didSpecialIntro
+            _didSpecialIntro                : LB42.didSpecialIntro,
+            _didWellTalkInitialDialogue     : LB42.didWellTalkInitialDialogue
         );
         
         data.levelsData.LB42 = lvlModel;
@@ -28,6 +29,7 @@ public class Script_SaveLoadLevelBehavior_42 : Script_SaveLoadLevelBehavior
         LB42.isMooseQuestDone                   = lvlModel.isMooseQuestDone;
         LB42.didPlayFaceOff                     = lvlModel.didPlayFaceOff;
         LB42.didSpecialIntro                    = lvlModel.didSpecialIntro;
+        LB42.didWellTalkInitialDialogue         = lvlModel.didWellTalkInitialDialogue;
 
         Dev_Logger.Debug($"-------- LOADED {name} --------");
         Script_Utils.DebugToConsole(lvlModel);
