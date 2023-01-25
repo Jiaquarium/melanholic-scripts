@@ -31,6 +31,8 @@ public class Script_WellsPuzzleController : Script_PuzzleController
 
     [SerializeField] private Script_Game game;
 
+    public bool IsDone => isDone;
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -101,7 +103,13 @@ public class Script_WellsPuzzleController : Script_PuzzleController
         }
     }
 
-    public bool IsCorrectWell(Script_Well well) => well.Id == keyWells[currentWellIdx].Id;
+    public bool IsCorrectWell(Script_Well well)
+    {
+        if (isDone)
+            return false;
+        
+        return well.Id == keyWells[currentWellIdx].Id;
+    }
 
     public override void CompleteState()
     {

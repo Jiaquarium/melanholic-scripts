@@ -445,6 +445,9 @@ public class Script_AchievementsManager : MonoBehaviour
 		if (!Debug.isDebugBuild)
             return;
         
+        if (!SteamManager.Initialized)
+        	return;
+        
         // We may get callbacks for other games' stats arriving, ignore them
 		if ((ulong)m_GameID == pCallback.m_nGameID) {
 			if (0 == pCallback.m_nMaxProgress) {
@@ -459,6 +462,9 @@ public class Script_AchievementsManager : MonoBehaviour
     // Dev only
     private void ResetSteamStatsAndAchievements()
     {
+        if (!SteamManager.Initialized)
+        	return;
+        
         Dev_Logger.Debug("Resetting Steam Stats & Achievements");
         
         achievementsState.InitialState();

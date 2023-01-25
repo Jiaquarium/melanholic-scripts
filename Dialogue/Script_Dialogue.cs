@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-21 14:56:15
+// Last created by Dialogue Exporter at 2023-01-24 13:54:33
 
 using System.Collections;
 using System.Collections.Generic;
@@ -243,7 +243,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I guess you’re really going to make me do it huh?",
+                @"I guess you’re really going to make me do it?",
         },
         
     }
@@ -3094,16 +3094,11 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It came to me in a dream,| no,| a vision.| From the divine <b>other side</b>.",
                 @"I have already made the proper preparations.",
-                @"...",
-                @"<size=14><b>Once the clock strikes |6:00|.|.|.|</b></size>",
-                @"<size=14><b>It will be complete.</b></size>",
+                @"<b>Once the clock strikes |6:00|.|.|.|</b>",
+                @"<b>It shall be complete.</b>",
         },
         metadata = new Model_Languages.Metadata[]
         {
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
                 new Model_Languages.Metadata
                 {
                     isUnskippable = true, 

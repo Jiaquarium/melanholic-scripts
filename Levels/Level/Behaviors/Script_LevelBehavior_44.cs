@@ -108,7 +108,7 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     
     private void OnLevelBlackScreenDone()
     {
-        if (!didMapNotification)
+        if (!didMapNotification && !IsSpecialIntro)
         {
             Script_MapNotificationsManager.Control.PlayMapNotification(MapName);
             didMapNotification = true;
