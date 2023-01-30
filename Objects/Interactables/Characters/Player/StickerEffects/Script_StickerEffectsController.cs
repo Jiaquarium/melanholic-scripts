@@ -319,7 +319,7 @@ public class Script_StickerEffectsController : MonoBehaviour
         );
     }
 
-    private void SwitchSFX()
+    public void SwitchSFX()
     {
         GetComponent<AudioSource>().PlayOneShot(
             Script_SFXManager.SFX.PlayerStashItem, Script_SFXManager.SFX.PlayerStashItemVol

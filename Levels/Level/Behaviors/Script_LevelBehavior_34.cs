@@ -25,6 +25,8 @@ public class Script_LevelBehavior_34 : Script_LevelBehavior
     {
         PauseBgmForElevator();
 
+        Script_Game.IsRunningDisabled = true;
+
         void PauseBgmForElevator()
         {
             Dev_Logger.Debug($"PauseBgmForElevator elevatorManager.IsBgmOn {elevatorManager.IsBgmOn}");
@@ -36,6 +38,13 @@ public class Script_LevelBehavior_34 : Script_LevelBehavior
                 Script_BackgroundMusicManager.Control.Stop();
             }
         }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        Script_Game.IsRunningDisabled = false;
     }
     
     public override void Setup()

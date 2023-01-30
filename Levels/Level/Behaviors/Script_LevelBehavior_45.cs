@@ -27,6 +27,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     // Nazca Totem
     [SerializeField] private float totemReactionWaitTime;
     [SerializeField] private Vector3 screenShakeVals;
+    [SerializeField] private float totemSFXExtraWaitTime;
     private Script_CameraShake activeShakeCamera;
 
     // ------------------------------------------------------------------
@@ -128,14 +129,21 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
             StartScreenShake();
         
             Script_SFXManager.SFX.PlayTotemCry(() => {
-                StopScreenShake();
-                game.ChangeStateInteract();
+                StartCoroutine(WaitToInteract());
             });
         }
 
         void StartScreenShake() => activeShakeCamera.
             Shake(screenShakeVals.x, screenShakeVals.y, screenShakeVals.z, null);
 
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSeconds(totemSFXExtraWaitTime);
+
+            StopScreenShake();
+            game.ChangeStateInteract();
+        }
+        
         void StopScreenShake() => activeShakeCamera.InitialState();
     }
 

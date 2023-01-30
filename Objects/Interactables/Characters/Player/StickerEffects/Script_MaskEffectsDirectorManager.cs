@@ -104,6 +104,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     {
         Script_StickerEffectEventsManager.MyMaskForceFaceDir(Directions.Up);
         Script_NPCEventsManager.NPCRandomAnimatorForceDefault();
+        game.GetPlayer().FaceDirection(Directions.Up);
     }
 
     public void MyMaskEffectTimelineDone()

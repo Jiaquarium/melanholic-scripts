@@ -49,6 +49,8 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         }
 
         Script_NPCEventsManager.OnNPCMovesSetsDone += OnMoveSetDone;
+
+        Script_Game.IsRunningDisabled = true;
     }
     
     protected override void OnDisable()
@@ -62,6 +64,8 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
         }
 
         Script_NPCEventsManager.OnNPCMovesSetsDone -= OnMoveSetDone;
+
+        Script_Game.IsRunningDisabled = false;
     }
     
     private void HandleGrandMirrorPaintingEntrance()

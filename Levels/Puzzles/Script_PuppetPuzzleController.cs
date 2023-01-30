@@ -89,7 +89,7 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
     
     public virtual void PuppeteerDeactivateTimelinePuppetBuffs()
     {
-        buffPuppets.ForEach(puppet => puppet.SetBuffEffectActive(false));
+        buffPuppets.ForEach(puppet => puppet.SetBuffEffectActive(true));
     }
 
     public virtual void OnPuppeteerDeactivateTimelineDone()

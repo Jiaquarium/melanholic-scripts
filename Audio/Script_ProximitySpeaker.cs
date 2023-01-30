@@ -34,6 +34,10 @@ public class Script_ProximitySpeaker : Script_Speaker
         set => maxVol = value;
     }
 
+    public Vector3 SpeakerLocation => speakerLocationOverride == null
+        ? transform.position
+        : speakerLocationOverride.position;
+
     public bool IsDisabled { get; set; }
     public bool IsForceOnNonInteractState { get; set; }
 
@@ -89,10 +93,7 @@ public class Script_ProximitySpeaker : Script_Speaker
             return;
         }
         
-        var speakerLocation = speakerLocationOverride == null
-            ? transform.position
-            : speakerLocationOverride.position;
-        currentDistance = Vector3.Distance(Script_Game.Game.GetPlayerLocation(), speakerLocation);
+        currentDistance = Vector3.Distance(Script_Game.Game.GetPlayerLocation(), SpeakerLocation);
         
         if (currentDistance >= maxDistance)
         {
@@ -113,7 +114,7 @@ public class Script_ProximitySpeaker : Script_Speaker
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        var position = transform.position;
+        var position = SpeakerLocation;
         Handles.color = Color.yellow;
         
         Handles.DrawWireDisc(position, new Vector3(0, 1, 0), maxDistance);

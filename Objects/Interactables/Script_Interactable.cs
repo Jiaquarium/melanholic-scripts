@@ -24,6 +24,8 @@ public class Script_Interactable : MonoBehaviour
     [Tooltip("Explicit colliders to hide and/or reveal.")]
     [SerializeField] private Collider[] targetColliders;
 
+    private Coroutine cooldownCoroutine;
+
     public bool DisableL {
         get => _disableL;
         set => _disableL = value;
@@ -47,6 +49,13 @@ public class Script_Interactable : MonoBehaviour
     protected virtual void OnDisable()
     {
         DialogueCoolDownReset();
+
+        // Avoid coroutine error if the level is somehow unmounted right during cooldown.
+        if (cooldownCoroutine != null)
+        {
+            StopCoroutine(cooldownCoroutine);
+            cooldownCoroutine = null;
+        }
     }
 
     protected virtual void OnValidate() { }
@@ -68,7 +77,7 @@ public class Script_Interactable : MonoBehaviour
     {
         isDialogueCoolDown = true;
         timer = dialogueCoolDownTime;
-        StartCoroutine(DialogueCoolDownCo());
+        cooldownCoroutine = StartCoroutine(DialogueCoolDownCo());
 
         IEnumerator DialogueCoolDownCo()
         {

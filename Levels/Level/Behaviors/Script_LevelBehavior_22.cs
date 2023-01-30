@@ -101,6 +101,9 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
     {
         game.ChangeStateInteract();
         Ursie.SwitchPsychicNodes(psychicNodesQuestActive);
+
+        // Cooldown the drinks interactables so player doesn't accidentally talk to them after
+        barMid1Text.StartDialogueCoolDown();
     }
 
     // Preaction when talking with Peche & Melba

@@ -277,14 +277,14 @@ public class Script_StartOverviewController : Script_UIState
                 else
                 {
                     StartOptionsOpen();
-                    startScreenController.FadeInTitle();
+                    startScreenController.FadeInTitle(Script_StartScreenController.Type.FromBack);
                 }
 
                 Script_Start.startState = Script_Start.StartStates.Start;
             }
             else
             {
-                startScreenController.FadeInTitle();
+                startScreenController.FadeInTitle(Script_StartScreenController.Type.Intro);
                 
                 startScreenCTA.Close();
                 demoHeader.Close();
@@ -302,7 +302,7 @@ public class Script_StartOverviewController : Script_UIState
             StartOptionsOpen(isFadeIn: true, isFadeInDemo: true);
             
             yield return new WaitForSeconds(waitBeforeFadeInTitleOnBackFromGame);
-            startScreenController.FadeInTitle();
+            startScreenController.FadeInTitle(Script_StartScreenController.Type.FromBack);
         }
 
         IEnumerator WaitToShowCTA()

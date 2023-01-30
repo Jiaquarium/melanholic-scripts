@@ -455,6 +455,11 @@ public class Script_PRCSManager : MonoBehaviour
     {
         game.ChangeStateCutScene();
         
+        // Unequip the current mask & move all prepped masks to inventory. Also prevents effects from
+        // carrying over to Grand Mirror like lantern light on.
+        game.GetPlayer().DefaultStickerState();
+        game.UnequipAll();
+        
         Script_TransitionManager.Control.TimelineBlackScreen();
         SetAwakeningFinalActive(false);
         

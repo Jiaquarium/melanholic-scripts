@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-01-23 10:59:08
+// Last created by UI Exporter at 2023-01-27 19:50:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -467,7 +467,7 @@ public class Script_UIText
     "true-ending_narrator_monologue3_3",
     new Model_LanguagesUI
     {
-        EN = @"And change my face for the sake of others."
+        EN = @"As I looked out from a face that wasn’t even mine."
     }
 },
 {
@@ -586,14 +586,21 @@ public class Script_UIText
     "true-ending_the-end_type",
     new Model_LanguagesUI
     {
-        EN = @"『 TRUE ENDING 』"
+        EN = @"autical Dawn"
+    }
+},
+{
+    "true-ending_the-end_type_start-word",
+    new Model_LanguagesUI
+    {
+        EN = @"n"
     }
 },
 {
     "true-ending_the-end_label",
     new Model_LanguagesUI
     {
-        EN = @"No More Is No More"
+        EN = @"A True Ending"
     }
 },
 // ------------------------------------------------------------------
@@ -609,21 +616,21 @@ public class Script_UIText
     "bad-ending_narrator_the-sealing_opening-words",
     new Model_LanguagesUI
     {
-        EN = @"At"
+        EN = @"As the clock"
     }
 },
 {
     "bad-ending_narrator_the-sealing",
     new Model_LanguagesUI
     {
-        EN = @"{49} the ancient spell of the {22} was said to be cast."
+        EN = @"struck {49} the ancient spell of the {22} was cast."
     }
 },
 {
     "bad-ending_narrator_the-sealing1",
     new Model_LanguagesUI
     {
-        EN = @"{18} along with all those inside were locked away,<br>permanently losing touch with the outside world."
+        EN = @"It is said that {18} along with all those inside were locked away,<br>permanently losing touch with the outside world."
     }
 },
 {
@@ -1671,6 +1678,13 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"♥"
+    }
+},
+{
+    "intro_loading_please-wait",
+    new Model_LanguagesUI
+    {
+        EN = @"Working... please wait...<br>Loading time is a bit longer than usual."
     }
 },
 // ------------------------------------------------------------------

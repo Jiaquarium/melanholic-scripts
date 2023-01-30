@@ -51,6 +51,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     
     [SerializeField] private Script_DialogueNode OnSnowReactionNode;
     
+    // For Special Intro and on Freeze Well scene if not done on entrance (impossible now)
     [SerializeField] private float beforeSnowReactionShortTime;
     // A bit longer wait time to give Player time to absorb the snow effect
     [SerializeField] private float beforeSnowReactionOpeningTime;
@@ -64,6 +65,15 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     [SerializeField] private Script_WeatherFXManager weatherFXManager;
     [SerializeField] private List<Script_WellsWorldBehavior> wellsWorldBehaviors;
+
+    // ------------------------------------------------------------------
+    // Moose Quest
+    
+    [Space][Header("Moose Quest")][Space]
+    // Success time longer than fail wait time to build suspense, a different expectation.
+    [SerializeField] private float pauseBeforeNewNodeSuccessTime;
+    [SerializeField] private float pauseBeforeNewNodeFailTime;
+    [SerializeField] private float pauseBeforeIntroNodeTime;
 
     // ------------------------------------------------------------------
     // Intro Only
@@ -99,9 +109,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     private bool didMapNotification;
     private bool didSnowReaction;
-    private Script_Well currentWellTalking;
+    private bool didMapNotificationDoneEvent;
 
     public Script_WellsPuzzleController WellsPuzzleController => wellsPuzzleController;
+    public bool IsSnowReaction => !didSnowReaction && !CatWalkBehavior.didPickUpLightSticker;
 
     protected override void OnEnable()
     {
@@ -117,6 +128,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnShatter                        += OnShatter;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           += OnMapNotificationTeletypeDone;
+        Script_TransitionsEventsManager.OnMapNotificationDefaultDone            += HandleOpeningSnowNoSpecial;
     }
 
     protected override void OnDisable()
@@ -133,6 +145,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnShatter                        -= OnShatter;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           -= OnMapNotificationTeletypeDone;
+        Script_TransitionsEventsManager.OnMapNotificationDefaultDone            -= HandleOpeningSnowNoSpecial;
     }
 
     void Awake()
@@ -187,10 +200,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             game.ChangeStateCutScene();
             PlaySpecialIntro();
         }
-        else
+        // Set up for HandleOpeningSnowNoSpecial()
+        else if (IsSnowReaction && !didMapNotificationDoneEvent)
         {
-            if (weatherFXManager.IsSnowDay)
-                HandleSnowReaction(beforeSnowReactionOpeningTime);
+            game.ChangeStateCutScene();
         }
     }
 
@@ -203,7 +216,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     /// </summary>
     private bool HandleSnowReaction(float pauseTime)
     {
-        if (didSnowReaction || CatWalkBehavior.didPickUpLightSticker)
+        if (!IsSnowReaction)
             return false;
         
         game.ChangeStateCutScene();
@@ -218,6 +231,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             yield return new WaitForSeconds(pauseTime);
             Script_DialogueManager.DialogueManager.StartDialogueNode(OnSnowReactionNode);
         }
+    }
+
+    // Entry point for opening snow reaction dialogue on Map Notification done
+    private void HandleOpeningSnowNoSpecial()
+    {
+        didMapNotificationDoneEvent = true;
+        
+        HandleSnowReaction(beforeSnowReactionOpeningTime);
     }
 
     private void OnItemPickUp(string itemId)
@@ -388,22 +409,43 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         bool hasBook = game.GetItemsInventoryItem(lastSpellRecipeBookItem.id, out slot) != null;
 
         if (hasBook)
+            StartCoroutine(WaitToReact(pauseBeforeNewNodeSuccessTime, StartSuccessDialogue));
+        else
+            StartCoroutine(WaitToReact(pauseBeforeNewNodeFailTime, StartFailDialogue));
+
+        IEnumerator WaitToReact(float t, Action cb)
         {
-            Script_DialogueManager.DialogueManager.StartDialogueNodeNextFrame(OnHasLastSpellRecipeBookNode);
+            yield return new WaitForSeconds(t);
+
+            if (cb != null)
+                cb();
+        }
+
+        void StartSuccessDialogue()
+        {
+            Script_DialogueManager.DialogueManager.StartDialogueNode(OnHasLastSpellRecipeBookNode);
 
             game.RemoveItemFromInventory(lastSpellRecipeBookItem);
         }
-        else
+
+        void StartFailDialogue()
         {
-            Script_DialogueManager.DialogueManager.StartDialogueNodeNextFrame(OnMissingLastSpellRecipeBookNode);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(OnMissingLastSpellRecipeBookNode);
         }
     }
 
     public void GiveSticker()
     {
-        Dev_Logger.Debug("-------- MOOSE GIVES PLAYER AESTHETIC STICKER --------");
+        Dev_Logger.Debug("-------- MOOSE GIVES PLAYER STICKER --------");
+        
+        StartCoroutine(WaitToTalk());
 
-        Script_DialogueManager.DialogueManager.StartDialogueNode(OnMooseGiveItemDoneNode);
+        IEnumerator WaitToTalk()
+        {
+            yield return new WaitForSeconds(pauseBeforeIntroNodeTime);
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(OnMooseGiveItemDoneNode);
+        }
     }
 
     public void UpdateMooseName()
@@ -433,6 +475,10 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
     public void OnMooseCheckItemDialogueDone()
     {
+        // Also set all Moose to cooldown
+        foreach (var Moose in Mooses)
+            Moose.StartDialogueCoolDown();
+        
         game.NextFrameChangeStateInteract();
     }
 

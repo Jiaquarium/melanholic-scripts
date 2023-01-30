@@ -63,6 +63,8 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
         HandleElevatorDisabledState(elevator);
 
         PauseBgmForElevator();
+        
+        Script_Game.IsRunningDisabled = true;
 
         void PauseBgmForElevator()
         {
@@ -81,6 +83,7 @@ public class Script_LevelBehavior_33 : Script_LevelBehavior
     {
         // after exiting, we'll always come back to a default Elevator Bay v1
         exitToLobby.Type = Script_Exits.ExitType.Default;
+        Script_Game.IsRunningDisabled = false;
     }
 
     private void HandleElevatorStateDefault()

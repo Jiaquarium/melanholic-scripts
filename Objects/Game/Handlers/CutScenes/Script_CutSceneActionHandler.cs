@@ -53,12 +53,8 @@ public class Script_CutSceneActionHandler : MonoBehaviour
         Script_Game.Game.dialogueManager.StartDialogueNode(
             itemObject.GetComponent<Script_DialogueNode>()
         );
-        
-        if (!itemObject.showTyping)
-        {
-            Dev_Logger.Debug("Skipping typing item initial description on receiving item");
-            Script_Game.Game.dialogueManager.SkipTypingSentence();
-        }
+
+        // Handle itemObject.showTyping here. Currently not implemented.
     }
 
     void HandleEndItemDescriptionDialogue(Script_Player player)

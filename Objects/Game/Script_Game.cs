@@ -29,6 +29,10 @@ public class Script_Game : MonoBehaviour
     public int faceOffCounter;
     /* ======================================================================= */
 
+    // Store this separately in state so Player Movement doesn't have to query Game each frame
+    // for hotel behaviors. Declare this within respective level behaviors.
+    public static bool IsRunningDisabled;
+    
     public Model_Levels Levels;
     public string state;
     public Model_PlayerState playerState;

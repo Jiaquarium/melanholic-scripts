@@ -188,6 +188,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
             clockManager.SetFinalRoundGrandMirrorTime();
             game.IsDisableMasksOnly = true;
         }
+
+        Script_Game.IsRunningDisabled = true;
     }
 
     protected override void OnDisable()
@@ -202,6 +204,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         Script_StickerEffectEventsManager.OnMyMaskStopFaceDir -= ResumeSheepBleats;
 
         InitialState();
+
+        Script_Game.IsRunningDisabled = false;
     }
 
     void OnValidate()
@@ -614,6 +618,10 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     public void DecreaseGlitchBlend()
     {
+        // Prevent error when closing game while on glitch zone.
+        if (glitchManager == null)
+            return;
+        
         // Once player clears the top of the wind zone, immediately set Blend for abrubt effect.
         Directions lastMove = game.GetPlayer().LastMove;
         

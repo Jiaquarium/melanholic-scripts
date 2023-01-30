@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Used to allow replacement of @@NAME in text; use for
-/// Items
+/// Used to allow replacement of @@NAME in text; use for Items
+/// 
+/// Note: When changing item names here, also MUST change corresponding Scriptable Object's
+/// item name, since that is used for Inventory Descriptions.
 /// </summary>
 public class Script_ItemStringBuilder : MonoBehaviour
 {
@@ -37,7 +39,7 @@ public class Script_ItemStringBuilder : MonoBehaviour
         Params.Add("@@LastElevator",            "<b>Last Elevator</b>");
         Params.Add("@@LetThereBeLight",         "<b>Lantern</b>");
         Params.Add("@@Puppeteer",               "<b>Puppeteer</b>");
-        Params.Add("@@MyMask",                  "<b>Ancient Summoner</b>");
+        Params.Add("@@MyMask",                  "<b>Summoner of Self</b>");
         
         Params.Add("@@MasterKey",               "<b>Master Key</b>");
         Params.Add("@@SuperSmallKey",           "<b>Super Small Key</b>");

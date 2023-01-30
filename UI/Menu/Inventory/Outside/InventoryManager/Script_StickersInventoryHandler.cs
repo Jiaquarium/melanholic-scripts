@@ -36,6 +36,52 @@ public class Script_StickersInventoryHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handle on enter on empty equipment slot
+    /// </summary>
+    public bool StickOnEquipmentEnter(
+        Script_Equipment equipment,
+        Script_Inventory inventory,
+        int equipmentSlot,
+        bool isBackground = false
+    )
+    {
+        try
+        {
+            int inventorySlot = inventory.GetSlotIdOfLastItem();
+
+            if (inventorySlot < 0)
+            {
+                Dev_Logger.Debug($"{name} StickOnEquipmentEnter: there are no masks in inventory left to prep");
+                return OnError();
+            }
+            
+            Script_Sticker inventorySticker = inventory.GetItemInSlot(inventorySlot) as Script_Sticker;
+            inventory.RemoveItemInSlot(inventorySlot);
+
+            if (inventorySticker != null)
+                equipment.AddStickerInSlot(inventorySticker, equipmentSlot);
+            else
+                return OnError();
+            
+            if (!isBackground)
+                StickerOnSFX();
+                
+            return true;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed StickOnEquipmentEnter with Error:\n{e}");
+            return OnError();
+        }
+        
+        bool OnError()
+        {
+            GetComponent<Script_InventoryManager>().ErrorDullSFX();
+            return false;
+        }
+    }
+
     public bool HotKeyStickUnstick(
         Script_Equipment equipment,
         Script_Inventory inventory,

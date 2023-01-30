@@ -634,11 +634,24 @@ public class Script_TransitionManager : MonoBehaviour
     // ------------------------------------------------------------
     // Audio
     
-    // Restart UI OnClick
     public void EnterMenuSFX()
     {
         var sfx = Script_SFXManager.SFX;
         sfx.Play(sfx.OpenCloseBook, sfx.OpenCloseBookVol);
+    }
+
+    // The Sealing choices try again
+    public void SealingTryAgainSFX()
+    {
+        var sfx = Script_SFXManager.SFX;
+        sfx.PlaySubmitTransition();
+    }
+
+    // The Sealing choices go to main menu
+    public void SealingGoToMainMenuSFX()
+    {
+        var sfx = Script_SFXManager.SFX;
+        sfx.PlaySubmitTransitionCancel();
     }
 
     // ------------------------------------

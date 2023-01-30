@@ -32,10 +32,7 @@ public class Script_UsablesInventoryHandler : MonoBehaviour
         switch(usable)
         {
             case Script_UsableKey key:
-                Dev_Logger.Debug("YOU JUST USED A KEY... PLAY KEY SFX");
-                GetComponent<AudioSource>().PlayOneShot(
-                    Script_SFXManager.SFX.useKey, Script_SFXManager.SFX.useKeyVol
-                );
+                // Using a key's SFX will be handled by the target object.
                 break;
             default:
                 Debug.LogWarning("Not a valid usable type used somehow, no SFX");

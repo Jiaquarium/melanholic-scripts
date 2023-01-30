@@ -132,6 +132,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnCCTVSFXDone += OnCCTVSFXDone;
 
         glitchManager.InitialState();
+        Script_Game.IsRunningDisabled = true;
     }
 
     protected override void OnDisable()
@@ -141,6 +142,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         Script_InteractableObjectEventsManager.OnCCTVSFXDone -= OnCCTVSFXDone;
 
         glitchManager.InitialState();
+        Script_Game.IsRunningDisabled = false;
     }
 
     public override void OnLevelInitComplete()

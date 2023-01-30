@@ -68,6 +68,17 @@ public class Script_Inventory : MonoBehaviour
     {
         Script_InventoryHelpers.Organize(items, itemImages);
     }
+
+    public int GetSlotIdOfLastItem()
+    {
+        for (var i = Items.Length - 1; i >= 0; i--)
+        {
+            if (GetItemInSlot(i) != null)
+                return i;
+        }
+
+        return -1;
+    }
 }
 
 #if UNITY_EDITOR

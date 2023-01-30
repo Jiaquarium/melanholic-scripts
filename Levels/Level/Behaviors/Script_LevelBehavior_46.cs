@@ -24,9 +24,37 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     [SerializeField] private Script_InteractablePaintingEntrance[] paintingEntrances;
     [SerializeField] private Script_InteractablePaintingEntrance ballroomPaintingEntrance;
     
+    [Space][Header("Opening Cut Scene")][Space]
+    
+    [SerializeField] private float openingAfterPsyDuckSwitchWaitTime;
+    [SerializeField] private Script_DialogueNode LatteOpeningNode;
+    [SerializeField] private Script_DialogueNode KaffeOpeningNode;
+    [SerializeField] private float openingCameraBlendTime;
+    [SerializeField] private Script_VCamera followKaffeOpeningVCam;
+    [SerializeField] private Script_VCamera followLatteOpeningVCam;
+    
+    [Space][Header("Success Cut Scene")][Space]
+    
     [SerializeField] private float successTransitionFadeInTime;
     [SerializeField] private float successBlackScreenTime;
     [SerializeField] private float successAfterFadeWaitTime;
+    [SerializeField] private float successAfterPsyDuckSwitchWaitTime;
+    [SerializeField] private Script_DialogueNode successCutSceneNode;
+    [SerializeField] private Script_VCamera successCutSceneVCam;
+    [SerializeField] private Script_Marker puppetMasterPuzzleSuccessSpawn;
+    [SerializeField] private Script_Marker puppetPuzzleSuccessSpawn;
+    [SerializeField] private Script_Marker playerPuzzleSuccessSpawn;
+    
+    [Space][Header("Blocked Cut Scene")][Space]
+
+    [Tooltip("Less than blend time of ANY CAMERA to KaffeFollow and LatteFollow")]
+    [SerializeField] private float onBlockedDoneWaitToInteractTime;
+    [SerializeField] private Script_DialogueNode KaffeBlockedNode;
+    [SerializeField] private Script_DialogueNode LatteBlockedNode;
+    [SerializeField] private Script_TriggerEnterOnce KaffeBlockedTrigger;
+    [SerializeField] private Script_TriggerEnterOnce LatteBlockedTrigger;
+
+    [Space]
     
     [SerializeField] private Script_MeetupPuzzleController meetupPuzzleController;
     
@@ -39,28 +67,11 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     [SerializeField] private Script_Marker puppetMasterSpawn;
     [SerializeField] private Script_Marker puppetSpawn;
 
-    [SerializeField] private Script_DialogueNode LatteOpeningNode;
-    [SerializeField] private Script_DialogueNode KaffeOpeningNode;
-    [SerializeField] private float openingCameraBlendTime;
-    
-    [SerializeField] private Script_DialogueNode KaffeBlockedNode;
-    [SerializeField] private Script_DialogueNode LatteBlockedNode;
-    [SerializeField] private Script_DialogueNode successCutSceneNode;
-
-    [SerializeField] private Script_TriggerEnterOnce KaffeBlockedTrigger;
-    [SerializeField] private Script_TriggerEnterOnce LatteBlockedTrigger;
-
-    [SerializeField] private Script_VCamera followKaffeOpeningVCam;
-    [SerializeField] private Script_VCamera followLatteOpeningVCam;
     [SerializeField] private Script_VCamera followKaffeVCam;
     [SerializeField] private Script_VCamera followLatteVCam;
     [SerializeField] private Script_VCamera followKaffeCloseupVCam;
     [SerializeField] private Script_VCamera followLatteCloseupVCam;
-    [SerializeField] private Script_VCamera successCutSceneVCam;
-
-    [SerializeField] private Script_Marker puppetMasterPuzzleSuccessSpawn;
-    [SerializeField] private Script_Marker puppetPuzzleSuccessSpawn;
-    [SerializeField] private Script_Marker playerPuzzleSuccessSpawn;
+    
     [SerializeField] private Transform movingLabyrinth;
 
     [SerializeField] private Script_ScarletCipherPiece scarletCipherPiece;
@@ -77,6 +88,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     private bool isUniqueBlockedCutScene;
     private bool isOpeningCutSceneDone;
+
+    private bool didPsychicDuckSwitch;
 
     private bool isInitialized;
 
@@ -188,6 +201,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     }
 
     // Starts Kaffe's dialogue and snaps camera to Kaffe.
+    // Also handle switching Player to Psychic Duck Animator for the cut scene to "understand" Kaffe & Latte
     public void PuzzleSuccessCutSceneDialogue()
     {
         StartCoroutine(WaitToSuccessCutSceneDialogue());
@@ -195,12 +209,40 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         IEnumerator WaitToSuccessCutSceneDialogue()
         {
             yield return new WaitForSeconds(successAfterFadeWaitTime);
+
+            // If player is not Psychic Duck, switch to it and wait 1 more sec
+            var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+            var isWearingPsychicDuckMask = activeMaskId == Const_Items.PsychicDuckId;
             
+            if (!isWearingPsychicDuckMask)
+                HandlePlayerSwitchToPsychicDuck();
+            else
+                StartKaffeLatteCutSceneDialogue();
+        }
+
+        void HandlePlayerSwitchToPsychicDuck()
+        {
+            // Change animator, don't actually switch items
+            game.GetPlayer().SetAnimatorControllerPsychicDuck(isActive: true, isSFX: true);
+            didPsychicDuckSwitch = true;
+            
+            StartCoroutine(WaitToStartCutScene());
+        }
+
+        void StartKaffeLatteCutSceneDialogue()
+        {
             SnapCloseUpVCams();
             KaffeCloseUp();
 
             UpdateLatte();
             Script_DialogueManager.DialogueManager.StartDialogueNode(successCutSceneNode);
+        }
+
+        IEnumerator WaitToStartCutScene()
+        {
+            yield return new WaitForSeconds(successAfterPsyDuckSwitchWaitTime);
+
+            StartKaffeLatteCutSceneDialogue();            
         }
     }
 
@@ -228,16 +270,45 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         
         game.ChangeStateCutScene();
 
-        preOpeningVCam = Script_VCamManager.VCamMain.ActiveVCamera;
-        Script_VCamManager.VCamMain.SwitchBetweenVCams(preOpeningVCam, followLatteOpeningVCam);
-        
-        StartCoroutine(WaitForCameraBlend());
+        // Handle Player switching to Psychic Duck if needed
+        // If player is not Psychic Duck, switch to it and wait 1 more sec
+        var activeMaskId = Script_ActiveStickerManager.Control.ActiveSticker?.id ?? string.Empty;
+        var isWearingPsychicDuckMask = activeMaskId == Const_Items.PsychicDuckId;
+
+        if (!isWearingPsychicDuckMask)
+            HandlePlayerSwitchToPsychicDuck();
+        else
+            StartOpeningCutScene();
+
+        void HandlePlayerSwitchToPsychicDuck()
+        {
+            // Change animator, don't actually switch items
+            game.GetPlayer().SetAnimatorControllerPsychicDuck(isActive: true, isSFX: true);
+            didPsychicDuckSwitch = true;
+            
+            StartCoroutine(WaitToStartCutScene());
+        }
+
+        void StartOpeningCutScene()
+        {
+            preOpeningVCam = Script_VCamManager.VCamMain.ActiveVCamera;
+            Script_VCamManager.VCamMain.SwitchBetweenVCams(preOpeningVCam, followLatteOpeningVCam);
+            
+            StartCoroutine(WaitForCameraBlend());
+        }        
 
         IEnumerator WaitForCameraBlend()
         {
             yield return new WaitForSeconds(openingCameraBlendTime);
             
             Script_DialogueManager.DialogueManager.StartDialogueNode(LatteOpeningNode);
+        }
+
+        IEnumerator WaitToStartCutScene()
+        {
+            yield return new WaitForSeconds(openingAfterPsyDuckSwitchWaitTime);
+
+            StartOpeningCutScene();            
         }
     }
 
@@ -254,7 +325,12 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     private void LatteBlockedCutScene()
     {
         game.ChangeStateCutScene();
+
         puppet.SetAnimatorControllerActive(false);
+        
+        // Player will always be in Puppet form in this case
+        game.GetPlayer().SetAnimatorControllerPsychicDuck(true);
+        Dev_Logger.Debug($"game.GetPlayer().MyAnimator.runtimeAnimatorController {game.GetPlayer().MyAnimator.runtimeAnimatorController}");
         
         Script_DialogueManager.DialogueManager.StartDialogueNode(LatteBlockedNode);
         
@@ -269,7 +345,12 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     private void KaffeBlockedCutScene()
     {
         game.ChangeStateCutScene();
+        
         puppetMaster.SetAnimatorControllerActive(false);
+        
+        // Player will always be in Puppet form in this case
+        game.GetPlayer().SetAnimatorControllerPsychicDuck(true);
+        Dev_Logger.Debug($"game.GetPlayer().MyAnimator.runtimeAnimatorController {game.GetPlayer().MyAnimator.runtimeAnimatorController}");
         
         Script_DialogueManager.DialogueManager.StartDialogueNode(KaffeBlockedNode);
         
@@ -283,15 +364,23 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     public void OnBlockedCutSceneDone()
     {
-        game.ChangeStateInteract();
-        
         puppet.SetAnimatorControllerActive(true);
         puppetMaster.SetAnimatorControllerActive(true);
 
         Script_VCamManager.VCamMain.SwitchBetweenVCams(Script_VCamManager.VCamMain.ActiveVCamera, puppeteerVCam);
         puppeteerVCam = null;
 
-        IsUniqueBlockedCutScene = false;
+        StartCoroutine(WaitToInteract());
+
+        // Wait a bit before camera transition time, so it's evident we're switching back from Psyduck
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSeconds(onBlockedDoneWaitToInteractTime);
+            game.GetPlayer().SetAnimatorControllerPsychicDuck(isActive: false, isSFX: true);
+
+            game.ChangeStateInteract();
+            IsUniqueBlockedCutScene = false;
+        }
     }
 
     private void LatteOpeningCloseUp()
@@ -335,8 +424,16 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         IEnumerator WaitToSetupDoneState()
         {
             // Switch to Main VCam.
+            var transitionManager = Script_TransitionManager.Control;
             preSuccessVCam = Script_VCamManager.VCamMain.ActiveVCamera;
             Script_VCamManager.VCamMain.SwitchToMainVCam(preSuccessVCam);
+
+            
+            // If switched to Psychic Duck for cut scene, switch back in BG here.
+            if (didPsychicDuckSwitch)
+                game.GetPlayer().SetAnimatorControllerPsychicDuck(false);
+            
+            didPsychicDuckSwitch = false;
             
             yield return new WaitForSeconds(successBlackScreenTime);
 
@@ -345,7 +442,6 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
                 isPuzzleComplete        = true;
                 isCurrentPuzzleComplete = true;
 
-                var transitionManager = Script_TransitionManager.Control;
                 transitionManager.OnCurrentQuestDone(
                     allQuestsDoneCb: () =>
                     {
@@ -426,9 +522,14 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
         IEnumerator WaitForCameraBlend()
         {
             yield return new WaitForSeconds(openingCameraBlendTime);
+
+            // Switch player back in BG
+            if (didPsychicDuckSwitch)
+                game.GetPlayer().SetAnimatorControllerPsychicDuck(isActive: false, isSFX: true);
             
             game.ChangeStateInteract();
 
+            didPsychicDuckSwitch = false;
             isOpeningCutSceneDone = true;
         }
     }

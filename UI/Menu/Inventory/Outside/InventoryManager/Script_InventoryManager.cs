@@ -418,9 +418,9 @@ public class Script_InventoryManager : MonoBehaviour
     {
         var stickerToRemove = equipment.GetStickerInSlot(stickerSlotId) as Script_Sticker;
         
-        // No Sticker in Slot.
+        // No Sticker in Slot. Take last inventory mask and place here.
         if (stickerToRemove == null)
-            ErrorDullSFX();
+            HandleEmpty();
         // Sticker is in use.
         else if (Script_ActiveStickerManager.Control.ActiveSticker == stickerToRemove)
             ErrorUnableSFX();
@@ -430,6 +430,19 @@ public class Script_InventoryManager : MonoBehaviour
             
             // Keep current slot highlighted and update for now empty slot description.
             HighlightItem(stickerSlotId, true, true, Types.Equipment);
+        }
+
+        bool HandleEmpty()
+        {
+            bool isNewContents = stickersHandler.StickOnEquipmentEnter(
+                equipment,
+                inventory,
+                stickerSlotId,
+                isBackground: false
+            );
+            HighlightItem(stickerSlotId, true, true, Types.Equipment);
+
+            return isNewContents; 
         }
     }
 
@@ -621,6 +634,11 @@ public class Script_InventoryManager : MonoBehaviour
             ErrorUnableSFX();
             return;
         }
+    }
+
+    private int GetSlotIdOfLastItem()
+    {
+        return inventory.GetSlotIdOfLastItem();
     }
 
     // Search in Items which hold Usables.

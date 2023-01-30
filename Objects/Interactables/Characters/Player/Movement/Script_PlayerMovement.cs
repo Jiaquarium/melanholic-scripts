@@ -38,7 +38,7 @@ public class Script_PlayerMovement : MonoBehaviour
     public static readonly int LastMoveXAnimatorParam      = Animator.StringToHash("LastMoveX");
     public static readonly int LastMoveZAnimatorParam      = Animator.StringToHash("LastMoveZ");
     
-    [SerializeField] private Animator animator;
+    [SerializeField] protected Animator animator;
     
     public Script_PlayerReflection PlayerReflectionPrefab;
 
@@ -306,7 +306,7 @@ public class Script_PlayerMovement : MonoBehaviour
         inputButtonDownBuffer.Clear();
     }
 
-    public void Move(Directions dir, bool _isNoInputMoveByWind = false)
+    public virtual void Move(Directions dir, bool _isNoInputMoveByWind = false)
     {
         isNoInputMoveByWind = _isNoInputMoveByWind;
         
@@ -550,7 +550,11 @@ public class Script_PlayerMovement : MonoBehaviour
 
         if (Input.GetButton(Const_KeyCodes.Dev) && isDev)
             walkSpeed = Speeds.Dev;
-        else if (hasSpeedSealAndIsFormerSelf && player.MyPlayerInput.actions[Const_KeyCodes.Speed].IsPressed())
+        else if (
+            !Script_Game.IsRunningDisabled
+            && hasSpeedSealAndIsFormerSelf
+            && player.MyPlayerInput.actions[Const_KeyCodes.Speed].IsPressed()
+        )
             walkSpeed = Speeds.Run;
         else
             walkSpeed = Speeds.Default;
@@ -569,7 +573,7 @@ public class Script_PlayerMovement : MonoBehaviour
     }
     
     // Handle Moving State in Animator.
-    private void HandleAnimations()
+    protected virtual void HandleAnimations()
     {
         if (isForceMoveAnimation)
             return;

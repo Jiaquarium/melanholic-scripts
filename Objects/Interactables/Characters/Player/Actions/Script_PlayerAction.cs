@@ -204,12 +204,8 @@ public class Script_PlayerAction : MonoBehaviour
                     itemObject.GetComponent<Script_DialogueNode>()
                 );
                 
-                if (!itemObject.showTyping)
-                {
-                    Dev_Logger.Debug("Skipping typing item initial description");
-                    Script_Game.Game.dialogueManager.SkipTypingSentence();
-                }
-                
+                // Handle itemObject.showTyping here. Currently not implemented.
+
                 player.ItemPickUpEffect(true, item);
             }
             else
@@ -402,6 +398,11 @@ public class Script_PlayerAction : MonoBehaviour
     public void MyMaskEquipEffectTimeline()
     {
         stickerEffectsController.MyMaskEquipEffectTimeline();
+    }
+
+    public void SwitchMaskSFX()
+    {
+        stickerEffectsController.SwitchSFX();
     }
 
     private void OpenSettings()

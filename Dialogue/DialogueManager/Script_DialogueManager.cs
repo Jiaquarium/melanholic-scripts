@@ -22,6 +22,7 @@ using UnityEngine.Events;
 /// </summary>
 public class Script_DialogueManager : MonoBehaviour
 {
+    public const float charTypeTime = 0.01111111f; // 90fps
     public const float pauseLength = 0.475f;
     public const char DefaultDemonNPCChar = '�';
     public const float autoNextWaitTime = 0.05f;
@@ -759,7 +760,7 @@ public class Script_DialogueManager : MonoBehaviour
             
             // Reveal current character.
             textUI.maxVisibleCharacters = visibleCount;
-
+            
             // Get the next visible character and handle Text Commands.
             TMP_CharacterInfo charInfo = textUI.textInfo.characterInfo[visibleCount];
             char nextVisibleChar = charInfo.character;
@@ -770,7 +771,7 @@ public class Script_DialogueManager : MonoBehaviour
             {
                 // Don't pause before the first character reveal.
                 if (visibleCount > 0)
-                    yield return null;
+                    yield return new WaitForSeconds(charTypeTime);
             }
             
             visibleCount++;
@@ -1176,7 +1177,10 @@ public class Script_DialogueManager : MonoBehaviour
 
     public void SkipTypingSentence()
     {
-        if (dialogueSection.isUnskippable)  return;
+        Dev_Logger.Debug($"dialogueSection {dialogueSection}, dialogueSection == null: {dialogueSection == null}");
+        
+        if (dialogueSection == null || dialogueSection.isUnskippable)
+            return;
         
         Dev_Logger.Debug("Skipping typing sentence");
 

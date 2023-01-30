@@ -199,6 +199,9 @@ public class Script_SFXManager : MonoBehaviour
 
     public AudioClip ElevatorDoneDing;
     [Range(0f, 1f)] public float ElevatorDoneDingVol;
+
+    public AudioClip ToriiPass;
+    [Range(0f, 1f)] public float ToriiPassVol;
     
     [Space]
 
@@ -281,6 +284,9 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip PianoNote;
     [Range(0f, 1f)] public float PianoNoteVol;
+
+    public AudioClip PaintingEntranceCancel;
+    [Range(0f, 1f)] public float PaintingEntranceCancelVol;
 
     private bool isDialogueTypingInProgress;
 
@@ -539,6 +545,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayBookReverseMenuExit()
     {
         SFXSource.PlayOneShot(OpenCloseBookReverse, OpenCloseBookReverseVol);
+    }
+
+    public void PlayPaintingEntranceCancel()
+    {
+        SFXSource.PlayOneShot(PaintingEntranceCancel, PaintingEntranceCancelVol);
     }
     
     // Continuous SFX

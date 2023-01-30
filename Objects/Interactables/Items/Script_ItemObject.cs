@@ -8,7 +8,8 @@ public class Script_ItemObject : Script_Interactable
     public Script_ItemPickUpTheatricsPlayer pickUpTheatricsPlayer;
     [SerializeField] private Script_Item item;
     public bool initialDescription;
-    public bool showTyping;
+    [UnityEngine.Serialization.FormerlySerializedAs("showTyping")]
+    public bool showTyping_DEPRECATED;
     
     [SerializeField] private SpriteRenderer graphics;
     [SerializeField] private Animator animator;

@@ -75,4 +75,6 @@ public class Script_LightFadeIn : MonoBehaviour
 
         if (cb != null)    cb();
     }
+
+    public void SetIntensity(float intensity) => myLight.intensity = intensity;
 }

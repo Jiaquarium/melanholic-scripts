@@ -14,27 +14,36 @@ public class Script_SceneManager : MonoBehaviour
     public const string TitleScene = "Title";
     public const string GameScene = "Game";
 
+    [Header("Loading Screen Settings")]
+    
     [Range(0, 1)] [SerializeField] private float loadingProgressBound0 = 0.15f;
     [Range(0, 1)] [SerializeField] private float loadingProgressBound1 = 0.40f;
     [Range(0, 1)] [SerializeField] private float loadingProgressBound2 = 0.65f;
     [SerializeField] private List<GameObject> loadingDuckMasks;
-
     [SerializeField] private float duckMaskRevealTime0;
     [SerializeField] private float duckMaskRevealTime1;
+    
+    [SerializeField] private float pleaseWaitTextWaitTime;
+    [SerializeField] private Script_CanvasGroupController pleaseWaitTextContainer;
 
-    [Header("Loading Screen Settings")]
     [SerializeField] private Script_CanvasGroupController LoadingScreen;
     [SerializeField] private Script_CanvasGroupController ducksCanvasFocused;
     [SerializeField] private Script_CanvasGroupController completeTextCanvasGroup;
     [SerializeField] private Script_CanvasGroupController loadingTextCanvasGroup;
 
     private Coroutine forceDucksActiveCo;
+    private Coroutine pleaseWaitTextCoroutine;
 
+    void OnDisable()
+    {
+        CleanUpLoadingCoroutines();
+    }
+    
     /// <summary>
     /// Singleton needs to be in Awake because there are multiple 
     /// of this, don't want to have to set up by both Start and Game
     /// </summary>
-    public void Awake()
+    void Awake()
     {
         if (SM == null)
         {
@@ -82,6 +91,7 @@ public class Script_SceneManager : MonoBehaviour
         // Note: Must clean this up, in case Game Scene loads before this
         // coroutine can complete.
         SM.forceDucksActiveCo = SM.StartCoroutine(FakeDucksLoading());
+        SM.pleaseWaitTextCoroutine = SM.StartCoroutine(PleaseWaitText());
         SM.StartCoroutine(LoadingScreenToGameAsync(GameScene));
 
         /// <summary>
@@ -97,6 +107,13 @@ public class Script_SceneManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(SM.duckMaskRevealTime1);
 
             SM.loadingDuckMasks[1].SetActive(true);
+        }
+
+        IEnumerator PleaseWaitText()
+        {
+            yield return new WaitForSecondsRealtime(SM.pleaseWaitTextWaitTime);
+
+            SM.pleaseWaitTextContainer.Open();
         }
     }
 
@@ -168,11 +185,20 @@ public class Script_SceneManager : MonoBehaviour
             StopCoroutine(SM.forceDucksActiveCo);
             SM.forceDucksActiveCo = null;
         }
+
+        if (pleaseWaitTextCoroutine != null)
+        {
+            Dev_Logger.Debug("Cleaned up pleaseWaitTextCoroutine");
+
+            StopCoroutine(SM.pleaseWaitTextCoroutine);
+            SM.pleaseWaitTextCoroutine = null;
+        }
     }
 
     public void InitialState()
     {
         loadingDuckMasks.ForEach(mask => mask.SetActive(false));
+        pleaseWaitTextContainer.Close();
         LoadingScreen.Close();
         ducksCanvasFocused.Close();
         completeTextCanvasGroup.Close();

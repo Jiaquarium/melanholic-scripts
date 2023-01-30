@@ -54,6 +54,16 @@ public class Script_PaintingEntranceManager : MonoBehaviour
     }
 
     // ------------------------------------------------------------------
+    // Unity Events
+
+    // On Choice Cancel (Id: 1)
+    public void PlayPaintingEntranceCancel()
+    {
+        Script_SFXManager.SFX.PlayPaintingEntranceCancel();
+    }
+    
+    
+    // ------------------------------------------------------------------
 
     private void EndPrompt()
     {

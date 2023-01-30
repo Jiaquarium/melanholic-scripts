@@ -20,6 +20,7 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
     public Transform[] textParents;
 
     private bool didMapNotification;
+    private bool didMapNotificationDoneEvent;
     
     protected override void OnEnable()
     {
@@ -27,6 +28,8 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
         
         Script_GameEventsManager.OnLevelInitComplete    += OnLevelInitCompleteEvent;
         Script_GameEventsManager.OnLevelBlackScreenDone += OnLevelBlackScreenDone;
+
+        Script_TransitionsEventsManager.OnMapNotificationDefaultDone += HandleEntranceDialogue;
     }
 
     protected override void OnDisable()
@@ -35,6 +38,8 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
         
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
         Script_GameEventsManager.OnLevelBlackScreenDone -= OnLevelBlackScreenDone;
+
+        Script_TransitionsEventsManager.OnMapNotificationDefaultDone -= HandleEntranceDialogue;
     }
 
     // ------------------------------------------------------------------
@@ -58,12 +63,16 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
     
     private void OnLevelInitCompleteEvent()
     {
-        HandleEntranceDialogue(onEntranceDialogue);
+        // Also handles case where map notification finishes up before level init event (not possible currently)
+        if (!didOnEntranceDialogue && !didMapNotificationDoneEvent)
+            game.ChangeStateCutScene();
     }
 
     /// TBD: Need to standardize this wait time after Map Notification
-    private void HandleEntranceDialogue(Script_DialogueNode dialogueNode)
+    private void HandleEntranceDialogue()
     {
+        didMapNotificationDoneEvent = true;
+        
         if (didOnEntranceDialogue)
             return;
         
@@ -77,7 +86,7 @@ public class Script_LevelBehavior_5 : Script_LevelBehavior
         {
             yield return new WaitForSeconds(beforeInternalThoughtWaitTime);
 
-            Script_DialogueManager.DialogueManager.StartDialogueNode(dialogueNode);
+            Script_DialogueManager.DialogueManager.StartDialogueNode(onEntranceDialogue);
         }
     }
     

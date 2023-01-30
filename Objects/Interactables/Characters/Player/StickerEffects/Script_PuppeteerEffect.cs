@@ -113,6 +113,9 @@ public class Script_PuppeteerEffect : Script_StickerEffect
         {
             yield return new WaitForSeconds(StopEffectHoldAnimationWaitTime);
 
+            // Wait 1 more frame, since Puppet waits for next frame also after its signal to switch.
+            yield return null;
+
             SetToInteract();
         }
     }

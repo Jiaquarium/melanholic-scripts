@@ -19,4 +19,12 @@ public class Script_TransitionsEventsManager : MonoBehaviour
         if (OnMapNotificationTeletypeDone != null)
             OnMapNotificationTeletypeDone(isWorldPaintingIntro); 
     }
+
+    public delegate void MapNotificationDefaultDoneDelegate();
+    public static event MapNotificationDefaultDoneDelegate OnMapNotificationDefaultDone;
+    public static void MapNotificationDefaultDone()
+    {
+        if (OnMapNotificationDefaultDone != null)
+            OnMapNotificationDefaultDone(); 
+    }
 }

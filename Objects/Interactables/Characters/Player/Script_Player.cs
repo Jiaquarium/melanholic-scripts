@@ -50,6 +50,11 @@ public class Script_Player : Script_Character
 
     [SerializeField] private PlayerInput playerInput;
 
+    [Space][Header("Animator Controllers")][Space]
+
+    [SerializeField] private Script_PsychicDuckEffect psychicDuckEffect;
+    [SerializeField] private RuntimeAnimatorController cachedAnimatorController;
+
     protected Script_Game game;
     
     private Script_PlayerReflection reflection;
@@ -558,6 +563,30 @@ public class Script_Player : Script_Character
         playerMovementHandler.SyncAnimatorState(animatorStateInfo);
     }
 
+    public void SetAnimatorControllerPsychicDuck(bool isActive, bool isSFX = false)
+    {
+        if (isActive)
+        {
+            AnimatorStateInfo animatorStateInfo = MyAnimator.GetCurrentAnimatorStateInfo(Script_PlayerMovement.Layer);
+            cachedAnimatorController = MyAnimator.runtimeAnimatorController;
+            MyAnimator.runtimeAnimatorController = psychicDuckEffect.StickerAnimatorController;
+            
+            SyncAnimatorState(animatorStateInfo);
+            MyAnimator.AnimatorSetDirection(FacingDirection);
+        }
+        else
+        {
+            AnimatorStateInfo animatorStateInfo = MyAnimator.GetCurrentAnimatorStateInfo(Script_PlayerMovement.Layer);
+            MyAnimator.runtimeAnimatorController = cachedAnimatorController;
+            
+            SyncAnimatorState(animatorStateInfo);
+            MyAnimator.AnimatorSetDirection(FacingDirection);
+        }
+
+        if (isSFX)
+            SwitchMaskSFX();
+    }
+
     // ------------------------------------------------------------------
     // Interactions
 
@@ -609,6 +638,8 @@ public class Script_Player : Script_Character
     {
         playerEffect.DropSFX();
     }
+
+    public void SwitchMaskSFX() => playerActionHandler.SwitchMaskSFX();
 
     public void Teleport(Vector3 newLocation)
     {
@@ -758,6 +789,11 @@ public class Script_PlayerTester : Editor
         if (GUILayout.Button("Set Emphasize Walk: False"))
         {
             player.IsEmphasizeWalk = false;
+        }
+
+        if (GUILayout.Button("Default Sticker State"))
+        {
+            player.DefaultStickerState();
         }
     }
 }

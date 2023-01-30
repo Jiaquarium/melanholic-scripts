@@ -140,6 +140,7 @@ public class Script_MapNotificationsManager : MonoBehaviour
                     Dev_Logger.Debug($"{name} Setting to initial state");
 
                     InitialState();
+                    Script_TransitionsEventsManager.MapNotificationDefaultDone();
                     
                     if (onCloseAction != null)
                     {
