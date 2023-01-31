@@ -12,7 +12,6 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private FadeSpeeds musicFadeSpeed;
     
     // Note: For prompt to work properly, MUST include an empty dialogue node in dialogueNodes,
     // so we can properly reset isPromptDialogueDone at the end of dialogue.
@@ -24,6 +23,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     private Script_FullArt activeFullArt;
     private Coroutine musicFadeCoroutine;
     private bool isPromptDialogueDone;
+    private bool didPauseBgm;
 
     protected UnityEvent PreFullArtAction
     {
@@ -171,28 +171,37 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         void HandleMusicFadeIn()
         {
             // fade out bg volume, pause any bg songs, play my bgThemePlayer and set volume
-            if (musicFadeCoroutine != null)
-            {
-                StopCoroutine(musicFadeCoroutine);
-                musicFadeCoroutine = null;
-            }
+            StopMyCoroutines();
             musicFadeCoroutine = StartCoroutine(
                 Script_AudioMixerFader.Fade(
                     audioMixer,
                     Const_AudioMixerParams.ExposedBGVolume,
-                    Script_AudioEffectsManager.GetFadeTime(musicFadeSpeed),
+                    Script_AudioEffectsManager.GetFadeTime(fadeInSpeed),
                     0f,
                     () => {
-                        Script_Game.Game.PauseBgMusic();
+                        var bgm = Script_BackgroundMusicManager.Control;
+                        
+                        if (bgm.IsPlaying)
+                        {
+                            bgm.Pause();
+                            didPauseBgm = true;
+                        }
+                        
                         Script_Game.Game.PauseNPCBgTheme();
                         
-                        PlayBgThemePlayer();
+                        PlayBgThemePlayerUntracked();
                         Script_AudioMixerVolume.SetVolume(
                             audioMixer, Const_AudioMixerParams.ExposedBGVolume, 1f
                         );
                     }
                 )
             );
+        }
+
+        void PlayBgThemePlayerUntracked()
+        {
+            bgThemePlayer.isUntrackedSource = true;
+            bgThemePlayer.gameObject.SetActive(true);
         }
     }
 
@@ -248,30 +257,31 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
             InitializeState();
         });
 
-        if (bgThemePlayer != null && audioMixer != null)    HandleMusicFadeOut();
+        if (bgThemePlayer != null && audioMixer != null)
+            HandleMusicFadeOut();
 
         void HandleMusicFadeOut()
         {
-            if (musicFadeCoroutine != null)
-            {
-                StopCoroutine(musicFadeCoroutine);
-                musicFadeCoroutine = null;
-            }
+            StopMyCoroutines();
             
             // fade out my bgThemePlayer, stop it and set master vol, unpause songs
             musicFadeCoroutine = StartCoroutine(
                 Script_AudioMixerFader.Fade(
                     audioMixer,
                     Const_AudioMixerParams.ExposedBGVolume,
-                    Script_AudioEffectsManager.GetFadeTime(musicFadeSpeed),
+                    Script_AudioEffectsManager.GetFadeTime(fadeOutSpeed),
                     0f,
                     () => {
                         StopBgThemePlayer();
                         
                         // Unpause whatever was playing before
-                        if (game.UnPauseNPCBgTheme() == null)
+                        game.UnPauseNPCBgTheme();
+                        
+                        if (didPauseBgm)
                         {
+                            Dev_Logger.Debug($"{name} Unpause bgm");
                             game.UnPauseBgMusic();
+                            didPauseBgm = false;
                         }
                         
                         Script_AudioMixerVolume.SetVolume(
@@ -283,11 +293,6 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         }
     }
 
-    private void PlayBgThemePlayer()
-    {
-        bgThemePlayer.isUntrackedSource = true;
-        bgThemePlayer.gameObject.SetActive(true);
-    }
 
     private void StopBgThemePlayer()
     {
@@ -300,9 +305,20 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         if (PreFullArtAction.CheckUnityEventAction()) PreFullArtAction.Invoke();
     }
 
+    private void StopMyCoroutines()
+    {
+        if (musicFadeCoroutine != null)
+        {
+            StopCoroutine(musicFadeCoroutine);
+            musicFadeCoroutine = null;
+        }
+    }
+
     public override void InitializeState()
     {
         activeFullArt = fullArt;
         base.InitializeState();
+
+        didPauseBgm = false;
     }
 }

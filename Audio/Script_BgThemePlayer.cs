@@ -17,6 +17,7 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_BgThemePlayer : Script_Speaker
 {
+    [Tooltip("Note: this will NOT affect adding this speaker to AudioConfiguration")]
     public bool isUntrackedSource = false;
     
     [Range(0f, 1f)]
@@ -32,26 +33,21 @@ public class Script_BgThemePlayer : Script_Speaker
 
     private Coroutine currentFadeCoroutine;    
     private Coroutine currentWaiToPlayCoroutine;
-
-    public bool IsPlaying
-    {
-        get => Source.isPlaying;
-    }
     
     protected override void OnEnable()
     {
         base.OnEnable();
-        
-        if (isUntrackedSource)
-            return;
-        
-        Script_Game.Game.npcBgThemePlayer = this;
 
         if (isFadeInOnEnable)
         {
             Source.playOnAwake = false;
             Source.volume = 0f;
             FadeInPlay();
+        }
+
+        if (!isUntrackedSource)
+        {
+            Script_Game.Game.npcBgThemePlayer = this;
         }
     }
 
@@ -175,6 +171,16 @@ public class Script_BgThemePlayerTester : Editor
         if (GUILayout.Button("Stop Fade Out"))
         {
             t.FadeOutStop();
+        }
+
+        if (GUILayout.Button("Pause"))
+        {
+            t.Pause();
+        }
+        
+        if (GUILayout.Button("Print IsPlaying"))
+        {
+            Dev_Logger.Debug($"IsPlaying {t.IsPlaying}");
         }
     }
 }

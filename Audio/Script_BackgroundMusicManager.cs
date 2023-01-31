@@ -138,7 +138,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     /// Fade out music when going to a different Bgm index level (or when new index is -1).
     /// </summary>
     /// <param name="levelToGo">The new upcoming level exiting to</param>
-    public void HandleStopLevelBgmFade(int levelToGo)
+    public void HandleStopLevelBgmFade(int levelToGo, bool isFadeBGMUI = false)
     {
         Dev_Logger.Debug("Handle Fade Out BGM");
 
@@ -148,7 +148,12 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         if (game.BgmIndex == newBgmIndex)
             return;
         else
+        {
             FadeOut(null, exitsManager.DefaultLevelFadeOutTime, Const_AudioMixerParams.ExposedBGVolume);
+            
+            if (isFadeBGMUI)
+                FadeOutExtra(null, exitsManager.DefaultLevelFadeOutTime, Const_AudioMixerParams.ExposedBGMUIVolume);
+        }
     }
 
     public void HandleStopLevelBgmNoFade(int levelToGo)

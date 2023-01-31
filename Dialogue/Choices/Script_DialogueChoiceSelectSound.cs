@@ -9,6 +9,8 @@ using UnityEngine.EventSystems;
 public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
 {
     public Script_InventoryAudioSettings settings;
+    [SerializeField] private AudioSource audioSourceOverride;
+    
     private AudioSource source;
     
     void OnEnable()
@@ -18,7 +20,10 @@ public class Script_DialogueChoiceSelectSound : MonoBehaviour, ISelectHandler, I
     
     void Awake()
     {
-        source = settings.selectAudioSource;
+        if (audioSourceOverride != null)
+            source = audioSourceOverride;
+        else
+            source = settings.selectAudioSource;
     }
     
     public void OnSubmit(BaseEventData e)

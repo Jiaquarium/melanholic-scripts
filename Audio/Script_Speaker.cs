@@ -11,6 +11,7 @@ public class Script_Speaker : MonoBehaviour
     /// Used to track the play state, so we can restart the Speaker on device output changes.
     /// </summary>
     public bool IsPlayingThisFrame { get; set; }
+    public bool IsPlaying => Source.isPlaying;
 
     public AudioSource Source
     {

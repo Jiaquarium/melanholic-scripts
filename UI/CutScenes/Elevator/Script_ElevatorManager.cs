@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 
 public class Script_ElevatorManager : MonoBehaviour
 {
@@ -32,11 +34,16 @@ public class Script_ElevatorManager : MonoBehaviour
 
     [SerializeField] private bool isBgmOn = true;
 
-    [Header("Last Elevator Effect")]
+    [Space][Header("Last Elevator Effect")][Space]
+    [SerializeField] private float bgmFadeOutTime;
+    [SerializeField] private Script_BgThemePlayer droneLoudBgPlayer;
+    [SerializeField] private float droneLoudFadeOutTime;
     [SerializeField] private float waitBeforeSaveDialogueTime;
     [SerializeField] private Script_ExitMetadataObject lobbySpawn;
     [SerializeField] private int bayV1BgmIdx;
     [SerializeField] private float bgmFadeInTime;
+    [SerializeField] private EventSystem lastElevatorEffectChoicesEventSystem;
+    [SerializeField] private AudioSource interactionUISource;
 
     public bool IsBgmOn
     {
@@ -89,6 +96,34 @@ public class Script_ElevatorManager : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Timeline Signals
+    
+    // Start of LastElevatorEffectTimeline
+    public void OnLastElevatorEffectStart()
+    {
+        // Don't stop current coroutines. This will allow a chance for leftover bgm coroutines
+        // to finish up, which will still work since we modify a parent mixer, and don't pause anything.
+        bgm.FadeOutExtra(
+            () => {
+                droneLoudBgPlayer.gameObject.SetActive(true);
+            },
+            bgmFadeOutTime,
+            outputMixer: Const_AudioMixerParams.ExposedMusicVolume
+        );
+        bgm.FadeOutExtra(null, bgmFadeOutTime, Const_AudioMixerParams.ExposedSFXVolume);
+    }
+
+    // Start of LastElevatorEffectTimeline_No
+    public void OnLastElevatorNo()
+    {
+        droneLoudBgPlayer.FadeOutStop(null, droneLoudFadeOutTime);
+    }
+
+    // LastElevatorEffectTimeline_No: LastElevatorNoFadeInBgm
+    public void LastElevatorNoFadeInBgm()
+    {
+        bgm.FadeIn(null, bgmFadeInTime, Const_AudioMixerParams.ExposedMusicVolume);
+        bgm.FadeInExtra(null, bgmFadeInTime, Const_AudioMixerParams.ExposedSFXVolume);
+    }
     
     /// <summary>
     /// Called when elevator UI canvas done closing
@@ -196,7 +231,7 @@ public class Script_ElevatorManager : MonoBehaviour
     // Note: Do not do at beginning of timeline because bgm still needs time to fade out
     public void OnEffectYesFadeInBgm()
     {
-        bgm.PlayFadeIn(bayV1BgmIdx, fadeTime: bgmFadeInTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        
     }
 
     public void OnEffectYesTimelineDone()
@@ -242,12 +277,15 @@ public class Script_ElevatorManager : MonoBehaviour
         }
     }
     
-    // LastElevatorPrompt UI Yes
+    // LastElevatorPrompt UI Choices: Yes
     public void LastElevatorConfirmedTimeline()
     {
-        var blackFadeInTime = FadeSpeeds.Med.GetFadeTime();
+        lastElevatorEffectChoicesEventSystem.sendNavigationEvents = false;
+
+        var sfx = Script_SFXManager.SFX;
+        interactionUISource.PlayOneShot(sfx.SubmitTransition, sfx.SubmitTransitionVol);
         
-        bgm.FadeOut(null, blackFadeInTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+        var blackFadeInTime = FadeSpeeds.Med.GetFadeTime();
         
         // Fade Screen to Black
         Script_TransitionManager.Control.TimelineFadeIn(blackFadeInTime, () => {
@@ -268,9 +306,14 @@ public class Script_ElevatorManager : MonoBehaviour
         }, isOver: true);
     }
 
-    // LastElevatorPrompt UI No
+    // LastElevatorPrompt UI Choices: No
     public void LastElevatorCanceledTimeline()
     {
+        lastElevatorEffectChoicesEventSystem.sendNavigationEvents = false;
+
+        var sfx = Script_SFXManager.SFX;
+        interactionUISource.PlayOneShot(sfx.SubmitTransitionNegative, sfx.SubmitTransitionNegativeVol);
+        
         Script_TransitionManager.Control.TimelineFadeIn(FadeSpeeds.Med.GetFadeTime(), () => {
             // Remove prompt
             lastElevatorPromptController.Close();
@@ -296,5 +339,7 @@ public class Script_ElevatorManager : MonoBehaviour
         // via Timeline Activation without animating the alpha.
         countdownCanvasGroup.gameObject.SetActive(false);
         lastElevatorMessageCanvasGroup.gameObject.SetActive(false);
+
+        droneLoudBgPlayer.gameObject.SetActive(false);
     }
 }

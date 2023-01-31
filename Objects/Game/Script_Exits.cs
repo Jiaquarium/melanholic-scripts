@@ -164,7 +164,7 @@ public class Script_Exits : MonoBehaviour
             case (FollowUp.SaveAndRestart):
             {
                 Dev_Logger.Debug("SaveAndRestart Exit Follow Up");
-                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo, isFadeBGMUI: true);
                 StartFadeOut();
                 break;
             }
@@ -177,14 +177,14 @@ public class Script_Exits : MonoBehaviour
             case (FollowUp.SaveAndStartWeekendCycle):
             {
                 Dev_Logger.Debug("SaveAndStartWeekendCycle Exit Follow Up");
-                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo, isFadeBGMUI: true);
                 StartFadeOut();
                 break;
             }
             case (FollowUp.SaveAndRestartOnLevel):
             {
                 Dev_Logger.Debug("SaveAndRestartOnLevel Exit Follow Up");
-                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo);
+                Script_BackgroundMusicManager.Control.HandleStopLevelBgmFade(levelToGo, isFadeBGMUI: true);
                 StartFadeOut();
                 break;
             }
