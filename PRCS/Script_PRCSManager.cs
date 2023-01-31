@@ -70,11 +70,17 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_TimelineController awakeningFinalTimelineController;
     [SerializeField] private float waitTimeAfterFaceOffHold;
     [SerializeField] private float waitTimeAfterFaceOff;
-    [SerializeField] private float waitTimeAfterAwakeningFinal;
     
+    [Space][Header("Final Awakening")][Space]
+    [SerializeField] private Script_BgThemePlayer seaFinalAwakeningBgThemePlayer;
+    [SerializeField] private float finalAwakeningBgmFadeInTime;
+    [SerializeField] private float waitTimeAfterAwakeningFinal;
     [SerializeField] private Script_DialogueNode myMaskReceiveNode;
     [SerializeField] private float waitTimeAfterMyMaskReceive;
+    [Tooltip("Note this should be less than waitTimeAfterMyMaskReceive")]
+    [SerializeField] private float finalAwakeningBgmFadeOutTime;
     [SerializeField] private float waitTimeAfterMyMaskTeleport;
+    
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Script_Game game;
@@ -451,6 +457,12 @@ public class Script_PRCSManager : MonoBehaviour
         }
     }
 
+    // Final Awakening Timeline
+    public void FinalAwakeningFadeInBgmPlayer()
+    {
+        seaFinalAwakeningBgThemePlayer.FadeInPlay(null, finalAwakeningBgmFadeInTime);
+    }
+    
     public void OnAwakeningFinalTimelineDone()
     {
         game.ChangeStateCutScene();
@@ -492,6 +504,9 @@ public class Script_PRCSManager : MonoBehaviour
         
         StartCoroutine(WaitToFadeOut());
 
+        // Fade Out Bgm before waiting in black with sheep bleats
+        seaFinalAwakeningBgThemePlayer.FadeOutStop(null, finalAwakeningBgmFadeOutTime);
+
         IEnumerator WaitToFadeOut()
         {
             yield return new WaitForSeconds(waitTimeAfterMyMaskReceive);
@@ -503,6 +518,7 @@ public class Script_PRCSManager : MonoBehaviour
             Script_TransitionManager transitionManager = Script_TransitionManager.Control;
             transitionManager.TimelineBlackScreen();
 
+            // Here will be waiting in black screen while hearing sheep bleats
             yield return new WaitForSeconds(waitTimeAfterMyMaskTeleport);
 
             transitionManager.TimelineFadeOut(
