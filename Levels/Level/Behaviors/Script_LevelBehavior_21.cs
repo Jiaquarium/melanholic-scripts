@@ -61,10 +61,14 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
     private bool isElleniaHurt;
     private bool isTimelineControlled = false;
 
-    // ------------------------------------------------------------------
-    // Dev Only
+    
+    [Space][Header("Dev Only")][Space]
     [SerializeField] private bool isHideSpikes;
     [SerializeField] private List<Script_DemonIntervalAttackController> spikeControllers;
+    [SerializeField] private Script_TimelineController eileenSpikeTimelineController;
+    [SerializeField] private Script_EnergySpike eileenEnergySpike;
+    [SerializeField] private Script_TimelineController eileenHurtSpikeTimelineController;
+    [SerializeField] private Script_EnergySpike eileenHurtEnergySpike;
 
     public bool DidSpeakWithEileenToday
     {
@@ -345,25 +349,75 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
 
         BaseSetup();
     }
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_21))]
-public class Script_LevelBehavior_21Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    [CustomEditor(typeof(Script_LevelBehavior_21))]
+    public class Script_LevelBehavior_21Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_LevelBehavior_21 lb = (Script_LevelBehavior_21)target;
-        if (GUILayout.Button("SetNewElleniaPassword()"))
-        {
-            lb.SetNewElleniaPassword();
-        }
+            Script_LevelBehavior_21 t = (Script_LevelBehavior_21)target;
+            if (GUILayout.Button("SetNewElleniaPassword()"))
+            {
+                t.SetNewElleniaPassword();
+            }
 
-        if (GUILayout.Button("PlayerEntranceFromEileenMind()"))
-        {
-            lb.PlayerEntranceFromEileenMind();
+            if (GUILayout.Button("PlayerEntranceFromEileenMind()"))
+            {
+                t.PlayerEntranceFromEileenMind();
+            }
+
+            if (GUILayout.Button("Pause Eileen Spike Up"))
+            {
+                foreach(var director in t.eileenSpikeTimelineController.playableDirectors)
+                    director.Pause();
+                
+                foreach (var ctrl in t.spikeControllers)
+                    ctrl.IsDisabled = true;
+            }
+
+            if (GUILayout.Button("Unpause Eileen Spike Up"))
+            {
+                foreach(var director in t.eileenSpikeTimelineController.playableDirectors)
+                    director.Play();
+                
+                foreach (var ctrl in t.spikeControllers)
+                    ctrl.IsDisabled = false;
+            }
+
+            if (GUILayout.Button("Move Eileen Spike on Player"))
+            {
+                Vector3 hitPlayerLocation = t.game.GetPlayerLocation();
+                hitPlayerLocation.y = 10f;
+                t.eileenEnergySpike.transform.position = hitPlayerLocation;
+            }
+
+            if (GUILayout.Button("Pause Eileen Spike Up (Hurt)"))
+            {
+                foreach(var director in t.eileenHurtSpikeTimelineController.playableDirectors)
+                    director.Pause();
+                
+                foreach (var ctrl in t.spikeControllers)
+                    ctrl.IsDisabled = true;
+            }
+
+            if (GUILayout.Button("Unpause Eileen Spike Up (Hurt)"))
+            {
+                foreach(var director in t.eileenHurtSpikeTimelineController.playableDirectors)
+                    director.Play();
+                
+                foreach (var ctrl in t.spikeControllers)
+                    ctrl.IsDisabled = false;
+            }
+
+            if (GUILayout.Button("Move Eileen Spike on Player (Eileen R2 Hurt)"))
+            {
+                Vector3 hitPlayerLocation = t.game.GetPlayerLocation();
+                hitPlayerLocation.y = 10f;
+                t.eileenHurtEnergySpike.transform.position = hitPlayerLocation;
+            }
         }
     }
-}
 #endif
+}

@@ -29,6 +29,17 @@ public class Script_AudioConfiguration : MonoBehaviour
         speakers.Remove(speaker);     
     }
 
+    public void PauseAll()
+    {
+        bgm.Pause();
+        
+        foreach (var speaker in speakers)
+        {
+            if (speaker != null)
+                speaker.Pause();
+        }
+    }
+
     /// <summary>
     /// Event handler to rebuild speaker states after AudioSetting.Reset is called automatically by
     /// Unity when Device output changes, will call with deviceWasChanged = false.

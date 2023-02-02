@@ -1053,6 +1053,12 @@ public static class Script_Utils
     public static float ConvertDecibelToFloat(this float dbVol) => Mathf.Pow(10f, (dbVol / 20f));
 
     // -------------------------------------------------------------------------------------
+    // Hitbox Utils
+
+    public static bool IsHitBoxBehaviorStateChanging(this Script_HitBoxBehavior hitBoxBehavior) =>
+        hitBoxBehavior is Script_HitBoxRestartPlayerBehavior;
+
+    // -------------------------------------------------------------------------------------
     // File Path Helpers
     
     /// <summary>

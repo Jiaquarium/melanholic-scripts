@@ -19,7 +19,7 @@ public class Script_CharacterStats : MonoBehaviour
         InitialState();
     }
     
-    public virtual int Hurt(int dmg, Script_HitBox hitBox)
+    public virtual int Hurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
         // reduce dmg by defense
         dmg -= stats.defense.GetVal();
@@ -85,7 +85,7 @@ public class Script_StatsTester : Editor
         }
         if (GUILayout.Button("Hurt(1)"))
         {
-            stats.Hurt(1, null);
+            stats.Hurt(1, null, null);
         }
     }
 }

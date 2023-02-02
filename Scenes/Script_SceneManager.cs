@@ -10,10 +10,18 @@ using UnityEditor;
 #endif
 public class Script_SceneManager : MonoBehaviour
 {
+    public enum MyScenes
+    {
+        Game = 0,
+        Start = 1
+    }
+    
     public static Script_SceneManager SM;
     public const string TitleScene = "Title";
     public const string GameScene = "Game";
 
+    [SerializeField] private MyScenes mySceneBehavior;
+    
     [Header("Loading Screen Settings")]
     
     [Range(0, 1)] [SerializeField] private float loadingProgressBound0 = 0.15f;
@@ -47,10 +55,17 @@ public class Script_SceneManager : MonoBehaviour
     {
         if (SM == null)
         {
-            DontDestroyOnLoad(this.gameObject);
+            if (
+                mySceneBehavior == MyScenes.Start
+                && SceneManager.GetActiveScene().name == TitleScene
+            )
+            {
+                DontDestroyOnLoad(this.gameObject);
+            }
+            
             SM = this;
         }
-        else if (this != SM)    
+        else if (this != SM)
         {
             Destroy(this.gameObject);
         }
@@ -226,6 +241,11 @@ public class Script_SceneManager : MonoBehaviour
             if (GUILayout.Button("Handle Ducks Progress 50%"))
             {
                 t.HandleDuckMasksProgress(.5f);
+            }
+
+            if (GUILayout.Button("Print SM"))
+            {
+                Dev_Logger.Debug($"{Script_SceneManager.SM}");
             }
         }
     }

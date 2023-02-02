@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
 
-[RequireComponent(typeof(Button))]
 public class Script_SelectSound : MonoBehaviour, ISelectHandler, ISubmitHandler
 {
     public Script_InventoryAudioSettings settings;

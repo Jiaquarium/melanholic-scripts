@@ -478,13 +478,13 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         if (Const_Dev.IsTrailerMode)
         {
             if (ice != iceBlockStatsLeft)
-                iceBlockStatsLeft.Hurt(1, null);
+                iceBlockStatsLeft.Hurt(1, null, null);
             
             if (ice != iceBlockStatsMid)
-                iceBlockStatsMid.Hurt(1, null);
+                iceBlockStatsMid.Hurt(1, null, null);
             
             if (ice != iceBlockStatsRight)
-                iceBlockStatsRight.Hurt(1, null);
+                iceBlockStatsRight.Hurt(1, null, null);
         }
 
         // Unpause timeline before framing, since the wait from after framing to shatter

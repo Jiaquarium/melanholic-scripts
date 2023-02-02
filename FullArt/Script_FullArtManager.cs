@@ -46,6 +46,9 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private float bgAlpha;
     [SerializeField] private Transform[] fullArtParentsToSetActive;
     [SerializeField] private Script_CanvasGroupController bgForceBlack;
+
+    private Coroutine fullArtCoroutine;
+    private Coroutine bgCoroutine;
     
     void Awake()
     {
@@ -96,12 +99,12 @@ public class Script_FullArtManager : MonoBehaviour
 
         // fade in
         activeFullArt = fullArt;
-        fullArt.FadeIn(fadeInSpeed, cb);
+        fullArt.FadeIn(out fullArtCoroutine, fadeInSpeed, cb);
         
         // fade in global bg
         Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
         bg.gameObject.SetActive(true);
-        bg.FadeIn(fadeInSpeed, null, bgAlpha);
+        bg.FadeIn(out bgCoroutine, fadeInSpeed, null, bgAlpha);
     }
     
     /// <summary>
@@ -122,8 +125,7 @@ public class Script_FullArtManager : MonoBehaviour
         
         fullArt.FadeOut(fadeOutSpeed, () =>
         {
-            fullArtCanvasGroup.alpha = 0f;
-            fullArtCanvasGroup.gameObject.SetActive(false);
+            CloseCanvasGroup(fullArtCanvasGroup);
             
             if (Script_Game.Game.GetPlayer().State == Const_States_Player.Viewing)
                 Script_Game.Game.GetPlayer().SetIsInteract();
@@ -131,6 +133,25 @@ public class Script_FullArtManager : MonoBehaviour
             activeFullArt = null;
             if (cb != null)     cb();
         });
+    }
+
+    public void CancelToInitialState(Script_FullArt fullArt)
+    {
+        Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
+        StopFullArtCoroutines(fullArt);
+        
+        bg.Initialize();
+        bg.gameObject.SetActive(false);
+
+        fullArt.Close();
+        CloseCanvasGroup(fullArtCanvasGroup);
+        activeFullArt = null;
+
+        void StopFullArtCoroutines(Script_FullArt fullArt)
+        {
+            fullArt.StopMyCoroutineRef(ref fullArtCoroutine);
+            bg.StopMyCoroutineRef(ref bgCoroutine);
+        }
     }
 
     public void TransitionOutFullArt(
@@ -191,6 +212,12 @@ public class Script_FullArtManager : MonoBehaviour
                 fullArtParent.sortingOrder = DefaultSortingOrder;
                 break;
         }
+    }
+
+    private void CloseCanvasGroup(CanvasGroup canvasGroup)
+    {
+        canvasGroup.alpha = 0f;
+        canvasGroup.gameObject.SetActive(false);
     }
     
     public void Setup()

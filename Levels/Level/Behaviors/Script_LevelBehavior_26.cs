@@ -361,6 +361,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             float rawAttackInterval = initialAttackInterval + (attackIntervalDifficultyInterval * spikeRoomTryCounterAutoUpdate);
             float newAttackInterval = Mathf.Min(rawAttackInterval, attackIntervalMax);
             attackController.AttackInterval = newAttackInterval;
+
+            Dev_Logger.Debug($"{name} Setting new newAttackInterval {newAttackInterval}");
         }
     }
     

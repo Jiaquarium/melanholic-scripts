@@ -8,7 +8,7 @@ public class Script_FrozenWellCrackableStats : Script_CrackableStats
 {
     [SerializeField] private List<GameObject> wellObjects;
     
-    public override int Hurt(int dmg, Script_HitBox hitBox)
+    public override int Hurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
         dmg = Mathf.Clamp(dmg, 0, int.MaxValue);
 

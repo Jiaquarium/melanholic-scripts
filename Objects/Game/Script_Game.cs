@@ -97,9 +97,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_TransitionManager transitionManager;
     public Script_EntryManager entryManager;
     public Script_ThoughtManager thoughtManager;
-    public Script_HintManager hintManager;
     public Script_FullArtManager fullArtManager;
-    public Script_CutSceneManager cutSceneManager;
     [SerializeField] private Script_PRCSManager PRCSManager;
     [SerializeField] private Script_ArtFrameManager artFrameManager;
     [SerializeField] private Script_GraphicsManager graphicsManager;
@@ -509,7 +507,6 @@ public class Script_Game : MonoBehaviour
         BGMManager.Setup();
         
         hitBoxDictionary.Setup();
-        hintManager.Setup();
         VCamManager.Setup();
         fullArtManager.Setup();
         PRCSManager.Setup();
@@ -534,7 +531,6 @@ public class Script_Game : MonoBehaviour
         SetupMenu();
 
         transitionManager.Setup();
-        cutSceneManager.Setup();
         canvasGroupsParent.Setup();
         UIAspectRatioEnforcerFrame.Setup();
         elevatorManager.Setup();
@@ -795,7 +791,6 @@ public class Script_Game : MonoBehaviour
 
         SetupDialogueManagerOnLevel();
         SetupThoughtManager();
-        InitializeHintManager();
         transitionManager.InitialStateExcludingLevelFader();
 
         // Level Behavior Setups (must occur last for references to be set)
@@ -1082,7 +1077,7 @@ public class Script_Game : MonoBehaviour
             playerData.isForceSortingLayerAxisZ
         );
 
-        CameraTargetFollower.MatchPlayer();
+        // CameraTargetFollower.MatchPlayer();
 
         Dev_Logger.Debug("---- ---- PLAYER SETUP ON LEVEL EVENT ---- ----");
         Script_GameEventsManager.PlayerSetupOnLevel();   
@@ -1186,9 +1181,9 @@ public class Script_Game : MonoBehaviour
         return GetPlayer().FullHeal();
     }
 
-    public int PlayerHurt(int dmg, Script_HitBox hitBox)
+    public int PlayerHurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
-        return GetPlayer().Hurt(dmg, hitBox);
+        return GetPlayer().Hurt(dmg, hitBox, hitBoxBehavior);
     }
 
     public void HidePlayer()
@@ -1411,21 +1406,6 @@ public class Script_Game : MonoBehaviour
     {
         transitionManager.InitialState();
         PRCSManager.Initialize();
-    }
-    
-    public void ShowHint(string s)
-    {
-        hintManager.ShowTextHint(s);
-    }
-
-    public void HideHint()
-    {
-        hintManager.HideTextHint();
-    }
-
-    public void InitializeHintManager()
-    {
-        hintManager.Initialize();
     }
 
     // separate vs. default level fader
@@ -2047,7 +2027,7 @@ public class Script_Game : MonoBehaviour
         activeVCam.PreviousStateIsValid = false;
 
         // Match the Camera Follower
-        cameraTargetFollower.MatchPlayer();
+        // CameraTargetFollower.MatchPlayer();
         
         return activeVCam;
     }
@@ -2213,10 +2193,6 @@ public class Script_Game : MonoBehaviour
     /* =========================================================================
         _CUTSCENES_
     ========================================================================= */    
-    public void MelanholicTitleCutScene()
-    {
-        cutSceneManager.MelanholicTitleCutScene();
-    }
 
     public void ElevatorCloseDoorsCutScene(
         Script_ExitMetadataObject exit,

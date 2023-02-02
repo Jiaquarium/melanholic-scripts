@@ -62,6 +62,8 @@ public class Script_ClockManager : MonoBehaviour
 
     public float DelayBeforeClockBlinkSunday { get => delayBeforeClockBlinkSunday; }
 
+    public bool IsClockDoneState => clock.State == Script_Clock.States.Done;
+
     void Update()
     {
         if (clock.State == Script_Clock.States.Done)
@@ -125,7 +127,9 @@ public class Script_ClockManager : MonoBehaviour
         clock.FastForwardTime(sec);
         HandleTimebar();
 
-        // Timebar animation to notify of time change
+        // Timebar animation to notify of time change. Force clock up this frame (it will
+        // then fade out if it's not a HUDManager.IsClockShowing state)
+        HUDManager.ForceClockUp();
         timeHUDAnimator.SetTrigger(HurtTrigger);
     }
 

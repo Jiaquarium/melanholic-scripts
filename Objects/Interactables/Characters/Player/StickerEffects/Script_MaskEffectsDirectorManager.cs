@@ -29,6 +29,8 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
     [SerializeField] private Vector3 screenShakeVals;
     [SerializeField] private Script_CameraShake activeZoomCamera;
 
+    private Coroutine extraBG2Coroutine;
+
     public bool IsMyMaskMutationOff
     {
         get => isMyMaskMutationOff;
@@ -75,7 +77,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         var bgm = Script_BackgroundMusicManager.Control;
 
         bgm.FadeOut(null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBGVolume);
-        bgm.FadeOutExtra(null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBG2Volume);
+        bgm.FadeOutExtra(out extraBG2Coroutine, null, myMaskBgmFadeOutTime, Const_AudioMixerParams.ExposedBG2Volume);
     }
 
     public void StartScreenShake()
@@ -97,7 +99,7 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         bgm.Play(bgm.CurrentClipIndex, true, bgm.myMaskDoneSongStartTime);
         
         bgm.FadeIn(null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBGVolume);
-        bgm.FadeInExtra(null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBG2Volume);
+        bgm.FadeInExtra(out extraBG2Coroutine, null, myMaskBgmFadeInTime, Const_AudioMixerParams.ExposedBG2Volume);
     }
 
     public void ForceSheepFaceDirection()

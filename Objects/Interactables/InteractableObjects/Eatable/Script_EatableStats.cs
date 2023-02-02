@@ -11,7 +11,7 @@ public class Script_EatableStats : Script_CharacterStats
     [SerializeField] private int lowHealthThreshold;
     [SerializeField] private SpriteRenderer graphics;
     
-    public override int Hurt(int dmg, Script_HitBox hitBox)
+    public override int Hurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
         dmg = Mathf.Clamp(dmg, 0, int.MaxValue);
 

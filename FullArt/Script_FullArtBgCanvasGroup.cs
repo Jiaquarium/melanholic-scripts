@@ -12,10 +12,15 @@ public class Script_FullArtBgCanvasGroup : MonoBehaviour
         GetComponent<CanvasGroup>().alpha = 0f;
     }
 
-    public void FadeIn(FadeSpeeds fadeSpeed, Action cb, float maxAlpha = 1f)
+    public void FadeIn(
+        out Coroutine coroutine,
+        FadeSpeeds fadeSpeed,
+        Action cb,
+        float maxAlpha = 1f
+    )
     {
         float fadeInTime = Script_Utils.GetFadeTime(fadeSpeed);
-        StartCoroutine(
+        coroutine = StartCoroutine(
             GetComponent<Script_CanvasGroupFadeInOut>()
                 .FadeInCo(fadeInTime, () => 
                 {
@@ -37,5 +42,19 @@ public class Script_FullArtBgCanvasGroup : MonoBehaviour
                 }
             )
         );
+    }
+
+    public void StopMyCoroutineRef(ref Coroutine coroutine)
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+    }
+
+    public void Initialize()
+    {
+        GetComponent<Script_CanvasGroupFadeInOut>().Initialize();   
     }
 }

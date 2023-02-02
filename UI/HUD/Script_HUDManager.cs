@@ -24,6 +24,9 @@ public class Script_HUDManager : MonoBehaviour
 
     [SerializeField] private Canvas timeHUDCanvas;
 
+    [Space][Header("Bad Ending")][Space]
+    [SerializeField] private float badEndingFadeOutTime;
+
     private FadeSpeeds defaultFadeSpeed;
     private int timeHUDdefaultSortingOrder;
 
@@ -91,6 +94,11 @@ public class Script_HUDManager : MonoBehaviour
             && !game.IsHideHUD;
     }
 
+    public void ForceClockUp()
+    {
+        timeCanvasGroup.Open();
+    }
+    
     public void SetFadeSpeedDefault()
     {
         FadeSpeed = defaultFadeSpeed;
@@ -100,6 +108,17 @@ public class Script_HUDManager : MonoBehaviour
     {
         TimeHUDSortingOrder = timeHUDdefaultSortingOrder;
     }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
+    // Bad Ending
+    public void BadEndingFadeOut()
+    {
+        timeCanvasGroup.FadeOut(badEndingFadeOutTime, null, isUnscaledTime: true);
+    }
+
+    // ------------------------------------------------------------------
 
     public void Setup()
     {

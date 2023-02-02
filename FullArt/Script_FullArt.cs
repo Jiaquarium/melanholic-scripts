@@ -60,10 +60,10 @@ public class Script_FullArt : MonoBehaviour
         c.gameObject.SetActive(false);
     }
     
-    public void FadeIn(FadeSpeeds fadeSpeed, Action cb)
+    public void FadeIn(out Coroutine coroutine, FadeSpeeds fadeSpeed, Action cb)
     {
         float fadeInTime = Script_Utils.GetFadeTime(fadeSpeed);
-        StartCoroutine(
+        coroutine = StartCoroutine(
             GetComponent<Script_CanvasGroupFadeInOut>()
                 .FadeInCo(fadeInTime, () =>
                 {
@@ -113,6 +113,15 @@ public class Script_FullArt : MonoBehaviour
         myBgImg.color = new Color(myBgColor.r, myBgColor.g, myBgColor.b, 1f);
         
         myBg.FadeIn(t, isForceMaxAlpha: true, fadeToAlpha: alpha);
+    }
+
+    public void StopMyCoroutineRef(ref Coroutine coroutine)
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
     }
 
     public virtual void Setup()

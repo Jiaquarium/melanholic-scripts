@@ -86,6 +86,7 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_Game game;
 
     private Action onFaceOffTimelineDoneAction;
+    private Coroutine fullArtCoroutine;
 
     public int FaceOffCounter
     {
@@ -124,7 +125,7 @@ public class Script_PRCSManager : MonoBehaviour
 
         PRCS.Setup();
         PRCS.gameObject.SetActive(true);
-        PRCS.FadeIn(fadeInSpeed, cb);
+        PRCS.FadeIn(out fullArtCoroutine, fadeInSpeed, cb);
     }
 
     public void HidePRCS(

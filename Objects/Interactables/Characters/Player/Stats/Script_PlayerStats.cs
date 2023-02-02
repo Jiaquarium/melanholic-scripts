@@ -15,10 +15,13 @@ public class Script_PlayerStats : Script_CharacterStats
     public string defaultHitBoxMessage;
     
     /// TODO: REMOVE ISSWALLEDDEMON, give demons hitboxes and they pass it in
-    public override int Hurt(int sec, Script_HitBox hitBox)
+    public override int Hurt(int sec, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
         if (GetComponent<Script_Player>().isInvincible)
+        {
+            Dev_Logger.Debug($"{name} Player invincible");
             return 0;
+        }
 
         // reduce dmg by defense
         sec -= stats.defense.GetVal();
@@ -31,8 +34,11 @@ public class Script_PlayerStats : Script_CharacterStats
         else
         {
             HandleTakeDamage(sec);
-            Dev_Logger.Debug($"Player {name} took damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime}");
+            Dev_Logger.Debug($"Player {name} took damage {sec} sec. Time: {Script_ClockManager.Control.ClockTime.FormatSecondsHHMMSS()}");
         }
+
+        Dev_Logger.Debug($"{name} Hit Cancel UI event");
+        Script_CombatEventsManager.HitCancelUI(hitBox, hitBoxBehavior);
 
         return sec;
     }
@@ -70,7 +76,7 @@ public class Script_PlayerStatsTester : Editor
         Script_PlayerStats stats = (Script_PlayerStats)target;
         if (GUILayout.Button("Hurt(1)"))
         {
-            stats.Hurt(1, null);
+            stats.Hurt(1, null, null);
         }
 
         if (GUILayout.Button("Heal(1)"))

@@ -50,6 +50,7 @@ public class Script_InventoryManager : MonoBehaviour
     [SerializeField] private Script_ItemChoicesInputManager itemsChoicesInputManager;
     
     [SerializeField] private Script_PersistentDropsContainer persistentDropsContainer;
+    [SerializeField] private Script_Game game;
     
     private Script_StickersInventoryHandler stickersHandler;
     private Script_CollectiblesInventoryHandler collectiblesHandler;
@@ -58,6 +59,16 @@ public class Script_InventoryManager : MonoBehaviour
 
     public static string ImpermanentTag;
 
+    void OnEnable()
+    {
+        Script_CombatEventsManager.OnHitCancelUI += OnHitCancelUI;        
+    }
+
+    void OnDisable()
+    {
+        Script_CombatEventsManager.OnHitCancelUI -= OnHitCancelUI;
+    }
+    
     // ------------------------------------------------------------------
     // Getters
     public Script_Item[] GetStickers()
@@ -478,7 +489,7 @@ public class Script_InventoryManager : MonoBehaviour
     public bool HandleUnequipAll(string[] excludes = null)
     {
         // Unequip currently worn mask.
-        Script_Game.Game.GetPlayer().DefaultStickerState();
+        game.GetPlayer().DefaultStickerState();
         
         bool didRemoveAll = true;
 
@@ -530,10 +541,10 @@ public class Script_InventoryManager : MonoBehaviour
             inventory.RemoveItemInSlot(itemSlotId);
             InstantiateDrop(
                 itemToDrop,
-                Script_Game.Game.GetPlayerLocation(),
-                Script_Game.Game.level
+                game.GetPlayerLocation(),
+                game.level
             );
-            Script_Game.Game.CloseInventory(noSFX: true);
+            game.CloseInventory(noSFX: true);
         }        
         else
         {
@@ -702,6 +713,28 @@ public class Script_InventoryManager : MonoBehaviour
             PopulateItemTags();
         
         return $"{itemName}{ImpermanentTag}";
+    }
+
+    private void OnHitCancelUI(Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
+    {
+        if (game.state == Const_States_Game.Inventory)
+        {
+            if (collectiblesHandler.IsFullArtMode || collectiblesHandler.IsInputDisabled)
+                collectiblesHandler.CancelToInitialState();
+            
+            bool isStateHandled = (hitBoxBehavior != null && hitBoxBehavior.IsHitBoxBehaviorStateChanging())
+                || Script_ClockManager.Control.IsClockDoneState;
+            
+            Dev_Logger.Debug($"{name} OnHitCanceLUI isStateHandled {isStateHandled}");
+            
+            if (!isStateHandled)
+            {
+                Script_MenuEventsManager.ExitSubmenu();
+                Script_MenuEventsManager.ExitMenu();
+                
+                game.ChangeStateInteract();
+            }
+        }
     }
 
     public void Setup()

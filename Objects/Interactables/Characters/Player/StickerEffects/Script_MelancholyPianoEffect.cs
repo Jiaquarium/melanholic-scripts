@@ -30,20 +30,12 @@ public class Script_MelancholyPianoEffect : Script_StickerEffect
         {
             audioSource.PlayOneShot(Script_SFXManager.SFX.piano, Script_SFXManager.SFX.pianoVol);
 
-            StartCoroutine(WaitToReact());
-            
+            Script_PianoManager.Control.DisabledMelancholyPianoReaction(disabledReactionWaitTime);
             return;
         }
 
         // Open Piano UI
         Script_PianoManager.Control.SetPianosCanvasGroupActive(true);
-
-        IEnumerator WaitToReact()
-        {
-            yield return new WaitForSeconds(disabledReactionWaitTime);
-
-            Script_DialogueManager.DialogueManager.DisabledMelancholyPianoReaction();
-        }
     }
 
     protected override void OnEquip()

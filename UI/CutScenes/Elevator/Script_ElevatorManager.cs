@@ -3,7 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.Playables;
+using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+/// <summary>
+/// Note:the flow to end the game with Last Elevator Effect will leave some mixers at 0f volume from exit fade.
+/// Last Elevator Effect will actually fade out "Music" mixer without pausing any speakers, until confirm yes,
+/// where it will Pause every audio except the DroneLoud bgThemePlayer and "Music" and "SFX" will be reset.
+/// </summary>
 public class Script_ElevatorManager : MonoBehaviour
 {
     /// Ensure matches level behavior's Elevator property name
@@ -26,8 +37,6 @@ public class Script_ElevatorManager : MonoBehaviour
 
     [SerializeField] private FadeSpeeds lastElevatorPromptFadeInTime;
     [SerializeField] private float waitToRevealLastElevatorChoicesTime;
-    [SerializeField] private Script_CanvasGroupController lastElevatorPromptController;
-    [SerializeField] private Script_CanvasGroupController lastElevatorPromptChoicesController;
 
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_BackgroundMusicManager bgm;
@@ -35,6 +44,8 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private bool isBgmOn = true;
 
     [Space][Header("Last Elevator Effect")][Space]
+    [SerializeField] private Script_CanvasGroupController lastElevatorPromptController;
+    [SerializeField] private Script_CanvasGroupController lastElevatorPromptChoicesController;
     [SerializeField] private float bgmFadeOutTime;
     [SerializeField] private Script_BgThemePlayer droneLoudBgPlayer;
     [SerializeField] private float droneLoudFadeOutTime;
@@ -44,11 +55,31 @@ public class Script_ElevatorManager : MonoBehaviour
     [SerializeField] private float bgmFadeInTime;
     [SerializeField] private EventSystem lastElevatorEffectChoicesEventSystem;
     [SerializeField] private AudioSource interactionUISource;
+    [SerializeField] private PlayableDirector elevatorCanvasGroupDirector;
+
+    [SerializeField] private Image elevatorLeftImage;
+    [SerializeField] private Image elevatorRightImage;
+    [SerializeField] private Vector3 elevatorLeftDefaultPosition;
+    [SerializeField] private Vector3 elevatorRightDefaultPosition;
+
+    private Coroutine musicCoroutine;
+    private Coroutine fxCoroutine;
+    private bool isElevatorEffect;
 
     public bool IsBgmOn
     {
         get => isBgmOn;
         set => isBgmOn = value;
+    }
+
+    void OnEnable()
+    {
+        Script_CombatEventsManager.OnHitCancelUI += OnHitCancelUI;
+    }
+
+    void OnDisable()
+    {
+        Script_CombatEventsManager.OnHitCancelUI -= OnHitCancelUI;
     }
     
     /// <summary>
@@ -100,16 +131,19 @@ public class Script_ElevatorManager : MonoBehaviour
     // Start of LastElevatorEffectTimeline
     public void OnLastElevatorEffectStart()
     {
+        isElevatorEffect = true;
+        
         // Don't stop current coroutines. This will allow a chance for leftover bgm coroutines
         // to finish up, which will still work since we modify a parent mixer, and don't pause anything.
         bgm.FadeOutExtra(
+            out musicCoroutine,
             () => {
                 droneLoudBgPlayer.gameObject.SetActive(true);
             },
             bgmFadeOutTime,
             outputMixer: Const_AudioMixerParams.ExposedMusicVolume
         );
-        bgm.FadeOutExtra(null, bgmFadeOutTime, Const_AudioMixerParams.ExposedSFXVolume);
+        bgm.FadeOutExtra(out fxCoroutine, null, bgmFadeOutTime, Const_AudioMixerParams.ExposedFXVolume);
     }
 
     // Start of LastElevatorEffectTimeline_No
@@ -121,8 +155,8 @@ public class Script_ElevatorManager : MonoBehaviour
     // LastElevatorEffectTimeline_No: LastElevatorNoFadeInBgm
     public void LastElevatorNoFadeInBgm()
     {
-        bgm.FadeIn(null, bgmFadeInTime, Const_AudioMixerParams.ExposedMusicVolume);
-        bgm.FadeInExtra(null, bgmFadeInTime, Const_AudioMixerParams.ExposedSFXVolume);
+        bgm.FadeInExtra(out musicCoroutine, null, bgmFadeInTime, Const_AudioMixerParams.ExposedMusicVolume);
+        bgm.FadeInExtra(out fxCoroutine, null, bgmFadeInTime, Const_AudioMixerParams.ExposedFXVolume);
     }
     
     /// <summary>
@@ -203,7 +237,6 @@ public class Script_ElevatorManager : MonoBehaviour
             game.ChangeStateInteract();
         }
 
-        
         bgm.FadeInMed(outputMixer: Const_AudioMixerParams.ExposedBGVolume);
         
         // When entering Bay v1 from Last Elevator, the BGM will be paused via Behavior.
@@ -225,13 +258,31 @@ public class Script_ElevatorManager : MonoBehaviour
     // LastElevatorCanvasTimeline_No
     public void OnLastElevatorCanceledTimelineDone()
     {
+        elevatorCanvasGroupController.Close();
         Script_Game.Game.ChangeStateInteract();
+
+        isElevatorEffect = false;
     }
 
-    // Note: Do not do at beginning of timeline because bgm still needs time to fade out
+    // Note: Bgm will be faded out at this point.
     public void OnEffectYesFadeInBgm()
     {
-        
+        try
+        {
+            Dev_Logger.Debug($"{name} Pausing all speakers & bgm except Drone bgThemePlayer");
+
+            // Pause all bgm before resetting volumes
+            var audioConfig = Script_AudioConfiguration.Instance;
+            audioConfig.RemoveSpeaker(droneLoudBgPlayer);
+            Script_AudioConfiguration.Instance.PauseAll();
+            audioConfig.AddSpeaker(droneLoudBgPlayer);
+            
+            Dev_Logger.Debug($"{name} Resetting volume for Music and SFX mixer params");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"{name} Failed timeline Last Elevator Yes signal with: {e}");
+        }
     }
 
     public void OnEffectYesTimelineDone()
@@ -242,6 +293,8 @@ public class Script_ElevatorManager : MonoBehaviour
             exitType = Script_Exits.ExitType.SaveAndStartWeekendCycle;
         
         StartCoroutine(WaitBeforeSave());
+
+        isElevatorEffect = false;
         
         IEnumerator WaitBeforeSave()
         {
@@ -281,6 +334,9 @@ public class Script_ElevatorManager : MonoBehaviour
     public void LastElevatorConfirmedTimeline()
     {
         lastElevatorEffectChoicesEventSystem.sendNavigationEvents = false;
+
+        // Prevent player from being affected by spikes, since this flow should carry player to Day End
+        game.GetPlayer().isInvincible = true;
 
         var sfx = Script_SFXManager.SFX;
         interactionUISource.PlayOneShot(sfx.SubmitTransition, sfx.SubmitTransitionVol);
@@ -329,6 +385,61 @@ public class Script_ElevatorManager : MonoBehaviour
         }, isOver: true);
     }
 
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// Used specifically to cancel the Last Elevator Effect timelines on an interrupting event like hit
+    /// </summary>
+    private void CancelToInitialState(bool isInteractAfter)
+    {
+        // Stop detecting input for choice if it's up
+        if (lastElevatorEffectChoicesEventSystem.gameObject.activeInHierarchy)
+            lastElevatorEffectChoicesEventSystem.sendNavigationEvents = false;
+
+        // Remove choice canvas
+        lastElevatorPromptController.Close();
+        lastElevatorPromptChoicesController.Close();
+
+        // Stop the current timeline
+        if (
+            elevatorCanvasGroupDirector.playableGraph.IsValid()
+            && elevatorCanvasGroupDirector.playableGraph.IsPlaying()
+        )
+            elevatorCanvasGroupDirector.Stop();
+        
+        // Set Elevator Door Images to default positions
+        elevatorLeftImage.rectTransform.anchoredPosition = elevatorLeftDefaultPosition;
+        elevatorRightImage.rectTransform.anchoredPosition = elevatorRightDefaultPosition;
+        
+        // Cancel any of the Audio mixer coroutines
+        bgm.StopExtraCoroutine(ref musicCoroutine);
+        bgm.StopExtraCoroutine(ref fxCoroutine);
+
+        // Reset mixers & drone player
+        bgm.SetVolume(1f, Const_AudioMixerParams.ExposedMusicVolume);
+        bgm.SetVolume(1f, Const_AudioMixerParams.ExposedFXVolume);
+        droneLoudBgPlayer.SoftStop();
+
+        elevatorCanvasGroupController.Close();
+
+        if (isInteractAfter)
+            game.ChangeStateInteract();
+    }
+
+    // Note: this event will not be called on hit when Player is invincible
+    private void OnHitCancelUI(Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
+    {
+        if (isElevatorEffect)
+        {
+            bool isStateHandled = (hitBoxBehavior != null && hitBoxBehavior.IsHitBoxBehaviorStateChanging())
+                || Script_ClockManager.Control.IsClockDoneState;
+            
+            Dev_Logger.Debug($"{name} OnHitCanceLUI isStateHandled {isStateHandled}");
+            
+            CancelToInitialState(!isStateHandled);
+        }
+    }
+
     public void Setup()
     {
         elevatorCanvasGroupController.Close();
@@ -341,5 +452,24 @@ public class Script_ElevatorManager : MonoBehaviour
         lastElevatorMessageCanvasGroup.gameObject.SetActive(false);
 
         droneLoudBgPlayer.gameObject.SetActive(false);
+
+        elevatorLeftDefaultPosition = elevatorLeftImage.rectTransform.anchoredPosition;
+        elevatorRightDefaultPosition = elevatorRightImage.rectTransform.anchoredPosition;
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_ElevatorManager))]
+    public class Script_ElevatorManagerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_ElevatorManager t = (Script_ElevatorManager)target;
+            if (GUILayout.Button("Elevator Effect Initial State"))
+            {
+                t.CancelToInitialState(true);
+            }
+        }
+    }
+#endif
 }

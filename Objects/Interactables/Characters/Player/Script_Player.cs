@@ -457,9 +457,9 @@ public class Script_Player : Script_Character
         return GetComponent<Script_PlayerStats>().FullHeal();
     }
 
-    public int Hurt(int dmg, Script_HitBox hitBox)
+    public int Hurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
-        return GetComponent<Script_PlayerStats>().Hurt(dmg, hitBox);
+        return GetComponent<Script_PlayerStats>().Hurt(dmg, hitBox, hitBoxBehavior);
     }
     
     // ------------------------------------------------------------------

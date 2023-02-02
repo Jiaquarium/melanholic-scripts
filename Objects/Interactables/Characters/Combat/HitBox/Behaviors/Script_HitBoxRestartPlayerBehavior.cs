@@ -21,22 +21,25 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
             if (Const_Dev.IsDevMode && Debug.isDebugBuild)
                 return;
 
+            var game = Script_Game.Game;
+            
             // Ignore this behavior if the hit caused Time to run out.
             if (
                 Script_ClockManager.Control.ClockState == Script_Clock.States.Done
                 || Script_ClockManager.Control.TimeLeft == 0
+                || game.GetPlayer().isInvincible
             )
             {
                 return;
             }
             
-            Script_Game.Game.ChangeStateCutScene();
+            game.ChangeStateCutScene();
             Script_HUDManager.Control.IsForceUp = true;
             
             // Force Time HUD to appear above fader
             Script_HUDManager.Control.TimeHUDSortingOrder = ExitFaderSortingOrder + 1;
             
-            StartCoroutine(Script_Game.Game.TransitionFadeIn(
+            StartCoroutine(game.TransitionFadeIn(
                 Script_TransitionManager.RestartPlayerFadeInTime, () =>
                 {
                     Script_Player p = col.transform.parent.GetComponent<Script_Player>();
@@ -48,27 +51,25 @@ public class Script_HitBoxRestartPlayerBehavior : Script_HitBoxBehavior
 
                     Script_HurtBoxEventsManager.PlayerRestartTeleport(col);
                     
-                    Script_Game.Game.SnapActiveCam(prevPlayerPos);
+                    game.SnapActiveCam(prevPlayerPos);
                     FadeOut();
                 }
             ));
-        }
+            
+            void FadeOut()
+            {
+                StartCoroutine(game.TransitionFadeOut(
+                    Script_TransitionManager.RestartPlayerFadeOutTime, () =>
+                    {
+                        game.ChangeStateInteract();
 
-        void FadeOut()
-        {
-            StartCoroutine(Script_Game.Game.TransitionFadeOut(
-                Script_TransitionManager.RestartPlayerFadeOutTime, () =>
-                {
-                    Script_Game.Game.ChangeStateInteract();
+                        Script_HUDManager.Control.IsForceUp = false;
+                        Script_HUDManager.Control.SetTimeHUDSortingOrderDefault();
 
-                    Script_HUDManager.Control.IsForceUp = false;
-                    Script_HUDManager.Control.SetTimeHUDSortingOrderDefault();
-
-                    Script_HurtBoxEventsManager.PlayerRestart(col);
-                }
-            ));
+                        Script_HurtBoxEventsManager.PlayerRestart(col);
+                    }
+                ));
+            }
         }
     }
-
-
 }

@@ -62,6 +62,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     
     [SerializeField] private Script_StickerObject AnimalWithinSticker;
     [SerializeField] private Script_DialogueNode onItemDescriptionDoneNode;
+    [SerializeField] private float waitAfterItemDescriptionDoneTime;
     [SerializeField] private Transform textParent;
     [SerializeField] private Transform fullArtParent;
     
@@ -118,6 +119,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
     
+    private bool isElleniaTourWalkRight;
     private bool isElleniaHurtToday;
     private bool isElleniaHurtCutSceneActivated;
     private bool isCheckingPsychicDuckElleniaHurtCutScene;
@@ -203,7 +205,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     public void OnElleniaPlayableDone(PlayableDirector aDirector)
     {
         // walked to first painting
-        if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[0])
+        if (
+            aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[0]
+            || aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[10]
+        )
         {
             Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[0], false);
         }
@@ -223,7 +228,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             Script_DialogueManager.DialogueManager.StartDialogueNode(cutSceneNodes[3], false);
         }
         // return to easle
-        else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[4])
+        else if (
+            aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[4]
+            || aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[12]
+        )
         {
             OnReturnedToEasle();
         }
@@ -266,7 +274,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             );
         }
         // Ellenia walked to the Exit and will brag to Player to look at her painting.
-        else if (aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[6])
+        else if (
+            aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[6]
+            || aDirector.playableAsset == GetComponent<Script_TimelineController>().timelines[11]
+        )
         {
             Script_DialogueManager.DialogueManager.StartDialogueNode(beforeExitNode, SFXOn: true);    
         }
@@ -629,7 +640,14 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         // Jittery camera movement if Update Blend Method is left on Fixed.
         VCamManager.SetCinemachineBlendUpdateMethod(CinemachineBrain.BrainUpdateMethod.LateUpdate);
 
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+        // If Player is blocking Ellenia (standing Up from her), she'll walk right first.
+        if (GetElleniaToPlayerDirection() == Directions.Up)
+        {
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 10);
+            isElleniaTourWalkRight = true;
+        }
+        else
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
     }
     
     public void ElleniaFacesPainting()
@@ -662,7 +680,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     public void ElleniaWalksBackToEasleCutScene()
     {
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
+        if (isElleniaTourWalkRight)
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 12);
+        else
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
     }
 
     public void IntroDoneWrong()
@@ -739,7 +760,14 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     public void OnAnimalWitinDescriptionDone()
     {
-        Script_DialogueManager.DialogueManager.StartDialogueNode(onItemDescriptionDoneNode, false);
+        StartCoroutine(WaitToContinueDialogue());
+
+        IEnumerator WaitToContinueDialogue()
+        {
+            yield return new WaitForSeconds(waitAfterItemDescriptionDoneTime);
+
+            Script_DialogueManager.DialogueManager.StartDialogueNode(onItemDescriptionDoneNode, false);
+        }
     }
 
     public void CorrectDone()
@@ -748,8 +776,11 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
         spokenWithEllenia = true;
         
-        // Ellenia walks to the Exit
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
+        // Ellenia walks to the Exit. If player standing to Right, Ellenia should walk down first.
+        if (GetElleniaToPlayerDirection() == Directions.Right)
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 11);
+        else
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
     }
 
     public void ElleniaExit()
@@ -941,6 +972,16 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
 
     // ----------------------------------------------------------------------
     
+    private Directions GetElleniaToPlayerDirection(bool isCursedR2Ellenia = false)
+    {
+        Vector3 ElleniaPosition = isCursedR2Ellenia 
+            ? ElleniaHurt.transform.position
+            : Ellenia.transform.position;
+        Vector3 playerPosition = game.GetPlayer().transform.position;
+
+        return ElleniaPosition.GetDirectionToTarget(playerPosition);
+    }
+    
     public override void Setup()
     {
         // Ellenia should always be there on new runs. We'll save states to skip Ellenia's intro
@@ -1046,6 +1087,11 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             if (GUILayout.Button("Ellenia Tour"))
             {
                 lb.ElleniaWalksToPaintingsCutScene();
+            }
+
+            if (GUILayout.Button("Print Direction (Ellenia to Player)"))
+            {
+                Dev_Logger.Debug($"{lb.GetElleniaToPlayerDirection()}");
             }
 
             GUILayout.Space(12);

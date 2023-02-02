@@ -72,7 +72,7 @@ public class Script_CrackableStats : Script_CharacterStats
         }
     }
     
-    public override int Hurt(int dmg, Script_HitBox hitBox)
+    public override int Hurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
         dmg = Mathf.Clamp(dmg, 0, int.MaxValue);
 

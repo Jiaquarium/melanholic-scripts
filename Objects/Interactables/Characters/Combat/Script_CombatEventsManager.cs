@@ -24,4 +24,12 @@ public class Script_CombatEventsManager : MonoBehaviour
     {
         CombinedSpikeAttackEnd();
     }
+
+    public delegate void OnHitCancelUIDelegate(Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior);
+    public static event OnHitCancelUIDelegate OnHitCancelUI;
+    public static void HitCancelUI(Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
+    {
+        if (OnHitCancelUI != null)
+            OnHitCancelUI(hitBox, hitBoxBehavior);
+    }    
 }

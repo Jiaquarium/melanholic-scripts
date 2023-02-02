@@ -22,7 +22,7 @@ using UnityEngine.Events;
 /// </summary>
 public class Script_DialogueManager : MonoBehaviour
 {
-    public const float charTypeTime = 0.01111111f; // 90fps
+    public const float charTypeTime = 0.01f; // <100fps
     public const float pauseLength = 0.475f;
     public const char DefaultDemonNPCChar = '�';
     public const float autoNextWaitTime = 0.05f;
@@ -145,10 +145,6 @@ public class Script_DialogueManager : MonoBehaviour
     [SerializeField] private bool shouldCantUnderstandReaction;
     private bool didCantUnderstandReactionDone;
     
-    // ------------------------------------------------------------------
-    // Sticker Reactions
-    [SerializeField] private Script_DialogueNode disabledMelancholyPianoReactionNode;
-
     private States State
     {
         get => state;
@@ -178,10 +174,6 @@ public class Script_DialogueManager : MonoBehaviour
     
     // ------------------------------------------------------------------
     // Player Dialogue Reactions
-    public void DisabledMelancholyPianoReaction()
-    {
-        StartDialogueNode(disabledMelancholyPianoReactionNode, SFXOn: false);   
-    }
     
     // If another cut scene or dialogue is planned after, skip this interaction.
     private IEnumerator WaitToTryCantUnderstandDialogue(Script_DialogueNode prevNode)

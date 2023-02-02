@@ -30,6 +30,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     private int currentClipIndex = -1;
     private Coroutine currentFadeCoroutine;
     private Coroutine currentWaiToPlayCoroutine;
+    private Coroutine currentExtraCoroutine;
 
     public AudioSource Source => GetComponent<AudioSource>();
     
@@ -140,7 +141,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     /// <param name="levelToGo">The new upcoming level exiting to</param>
     public void HandleStopLevelBgmFade(int levelToGo, bool isFadeBGMUI = false)
     {
-        Dev_Logger.Debug("Handle Fade Out BGM");
+        Dev_Logger.Debug("Handle Fade Out BGM on exit followup");
 
         int newBgmIndex = game.GetLevelBgmIndex(levelToGo);
         
@@ -152,7 +153,15 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             FadeOut(null, exitsManager.DefaultLevelFadeOutTime, Const_AudioMixerParams.ExposedBGVolume);
             
             if (isFadeBGMUI)
-                FadeOutExtra(null, exitsManager.DefaultLevelFadeOutTime, Const_AudioMixerParams.ExposedBGMUIVolume);
+            {
+                Dev_Logger.Debug($"{name} Handle Fade Out ExposedBGMUIVolume on exit followup");
+                FadeOutExtra(
+                    out currentExtraCoroutine,
+                    null,
+                    exitsManager.DefaultLevelFadeOutTime,
+                    Const_AudioMixerParams.ExposedBGMUIVolume
+                );
+            }
         }
     }
 
@@ -351,13 +360,14 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     // Identical as above, but you must keep track of coroutines
     public void FadeOutExtra(
+        out Coroutine coroutine,
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
         float targetVolume = 0f
     )
     {
-        StartCoroutine(
+        coroutine = StartCoroutine(
             Script_AudioMixerFader.Fade(
                 audioMixer,
                 outputMixer,
@@ -372,13 +382,14 @@ public class Script_BackgroundMusicManager : MonoBehaviour
 
     // Identical as above, but you must keep track of coroutines
     public void FadeInExtra(
+        out Coroutine coroutine,
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
         float targetVolume = 1f
     )
     {
-        StartCoroutine(
+        coroutine = StartCoroutine(
             Script_AudioMixerFader.Fade(
                 audioMixer,
                 outputMixer,
@@ -389,6 +400,15 @@ public class Script_BackgroundMusicManager : MonoBehaviour
                 }
             )
         );
+    }
+
+    public void StopExtraCoroutine(ref Coroutine coroutine)
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
     }
 
     public void FadeOutXFast(Action cb = null, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
@@ -491,6 +511,19 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Play(26, forcePlay: true);
     }
 
+    public void InitialState()
+    {
+        Dev_Logger.Debug($"{name} initing Audio Mixer volumes");
+        
+        // Note: do not set ExposedBGVolume since it will be handled by default level fade in behavior and/or LB32. 
+        SetVolume(1f, Const_AudioMixerParams.ExposedGameVolume);
+        SetVolume(1f, Const_AudioMixerParams.ExposedMusicVolume);
+        SetVolume(1f, Const_AudioMixerParams.ExposedBG2Volume);
+        SetVolume(1f, Const_AudioMixerParams.ExposedSFXVolume);
+        SetVolume(1f, Const_AudioMixerParams.ExposedInteractionUIVolume);
+        SetVolume(1f, Const_AudioMixerParams.ExposedBGMUIVolume);
+    }
+
     public void Setup()
     {
         if (Control == null)
@@ -501,6 +534,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        InitialState();
     }
 }
 

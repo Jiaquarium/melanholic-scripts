@@ -84,7 +84,7 @@ public class Script_AlternatingSpikesAttack : Script_EnergySpikeAttack
             Dev_Logger.Debug($"CollisionedWith with {hurtBox} inflicting dmg: {dmg}");
             
             /// Only hit if did damage
-            if (hurtBox.Hurt(dmg, hitBox) > 0)
+            if (hurtBox.Hurt(dmg, hitBox, hitBoxBehavior) > 0)
             {
                 HitSFX();
                 didHit = true;

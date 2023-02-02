@@ -13,9 +13,9 @@ public class Script_HurtBox : MonoBehaviour
     
     [SerializeField] private ColliderState state = ColliderState.Open;
 
-    public int Hurt(int dmg, Script_HitBox hitBox)
+    public int Hurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
-        int dmgActuallyTaken = stats.Hurt(dmg, hitBox);
+        int dmgActuallyTaken = stats.Hurt(dmg, hitBox, hitBoxBehavior);
         
         Script_HurtBoxEventsManager.Hurt(tag, hitBox);
         

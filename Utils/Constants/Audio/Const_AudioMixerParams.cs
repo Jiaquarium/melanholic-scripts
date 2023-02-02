@@ -7,9 +7,10 @@ public static class Const_AudioMixerParams
     
     // Should only be used by the highest level controllers where there will be no conflict.
     public const string ExposedMusicVolume = "ExposedMusicVolume";
-    
     public const string ExposedBGVolume = "ExposedBGVolume";
     public const string ExposedBG2Volume = "ExposedBG2Volume";
+    
+    public const string ExposedFXVolume = "ExposedFXVolume";
     public const string ExposedSFXVolume = "ExposedSFXVolume";
     
     public const string ExposedInteractionUIVolume = "ExposedInteractionUIVolume";

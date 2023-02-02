@@ -29,7 +29,7 @@ public class Script_DemonStatsTester : Editor
         }
         if (GUILayout.Button("Hurt(1)"))
         {
-            stats.Hurt(1, null);
+            stats.Hurt(1, null, null);
         }
     }
 }

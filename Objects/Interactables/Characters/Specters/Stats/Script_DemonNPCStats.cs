@@ -7,7 +7,7 @@ public class Script_DemonNPCStats : Script_DemonStats
 {
     [SerializeField] private Script_DialogueNode reactionNode;
     
-    public override int Hurt(int dmg, Script_HitBox hitBox)
+    public override int Hurt(int dmg, Script_HitBox hitBox, Script_HitBoxBehavior hitBoxBehavior)
     {
         // give player a callback to do after eating
         Script_Player player = hitBox.transform.GetParentRecursive<Script_Player>();

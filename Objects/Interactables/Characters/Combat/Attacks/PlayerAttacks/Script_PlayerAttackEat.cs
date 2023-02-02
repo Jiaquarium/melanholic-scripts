@@ -58,7 +58,7 @@ public class Script_PlayerAttackEat : Script_Attack
             int dmg = GetAttackStat().GetVal();
             Dev_Logger.Debug($"CollisionedWith with {hurtBox.gameObject.name} inflicting dmg: {dmg}");
 
-            int dmgActuallyGiven = hurtBox.Hurt(dmg, hitBox);
+            int dmgActuallyGiven = hurtBox.Hurt(dmg, hitBox, hitBoxBehavior);
             if (dmgActuallyGiven > 0) 
                 HitSFX();
 

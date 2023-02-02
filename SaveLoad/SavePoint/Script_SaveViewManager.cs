@@ -20,10 +20,6 @@ public class Script_SaveViewManager : MonoBehaviour
     [SerializeField] private CanvasGroup saveChoiceCanvas;
     [SerializeField] private CanvasGroup saveEntryCanvas;
     
-    [SerializeField] private GameObject saveProgressCanvasGroup;
-    [SerializeField] private GameObject saveProgressCanvas;
-    [SerializeField] private GameObject saveCompleteCanvas;
-    
     [SerializeField] private Script_DialogueChoice[] choices;
     
     [SerializeField] private Script_DialogueManager dm;
@@ -68,85 +64,12 @@ public class Script_SaveViewManager : MonoBehaviour
     /// <summary>
     /// called on save prompt (yes, no)
     /// </summary>
-    public void InputChoice(int Id)
-    {
-        // yes, save
-        // if (Id == 0)
-        // {
-        //     string savePointNameId = game.GetSavePointData().nameId;
-        //     // check to see if editting or new entry
-        //     Script_Entry existingEntry = entryManager.GetExistingEntry(savePointNameId);
-        //     if (existingEntry != null)
-        //         entryInput.InitializeState(existingEntry.text);
-        //     else
-        //         entryInput.InitializeState(string.Empty);
-            
-        //     StartEntryMode();
-        //     dm.HideDialogue();
-        // }
-        // // no, don't save
-        // else
-        // {
-        //     dm.NextDialogueNode(1);
-        // }
-        // EndSavePrompt();
-    }
+    public void InputChoice(int Id) {}
 
     /// <summary>
     /// called on save entry INPUT view by Choice
     /// </summary>
-    public void InputSaveEntryChoice(int Id, string playerInputText)
-    {
-        // Submit
-        // if (Id == 0)
-        // {
-        //     Model_SavePointData spData = game.GetSavePointData();
-            
-        //     // create Entry
-        //     entryManager.AddEntry(
-        //         spData.nameId,
-        //         playerInputText,
-        //         DateTime.Now,
-        //         spData.headline
-        //     );
-            
-        //     saveProgressCanvas.SetActive(true);
-        //     Script_SaveGameControl.control.Save();
-
-        //     isShowingSaving = true;
-        //     Script_AwaitFile.AwaitFile(Script_SaveGameControl.saveFilePath);
-        //     isShowingSaving = false;
-            
-        //     StartCoroutine(AwaitSaveComplete());
-        // }
-        // // Cancel
-        // else if (Id == 1)
-        // {
-        //     Dev_Logger.Debug("Cancelling save entry input!");
-        //     dm.NextDialogueNode(1);
-        // }
-        // EndEntryMode();
-    }
-
-    /// <summary>
-    ///     to mock saving; our saves are near-instant but i still want the feel of a "real" save
-    /// </summary>
-    IEnumerator AwaitSaveComplete()
-    {
-        yield return new WaitForSeconds(showSavingMinTime);
-        // wait for AwaitFile if needed (it will turn isShowingSaving false)
-        while (isShowingSaving)    { }
-
-        saveCompleteCanvas.SetActive(true);
-        saveProgressCanvas.SetActive(false);
-
-        Script_Game.Game.PlayerFullHeal();
-
-        yield return new WaitForSeconds(showSavingCompleteTime);
-
-        saveCompleteCanvas.SetActive(false);
-        dm.NextDialogueNode(0);
-    }
+    public void InputSaveEntryChoice(int Id, string playerInputText) {}
 
     void EndSavePrompt()
     {
@@ -176,9 +99,6 @@ public class Script_SaveViewManager : MonoBehaviour
         
         saveChoiceCanvas.gameObject.SetActive(false);
         saveEntryCanvas.gameObject.SetActive(false);
-        saveProgressCanvasGroup.SetActive(true);
-        saveProgressCanvas.SetActive(false);
-        saveCompleteCanvas.SetActive(false);
         entryInput.Setup();
         
         saveAndRestartCanvasGroup.Close();
