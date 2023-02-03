@@ -45,8 +45,7 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
 
                 Script_Game.Game.fullArtManager.HideFullArt(
                     fullArt,
-                    // collectible.fadeOutSpeed,
-                    FadeSpeeds.XXSlow,
+                    collectible.fadeOutSpeed,
                     () => {
                         InitialState();
                     }
@@ -84,8 +83,7 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
         ItemsController.EnterFullArt();
         Script_Game.Game.fullArtManager.ShowFullArt(
             fullArt,
-            // collectible.fadeInSpeed,
-            FadeSpeeds.XXSlow,
+            collectible.fadeInSpeed,
             () =>
                 {
                     IsFullArtMode = true;

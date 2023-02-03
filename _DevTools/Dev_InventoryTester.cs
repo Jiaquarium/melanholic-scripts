@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Dev_InventoryTester : MonoBehaviour
 {
-    public Dev_InventoryTester Control;
+    public static Dev_InventoryTester Control;
     
     public string itemId;
 

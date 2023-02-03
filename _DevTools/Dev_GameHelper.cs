@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using TMPro;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -76,13 +77,22 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_LevelBehavior_0 woodsBehavior;
     [SerializeField] private Script_LevelBehavior_4 hallwayWithSecretBehavior;
     [SerializeField] private Script_LevelBehavior_10 IdsRoomBehavior;
+    [SerializeField] private Script_LevelBehavior_13 CatWalk1Behavior;
     [SerializeField] private Script_LevelBehavior_20 BallroomBehavior;
     [SerializeField] private Script_LevelBehavior_21 EileensRoomBehavior;
+    [SerializeField] private Script_LevelBehavior_22 SaloonBehavior;
+    [SerializeField] private Script_LevelBehavior_24 KTV2Behavior;
     [SerializeField] private Script_LevelBehavior_25 ElleniasRoomBehavior;
     [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;
     [SerializeField] private Script_LevelBehavior_27 LastElevatorBehavior;
     [SerializeField] private Script_LevelBehavior_32 hotelLobbyBehavior;
+    [SerializeField] private Script_LevelBehavior_42 WellsWorldBehavior;
+    [SerializeField] private Script_LevelBehavior_43 CelGardensBehavior;
+    [SerializeField] private Script_LevelBehavior_44 XXXWorldBehavior;
+    [SerializeField] private Script_LevelBehavior_46 LabyrinthBehavior;
+    [SerializeField] private Script_LevelBehavior_47 RockGardenBehavior;
     [SerializeField] private Script_LevelBehavior_48 MynesGrandMirrorRoomBehavior;
+    [SerializeField] private Script_LevelBehavior_49 CatWalk2Behavior;
     [SerializeField] private List<Script_WorldTile> WellsWorldTiles;
     [SerializeField] private List<Script_WorldTile> CelestialGardensWorldTiles;
     [SerializeField] private List<Script_WorldTile> XXXWorldTiles;
@@ -118,6 +128,7 @@ public class Dev_GameHelper : MonoBehaviour
     // ----------------------------------------------------------------------
     // Dev Canvases
     [SerializeField] private Script_CanvasGroupController saveDevCanvas;
+    [SerializeField] private TextMeshProUGUI saveDevCanvasText;
 
     private bool didSetWeekend;
 
@@ -162,6 +173,12 @@ public class Dev_GameHelper : MonoBehaviour
             TestCaseKey4();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha5))
             TestCaseKey5();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.F))
+            Act2NewState();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.G))
+            GoodEndingNewState();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.H))
+            TrueEndingNewState();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.B))
 		{
 			if (Script_SaveGameControl.control != null)
@@ -640,6 +657,72 @@ public class Dev_GameHelper : MonoBehaviour
         Script_Game.Game.StartWeekendCycleSaveInitialize();
     }
 
+    public void Act2NewState()
+    {
+        Script_TransitionManager.Control.TimelineBlackScreen();
+        ShowSaveDevCanvas($"{name} GO TO: ACT2 START");
+
+        inventoryTester.WeekendCycle();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        Script_Game.Game.StartWeekendCycleSaveInitialize();
+    }
+
+    public void GoodEndingNewState()
+    {
+        Script_TransitionManager.Control.TimelineBlackScreen();
+        ShowSaveDevCanvas($"{name} GO TO: CCTV ENDING");
+
+        inventoryTester.WeekendCycle();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        AfterGrandMirrorToGoodEndingState();
+        Act2ScarletCipherState();
+        Act2PianoStates();
+        Act2Items();
+
+        // Set most likely finish run (4th day weekend)
+        runsManager.StartWeekendCycle();
+        runsManager.IncrementRun();
+        runsManager.IncrementRun();
+        
+        Script_Game.Game.NextRunSaveInitialize();
+    }
+
+    public void TrueEndingNewState()
+    {
+        Script_TransitionManager.Control.TimelineBlackScreen();
+        ShowSaveDevCanvas($"{name} GO TO: TRUE ENDING");
+        
+        inventoryTester.WeekendCycle();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        AfterGrandMirrorToGoodEndingState();
+        Act2ScarletCipherState();
+        Act2PianoStates();
+        Act2Items();
+        inventoryTester.AddMyMask();
+
+        // Set most likely finish run (4th day weekend)
+        runsManager.StartWeekendCycle();
+        runsManager.IncrementRun();
+        runsManager.IncrementRun();
+
+        Script_Game.Game.StartSundayCycleSaveInitialize();
+    }
+
     public void StartSundayCycle()
     {
         Script_Game.Game.StartSundayCycleSaveInitialize();
@@ -665,7 +748,7 @@ public class Dev_GameHelper : MonoBehaviour
 
     private void ToGrandMirrorState()
     {
-        // Set State at this point in game.
+        hotelLobbyBehavior.didStartThought                          = true;
         hotelLobbyBehavior.didCantSwimDialogue                      = true;
         
         woodsBehavior.didStartThought                               = true;
@@ -677,6 +760,7 @@ public class Dev_GameHelper : MonoBehaviour
         IdsRoomBehavior.gotBoarNeedle                               = true;
 
         EileensRoomBehavior.spokenWithEileen                        = true;
+        EileensRoomBehavior.didOnEntranceAttack                     = true;
 
         ElleniasRoomBehavior.isPuzzleComplete                       = true;
         ElleniasRoomBehavior.spokenWithEllenia                      = true;
@@ -686,6 +770,36 @@ public class Dev_GameHelper : MonoBehaviour
         EileensMindBehavior.gotIceSpikeSticker                      = true;
 
         LastElevatorBehavior.GotPsychicDuck                         = true;
+    }
+
+    private void AfterGrandMirrorToGoodEndingState()
+    {
+        hotelLobbyBehavior.didOpeningThoughtFaceOff0 = true;
+        hotelLobbyBehavior.didOpeningThoughtFaceOff1 = true;
+        hotelLobbyBehavior.didOpeningThoughtCodeRemains0 = true;
+        hotelLobbyBehavior.didOpeningThoughtCodeRemains1 = true;
+        
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        WellsWorldBehavior.didPickUpLastWellMap = true;
+        WellsWorldBehavior.didPickUpSpeedSeal = true;
+        WellsWorldBehavior.isMooseQuestDone = true;
+        WellsWorldBehavior.didPlayFaceOff = true;
+        WellsWorldBehavior.didSpecialIntro = true;
+        WellsWorldBehavior.didWellTalkInitialDialogue = true;
+        CatWalk1Behavior.didPickUpLightSticker = true;
+
+        CelGardensBehavior.didIntro = true;
+        RockGardenBehavior.didPickUpPuppeteerSticker = true;
+        CatWalk2Behavior.didActivateDoubts = true;
+        LabyrinthBehavior.isPuzzleComplete = true;
+        LabyrinthBehavior.didPlayFaceOff = true;
+
+        XXXWorldBehavior.didIntro = true;
+        XXXWorldBehavior.didDontKnowMeThought = true;
+        SaloonBehavior.isUrsieCutsceneDone = true;
+        KTV2Behavior.IsPuzzleComplete = true;
+        KTV2Behavior.didPlayFaceOff = true;
     }
 
     public void SetElleniaPuzzleDone()
@@ -712,11 +826,39 @@ public class Dev_GameHelper : MonoBehaviour
         scarletCipherManager.RevealScarletCipherSlot(2);
     }
 
+    private void Act2ScarletCipherState()
+    {
+        var scarletCipherManager = Script_ScarletCipherManager.Control;
+        scarletCipherManager.RevealScarletCipherSlot(3);
+        scarletCipherManager.RevealScarletCipherSlot(4);
+        scarletCipherManager.RevealScarletCipherSlot(5);
+        scarletCipherManager.RevealScarletCipherSlot(6);
+        scarletCipherManager.RevealScarletCipherSlot(7);
+        scarletCipherManager.RevealScarletCipherSlot(8);
+        scarletCipherManager.RevealScarletCipherSlot(9);
+    }
+
     private void Act1PianoStates()
     {
         Script_PianoManager.Control.Pianos[0].IsRemembered = true;
         Script_PianoManager.Control.Pianos[1].IsRemembered = true;
         Script_PianoManager.Control.Pianos[2].IsRemembered = true;
+    }
+
+    private void Act2PianoStates()
+    {
+        Script_PianoManager.Control.Pianos[3].IsRemembered = true;
+        Script_PianoManager.Control.Pianos[4].IsRemembered = true;
+    }
+
+    private void Act2Items()
+    {
+        var inventory = Dev_InventoryTester.Control;
+        inventory.AddLetThereBeLight();
+        inventory.AddPuppeteer();
+
+        inventory.AddLastWellMap();
+        inventory.AddSpeedSeal();
     }
 
     // ----------------------------------------------------------------------
@@ -810,8 +952,9 @@ public class Dev_GameHelper : MonoBehaviour
         Script_Game.Game.IsHideHUD = !isActive;
     }
 
-    public void ShowSaveDevCanvas()
+    public void ShowSaveDevCanvas(string msg = "SAVED")
     {
+        saveDevCanvasText.text = msg;
         saveDevCanvas.Open();
 
         StartCoroutine(WaitToClose());
