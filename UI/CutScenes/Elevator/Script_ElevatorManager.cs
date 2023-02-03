@@ -390,7 +390,7 @@ public class Script_ElevatorManager : MonoBehaviour
     /// <summary>
     /// Used specifically to cancel the Last Elevator Effect timelines on an interrupting event like hit
     /// </summary>
-    private void CancelToInitialState(bool isInteractAfter)
+    private void InitialState()
     {
         // Stop detecting input for choice if it's up
         if (lastElevatorEffectChoicesEventSystem.gameObject.activeInHierarchy)
@@ -421,9 +421,6 @@ public class Script_ElevatorManager : MonoBehaviour
         droneLoudBgPlayer.SoftStop();
 
         elevatorCanvasGroupController.Close();
-
-        if (isInteractAfter)
-            game.ChangeStateInteract();
     }
 
     // Note: this event will not be called on hit when Player is invincible
@@ -436,7 +433,10 @@ public class Script_ElevatorManager : MonoBehaviour
             
             Dev_Logger.Debug($"{name} OnHitCanceLUI isStateHandled {isStateHandled}");
             
-            CancelToInitialState(!isStateHandled);
+            InitialState();
+
+            if (!isStateHandled)
+                game.ChangeStateInteract();
         }
     }
 
@@ -467,7 +467,7 @@ public class Script_ElevatorManager : MonoBehaviour
             Script_ElevatorManager t = (Script_ElevatorManager)target;
             if (GUILayout.Button("Elevator Effect Initial State"))
             {
-                t.CancelToInitialState(true);
+                t.InitialState();
             }
         }
     }

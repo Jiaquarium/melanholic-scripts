@@ -70,11 +70,14 @@ public class Script_FullArtManager : MonoBehaviour
                 {
                     fullArtCanvasGroup.gameObject.SetActive(false);
                     
-                    foreach (var bg in bgs) bg.gameObject.SetActive(false);
+                    foreach (var bg in bgs)
+                        bg.gameObject.SetActive(false);
 
                     fullArtImage.gameObject.SetActive(false);
                     fullArtImage.sprite = null;
-                    if (cb != null)     cb();
+                    
+                    if (cb != null)
+                        cb();
                 }
             )
         );
@@ -131,27 +134,10 @@ public class Script_FullArtManager : MonoBehaviour
                 Script_Game.Game.GetPlayer().SetIsInteract();
 
             activeFullArt = null;
-            if (cb != null)     cb();
+            
+            if (cb != null)
+                cb();
         });
-    }
-
-    public void CancelToInitialState(Script_FullArt fullArt)
-    {
-        Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
-        StopFullArtCoroutines(fullArt);
-        
-        bg.Initialize();
-        bg.gameObject.SetActive(false);
-
-        fullArt.Close();
-        CloseCanvasGroup(fullArtCanvasGroup);
-        activeFullArt = null;
-
-        void StopFullArtCoroutines(Script_FullArt fullArt)
-        {
-            fullArt.StopMyCoroutineRef(ref fullArtCoroutine);
-            bg.StopMyCoroutineRef(ref bgCoroutine);
-        }
     }
 
     public void TransitionOutFullArt(
@@ -218,6 +204,26 @@ public class Script_FullArtManager : MonoBehaviour
     {
         canvasGroup.alpha = 0f;
         canvasGroup.gameObject.SetActive(false);
+    }
+    
+    // Note: after initialization, full arts are never closed again, just their alphas are adjusted.
+    public void InitialState(Script_FullArt fullArt)
+    {
+        Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
+        StopFullArtCoroutines(fullArt);
+        
+        bg.Initialize();
+        bg.gameObject.SetActive(false);
+
+        fullArt.Close();
+        CloseCanvasGroup(fullArtCanvasGroup);
+        activeFullArt = null;
+
+        void StopFullArtCoroutines(Script_FullArt fullArt)
+        {
+            fullArt.StopMyCoroutineRef(ref fullArtCoroutine);
+            bg.StopMyCoroutineRef(ref bgCoroutine);
+        }
     }
     
     public void Setup()

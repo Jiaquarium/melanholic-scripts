@@ -189,16 +189,11 @@ public class Script_PianoManager : MonoBehaviour
             
             Dev_Logger.Debug($"{name} OnHitCanceLUI isStateHandled {isStateHandled}");
 
-            CancelToInitialState(!isStateHandled);
+            InitialState();
+
+            if (!isStateHandled)
+                game.ChangeStateInteract();
         }
-    }
-    
-    private void CancelToInitialState(bool isInteractAfter)
-    {
-        InitialState();
-        
-        if (isInteractAfter)
-            game.ChangeStateInteract();
     }
     
     private void StopMyCoroutines()

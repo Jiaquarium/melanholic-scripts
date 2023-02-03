@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-01-24 13:54:33
+// Last created by Dialogue Exporter at 2023-02-02 12:38:21
 
 using System.Collections;
 using System.Collections.Generic;
@@ -91,22 +91,10 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 {
                     isUnskippable = true, 
                 },
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
-                new Model_Languages.Metadata
-                {
-                    isUnskippable = true, 
-                },
+                null,
+                null,
+                null,
+                null,
         }
     }
 },

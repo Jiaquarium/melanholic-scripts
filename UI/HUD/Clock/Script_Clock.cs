@@ -83,18 +83,8 @@ public class Script_Clock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Const_Dev.IsTrailerMode || Debug.isDebugBuild || Const_Dev.IsSpecsDisplayOn || Const_Dev.IsDevMode)
-        {
-            if (Input.GetButtonDown(Const_KeyCodes.DevIncrement) && Input.GetButton(Const_KeyCodes.Time))
-                FastForwardTime(60, true);
-            else if (Input.GetButtonDown(Const_KeyCodes.DevDecrement) && Input.GetButton(Const_KeyCodes.Time))
-                FastForwardTime(-60, true);
-
-            if (Input.GetKeyDown(KeyCode.P) && Input.GetButton(Const_KeyCodes.Time))
-                FastForwardTime(600, true);
-            else if (Input.GetKeyDown(KeyCode.O) && Input.GetButton(Const_KeyCodes.Time))
-                FastForwardTime(-600, true);
-        }
+        if (Debug.isDebugBuild || Const_Dev.IsDevHelperOn)
+            HandleDevInput();
         
         switch (State)
         {
@@ -230,6 +220,22 @@ public class Script_Clock : MonoBehaviour
         else if (CurrentTime >= AwareTime)          timeState = TimeStates.Aware;
         else                                        timeState = TimeStates.None;
     }
+
+    // ------------------------------------------------------------------
+    // For Dev Only
+    private void HandleDevInput()
+    {
+        if (Input.GetButtonDown(Const_KeyCodes.DevIncrement) && Input.GetButton(Const_KeyCodes.Time))
+                FastForwardTime(60, true);
+        else if (Input.GetButtonDown(Const_KeyCodes.DevDecrement) && Input.GetButton(Const_KeyCodes.Time))
+            FastForwardTime(-60, true);
+
+        if (Input.GetKeyDown(KeyCode.P) && Input.GetButton(Const_KeyCodes.Time))
+            FastForwardTime(600, true);
+        else if (Input.GetKeyDown(KeyCode.O) && Input.GetButton(Const_KeyCodes.Time))
+            FastForwardTime(-600, true);
+    }
+    // ------------------------------------------------------------------
 
     public void InitialState()
     {

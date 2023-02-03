@@ -15,4 +15,8 @@ public static class Const_AudioMixerParams
     
     public const string ExposedInteractionUIVolume = "ExposedInteractionUIVolume";
     public const string ExposedBGMUIVolume = "ExposedBGMUIVolume";
+
+    //////////////////////////////////////////////////////////////////////////////////
+    // NOTE: When adding new params, MUST initialize them in BackgroundMusicManager //
+    //////////////////////////////////////////////////////////////////////////////////
 }

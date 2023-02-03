@@ -108,7 +108,7 @@ public class Script_CollectiblesInventoryHandler : MonoBehaviour
     {
         Dev_Logger.Debug($"{name} Cancel to Initial State");
 
-        Script_Game.Game.fullArtManager.CancelToInitialState(fullArt);
+        Script_Game.Game.fullArtManager.InitialState(fullArt);
         InitialState();
     }
     

@@ -100,7 +100,7 @@ public class Script_RunsManager : MonoBehaviour
     
     void Update()
     {
-        if (Const_Dev.IsTrailerMode)
+        if (Const_Dev.IsDevHelperOn)
         {
             if (Input.GetButtonDown(Const_KeyCodes.DevIncrement) && Input.GetButton(Const_KeyCodes.Day))
                 IncrementRun();

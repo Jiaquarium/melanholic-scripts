@@ -519,7 +519,10 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         SetVolume(1f, Const_AudioMixerParams.ExposedGameVolume);
         SetVolume(1f, Const_AudioMixerParams.ExposedMusicVolume);
         SetVolume(1f, Const_AudioMixerParams.ExposedBG2Volume);
+        
+        SetVolume(1f, Const_AudioMixerParams.ExposedFXVolume);
         SetVolume(1f, Const_AudioMixerParams.ExposedSFXVolume);
+        
         SetVolume(1f, Const_AudioMixerParams.ExposedInteractionUIVolume);
         SetVolume(1f, Const_AudioMixerParams.ExposedBGMUIVolume);
     }

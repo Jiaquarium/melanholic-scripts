@@ -27,7 +27,7 @@ public class Dev_SpecsDisplay : MonoBehaviour
 	void Awake()
     {
         cam = GetComponent<Camera>();
-		this.enabled = Const_Dev.IsSpecsDisplayOn || Const_Dev.IsPublisherSpecsOn;
+		this.enabled = Const_Dev.IsSpecsDisplayOn;
 
 		version = Version();
 
@@ -45,12 +45,6 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		}
 
 		HandleSpecsDevInput();
-
-		if (Const_Dev.IsTrailerMode)
-			HandleTrailerDevInput();
-		
-		if (Const_Dev.IsDevMode || Debug.isDebugBuild)
-			HandleDevInput();
 	}
  
 	void OnGUI()
@@ -74,11 +68,6 @@ public class Dev_SpecsDisplay : MonoBehaviour
 		{
 			label =
 TrailerModeSpecs();
-		}
-		else if (Const_Dev.IsPublisherSpecsOn)
-		{
-			label =
-@$"{version}";
 		}
 		else
 		{
@@ -229,59 +218,5 @@ lt:{Script_LightFXManager.Control?.CurrentIntensity.ToString()}";
 		{
 			isHidden = !isHidden;
 		}
-	}
-	
-	private void HandleTrailerDevInput()
-	{
-		if (Input.GetButtonDown(Const_KeyCodes.PlayerVisibility))
-		{
-			if (Script_Game.Game != null)
-			{
-				var isInvisible = Script_Game.Game.GetPlayer().isInvisible;
-				Script_Game.Game.GetPlayer().SetInvisible(!isInvisible);
-			}			
-		}
-
-		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
-		{
-			if (Script_Game.Game != null)
-				Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
-		}
-	}
-
-	private void HandleDevInput()
-	{
-		if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.B))
-		{
-			if (Script_SaveGameControl.control != null)
-			{
-				Script_SaveGameControl.control.Save();
-				ShowSavedNotification();
-			}
-		}
-		else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.N))
-		{
-			Script_Game game = Script_Game.Game;
-                    
-			Model_Exit exitData = new Model_Exit(
-				game.level,
-				game.GetPlayer().transform.position,
-				game.GetPlayer().FacingDirection
-			);
-			
-			game.ElevatorCloseDoorsCutScene(
-				null,
-				null,
-				Script_Elevator.Types.Last,
-				exitData,
-				Script_Exits.ExitType.SaveAndRestartOnLevel
-			);
-		}
-	}
-
-	private void ShowSavedNotification()
-	{
-		if (gameHelper != null)
-			gameHelper.ShowSaveDevCanvas();
 	}
 }

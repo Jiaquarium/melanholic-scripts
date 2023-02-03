@@ -15,7 +15,7 @@ public class Dev_SteamworksTester : MonoBehaviour
 
     void Awake()
     {
-        bool isTestingSteamworks = Const_Dev.IsSpecsDisplayOn || Debug.isDebugBuild;
+        bool isTestingSteamworks = Debug.isDebugBuild || Const_Dev.IsDevHelperOn;
         this.enabled = isTestingSteamworks;
         steamTestCanvas.gameObject.SetActive(false);
     }

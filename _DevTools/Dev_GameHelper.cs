@@ -45,6 +45,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject EileensRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject ElleniasRoomEntrance;
     [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromHMSHall;
+    [SerializeField] private Script_ExitMetadataObject BallroomEntranceFromLastElevator;
     [SerializeField] private Script_ExitMetadataObject LastElevatorEntrance;
     [SerializeField] private Script_ExitMetadataObject EileensMindEntrance;
     [SerializeField] private Script_ExitMetadataObject EileensMindDoneLoc;
@@ -80,6 +81,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_LevelBehavior_25 ElleniasRoomBehavior;
     [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;
     [SerializeField] private Script_LevelBehavior_27 LastElevatorBehavior;
+    [SerializeField] private Script_LevelBehavior_32 hotelLobbyBehavior;
     [SerializeField] private Script_LevelBehavior_48 MynesGrandMirrorRoomBehavior;
     [SerializeField] private List<Script_WorldTile> WellsWorldTiles;
     [SerializeField] private List<Script_WorldTile> CelestialGardensWorldTiles;
@@ -138,6 +140,80 @@ public class Dev_GameHelper : MonoBehaviour
         else if (isStartDangerTime)
             clock.DangerTime();
     }
+
+    void Update()
+    {
+        if (Const_Dev.IsDevHelperOn || Debug.isDebugBuild)
+		    HandleDevInput();
+
+        if (Const_Dev.IsTrailerMode)
+			HandleTrailerDevInput();
+    }
+
+    private void HandleDevInput()
+	{
+		if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha1))
+            TestCaseKey1();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2))
+            TestCaseKey2();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha3))
+            TestCaseKey3();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha4))
+            TestCaseKey4();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha5))
+            TestCaseKey5();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.B))
+		{
+			if (Script_SaveGameControl.control != null)
+			{
+				Script_SaveGameControl.control.Save();
+				ShowSaveDevCanvas();
+			}
+		}
+		else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.N))
+		{
+			Script_Game game = Script_Game.Game;
+                    
+			Model_Exit exitData = new Model_Exit(
+				game.level,
+				game.GetPlayer().transform.position,
+				game.GetPlayer().FacingDirection
+			);
+			
+			game.ElevatorCloseDoorsCutScene(
+				null,
+				null,
+				Script_Elevator.Types.Last,
+				exitData,
+				Script_Exits.ExitType.SaveAndRestartOnLevel
+			);
+		}
+
+        //  Replace these with necessary milestone cases
+        void TestCaseKey1() => Act1EndingFrontOfMirror();
+        void TestCaseKey2() => Act2SeaVignette();
+        void TestCaseKey3() => SpecialIntroWellsWorld();
+        void TestCaseKey4() => SpecialIntroCelestialGardens();
+        void TestCaseKey5() => SpecialIntroXXXWorld();
+	}
+
+    private void HandleTrailerDevInput()
+	{
+		if (Input.GetButtonDown(Const_KeyCodes.PlayerVisibility))
+		{
+			if (Script_Game.Game != null)
+			{
+				var isInvisible = Script_Game.Game.GetPlayer().isInvisible;
+				Script_Game.Game.GetPlayer().SetInvisible(!isInvisible);
+			}			
+		}
+
+		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
+		{
+			if (Script_Game.Game != null)
+				Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
+		}
+	}
     
     public void DefaultPlayerSpawnPos()
     {
@@ -551,15 +627,10 @@ public class Dev_GameHelper : MonoBehaviour
         ToGrandMirrorState();
 
         // Set Scarlet Cipher visibility
-        var scarletCipherManager = Script_ScarletCipherManager.Control;
-        scarletCipherManager.RevealScarletCipherSlot(0);
-        scarletCipherManager.RevealScarletCipherSlot(1);
-        scarletCipherManager.RevealScarletCipherSlot(2);
+        Act1ScarletCipherState();
 
         // Set Piano states
-        Script_PianoManager.Control.Pianos[0].IsRemembered = true;
-        Script_PianoManager.Control.Pianos[1].IsRemembered = true;
-        Script_PianoManager.Control.Pianos[2].IsRemembered = true;
+        Act1PianoStates();
 
         // Update names
         Script_Names.UpdateR1Names();
@@ -595,6 +666,8 @@ public class Dev_GameHelper : MonoBehaviour
     private void ToGrandMirrorState()
     {
         // Set State at this point in game.
+        hotelLobbyBehavior.didCantSwimDialogue                      = true;
+        
         woodsBehavior.didStartThought                               = true;
         
         BallroomBehavior.isKingIntroCutSceneDone                    = true;
@@ -629,6 +702,96 @@ public class Dev_GameHelper : MonoBehaviour
         
         Script_EventCycleManager.Control.SetElleniaDidTalkCountdownMax();
         Script_EventCycleManager.Control.DidTalkToEllenia--;
+    }
+
+    private void Act1ScarletCipherState()
+    {
+        var scarletCipherManager = Script_ScarletCipherManager.Control;
+        scarletCipherManager.RevealScarletCipherSlot(0);
+        scarletCipherManager.RevealScarletCipherSlot(1);
+        scarletCipherManager.RevealScarletCipherSlot(2);
+    }
+
+    private void Act1PianoStates()
+    {
+        Script_PianoManager.Control.Pianos[0].IsRemembered = true;
+        Script_PianoManager.Control.Pianos[1].IsRemembered = true;
+        Script_PianoManager.Control.Pianos[2].IsRemembered = true;
+    }
+
+    // ----------------------------------------------------------------------
+    // Freedom Milestone States
+    // These should not save state.
+    
+    public void Act1EndingFrontOfMirror()
+    {
+        inventoryTester.GrandMirror();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+
+        Teleport(GrandMirrorFrontOfMirror);
+    }
+
+    public void Act2SeaVignette()
+    {
+        inventoryTester.WeekendCycle();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        // Set runs manager to weekend, cyclecount 0
+        runsManager.StartWeekendCycle();
+    }
+
+    public void SpecialIntroWellsWorld()
+    {
+        inventoryTester.WeekendCycle();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        // Set runs manager to weekend, cyclecount 0
+        runsManager.StartWeekendCycle();
+        
+        Teleport(BallroomEntranceFromLastElevator);
+    }
+
+    public void SpecialIntroCelestialGardens()
+    {
+        inventoryTester.WeekendCycle();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        // Set runs manager to weekend, cyclecount 0
+        runsManager.StartWeekendCycle();
+        Script_Game.Game.faceOffCounter = 1;
+        
+        Teleport(BallroomEntranceFromLastElevator);
+    }
+
+    public void SpecialIntroXXXWorld()
+    {
+        inventoryTester.WeekendCycle();
+        ToGrandMirrorState();
+        Act1ScarletCipherState();
+        Act1PianoStates();
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        // Set runs manager to weekend, cyclecount 0
+        runsManager.StartWeekendCycle();
+        Script_Game.Game.faceOffCounter = 2;
+
+        Teleport(BallroomEntranceFromLastElevator);
     }
 
     // ----------------------------------------------------------------------
