@@ -5,16 +5,24 @@ using TMPro;
 
 public class Script_TMProSetFontUnique : MonoBehaviour
 {
-    [SerializeField] private TMP_FontAsset font;
+    [Tooltip("Will be auto-populated if using Text Styles")]
+    [SerializeField] protected TMP_FontAsset font;
     
+    protected TextMeshProUGUI text;
+
     public TMP_FontAsset Font
     {
         get => font;
     }
     
-    void OnValidate()
+    protected virtual void OnValidate()
     {
-        var text = GetComponent<TextMeshProUGUI>();
+        SetFontAttributes();
+    }
+
+    public virtual void SetFontAttributes()
+    {
+        text = GetComponent<TextMeshProUGUI>();
         if (font != null)
             text.font = font;
     }

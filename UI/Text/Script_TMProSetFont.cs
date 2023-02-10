@@ -15,7 +15,14 @@ public class Script_TMProSetFont : MonoBehaviour
         var texts = GetComponentsInChildren<TextMeshProUGUI>(true);
         foreach (var text in texts)
         {
-            if (text.GetComponent<Script_TMProSetFontUnique>()?.Font == null)
+            var uniqueStyle = text.GetComponent<Script_TMProSetFontUniqueStyle>();
+            
+            if (
+                text.GetComponent<Script_TMProSetFontUnique>()?.Font == null
+                && (
+                    uniqueStyle == null || uniqueStyle?.TextStylesManager == null
+                )
+            )
             {
                 if (font != null)
                     text.font = font;

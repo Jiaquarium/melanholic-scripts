@@ -225,7 +225,7 @@ public class Dev_GameHelper : MonoBehaviour
 			}			
 		}
 
-		if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
+        if (Input.GetButtonDown(Const_KeyCodes.UIVisibility))
 		{
 			if (Script_Game.Game != null)
 				Script_Game.Game.IsHideHUD = !Script_Game.Game.IsHideHUD;
