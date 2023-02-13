@@ -8,6 +8,12 @@ using System;
 /// Handles fullArts
 /// Uses a global transparent bg
 /// </summary>
+public enum FullArtPortrait
+{
+    None = 0,
+    Moose = 1
+}
+
 public class Script_FullArtManager : MonoBehaviour
 {
     public enum FullArtState
@@ -47,6 +53,12 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private Transform[] fullArtParentsToSetActive;
     [SerializeField] private Script_CanvasGroupController bgForceBlack;
 
+    /// <summary>
+    /// Alternate way to reference Full Arts via Dialogue Nodes
+    /// </summary>
+    [Space][Header("Full Art Overrides")][Space]
+    [SerializeField] private Script_FullArt MooseFullArt;
+
     private Coroutine fullArtCoroutine;
     private Coroutine bgCoroutine;
     
@@ -56,6 +68,12 @@ public class Script_FullArtManager : MonoBehaviour
         if (canvas != null && canvas.sortingOrder != DefaultSortingOrder)
             Debug.LogWarning($"FullArtCanvas Sorting Order <{canvas.sortingOrder}> != DefaulSortingOrder");
     }
+    
+    public Script_FullArt GetFullArt(FullArtPortrait fullArtType) => fullArtType switch
+    {
+        FullArtPortrait.Moose => MooseFullArt,
+        _ => null,
+    };
     
     /// <summary>
     /// fades out fullArt canvases and does callback after finishing fadeOut

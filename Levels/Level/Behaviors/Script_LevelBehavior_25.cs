@@ -485,7 +485,7 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             heartbeatsPlayer.GetComponent<Script_AudioSourcePitchShifter>().SwitchMySettings(0);
             
             // Open Ellenia FullArt behind ElleniasHandPRCS
-            Script_FullArt firstFullArt = onElleniasPRCSDoneNode.data.fullArt;
+            Script_FullArt firstFullArt = onElleniasPRCSDoneNode.data.FullArt;
             Script_FullArtManager.Control.ShowFullArt(
                 firstFullArt,
                 FadeSpeeds.None,

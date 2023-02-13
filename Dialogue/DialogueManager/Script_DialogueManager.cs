@@ -250,7 +250,7 @@ public class Script_DialogueManager : MonoBehaviour
         
         Script_FullArt lastFullArt = null;
         if (currentNode != null)
-            lastFullArt = currentNode.data.fullArt;
+            lastFullArt = currentNode.data.FullArt;
         
         currentNode = node;
         activeInteractable = talkingInteractive;
@@ -273,14 +273,14 @@ public class Script_DialogueManager : MonoBehaviour
 
         isInputDisabled = true;
         
-        if (currentNode.data.fullArt != null)
+        if (currentNode.data.FullArt != null)
         {
             // In the case last dialogue node isKeepThisDialogue == true and was a different full art,
             // ensure to remove it
             // Note: Uses the current node's Fade In speed to always match.
             if (isKeepingDialogueUp && lastFullArt != null)
             {
-                if (lastFullArt != currentNode.data.fullArt)
+                if (lastFullArt != currentNode.data.FullArt)
                 {
                     Dev_Logger.Debug("Fading out last full art");
                     fullArtManager.TransitionOutFullArt(lastFullArt, currentNode.data.fadeIn, null);
@@ -308,7 +308,7 @@ public class Script_DialogueManager : MonoBehaviour
             HandlePlayerState(currentType);
             
             fullArtManager.ShowFullArt(
-                currentNode.data.fullArt,
+                currentNode.data.FullArt,
                 currentNode.data.fadeIn, () => {
                     StartDialogue(currentNode.data.dialogue, currentType, SFXOn);
                 },
@@ -379,7 +379,7 @@ public class Script_DialogueManager : MonoBehaviour
         
         EndInputMode();
         
-        Script_FullArt lastFullArt      = currentNode.data.fullArt;
+        Script_FullArt lastFullArt      = currentNode.data.FullArt;
         FadeSpeeds lastFadeOutSpeed     = currentNode.data.fadeOut;   
 
         currentNode = currentNode.data.children[childIdx];
@@ -404,12 +404,12 @@ public class Script_DialogueManager : MonoBehaviour
         isInputDisabled = true;
 
         // fade into a new fullArt
-        if (currentNode.data.fullArt != null)
+        if (currentNode.data.FullArt != null)
         {
             // If the current full art and last are the same, then no need to do anything with Full Art
-            if (currentNode.data.fullArt == lastFullArt)
+            if (currentNode.data.FullArt == lastFullArt)
             {
-                Dev_Logger.Debug($"Full Art {currentNode.data.fullArt} same as Last Full Art {lastFullArt}");
+                Dev_Logger.Debug($"Full Art {currentNode.data.FullArt} same as Last Full Art {lastFullArt}");
                 DisplayNextDialoguePortionNextFrame();
             }
             else
@@ -421,7 +421,7 @@ public class Script_DialogueManager : MonoBehaviour
                     fullArtManager.TransitionOutFullArt(lastFullArt, fadeInSpeed, null);
                 }
                 fullArtManager.ShowFullArt(
-                    currentNode.data.fullArt,
+                    currentNode.data.FullArt,
                     fadeInSpeed, () =>
                     {
                         DisplayNextDialoguePortionNextFrame();

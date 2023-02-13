@@ -74,6 +74,7 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
     [SerializeField] private float pauseBeforeNewNodeSuccessTime;
     [SerializeField] private float pauseBeforeNewNodeFailTime;
     [SerializeField] private float pauseBeforeIntroNodeTime;
+    [SerializeField] private FadeSpeeds successFullArtFadeOutSpeed;
 
     // ------------------------------------------------------------------
     // Intro Only
@@ -401,6 +402,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         }
     }
     
+    
+    
     public void CheckPlayerHasLastSpellRecipeBook()
     {
         game.ChangeStateCutScene();
@@ -409,7 +412,18 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         bool hasBook = game.GetItemsInventoryItem(lastSpellRecipeBookItem.id, out slot) != null;
 
         if (hasBook)
-            StartCoroutine(WaitToReact(pauseBeforeNewNodeSuccessTime, StartSuccessDialogue));
+        {
+            // Force fade out of current full art because it is a "Leave Up" node. Success flow has a longer
+            // pause where Moose portrait will be removed and then fade back in after the pause.
+            var currentNode = Script_DialogueManager.DialogueManager.currentNode;
+            Script_FullArtManager.Control.HideFullArt(
+                currentNode.data.FullArt,
+                successFullArtFadeOutSpeed,
+                () => {
+                    StartCoroutine(WaitToReact(pauseBeforeNewNodeSuccessTime, StartSuccessDialogue));
+                }
+            );
+        }
         else
             StartCoroutine(WaitToReact(pauseBeforeNewNodeFailTime, StartFailDialogue));
 

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-02 12:38:21
+// Last created by Dialogue Exporter at 2023-02-10 15:35:41
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2680,7 +2680,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"The divine proportion. Spirals. The seasons. It all has meaning.",
-                @"Time. Relative in theory, absolute in practice. Waits for no one.",
+                @"Time. Relative in theory, absolute in practice. You kill it or it kills you.",
                 @"It’s no use. The {22}. It’s been decided. Precisely.",
         },
         
