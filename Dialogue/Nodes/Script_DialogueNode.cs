@@ -75,6 +75,9 @@ public class Script_DialogueNode : MonoBehaviour
                             data.dialogue.sections[i].noContinuationIcon = true;
                         }
                     }
+
+                    if (metadata[i] != null && metadata[i].fullArtOverride != null)
+                        data.dialogue.sections[i].fullArtOverride = (FullArtPortrait)metadata[i].fullArtOverride;
                 }
             }
 

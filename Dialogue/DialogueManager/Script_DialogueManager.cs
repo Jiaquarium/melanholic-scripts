@@ -248,9 +248,15 @@ public class Script_DialogueManager : MonoBehaviour
         if (isInputDisabled)
             return;
         
+        // Handle keeping dialogue & FullArt up (new node, mid convo)
         Script_FullArt lastFullArt = null;
+        bool isLeaveFullArtUp = false;
+        
         if (currentNode != null)
-            lastFullArt = currentNode.data.FullArt;
+        {
+            lastFullArt = GetLastActiveFullArt(currentNode.data);
+            isLeaveFullArtUp = currentNode.data.isLeaveFullArtUp;
+        }
         
         currentNode = node;
         activeInteractable = talkingInteractive;
@@ -273,14 +279,18 @@ public class Script_DialogueManager : MonoBehaviour
 
         isInputDisabled = true;
         
-        if (currentNode.data.FullArt != null)
+        Script_FullArt currentFullArt = GetStartNodeFullArt(currentNode.data);
+
+        Dev_Logger.Debug($"{name} lastFullArt {lastFullArt} currentFullArt {currentFullArt} isLeaveFullArtUp {isLeaveFullArtUp}");
+
+        if (currentFullArt != null)
         {
             // In the case last dialogue node isKeepThisDialogue == true and was a different full art,
             // ensure to remove it
             // Note: Uses the current node's Fade In speed to always match.
             if (isKeepingDialogueUp && lastFullArt != null)
             {
-                if (lastFullArt != currentNode.data.FullArt)
+                if (lastFullArt != currentFullArt)
                 {
                     Dev_Logger.Debug("Fading out last full art");
                     fullArtManager.TransitionOutFullArt(lastFullArt, currentNode.data.fadeIn, null);
@@ -307,8 +317,12 @@ public class Script_DialogueManager : MonoBehaviour
             string currentType = type ?? currentNode.data.type;
             HandlePlayerState(currentType);
             
+            // Handle changing left up FullArt to new pose on dialogue start.
+            if (lastFullArt != null && lastFullArt != currentFullArt && isLeaveFullArtUp)
+                fullArtManager.InitialState(lastFullArt);
+            
             fullArtManager.ShowFullArt(
-                currentNode.data.FullArt,
+                currentFullArt,
                 currentNode.data.fadeIn, () => {
                     StartDialogue(currentNode.data.dialogue, currentType, SFXOn);
                 },
@@ -379,7 +393,7 @@ public class Script_DialogueManager : MonoBehaviour
         
         EndInputMode();
         
-        Script_FullArt lastFullArt      = currentNode.data.FullArt;
+        Script_FullArt lastFullArt      = GetLastActiveFullArt(currentNode.data);
         FadeSpeeds lastFadeOutSpeed     = currentNode.data.fadeOut;   
 
         currentNode = currentNode.data.children[childIdx];
@@ -403,17 +417,23 @@ public class Script_DialogueManager : MonoBehaviour
         
         isInputDisabled = true;
 
-        // fade into a new fullArt
-        if (currentNode.data.FullArt != null)
+        // Fetch the full art override or node's full art
+        Script_FullArt currentFullArt = GetStartNodeFullArt(currentNode.data);
+
+        // Fade into a new fullArt
+        if (currentFullArt != null)
         {
             // If the current full art and last are the same, then no need to do anything with Full Art
-            if (currentNode.data.FullArt == lastFullArt)
+            if (currentFullArt == lastFullArt)
             {
-                Dev_Logger.Debug($"Full Art {currentNode.data.FullArt} same as Last Full Art {lastFullArt}");
+                Dev_Logger.Debug($"currentFullArt {currentFullArt} same as lastFullArt {lastFullArt}");
+
                 DisplayNextDialoguePortionNextFrame();
             }
             else
             {
+                Dev_Logger.Debug($"currentFullArt {currentFullArt} different vs. lastFullArt {lastFullArt}");
+                
                 // use fadeIn if it's a new fullArt or fadeTransition if just switching out a fullArt
                 FadeSpeeds fadeInSpeed = lastFullArt == null ? currentNode.data.fadeIn : currentNode.data.fadeTransition;
                 if (lastFullArt != null)
@@ -421,7 +441,7 @@ public class Script_DialogueManager : MonoBehaviour
                     fullArtManager.TransitionOutFullArt(lastFullArt, fadeInSpeed, null);
                 }
                 fullArtManager.ShowFullArt(
-                    currentNode.data.FullArt,
+                    currentFullArt,
                     fadeInSpeed, () =>
                     {
                         DisplayNextDialoguePortionNextFrame();
@@ -432,6 +452,8 @@ public class Script_DialogueManager : MonoBehaviour
         }
         else
         {
+            Dev_Logger.Debug($"{name} Next Dialogue Node, NO currentFullArt {currentFullArt}");
+            
             if (lastFullArt == null)
             {
                 /// Wait for next frame to show dialogue so Inputs don't carry over into 
@@ -465,6 +487,53 @@ public class Script_DialogueManager : MonoBehaviour
                 isInputDisabled = false;
             }
         }
+    }
+
+    /// <summary>
+    /// Handle getting the last FullArt that was/is up whether it is an override or default object ref
+    /// </summary>
+    /// <param name="lastNodeData">data prop</param>
+    /// <returns>Active FA ONLY if in FullArtState.DialogueManager state or last node's Full Art prop</returns>
+    private Script_FullArt GetLastActiveFullArt(Model_DialogueNode lastNodeData)
+    {
+        Script_FullArt lastFullArt = lastNodeData.FullArt;
+        
+        // Get whatever FullArt has been left up, handling even the override case.
+        // Full art manager will set activeFullArt to null after finishing FullArt hide/close, so test if it hasn't
+        // been taken down yet (e.g. mid-convo)
+        if (
+            fullArtManager.state == Script_FullArtManager.FullArtState.DialogueManager
+            && fullArtManager.activeFullArt != null
+        )
+            lastFullArt = fullArtManager.activeFullArt;
+        
+        return lastFullArt;
+    }
+    
+    /// <summary>
+    /// Checks the node's first dialogue section to see if a FA override is present,
+    /// if one is, return it.
+    /// </summary>
+    /// <param name="nodeData">data prop</param>
+    /// <returns>The full art if override is present, the node's full art, or null if neither are present</returns>
+    private Script_FullArt GetStartNodeFullArt(Model_DialogueNode nodeData)
+    {
+        Script_FullArt currentFullArt = nodeData.FullArt;
+        
+        // Check if dialogue sections exist
+        if (
+            nodeData.dialogue != null
+            && nodeData.dialogue.sections != null
+            && nodeData.dialogue.sections.Length > 0
+        )
+        {
+            // Check if FA override is populated
+            var fullArtOverride = fullArtManager.GetFullArt(nodeData.dialogue.sections[0].fullArtOverride);
+            if (fullArtOverride != null)
+                currentFullArt = fullArtOverride;
+        }
+
+        return currentFullArt;
     }
 
     public bool IsDialogueSkippable()
@@ -634,9 +703,30 @@ public class Script_DialogueManager : MonoBehaviour
             lines.Enqueue(_line);
         }
         
+        // Handle FA override
+        HandleMidConvoFullArtOverride(dialogueSection);
+        
         lineCount = 0;
         ClearActiveCanvasTexts();
         DisplayNextLine();
+    }
+
+    /// <summary>
+    /// Change FullArt poses between dialogue sections.
+    /// </summary>
+    private void HandleMidConvoFullArtOverride(Model_DialogueSection section)
+    {
+        if (section.fullArtOverride == FullArtPortrait.None)
+            return;
+        
+        Script_FullArt fullArtOverride = fullArtManager.GetFullArt(section.fullArtOverride);
+
+        // Prevent a second call if the active full art is the same as override. 
+        if (fullArtOverride != null && fullArtOverride != fullArtManager.activeFullArt)
+        {
+            fullArtManager.InitialState(fullArtManager.activeFullArt);
+            fullArtManager.OpenFullArt(fullArtOverride, Script_FullArtManager.FullArtState.DialogueManager);
+        }
     }
 
     void DisplayNextLine()
@@ -1011,10 +1101,12 @@ public class Script_DialogueManager : MonoBehaviour
             && !currentNode.data.isLeaveFullArtUp
         )
         {
+            Dev_Logger.Debug($"{name} FullArtEndDialogue() isFullArtControlledByMe: {isFullArtControlledByMe} fullArtManager.activeFullArt {fullArtManager.activeFullArt}");
             StartCoroutine(FullArtEndDialogue());
         }
         else
         {
+            Dev_Logger.Debug($"{name} NoFullArtEndDialogue() isFullArtControlledByMe: {isFullArtControlledByMe} fullArtManager.activeFullArt {fullArtManager.activeFullArt}");
             StartCoroutine(NoFullArtEndDialogue());
         }
 

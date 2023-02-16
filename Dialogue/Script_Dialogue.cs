@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-10 15:35:41
+// Last created by Dialogue Exporter at 2023-02-15 19:28:48
 
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +20,7 @@ public class Model_Languages
         public bool? noContinuationIcon;
         public bool? waitForTimeline;
         public bool? autoNext;
+        public int? fullArtOverride; 
     }
 }
 
@@ -3976,7 +3977,19 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"They’ll fall to their <b>knees</b> when they see this, ha! You just watch!",
                 @"My current subject of focus you ask?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 12, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+        }
     }
 },
 {
@@ -4015,7 +4028,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Simpletons like you wouldn’t understand, okay?",
         },
         choiceText = "Why did you choose that subject?",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 12, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 14, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 14, 
+                },
+        }
     }
 },
 {
@@ -4030,7 +4057,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Simpletons like you wouldn’t understand, okay?",
         },
         choiceText = "You’ve seen the {8}?",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 14, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 14, 
+                },
+        }
     }
 },
 {
@@ -4044,7 +4085,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It’s taking a little longer than I planned though......",
                 @"Hey I’ll figure it out though, alright?! Forget I said anything! Hmph!",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 13, 
+                },
+        }
     }
 },
 {
@@ -4057,7 +4112,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Okay enough small talk!",
                 @"See these portraits here...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+        }
     }
 },
 {
@@ -4119,7 +4184,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"What do you think?",
                 @"C’mon already! Give me one word that describes its essence!",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+        }
     }
 },
 {
@@ -4131,7 +4210,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Ha... you pleb, what do you know... I don’t even know why I asked.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 14, 
+                },
+        }
     }
 },
 {
@@ -4160,7 +4245,81 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"......",
                 @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anymore... So here take it, it’s yours...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 18, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 18, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 19, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+        }
     }
 },
 {
@@ -4199,7 +4358,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You finally have something worthwhile to say about my painting?",
                 @"Spit it out, what is it already?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+        }
     }
 },
 {
@@ -4214,7 +4383,25 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Well, c’mon now, what do you think about it?",
                 @"Spit it out, what is it already?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 13, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+        }
     }
 },
 {
@@ -4238,13 +4425,86 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It’s just me, myself, and I in here! That’s it.",
                 @"......",
                 @"Anyways, it’s pretty clear now.",
-                @"I know what I have to do.",
+                @"I’ve scraped all that I can out of myself already... <b>There’s nothing else left for me here</b>,| nope.",
                 @"It’s time I leave for good.",
-                @"I think I’ve scraped all that I can out of myself already. There’s nothing more for me here, nope.",
                 @"......",
-                @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anyways... So here take it, it’s yours...",
+                @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anymore... So here take it, it’s yours...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 18, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 18, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 19, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+        }
     }
 },
 {
@@ -4313,7 +4573,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Anyways, it’s not like I need any advice, especially from a stranger!",
                 @"But it looks like you have something to say about my painting?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+        }
     }
 },
 {
@@ -4325,7 +4599,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You finally have something worthwhile to say about my painting?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+        }
     }
 },
 {
@@ -4337,7 +4617,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Spit it out, what is it already?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 11, 
+                },
+        }
     }
 },
 {
@@ -4361,13 +4647,86 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It’s just me, myself, and I in here! That’s it.",
                 @"......",
                 @"Anyways, it’s pretty clear now.",
-                @"I know what I have to do.",
+                @"I’ve scraped all that I can out of myself already... <b>There’s nothing else left for me here</b>,| nope.",
                 @"It’s time I leave for good.",
-                @"I think I’ve scraped all that I can out of myself already. There’s nothing more for me here, nope.",
                 @"......",
-                @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anyways... So here take it, it’s yours...",
+                @"Hey you know what? I owe you one... Where I’m going I’m not going to need this anymore... So here take it, it’s yours...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 18, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 18, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 19, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 16, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 15, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 10, 
+                },
+        }
     }
 },
 {

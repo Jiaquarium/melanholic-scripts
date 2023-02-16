@@ -11,7 +11,17 @@ using System;
 public enum FullArtPortrait
 {
     None = 0,
-    Moose = 1
+    Moose = 1,
+    Ellenia = 10,
+    ElleniaAngry = 11,
+    ElleniaAngrySmile = 12,
+    ElleniaHmph = 13,
+    ElleniaSmug = 14,
+    ElleniaPensive = 15,
+    ElleniaPensiveAdmit = 16,
+    ElleniaPensiveAngry = 17,
+    ElleniaPensiveTearingUp1 = 18,
+    ElleniaPensiveTearingUp2 = 19,
 }
 
 public class Script_FullArtManager : MonoBehaviour
@@ -54,10 +64,22 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController bgForceBlack;
 
     /// <summary>
-    /// Alternate way to reference Full Arts via Dialogue Nodes
+    /// Alternate way to reference Full Arts via Dialogue Nodes of using enum FullArtPortrait instead
+    /// of referencing the object (useful for scriptable data e.g. prefabs, scriptable objects)
     /// </summary>
     [Space][Header("Full Art Overrides")][Space]
     [SerializeField] private Script_FullArt MooseFullArt;
+
+    [SerializeField] private Script_FullArt ElleniaFullArt;
+    [SerializeField] private Script_FullArt ElleniaAngryFullArt;
+    [SerializeField] private Script_FullArt ElleniaAngrySmileFullArt;
+    [SerializeField] private Script_FullArt ElleniaHmphFullArt;
+    [SerializeField] private Script_FullArt ElleniaSmugFullArt;
+    [SerializeField] private Script_FullArt ElleniaPensiveFullArt;
+    [SerializeField] private Script_FullArt ElleniaPensiveAdmitFullArt;
+    [SerializeField] private Script_FullArt ElleniaPensiveAngryFullArt;
+    [SerializeField] private Script_FullArt ElleniaPensiveTearingUp1FullArt;
+    [SerializeField] private Script_FullArt ElleniaPensiveTearingUp2FullArt;
 
     private Coroutine fullArtCoroutine;
     private Coroutine bgCoroutine;
@@ -72,6 +94,16 @@ public class Script_FullArtManager : MonoBehaviour
     public Script_FullArt GetFullArt(FullArtPortrait fullArtType) => fullArtType switch
     {
         FullArtPortrait.Moose => MooseFullArt,
+        FullArtPortrait.Ellenia => ElleniaFullArt,
+        FullArtPortrait.ElleniaAngry => ElleniaAngryFullArt,
+        FullArtPortrait.ElleniaAngrySmile => ElleniaAngrySmileFullArt,
+        FullArtPortrait.ElleniaHmph => ElleniaHmphFullArt,
+        FullArtPortrait.ElleniaSmug => ElleniaSmugFullArt,
+        FullArtPortrait.ElleniaPensive => ElleniaPensiveFullArt,
+        FullArtPortrait.ElleniaPensiveAdmit => ElleniaPensiveAdmitFullArt,
+        FullArtPortrait.ElleniaPensiveAngry => ElleniaPensiveAngryFullArt,
+        FullArtPortrait.ElleniaPensiveTearingUp1 => ElleniaPensiveTearingUp1FullArt,
+        FullArtPortrait.ElleniaPensiveTearingUp2 => ElleniaPensiveTearingUp2FullArt,
         _ => null,
     };
     
@@ -112,7 +144,7 @@ public class Script_FullArtManager : MonoBehaviour
         
         HandleFullArtSortingOrder();
         
-        fullArtCanvasGroup.alpha = 1;
+        fullArtCanvasGroup.alpha = 1f;
         fullArtCanvasGroup.gameObject.SetActive(true);
         
         fullArt.Setup();
@@ -126,6 +158,27 @@ public class Script_FullArtManager : MonoBehaviour
         Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
         bg.gameObject.SetActive(true);
         bg.FadeIn(out bgCoroutine, fadeInSpeed, null, bgAlpha);
+    }
+
+    public void OpenFullArt(Script_FullArt fullArt, FullArtState _state)
+    {   
+        state = _state;
+        
+        HandleFullArtSortingOrder();
+        
+        fullArtCanvasGroup.alpha = 1f;
+        fullArtCanvasGroup.gameObject.SetActive(true);
+        
+        fullArt.Setup();
+        fullArt.gameObject.SetActive(true);
+
+        // Show full art
+        activeFullArt = fullArt;
+        fullArt.Open();
+        
+        // Show global bg
+        Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
+        bg.Open();
     }
     
     /// <summary>
@@ -158,6 +211,25 @@ public class Script_FullArtManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Note: this will not handle Player state like default Hide
+    /// </summary>
+    public void CloseFullArt(Script_FullArt fullArt)
+    {
+        // Close global bg
+        Script_FullArtBgCanvasGroup bg = bgs[(int)fullArt.bg];
+        bg.Close();
+        
+        fullArt.Close();
+        CloseCanvasGroup(fullArtCanvasGroup);
+
+        activeFullArt = null;
+    }
+
+    /// <summary>
+    /// Used to fade out a Full Art, accompanied by a call to transition in a new Full Art.
+    /// Note: (When used syncronously) fadeOutSpeed must match fadeInSpeed of new Full Art being transitioned to.
+    /// </summary>
     public void TransitionOutFullArt(
         Script_FullArt fullArt,
         FadeSpeeds fadeOutSpeed,

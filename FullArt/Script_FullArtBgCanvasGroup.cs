@@ -53,6 +53,20 @@ public class Script_FullArtBgCanvasGroup : MonoBehaviour
         }
     }
 
+    public void Open()
+    {
+        CanvasGroup c = GetComponent<CanvasGroup>();
+        c.alpha = 1f;
+        c.gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        CanvasGroup c = GetComponent<CanvasGroup>();
+        c.alpha = 0f;
+        c.gameObject.SetActive(false);
+    }
+
     public void Initialize()
     {
         GetComponent<Script_CanvasGroupFadeInOut>().Initialize();   
