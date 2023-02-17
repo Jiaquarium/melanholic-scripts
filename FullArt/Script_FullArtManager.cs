@@ -22,6 +22,9 @@ public enum FullArtPortrait
     ElleniaPensiveAngry = 17,
     ElleniaPensiveTearingUp1 = 18,
     ElleniaPensiveTearingUp2 = 19,
+    Eileen = 20,
+    EileenUneasy = 21,
+    EileenFocused = 22,
 }
 
 public class Script_FullArtManager : MonoBehaviour
@@ -81,6 +84,10 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private Script_FullArt ElleniaPensiveTearingUp1FullArt;
     [SerializeField] private Script_FullArt ElleniaPensiveTearingUp2FullArt;
 
+    [SerializeField] private Script_FullArt EileenFullArt;
+    [SerializeField] private Script_FullArt EileenUneasyFullArt;
+    [SerializeField] private Script_FullArt EileenFocusedFullArt;
+
     private Coroutine fullArtCoroutine;
     private Coroutine bgCoroutine;
     
@@ -104,6 +111,10 @@ public class Script_FullArtManager : MonoBehaviour
         FullArtPortrait.ElleniaPensiveAngry => ElleniaPensiveAngryFullArt,
         FullArtPortrait.ElleniaPensiveTearingUp1 => ElleniaPensiveTearingUp1FullArt,
         FullArtPortrait.ElleniaPensiveTearingUp2 => ElleniaPensiveTearingUp2FullArt,
+        
+        FullArtPortrait.Eileen => EileenFullArt,
+        FullArtPortrait.EileenUneasy => EileenUneasyFullArt,
+        FullArtPortrait.EileenFocused => EileenFocusedFullArt,
         _ => null,
     };
     

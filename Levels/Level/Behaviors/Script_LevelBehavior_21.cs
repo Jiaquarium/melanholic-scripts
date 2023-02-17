@@ -86,7 +86,9 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         Script_CombatEventsManager.OnEnemyAttackEnd     += HandleOnEntranceAttackDone;
         
         playerPlayableDirector = game.GetPlayer().GetComponent<PlayableDirector>();
-        playerPlayableDirector.stopped                  += OnDropTimelineDone;
+        
+        if (playerPlayableDirector != null)
+            playerPlayableDirector.stopped += OnDropTimelineDone;
         
         // The first time player enters, need to trigger the Attack sequence
         if (!didOnEntranceAttack)
@@ -104,7 +106,9 @@ public class Script_LevelBehavior_21 : Script_LevelBehavior
         Script_GameEventsManager.OnLevelInitComplete    -= OnLevelInitCompleteEvent;
         Script_CombatEventsManager.OnEnemyAttackEnd     -= HandleOnEntranceAttackDone;
         
-        playerPlayableDirector.stopped -= OnDropTimelineDone;
+        if (playerPlayableDirector != null)
+            playerPlayableDirector.stopped -= OnDropTimelineDone;
+        
         playerPlayableDirector = null;
         
         if (EileenThemePlayer != null)

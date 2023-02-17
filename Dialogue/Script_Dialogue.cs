@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-15 19:28:48
+// Last created by Dialogue Exporter at 2023-02-17 18:27:38
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3601,7 +3601,14 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"She’s always been a bit stubborn...",
                 @"Oh no, um... I don’t mean that in a bad sense or anything.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+        }
     }
 },
 {
@@ -3612,11 +3619,34 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"It’s just something tells me that... how should I put this...?",
-                @"On her current path...| she won’t ever <i>find</i> the image of the {8}.",
+                @"On her current path...",
+                @"She won’t ever <i>find</i> the image of the {8}.",
                 @"In fact, it’s all a thing of fables...",
                 @"...No one’s ever really seen the {8}...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 22, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
+        }
     }
 },
 {
@@ -3628,7 +3658,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"It’s something she’s been doing ever since I can remember... but I mean... there’s just something <i>off</i> these days...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+        }
     }
 },
 {
@@ -3641,22 +3677,37 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Well, it’s just that...",
                 @"...Sometimes when painters lose confidence they’ll try to plan out every detail of the final piece, all the lines, shapes, all of it...",
                 @"It’s completely fine, I mean when you already know what your final piece is supposed to look like.",
-                @"But I-I’ve been thinking... what if your subject has no physical form?",
+                @"But I’ve been thinking... what if your subject has no physical form?",
                 @"What if what she’s really trying to paint is|.|.|.|| <b><i>{14}</b></i>.",
                 @"Sigh... What am I even saying...",
         },
         choiceText = "What do you mean...?",
         metadata = new Model_Languages.Metadata[]
         {
-                null,
-                null,
-                null,
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 21, 
                 },
-                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 22, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 22, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
         }
     }
 },
@@ -3677,15 +3728,30 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         choiceText = "Could this all be in your head?",
         metadata = new Model_Languages.Metadata[]
         {
-                null,
-                null,
-                null,
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 21, 
                 },
-                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 22, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 22, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 20, 
+                },
         }
     }
 },
@@ -3700,7 +3766,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"That she’s in fact painting| <b><i>{14}</b></i>.",
                 @"She would never listen to me though...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+        }
     }
 },
 {
@@ -3715,7 +3789,16 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"...she needs to first fully understand...| <b><i>{14}</b></i>.",
                 @"I’m far too exhausted just thinking about all this.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+        }
     }
 },
 {
@@ -3729,7 +3812,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Us two aren’t really on speaking terms anymore. I guess perhaps she...",
                 @"Just wants to be the exact opposite of me.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+        }
     }
 },
 {
@@ -3743,7 +3834,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"I mean, it’s just the thought of picking myself apart...",
                 @"...and then putting all of it on a canvas for everyone to pick apart again...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 21, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 22, 
+                },
+        }
     }
 },
 {
