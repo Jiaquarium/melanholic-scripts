@@ -14,6 +14,11 @@ public class Script_MynesMirrorManager : MonoBehaviour
     [SerializeField] private bool didSealingDialogue;
 
     [SerializeField] private Script_DialogueNode[] interactionNodes;
+
+    [SerializeField] private Script_CanvasGroupController mynePortraitDefault;
+    [SerializeField] private Script_CanvasGroupController mynePortraitGlare;
+    [SerializeField] private Script_CanvasGroupController mynePortraitFeignedConcern;
+    [SerializeField] private Script_CanvasGroupController mynePortraitConfident;
     
     public int InteractionCount
     {
@@ -35,6 +40,55 @@ public class Script_MynesMirrorManager : MonoBehaviour
     {
         get => didSealingDialogue;
         set => didSealingDialogue = value;
+    }
+    
+    public void InitializeMynePortrait(Script_DialogueNode node)
+    {
+        CloseAllPortraits();
+
+        Model_DialogueSection[] sections = node.data.dialogue.sections;
+        if (sections.Length > 0 && sections[0].fullArtOverride != FullArtPortrait.None)
+        {
+            var fullArtPortrait = sections[0].fullArtOverride;
+            OpenMynePortrait(fullArtPortrait);
+        }
+        else
+        {
+            mynePortraitDefault.Open();
+        }
+    }
+
+    public void HandleMidConvoPortraitOverride(FullArtPortrait portraitType)
+    {
+        CloseAllPortraits();
+        OpenMynePortrait(portraitType);
+    }
+
+    void CloseAllPortraits()
+    {
+        mynePortraitDefault.Close();
+        mynePortraitGlare.Close();
+        mynePortraitFeignedConcern.Close();
+        mynePortraitConfident.Close();
+    }
+
+    void OpenMynePortrait(FullArtPortrait portraitType)
+    {
+        switch (portraitType)
+        {
+            case FullArtPortrait.MyneGlare:
+                mynePortraitGlare.Open();
+                break;
+            case FullArtPortrait.MyneFeignedConcern:
+                mynePortraitFeignedConcern.Open();
+                break;
+            case FullArtPortrait.MyneConfident:
+                mynePortraitConfident.Open();
+                break;
+            default:
+                mynePortraitDefault.Open();
+                break;
+        }
     }
     
     // ----------------------------------------------------------------------

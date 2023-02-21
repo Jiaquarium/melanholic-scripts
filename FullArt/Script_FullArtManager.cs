@@ -25,6 +25,21 @@ public enum FullArtPortrait
     Eileen = 20,
     EileenUneasy = 21,
     EileenFocused = 22,
+    Ids = 30,
+    IdsSerious = 31,
+    IdsPensive = 32,
+    IdsTroubled = 33,
+    IdsPossessed = 34,
+    IdsHesitant = 35,
+    IdsGladBashful = 36,
+    IdsSuperHappy = 37,
+    IdsSuperHappyBashful = 38,
+    IdsSusPositive = 39,
+    IdsPossessedPositive = 40,
+    Myne = 50,
+    MyneGlare = 51,
+    MyneFeignedConcern = 52,
+    MyneConfident = 53,
 }
 
 public class Script_FullArtManager : MonoBehaviour
@@ -88,6 +103,18 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private Script_FullArt EileenUneasyFullArt;
     [SerializeField] private Script_FullArt EileenFocusedFullArt;
 
+    [SerializeField] private Script_FullArt IdsFullArt;
+    [SerializeField] private Script_FullArt IdsSeriousFullArt;
+    [SerializeField] private Script_FullArt IdsPensiveFullArt;
+    [SerializeField] private Script_FullArt IdsTroubledFullArt;
+    [SerializeField] private Script_FullArt IdsPossessedFullArt;
+    [SerializeField] private Script_FullArt IdsHesitant;
+    [SerializeField] private Script_FullArt IdsGladBashfulFullArt;
+    [SerializeField] private Script_FullArt IdsSuperHappyFullArt;
+    [SerializeField] private Script_FullArt IdsSuperHappyBashfulFullArt;
+    [SerializeField] private Script_FullArt IdsSusPositiveFullArt;
+    [SerializeField] private Script_FullArt IdsPossessedPositiveFullArt;
+
     private Coroutine fullArtCoroutine;
     private Coroutine bgCoroutine;
     
@@ -98,25 +125,55 @@ public class Script_FullArtManager : MonoBehaviour
             Debug.LogWarning($"FullArtCanvas Sorting Order <{canvas.sortingOrder}> != DefaulSortingOrder");
     }
     
-    public Script_FullArt GetFullArt(FullArtPortrait fullArtType) => fullArtType switch
+    public Script_FullArt GetFullArt(FullArtPortrait fullArtType, out bool isMynesMirrorNode)
     {
-        FullArtPortrait.Moose => MooseFullArt,
-        FullArtPortrait.Ellenia => ElleniaFullArt,
-        FullArtPortrait.ElleniaAngry => ElleniaAngryFullArt,
-        FullArtPortrait.ElleniaAngrySmile => ElleniaAngrySmileFullArt,
-        FullArtPortrait.ElleniaHmph => ElleniaHmphFullArt,
-        FullArtPortrait.ElleniaSmug => ElleniaSmugFullArt,
-        FullArtPortrait.ElleniaPensive => ElleniaPensiveFullArt,
-        FullArtPortrait.ElleniaPensiveAdmit => ElleniaPensiveAdmitFullArt,
-        FullArtPortrait.ElleniaPensiveAngry => ElleniaPensiveAngryFullArt,
-        FullArtPortrait.ElleniaPensiveTearingUp1 => ElleniaPensiveTearingUp1FullArt,
-        FullArtPortrait.ElleniaPensiveTearingUp2 => ElleniaPensiveTearingUp2FullArt,
+        switch (fullArtType)
+        {
+            case FullArtPortrait.Myne:
+            case FullArtPortrait.MyneGlare:
+            case FullArtPortrait.MyneFeignedConcern:
+            case FullArtPortrait.MyneConfident:
+                isMynesMirrorNode = true;
+                return null;
+            default:
+                isMynesMirrorNode = false;
+                return GetDefaultFullArt(fullArtType);
+        }
         
-        FullArtPortrait.Eileen => EileenFullArt,
-        FullArtPortrait.EileenUneasy => EileenUneasyFullArt,
-        FullArtPortrait.EileenFocused => EileenFocusedFullArt,
-        _ => null,
-    };
+        Script_FullArt GetDefaultFullArt(FullArtPortrait fullArtType) => fullArtType switch
+        {
+            FullArtPortrait.Moose => MooseFullArt,
+            FullArtPortrait.Ellenia => ElleniaFullArt,
+            FullArtPortrait.ElleniaAngry => ElleniaAngryFullArt,
+            FullArtPortrait.ElleniaAngrySmile => ElleniaAngrySmileFullArt,
+            FullArtPortrait.ElleniaHmph => ElleniaHmphFullArt,
+            FullArtPortrait.ElleniaSmug => ElleniaSmugFullArt,
+            FullArtPortrait.ElleniaPensive => ElleniaPensiveFullArt,
+            FullArtPortrait.ElleniaPensiveAdmit => ElleniaPensiveAdmitFullArt,
+            FullArtPortrait.ElleniaPensiveAngry => ElleniaPensiveAngryFullArt,
+            FullArtPortrait.ElleniaPensiveTearingUp1 => ElleniaPensiveTearingUp1FullArt,
+            FullArtPortrait.ElleniaPensiveTearingUp2 => ElleniaPensiveTearingUp2FullArt,
+            
+            FullArtPortrait.Eileen => EileenFullArt,
+            FullArtPortrait.EileenUneasy => EileenUneasyFullArt,
+            FullArtPortrait.EileenFocused => EileenFocusedFullArt,
+
+            FullArtPortrait.Ids => IdsFullArt,
+            FullArtPortrait.IdsSerious => IdsSeriousFullArt,
+            FullArtPortrait.IdsPensive => IdsPensiveFullArt,
+            FullArtPortrait.IdsTroubled => IdsTroubledFullArt,
+            FullArtPortrait.IdsPossessed => IdsPossessedFullArt,
+            FullArtPortrait.IdsHesitant => IdsHesitant,
+            FullArtPortrait.IdsGladBashful => IdsGladBashfulFullArt,
+            FullArtPortrait.IdsSuperHappy => IdsSuperHappyFullArt,
+            FullArtPortrait.IdsSuperHappyBashful => IdsSuperHappyBashfulFullArt,
+            FullArtPortrait.IdsSusPositive => IdsSusPositiveFullArt,
+            FullArtPortrait.IdsPossessedPositive => IdsPossessedPositiveFullArt,
+
+            _ => null,
+        };
+    }
+    
     
     /// <summary>
     /// fades out fullArt canvases and does callback after finishing fadeOut

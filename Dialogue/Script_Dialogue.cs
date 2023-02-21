@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-17 18:27:38
+// Last created by Dialogue Exporter at 2023-02-20 16:07:01
 
 using System.Collections;
 using System.Collections.Generic;
@@ -611,7 +611,18 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Consider yourself special, kiddo!",
                 @"Actually on the contrary, most are fleeing from good ol’ {18}.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 39, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 39, 
+                },
+        }
     }
 },
 {
@@ -623,7 +634,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"So what brings you here, huh?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+        }
     }
 },
 {
@@ -636,7 +653,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Well you know what they say?",
         },
         choiceText = "Not too sure myself.",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+        }
     }
 },
 {
@@ -650,7 +673,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"But you know what they say?",
         },
         choiceText = "None of your business.",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 37, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 37, 
+                },
+        }
     }
 },
 {
@@ -673,7 +706,48 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Yep, can’t sense the change at all.",
                 @"And BOOM,| there you have it,| boiling f|-r|-o|-g.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 34, 
+                },
+        }
     }
 },
 {
@@ -687,7 +761,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"......",
                 @"Alright alright, enough of this mushy stuff.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+        }
     }
 },
 {
@@ -1830,7 +1918,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"{0}.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 39, 
+                },
+        }
     }
 },
 {
@@ -1842,7 +1936,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"......",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 39, 
+                },
+        }
     }
 },
 {
@@ -1880,24 +1980,30 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 null,
                 null,
                 null,
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 31, 
                 },
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 31, 
                 },
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 31, 
                 },
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 31, 
                 },
-                null,
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 31, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 35, 
+                },
         }
     }
 },
@@ -1914,10 +2020,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         choiceText = "(Don’t mention anything.)",
         metadata = new Model_Languages.Metadata[]
         {
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 35, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 35, 
                 },
         }
     }
@@ -1932,7 +2041,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"{0}.",
                 @"Listen kiddo, I have a hunch.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 31, 
+                },
+        }
     }
 },
 {
@@ -1948,7 +2067,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 35, 
                 },
         }
     }
@@ -1963,7 +2082,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Oh hey, {0}. Nice of you to join me, kiddo, I was getting a little lonely.",
                 @"What are we about to do you ask?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 39, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 39, 
+                },
+        }
     }
 },
 {
@@ -1979,11 +2108,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         },
         metadata = new Model_Languages.Metadata[]
         {
-                null,
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 39, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 40, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 40, 
                 },
         }
     }
@@ -2340,7 +2475,43 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"What’s the point of all this anymore?",
         },
         choiceText = "No, it’s nothing.",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 33, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 33, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 33, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+        }
     }
 },
 {
@@ -2355,7 +2526,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"If it was any other––",
         },
         choiceText = "Want to dance?",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+        }
     }
 },
 {
@@ -2382,7 +2567,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Just this one time.",
                 @"Let’s go!",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 35, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 35, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 36, 
+                },
+        }
     }
 },
 {
@@ -2395,7 +2594,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Oh right, it’s me first, that’s how it goes...",
                 @"Ha... it’s really been a while.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 36, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 36, 
+                },
+        }
     }
 },
 {
@@ -2411,11 +2620,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         },
         metadata = new Model_Languages.Metadata[]
         {
-                null,
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 39, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 34, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 34, 
                 },
         }
     }
@@ -2430,7 +2645,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Wow, hey I’m actually kinda refreshed!",
                 @"This feels really nostalgic for some reason, kiddo.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 38, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 38, 
+                },
+        }
     }
 },
 {
@@ -2442,7 +2667,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Well {0} I gotta run, but I’m sure I’ll be seeing you another time.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 38, 
+                },
+        }
     }
 },
 {
@@ -2497,7 +2728,23 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Yep, that’d be something huh?",
         },
         choiceText = "No, it’s nothing.",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 32, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 30, 
+                },
+        }
     }
 },
 {

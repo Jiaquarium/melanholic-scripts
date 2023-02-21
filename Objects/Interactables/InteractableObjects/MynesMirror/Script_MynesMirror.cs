@@ -203,6 +203,9 @@ public class Script_MynesMirror : Script_InteractableObjectText
     public void Intro()
     {
         game.ChangeStateCutScene();
+
+        // Ask manager to init correct image based on first node
+        Script_MynesMirrorManager.Control.InitializeMynePortrait(InteractionNode);
         
         Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
             isOpen: true,

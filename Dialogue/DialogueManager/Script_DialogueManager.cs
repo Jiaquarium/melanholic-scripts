@@ -104,6 +104,7 @@ public class Script_DialogueManager : MonoBehaviour
     [SerializeField] private Script_InputManager inputManager;
     [SerializeField] private Script_FullArtManager fullArtManager;
     [SerializeField] private Script_DialogueManagerCanvasHandler canvasHandler;
+    [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
 
     public bool isRenderingDialogueSection = false;
     public int lineCount = 0;
@@ -528,7 +529,8 @@ public class Script_DialogueManager : MonoBehaviour
         )
         {
             // Check if FA override is populated
-            var fullArtOverride = fullArtManager.GetFullArt(nodeData.dialogue.sections[0].fullArtOverride);
+            var fullArtOverride = fullArtManager.GetFullArt(nodeData.dialogue.sections[0].fullArtOverride, out _);
+
             if (fullArtOverride != null)
                 currentFullArt = fullArtOverride;
         }
@@ -719,10 +721,16 @@ public class Script_DialogueManager : MonoBehaviour
         if (section.fullArtOverride == FullArtPortrait.None)
             return;
         
-        Script_FullArt fullArtOverride = fullArtManager.GetFullArt(section.fullArtOverride);
+        bool isMynesMirrorNode;
+        Script_FullArt fullArtOverride = fullArtManager.GetFullArt(section.fullArtOverride, out isMynesMirrorNode);
 
+        // Allow Mynes Mirror Manager to handle
+        if (isMynesMirrorNode)
+        {
+            mynesMirrorManager.HandleMidConvoPortraitOverride(section.fullArtOverride);
+        }
         // Prevent a second call if the active full art is the same as override. 
-        if (fullArtOverride != null && fullArtOverride != fullArtManager.activeFullArt)
+        else if (fullArtOverride != null && fullArtOverride != fullArtManager.activeFullArt)
         {
             fullArtManager.InitialState(fullArtManager.activeFullArt);
             fullArtManager.OpenFullArt(fullArtOverride, Script_FullArtManager.FullArtState.DialogueManager);
