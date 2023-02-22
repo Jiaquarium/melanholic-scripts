@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-20 16:07:01
+// Last created by Dialogue Exporter at 2023-02-21 16:43:09
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1179,14 +1179,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 50, 
                 },
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 50, 
                 },
-                null,
-                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
         }
     }
 },
@@ -1203,7 +1209,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 50, 
                 },
         }
     }
@@ -1232,7 +1238,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Perhaps <b>you</b> could be seeing things again? Have you been up all night?",
         },
         choiceText = "What were those outside?",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 52, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 52, 
+                },
+        }
     }
 },
 {
@@ -1246,7 +1262,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"I am just a bit flustered is all. It is not every day that someone arrives at one’s residence unannounced.",
                 @"But a guest is a guest afterall.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 52, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 52, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+        }
     }
 },
 {
@@ -1265,14 +1295,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 50, 
                 },
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 53, 
                 },
-                null,
-                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
         }
     }
 },
@@ -1287,7 +1323,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"My apologies... my tone of voice is unacceptable.",
                 @"A guest is a guest afterall.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+        }
     }
 },
 {
@@ -1303,7 +1353,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    isUnskippable = true, fullArtOverride = 50, 
                 },
         }
     }
@@ -1351,16 +1401,34 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         },
         metadata = new Model_Languages.Metadata[]
         {
-                null,
-                null,
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 52, 
                 },
-                null,
-                null,
-                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 52, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 52, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 52, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
         }
     }
 },
@@ -1377,7 +1445,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Just down the hall on your right, through the {36}, you should be able to find the {66}.",
                 @"You may safely and securely exit through there, my dear.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+        }
     }
 },
 {
@@ -1391,7 +1473,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Down the hall on your right, through the {36}, you will find the {66}.",
                 @"You should exit through there, my dear.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+        }
     }
 },
 {
@@ -1405,7 +1501,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Take the hall on your right, go through the {36}, and you will find the {66}.",
                 @"You really ought to exit through there, my dear.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+        }
     }
 },
 {
@@ -1419,7 +1529,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Just down the hall on your right, through the {36}, is the {66}.",
                 @"You may exit through there, my dear.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+        }
     }
 },
 // ------------------------------------------------------------------
@@ -1436,10 +1560,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         },
         metadata = new Model_Languages.Metadata[]
         {
-                null,
                 new Model_Languages.Metadata
                 {
-                    isUnskippable = true, 
+                    fullArtOverride = 51, 
+                },
+                new Model_Languages.Metadata
+                {
+                    isUnskippable = true, fullArtOverride = 51, 
                 },
         }
     }
@@ -1457,7 +1584,25 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It is simple, my dear. At {49} our doors will close.",
         },
         choiceText = "The {22}? What do you know about it?",
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
+        }
     }
 },
 {
@@ -1472,7 +1617,25 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Just down the hall on your right, through the {36}, is the {66}.",
                 @"You may exit through there, my dear.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 53, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+        }
     }
 },
 // ------------------------------------------------------------------
@@ -1486,7 +1649,31 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Please have a wonderful rest of your night.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 50, 
+                },
+        }
+    }
+},
+{
+    "dining_mynes-mirror_default-end_glare",
+    new Model_Languages
+    {
+        speaker = "{10}",
+        EN = new string[]
+        {
+                @"Please have a wonderful rest of your night.",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 51, 
+                },
+        }
     }
 },
 {

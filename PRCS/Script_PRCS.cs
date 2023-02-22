@@ -12,6 +12,9 @@ using UnityEngine.Timeline;
 public class Script_PRCS : Script_FullArt
 {
     [SerializeField] private List<TimelineAsset> timelines;
+
+    public List<TimelineAsset> Timelines => timelines;
+    public PlayableDirector Director => GetComponent<PlayableDirector>();
     
     /// <summary>
     /// Simplest of PRCS where they are only played once and have a single timeline

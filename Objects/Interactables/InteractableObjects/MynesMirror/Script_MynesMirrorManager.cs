@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 /// <summary>
 /// Manager for Mynes Mirror Game Objects
@@ -10,8 +12,13 @@ public class Script_MynesMirrorManager : MonoBehaviour
 {
     public static Script_MynesMirrorManager Control;
 
+    // ==================================================================
+    // State Data
+    
     [SerializeField] private int interactionCount;
     [SerializeField] private bool didSealingDialogue;
+    
+    // ==================================================================
 
     [SerializeField] private Script_DialogueNode[] interactionNodes;
 
@@ -19,6 +26,8 @@ public class Script_MynesMirrorManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController mynePortraitGlare;
     [SerializeField] private Script_CanvasGroupController mynePortraitFeignedConcern;
     [SerializeField] private Script_CanvasGroupController mynePortraitConfident;
+
+    [SerializeField] private List<GameObject> introTimelineObjectsToBind;
     
     public int InteractionCount
     {
@@ -41,27 +50,43 @@ public class Script_MynesMirrorManager : MonoBehaviour
         get => didSealingDialogue;
         set => didSealingDialogue = value;
     }
+
+    public GameObject MynePortraitToBind { get; set; }
     
+    /// <summary>
+    /// Set MynePortraitToBind to the object to be bound to Intro timeline
+    /// </summary>
     public void InitializeMynePortrait(Script_DialogueNode node)
     {
         CloseAllPortraits();
 
         Model_DialogueSection[] sections = node.data.dialogue.sections;
+
         if (sections.Length > 0 && sections[0].fullArtOverride != FullArtPortrait.None)
         {
-            var fullArtPortrait = sections[0].fullArtOverride;
-            OpenMynePortrait(fullArtPortrait);
+            FullArtPortrait portraitType = sections[0].fullArtOverride;
+            MynePortraitToBind = GetMynePortrait(portraitType).gameObject;
         }
         else
         {
-            mynePortraitDefault.Open();
+            MynePortraitToBind = mynePortraitDefault.gameObject;
         }
+    }
+
+    public void BindIntroTimeline(
+        PlayableDirector director,
+        TimelineAsset timeline
+    )
+    {
+        introTimelineObjectsToBind[0] = MynePortraitToBind;
+        introTimelineObjectsToBind[1] = MynePortraitToBind;
+        director.BindTimelineTracks(timeline, introTimelineObjectsToBind);
     }
 
     public void HandleMidConvoPortraitOverride(FullArtPortrait portraitType)
     {
         CloseAllPortraits();
-        OpenMynePortrait(portraitType);
+        GetMynePortrait(portraitType).Open();
     }
 
     void CloseAllPortraits()
@@ -72,25 +97,14 @@ public class Script_MynesMirrorManager : MonoBehaviour
         mynePortraitConfident.Close();
     }
 
-    void OpenMynePortrait(FullArtPortrait portraitType)
+    private Script_CanvasGroupController GetMynePortrait(FullArtPortrait portraitType) => portraitType switch
     {
-        switch (portraitType)
-        {
-            case FullArtPortrait.MyneGlare:
-                mynePortraitGlare.Open();
-                break;
-            case FullArtPortrait.MyneFeignedConcern:
-                mynePortraitFeignedConcern.Open();
-                break;
-            case FullArtPortrait.MyneConfident:
-                mynePortraitConfident.Open();
-                break;
-            default:
-                mynePortraitDefault.Open();
-                break;
-        }
-    }
-    
+        FullArtPortrait.MyneGlare => mynePortraitGlare,
+        FullArtPortrait.MyneFeignedConcern => mynePortraitFeignedConcern,
+        FullArtPortrait.MyneConfident => mynePortraitConfident,
+        _ => mynePortraitDefault,
+    };
+
     // ----------------------------------------------------------------------
     // Timeline Signals
     

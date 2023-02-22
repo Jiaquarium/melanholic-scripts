@@ -65,6 +65,7 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_PRCS seaVignettePRCS;
 
     [SerializeField] private Script_GlitchFXManager glitchManager;
+    [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
 
     [SerializeField] private Script_TimelineController faceOffTimelineController;
     [SerializeField] private Script_TimelineController awakeningFinalTimelineController;
@@ -182,12 +183,20 @@ public class Script_PRCSManager : MonoBehaviour
                 PRCSCanvasGroup.alpha = 1f;
                 PRCSCanvasGroup.gameObject.SetActive(true);
                 
+                var introTimelineIdx = 0;
+                
+                // Init and bind Myne Portrait
+                mynesMirrorManager.BindIntroTimeline(
+                    MynesMirrorPRCS.Director,
+                    MynesMirrorPRCS.Timelines[introTimelineIdx]
+                );
+
                 MynesMirrorBg.Close();
                 MynesMirrorCanvasGroup.Open();
                 
                 MynesMirrorPRCS.Setup();
                 MynesMirrorPRCS.Open();
-                MynesMirrorPRCS.PlayTimeline(0);
+                MynesMirrorPRCS.PlayTimeline(introTimelineIdx);
                 // MynesMirror Timeline controls Fading in Bg
                 break;
                 

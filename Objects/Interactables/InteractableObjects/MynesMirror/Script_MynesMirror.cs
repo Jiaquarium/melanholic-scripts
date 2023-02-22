@@ -47,6 +47,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     [SerializeField] private Script_PRCSManager PRCSManager;
 
     private bool isSolved;
+    private Script_DialogueNode cachedInteractionNode;
     
     protected Script_DialogueNode HintNode
     {
@@ -56,19 +57,28 @@ public class Script_MynesMirror : Script_InteractableObjectText
         set => defaultNode = value;
     }
 
+    /// <summary>
+    /// The first call is cached as some getters may modify state (e.g. Special Condition Nodes) and the
+    /// interaction dialogue should represent only 1 state per day.  
+    /// </summary>
     private Script_DialogueNode InteractionNode
     {
         get
         {
+            if (cachedInteractionNode != null)
+                return cachedInteractionNode;
+            
             var specialConditionNodes = dialogueController?.SpecialConditionNodes;
             var interactionNode = Script_MynesMirrorManager.Control.ActiveNode;
-            
+
             if (specialConditionNodes != null && specialConditionNodes.Length > 0)
-                return specialConditionNodes[0];
+                cachedInteractionNode = specialConditionNodes[0];
             else if (interactionNode != null)
-                return interactionNode;
+                cachedInteractionNode = interactionNode;
             else
-                return HintNode;
+                cachedInteractionNode = HintNode;
+
+            return cachedInteractionNode;
         }
     }
 
@@ -204,7 +214,7 @@ public class Script_MynesMirror : Script_InteractableObjectText
     {
         game.ChangeStateCutScene();
 
-        // Ask manager to init correct image based on first node
+        // Ask manager to prepare image to be bound to intro timeline
         Script_MynesMirrorManager.Control.InitializeMynePortrait(InteractionNode);
         
         Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
