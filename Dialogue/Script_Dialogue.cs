@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-21 16:43:09
+// Last created by Dialogue Exporter at 2023-02-23 16:07:02
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3052,7 +3052,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Howdy! The name’s {33}.",
                 @"Say partner, you look like you need a drink.| I can tell from all these years running the {35}.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 61, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 61, 
+                },
+        }
     }
 },
 {
@@ -3065,7 +3075,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"To be frank,| some strange things have been happening at my <b>saloon</b>...| strangeness I can take... but my customers!",
                 @"...So I’m here to speak to the {83} about it.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+        }
     }
 },
 {
@@ -3078,7 +3098,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Hopefully the {83} takes action...| and fast.",
                 @"I got a business to run.| I’m <b>bleeding</b> sales as we speak, don’t you understand?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 62, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 62, 
+                },
+        }
     }
 },
 {
@@ -7666,7 +7696,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Howdy! You sure look like you need a drink.| I can tell these things after all these years managing the {35}.",
                 @"Ever since <i>it</i> started coming around here though, strange things began happening... strangeness I can take... but my business is getting ruined!",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 61, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 66, 
+                },
+        }
     }
 },
 {
@@ -7678,7 +7718,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"So partner, what do you say, can you help me out here?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 66, 
+                },
+        }
     }
 },
 {
@@ -7701,15 +7747,65 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{33}",
         EN = new string[]
         {
-                @"Terrific! Recently <b>strange growths</b> have infested my main <b>dance floor</b>.",
+                @"Terrific!",
+                @"Well, it’s obvious, right?",
+                @"My clients come for the dancing and our incredible <i>atmosphere</i>!",
+                @"And our drinks keep them goin’ all night~",
+                @"That’s where we profit, cha-ching!",
+                @"But... recently these <b>strange growths</b> have infested my main <b>dance floor</b>.",
                 @"And now all my regulars are scared out of their wits.",
-                @"My clients come for the dancing and our incredible <i>atmosphere</i>! And our drinks keep them goin’ all night.| That’s where we profit, cha-ching!",
                 @"How is the {35} going to be the best watering well around if I’m bleeding this much business?",
                 @"What did you say your name was again, youngin’?",
                 @"{0}... interesting, hey I like that name. It has a nice ring to it, seems familiar, not quite sure why.",
                 @"...Perhaps you can do something about those strange growths.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 63, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 63, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 63, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 64, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 64, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 65, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 65, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 61, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 61, 
+                },
+        }
     }
 },
 {
@@ -7735,7 +7831,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Ah, well, that is very unfortunate...",
                 @"I really hope the {35} can reach its full potential...",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 62, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 62, 
+                },
+        }
     }
 },
 {
@@ -7759,7 +7865,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"Ah so you <i>can</i> help out?",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+        }
     }
 },
 {
@@ -7773,7 +7885,21 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"But first I have to prove our worth inside these {18} walls! I swore to myself I wouldn’t leave here ‘til I do.",
                 @"Ha-ha, sure, call me ol’ fashioned or whatnot, but I never break my promises.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 61, 
+                },
+        }
     }
 },
 {
@@ -7786,7 +7912,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You know the {35} used to be the town grapevine. You got the latest news, gossip and of course specialty cocktails here.",
                 @"And if you’re lucky you might even meet your special somebody here, he-he.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 63, 
+                },
+        }
     }
 },
 {
@@ -7798,7 +7934,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"If only I could get that <b>dance floor</b> back to operational again, maybe then the {35} could be the crown jewel of {18}.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+        }
     }
 },
 {
@@ -7811,7 +7953,17 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You know why I wanted to get into the nightlife business in the first place?",
                 @"I thought us {19} tend to show our true selves at night. You know it’s the time where you can really let loose.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 60, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 63, 
+                },
+        }
     }
 },
 // ------------------------------------------------------------------

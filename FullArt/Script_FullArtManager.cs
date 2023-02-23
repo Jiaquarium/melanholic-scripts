@@ -40,6 +40,13 @@ public enum FullArtPortrait
     MyneGlare = 51,
     MyneFeignedConcern = 52,
     MyneConfident = 53,
+    Ursie = 60,
+    UrsieHatTilt = 61,
+    UrsieGrumble = 62,
+    UrsieExcited = 63,
+    UrsieSerious = 64,
+    UrsieUpset = 65,
+    UrsieHatTiltSerious = 66,
 }
 
 public class Script_FullArtManager : MonoBehaviour
@@ -115,6 +122,14 @@ public class Script_FullArtManager : MonoBehaviour
     [SerializeField] private Script_FullArt IdsSusPositiveFullArt;
     [SerializeField] private Script_FullArt IdsPossessedPositiveFullArt;
 
+    [SerializeField] private Script_FullArt UrsieFullArt;
+    [SerializeField] private Script_FullArt UrsieHatTiltFullArt;
+    [SerializeField] private Script_FullArt UrsieGrumbleFullArt;
+    [SerializeField] private Script_FullArt UrsieExcitedFullArt;
+    [SerializeField] private Script_FullArt UrsieSeriousFullArt;
+    [SerializeField] private Script_FullArt UrsieUpsetFullArt;
+    [SerializeField] private Script_FullArt UrsieHatTiltSeriousFullArt;
+
     private Coroutine fullArtCoroutine;
     private Coroutine bgCoroutine;
     
@@ -169,6 +184,14 @@ public class Script_FullArtManager : MonoBehaviour
             FullArtPortrait.IdsSuperHappyBashful => IdsSuperHappyBashfulFullArt,
             FullArtPortrait.IdsSusPositive => IdsSusPositiveFullArt,
             FullArtPortrait.IdsPossessedPositive => IdsPossessedPositiveFullArt,
+
+            FullArtPortrait.Ursie => UrsieFullArt,
+            FullArtPortrait.UrsieHatTilt => UrsieHatTiltFullArt,
+            FullArtPortrait.UrsieGrumble => UrsieGrumbleFullArt,
+            FullArtPortrait.UrsieExcited => UrsieExcitedFullArt,
+            FullArtPortrait.UrsieSerious => UrsieSeriousFullArt,
+            FullArtPortrait.UrsieUpset => UrsieUpsetFullArt,
+            FullArtPortrait.UrsieHatTiltSerious => UrsieHatTiltSeriousFullArt,
 
             _ => null,
         };
