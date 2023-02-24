@@ -415,9 +415,9 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
         {
             // Force fade out of current full art because it is a "Leave Up" node. Success flow has a longer
             // pause where Moose portrait will be removed and then fade back in after the pause.
-            var currentNode = Script_DialogueManager.DialogueManager.currentNode;
-            Script_FullArtManager.Control.HideFullArt(
-                currentNode.data.FullArt,
+            var fullArtManager = Script_FullArtManager.Control;
+            fullArtManager.HideFullArt(
+                fullArtManager.activeFullArt,
                 successFullArtFadeOutSpeed,
                 () => {
                     StartCoroutine(WaitToReact(pauseBeforeNewNodeSuccessTime, StartSuccessDialogue));

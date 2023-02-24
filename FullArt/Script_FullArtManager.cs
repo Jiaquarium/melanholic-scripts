@@ -12,6 +12,8 @@ public enum FullArtPortrait
 {
     None = 0,
     Moose = 1,
+    MooseAlt = 2,
+    MooseInterested = 3,
     Ellenia = 10,
     ElleniaAngry = 11,
     ElleniaAngrySmile = 12,
@@ -94,6 +96,8 @@ public class Script_FullArtManager : MonoBehaviour
     /// </summary>
     [Space][Header("Full Art Overrides")][Space]
     [SerializeField] private Script_FullArt MooseFullArt;
+    [SerializeField] private Script_FullArt MooseAltFullArt;
+    [SerializeField] private Script_FullArt MooseInterestedFullArt;
 
     [SerializeField] private Script_FullArt ElleniaFullArt;
     [SerializeField] private Script_FullArt ElleniaAngryFullArt;
@@ -158,6 +162,9 @@ public class Script_FullArtManager : MonoBehaviour
         Script_FullArt GetDefaultFullArt(FullArtPortrait fullArtType) => fullArtType switch
         {
             FullArtPortrait.Moose => MooseFullArt,
+            FullArtPortrait.MooseAlt => MooseAltFullArt,
+            FullArtPortrait.MooseInterested => MooseInterestedFullArt,
+            
             FullArtPortrait.Ellenia => ElleniaFullArt,
             FullArtPortrait.ElleniaAngry => ElleniaAngryFullArt,
             FullArtPortrait.ElleniaAngrySmile => ElleniaAngrySmileFullArt,

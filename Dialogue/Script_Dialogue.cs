@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-23 16:07:02
+// Last created by Dialogue Exporter at 2023-02-24 11:54:28
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3148,7 +3148,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Time. Relative in theory, absolute in practice. You kill it or it kills you.",
                 @"It’s no use. The {22}. It’s been decided. Precisely.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 2, 
+                },
+        }
     }
 },
 {
@@ -3162,7 +3170,15 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"No outsiders means no more new spells for me.",
                 @"I’ll have to focus on only the spells I know then.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 2, 
+                },
+        }
     }
 },
 {
@@ -6501,7 +6517,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"They help my mind. They’ll help yours too. If you let them.",
                 @"Shouldn’t leave here until I’ve learned this final spell. No.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 2, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 2, 
+                },
+        }
     }
 },
 {
@@ -6544,7 +6573,25 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Enough loafing! This should be it!",
                 @"Here, I know I’ve been distracted. Perhaps even obsessed. Unacceptable possibly.",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 3, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 3, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 3, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 1, 
+                },
+        }
     }
 },
 {
@@ -6559,7 +6606,25 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Custom cryokinesis! Derivations via fractalization! Impressive work!",
                 @"Can it be... I...| <b>I’ve got it!</b>",
         },
-        
+        metadata = new Model_Languages.Metadata[]
+        {
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 1, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 3, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 3, 
+                },
+                new Model_Languages.Metadata
+                {
+                    fullArtOverride = 3, 
+                },
+        }
     }
 },
 {
