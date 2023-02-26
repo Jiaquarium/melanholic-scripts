@@ -55,6 +55,7 @@ public class Script_MovingNPC : Script_StaticNPC
     [SerializeField] private AudioClip moveSetStartSFXClip;
 
     private Animator animator;
+    private Directions directionOnTalk;
     
     public bool DefaultFacingDirectionDisabled
     {
@@ -79,7 +80,10 @@ public class Script_MovingNPC : Script_StaticNPC
     
     private Script_InteractionBoxController interactionBoxController { get; set; }
 
-    protected override void OnEnable() {
+    public bool IsAutoMoveTimelineForcePaused { get; private set; }
+
+    protected override void OnEnable()
+    {
         base.OnEnable();
     }
     
@@ -97,7 +101,11 @@ public class Script_MovingNPC : Script_StaticNPC
 
     protected override void TriggerDialogue()
     {
-        if (!disableFacingPlayerOnDialogue)     FacePlayer();
+        if (!disableFacingPlayerOnDialogue)
+        {
+            directionOnTalk = FacingDirection;
+            FacePlayer();
+        }
         base.TriggerDialogue();
     }
 
@@ -141,11 +149,17 @@ public class Script_MovingNPC : Script_StaticNPC
         // Meaning it was a valid continuation but there are no more nodes
         if (didContinue == false && defaultFacingDirection != Directions.None)
         {
+            if (myDirector != null)
+            {
+                FaceDirection(directionOnTalk);
+                return;
+            }
+            
             FaceDefaultDirection();
             Dev_Logger.Debug($"MovingNPC returning to default direction: {defaultFacingDirection}");
         }
     }
-
+    
     /// <summary>
     /// For MovingNPCs controlled via Timeline, allows to pause their moves to speak with Player
     /// 
@@ -158,11 +172,10 @@ public class Script_MovingNPC : Script_StaticNPC
     {
         if (isSetAutoMoveTimelineSpeed)
             MyDirector.playableGraph.GetRootPlayable(0).SetSpeed(autoMoveTimelineSpeed);
-
         
         if (State == States.Dialogue)
         {
-            if (myDirector.playableGraph.IsPlaying())
+            if (myDirector.playableGraph.IsValid() && myDirector.playableGraph.IsPlaying())
             {
                 myDirector.Pause();
                 MyAnimator.SetBool(NPCMoving, false);
@@ -173,17 +186,22 @@ public class Script_MovingNPC : Script_StaticNPC
         }
         else if (State == States.Interact)
         {
-            if (HandleBlocking(facingDirection))
+            if (IsAutoMoveTimelineForcePaused)
             {
                 myDirector.Pause();
                 MyAnimator.SetBool(NPCMoving, false);
             }
-            else if (!myDirector.playableGraph.IsPlaying())
+            else if (HandleBlocking(facingDirection))
+            {
+                myDirector.Pause();
+                MyAnimator.SetBool(NPCMoving, false);
+            }
+            else if (myDirector.playableGraph.IsValid() && !myDirector.playableGraph.IsPlaying())
             {
                 myDirector.Play();
                 MyAnimator.SetBool(NPCMoving, true);
             }
-            else if (myDirector.playableGraph.IsPlaying())
+            else if (myDirector.playableGraph.IsValid() && myDirector.playableGraph.IsPlaying())
                 MyAnimator.SetBool(NPCMoving, true);
         }
 
@@ -463,6 +481,20 @@ public class Script_MovingNPC : Script_StaticNPC
     public void FaceDown()
     {
         FaceDirection(Directions.Down);
+    }
+
+    public void SetPauseAutoMoveTimeline(bool isPaused)
+    {
+        IsAutoMoveTimelineForcePaused = isPaused;
+    }
+
+    /// <summary>
+    /// Call at the end of AutoMove timeline to stop repeating the timeline OnEnable (playOnAwake will actually
+    /// play the timeline OnEnable not Awake).
+    /// </summary>
+    public void StopAutoMoveTimelineReplay()
+    {
+        myDirector.playOnAwake = false;
     }
     
     /// Timeline Signal Functions END =============================================================

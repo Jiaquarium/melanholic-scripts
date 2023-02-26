@@ -12,6 +12,11 @@ using UnityEditor;
 /// <summary>
 /// Add Cinemachine track to Timeline to control VCams via Timeline
 /// Timeline: Use a "controller" PlayableDirector if controlling multiple things
+/// 
+/// NPC Walk Paths:
+/// Ursie
+///     - walk from Elder to stopping position as if just spoke with Elder about the infestation
+///     - timeline should repeat until Ursie is at Default/Resting position, then will spawn there
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Script_TimelineController))]
@@ -49,6 +54,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC KingEclaire;
 
     [SerializeField] private Script_DemonNPC Ids;
+
+    [SerializeField] private float waitForUrsieWalkPathTime;
 
     // -------------------------------------------------------------------------------------
     // Painting Entrances to the "Worlds"
@@ -89,6 +96,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     private float fadeTime;
 
     private bool isGlitched;
+    private Coroutine waitForUrsieWalkPath;
     
     private Dictionary<string, Seasons> SeasonStonesEnums = new Dictionary<string, Seasons>{
         {"collectible_winter-stone",    Seasons.Winter},
@@ -121,6 +129,12 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         {
             Script_GlitchFXManager.Control.SetBlend(0f);
             isGlitched = false;
+        }
+
+        if (waitForUrsieWalkPath != null)
+        {
+            StopCoroutine(waitForUrsieWalkPath);
+            waitForUrsieWalkPath = null;
         }
     }
 
@@ -398,9 +412,23 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     {
         // Ids runs away on tutorial run.
         if (ShouldPlayIdsIntro())
+        {
             Ids.gameObject.SetActive(true);
+
+            // Delay Ursie walk
+            Ursie.SetPauseAutoMoveTimeline(true);
+
+            waitForUrsieWalkPath = StartCoroutine(WaitToStartUrsieWalkPath());
+        }
         else
             Ids.gameObject.SetActive(false);
+        
+        IEnumerator WaitToStartUrsieWalkPath()
+        {
+            yield return new WaitForSeconds(waitForUrsieWalkPathTime);
+
+            Ursie.SetPauseAutoMoveTimeline(false);
+        }
     }
 
     // -------------------------------------------------------------------------------------

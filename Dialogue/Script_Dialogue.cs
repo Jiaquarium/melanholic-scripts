@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-24 11:54:28
+// Last created by Dialogue Exporter at 2023-02-26 13:17:41
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3073,7 +3073,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"To be frank,| some strange things have been happening at my <b>saloon</b>...| strangeness I can take... but my customers!",
-                @"...So I’m here to speak to the {83} about it.",
+                @"...Yep, I just spoke to the {83} about all this...",
         },
         metadata = new Model_Languages.Metadata[]
         {
