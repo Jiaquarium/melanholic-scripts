@@ -43,4 +43,20 @@ public class Script_NPCEventsManager : MonoBehaviour
         if (OnNPCRandomAnimatorStopForceDefault != null)
             OnNPCRandomAnimatorStopForceDefault();
     }
+
+    public delegate void MovingNPCTriggerDialogueDelegate(Script_MovingNPC npc);
+    public static event MovingNPCTriggerDialogueDelegate OnMovingNPCTriggerDialogue;
+    public static void MovingNPCTriggerDialogue(Script_MovingNPC npc)
+    {
+        if (OnMovingNPCTriggerDialogue != null)
+            OnMovingNPCTriggerDialogue(npc);
+    }
+
+    public delegate void MovingNPCEndDialogueDelegate(Script_MovingNPC npc);
+    public static event MovingNPCEndDialogueDelegate OnMovingNPCEndDialogue;
+    public static void MovingNPCEndDialogue(Script_MovingNPC npc)
+    {
+        if (OnMovingNPCEndDialogue != null)
+            OnMovingNPCEndDialogue(npc);
+    }
 }

@@ -80,7 +80,7 @@ public class Script_MovingNPC : Script_StaticNPC
     
     private Script_InteractionBoxController interactionBoxController { get; set; }
 
-    public bool IsAutoMoveTimelineForcePaused { get; private set; }
+    public bool IsAutoMoveTimelineForcePaused { get; set; }
 
     protected override void OnEnable()
     {
@@ -107,6 +107,8 @@ public class Script_MovingNPC : Script_StaticNPC
             FacePlayer();
         }
         base.TriggerDialogue();
+
+        Script_NPCEventsManager.MovingNPCTriggerDialogue(this);
     }
 
     /// <summary>
@@ -125,6 +127,8 @@ public class Script_MovingNPC : Script_StaticNPC
             Dev_Logger.Debug($"{this.name} returning my state to {States.Interact}");
 
             State = States.Interact;
+
+            Script_NPCEventsManager.MovingNPCEndDialogue(this);
         }
         
         return didContinue;
