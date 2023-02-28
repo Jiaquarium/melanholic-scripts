@@ -55,6 +55,18 @@ public class Dev_InventoryTester : MonoBehaviour
         AddSuperSmallKey();
     }
 
+    public void UnequipAll()
+    {
+        Script_Game.Game.UnequipAll();
+    }
+
+    // ------------------------------------------------------------------------
+    //  States
+    public void Day2()
+    {
+        AddPsychicDuck();
+    }
+    
     public void GrandMirror()
     {
         AddPsychicDuck();
@@ -72,11 +84,6 @@ public class Dev_InventoryTester : MonoBehaviour
         AddIceSpike();
         AddMelancholyPiano();
         AddLastElevator();
-    }
-
-    public void UnequipAll()
-    {
-        Script_Game.Game.UnequipAll();
     }
     
     // ------------------------------------------------------------------------

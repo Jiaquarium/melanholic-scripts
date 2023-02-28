@@ -165,14 +165,14 @@ public class Dev_GameHelper : MonoBehaviour
 	{
 		if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha1))
             TestCaseKey1();
-        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2))
-            TestCaseKey2();
-        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha3))
-            TestCaseKey3();
-        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha4))
-            TestCaseKey4();
-        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha5))
-            TestCaseKey5();
+        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2))
+        //     TestCaseKey2();
+        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha3))
+        //     TestCaseKey3();
+        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha4))
+        //     TestCaseKey4();
+        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha5))
+        //     TestCaseKey5();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.F))
             Act2NewState();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.G))
@@ -189,30 +189,37 @@ public class Dev_GameHelper : MonoBehaviour
 		}
 		else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.N))
 		{
-			Script_Game game = Script_Game.Game;
-                    
-			Model_Exit exitData = new Model_Exit(
-				game.level,
-				game.GetPlayer().transform.position,
-				game.GetPlayer().FacingDirection
-			);
-			
-			game.ElevatorCloseDoorsCutScene(
-				null,
-				null,
-				Script_Elevator.Types.Last,
-				exitData,
-				Script_Exits.ExitType.SaveAndRestartOnLevel
-			);
+			SaveRestartOnLevel();
 		}
 
         //  Replace these with necessary milestone cases
-        void TestCaseKey1() => Act1EndingFrontOfMirror();
-        void TestCaseKey2() => Act2SeaVignette();
-        void TestCaseKey3() => SpecialIntroWellsWorld();
-        void TestCaseKey4() => SpecialIntroCelestialGardens();
-        void TestCaseKey5() => SpecialIntroXXXWorld();
+        void TestCaseKey1() => Day2SaveAndRestart(1);
+        // void TestCaseKey2() => Act2SeaVignette();
+        // void TestCaseKey3() => SpecialIntroWellsWorld();
+        // void TestCaseKey4() => SpecialIntroCelestialGardens();
+        // void TestCaseKey5() => SpecialIntroXXXWorld();
 	}
+
+    private void SaveRestartOnLevel()
+    {
+        Script_Game game = Script_Game.Game;
+
+        game.CleanRun();
+                
+        Model_Exit exitData = new Model_Exit(
+            game.level,
+            game.GetPlayer().transform.position,
+            game.GetPlayer().FacingDirection
+        );
+        
+        game.ElevatorCloseDoorsCutScene(
+            null,
+            null,
+            Script_Elevator.Types.Last,
+            exitData,
+            Script_Exits.ExitType.SaveAndRestartOnLevel
+        );
+    }
 
     private void HandleTrailerDevInput()
 	{
@@ -865,6 +872,27 @@ public class Dev_GameHelper : MonoBehaviour
     // Freedom Milestone States
     // These should not save state.
     
+    /// <summary>
+    /// Milestone FEBRUARY
+    /// </summary>
+    public void Day2SaveAndRestart(int testCaseIdx)
+    {
+        var game = Script_Game.Game;
+        
+        game.ChangeStateCutScene();
+
+        // Put up canvas
+        ShowSaveDevCanvas(@$"TEST CASE {testCaseIdx}");
+
+        inventoryTester.Day2();
+        woodsBehavior.didStartThought = true;
+        
+        game.NextRunSaveInitialize();
+    }
+    
+    /// <summary>
+    /// Milestone JANUARY
+    /// </summary>
     public void Act1EndingFrontOfMirror()
     {
         inventoryTester.GrandMirror();

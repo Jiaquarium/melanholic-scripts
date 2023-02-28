@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-26 13:17:41
+// Last created by Dialogue Exporter at 2023-02-28 12:32:41
 
 using System.Collections;
 using System.Collections.Generic;
@@ -4614,7 +4614,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 new Model_Languages.Metadata
                 {
-                    fullArtOverride = 12, 
+                    fullArtOverride = 14, 
                 },
                 new Model_Languages.Metadata
                 {

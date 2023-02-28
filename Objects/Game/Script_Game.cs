@@ -2382,7 +2382,7 @@ public class Script_Game : MonoBehaviour
 
     // ------------------------------------------------------------------
 
-    private void CleanRun()
+    public void CleanRun()
     {
         clockManager.InitialState();
         scarletCipherManager.InitialState();
