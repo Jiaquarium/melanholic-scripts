@@ -81,6 +81,7 @@ public class Script_MovingNPC : Script_StaticNPC
     private Script_InteractionBoxController interactionBoxController { get; set; }
 
     public bool IsAutoMoveTimelineForcePaused { get; set; }
+    public bool IsAutoMoveTimelineDone { get; private set; }
 
     protected override void OnEnable()
     {
@@ -499,6 +500,7 @@ public class Script_MovingNPC : Script_StaticNPC
     public void StopAutoMoveTimelineReplay()
     {
         myDirector.playOnAwake = false;
+        IsAutoMoveTimelineDone = true;
     }
     
     /// Timeline Signal Functions END =============================================================

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-02-28 12:32:41
+// Last created by Dialogue Exporter at 2023-03-01 10:27:44
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1394,7 +1394,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Dear! Have you been up all night?",
                 @"They say you can hallucinate from lack of sleep.",
                 @"Your mind might be playing tricks on you.",
-                @"<size=16>C̵̻̏á̵ͅn̶̥͋ ̷̱̇y̸͇̚o̶̪͝ũ̴͕ ̴͙͋é̵̝v̸̡̚e̴̦̒ǹ̸͚ ̴̜̓t̵̜͌e̵̥͝l̵͇͛l̶̟̚ ̴̮͐u̵̾͜ș̶́ ̸͎̍a̵̮̓p̵͓͆ȃ̴̭r̷͔̕t̵͖̆ ̴͋ͅa̵̛̪n̵͍̓y̴̛ͅm̸̟̐o̶̬̓ȑ̶͉e̸͖̊?̶̧͗</size>",
+                @"<size=16>C̵a̴n̵ ̷y̴o̶u̴ ̴e̷v̶e̸n̸ ̷t̵e̴l̵l̴ ̵u̷s̸ ̶a̷p̴a̵r̶t̴ ̶a̸n̵y̴m̵o̸r̶e̵?̷</size>",
                 @"Why don’t we just keep it our little secret, everything you have witnessed down here? He-he...",
                 @"If I may say so, the best solution for you is to find the nearest exit and get some rest, trust me, dear.",
                 @"And please, refrain from returning.| It is for your own good.",
@@ -4973,7 +4973,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 },
                 new Model_Languages.Metadata
                 {
-                    fullArtOverride = 13, 
+                    fullArtOverride = 10, 
                 },
                 new Model_Languages.Metadata
                 {
@@ -5476,7 +5476,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{12}",
         EN = new string[]
         {
-                @"Y̶̦̐o̸͔̍u̵͔̾ ̸̦̌l̷͍̿i̶̟͘k̸̡̐e̵̛͎ ̶͓̾ḭ̶͠t̷̖͗ ̷̺̃r̵͈͛i̵͇͊g̵̭͛h̴̯͑t̸̝̓?̸̟̕",
+                @"Y̸o̴u̷ ̶l̶i̸k̶e̴ ̴i̸t̸,̵ ̶r̷i̵g̶h̷t̴?̵",
                 @"Obviously it’s about being alone...hehehe.",
                 @"I’d say it’s even a bit autobiographical.",
                 @"You can relate too, I’m sure, right!?",

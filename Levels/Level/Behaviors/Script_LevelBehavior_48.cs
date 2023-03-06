@@ -849,7 +849,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
         IEnumerator WaitToStartSunday()
         {
             yield return new WaitForSeconds(WaitBeforeFinalSaveTime);
-
+            
             game.ShowSaveAndRestartMessageDefault();
             game.StartSundayCycleSaveInitialize();
         }   

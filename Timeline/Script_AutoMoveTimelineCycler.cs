@@ -43,6 +43,13 @@ public class Script_AutoMoveTimelineCycler : MonoBehaviour
   
         timelineIdx = 0;
 
+        // Start at frame 0 of timeline. Prevents teleporting to this frame when the timeline
+        // begins after the initial wait period (if any)
+        myDirector.playableAsset = timelines[timelineIdx];
+        myNPC.FaceDirection(directions[timelineIdx]);
+        myDirector.time = 0f;
+        myDirector.Evaluate();
+        
         WaitToPlayTimeline(timelineIdx, Directions.None);
     }
 
@@ -70,8 +77,12 @@ public class Script_AutoMoveTimelineCycler : MonoBehaviour
 
     private void WaitToPlayTimeline(int i, Directions waitFaceDir)
     {
+        if (myDirector == null)
+            return;
+        
         myDirector.playableAsset = timelines[i];
         currentDir = directions[i];
+        
         nextTimelineCoroutine = StartCoroutine(WaitToPlay());
 
         HandleFaceDirection();

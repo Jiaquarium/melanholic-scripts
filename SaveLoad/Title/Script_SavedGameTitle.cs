@@ -74,7 +74,7 @@ public class Script_SavedGameTitle : MonoBehaviour
         float playTime          = savedGame.playTime;
 
         runText.text            = run.FormatRun();
-        clockTimeText.text      = clockTime.FormatSecondsClock(isClose: clockTime >= Script_Clock.WarningTime);
+        clockTimeText.text      = clockTime.FormatSecondsClock(isClose: false);
         nameText.text           = name;
         
         maskCountText.text      = savedGame.maskCount.ToString();

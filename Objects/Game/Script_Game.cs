@@ -2244,7 +2244,7 @@ public class Script_Game : MonoBehaviour
             runsManager.SetRun(dayId);
         
         CleanRun();
-        
+
         SaveWaitRestart(isLobbySpawn);
     }
 
@@ -2267,6 +2267,10 @@ public class Script_Game : MonoBehaviour
         
         runsManager.StartSundayCycle();
         CleanRun();
+
+        // Set clockTime to 6:00am
+        clockManager.SetEndTime();
+        clockManager.ClockState = Script_Clock.States.Paused;
 
         SaveWaitRestart(isLobbySpawn);
     }

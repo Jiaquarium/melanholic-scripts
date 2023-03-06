@@ -51,11 +51,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_DemonNPC Suzette;
     [SerializeField] private Script_DemonNPC Moose;
     [SerializeField] private Script_DemonNPC Ursie;
+    [SerializeField] private PlayableDirector UrsieDirector;
+    [SerializeField] private List<TimelineAsset> UrsieWalkPathTimelines;
     [SerializeField] private Script_DemonNPC KingEclaire;
 
     [SerializeField] private Script_DemonNPC Ids;
-
-    [SerializeField] private float waitForUrsieWalkPathTime;
 
     // -------------------------------------------------------------------------------------
     // Painting Entrances to the "Worlds"
@@ -96,7 +96,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     private float fadeTime;
 
     private bool isGlitched;
-    private Coroutine waitForUrsieWalkPath;
     
     private Dictionary<string, Seasons> SeasonStonesEnums = new Dictionary<string, Seasons>{
         {"collectible_winter-stone",    Seasons.Winter},
@@ -129,12 +128,6 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         {
             Script_GlitchFXManager.Control.SetBlend(0f);
             isGlitched = false;
-        }
-
-        if (waitForUrsieWalkPath != null)
-        {
-            StopCoroutine(waitForUrsieWalkPath);
-            waitForUrsieWalkPath = null;
         }
     }
 
@@ -415,20 +408,22 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         {
             Ids.gameObject.SetActive(true);
 
-            // Delay Ursie walk
-            Ursie.SetPauseAutoMoveTimeline(true);
-
-            waitForUrsieWalkPath = StartCoroutine(WaitToStartUrsieWalkPath());
+            // For Ids intro, Ursie should take the longer walk path
+            UrsieDirector.playableAsset = UrsieWalkPathTimelines[0];
+            UrsieDirector.Play();
         }
         else
-            Ids.gameObject.SetActive(false);
-        
-        IEnumerator WaitToStartUrsieWalkPath()
         {
-            yield return new WaitForSeconds(waitForUrsieWalkPathTime);
+            Ids.gameObject.SetActive(false);
 
-            Ursie.SetPauseAutoMoveTimeline(false);
+            // When Ids is not there, Ursie should take the shorter walk path, so bottom of map isn't too empty
+            UrsieDirector.playableAsset = UrsieWalkPathTimelines[1];
+            UrsieDirector.Play();
         }
+
+        // If Ursie walk path is done, then start off at spawn position, no walk path
+        if (Ursie.IsAutoMoveTimelineDone)
+            UrsieDirector.playableAsset = null;
     }
 
     // -------------------------------------------------------------------------------------
