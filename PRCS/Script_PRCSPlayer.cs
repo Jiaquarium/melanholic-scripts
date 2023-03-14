@@ -65,7 +65,7 @@ public class Script_PRCSPlayer : MonoBehaviour
     {
         if (isDetectingReturn)
         {
-            if (game.GetPlayer().MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+            if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWInteract))
             {
                 isReturnPressedDone         = true;
                 isDetectingReturn           = false;

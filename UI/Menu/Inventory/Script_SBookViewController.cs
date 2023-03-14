@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Rewired;
 
 [RequireComponent(typeof(Script_InventoryViewInputManager))]
 /// <summary>
@@ -30,7 +31,13 @@ public class Script_SBookViewController : Script_SlotsViewController
         // or exited via HandleExitInput. This ensures we have state for InventoryState
         // and SlotId up-to-date before checking for Hot Keys.
         if (hotKeyInputManager != null)
-            hotKeyInputManager.OnHotkey(menuController.InventoryState, lastSlotIndex);
+        {
+            Controller controller = Script_PlayerInputManager.Instance.GetLastActiveController;
+            if (controller != null && controller.type == ControllerType.Joystick)
+                hotKeyInputManager.OnHotkeyJoystick(menuController.InventoryState, lastSlotIndex);
+            else
+                hotKeyInputManager.OnHotkey(menuController.InventoryState, lastSlotIndex);
+        }
     }
     
     protected override void HandleExitInput() {

@@ -116,8 +116,10 @@ public class Script_PlayerGhost : MonoBehaviour
     public void SetMoveAnimation(bool isMoving)
     {
         bool isMovingAnimation = isMoving
-            || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
-            || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f;
+            || player.IsInputAxesMoving(
+                player.RewiredInput.GetAxis(Const_KeyCodes.RWHorizontal),
+                player.RewiredInput.GetAxis(Const_KeyCodes.RWVertical)
+            );
         
         animator.SetBool(
             Script_PlayerMovement.PlayerMovingAnimatorParam,

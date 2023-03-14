@@ -5,6 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System;
 using UnityEngine.InputSystem;
+using Rewired;
 
 /// <summary>
 /// For TimelineAndEnter, this will start tracking Enter/Space input after timeline is done
@@ -55,18 +56,17 @@ public class Script_ItemPickUpTheatricsPlayer : MonoBehaviour
 
     void Update()
     {
-        PlayerInput playerInput = game.GetPlayer().MyPlayerInput;
+        Player rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
         
         // track enter or space
         if (
             isDetectingEnter &&
             (
-                playerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
-                || playerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame()
+                rewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit)
+                || rewiredInput.GetButtonDown(Const_KeyCodes.RWInteract)
             )
         )
         {
-            Dev_Logger.Debug("Detected enter or space!!!!!");    
             isEnterOrSpacePressed = true;
             isDetectingEnter = false;
         }

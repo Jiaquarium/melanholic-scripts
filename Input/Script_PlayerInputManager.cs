@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using System;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,16 +29,30 @@ public class Script_PlayerInputManager : MonoBehaviour
     /// </summary>
     /// <typeparam name="string"></typeparam>
     private List<string> rebindableActionNames = new List<string>(){
-        Const_KeyCodes.Interact,
-        Const_KeyCodes.Inventory,
-        Const_KeyCodes.MaskEffect,
-        Const_KeyCodes.Speed,
+        "Interact", // TBD Const_KeyCodes.Interact,
+        "Inventory", // TBD Const_KeyCodes.Inventory,
+        "MaskEffect", // TBD Const_KeyCodes.MaskEffect,
+        "Speed", // TBD Const_KeyCodes.Speed,
     };
 
     public PlayerInput MyPlayerInput { get => playerInput; }
+    public Rewired.Player RewiredInput { get; set; }
+    public Rewired.Controller GetLastActiveController => RewiredInput.controllers.GetLastActiveController();
 
-    public void Awake()
+    void OnEnable()
     {
+        Rewired.ReInput.ControllerConnectedEvent += JoystickConnected;
+    }
+
+    void OnDisable()
+    {
+        Rewired.ReInput.ControllerConnectedEvent -= JoystickConnected;
+    }
+    
+    void Awake()
+    {        
+        RewiredInput = Rewired.ReInput.players.GetPlayer(Script_Player.PlayerId);
+        
         if (Instance == null)
         {
             // Persist through scenes
@@ -50,6 +65,9 @@ public class Script_PlayerInputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get all current InputActions for the declared rebindable actions  
+    /// </summary>
     public List<InputAction> GetRebindableActions()
     {
         var inputActions = new List<InputAction>();
@@ -63,6 +81,9 @@ public class Script_PlayerInputManager : MonoBehaviour
         return inputActions;
     }
 
+    /// <summary>
+    /// Fetch override paths from the Player Input module and save into settings data
+    /// </summary>
     public void Save(Model_SettingsData settingsData)
     {
         // Make List of nulls to populate with override paths, if any
@@ -100,8 +121,10 @@ public class Script_PlayerInputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// JsonUtility will take care of building the model with the proper fields (e.g. if a player
-    /// changes the Interact field to Interactz, it will skip the value).
+    /// Apply saved overrides to the Input module.
+    /// 
+    /// Note: JsonUtility will take care of building the model with the proper fields (e.g. if a player
+    /// changes the Interact field key to "Interactz", it will skip the value).
     /// We use GetKeyboardControl to then validate the given path.
     /// </summary>
     public void Load(Model_SettingsData settingsData)
@@ -160,9 +183,10 @@ public class Script_PlayerInputManager : MonoBehaviour
     {
         switch (actionName)
         {
-            case Const_KeyCodes.Interact:
+            // TBD case Const_KeyCodes.Interact:
+            case "Interact":
                 InputAction inputAction = MyPlayerInput.actions.FindActionMap(Const_KeyCodes.UIMap)
-                    .FindAction(Const_KeyCodes.UISubmit);
+                    .FindAction("Submit");
                 
                 int controlBindingIndex = GetFirstControlBindingIndex(inputAction);
                 inputAction.ApplyBindingOverride(
@@ -222,6 +246,20 @@ public class Script_PlayerInputManager : MonoBehaviour
     }
     
     private string FilePath => $"{Script_SaveGameControl.path}/{Script_Utils.SettingsFile}";
+
+    private void JoystickConnected(Rewired.ControllerStatusChangedEventArgs args)
+    {
+        // If this is Game scene and Player exists, force setting Deadzones
+        if (SceneManager.GetActiveScene().name == Script_SceneManager.GameScene)
+        {
+            if (Script_Game.Game != null)
+            {
+                var player = Script_Game.Game.GetPlayer();
+                if (player != null)
+                    player.SetupRewiredDefaults();
+            }
+        }
+    }
 
     public void Setup()
     {

@@ -10,7 +10,34 @@ public static class Const_KeyCodes
     // ------------------------------------------------------------------
     // Player Map Actions
 
-    public const string Interact = "Interact";
+    // Ensure Rewired codes are different than KeyCodes to differentiate for now until we 
+    // completely migrate to Rewired.
+    public const string RWInteract = "Confirm";
+    public const string RWMaskCommand = "Mask Command";
+    public const string RWInventory = "Menu";
+    public const string RWSpeed = "Run";
+    public const string RWMask1 = "Mask 1";
+    public const string RWMask2 = "Mask 2";
+    public const string RWMask3 = "Mask 3";
+    public const string RWMask4 = "Mask 4";
+    public const string RWHorizontal = "Move Horizontal";
+    public const string RWVertical = "Move Vertical";
+    public const string RWUICancel = "UICancel";
+    public const string RWUISubmit = "UISubmit";
+    public const string RWHotKey1 = "Hot Key 1";
+    public const string RWHotKey2 = "Hot Key 2";
+    public const string RWHotKey3 = "Hot Key 3";
+    public const string RWHotKey4 = "Hot Key 4";
+    public const string RWHotKey5 = "Hot Key 5";
+    public const string RWHotKey6 = "Hot Key 6";
+    public const string RWHotKey7 = "Hot Key 7";
+    public const string RWHotKey8 = "Hot Key 8";
+    public const string RWHotKey9 = "Hot Key 9";
+    public static KeyCode KeyboardDownArrow = KeyCode.DownArrow;
+    public static KeyCode KeyboardSpace = KeyCode.Space;
+
+    
+    public const string InteractAction = "Interact";
     public const string Inventory = "Inventory";
     public const string MaskEffect = "MaskEffect";
     public const string Speed = "Speed";

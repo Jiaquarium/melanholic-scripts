@@ -104,7 +104,6 @@ public class Script_SaveGameControl : MonoBehaviour
             entriesHandler.SaveEntries(data);
             inventoryHandler.SaveInventory(data);
             equipmentHandler.SaveEquipment(data);
-            dropsHandler.SaveDrops(data);
             namesHandler.SaveNames(data);
             scarletCipherHandler.SaveScarletCipher(data);
             eventCycleHandler.SaveEventCycle(data);
@@ -143,7 +142,6 @@ public class Script_SaveGameControl : MonoBehaviour
                 entriesHandler.LoadEntries(data);
                 inventoryHandler.LoadInventory(data);
                 equipmentHandler.LoadEquipment(data);
-                dropsHandler.LoadDrops(data);
                 levelsHandler.LoadLevels(data);
                 namesHandler.LoadNames(data);
                 scarletCipherHandler.LoadScarletCipher(data);

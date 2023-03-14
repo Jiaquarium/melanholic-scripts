@@ -21,7 +21,7 @@ public class Script_SavedGameSubmenuInputManager : Script_ExitViewInputManager
         if (masterUIState != null && masterUIState.state == UIState.Disabled)
             return;
         
-        if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
+        if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel))
         {
             Dev_Logger.Debug($"SavedGameSubmenuInputManager: Cancel called, firing exitSubmenu event");
             Script_StartEventsManager.ExitSubmenu();

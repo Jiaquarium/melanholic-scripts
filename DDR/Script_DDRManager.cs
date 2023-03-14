@@ -399,9 +399,11 @@ public class Script_DDRManager : MonoBehaviour
 
     void HandleInput()
     {
+        var rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
+        
         // ask arrow where it is, and manager will post that event
         // for game -> level behavior to handle
-        if (Input.GetButtonDown(Const_KeyCodes.Left))
+        if (rewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
         {
             ScriptArrowOutlineLeft.Focus();
             
@@ -419,7 +421,7 @@ public class Script_DDRManager : MonoBehaviour
                 }
             } 
         }
-        if (Input.GetButtonDown(Const_KeyCodes.Down))
+        if (rewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWVertical))
         {
             ScriptArrowOutlineDown.Focus();
             
@@ -437,7 +439,7 @@ public class Script_DDRManager : MonoBehaviour
                 }
             } 
         }
-        if (Input.GetButtonDown(Const_KeyCodes.Up))
+        if (rewiredInput.GetButtonDown(Const_KeyCodes.RWVertical))
         {
             ScriptArrowOutlineUp.Focus();
             
@@ -455,7 +457,7 @@ public class Script_DDRManager : MonoBehaviour
                 }
             } 
         }
-        if (Input.GetButtonDown(Const_KeyCodes.Right))
+        if (rewiredInput.GetButtonDown(Const_KeyCodes.RWHorizontal))
         {
             ScriptArrowOutlineRight.Focus();
             

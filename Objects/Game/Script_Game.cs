@@ -8,6 +8,8 @@ using Cinemachine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
 using System.Linq;
+using Rewired;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Entry point for Game scene
@@ -32,13 +34,11 @@ public class Script_Game : MonoBehaviour
     // Store this separately in state so Player Movement doesn't have to query Game each frame
     // for hotel behaviors. Declare this within respective level behaviors.
     public static bool IsRunningDisabled;
-    
+
     public Model_Levels Levels;
     public string state;
     public Model_PlayerState playerState;
     public Model_PlayerThoughts thoughts;
-    public Script_PlayerThoughtsInventoryButton[] thoughtSlots;
-    [SerializeField] private Script_ThoughtSlotHolder thoughtSlotHolder;
     public Vector3 levelZeroCameraPosition;
     
     public Script_DDRManager DDRManager;
@@ -155,7 +155,6 @@ public class Script_Game : MonoBehaviour
     public Script_Player PlayerPrefab;
     public Script_AudioOneShotSource AudioOneShotSourcePrefab;
 
-    public Font[] fonts;
     public Script_VCamera VCam;
     public Script_VCamera VCamDramaticZoom;
     public Transform playerContainer;
@@ -425,8 +424,7 @@ public class Script_Game : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void OnBeforeSceneLoadRuntimeMethod()
     {
-        Dev_Logger.Debug("~~~~~~~~ TASKS RIGHT AFTER GAME SCENE LOAD ~~~~~~~~");
-        LevelsInactivate();
+        
     }
 
     public static void LevelsInactivate(bool isOnBeforeScene = true)
@@ -462,117 +460,143 @@ public class Script_Game : MonoBehaviour
 
     void OnValidate()
     {
-        thoughtSlots = thoughtSlotHolder.transform
-            .GetChildren<Script_PlayerThoughtsInventoryButton>(true);
-        thoughtSlots.SetExplicitListNav();
+        
     }
 
     /// All managers are setup as singletons in their respective Awake()
     /// NOTE: no refs to Game or other Managers in Awake, only allowed in Start()
     void Awake()
     {
-        DevCleanup();
-
-        if (Game == null)
+        try
         {
-            Game = this;
+            Dev_Logger.Debug($"Game Mount Attempt {Script_SceneManager.DevMountErrorCount}: Awake()");
+            
+            DevCleanup();
+
+            if (Game == null)
+            {
+                Game = this;
+            }
+            else if (Game != this)
+            {
+                Destroy(this.gameObject);
+            }
+
+            // Setup Singletons, Dicts, Managers and Canvases
+            saveGameControl.Setup();
+            saveCurseControl.Setup();
+            saveSettingsControl.Setup();
+
+            Script_SystemSettings.DisableMouse();
+            systemSettings.TargetFrameRate();
+            systemSettings.SetScreenSettings();
+
+            cinemachineBrain = GetComponent<CinemachineBrain>();
+
+            ChangeStateToInitiateLevel();
+
+            graphicsManager.Setup();
+            
+            scarletCipherManager.Setup();
+            namesManager.Setup();
+            exitsHandler.Setup(this);
+            
+            SFXManager.Setup();
+            BGMManager.Setup();
+            
+            hitBoxDictionary.Setup();
+            VCamManager.Setup();
+            fullArtManager.Setup();
+            PRCSManager.Setup();
+            artFrameManager.Setup();
+            itemPickUpTheatricsManager.Setup();
+            
+            runsManager.Setup();
+            weatherFXManager.Setup();
+            eventCycleManager.Setup();
+            mapNotificationsManager.Setup();
+            dayNotificationManager.Setup();
+            teletypeNotificationManager.Setup();
+            lightFXManager.Setup();
+            glitchFXManager.Setup();
+            windManager.Setup();
+
+            canvasesAudioSource.gameObject.SetActive(true);
+            
+            dialogueManager.Initialize();
+            DDRManager.Setup();
+            SetupMenu();
+
+            transitionManager.Setup();
+            canvasGroupsParent.Setup();
+            UIAspectRatioEnforcerFrame.Setup();
+            elevatorManager.Setup();
+            stickerHolsterManager.Setup();
+            activeStickerManager.Setup();
+            mynesMirrorManager.Setup();
+            HUDManager.Setup();
+            saveManager.Setup();
+            pianoManager.Setup();
+            notesTallyTracker.Setup();
+            demoNoteController.Setup();
+            questPaintingsManager.Setup();
+            maskEffectsDirectorManager.Setup();
+
+            settingsController.Setup();
+            audioConfiguration.Setup();
         }
-        else if (Game != this)
+        catch (System.Exception e)
         {
-            Destroy(this.gameObject);
+            Debug.LogError($"Error in Awake when mounting Game with following error: {e}");
+            OnMountErrorReloadScene();
         }
-        
-        saveGameControl.Setup();
-        saveCurseControl.Setup();
-        saveSettingsControl.Setup();
-
-        Script_SystemSettings.DisableMouse();
-        systemSettings.TargetFrameRate();
-        systemSettings.SetScreenSettings();
-
-        cinemachineBrain = GetComponent<CinemachineBrain>();
-
-        Script_Utils.MakeFontsCrispy(fonts);
-        
-        ChangeStateToInitiateLevel();
-
-        // Setup Singletons, Dicts, Managers and Canvases
-        graphicsManager.Setup();
-        
-        scarletCipherManager.Setup();
-        namesManager.Setup();
-        exitsHandler.Setup(this);
-        
-        SFXManager.Setup();
-        BGMManager.Setup();
-        
-        hitBoxDictionary.Setup();
-        VCamManager.Setup();
-        fullArtManager.Setup();
-        PRCSManager.Setup();
-        artFrameManager.Setup();
-        itemPickUpTheatricsManager.Setup();
-        
-        runsManager.Setup();
-        weatherFXManager.Setup();
-        eventCycleManager.Setup();
-        mapNotificationsManager.Setup();
-        dayNotificationManager.Setup();
-        teletypeNotificationManager.Setup();
-        lightFXManager.Setup();
-        glitchFXManager.Setup();
-        windManager.Setup();
-
-        canvasesAudioSource.gameObject.SetActive(true);
-        
-        dialogueManager.Initialize();
-        thoughtManager.HideThought();
-        DDRManager.Setup();
-        SetupMenu();
-
-        transitionManager.Setup();
-        canvasGroupsParent.Setup();
-        UIAspectRatioEnforcerFrame.Setup();
-        elevatorManager.Setup();
-        stickerHolsterManager.Setup();
-        activeStickerManager.Setup();
-        mynesMirrorManager.Setup();
-        HUDManager.Setup();
-        saveManager.Setup();
-        pianoManager.Setup();
-        notesTallyTracker.Setup();
-        demoNoteController.Setup();
-        questPaintingsManager.Setup();
-        maskEffectsDirectorManager.Setup();
-
-        settingsController.Setup();
-        audioConfiguration.Setup();
     }
 
     // Load Save Data and Initiate level
     void Start()
     {
-        Script_PlayerInputManager.Instance.Setup();
-        saveSettingsControl.Load();
-        Script_PlayerInputManager.Instance.UpdateKeyBindingUIs();
+        try
+        {
+            Dev_Logger.Debug($"Game Mount Attempt {Script_SceneManager.DevMountErrorCount}: Start()");
+            
+            Script_PlayerInputManager.Instance.Setup();
+            saveSettingsControl.Load();
+            Script_PlayerInputManager.Instance.UpdateKeyBindingUIs();
 
-        LoadGame();
-        
-        OnLoadTasks();
-        
-        // player creation must happen before level creation as LB needs reference to player
-        CreatePlayer();
-        
-        lanternFollower.Setup();
+            LoadGame();
+            OnLoadTasks();
+            
+            // Player creation must happen before level creation as LB needs reference to player
+            CreatePlayer();
+            
+            InitiateLevel();
 
-        InitiateLevel();
+            exitsHandler.InitializeExitFader();
+            exitsHandler.StartFadeIn();
 
-        exitsHandler.canvas.alpha = 1.0f;
-        exitsHandler.StartFadeIn();
+            timeManager.Setup();
+            
+            // Clock setup must happen after level is set so we know if we're in lobby or not
+            clockManager.Setup();
+            achievementsManager.Setup();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error in Start when mounting Game with following error: {e}");
+            OnMountErrorReloadScene();
+        }
+    }
 
-        timeManager.Setup();
-        clockManager.Setup(); // needs to happen after level is set so we know if we're in lobby or not
-        achievementsManager.Setup();
+    /// <summary>
+    /// March 2023 J Loop Tests (Freedom):
+    /// Fallback method to prevent black screen error that occurs when a mounting Setup function fails.
+    /// This will keep trying to reload scene until mounting works; not optimal but this error is rare.
+    /// </summary>
+    private void OnMountErrorReloadScene()
+    {
+        Debug.LogWarning($"Reloading scene syncronous on mounting error. Retry No. {Script_SceneManager.DevMountErrorCount}");
+        Script_SceneManager.DevMountErrorCount++;
+        SceneManager.LoadScene(Script_SceneManager.GameScene);
     }
 
     private void DevCleanup()
@@ -584,43 +608,12 @@ public class Script_Game : MonoBehaviour
 
     private void LoadGame()
     {
-        if (!Debug.isDebugBuild || Const_Dev.IsPersisting)
-        {
-            isLoadedGame = Script_SaveGameControl.control.Load();
+        isLoadedGame = Script_SaveGameControl.control.Load();
 
-            if (isLoadedGame)
-                OnDidLoad();
-        }
-        
-        // TBD TODO: REMOVE (only for dev)
-        if (Const_Dev.IsDevSpawn && !isLoadedGame)
-        {
-            OnNewGameDev();
-
-            Dev_GameHelper gameHelper = GetComponent<Dev_GameHelper>();
-            level = gameHelper.level;
-            Dev_Logger.Debug("DEV/Setting level to "+ level);
-            
-            Tilemap tileMap = Levels.levelsData[level].tileMap;
-            GameObject grid = Levels.levelsData[level].grid;
-            gridOffset = grid.transform.position;
-            Vector3 tileLocation = gameHelper.playerSpawn + gridOffset;
-            
-            // Vector3 tileLocation = tileMap.CellToWorld(gameHelper.playerSpawn);
-            Dev_Logger.Debug($"player dev spawn tileLocation: {tileLocation} on Tilemap: {tileMap}");
-
-            SetPlayerState(new Model_PlayerState(
-                    (int)tileLocation.x,
-                    (int)tileLocation.y,
-                    (int)tileLocation.z,
-                    gameHelper.facingDirection
-                )
-            );
-        }
-        else if (!isLoadedGame)
-        {
+        if (isLoadedGame)
+            OnDidLoad();
+        else
             OnNewGame();
-        }
     }
 
     private void OnDidLoad() { }
@@ -660,17 +653,7 @@ public class Script_Game : MonoBehaviour
     /// </summary>
     private void OnLoadTasks()
     {
-        if (level > tutorialEndLevel)
-        {
-            Dev_Logger.Debug($"Enabling S-book because we loaded after level {tutorialEndLevel}");
-            EnableSBook(true);
-        }
-        else
-        {
-            /// Always allow SBook for now (some people like to check out inventory at start of game)
-            EnableSBook(true); // EnableSBook(false);
-        }
-
+        EnableSBook(true);
         IdsRoomBehavior.InitializeBGMOnRun();
     }
 
@@ -790,7 +773,6 @@ public class Script_Game : MonoBehaviour
         SetupPlayerOnLevel();
 
         SetupDialogueManagerOnLevel();
-        SetupThoughtManager();
         transitionManager.InitialStateExcludingLevelFader();
 
         // Level Behavior Setups (must occur last for references to be set)
@@ -805,8 +787,6 @@ public class Script_Game : MonoBehaviour
 
     void InitLevelBehavior()
     {
-        persistentDropsContainer.ActivatePersistentDropsForLevel(level);
-        
         if (levelBehavior == null)
             return;
         
@@ -837,7 +817,6 @@ public class Script_Game : MonoBehaviour
         DestroyTmpTargets();
         DestroyAudioOneShotSources();
         grid.SetActive(false);
-        ClearDrops();
         
         StopMovingNPCThemes();
         BGMManager.SetDefault(Const_AudioMixerParams.ExposedSFXVolume);
@@ -851,11 +830,6 @@ public class Script_Game : MonoBehaviour
     private float UpdateTime()
     {
         return timeManager.UpdateTotalPlayTime();
-    }
-
-    private void ClearDrops()
-    {
-        persistentDropsContainer.DeactivatePersistentDrops();
     }
 
     public void LoadRun(int runIdx, int cycleCount)
@@ -1839,11 +1813,6 @@ public class Script_Game : MonoBehaviour
         dialogueManager.Setup();
     }
 
-    void SetupThoughtManager()
-    {
-        thoughtManager.Setup();
-    }
-
     public void ShowAndCloseThought(Model_Thought thought)
     {
         thoughtManager.ShowThought(thought);
@@ -2208,10 +2177,6 @@ public class Script_Game : MonoBehaviour
     /* =========================================================================
         _SAVELOAD_
     ========================================================================= */
-    public Model_PersistentDrop[] GetPersistentDrops()
-    {
-        return persistentDropsContainer.GetPersistentDropModels();
-    }
 
     public void SaveAchievements() => saveGameControl.SaveAchievements();
     

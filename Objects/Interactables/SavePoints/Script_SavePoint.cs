@@ -12,7 +12,7 @@ public class Script_SavePoint : Script_Interactable
 
     public void HandleAction(string action)
     {
-        if (action == Const_KeyCodes.Interact)
+        if (action == Const_KeyCodes.InteractAction)
         {
             if (isDialogueCoolDown)     return;
             SaveDialogue();

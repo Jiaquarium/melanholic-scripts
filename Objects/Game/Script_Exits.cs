@@ -97,6 +97,8 @@ public class Script_Exits : MonoBehaviour
 
     private float fadeTimer;
     
+    public Script_CanvasGroupController ExitCanvasGroupController => canvas.GetComponent<Script_CanvasGroupController>();
+    
     public bool IsHandlingExit
     {
         get => isHandlingExit;
@@ -532,6 +534,8 @@ public class Script_Exits : MonoBehaviour
         }
     }
 
+    public void InitializeExitFader() => ExitCanvasGroupController.InitialState();
+    
     public void Setup(Script_Game _game)
     {
         if (Control == null)

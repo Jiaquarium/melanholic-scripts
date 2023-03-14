@@ -10,6 +10,7 @@
 #endif
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 #if !DISABLESTEAMWORKS
 using System.Collections;
 using Steamworks;
@@ -18,11 +19,16 @@ using Steamworks;
 //
 // The SteamManager provides a base implementation of Steamworks.NET on which you can build upon.
 // It handles the basics of starting up and shutting down the SteamAPI for use.
-//
+// 
+// Script execution order set to FIRST in order to force initing Rewired after Steamworks
+// https://guavaman.com/projects/rewired/docs/Troubleshooting.html#steam-rewired-setup
 [DisallowMultipleComponent]
 public class SteamManager : MonoBehaviour {
 #if !DISABLESTEAMWORKS
 	public const int AppId = 1826060;
+
+	public GameObject rewiredInitializer;
+	public const string EntryPointScene = Script_SceneManager.TitleScene;
 	
 	protected static bool s_EverInitialized = false;
 
@@ -129,11 +135,20 @@ public class SteamManager : MonoBehaviour {
 		m_bInitialized = SteamAPI.Init();
 		if (!m_bInitialized) {
 			Debug.LogWarning("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);
-
+			InitRewired();
 			return;
 		}
-
+		
+		InitRewired();
 		s_EverInitialized = true;
+	}
+
+	private void InitRewired()
+	{
+		// If this is Start Scene (entry point in prod), we need to manually init Rewired so it is inited after Steamworks.
+		// https://guavaman.com/projects/rewired/docs/Troubleshooting.html#steam-rewired-setup
+		if (SceneManager.GetActiveScene().name == EntryPointScene)
+			rewiredInitializer.gameObject.SetActive(true);
 	}
 
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.

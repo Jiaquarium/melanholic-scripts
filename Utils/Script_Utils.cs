@@ -10,6 +10,7 @@ using System.Reflection;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using Rewired;
 
 public delegate void modifierCallback(Vector3Int tileLoc);
 
@@ -119,39 +120,22 @@ public static class Script_Utils
         return GetDirectionToVectorDict()[dir];
     }
 
-    public static Directions KeyCodeToDirections(this string keyCode)
-    {
-        switch (keyCode)
-        {
-            case Const_KeyCodes.Up:
-                return Directions.Up;
-            case Const_KeyCodes.Down:
-                return Directions.Down;
-            case Const_KeyCodes.Right:
-                return Directions.Right;
-            case Const_KeyCodes.Left:
-                return Directions.Left;
-            default:
-                return Directions.None;
-        }
-    }
-
-    public static string DirectionToKeyCode(this Directions dir)
+    public static bool GetButtonFromDirection(this Player rewiredInput, Directions dir)
     {
         switch (dir)
         {
             case Directions.Up:
-                return Const_KeyCodes.Up;
+                return rewiredInput.GetButton(Const_KeyCodes.RWVertical);
             case Directions.Down:
-                return Const_KeyCodes.Down;
+                return rewiredInput.GetNegativeButton(Const_KeyCodes.RWVertical);
             case Directions.Right:
-                return Const_KeyCodes.Right;
+                return rewiredInput.GetButton(Const_KeyCodes.RWHorizontal);
             case Directions.Left:
-                return Const_KeyCodes.Left;
+                return rewiredInput.GetNegativeButton(Const_KeyCodes.RWHorizontal);
             default:
-                return null;
+                return false;
         }
-    }
+    } 
 
     public static Vector3 MovesToVector(Model_MoveSet moveSet)
     {
@@ -1058,6 +1042,51 @@ public static class Script_Utils
     public static bool IsHitBoxBehaviorStateChanging(this Script_HitBoxBehavior hitBoxBehavior) =>
         hitBoxBehavior is Script_HitBoxRestartPlayerBehavior;
 
+    // -------------------------------------------------------------------------------------
+    // Rewired Helpers
+    // Return the first bound keyboard human readable button name
+    // https://guavaman.com/projects/rewired/docs/HowTos.html#get-element-name-for-action
+    public static string GetFirstMappingKeyboard(Player rewiredInput, string actionName)
+    {
+        foreach (ActionElementMap aem in rewiredInput.controllers.maps.ButtonMapsWithAction(
+            ControllerType.Keyboard, actionName, skipDisabledMaps: false
+        ))
+        {
+            InputAction action = ReInput.mapping.GetAction(aem.actionId);
+            
+            if (action == null)
+                continue;
+            
+            if (aem.keyCode == KeyCode.None)
+                continue;
+
+            // Get the primary key code as a string
+            string key = aem.keyCode.ToString();
+
+            return key;
+        }
+
+        return null;
+    }
+
+    // Return the first bound human readable gamepad template button name
+    // https://guavaman.com/projects/rewired/docs/HowTos.html#get-element-name-for-action
+    public static string GetFirstMappingJoystick(Controller controller, Player rewiredInput, string actionName)
+    {
+        IGamepadTemplate gamepad = controller.GetTemplate<IGamepadTemplate>();
+
+        if (gamepad == null)
+            return null;
+        
+        // Get the first button map with the Action
+        ActionElementMap mapping = rewiredInput.controllers.maps.GetFirstElementMapWithAction(actionName, skipDisabledMaps: false);
+        
+        if (mapping == null)
+            return null;
+        
+        return mapping.elementIdentifierName;
+    }
+    
     // -------------------------------------------------------------------------------------
     // File Path Helpers
     

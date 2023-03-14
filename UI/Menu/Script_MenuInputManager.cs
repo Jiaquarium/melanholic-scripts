@@ -25,11 +25,11 @@ public class Script_MenuInputManager : Script_ExitViewInputManager
             return;
         }
 
-        var playerInput = game.GetPlayer().MyPlayerInput;
+        var rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
         
         if (
-            playerInput.actions[Const_KeyCodes.Inventory].WasPressedThisFrame()
-            || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
+            rewiredInput.GetButtonDown(Const_KeyCodes.RWInventory)
+            || rewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel)
         )
         {
             Dev_Logger.Debug("{name} Exit menu input detected");
@@ -45,6 +45,6 @@ public class Script_MenuInputManager : Script_ExitViewInputManager
 
     public void Setup()
     {
-        game = FindObjectOfType<Script_Game>();
+        game = Script_Game.Game;
     }
 }

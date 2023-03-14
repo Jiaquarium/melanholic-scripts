@@ -48,6 +48,8 @@ public class Script_SettingsSystemController : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
 
     public float AudioListenerMasterVolume => AudioListener.volume;
+
+    private Rewired.Player rewiredInput;
     
     void OnValidate()
     {
@@ -57,6 +59,12 @@ public class Script_SettingsSystemController : MonoBehaviour
     void OnEnable()
     {
         InitialState();
+    }
+
+    void Start()
+    {
+        // Note: should only reference in Start or later since Player Input singleton is set in Awake
+        rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
     }
     
     void Update()
@@ -172,7 +180,7 @@ public class Script_SettingsSystemController : MonoBehaviour
 
     private void HandleMasterVolumeInput()
     {
-        if (Input.GetButtonDown(Const_KeyCodes.Left))
+        if (rewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
         {
             if (timebar.Fill > 0f)
             {
@@ -184,7 +192,7 @@ public class Script_SettingsSystemController : MonoBehaviour
             else
                 DullErrorSFX();
         }
-        else if (Input.GetButtonDown(Const_KeyCodes.Right))
+        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWHorizontal))
         {
             if (timebar.Fill < 1f)
             {

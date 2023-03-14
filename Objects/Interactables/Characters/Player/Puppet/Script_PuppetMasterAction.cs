@@ -11,7 +11,7 @@ public class Script_PuppetMasterAction : Script_PlayerAction
 
     protected override void HandleInteraction(Directions facingDirection, Vector3 location)
     {
-        if (game.GetPlayer().MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMaskCommand))
         {
             PlayerStickerEffect();
         }

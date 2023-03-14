@@ -103,7 +103,7 @@ public class Script_TimelineTeletypeReveal : MonoBehaviour
     {
         if (
             isListening
-            && Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
+            && Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit)
         )
         {
             Dev_Logger.Debug("Playing timeline on input");

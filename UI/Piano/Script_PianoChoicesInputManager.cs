@@ -8,7 +8,7 @@ public class Script_PianoChoicesInputManager : Script_ExitViewInputManager
     
     public override void HandleExitInput()
     {
-        if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
+        if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel))
         {
             pianoManager.ExitPianoChoices();
         }

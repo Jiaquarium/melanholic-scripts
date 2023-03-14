@@ -69,19 +69,7 @@ public class Script_PlayerThoughtsInventoryManager : MonoBehaviour
     public void Setup()
     {
         menuController.Setup();
-        
-        // setup number of slots
-        Transform slotHolder = thoughtSlotHolder.transform;
-        Script_PlayerThoughtsInventoryButton[] thoughtSlots = new Script_PlayerThoughtsInventoryButton[
-            slotHolder.childCount
-        ];
-        for (int i = 0; i < thoughtSlots.Length; i++)
-        {
-            thoughtSlots[i] = slotHolder.GetChild(i)
-                .GetComponent<Script_PlayerThoughtsInventoryButton>();
-        }
         game = Script_Game.Game;
-        game.thoughtSlots = thoughtSlots; 
 
         InitializeState();
     }

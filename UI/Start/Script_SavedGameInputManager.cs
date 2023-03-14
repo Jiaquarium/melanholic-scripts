@@ -16,7 +16,7 @@ public class Script_SavedGameInputManager : Script_ExitViewInputManager
 
     public override void HandleExitInput()
     {
-        if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
+        if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel))
         {
             Dev_Logger.Debug($"SavedGameInputManager: Cancel called, firing ExitFileActionsMode event");
             Script_StartEventsManager.ExitFileActions();

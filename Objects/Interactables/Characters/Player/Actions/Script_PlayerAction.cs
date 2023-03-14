@@ -8,7 +8,7 @@ using UnityEngine;
 public class Script_PlayerAction : MonoBehaviour
 {
     protected Script_Game game;
-    private Script_Player player;
+    protected Script_Player player;
     private Dictionary<Directions, Vector3> directions;
     private Script_InteractionBoxController interactionBoxController;
     [SerializeField] private AudioSource itemStashAudioSource;
@@ -68,21 +68,21 @@ public class Script_PlayerAction : MonoBehaviour
 
     protected virtual void HandleInteraction(Directions facingDirection, Vector3 location)
     {
-        var playerInput = player.MyPlayerInput;
+        var rewiredInput = player.RewiredInput;
         
-        if (playerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+        if (rewiredInput.GetButtonDown(Const_KeyCodes.RWInteract))
         {
             HandleDefaultAction(facingDirection, location);
         }
-        else if (playerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
+        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWMaskCommand))
         {
             stickerEffectsController.Effect(facingDirection);
         }
-        else if (playerInput.actions[Const_KeyCodes.Inventory].WasPressedThisFrame())
+        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWInventory))
         {
             OpenInventory();
         }
-        else if (playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
+        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel))
         {
             Dev_Logger.Debug("Open Settings");
             OpenSettings();
@@ -95,11 +95,11 @@ public class Script_PlayerAction : MonoBehaviour
 
     private void HandleLastElevatorActions(Directions facingDirection, Vector3 location)
     {
-        if (player.MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMaskCommand))
         {
             stickerEffectsController.Effect(facingDirection);
         }
-        else if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWInteract))
         {
             HandleNoInteractions();
         }
@@ -111,11 +111,11 @@ public class Script_PlayerAction : MonoBehaviour
 
     private void HandleMelancholyPianoActions(Directions facingDirection, Vector3 location)
     {
-        if (player.MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMaskCommand))
         {
             stickerEffectsController.Effect(facingDirection);
         }
-        else if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWInteract))
         {
             HandleNoInteractions();
         }
@@ -137,31 +137,31 @@ public class Script_PlayerAction : MonoBehaviour
     
     private void HandleStickerSwitch(Directions facingDirection, Vector3 location)
     {
-        if (player.MyPlayerInput.actions[Const_KeyCodes.Effect1].WasPressedThisFrame())
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask1))
         {
-            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect1}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask1}");
             stickerEffectsController.Switch(0);
         }
-        else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect2].WasPressedThisFrame())
+        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask2))
         {
-            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect2}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask2}");
             stickerEffectsController.Switch(1);
         }
-        else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect3].WasPressedThisFrame())
+        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask3))
         {
-            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect3}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask3}");
             stickerEffectsController.Switch(2);
         }
-        else if (player.MyPlayerInput.actions[Const_KeyCodes.Effect4].WasPressedThisFrame())
+        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask4))
         {
-            Dev_Logger.Debug($"Switch to {Const_KeyCodes.Effect4}");
+            Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask4}");
             stickerEffectsController.Switch(3);
         }
     }
 
     private void HandleDefaultAction(Directions facingDirection, Vector3 location)
     {
-        if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWInteract))
         {
             if (!HandleDialogue(facingDirection))
                 HandlePickUpItem(facingDirection);
@@ -170,9 +170,9 @@ public class Script_PlayerAction : MonoBehaviour
 
     private bool HandleDialogue(Directions facingDirection)
     {
-        if (!DetectNPC(Const_KeyCodes.Interact, facingDirection))
-            if (!DetectInteractableObject(Const_KeyCodes.Interact, facingDirection))
-                return DetectSavePoint(Const_KeyCodes.Interact, facingDirection);
+        if (!DetectNPC(Const_KeyCodes.InteractAction, facingDirection))
+            if (!DetectInteractableObject(Const_KeyCodes.InteractAction, facingDirection))
+                return DetectSavePoint(Const_KeyCodes.InteractAction, facingDirection);
 
         return true;
     }
@@ -189,7 +189,7 @@ public class Script_PlayerAction : MonoBehaviour
     {
         Script_Item item;
         Script_ItemObject itemObject = DetectAndOutItem(
-            Const_KeyCodes.Interact, facingDirection, out item
+            Const_KeyCodes.InteractAction, facingDirection, out item
         );
 
         /// itemObject will be null if item failed to pick up (e.g. inventory was full)
@@ -222,7 +222,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     public bool HandlePickingUp()
     {
-        if (player.MyPlayerInput.actions[Const_KeyCodes.Interact].WasPressedThisFrame())
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWInteract))
         {
             HandleEndItemDescriptionDialogue(itemShown); // current item being held above Player's head
             return true;
@@ -384,7 +384,7 @@ public class Script_PlayerAction : MonoBehaviour
 
     private void HandleExitPuppeteerNull(Directions facingDirection)
     {
-        if (player.MyPlayerInput.actions[Const_KeyCodes.MaskEffect].WasPressedThisFrame())
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMaskCommand))
         {
             stickerEffectsController.Effect(facingDirection);
         }

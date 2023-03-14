@@ -80,7 +80,7 @@ public class Script_InteractableObject : Script_Interactable
     public virtual void HandleAction(string action)
     {
         Dev_Logger.Debug($"{name} Handling action: {action}, State: {State}");
-        if (action == Const_KeyCodes.Interact && State == States.Active)
+        if (action == Const_KeyCodes.InteractAction && State == States.Active)
         {
             ActionDefault();
         }

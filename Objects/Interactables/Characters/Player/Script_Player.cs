@@ -5,6 +5,7 @@ using UnityEngine.Playables;
 using System;
 using UnityEngine.Timeline;
 using UnityEngine.InputSystem;
+using Rewired;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,6 +17,14 @@ public class Script_Player : Script_Character
 {
     public static readonly int IsEffectTrigger = Animator.StringToHash("IsEffect");
     public static readonly int IsEffectHoldBool = Animator.StringToHash("IsEffectHold");
+    
+    public static int PlayerId = 0;
+    
+    /// <summary>
+    /// Note: DefaultJoystickDeadZone needs to be the same as Input Behavior dead zone for buttons in
+    /// Rewired Input Manager for isMoving and handleAnimation checks to work consistently.
+    /// </summary>
+    public static float DefaultJoystickDeadZone = 0.5f;
     
     public Renderer graphics;
     public Action onAttackDone; 
@@ -49,6 +58,7 @@ public class Script_Player : Script_Character
     [SerializeField] private SignalReceiver signalReceiver;
 
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private Player rewiredInput;
 
     [Space][Header("Animator Controllers")][Space]
 
@@ -215,6 +225,12 @@ public class Script_Player : Script_Character
     {
         get => playerInput;
         set => playerInput = value;
+    }
+
+    public Player RewiredInput
+    {
+        get => rewiredInput;
+        private set => rewiredInput = value;
     }
 
     public void FlipSprite(bool flipX, bool flipY)
@@ -433,6 +449,8 @@ public class Script_Player : Script_Character
         playerMovementHandler.StopMovingAnimations();
         playerMovementHandler.ClearInputBuffer();
     }
+
+    public bool IsInputAxesMoving(float x, float y) => playerMovementHandler.IsInputAxesMoving(x, y);
 
     public void DefaultStickerState()
     {
@@ -695,21 +713,19 @@ public class Script_Player : Script_Character
             playerState.spawnZ
         );
 
-        // Currently unadjusted
-        Vector3 adjustedSpawnLocation = new Vector3(
-            spawnLocation.x,
-            spawnLocation.y,
-            spawnLocation.z
-        );
-
-        transform.position = adjustedSpawnLocation;
+        transform.position = spawnLocation;
         location = transform.position;
         FaceDirection(playerState.faceDirection);
         playerMovementHandler.InitializeOnLevel(grid);
         
         SwitchLight(IsLightOn);
 
-        Dev_Logger.Debug($"Player initialized at position: {adjustedSpawnLocation.x}, {adjustedSpawnLocation.y}, {adjustedSpawnLocation.z}");
+        Dev_Logger.Debug($"Player initialized at position: {spawnLocation.x}, {spawnLocation.y}, {spawnLocation.z}");
+    }
+    
+    public void SetupRewiredDefaults()
+    {
+        playerMovementHandler.SetJoystickDeadZone(DefaultJoystickDeadZone);
     }
     
     public void Setup(
@@ -719,6 +735,7 @@ public class Script_Player : Script_Character
     {   
         game = Script_Game.Game;
         MyPlayerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
+        RewiredInput = ReInput.players.GetPlayer(PlayerId);
 
         directionsToVector = Script_Utils.GetDirectionToVectorDict();
         
@@ -730,10 +747,13 @@ public class Script_Player : Script_Character
         playerStats = GetComponent<Script_PlayerStats>();
         
         playerMovementHandler.Setup(game);
+        
         playerActionHandler.Setup(game);
         playerEffect.Setup();
         
-        /// Setup character stats
+        SetupRewiredDefaults();
+        
+        // Setup character stats
         base.Setup();
 
         location = transform.position;

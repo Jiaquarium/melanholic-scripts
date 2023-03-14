@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 /// <summary>
 /// To Store Dynamically Updated names
@@ -40,29 +41,45 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         Params.Add("@@DDRCurrentTry", $"<b>{((Script_Game.Game?.IdsRoomBehavior.CurrentTry ?? 1) + 1).ToString() ?? "?"}</b>");
     }
 
-    public static void BuildInventoryParam()
+    public static void BuildDynamicParam(string paramKey, string actionName)
     {
-        if (Script_PlayerInputManager.Instance != null)
-            Params.Add(InventoryKey, $"<b>{Script_PlayerInputManager.Instance.GetHumanReadableBindingPath(Const_KeyCodes.Inventory)}</b>");
-        else
-            BuildDefaultDynamicKeys();
+        var playerInputManager = Script_PlayerInputManager.Instance;
+        
+        if (playerInputManager != null)
+        {
+            Player rewiredInput = playerInputManager.RewiredInput;
+            Controller controller = rewiredInput.controllers.GetLastActiveController();
+            
+            if (controller != null)
+            {
+                string firstBoundKey = null;
+                
+                switch (controller.type)
+                {
+                    case ControllerType.Joystick:
+                        firstBoundKey = Script_Utils.GetFirstMappingJoystick(controller, rewiredInput, actionName);
+                        break;
+                    default:
+                        firstBoundKey = Script_Utils.GetFirstMappingKeyboard(rewiredInput, actionName);
+                        break;
+                }
+                
+                if (!string.IsNullOrEmpty(firstBoundKey))
+                {
+                    Params.Add(paramKey, $"<b>{firstBoundKey}</b>");
+                    return;
+                }
+            }
+        }
+        
+        BuildDefaultDynamicKeys();
     }
+    
+    public static void BuildInventoryParam() => BuildDynamicParam(InventoryKey, Const_KeyCodes.RWInventory);
 
-    public static void BuildSpeedParam()
-    {
-        if (Script_PlayerInputManager.Instance != null)
-            Params.Add(SpeedKey, $"<b>{Script_PlayerInputManager.Instance.GetHumanReadableBindingPath(Const_KeyCodes.Speed)}</b>");
-        else
-            BuildDefaultDynamicKeys();
-    }
+    public static void BuildSpeedParam() => BuildDynamicParam(SpeedKey, Const_KeyCodes.RWSpeed);
 
-    public static void BuildMaskCommandParam()
-    {
-        if (Script_PlayerInputManager.Instance != null)
-            Params.Add(MaskCommandKey, $"<b>{Script_PlayerInputManager.Instance.GetHumanReadableBindingPath(Const_KeyCodes.MaskEffect)}</b>");
-        else
-            BuildDefaultDynamicKeys();
-    }
+    public static void BuildMaskCommandParam() => BuildDynamicParam(MaskCommandKey, Const_KeyCodes.RWMaskCommand);
 
     private static void BuildDefaultDynamicKeys()
     {

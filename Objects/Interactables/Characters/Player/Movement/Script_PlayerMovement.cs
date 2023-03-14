@@ -6,6 +6,7 @@ using System;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Linq;
+using Rewired;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -155,10 +156,6 @@ public class Script_PlayerMovement : MonoBehaviour
         HandleWalkSpeed();
         HandleAnimations();
         
-        Vector2 dirVector = new Vector2(
-            Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
-        );
-        
         // ------------------------------------------------------------------
         // Input Buffer
         
@@ -203,29 +200,31 @@ public class Script_PlayerMovement : MonoBehaviour
         // ------------------------------------------------------------------
         // New Button Presses
         
-        if (Input.GetButtonDown(Const_KeyCodes.Up))
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWVertical))
             ExecuteMove(Directions.Up, isReversed);
-        else if (Input.GetButtonDown(Const_KeyCodes.Down))
+        else if (player.RewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWVertical))
             ExecuteMove(Directions.Down, isReversed);
-        else if (Input.GetButtonDown(Const_KeyCodes.Right))
+        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWHorizontal))
             ExecuteMove(Directions.Right, isReversed);
-        else if (Input.GetButtonDown(Const_KeyCodes.Left))
+        else if (player.RewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
             ExecuteMove(Directions.Left, isReversed);
 
         // ------------------------------------------------------------------
         // Button Holds
 
         else if (
-            Input.GetButton(Const_KeyCodes.Up)
-            || Input.GetButton(Const_KeyCodes.Down)
-            || Input.GetButton(Const_KeyCodes.Right)
-            || Input.GetButton(Const_KeyCodes.Left)
+            player.RewiredInput.GetButton(Const_KeyCodes.RWVertical)
+            || player.RewiredInput.GetNegativeButton(Const_KeyCodes.RWVertical)
+            || player.RewiredInput.GetButton(Const_KeyCodes.RWHorizontal)
+            || player.RewiredInput.GetNegativeButton(Const_KeyCodes.RWHorizontal)
         )
         {
             // Handle coming from moving state, use the last move if it's still being held down.
             // (e.g. holding down Left continuously)
+            // This must be included in case Update happens between FixedUpdate. For the usual case
+            // where FixedUpdate happens before Update, FixedUpdate will handle this input.
             // Note: isMoving is reset at every level initialization
-            if (isMoving && Input.GetButton(lastMoveInput.DirectionToKeyCode()))
+            if (isMoving && player.RewiredInput.GetButtonFromDirection(lastMoveInput))
                 ExecuteMove(lastMoveInput, isReversed);
             
             // If coming from a nonmoving state, define the new direction, giving priority
@@ -234,13 +233,13 @@ public class Script_PlayerMovement : MonoBehaviour
             // and still holding that direction)
             if (!isMoving)
             {
-                if (Input.GetButton(Const_KeyCodes.Up))
+                if (player.RewiredInput.GetButton(Const_KeyCodes.RWVertical))
                     ExecuteMove(Directions.Up, isReversed);
-                else if (Input.GetButton(Const_KeyCodes.Down))
+                else if (player.RewiredInput.GetNegativeButton(Const_KeyCodes.RWVertical))
                     ExecuteMove(Directions.Down, isReversed);
-                else if (Input.GetButton(Const_KeyCodes.Right))
+                else if (player.RewiredInput.GetButton(Const_KeyCodes.RWHorizontal))
                     ExecuteMove(Directions.Right, isReversed);
-                else if (Input.GetButton(Const_KeyCodes.Left))
+                else if (player.RewiredInput.GetNegativeButton(Const_KeyCodes.RWHorizontal))
                     ExecuteMove(Directions.Left, isReversed);
             }
         }
@@ -291,14 +290,14 @@ public class Script_PlayerMovement : MonoBehaviour
     private void BufferInput()
     {
         // Buffer new button presses
-        if (Input.GetButtonDown(Const_KeyCodes.Up))
-            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Up.KeyCodeToDirections());
-        else if (Input.GetButtonDown(Const_KeyCodes.Down))
-            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Down.KeyCodeToDirections());
-        else if (Input.GetButtonDown(Const_KeyCodes.Right))
-            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Right.KeyCodeToDirections());
-        else if (Input.GetButtonDown(Const_KeyCodes.Left))
-            inputButtonDownBuffer.Enqueue(Const_KeyCodes.Left.KeyCodeToDirections());
+        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWVertical))
+            inputButtonDownBuffer.Enqueue(Directions.Up);
+        else if (player.RewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWVertical))
+            inputButtonDownBuffer.Enqueue(Directions.Down);
+        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWHorizontal))
+            inputButtonDownBuffer.Enqueue(Directions.Right);
+        else if (player.RewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
+            inputButtonDownBuffer.Enqueue(Directions.Left);
     }
 
     public void ClearInputBuffer()
@@ -507,22 +506,38 @@ public class Script_PlayerMovement : MonoBehaviour
             else
             {
                 Vector2 dirVector = new Vector2(
-                    Input.GetAxis(Const_KeyCodes.Horizontal),
-                    Input.GetAxis(Const_KeyCodes.Vertical)
+                    player.RewiredInput.GetAxis(Const_KeyCodes.RWHorizontal),
+                    player.RewiredInput.GetAxis(Const_KeyCodes.RWVertical)
                 );
 
-                if (dirVector != Vector2.zero)
+                HandleInput();
+
+                void HandleInput()
                 {
-                    if (dirVector.y > 0f)
-                        bufferedInput = Directions.Up;
-                    else if (dirVector.y < 0f)
-                        bufferedInput = Directions.Down;
-                    else if (dirVector.x > 0f)
-                        bufferedInput = Directions.Right;
-                    else if (dirVector.x < 0f)
-                        bufferedInput = Directions.Left;
-                    
-                    Dev_Logger.Debug($"Player using Fixed Buffered HOLD Move: {bufferedInput}; dirVector {dirVector}");
+                    if (dirVector != Vector2.zero)
+                    {
+                        float x = dirVector.x;
+                        float y = dirVector.y;
+
+                        // If y magnitude is greater than x, then default to U or D
+                        if (Mathf.Abs(y) >= Mathf.Abs(x))
+                        {
+                            if (y > 0)
+                                bufferedInput = Directions.Up;
+                            else
+                                bufferedInput = Directions.Down;
+                        }
+                        // If y magnitude is less, then default to L or R
+                        else
+                        {
+                            if (x > 0)
+                                bufferedInput = Directions.Right;
+                            else
+                                bufferedInput = Directions.Left;
+                        }
+
+                        Dev_Logger.Debug($"Player Fixed Buffered HOLD Move: {bufferedInput}; dirVector ({x}, {y})");
+                    }
                 }
             }
             
@@ -553,7 +568,7 @@ public class Script_PlayerMovement : MonoBehaviour
         else if (
             !Script_Game.IsRunningDisabled
             && hasSpeedSealAndIsFormerSelf
-            && player.MyPlayerInput.actions[Const_KeyCodes.Speed].IsPressed()
+            && player.RewiredInput.GetButton(Const_KeyCodes.RWSpeed)
         )
             walkSpeed = Speeds.Run;
         else
@@ -582,16 +597,45 @@ public class Script_PlayerMovement : MonoBehaviour
             && game.state != Const_States_Game.DDR
             && (
                 isMoving
-                || Input.GetAxis(Const_KeyCodes.Vertical) != 0f
-                || Input.GetAxis(Const_KeyCodes.Horizontal) != 0f
+                || IsInputAxesMoving(
+                    player.RewiredInput.GetAxis(Const_KeyCodes.RWHorizontal),
+                    player.RewiredInput.GetAxis(Const_KeyCodes.RWVertical)
+                )
             );
-        
+
         animator.SetBool(PlayerMovingAnimatorParam, isMovingAnimation);
 
         // Prevent being stuck in a speed adjusted idle animation (because WalkSpeed is not
         // called when not actually moving).
         if (!isMovingAnimation)
             InitialStateAnimatorSpeed();
+    }
+
+    /// <summary>
+    /// Based on Rewired/Examples ControlRemapping1
+    /// </summary>
+    public void SetJoystickDeadZone(float newDeadZone)
+    {
+        foreach (Joystick joystick in player.RewiredInput.controllers.Joysticks)
+        {
+            if (joystick == null)
+                continue;
+            
+            CalibrationMap calibrationMap = joystick.calibrationMap;
+
+            if (calibrationMap == null)
+                continue;
+            
+            IList<ControllerElementIdentifier> axisIdentifiers = joystick.AxisElementIdentifiers;
+            for (int i = 0; i < axisIdentifiers.Count; i++)
+            {
+                int axisIndex = joystick.GetAxisIndexById(axisIdentifiers[i].id);
+                AxisCalibration axis = calibrationMap.GetAxis(axisIndex);
+                axis.deadZone = newDeadZone;
+                
+                Dev_Logger.Debug($"SET {joystick.name} axisIndex {axisIndex} deadZone to {axis.deadZone}");
+            }
+        }   
     }
 
     private void HandleBufferedMoveAnimations(Directions bufferedMove)
@@ -672,11 +716,14 @@ public class Script_PlayerMovement : MonoBehaviour
     {
         if (Progress >= 1f && isMoving)
         {
-            Vector2 dirVector = new Vector2(
-                Input.GetAxis(Const_KeyCodes.Horizontal), Input.GetAxis(Const_KeyCodes.Vertical)
-            );
-
-            if (dirVector == Vector2.zero && inputButtonDownBuffer.Count == 0)
+            // Must compare with Script_Player.DefaultJoystickDeadZone and not just test with Vector2.zero since values
+            // less than Dead Zone will NOT register as button downs and thus will not move Player.
+            if (
+                !IsInputAxesMoving(
+                    player.RewiredInput.GetAxis(Const_KeyCodes.RWHorizontal),
+                    player.RewiredInput.GetAxis(Const_KeyCodes.RWVertical)
+                ) && inputButtonDownBuffer.Count == 0
+            )
             {
                 isMoving = false;
             }
@@ -865,6 +912,12 @@ public class Script_PlayerMovement : MonoBehaviour
         IsEmphasizeWalk = false;
     }
 
+    /// <param name="x">X axis value</param>
+    /// <param name="y">Y axis value</param>
+    /// <returns>True if past Dead Zone</returns>
+    public bool IsInputAxesMoving(float x, float y) => Mathf.Abs(x) > Script_Player.DefaultJoystickDeadZone
+        || Mathf.Abs(y) > Script_Player.DefaultJoystickDeadZone;
+
     // ------------------------------------------------------------------
     // Timeline Signals
     /// NOTE: should only be called from Player
@@ -952,6 +1005,16 @@ public class Script_PlayerMovementTester : Editor
         if (GUILayout.Button("Change Game State: Interact"))
         {
             Script_Game.Game.ChangeStateInteract();
+        }
+
+        if (GUILayout.Button("Set Controller Dead Zone 1f"))
+        {
+            player.SetJoystickDeadZone(1f);
+        }
+
+        if (GUILayout.Button("Set Controller Dead Zone 0f"))
+        {
+            player.SetJoystickDeadZone(0f);
         }
     }
 }

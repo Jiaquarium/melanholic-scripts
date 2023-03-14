@@ -96,7 +96,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         game.ChangeStateCutScene();
         
         Flan.FaceDirection(Flan.transform.position.GetDirectionToTarget(playerPos));
-        Flan.ForceHandleAction(Const_KeyCodes.Interact);
+        Flan.ForceHandleAction(Const_KeyCodes.InteractAction);
 
         // NOTE Flan's last dialogue node needs to call EndGuardDialogue()
     }
@@ -140,7 +140,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
         var player = game.GetPlayer();
         
         if (
-            Input.GetButton(checkDirection.DirectionToKeyCode())
+            player.RewiredInput.GetButtonFromDirection(checkDirection)
             && player.FacingDirection == checkDirection
             && player.State == Const_States_Player.Interact
             && game.state == Const_States_Game.Interact
@@ -157,7 +157,7 @@ public class Script_LevelBehavior_39 : Script_LevelBehavior
     {
         var player = game.GetPlayer();
         
-        var isExiting = Input.GetButton(checkDirectionEileenReminder.DirectionToKeyCode())
+        var isExiting = player.RewiredInput.GetButtonFromDirection(checkDirectionEileenReminder)
             && player.FacingDirection == checkDirectionEileenReminder
             && player.State == Const_States_Player.Interact
             && game.state == Const_States_Game.Interact;

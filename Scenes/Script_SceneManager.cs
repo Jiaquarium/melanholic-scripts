@@ -20,6 +20,9 @@ public class Script_SceneManager : MonoBehaviour
     public const string TitleScene = "Title";
     public const string GameScene = "Game";
 
+    // To set a limit on simulated errors
+    public static int DevMountErrorCount;
+
     [SerializeField] private MyScenes mySceneBehavior;
     
     [Header("Loading Screen Settings")]
@@ -152,6 +155,7 @@ public class Script_SceneManager : MonoBehaviour
         while (!asyncLoad.isDone)
         {
             Dev_Logger.Debug($"load progress: {asyncLoad.progress}");
+            
             SM.HandleDuckMasksProgress(asyncLoad.progress);
 
             // Progress will be maintained at .9f as well until allowSceneActivation is set to true
@@ -179,6 +183,10 @@ public class Script_SceneManager : MonoBehaviour
         SM.InitialState();
     }
 
+    /// <summary>
+    /// Show the duck masks based on progress. In the case progress is very slow Masks 0 & 1 will be handled by
+    /// FakeDucksLoading, which shows them at fixed time intervals. Nothing will happen if they are already showing.
+    /// </summary>
     private void HandleDuckMasksProgress(float progress)
     {
         if (progress >= loadingProgressBound2)

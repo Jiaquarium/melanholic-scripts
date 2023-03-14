@@ -103,17 +103,18 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             return;
         
         PlayerInput playerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
+        Rewired.Player rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
         
         if (
-            // NOTE: CPU-ONLY
-            Input.GetKeyDown(KeyCode.DownArrow)
+            // NOTE: KEYBOARD-ONLY
+            Input.GetKeyDown(Const_KeyCodes.KeyboardDownArrow)
             || (
-                playerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
-                // NOTE: CPU-ONLY
+                rewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit)
+                // NOTE: KEYBOARD-ONLY
                 // Space should just give a null SFX, not navigate to Submit
-                && !Input.GetKeyDown(KeyCode.Space)
+                && !Input.GetKeyDown(Const_KeyCodes.KeyboardSpace)
             )
-            || playerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame()
+            || rewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel)
         )
         {
             // Ignore letters for entry inputs requiring typing alphabet characters.

@@ -37,14 +37,13 @@ public class Script_MenuController : Script_UIState
     
     public TopBarStates topBarState;
     public InventoryStates inventoryState;
-    public bool isSBookDisabled;
     public GameObject SBookOverviewButton;
     public GameObject initialStateSelected;
     public Script_SBookOverviewController SBookController;
     [SerializeField] private Script_ItemsController itemsController;
     [SerializeField] private Script_NotesController notesController;
     [SerializeField] private Script_EntriesController entriesController;
-    public Script_CanvasGroupController_Thoughts thoughtsController;
+    [SerializeField] Script_CanvasGroupController_Thoughts thoughtsController;
     [SerializeField] private Script_MemoriesController memoriesController;
     public Script_InventoryViewSettings inventorySettings;
     public Script_EntriesViewSettings entriesSettings;
@@ -119,9 +118,6 @@ public class Script_MenuController : Script_UIState
 
                 SBookController.Open();
                 itemsController.Close();
-                thoughtsController.Close();
-                entriesController.Close();
-                memoriesController.Close();
                 notesController.Close();
 
                 break;
@@ -131,9 +127,6 @@ public class Script_MenuController : Script_UIState
 
                 SBookController.Close();
                 itemsController.Open();
-                thoughtsController.Close();
-                entriesController.Close();
-                memoriesController.Close();
                 notesController.Close();
 
                 break;
@@ -144,9 +137,6 @@ public class Script_MenuController : Script_UIState
                 SBookController.Close();
                 itemsController.Close();
                 notesController.Open();
-                thoughtsController.Close();
-                entriesController.Close();
-                memoriesController.Close();
 
                 break;            
 
@@ -156,9 +146,6 @@ public class Script_MenuController : Script_UIState
                 SBookController.Close();
                 itemsController.Close();
                 notesController.Close();
-                entriesController.Open();
-                thoughtsController.Close();
-                memoriesController.Close();
 
                 break;
 
@@ -168,9 +155,6 @@ public class Script_MenuController : Script_UIState
                 SBookController.Close();
                 itemsController.Close();
                 notesController.Close();
-                entriesController.Close();
-                thoughtsController.Open();
-                memoriesController.Close();
 
                 break;
 
@@ -180,9 +164,6 @@ public class Script_MenuController : Script_UIState
                 SBookController.Close();
                 itemsController.Close();
                 notesController.Close();
-                entriesController.Close();
-                thoughtsController.Close();
-                memoriesController.Open();
 
                 break;
                 
@@ -386,20 +367,14 @@ public class Script_MenuController : Script_UIState
         inputManager = GetComponent<Script_MenuInputManager>();
 
         inputManager.Setup();
-        thoughtsController.Setup();
         SBookController.Setup();
         itemsController.Setup();
-        entriesController.Setup();
-        memoriesController.Setup();
         inventoryManager.Setup();
-
-        isSBookDisabled = true;
-
-        if (Debug.isDebugBuild && Const_Dev.IsDevMode)
-        {
-            Dev_Logger.Debug("<b>SBook</b> enabled by default for debugging.");
-            isSBookDisabled = false;
-        }
+        
+        // Deprecated, no need to call Setup for these
+        thoughtsController.Close();
+        entriesController.Close();
+        memoriesController.Close();
     }
 }
 

@@ -16,7 +16,7 @@ public class Script_IntroInputManager : MonoBehaviour
     public virtual void HandleEnterInput()
     {
         if (
-            Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame()
+            Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit)
             && !isDisabled
         )
         {

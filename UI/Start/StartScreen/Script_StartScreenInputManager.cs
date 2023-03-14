@@ -17,7 +17,7 @@ public class Script_StartScreenInputManager : MonoBehaviour
         if (IsCTADone)
             return;
 
-        if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UISubmit].WasPressedThisFrame())
+        if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit))
         {
             Dev_Logger.Debug("HandleEnterInput(): StartOptionsOpen() UI Submit input detected");
             

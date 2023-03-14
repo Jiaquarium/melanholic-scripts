@@ -15,7 +15,7 @@ public class Script_SettingsInputManager : MonoBehaviour
     
     public void HandleExitInput()
     {
-        if (Script_PlayerInputManager.Instance.MyPlayerInput.actions[Const_KeyCodes.UICancel].WasPressedThisFrame())
+        if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel))
         {
             switch (settingsController.state)
             {
