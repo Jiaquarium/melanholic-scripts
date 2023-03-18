@@ -594,9 +594,13 @@ public class Script_Game : MonoBehaviour
     /// </summary>
     private void OnMountErrorReloadScene()
     {
-        Debug.LogWarning($"Reloading scene syncronous on mounting error. Retry No. {Script_SceneManager.DevMountErrorCount}");
-        Script_SceneManager.DevMountErrorCount++;
-        SceneManager.LoadScene(Script_SceneManager.GameScene);
+        // Try remounting X times
+        if (Script_SceneManager.DevMountErrorCount < Script_SceneManager.RemountTryMaxCount)
+        {
+            Debug.LogWarning($"Reloading scene syncronous on mounting error. Retry No. {Script_SceneManager.DevMountErrorCount}");
+            Script_SceneManager.DevMountErrorCount++;
+            SceneManager.LoadScene(Script_SceneManager.GameScene);
+        }
     }
 
     private void DevCleanup()

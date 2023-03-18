@@ -221,12 +221,6 @@ public class Script_Player : Script_Character
         set => isFinalRound = value;
     }
 
-    public PlayerInput MyPlayerInput
-    {
-        get => playerInput;
-        set => playerInput = value;
-    }
-
     public Player RewiredInput
     {
         get => rewiredInput;
@@ -734,7 +728,6 @@ public class Script_Player : Script_Character
     )
     {   
         game = Script_Game.Game;
-        MyPlayerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
         RewiredInput = ReInput.players.GetPlayer(PlayerId);
 
         directionsToVector = Script_Utils.GetDirectionToVectorDict();

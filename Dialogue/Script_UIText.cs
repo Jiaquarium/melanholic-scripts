@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-01-27 19:50:15
+// Last created by UI Exporter at 2023-03-16 15:05:08
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1697,6 +1697,27 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 {
+    "controls_type_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Controller"
+    }
+},
+{
+    "controls_type_keyboard",
+    new Model_LanguagesUI
+    {
+        EN = @"KEYBOARD"
+    }
+},
+{
+    "controls_type_joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"JOYSTICK"
+    }
+},
+{
     "controls_move_name",
     new Model_LanguagesUI
     {
@@ -1715,6 +1736,34 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Inventory"
+    }
+},
+{
+    "controls_wear-mask-1_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 1"
+    }
+},
+{
+    "controls_wear-mask-2_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 2"
+    }
+},
+{
+    "controls_wear-mask-3_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 3"
+    }
+},
+{
+    "controls_wear-mask-4_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 4"
     }
 },
 {
@@ -1795,10 +1844,10 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 {
-    "controls_error_other",
+    "controls_error_hotkey",
     new Model_LanguagesUI
     {
-        EN = @"Unknown error"
+        EN = @"Cannot overwrite Hotkeys"
     }
 },
 {

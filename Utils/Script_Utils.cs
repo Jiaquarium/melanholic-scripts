@@ -34,6 +34,64 @@ public static class Script_Utils
         'ť','Ŧ','ŧ','Ũ','ũ','Ū','ū','Ŭ','ŭ','Ů','ů','Ű','ű','Ų','ų','Ŵ','ŵ','Ŷ','ŷ','Ÿ','Ź','ź','Ż','ż','Ž','ž',
         'A','a','E','e','I','i','O','o','U','u','R','r','S','s','T','T'
     };
+
+    public static Dictionary<KeyCode, string> HumanReadableKeyCodes = new Dictionary<KeyCode, string>()
+    {
+        { KeyCode.Escape, "Esc" },
+        { KeyCode.KeypadPeriod, "Keypad ." },
+        { KeyCode.KeypadDivide, "Keypad /" },
+        { KeyCode.KeypadMultiply, "Keypad *" },
+        { KeyCode.KeypadMinus, "Keypad -" },
+        { KeyCode.KeypadPlus, "Keypad +" },
+        { KeyCode.KeypadEnter, "Keypad Enter" },
+        { KeyCode.KeypadEquals, "Keypad =" },
+        { KeyCode.UpArrow, "Up" },
+        { KeyCode.DownArrow, "Down" },
+        { KeyCode.RightArrow, "Right" },
+        { KeyCode.LeftArrow, "Left" },
+        { KeyCode.Alpha0, "0" },
+        { KeyCode.Alpha1, "1" },
+        { KeyCode.Alpha2, "2" },
+        { KeyCode.Alpha3, "3" },
+        { KeyCode.Alpha4, "4" },
+        { KeyCode.Alpha5, "5" },
+        { KeyCode.Alpha6, "6" },
+        { KeyCode.Alpha7, "7" },
+        { KeyCode.Alpha8, "8" },
+        { KeyCode.Alpha9, "9" },
+        { KeyCode.Exclaim, "!" },
+        { KeyCode.DoubleQuote, "”" },
+        { KeyCode.Hash, "#" },
+        { KeyCode.Dollar, "$" },
+        { KeyCode.Percent, "%" },
+        { KeyCode.Ampersand, "&" },
+        { KeyCode.Quote, "’" },
+        { KeyCode.LeftParen, "(" },
+        { KeyCode.RightParen, ")" },
+        { KeyCode.Asterisk, "*" },
+        { KeyCode.Plus, "+" },
+        { KeyCode.Comma, "," },
+        { KeyCode.Minus, "-" },
+        { KeyCode.Period, "." },
+        { KeyCode.Slash, "/" },
+        { KeyCode.Colon, ":" },
+        { KeyCode.Semicolon, ";" },
+        { KeyCode.Less, "<" },
+        { KeyCode.Equals, "=" },
+        { KeyCode.Greater, ">" },
+        { KeyCode.Question, "?" },
+        { KeyCode.At, "@" },
+        { KeyCode.LeftBracket, "[" },
+        { KeyCode.Backslash, "\\" },
+        { KeyCode.RightBracket, "]" },
+        { KeyCode.Caret, "^" },
+        { KeyCode.Underscore, "_" },
+        { KeyCode.BackQuote, "`" },
+        { KeyCode.LeftCurlyBracket, "{" },
+        { KeyCode.Pipe, "|" },
+        { KeyCode.RightCurlyBracket, "}" },
+        { KeyCode.Tilde, "~" },
+    };
     
     public static T FindComponentInChildWithTag<T>(
         this GameObject parent, string tag
@@ -723,7 +781,32 @@ public static class Script_Utils
         }
 
         return children;
-    }  
+    }
+
+    public static void SetNavigation(
+        this Button buttonToChange,
+        Button newSelectOnUp = null,
+        Button newSelectOnLeft = null,
+        Button newSelectOnDown = null,
+        Button newSelectOnRight = null
+    )
+    {
+        Navigation btnNav = buttonToChange.GetComponent<Selectable>().navigation;
+        
+        if (newSelectOnUp != null)
+            btnNav.selectOnUp = newSelectOnUp;
+        
+        if (newSelectOnLeft != null)
+            btnNav.selectOnLeft = newSelectOnLeft;
+        
+        if (newSelectOnDown != null)
+            btnNav.selectOnDown = newSelectOnDown;
+
+        if (newSelectOnRight != null)
+            btnNav.selectOnRight = newSelectOnRight;
+
+        buttonToChange.GetComponent<Selectable>().navigation = btnNav;
+    }
 
     public static void PrintArray<T>(this System.Collections.Generic.IEnumerable<T> list, string label = "array: ")
     {
@@ -1044,9 +1127,13 @@ public static class Script_Utils
 
     // -------------------------------------------------------------------------------------
     // Rewired Helpers
-    // Return the first bound keyboard human readable button name
+    // Return the first bound keyboard human readable button name. Uses Unity Keycode string
     // https://guavaman.com/projects/rewired/docs/HowTos.html#get-element-name-for-action
-    public static string GetFirstMappingKeyboard(Player rewiredInput, string actionName)
+    
+    /// <summary>
+    /// This is a keyboard specific function as it fetches button maps
+    /// </summary>
+    public static string GetFirstMappingKeyboardByActionName(this Player rewiredInput, string actionName)
     {
         foreach (ActionElementMap aem in rewiredInput.controllers.maps.ButtonMapsWithAction(
             ControllerType.Keyboard, actionName, skipDisabledMaps: false
@@ -1054,16 +1141,18 @@ public static class Script_Utils
         {
             InputAction action = ReInput.mapping.GetAction(aem.actionId);
             
-            if (action == null)
-                continue;
-            
-            if (aem.keyCode == KeyCode.None)
+            if (action == null || aem.keyCode == KeyCode.None)
                 continue;
 
             // Get the primary key code as a string
-            string key = aem.keyCode.ToString();
+            KeyCode key = aem.keyCode;
 
-            return key;
+            // Check custom defined human readable keycodes
+            string customKeyCode;
+            if (!Script_Utils.HumanReadableKeyCodes.TryGetValue(key, out customKeyCode))
+                return key.ToString();
+
+            return customKeyCode;
         }
 
         return null;
@@ -1071,21 +1160,93 @@ public static class Script_Utils
 
     // Return the first bound human readable gamepad template button name
     // https://guavaman.com/projects/rewired/docs/HowTos.html#get-element-name-for-action
-    public static string GetFirstMappingJoystick(Controller controller, Player rewiredInput, string actionName)
+    public static ActionElementMap GetFirstActionElementMapByActionName(
+        this Player rewiredInput,
+        Controller controller,
+        string actionName
+    )
+    {
+        // Get the first button map with the Action
+        ActionElementMap mapping = rewiredInput.controllers.maps.GetFirstElementMapWithAction(
+            controller.type, actionName, skipDisabledMaps: false
+        );
+        
+        return mapping;
+    }
+
+    public static string GetFirstMappingJoystickByActionName(
+        this Player rewiredInput,
+        Controller controller,
+        string actionName
+    )
     {
         IGamepadTemplate gamepad = controller.GetTemplate<IGamepadTemplate>();
 
         if (gamepad == null)
             return null;
         
-        // Get the first button map with the Action
-        ActionElementMap mapping = rewiredInput.controllers.maps.GetFirstElementMapWithAction(actionName, skipDisabledMaps: false);
-        
-        if (mapping == null)
+        ActionElementMap aem = GetFirstActionElementMapByActionName(rewiredInput, controller, actionName);
+
+        if (aem == null)
             return null;
         
-        return mapping.elementIdentifierName;
+        return aem.elementIdentifierName;
     }
+
+
+    public static ActionElementMap GetFirstActionElementMapByActionId(
+        this Player rewiredInput,
+        Controller controller,
+        int actionId
+    )
+    {
+        if (controller.type == ControllerType.Joystick)
+        {
+            IGamepadTemplate gamepad = controller.GetTemplate<IGamepadTemplate>();
+
+            if (gamepad == null)
+                return null;
+        }
+
+        // Get the first button map with the Action
+        ActionElementMap mapping = rewiredInput.controllers.maps.GetFirstElementMapWithAction(
+            controller.type, actionId, skipDisabledMaps: false
+        );
+        
+        return mapping;
+    }
+
+    public static ControllerType ControlsStateToControllerType(
+        this Script_SettingsController.ControlsStates _controlsState
+    ) => _controlsState switch
+    {
+        Script_SettingsController.ControlsStates.Joystick => ControllerType.Joystick,
+        _ => ControllerType.Keyboard,
+    };
+
+    public static Script_SettingsController.ControlsStates ControllerTypeToControlsState(
+        this ControllerType controllerType
+    ) => controllerType switch
+    {
+        ControllerType.Joystick => Script_SettingsController.ControlsStates.Joystick,
+        _ => Script_SettingsController.ControlsStates.Keyboard,
+    };
+
+    /// <summary>
+    /// The Action Id found in the Rewired Editor Properties panel (NOT the index it is in the list
+    /// </summary>
+    public static int RWActionNamesToId(this string RWActionName) => RWActionName switch
+    {
+        Const_KeyCodes.RWInteract => 2,
+        Const_KeyCodes.RWMaskCommand => 13,
+        Const_KeyCodes.RWInventory => 3,
+        Const_KeyCodes.RWSpeed => 4,
+        Const_KeyCodes.RWMask1 => 5,
+        Const_KeyCodes.RWMask2 => 6,
+        Const_KeyCodes.RWMask3 => 7,
+        Const_KeyCodes.RWMask4 => 8,
+        _ => 2,
+    };
     
     // -------------------------------------------------------------------------------------
     // File Path Helpers

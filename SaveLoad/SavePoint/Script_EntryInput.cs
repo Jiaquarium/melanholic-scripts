@@ -102,7 +102,6 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         if (!EventSystem.current.sendNavigationEvents)
             return;
         
-        PlayerInput playerInput = Script_PlayerInputManager.Instance.MyPlayerInput;
         Rewired.Player rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
         
         if (

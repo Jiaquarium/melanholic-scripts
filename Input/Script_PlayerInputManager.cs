@@ -1,57 +1,94 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Linq;
 using System;
 using System.IO;
 using UnityEngine.SceneManagement;
+using Rewired;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
+public enum RWActions
+{
+    Interact = 0,
+    MaskCommand = 1,
+    Inventory = 2,
+    Speed = 3,
+    Mask1 = 4,
+    Mask2 = 5,
+    Mask3 = 6,
+    Mask4 = 7,
+}
+
 /// <summary>
 /// Should only reference this instance as a Singleton (because Game will actually use
 /// Start Scene's Player Input Manager)
+/// 
+/// NOTE: Script Execution Order: this is set before Default runtime
 /// </summary>
 public class Script_PlayerInputManager : MonoBehaviour
 {
-    public static Script_PlayerInputManager Instance;
+    public const int KeyboardId = 0;
+    public static int ControllerId = 0;
+
+    public const string Category = "Default";
+    public const string Layout = "Default";
+    public const string uiCategory = "UI";
+    // All UI actions to ignore for conflict checking, should go here (e.g. Keyboard space on UI can be overwritten
+    // in the default map)
+    public const string uiExtraCategory = "UI Extra";
     
-    [SerializeField] private PlayerInput playerInput;
+    // Only for dev purposes to display ControllerId
+    [SerializeField] private int devControllerIdDisplay;
     
-    /// <summary>
-    /// When adding addt'l rebindable keys, update this field as well as:
-    /// - Save/Load the model
-    /// - SettingsController.UIRebindActions
-    /// This also affects the exclusion keys during RebindingOperation.
-    /// </summary>
-    /// <typeparam name="string"></typeparam>
-    private List<string> rebindableActionNames = new List<string>(){
-        "Interact", // TBD Const_KeyCodes.Interact,
-        "Inventory", // TBD Const_KeyCodes.Inventory,
-        "MaskEffect", // TBD Const_KeyCodes.MaskEffect,
-        "Speed", // TBD Const_KeyCodes.Speed,
+    // Note: this is the Category Id shown in Rewired Editor UI, NOT the order in the list
+    private const int DefaultMapCategoryId = 0;
+
+    // -------------------------------------------------------------------------------------  
+    // Rewired Keyboard Action Ids
+    private static List<string> KeyboardRebinds = new List<string>{
+        Const_KeyCodes.RWInteract,
+        Const_KeyCodes.RWInventory,
+        Const_KeyCodes.RWMaskCommand,
+        Const_KeyCodes.RWSpeed,
+    };
+    private static List<string> JoystickRebinds = new List<string>{
+        Const_KeyCodes.RWInteract,
+        Const_KeyCodes.RWInventory,
+        Const_KeyCodes.RWMaskCommand,
+        Const_KeyCodes.RWMask1,
+        Const_KeyCodes.RWMask2,
+        Const_KeyCodes.RWMask3,
+        Const_KeyCodes.RWMask4,
+        Const_KeyCodes.RWSpeed,
     };
 
-    public PlayerInput MyPlayerInput { get => playerInput; }
+    // -------------------------------------------------------------------------------------  
+
+    public static Script_PlayerInputManager Instance;
+    
     public Rewired.Player RewiredInput { get; set; }
     public Rewired.Controller GetLastActiveController => RewiredInput.controllers.GetLastActiveController();
 
     void OnEnable()
     {
-        Rewired.ReInput.ControllerConnectedEvent += JoystickConnected;
+        ReInput.ControllerConnectedEvent += JoystickConnected;
+        ReInput.ControllerDisconnectedEvent += JoystickConnected;
     }
 
     void OnDisable()
     {
-        Rewired.ReInput.ControllerConnectedEvent -= JoystickConnected;
+        ReInput.ControllerConnectedEvent -= JoystickConnected;
+        ReInput.ControllerDisconnectedEvent -= JoystickConnected;
     }
     
     void Awake()
     {        
         RewiredInput = Rewired.ReInput.players.GetPlayer(Script_Player.PlayerId);
+        UpdateControllerId();
         
         if (Instance == null)
         {
@@ -65,137 +102,162 @@ public class Script_PlayerInputManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Get all current InputActions for the declared rebindable actions  
-    /// </summary>
-    public List<InputAction> GetRebindableActions()
+    void OnGUI()
     {
-        var inputActions = new List<InputAction>();
-
-        foreach (var actionName in rebindableActionNames)
-        {
-            InputAction inputAction = MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap).FindAction(actionName);
-            inputActions.Add(inputAction);
-        }
-
-        return inputActions;
+        if (Debug.isDebugBuild)
+            devControllerIdDisplay = ControllerId;
     }
 
+    // -------------------------------------------------------------------------------------  
+    // Save/Load
+
     /// <summary>
-    /// Fetch override paths from the Player Input module and save into settings data
+    /// Save keyboardMapSaveData and joystickMapSaveData into respective fields
     /// </summary>
     public void Save(Model_SettingsData settingsData)
     {
-        // Make List of nulls to populate with override paths, if any
-        List<string> overrides = new List<string>(new string[rebindableActionNames.Count]);
-        var playerMap = MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap);
-        
-        for (var i = 0; i < rebindableActionNames.Count; i++)
+        PlayerSaveData playerData = RewiredInput.GetSaveData(userAssignableMapsOnly: true);
+        SaveControllerMaps(RewiredInput, playerData);
+
+        void SaveControllerMaps(Player player, PlayerSaveData playerSaveData)
         {
-            var actionName = rebindableActionNames[i];
-            InputAction inputAction = playerMap.FindAction(actionName);
-            
-            int controlBindingIndex = GetFirstControlBindingIndex(inputAction);
-            var overridePath = inputAction.bindings[controlBindingIndex].overridePath;
-
-            // Check & validate the control path
-            var isValidControl = GetKeyboardControl(overridePath) != null;
-            
-            Dev_Logger.Debug($"GetKeyboardControl: {GetKeyboardControl(overridePath)}, isValidControl: {isValidControl}");
-
-            if (!String.IsNullOrEmpty(overridePath) && isValidControl)
+            foreach (KeyboardMapSaveData keyboardMapSaveData in playerSaveData.keyboardMapSaveData)
             {
-                overrides[i] = overridePath;
-                MatchUIActions(actionName, overridePath);
+                // Only look for Default map (Category Id as shown in Rewired UI, NOT order in list)
+                if (keyboardMapSaveData.categoryId == DefaultMapCategoryId)
+                {
+                    Dev_Logger.Debug($"Keyboard Map Save Data Id: {keyboardMapSaveData.categoryId} {keyboardMapSaveData}");
+                    settingsData.rewiredKeyboardMapDefault = keyboardMapSaveData.keyboardMap.ToXmlString();
+                }
+            }
+
+            foreach (JoystickMapSaveData joystickMapSaveData in playerSaveData.joystickMapSaveData)
+            {
+                // Only look for Default map (Category Id as shown in Rewired UI, NOT order in list)
+                if (joystickMapSaveData.categoryId == DefaultMapCategoryId)
+                {
+                    Dev_Logger.Debug($"Joystick Map Save Data Id: {joystickMapSaveData.categoryId} {joystickMapSaveData}");
+                    settingsData.rewiredJoystickMapDefault = joystickMapSaveData.joystickMap.ToXmlString();
+                }
             }
         }
-        
-        Model_KeyBindsData keyBinds = new Model_KeyBindsData(
-            _Interact: overrides[0],
-            _Inventory: overrides[1],
-            _MaskEffect: overrides[2],
-            _Speed: overrides[3]
-        );
-
-        settingsData.keyBindsData = keyBinds;
     }
 
     /// <summary>
-    /// Apply saved overrides to the Input module.
-    /// 
-    /// Note: JsonUtility will take care of building the model with the proper fields (e.g. if a player
-    /// changes the Interact field key to "Interactz", it will skip the value).
-    /// We use GetKeyboardControl to then validate the given path.
+    /// Try loading maps for keyboard and joystick.
+    /// Note: this should only be called in Start() or later, since ControllerId is set in Awake()
     /// </summary>
     public void Load(Model_SettingsData settingsData)
     {
-        Model_KeyBindsData keyBinds = settingsData?.keyBindsData;
-        
-        if (keyBinds == null)
+        try
         {
-            Dev_Logger.Debug("Key Rebinds settings null");
-            return;
+            LoadKeyboard(settingsData);
         }
-        
-        var playerMap = MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap);
-        
-        var keyBindsPaths = new List<string>()
+        catch (System.Exception e)
         {
-            keyBinds.Interact,
-            keyBinds.Inventory,
-            keyBinds.MaskEffect,
-            keyBinds.Speed
-        };
-        
-        for (var i = 0; i < keyBindsPaths.Count; i++)
+            Debug.LogError($"{name} Keyboard keybinds loading failed with the following error: {e}");
+
+            SetKeyboardDefaults();
+            UpdateKeyBindingUIs();
+        }
+
+        try
         {
-            var actionName = rebindableActionNames[i];
-            var loadedOverridePath = keyBindsPaths[i];
-            InputAction inputAction = playerMap.FindAction(actionName);
+            // ControllerId will be set in Awake
+            LoadJoystick(settingsData);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"{name} Joystick keybinds loading failed with the following error: {e}");
 
-            // Check & validate the control path
-            var isValidControl = GetKeyboardControl(keyBindsPaths[i]) != null;
-            
-            Dev_Logger.Debug($"GetKeyboardControl: {GetKeyboardControl(keyBindsPaths[0])}, isValidControl: {isValidControl}");
-
-            if (!String.IsNullOrEmpty(loadedOverridePath) && isValidControl)
-            {
-                // Apply override to only the very first Control.
-                int controlBindingIndex = GetFirstControlBindingIndex(inputAction);
-                inputAction.ApplyBindingOverride(
-                    controlBindingIndex,
-                    new InputBinding { overridePath = loadedOverridePath}
-                );
-
-                MatchUIActions(actionName, loadedOverridePath);
-            }
+            SetJoystickDefaults();
+            UpdateKeyBindingUIs();
         }
     }
 
-    /// <summary>
-    /// For some player Actions, the UI should have an up to date equivalent
-    /// such as with the following:
-    /// - Interact (Player changing Interact / Confirm should expect this also be confirm in UI)
-    /// </summary>
-    /// <param name="actionName">Interact, MaskEffect, etc.</param>
-    /// <param name="path">override path</param>
-    private void MatchUIActions(string actionName, string path)
+    private void LoadKeyboard(Model_SettingsData settingsData)
     {
-        switch (actionName)
+        string xml = settingsData.rewiredKeyboardMapDefault;
+
+        if (string.IsNullOrEmpty(xml))
+            return;
+
+        ControllerMap controllerMap = ControllerMap.CreateFromXml(ControllerType.Keyboard, xml);
+        Controller controller = ReInput.controllers.GetController(ControllerType.Keyboard, KeyboardId);
+
+        if (controllerMap == null || controller == null)
+            return;
+        
+        foreach (string keyboardRebind in KeyboardRebinds)
         {
-            // TBD case Const_KeyCodes.Interact:
-            case "Interact":
-                InputAction inputAction = MyPlayerInput.actions.FindActionMap(Const_KeyCodes.UIMap)
-                    .FindAction("Submit");
-                
-                int controlBindingIndex = GetFirstControlBindingIndex(inputAction);
-                inputAction.ApplyBindingOverride(
-                    controlBindingIndex,
-                    new InputBinding { overridePath = path}
+            int targetActionId = keyboardRebind.RWActionNamesToId();
+            ReplaceKeybindMapping(targetActionId, controller, controllerMap);
+        }
+    }
+
+    private void LoadJoystick(Model_SettingsData settingsData)
+    {
+        string xml = settingsData.rewiredJoystickMapDefault;
+
+        if (string.IsNullOrEmpty(xml))
+            return;
+
+        ControllerMap controllerMap = ControllerMap.CreateFromXml(ControllerType.Joystick, xml);
+        Controller controller = ReInput.controllers.GetController(ControllerType.Joystick, ControllerId);
+
+        if (controllerMap == null || controller == null)
+            return;
+        
+        foreach (string joystickRebind in JoystickRebinds)
+        {
+            int targetActionId = joystickRebind.RWActionNamesToId();
+            ReplaceKeybindMapping(targetActionId, controller, controllerMap);
+        }
+    }
+
+    private void ReplaceKeybindMapping(
+        int targetActionId,
+        Controller controller,
+        ControllerMap controllerMap
+    )
+    {
+        ActionElementMap aemToReplace = null;
+        aemToReplace = RewiredInput.GetFirstActionElementMapByActionId(controller, targetActionId);
+
+        if (aemToReplace == null)
+            return;
+        
+        // Get first AEM with matching ActionId
+        foreach (var aem in controllerMap.ElementMapsWithAction(targetActionId))
+        {
+            if (aem.actionId == targetActionId)
+            {
+                ElementAssignment assignment = new ElementAssignment(
+                    controllerMap.controllerType,
+                    aem.elementType,
+                    aem.elementIdentifierId,
+                    aem.axisRange,
+                    aem.keyCode,
+                    aem.modifierKeyFlags,
+                    aem.actionId,
+                    aem.axisContribution,
+                    aem.invert
                 );
-                break;
-            default:
-                break;
+
+                // Must declare elementMapId as ActionElementMap's Id you are trying to replace
+                // https://guavaman.com/projects/rewired/docs/api-reference/html/Overload_Rewired_ControllerMap_ReplaceElementMap.htm
+                assignment.elementMapId = aemToReplace.id;
+                bool didReplace = aemToReplace.controllerMap.ReplaceElementMap(assignment, out aemToReplace);
+                
+                // If any replacement fails, the whole map should fail. Set maps to default.
+                if (!didReplace)
+                {
+                    throw new Exception($"Keybind for {aem.actionDescriptiveName} failed, setting map to default!");
+                }
+                
+                Dev_Logger.Debug($"didReplace {didReplace} {aem.actionDescriptiveName} aemToReplace: {aemToReplace}");
+                return;
+            }
         }
     }
 
@@ -205,44 +267,25 @@ public class Script_PlayerInputManager : MonoBehaviour
     /// </summary>
     public void SetDefault()
     {
-        MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap).RemoveAllBindingOverrides();
-        MyPlayerInput.actions.FindActionMap(Const_KeyCodes.UIMap).RemoveAllBindingOverrides();
-        
         // Delete keybindings file
         if(File.Exists(FilePath))
             File.Delete(FilePath);
         
+        SetKeyboardDefaults();
+        SetJoystickDefaults();
+        
         UpdateKeyBindingUIs();
     }
+
+    // -------------------------------------------------------------------------------------  
+
+    private void SetKeyboardDefaults() => RewiredInput.controllers.maps.LoadDefaultMaps(ControllerType.Keyboard);
+    
+    private void SetJoystickDefaults() => RewiredInput.controllers.maps.LoadDefaultMaps(ControllerType.Joystick);
 
     public void UpdateKeyBindingUIs()
     {
         Script_SettingsController.Instance.UpdateControlKeyDisplays();
-    }
-
-    public static int GetFirstControlBindingIndex(InputAction inputAction) => 
-        inputAction.GetBindingIndexForControl(inputAction.controls[0]);
-
-    // Note: Do not call every frame, ToHumanReadableString's performance is very slow.
-    // Note: only returns the first binding control path.
-    // https://github.com/UnityTechnologies/InputSystem_Warriors/blob/056e74b1701f3bd2f218a34a46d6d2cc1e167a78/InputSystem_Warriors_Project/Assets/Scripts/Behaviours/UI/UIRebindActionBehaviour.cs#L116
-    public string GetHumanReadableBindingPath(string actionName, string actionMap = Const_KeyCodes.PlayerMap)
-    {
-        var inputAction = MyPlayerInput.actions.FindActionMap(actionMap).FindAction(actionName);
-        
-        int controlBindingIndex = inputAction.GetBindingIndexForControl(inputAction.controls[0]);
-        string path = InputControlPath.ToHumanReadableString(
-            inputAction.bindings[controlBindingIndex].effectivePath,
-            InputControlPath.HumanReadableStringOptions.OmitDevice
-        );
-        return path.ToUpper();
-    }
-
-    public InputControl GetKeyboardControl(string path)
-    {
-        var control = InputControlPath.TryFindControl(Keyboard.current, path);
-
-        return control;
     }
     
     private string FilePath => $"{Script_SaveGameControl.path}/{Script_Utils.SettingsFile}";
@@ -259,12 +302,38 @@ public class Script_PlayerInputManager : MonoBehaviour
                     player.SetupRewiredDefaults();
             }
         }
+
+        bool didChange = UpdateControllerId();
+
+        Dev_Logger.Debug($"ControllerConnectedEvent: JoystickConnected didChange {didChange} new ControllerId {ControllerId}");
+
+        // Update rebinding UI and stop input mapper if it was listening
+        Script_SettingsController.Instance.OnControllerChanged(args);
+    }
+
+    // Keep controllerId up to date with first joystick only
+    public bool UpdateControllerId()
+    {
+        int originalId = ControllerId;
+        
+        if (RewiredInput.controllers.joystickCount > 0)
+            ControllerId = RewiredInput.controllers.Joysticks[0].id;
+        else
+            ControllerId = -1;
+
+        return ControllerId != originalId;
+    }
+
+    public static void SetRewiredUIMapsEnabled(bool isEnabled)
+    {
+        var rewiredInput = ReInput.players.GetPlayer(Script_Player.PlayerId);
+        rewiredInput.controllers.maps.SetMapsEnabled(isEnabled, uiCategory);
+        rewiredInput.controllers.maps.SetMapsEnabled(isEnabled, uiExtraCategory);
     }
 
     public void Setup()
     {
-        MyPlayerInput.actions.FindActionMap(Const_KeyCodes.PlayerMap).Enable();
-        MyPlayerInput.actions.FindActionMap(Const_KeyCodes.UIMap).Enable();
+        
     }
 
 #if UNITY_EDITOR

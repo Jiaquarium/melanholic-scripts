@@ -57,10 +57,10 @@ public class Script_DynamicStringBuilder : MonoBehaviour
                 switch (controller.type)
                 {
                     case ControllerType.Joystick:
-                        firstBoundKey = Script_Utils.GetFirstMappingJoystick(controller, rewiredInput, actionName);
+                        firstBoundKey = Script_Utils.GetFirstMappingJoystickByActionName(rewiredInput, controller, actionName);
                         break;
                     default:
-                        firstBoundKey = Script_Utils.GetFirstMappingKeyboard(rewiredInput, actionName);
+                        firstBoundKey = Script_Utils.GetFirstMappingKeyboardByActionName(rewiredInput, actionName);
                         break;
                 }
                 
