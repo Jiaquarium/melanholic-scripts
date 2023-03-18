@@ -437,26 +437,11 @@ public class Script_SettingsController : MonoBehaviour
             {
                 actionId = rebindActionButton.ActionId,
                 controllerMap = MyControllerMap,
-                actionElementMapToReplace = GetFirstActionElementMapId()
+                actionElementMapToReplace = MyControllerMap.GetFirstActionElementMapByMap(rebindActionButton.ActionId)
             };
             
             currentRebindActionButton = rebindActionButton;
             inputMapper.Start(context);
-        }
-
-        // TBD MOVE TO UpdateControlKeyDisplays()
-        // Get the first action element map for the actionId for the current controller map
-        ActionElementMap GetFirstActionElementMapId()
-        {
-            foreach(var actionElementMap in MyControllerMap.ElementMapsWithAction(rebindActionButton.ActionId))
-            {
-                Dev_Logger.Debug($"Action element map: {actionElementMap} {actionElementMap.actionDescriptiveName} for ActionId: {actionElementMap.actionId}");
-                 
-                if (actionElementMap != null)
-                    return actionElementMap;
-            }
-
-            return null;
         }
     }
     

@@ -1216,6 +1216,17 @@ public static class Script_Utils
         return mapping;
     }
 
+    public static ActionElementMap GetFirstActionElementMapByMap(this ControllerMap map, int actionId)
+    {
+        foreach(var actionElementMap in map.ElementMapsWithAction(actionId))
+        {
+            if (actionElementMap != null)
+                return actionElementMap;
+        }
+
+        return null;
+    }
+
     public static ControllerType ControlsStateToControllerType(
         this Script_SettingsController.ControlsStates _controlsState
     ) => _controlsState switch

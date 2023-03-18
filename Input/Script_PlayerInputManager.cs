@@ -31,6 +31,12 @@ public enum RWActions
 /// </summary>
 public class Script_PlayerInputManager : MonoBehaviour
 {
+    /// <summary>
+    /// Note: DefaultJoystickDeadZone needs to be the same as Input Behavior dead zone for buttons in
+    /// Rewired Input Manager for isMoving and handleAnimation checks to work consistently.
+    /// </summary>
+    public static float DefaultJoystickDeadZone = 0.5f;
+    
     public const int KeyboardId = 0;
     public static int ControllerId = 0;
 
@@ -292,16 +298,7 @@ public class Script_PlayerInputManager : MonoBehaviour
 
     private void JoystickConnected(Rewired.ControllerStatusChangedEventArgs args)
     {
-        // If this is Game scene and Player exists, force setting Deadzones
-        if (SceneManager.GetActiveScene().name == Script_SceneManager.GameScene)
-        {
-            if (Script_Game.Game != null)
-            {
-                var player = Script_Game.Game.GetPlayer();
-                if (player != null)
-                    player.SetupRewiredDefaults();
-            }
-        }
+        SetupRewiredDefaults();
 
         bool didChange = UpdateControllerId();
 
@@ -309,6 +306,38 @@ public class Script_PlayerInputManager : MonoBehaviour
 
         // Update rebinding UI and stop input mapper if it was listening
         Script_SettingsController.Instance.OnControllerChanged(args);
+    }
+
+    public void SetupRewiredDefaults()
+    {
+        SetJoystickDeadZone(DefaultJoystickDeadZone);
+        
+        /// <summary>
+        /// Based on Rewired/Examples ControlRemapping1
+        /// </summary>
+        void SetJoystickDeadZone(float newDeadZone)
+        {
+            foreach (Joystick joystick in RewiredInput.controllers.Joysticks)
+            {
+                if (joystick == null)
+                    continue;
+                
+                CalibrationMap calibrationMap = joystick.calibrationMap;
+
+                if (calibrationMap == null)
+                    continue;
+                
+                IList<ControllerElementIdentifier> axisIdentifiers = joystick.AxisElementIdentifiers;
+                for (int i = 0; i < axisIdentifiers.Count; i++)
+                {
+                    int axisIndex = joystick.GetAxisIndexById(axisIdentifiers[i].id);
+                    AxisCalibration axis = calibrationMap.GetAxis(axisIndex);
+                    axis.deadZone = newDeadZone;
+                    
+                    Dev_Logger.Debug($"SET {joystick.name} axisIndex {axisIndex} deadZone to {axis.deadZone}");
+                }
+            }   
+        }
     }
 
     // Keep controllerId up to date with first joystick only
@@ -333,7 +362,7 @@ public class Script_PlayerInputManager : MonoBehaviour
 
     public void Setup()
     {
-        
+        SetupRewiredDefaults();   
     }
 
 #if UNITY_EDITOR
@@ -348,6 +377,16 @@ public class Script_PlayerInputManager : MonoBehaviour
             if (GUILayout.Button("Set Default"))
             {
                 t.SetDefault();
+            }
+
+            if (GUILayout.Button("Set Controller Dead Zone 1f"))
+            {
+                t.SetupRewiredDefaults();
+            }
+
+            if (GUILayout.Button("Set Controller Dead Zone 0f"))
+            {
+                t.SetupRewiredDefaults();
             }
         }
     }

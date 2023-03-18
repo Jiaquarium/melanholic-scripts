@@ -20,12 +20,6 @@ public class Script_Player : Script_Character
     
     public static int PlayerId = 0;
     
-    /// <summary>
-    /// Note: DefaultJoystickDeadZone needs to be the same as Input Behavior dead zone for buttons in
-    /// Rewired Input Manager for isMoving and handleAnimation checks to work consistently.
-    /// </summary>
-    public static float DefaultJoystickDeadZone = 0.5f;
-    
     public Renderer graphics;
     public Action onAttackDone; 
     [SerializeField] protected Script_PlayerMovement playerMovementHandler;
@@ -717,11 +711,6 @@ public class Script_Player : Script_Character
         Dev_Logger.Debug($"Player initialized at position: {spawnLocation.x}, {spawnLocation.y}, {spawnLocation.z}");
     }
     
-    public void SetupRewiredDefaults()
-    {
-        playerMovementHandler.SetJoystickDeadZone(DefaultJoystickDeadZone);
-    }
-    
     public void Setup(
         Directions direction,
         Model_PlayerState playerState
@@ -743,8 +732,6 @@ public class Script_Player : Script_Character
         
         playerActionHandler.Setup(game);
         playerEffect.Setup();
-        
-        SetupRewiredDefaults();
         
         // Setup character stats
         base.Setup();

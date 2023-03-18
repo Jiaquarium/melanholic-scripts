@@ -611,33 +611,6 @@ public class Script_PlayerMovement : MonoBehaviour
             InitialStateAnimatorSpeed();
     }
 
-    /// <summary>
-    /// Based on Rewired/Examples ControlRemapping1
-    /// </summary>
-    public void SetJoystickDeadZone(float newDeadZone)
-    {
-        foreach (Joystick joystick in player.RewiredInput.controllers.Joysticks)
-        {
-            if (joystick == null)
-                continue;
-            
-            CalibrationMap calibrationMap = joystick.calibrationMap;
-
-            if (calibrationMap == null)
-                continue;
-            
-            IList<ControllerElementIdentifier> axisIdentifiers = joystick.AxisElementIdentifiers;
-            for (int i = 0; i < axisIdentifiers.Count; i++)
-            {
-                int axisIndex = joystick.GetAxisIndexById(axisIdentifiers[i].id);
-                AxisCalibration axis = calibrationMap.GetAxis(axisIndex);
-                axis.deadZone = newDeadZone;
-                
-                Dev_Logger.Debug($"SET {joystick.name} axisIndex {axisIndex} deadZone to {axis.deadZone}");
-            }
-        }   
-    }
-
     private void HandleBufferedMoveAnimations(Directions bufferedMove)
     {
         animator.SetBool(PlayerMovingAnimatorParam, bufferedMove != Directions.None);
@@ -915,8 +888,8 @@ public class Script_PlayerMovement : MonoBehaviour
     /// <param name="x">X axis value</param>
     /// <param name="y">Y axis value</param>
     /// <returns>True if past Dead Zone</returns>
-    public bool IsInputAxesMoving(float x, float y) => Mathf.Abs(x) > Script_Player.DefaultJoystickDeadZone
-        || Mathf.Abs(y) > Script_Player.DefaultJoystickDeadZone;
+    public bool IsInputAxesMoving(float x, float y) => Mathf.Abs(x) > Script_PlayerInputManager.DefaultJoystickDeadZone
+        || Mathf.Abs(y) > Script_PlayerInputManager.DefaultJoystickDeadZone;
 
     // ------------------------------------------------------------------
     // Timeline Signals
@@ -1005,16 +978,6 @@ public class Script_PlayerMovementTester : Editor
         if (GUILayout.Button("Change Game State: Interact"))
         {
             Script_Game.Game.ChangeStateInteract();
-        }
-
-        if (GUILayout.Button("Set Controller Dead Zone 1f"))
-        {
-            player.SetJoystickDeadZone(1f);
-        }
-
-        if (GUILayout.Button("Set Controller Dead Zone 0f"))
-        {
-            player.SetJoystickDeadZone(0f);
         }
     }
 }
