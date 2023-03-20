@@ -17,6 +17,13 @@ using UnityEngine.UI;
 /// </summary>
 public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
+    /// <summary>
+    /// Set True to simulate as if this was EventSystem.firstSelected. This will force it to be highlighted
+    /// after slow awake and update its highlight state. Use this when you want this button highlighter to be
+    /// shown as first active but it is set after Button Highlighter inits.
+    /// </summary>
+    [SerializeField] private bool isForceHighlightOnSlowAwake;
+    
     public bool isActive = true;
     public bool isLoading = false;
     public Image[] outlines;
@@ -24,6 +31,17 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     [SerializeField] protected Image deactivateOverlay;
 
     [SerializeField] private Script_ItemHighlight itemHighlighter;
+
+    [Tooltip("Set this to True to Activate/Deactivate the outline object instead of an Image component. Use with ButtonHighlighterOutlineHelper")]
+    [SerializeField] private bool isChangeImageActiveState;
+    
+    /// <summary>
+    /// Set the below to true on Entry Input's using Letter Select Grid. This way Entry Input will not be highlighted
+    /// on Slow Awake. You must also set the desired active ButtonHighlighter.isForceHighlightOnSlowAwake: True so it
+    /// appears active when the LetterSelectGrid opens (usually the Button "A" or "a").
+    /// </summary>
+    [Tooltip("Set to true to ignore the Event System first selected. Set True if this is on EntryInput component when using letterSelectGrid")]
+    [SerializeField] private bool isIgnoreEventSystemFirstSelectedLetterSelect;
 
     public bool IsPaused { get; set; }
     
@@ -98,9 +116,17 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         
         // Note: for Event System's where you may want to start off highlighting not only the first selected,
         // ensure to set EventSystem.firstSelectedGameObject to None
+        bool isEventSystemFirstSelected = EventSystem.current != null
+            && EventSystem.current.firstSelectedGameObject == gameObject;
+        
+        // This allows for Entry Input / LetterSelectGrid to specify a different first selected (i.e. inside LetterSelectGrid)
+        Script_EntryInput entryInput = GetComponent<Script_EntryInput>();
+        bool isIgnoreFirstSelected = isIgnoreEventSystemFirstSelectedLetterSelect
+            && entryInput != null && entryInput.IsLetterSelectState;
+
         if (
-            EventSystem.current != null
-            && EventSystem.current.firstSelectedGameObject == gameObject
+            (isEventSystemFirstSelected && !isIgnoreFirstSelected)
+            || isForceHighlightOnSlowAwake
         )
         {
             Dev_Logger.Debug("Flagging first selected to be highlighted");
@@ -139,6 +165,7 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         else
         {
             isLoading = false;
+            
             if (isHighlighted)
             {
                 HandleHighlight(true);
@@ -158,10 +185,16 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
         isHighlighted = isOn;
     }
 
+    // Adjust highlight without updating state
     private void HandleHighlight(bool isOn)
     {
         foreach (Image img in outlines)
-            img.enabled = isOn;
+        {
+            if (isChangeImageActiveState)
+                img.gameObject.SetActive(isOn);
+            else
+                img.enabled = isOn;
+        }
     }
 
     /// <summary>

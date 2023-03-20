@@ -1,5 +1,25 @@
 ﻿public static class Const_InputValidation
 {
+    public enum Validators
+    {
+        None = 0,
+        Entry = 1,
+        Name = 2,
+        Answer = 3,
+        Code = 4
+    }
+
+    public const int EscASCIICode = 27;
+
+    public static int GetMaxCharCount(Validators validator) => validator switch
+    {
+        Validators.Entry => Entry.maxCharCount,
+        Validators.Name => Name.maxCharCount,
+        Validators.Answer => Answer.maxCharCount,
+        Validators.Code => Code.maxCharCount,
+        _ => 999,
+    };
+    
     public static class Entry
     {
         public const int minASCII = 32; // includes [space]
@@ -11,7 +31,7 @@
     {
         public const int minASCII = 32; // includes [space]
         public const int maxASCII = 126;
-        public const int maxCharCount = 12;
+        public const int maxCharCount = 15;
     }
 
     public static class Answer

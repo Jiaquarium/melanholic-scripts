@@ -33,11 +33,18 @@ public static class Const_KeyCodes
     public const string RWHotKey7 = "Hot Key 7";
     public const string RWHotKey8 = "Hot Key 8";
     public const string RWHotKey9 = "Hot Key 9";
-    public static KeyCode KeyboardDownArrow = KeyCode.DownArrow;
-    public static KeyCode KeyboardSpace = KeyCode.Space;
+    public static string RWBackspace = "Backspace";
+    public static string RWKeyboardDownArrow = "Keyboard Down Arrow";
+    public static string RWKeyboardSpace = "Keyboard Space";
+    
+    public static KeyCode KeycodeDownArrow = KeyCode.DownArrow;
+    public static KeyCode KeycodeUpArrow = KeyCode.UpArrow;
+    public static KeyCode KeycodeBackspace = KeyCode.Backspace;
+    public static KeyCode KeycodeDelete = KeyCode.Delete;
 
     
     public const string InteractAction = "Interact";
+    
     public const string Inventory = "Inventory";
     public const string MaskEffect = "MaskEffect";
     public const string Speed = "Speed";

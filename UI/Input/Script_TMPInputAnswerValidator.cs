@@ -19,6 +19,6 @@ public class Script_TMPInputAnswerValidator : Script_TMPInputValidator
             return Insert(ref text, ref pos, ch);
         }
         
-        return Error(ch);
+        return Error(ch, ASCIICode);
     }
 }

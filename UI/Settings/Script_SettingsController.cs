@@ -128,7 +128,7 @@ public class Script_SettingsController : MonoBehaviour
         }
     }
 
-    public bool IsControllerConnected => MyController != null && MyControllerMap != null;
+    public bool IsControllerConnectedForState => MyController != null && MyControllerMap != null;
 
     private Rewired.Controller GetLastActiveController => MyPlayer.controllers.GetLastActiveController();
     

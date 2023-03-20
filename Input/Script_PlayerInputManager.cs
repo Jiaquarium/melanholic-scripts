@@ -35,7 +35,7 @@ public class Script_PlayerInputManager : MonoBehaviour
     /// Note: DefaultJoystickDeadZone needs to be the same as Input Behavior dead zone for buttons in
     /// Rewired Input Manager for isMoving and handleAnimation checks to work consistently.
     /// </summary>
-    public static float DefaultJoystickDeadZone = 0.5f;
+    public static float DefaultJoystickDeadZone = 0.4f;
     
     public const int KeyboardId = 0;
     public static int ControllerId = 0;
@@ -78,6 +78,7 @@ public class Script_PlayerInputManager : MonoBehaviour
     
     public Rewired.Player RewiredInput { get; set; }
     public Rewired.Controller GetLastActiveController => RewiredInput.controllers.GetLastActiveController();
+    public bool IsJoystickConnected => ControllerId >= 0;
 
     void OnEnable()
     {

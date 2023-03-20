@@ -51,7 +51,7 @@ public class Script_UIRebindAction : MonoBehaviour
     public void UpdateBehaviorUIText()
     {
         // If ControlsState:Keyboard state, will always be connected. Need this for ControlsState:Joystick
-        if (!settingsController.IsControllerConnected)
+        if (!settingsController.IsControllerConnectedForState)
         {
             keyTextTMP.text = NoControllerText;
             return;
@@ -91,7 +91,7 @@ public class Script_UIRebindAction : MonoBehaviour
     // Key Button OnClick
     public void StartRebindProcess()
     {
-        if (!settingsController.IsControllerConnected)
+        if (!settingsController.IsControllerConnectedForState)
         {
             ErrorSFX();
             return;

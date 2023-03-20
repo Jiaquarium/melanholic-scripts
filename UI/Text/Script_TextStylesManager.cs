@@ -12,6 +12,7 @@ public enum TextStyle
     Name = 1,
     UI = 2,
     UIEmphasis = 6,
+    UILetterSelect = 18,
     BadEndingLeadIn = 3,
     BadEndingDescription = 4,
     BadEndingHeading = 5,
@@ -34,6 +35,7 @@ public class Script_TextStylesManager : MonoBehaviour
     [SerializeField] private Script_TextStyle DialogueNameStyle;
     [SerializeField] private Script_TextStyle UIStyle;
     [SerializeField] private Script_TextStyle UIEmphasisStyle;
+    [SerializeField] private Script_TextStyle UILetterSelectStyle;
     [SerializeField] private Script_TextStyle BadEndingLeadInStyle;
     [SerializeField] private Script_TextStyle BadEndingDescriptionStyle;
     [SerializeField] private Script_TextStyle BadEndingHeadingStyle;
@@ -53,6 +55,7 @@ public class Script_TextStylesManager : MonoBehaviour
     {
         TextStyle.Name => DialogueNameStyle,
         TextStyle.UI => UIStyle,
+        TextStyle.UILetterSelect => UILetterSelectStyle,
         TextStyle.UIEmphasis => UIEmphasisStyle,
         TextStyle.BadEndingLeadIn => BadEndingLeadInStyle,
         TextStyle.BadEndingDescription => BadEndingDescriptionStyle,

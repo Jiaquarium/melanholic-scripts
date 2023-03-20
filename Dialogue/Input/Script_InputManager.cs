@@ -101,6 +101,11 @@ public class Script_InputManager : MonoBehaviour
         audioSource.PlayOneShot(SFXManager.UIErrorSFX, SFXManager.UIErrorSFXVol);
     }
 
+    public void BackspaceSFX()
+    {
+        SFXManager.PlayExitSubmenuPencil();
+    }
+
     private void OnSubmit(int nextChildNodeIdx)
     {
         if (nextChildNodeIdx > -1)

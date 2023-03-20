@@ -24,6 +24,6 @@ public class Script_TMPInputCodeValidator : Script_TMPInputValidator
             return ch;
         }
         
-        return Error(ch);
+        return Error(ch, ASCIICode);
     }
 }

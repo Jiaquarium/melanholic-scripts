@@ -10,9 +10,11 @@ public class Script_TMPInputValidator : TMP_InputValidator
         return ch;
     }
     
-    protected char Error(char ch)
+    protected char Error(char ch, int ASCIICode)
     {
-        Script_InputManager.Control.ErrorSFX();
+        // Handle ignoring ESC
+        if (ASCIICode != Const_InputValidation.EscASCIICode)
+            Script_InputManager.Control.ErrorSFX();
         
         return ch;
     }
