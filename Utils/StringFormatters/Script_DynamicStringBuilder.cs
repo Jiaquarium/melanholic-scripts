@@ -31,6 +31,7 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         BuildParams();
     }
     
+    // Builds a new dict on each format call.
     public static void BuildParams()
     {
         Params = new Dictionary<string, string>();
@@ -50,25 +51,20 @@ public class Script_DynamicStringBuilder : MonoBehaviour
             Player rewiredInput = playerInputManager.RewiredInput;
             Controller controller = rewiredInput.controllers.GetLastActiveController();
             
-            if (controller != null)
+            string firstBoundKey = null;
+            
+            // If last controller is null, default to Keyboard
+            if (controller != null && controller.type == ControllerType.Joystick)
+                firstBoundKey = Script_Utils.GetFirstMappingJoystickByActionName(rewiredInput, controller, actionName);
+            else
+                firstBoundKey = Script_Utils.GetFirstMappingKeyboardByActionName(rewiredInput, actionName);
+
+            if (!string.IsNullOrEmpty(firstBoundKey))
             {
-                string firstBoundKey = null;
-                
-                switch (controller.type)
-                {
-                    case ControllerType.Joystick:
-                        firstBoundKey = Script_Utils.GetFirstMappingJoystickByActionName(rewiredInput, controller, actionName);
-                        break;
-                    default:
-                        firstBoundKey = Script_Utils.GetFirstMappingKeyboardByActionName(rewiredInput, actionName);
-                        break;
-                }
-                
-                if (!string.IsNullOrEmpty(firstBoundKey))
-                {
-                    Params.Add(paramKey, $"<b>{firstBoundKey}</b>");
-                    return;
-                }
+                Dev_Logger.Debug($"Added paramKey {paramKey} firstBoundKey {firstBoundKey} to Params Dict");
+
+                Params.Add(paramKey, $"<b>{firstBoundKey.ToUpper()}</b>");
+                return;
             }
         }
         

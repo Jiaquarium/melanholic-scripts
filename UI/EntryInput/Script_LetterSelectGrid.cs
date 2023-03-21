@@ -41,7 +41,8 @@ public class Script_LetterSelectGrid : MonoBehaviour
         HandleBackspace();
         
         var lastController = rewiredInput.controllers.GetLastActiveController();
-        if (lastController != null && lastController.type == ControllerType.Keyboard)
+        // If lastController is null, then keyboard must be active at least
+        if (lastController == null || lastController.type == ControllerType.Keyboard)
             HandleCancel();
 
         void HandleBackspace()

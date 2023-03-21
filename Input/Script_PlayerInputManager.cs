@@ -162,7 +162,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"{name} Keyboard keybinds loading failed with the following error: {e}");
+            Debug.LogError($"{name} Loading Default Keyboard bindings. Failed loading rebinds with the following error: {e}");
 
             SetKeyboardDefaults();
             UpdateKeyBindingUIs();
@@ -175,7 +175,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"{name} Joystick keybinds loading failed with the following error: {e}");
+            Debug.LogError($"{name} Loading Default Joystick bindings. Failed loading rebinds with the following error: {e}");
 
             SetJoystickDefaults();
             UpdateKeyBindingUIs();
@@ -347,7 +347,12 @@ public class Script_PlayerInputManager : MonoBehaviour
         int originalId = ControllerId;
         
         if (RewiredInput.controllers.joystickCount > 0)
-            ControllerId = RewiredInput.controllers.Joysticks[0].id;
+        {
+            Joystick firstJoystick = RewiredInput.controllers.Joysticks[0];
+            ControllerId = firstJoystick.IsJoystickSupported()
+                ? firstJoystick.id
+                : -1;
+        }
         else
             ControllerId = -1;
 

@@ -24,7 +24,8 @@ public static class Script_Utils
     public const string AppId = "1826060";
     public static readonly string SteamClientStoreURL = $"steam://store/{AppId}";
     
-    public static List<char> glitchLetters = new List<char>(){
+    public static List<char> glitchLetters = new List<char>()
+    {
         'Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','×','Ø','Ù','Ú','Û','Ü',
         'Ý','Þ','ß','à','á','â','ã','ä','å','æ','ç','è','é','ê','ë','ì','í','î','ï','ð','ñ','ò','ó','ô','õ','ö','ø',
         'ù','ú','û','ü','ý','þ','ÿ','Ā','ā','Ă','ă','Ą','ą','Ć','ć','Ĉ','ĉ','Ċ','ċ','Č','č','Ď','ď','Đ','đ','Ē','ē',
@@ -91,6 +92,18 @@ public static class Script_Utils
         { KeyCode.Pipe, "|" },
         { KeyCode.RightCurlyBracket, "}" },
         { KeyCode.Tilde, "~" },
+        { KeyCode.RightShift, "Right Shift" },
+        { KeyCode.LeftShift, "Left Shift" },
+        { KeyCode.RightControl, "Right Control" },
+        { KeyCode.LeftControl, "Left Control" },
+        { KeyCode.RightAlt, "Right Alt" },
+        { KeyCode.LeftAlt, "Left Alt" },
+        { KeyCode.LeftCommand, "Left Command" },
+        { KeyCode.LeftWindows, "Left Windows" },
+        { KeyCode.RightCommand, "Right Command" },
+        { KeyCode.RightWindows, "Right Windows" },
+        { KeyCode.AltGr, "Alt Gr" },
+        { KeyCode.SysReq, "Sys Req" },
     };
     
     public static T FindComponentInChildWithTag<T>(
@@ -1127,10 +1140,16 @@ public static class Script_Utils
 
     // -------------------------------------------------------------------------------------
     // Rewired Helpers
-    // Return the first bound keyboard human readable button name. Uses Unity Keycode string
-    // https://guavaman.com/projects/rewired/docs/HowTos.html#get-element-name-for-action
+    
+    public static bool IsJoystickSupported(this Controller controller)
+    {
+        IGamepadTemplate gamepad = controller.GetTemplate<IGamepadTemplate>();
+        return gamepad != null;
+    }
     
     /// <summary>
+    /// Return the first bound keyboard human readable button name. Uses Unity Keycode string
+    /// https://guavaman.com/projects/rewired/docs/HowTos.html#get-element-name-for-action
     /// This is a keyboard specific function as it fetches button maps
     /// </summary>
     public static string GetFirstMappingKeyboardByActionName(this Player rewiredInput, string actionName)
@@ -1180,11 +1199,6 @@ public static class Script_Utils
         string actionName
     )
     {
-        IGamepadTemplate gamepad = controller.GetTemplate<IGamepadTemplate>();
-
-        if (gamepad == null)
-            return null;
-        
         ActionElementMap aem = GetFirstActionElementMapByActionName(rewiredInput, controller, actionName);
 
         if (aem == null)

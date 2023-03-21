@@ -20,7 +20,7 @@ public class Script_SceneManager : MonoBehaviour
     public const string TitleScene = "Title";
     public const string GameScene = "Game";
 
-    public const int RemountTryMaxCount = 10;
+    public const int RemountTryMaxCount = 5;
     
     // To set a limit on simulated errors
     public static int DevMountErrorCount;

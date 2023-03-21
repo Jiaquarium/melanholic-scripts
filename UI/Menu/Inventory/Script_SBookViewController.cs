@@ -32,8 +32,8 @@ public class Script_SBookViewController : Script_SlotsViewController
         // and SlotId up-to-date before checking for Hot Keys.
         if (hotKeyInputManager != null)
         {
-            Controller controller = Script_PlayerInputManager.Instance.GetLastActiveController;
-            if (controller != null && controller.type == ControllerType.Joystick)
+            Controller lastController = Script_PlayerInputManager.Instance.GetLastActiveController;
+            if (lastController != null && lastController.type == ControllerType.Joystick)
                 hotKeyInputManager.OnHotkeyJoystick(menuController.InventoryState, lastSlotIndex);
             else
                 hotKeyInputManager.OnHotkey(menuController.InventoryState, lastSlotIndex);

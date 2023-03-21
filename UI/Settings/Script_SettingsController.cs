@@ -130,8 +130,6 @@ public class Script_SettingsController : MonoBehaviour
 
     public bool IsControllerConnectedForState => MyController != null && MyControllerMap != null;
 
-    private Rewired.Controller GetLastActiveController => MyPlayer.controllers.GetLastActiveController();
-    
     void OnEnable()
     {
         Script_MenuEventsManager.OnExitMenu += StartThrottlingInGame;
@@ -236,7 +234,12 @@ public class Script_SettingsController : MonoBehaviour
 
         overviewCanvasGroup.Close();
         
-        controlsState = GetLastActiveController.type.ControllerTypeToControlsState();
+        var lastController = Script_PlayerInputManager.Instance.GetLastActiveController;
+        ControllerType lastControllerType = ControllerType.Keyboard;
+        if (lastController != null)
+            lastControllerType = lastController.type;
+
+        controlsState = lastControllerType.ControllerTypeToControlsState();
         RenderControlsUI();
         
         controlsCanvasGroup.Open();
@@ -406,9 +409,8 @@ public class Script_SettingsController : MonoBehaviour
             rebindKeyUI.UpdateBehaviorUIText();
         });
 
-        UIRebindActionsJoystick.ForEach(rebindKeyUI => {
-            rebindKeyUI.UpdateBehaviorUIText();
-        });
+        for (var i = 0; i < UIRebindActionsJoystick.Count; i++)
+            UIRebindActionsJoystick[i].UpdateBehaviorUIText(isDisplayMessage: i == 0);
     }
 
     public void OpenResetDefaultsSubmenu()

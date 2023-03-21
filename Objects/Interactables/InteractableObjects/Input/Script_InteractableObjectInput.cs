@@ -74,6 +74,7 @@ public class Script_InteractableObjectInput : Script_InteractableObject
             
             inputManager.End();
             Script_Game.Game.GetPlayer().SetIsInteract();
+            StartDialogueCoolDown();
         }
     }
 }

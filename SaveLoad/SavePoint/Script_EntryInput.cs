@@ -80,8 +80,8 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     private bool isIgnoreSubmitOnDownJoystick;
     private bool disableMoveStartEndOfLineCode;
 
-    public bool IsJoystickConnected => Script_PlayerInputManager.Instance.IsJoystickConnected;
     public bool IsLetterSelectState => IsJoystickConnected && letterSelectGrid != null;
+    private bool IsJoystickConnected => Script_PlayerInputManager.Instance.IsJoystickConnected;
     
     private TMP_InputField TMPInputField
     {

@@ -8,6 +8,8 @@ using Rewired;
 
 public class Script_UIRebindAction : MonoBehaviour
 {
+    private const string NoJoystickConnectedText = "No Joystick Connected";
+    private const string UnsupportedJoystickText = "Unsupported Joystick";
     private const string NoControllerText = "--";
 
     public enum ErrorTypes
@@ -47,13 +49,29 @@ public class Script_UIRebindAction : MonoBehaviour
         MessagingInitialState();
     }
 
-    // Update controls map with First keybind map
-    public void UpdateBehaviorUIText()
+    // Update controls map with First keybind map. isDisplayMessage allows for first keybind to display the
+    // error message to Player.
+    public void UpdateBehaviorUIText(bool isDisplayMessage = false)
     {
         // If ControlsState:Keyboard state, will always be connected. Need this for ControlsState:Joystick
         if (!settingsController.IsControllerConnectedForState)
         {
-            keyTextTMP.text = NoControllerText;
+            // Handle displaying a more specific message for joystick
+            if (
+                isDisplayMessage
+                && settingsController.MyControlsState == Script_SettingsController.ControlsStates.Joystick
+            )
+            {
+                bool IsJoystickConnectedNotSupported = MyPlayer.controllers.joystickCount > 0
+                    && !MyPlayer.controllers.Joysticks[0].IsJoystickSupported();
+                
+                keyTextTMP.text = (IsJoystickConnectedNotSupported
+                    ? UnsupportedJoystickText
+                    : NoJoystickConnectedText).ToUpper();
+            }
+            else
+                keyTextTMP.text = NoControllerText;
+
             return;
         }
         
@@ -67,6 +85,14 @@ public class Script_UIRebindAction : MonoBehaviour
             _ => MyPlayer.GetFirstMappingKeyboardByActionName(myAction),
         };
         
+        Dev_Logger.Debug($"{name} currentBindingInput {currentBindingInput}");
+
+        if (string.IsNullOrEmpty(currentBindingInput))
+        {
+            keyTextTMP.text = NoControllerText;
+            return;
+        }
+
         keyTextTMP.text = currentBindingInput.ToUpper();
     }
 
