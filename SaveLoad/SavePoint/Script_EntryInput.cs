@@ -27,7 +27,7 @@ using UnityEditor;
 /// </summary>
 public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
-    private const float WaitTimeAfterAutoNavigate = 0.2f;
+    private const float WaitTimeAfterAutoNavigate = 0.1f;
     
     [SerializeField] private Const_InputValidation.Validators entryValidator;
     
@@ -370,12 +370,19 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         TMPGUI.GetComponent<TMP_InputField>().DeactivateInputField();
         StartCoroutine(NavigateToSubmitAndWait());
 
-        // Wait to prevent consuming the current Down press event
+        // Wait to prevent consuming the current Down press event for Submit OnSelectDown that would cause nav'ing
+        // down into letter grid (when it's active)
         IEnumerator NavigateToSubmitAndWait()
         {
             EventSystem.current.SetSelectedGameObject(submitButton);
             
-            yield return new WaitForSecondsRealtime(WaitTimeAfterAutoNavigate);
+            // When letter grid is up, wait to prevent down from Submit also reading as Submit's OnSelectDown
+            if (IsLetterSelectState)
+                yield return new WaitForSecondsRealtime(WaitTimeAfterAutoNavigate);
+            // When letter grid is not active, there is no elemenet for Submit's OnSelectDown so no need to wait
+            else
+                yield return null;
+            
             EventSystem.current.sendNavigationEvents = true;
         }
     }

@@ -75,9 +75,11 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
     [Space][Header("Myne's Challenge Settings")][Space]
     [SerializeField] private Script_DialogueNode[] mynesStopDialogue;
     [SerializeField] private Script_DialogueNode dramaDoneRepeatDialogue;
+    
+    [Space][Header("Demo")][Space]
     [SerializeField] private Script_DemoNoteController demoNoteController;
 
-    [Space][Header("Demo")][Space]
+    [Space][Header("Other")][Space]
     [SerializeField] private Script_CrackableStats giantFinalIce;
     
     // Dev Only
@@ -567,7 +569,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
         if (Const_Dev.IsDemo && ice == giantFinalIce)
         {
             giantFinalIce.IsIcePersists = true;
-            demoNoteController.ActivateDemoText();
+            demoNoteController.ActivateDemoText(Script_DemoNoteController.Levels.SpikeRoom);
         }
 
         // Break first ice achievement (this happens a few moments after diagonal cut and ice shatter)

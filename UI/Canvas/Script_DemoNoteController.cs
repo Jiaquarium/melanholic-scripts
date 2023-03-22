@@ -10,6 +10,14 @@ using UnityEditor;
 
 public class Script_DemoNoteController : MonoBehaviour
 {
+    public enum Levels
+    {
+        SpikeRoom = 0,
+        IdsRoom = 1
+    }
+
+    private static int IntroThemeIdx = 23;
+
     [SerializeField] private Script_CanvasGroupController controller;
     [SerializeField] private Script_CanvasGroupController headerCanvasGroup;
     [SerializeField] private Script_CanvasGroupController demoNoteCanvasGroup;
@@ -17,36 +25,64 @@ public class Script_DemoNoteController : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController choicesCanvasGroup;
     [SerializeField] private Script_CanvasGroupController demoBg;
     [SerializeField] private float introThemeFadeInTime;
+    [SerializeField] private float introThemeStartTime;
     [SerializeField] private float waitForDemoTextTime;
     [SerializeField] private float waitForChoicesTime;
     [SerializeField] private float waitToRevealScrollingBgTime;
     [SerializeField] private float demoBgFadeOutTime;
     
+    [Space][Header("Spike Room Ending")][Space]
     [SerializeField] private Script_LevelBehavior_26 EileensMindBehavior;    
     [SerializeField] private GameObject EileensMindContainer;
     [SerializeField] private GameObject EileensMindScrollingBg;
     [SerializeField] private GameObject scrollingBG;
-    [SerializeField] private int introThemeIdx;
+    
+    [Space][Header("Ids' Room Ending")][Space]
+    [SerializeField] private GameObject IdsRoomContainer;
+    [SerializeField] private GameObject IdsRoomScrollingBg;
+    [SerializeField] private GameObject IdsRoomDemoScrollingBG;
 
-    public void ActivateDemoText()
+    private Levels activeLevel = Levels.SpikeRoom;
+
+    private GameObject LevelContainer => activeLevel switch
     {
+        Levels.IdsRoom => IdsRoomContainer,
+        _ => EileensMindContainer
+    };
+
+    private GameObject ScrollingBg => activeLevel switch
+    {
+        Levels.IdsRoom => IdsRoomScrollingBg,
+        _ => EileensMindScrollingBg
+    };
+
+    private GameObject DemoScrollingBg => activeLevel switch
+    {
+        Levels.IdsRoom => IdsRoomDemoScrollingBG,
+        _ => scrollingBG
+    };
+
+    public void ActivateDemoText(Levels _activeLevel)
+    {
+        activeLevel = _activeLevel;
+        
         // Note: Ensure bgm fade out time less than FadeTo time
         float fadeToBlackTime = FadeSpeeds.XXSlow.GetFadeTime();
         float fadeOutBgmTime = Mathf.Clamp(fadeToBlackTime - 1f, 0f, fadeToBlackTime);
 
         Script_Game.Game.ChangeStateCutScene();
-        EileensMindBehavior.IsDemoEnd = true;
+        
+        if (activeLevel == Levels.SpikeRoom)
+            EileensMindBehavior.IsDemoEnd = true;
         
         var bgm = Script_BackgroundMusicManager.Control;
         
         // Fade out Bgm in 4 sec, while simultaneously fading in this CanvasGroup (shown as black BG)
         bgm.FadeOut(
-            // Do not set volume here or popping will occur, just allow the upcoming
-            // coroutine to handle Audio Mixer volume since it'll be 0f at this point anyways.
-            null,
+            bgm.PauseAll,
             fadeOutBgmTime,
-            outputMixer: Const_AudioMixerParams.ExposedBGVolume)
-        ;
+            outputMixer: Const_AudioMixerParams.ExposedBGVolume
+        );
         
         // Fade in this canvas group in 5 sec (only Black BG will be showing)
         // On completion fade in new Bgm
@@ -72,13 +108,15 @@ public class Script_DemoNoteController : MonoBehaviour
         // Then fade in new Bgm (intro theme)
         void FadeInIntroTheme()
         {
-            bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            // In the case, bgm fade out coroutine is still running, calling Stop will end it
+            bgm.Stop();
             bgm.PlayFadeIn(
-                i: introThemeIdx,
+                i: IntroThemeIdx,
                 cb: () => StartCoroutine(FadeInText()),
                 forcePlay: true,
                 fadeTime: introThemeFadeInTime,
-                outputMixer: Const_AudioMixerParams.ExposedBGVolume
+                outputMixer: Const_AudioMixerParams.ExposedBGVolume,
+                startTime: introThemeStartTime
             );
         }
 
@@ -103,10 +141,10 @@ public class Script_DemoNoteController : MonoBehaviour
         void HandleScrollingBGReveal()
         {
             // Hide Eileens Mind to show scrolling BG.
-            EileensMindContainer.SetActive(false);
-            EileensMindScrollingBg.SetActive(false);
+            LevelContainer.SetActive(false);
+            ScrollingBg.SetActive(false);
             Script_Game.Game.GetPlayer().SetInvisible(true);
-            scrollingBG.SetActive(true);
+            DemoScrollingBg.SetActive(true);
 
             StartCoroutine(WaitToFadeOutDemoBG());
         }
@@ -175,7 +213,7 @@ public class Script_DemoNoteController : MonoBehaviour
         demoTextCanvasGroup.Close();
         choicesCanvasGroup.Close();
         headerCanvasGroup.Close();
-        scrollingBG.SetActive(false);
+        DemoScrollingBg.SetActive(false);
 
         demoBg.Open();
     }
@@ -193,9 +231,14 @@ public class Script_DemoNoteController : MonoBehaviour
             DrawDefaultInspector();
 
             Script_DemoNoteController t = (Script_DemoNoteController)target;
-            if (GUILayout.Button("Activate"))
+            if (GUILayout.Button("Activate (Spike Room)"))
             {
-                t.ActivateDemoText();
+                t.ActivateDemoText(Script_DemoNoteController.Levels.SpikeRoom);
+            }
+
+            if (GUILayout.Button("Activate (Ids' Room)"))
+            {
+                t.ActivateDemoText(Script_DemoNoteController.Levels.IdsRoom);
             }
         }
     }

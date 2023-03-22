@@ -75,11 +75,13 @@ public class Script_AchievementsManager : MonoBehaviour
 
     void OnEnable()
     {
-		if (!SteamManager.Initialized)
+		if (!SteamManager.Initialized || Const_Dev.IsDemo)
         {
             Debug.LogWarning($"{name} SteamManager is not inited");
 			return;
         }
+
+        Dev_Logger.Debug($"{name} setting callbacks. SteamManager is inited");
 
 		// Cache the GameID for use in the Callbacks
 		m_GameID = new CGameID(SteamUtils.GetAppID());
@@ -90,13 +92,13 @@ public class Script_AchievementsManager : MonoBehaviour
 
     void Update()
     {
-        if (!SteamManager.Initialized)
+        if (!SteamManager.Initialized || Const_Dev.IsDemo)
 			return;
 
         if (!m_bRequestedStats)
         {
 			// Is Steam Loaded? if no, can't get stats, done.
-			if (!SteamManager.Initialized)
+			if (!SteamManager.Initialized || Const_Dev.IsDemo)
             {
 				m_bRequestedStats = true;
 				return;
@@ -217,6 +219,9 @@ public class Script_AchievementsManager : MonoBehaviour
 
     public void UnlockPsyConn()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achPsyConn)
         {
             achievementsState.achPsyConn = true;
@@ -226,6 +231,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockWord()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achWord)
         {
             achievementsState.achWord = true;
@@ -235,6 +243,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockDancePerfect()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achDancePerfect)
         {
             achievementsState.achDancePerfect = true;
@@ -244,6 +255,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockSpikePerfect()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achSpikePerfect)
         {
             achievementsState.achSpikePerfect = true;
@@ -253,6 +267,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockBreakIce()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achBreakIce)
         {
             achievementsState.achBreakIce = true;
@@ -262,6 +279,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockWell()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achWell)
         {
             achievementsState.achWell = true;
@@ -271,6 +291,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockSin()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achSin)
         {
             achievementsState.achSin = true;
@@ -280,6 +303,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockRaveStage()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achRaveStage)
         {
             achievementsState.achRaveStage = true;
@@ -289,6 +315,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockCctvCode()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achCctvCode)
         {
             achievementsState.achCctvCode = true;
@@ -298,6 +327,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockNauticalDawn()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achNauticalDawn)
         {
             achievementsState.achNauticalDawn = true;
@@ -307,6 +339,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockSealing()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achSealing)
         {
             achievementsState.achSealing = true;
@@ -316,6 +351,9 @@ public class Script_AchievementsManager : MonoBehaviour
     
     public void UnlockSadist()
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         if (!achievementsState.achSadist)
         {
             achievementsState.achSadist = true;
@@ -326,6 +364,9 @@ public class Script_AchievementsManager : MonoBehaviour
     // Set the Cursed Cut Scene, and save Achievements to keep up to date
     public void UpdateCursedCutScene(CursedCutScenes cutScene)
     {
+        if (Const_Dev.IsDemo)
+            return;
+        
         bool didStateUpdate = false;
         
         switch (cutScene)
@@ -402,7 +443,7 @@ public class Script_AchievementsManager : MonoBehaviour
     }
 
     private void OnUserStatsReceived(UserStatsReceived_t pCallback) {
-        if (!SteamManager.Initialized)
+        if (!SteamManager.Initialized || Const_Dev.IsDemo)
         	return;
 
         // We may get callbacks for other games' stats arriving, ignore them.
@@ -410,7 +451,7 @@ public class Script_AchievementsManager : MonoBehaviour
         {
         	if (EResult.k_EResultOK == pCallback.m_eResult)
             {
-        		Dev_Logger.Debug("Received stats and achievements from Steam\n");
+        		Dev_Logger.Debug($"{name} Received stats and achievements from Steam\n");
 
         		m_bStatsValid = true;
 
@@ -445,7 +486,7 @@ public class Script_AchievementsManager : MonoBehaviour
 		if (!Debug.isDebugBuild)
             return;
         
-        if (!SteamManager.Initialized)
+        if (!SteamManager.Initialized || Const_Dev.IsDemo)
         	return;
         
         // We may get callbacks for other games' stats arriving, ignore them
@@ -462,7 +503,7 @@ public class Script_AchievementsManager : MonoBehaviour
     // Dev only
     private void ResetSteamStatsAndAchievements()
     {
-        if (!SteamManager.Initialized)
+        if (!SteamManager.Initialized || Const_Dev.IsDemo)
         	return;
         
         Dev_Logger.Debug("Resetting Steam Stats & Achievements");

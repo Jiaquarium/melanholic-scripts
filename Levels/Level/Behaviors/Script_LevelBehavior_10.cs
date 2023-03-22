@@ -206,7 +206,12 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_Trigger SlowWalkTrigger;
 
     // ------------------------------------------------------------------------------------
+
+    [Space][Header("Demo")][Space]
+    [SerializeField] private Script_DemoNoteController demoNoteController;
     
+    // ------------------------------------------------------------------------------------
+
     private bool didIdsLeaveWeekend;
     private bool didIdsDeadPRCS;
     private bool didInteractPositiveWithIds;
@@ -966,7 +971,13 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         if (stashItemId == smallKey.Item.id)
             IdsExits();
         else if (stashItemId == boarNeedle.Item.id)
+        {
             gotBoarNeedle = true;
+
+            // For demo, immediately change to cut scene to avoid flash of UI after stash
+            if (Const_Dev.IsDemo)
+                game.ChangeStateCutScene();
+        }
 
         void IdsExits()
         {
@@ -1562,6 +1573,20 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             //     dialogueState = DialogueState.Weekend;
         // }
     }
+
+    // ------------------------------------------------------------------------------------
+    // Demo
+
+    // Called from Boar Needle Object: Next Node Action
+    public void ActivateDemoCutOff()
+    {
+        if (Const_Dev.IsDemo)
+        {
+            demoNoteController.ActivateDemoText(Script_DemoNoteController.Levels.IdsRoom);
+        }
+    }    
+
+    // ------------------------------------------------------------------------------------
     
     #if UNITY_EDITOR
     [CustomEditor(typeof(Script_LevelBehavior_10))]
