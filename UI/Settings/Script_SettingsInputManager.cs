@@ -15,7 +15,12 @@ public class Script_SettingsInputManager : MonoBehaviour
     
     public void HandleExitInput()
     {
-        if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel))
+        var rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
+        
+        if (
+            rewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel)
+            || rewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerSettings)
+        )
         {
             switch (settingsController.state)
             {

@@ -87,6 +87,11 @@ public class Script_PlayerAction : MonoBehaviour
             Dev_Logger.Debug("Open Settings");
             OpenSettings();
         }
+        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerSettings))
+        {
+            Dev_Logger.Debug("Open Settings via Unknown Controller Settings");
+            OpenSettings();
+        }
         else
         {
             HandleStickerSwitch(facingDirection, location);

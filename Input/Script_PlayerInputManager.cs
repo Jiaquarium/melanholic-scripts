@@ -21,6 +21,7 @@ public enum RWActions
     Mask2 = 5,
     Mask3 = 6,
     Mask4 = 7,
+    Settings = 8,
 }
 
 /// <summary>
@@ -72,6 +73,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         Const_KeyCodes.RWSpeed,
     };
 
+        Const_KeyCodes.RWUnknownControllerSettings
     // -------------------------------------------------------------------------------------  
 
     public static Script_PlayerInputManager Instance;

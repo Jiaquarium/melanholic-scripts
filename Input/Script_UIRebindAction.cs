@@ -105,6 +105,7 @@ public class Script_UIRebindAction : MonoBehaviour
         RWActions.Mask2 => Const_KeyCodes.RWMask2,
         RWActions.Mask3 => Const_KeyCodes.RWMask3,
         RWActions.Mask4 => Const_KeyCodes.RWMask4,
+        RWActions.Settings => Const_KeyCodes.RWUnknownControllerSettings,
         _ => Const_KeyCodes.RWInteract,
     };
 
