@@ -1314,10 +1314,11 @@ public static class Script_Utils
     /// Version number must be formatted like W.X.Y.Z
     /// </summary>
     
-    public static string SaveFile(int slot) => $"nl_savedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
-    public static string SaveTitleDataFile(int slot) => $"nl_titlesavedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
-    public static string SettingsFile => $"nl_settings_v{GetMajorVersion(Application.version)}.dat";
-    public static string CurseFile => $"nl_curse_v{GetMajorVersion(Application.version)}.dat";
+    public static string SaveFile(int slot) => $"{Prefix}_savedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
+    public static string SaveTitleDataFile(int slot) => $"{Prefix}_titlesavedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
+    public static string SettingsFile => $"{Prefix}_settings_v{GetMajorVersion(Application.version)}.dat";
+    public static string CurseFile => $"{Prefix}_curse_v{GetMajorVersion(Application.version)}.dat";
+    public static string Prefix => Const_Dev.IsDemo ? "nld" : "nl";
 
     // Will remove last "." and anything after it.
     public static string RemoveBuildNumber(string version)
