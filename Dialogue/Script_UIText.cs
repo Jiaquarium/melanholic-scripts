@@ -1267,6 +1267,120 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 // ------------------------------------------------------------------
+// Hints
+{
+    "hint_notes_sheep-chase",
+    new Model_LanguagesUI
+    {
+        EN = @"A wild sheep chase"
+    }
+},
+{
+    "hint_notes_painting-words",
+    new Model_LanguagesUI
+    {
+        EN = @"A word that lost its image"
+    }
+},
+{
+    "hint_notes_chomp",
+    new Model_LanguagesUI
+    {
+        EN = @"Nom nom chomp!"
+    }
+},
+{
+    "hint_notes_third-eye",
+    new Model_LanguagesUI
+    {
+        EN = @"To know it can hurt you but to know it won’t"
+    }
+},
+{
+    "hint_notes_snow-woman",
+    new Model_LanguagesUI
+    {
+        EN = @"Back to the elevator of sin"
+    }
+},
+{
+    "hint_notes_act-2-start",
+    new Model_LanguagesUI
+    {
+        EN = @"Beginnings of a portrait"
+    }
+},
+{
+    "hint_notes_act-2-default",
+    new Model_LanguagesUI
+    {
+        EN = @"Don't turn me invisible again."
+    }
+},
+{
+    "hint_notes_wells-world_start",
+    new Model_LanguagesUI
+    {
+        EN = @"From the bottom of a well"
+    }
+},
+{
+    "hint_notes_wells-world_complete",
+    new Model_LanguagesUI
+    {
+        EN = @"Having let go down there again"
+    }
+},
+{
+    "hint_notes_celestial-gardens_start",
+    new Model_LanguagesUI
+    {
+        EN = @"Gotta take control!"
+    }
+},
+{
+    "hint_notes_celestial-gardens_complete",
+    new Model_LanguagesUI
+    {
+        EN = @"Found a way back from sea"
+    }
+},
+{
+    "hint_notes_xxx-world_start",
+    new Model_LanguagesUI
+    {
+        EN = @"A desert longing for its oasis"
+    }
+},
+{
+    "hint_notes_xxx-world_complete",
+    new Model_LanguagesUI
+    {
+        EN = @"No more mirages"
+    }
+},
+{
+    "hint_notes_good-ending_start",
+    new Model_LanguagesUI
+    {
+        EN = @"Permanence"
+    }
+},
+{
+    "hint_notes_good-ending_complete",
+    new Model_LanguagesUI
+    {
+        EN = @"Tonight look at me"
+    }
+},
+{
+    "hint_notes_true-ending",
+    new Model_LanguagesUI
+    {
+        EN = @"Dawn of a new day"
+    }
+},
+// ------------------------------------------------------------------
 // Notes Tally Tracker
 {
     "notes-tally-tracker_UI_label",

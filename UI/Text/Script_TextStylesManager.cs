@@ -26,7 +26,8 @@ public enum TextStyle
     GoodTrueEnding = 14,
     SettingsHeading = 15,
     Cta = 16,
-    FileActionBanner = 17
+    FileActionBanner = 17,
+    NotesHint = 19,
 }
 
 public class Script_TextStylesManager : MonoBehaviour
@@ -50,6 +51,7 @@ public class Script_TextStylesManager : MonoBehaviour
     [SerializeField] private Script_TextStyle SettingsHeadingStyle;
     [SerializeField] private Script_TextStyle CtaStyle;
     [SerializeField] private Script_TextStyle FileActionBannerStyle;
+    [SerializeField] private Script_TextStyle NotesHintStyle;
 
     public Script_TextStyle GetTextStyle(TextStyle style) => style switch
     {
@@ -71,6 +73,7 @@ public class Script_TextStylesManager : MonoBehaviour
         TextStyle.SettingsHeading => SettingsHeadingStyle,
         TextStyle.Cta => CtaStyle,
         TextStyle.FileActionBanner => FileActionBannerStyle,
+        TextStyle.NotesHint => NotesHintStyle,
         _ => DialogueDefaultStyle,
     };
 

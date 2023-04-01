@@ -19,6 +19,8 @@ public class Script_GoodEndingController : MonoBehaviour
 
     [SerializeField] private List<Script_CanvasGroupController> slashOverlays;
 
+    [SerializeField] private Script_Game game;
+
     // ------------------------------------------------------------------
     // Timeline Signals
     
@@ -44,8 +46,13 @@ public class Script_GoodEndingController : MonoBehaviour
         glitchFXManager.BlendTo(0f);
     }
 
+    /// <summary>
+    /// Good Ending Timeline -- once curse file is made, defines if Good Ending has been done or not.
+    /// </summary>
     public void SaveCurseData()
     {
+        game.didGoodEnding = true;
+        game.SaveAutoSaves();
         Script_SaveCurseControl.Instance.Save();
     }
 

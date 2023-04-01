@@ -42,15 +42,16 @@ public class Script_MenuController : Script_UIState
     public Script_SBookOverviewController SBookController;
     [SerializeField] private Script_ItemsController itemsController;
     [SerializeField] private Script_NotesController notesController;
+    [SerializeField] private Script_NotesHintManager notesHintManager;
     [SerializeField] private Script_EntriesController entriesController;
     [SerializeField] Script_CanvasGroupController_Thoughts thoughtsController;
     [SerializeField] private Script_MemoriesController memoriesController;
     public Script_InventoryViewSettings inventorySettings;
     public Script_EntriesViewSettings entriesSettings;
     public Script_InventoryOverviewSettings inventoryOverviewSettings;
-    
     [SerializeField] private Script_MenuInputManager inputManager;
     [SerializeField] private Script_InventoryManager inventoryManager;
+    
     [SerializeField] private Script_EntriesViewController entriesViewController;
     [SerializeField] private Button entriesTopBarButton;
     private Selectable entriesTopBarSelectOnDownButton;
@@ -136,6 +137,8 @@ public class Script_MenuController : Script_UIState
 
                 SBookController.Close();
                 itemsController.Close();
+                
+                notesHintManager.RenderHint();
                 notesController.Open();
 
                 break;            
@@ -375,6 +378,8 @@ public class Script_MenuController : Script_UIState
         thoughtsController.Close();
         entriesController.Close();
         memoriesController.Close();
+
+        notesHintManager.Setup();
     }
 }
 

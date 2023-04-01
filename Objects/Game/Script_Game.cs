@@ -29,6 +29,10 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_TransitionManager.Endings activeEnding;
 
     public int faceOffCounter;
+
+    // ----------------------------------------------------------------------
+    // Auto Saves
+    public bool didGoodEnding;
     /* ======================================================================= */
 
     // Store this separately in state so Player Movement doesn't have to query Game each frame
@@ -191,6 +195,9 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_LevelBehavior[] hotelLevelBehaviors;
     [SerializeField] private Script_LevelBehavior[] disabledPianoLevels;
     [SerializeField] private Script_LevelBehavior[] psychicLevels;
+    [SerializeField] private List<Script_LevelBehavior> wellsWorldLevels;
+    [SerializeField] private List<Script_LevelBehavior> celestialGardensWorldLevels;
+    [SerializeField] private List<Script_LevelBehavior> xxxWorldLevels;
     
     // ------------------------------------------------------------------
     // Spawn points
@@ -971,6 +978,24 @@ public class Script_Game : MonoBehaviour
     public bool IsLastElevatorSaveAndStartWeekendCycle()
     {
         return levelBehavior == grandMirrorRoomBehavior;
+    }
+
+    public bool GetIsInsideWellsWorld()
+    {
+        var match = wellsWorldLevels.FirstOrDefault(level => level == levelBehavior);
+        return match != null;
+    }
+
+    public bool GetIsInsideCelestialGardensWorld()
+    {
+        var match = celestialGardensWorldLevels.FirstOrDefault(level => level == levelBehavior);
+        return match != null;
+    }
+
+    public bool GetIsInsideXXXWorld()
+    {
+        var match = xxxWorldLevels.FirstOrDefault(level => level == levelBehavior);
+        return match != null;
     }
 
     /* =======================================================================
