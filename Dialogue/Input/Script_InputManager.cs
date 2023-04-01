@@ -91,6 +91,12 @@ public class Script_InputManager : MonoBehaviour
         audioSource.PlayOneShot(SFXManager.UITypingSFX, SFXManager.UITypingSFXVol);
     }
 
+    // Since letter grid move makes InsertSFX, need to differentiate inserting from here
+    public void InsertLetterGridSFX()
+    {
+        audioSource.PlayOneShot(SFXManager.PencilEditShort, SFXManager.PencilEditShortVol);
+    }
+
     public void InsertCodeSFX()
     {
         audioSource.PlayOneShot(SFXManager.UICodeTypingSFX, SFXManager.UICodeTypingSFXVol);

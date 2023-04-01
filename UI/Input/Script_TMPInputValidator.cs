@@ -10,7 +10,7 @@ public class Script_TMPInputValidator : TMP_InputValidator
         return ch;
     }
     
-    protected char Error(char ch, int ASCIICode)
+    protected virtual char Error(char ch, int ASCIICode)
     {
         // Handle ignoring ESC
         if (ASCIICode != Const_InputValidation.EscASCIICode)

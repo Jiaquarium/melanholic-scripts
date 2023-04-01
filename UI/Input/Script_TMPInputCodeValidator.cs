@@ -26,4 +26,17 @@ public class Script_TMPInputCodeValidator : Script_TMPInputValidator
         
         return Error(ch, ASCIICode);
     }
+
+    protected override char Error(char ch, int ASCIICode)
+    {
+        // Ignore WASD error SFX for CCTV Code, since these are used for navigation here
+        bool isWASD = ch == 'w' || ch == 'a' || ch == 's' || ch == 'd'
+            || ch == 'W' || ch == 'A' || ch == 'S' || ch == 'D';
+        
+        // Handle ignoring ESC
+        if (ASCIICode != Const_InputValidation.EscASCIICode && !isWASD)
+            Script_InputManager.Control.ErrorSFX();
+        
+        return ch;
+    }
 }

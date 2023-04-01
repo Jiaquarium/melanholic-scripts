@@ -255,7 +255,10 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         HandleNavigateToSubmit(lastControllerType);
         
         if (entryValidator == Const_InputValidation.Validators.Code)
+        {
+            HandleNavigateToSubmitWasdS(lastControllerType);
             HandleFocusArrows(lastControllerType, rewiredInput: rewiredInput);
+        }
         
         // Keyboard handles backspace and moving through text natively via Input Field
         if (lastControllerType == ControllerType.Joystick)
@@ -271,7 +274,10 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         else
         {
             if (entryValidator == Const_InputValidation.Validators.Code)
+            {
+                HandleCodeKeyboardWASDInputMove();
                 HandleBackspaceDisabled();
+            }
             else
                 HandleKeyboardBackspaceSFX();
         }
@@ -297,7 +303,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             else
             {
                 if (
-                    // NOTE: KEYBOARD-ONLY
+                    // NOTE: KEYBOARD-ONLY, do NOT bind this to S in WASD
                     // Focus arrows will be hidden so can always allow for Down Arrow shortcut 
                     rewiredInput.GetButtonDown(Const_KeyCodes.RWKeyboardDownArrow)
                     || (
@@ -318,6 +324,17 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
                     TMPInputField.text = cachedText;
                     NavToSubmitShortcut();
                 }
+            }
+        }
+
+        // Handle navigating to submit on code with WASD by pressing S. This should NOT
+        // be used for any other input because S needs to type with others.
+        void HandleNavigateToSubmitWasdS(ControllerType controllerType)
+        {
+            if (controllerType == ControllerType.Keyboard)
+            {
+                if (rewiredInput.GetButtonDown(Const_KeyCodes.RWKeyboardWasdS))
+                    NavToSubmitShortcut();
             }
         }
         
@@ -343,6 +360,14 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             if (rewiredInput.GetButtonDown(Const_KeyCodes.RWHorizontal))
                 MoveCursor(true);
             else if (rewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
+                MoveCursor(false);
+        }
+
+        void HandleCodeKeyboardWASDInputMove()
+        {
+            if (rewiredInput.GetButtonDown(Const_KeyCodes.RWKeyboardWasdD))
+                MoveCursor(true);
+            else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWKeyboardWasdA))
                 MoveCursor(false);
         }
 
@@ -500,7 +525,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         
         TMPInputField.text = TMPInputField.text + letter;
         SetCaretDefaultPosition();
-        inputManager.InsertSFX();
+        inputManager.InsertLetterGridSFX();
     }
 
     // Remove 1 letter from the entry input. Caret will be moved to the end.
