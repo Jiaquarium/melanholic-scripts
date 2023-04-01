@@ -1177,6 +1177,18 @@ public static class Script_Utils
         return null;
     }
 
+    public static string GetFirstMappingByMap(
+        this ControllerMap map,
+        int actionId,
+        Pole? axisContribution = null,
+        AxisRange? axisRange = null
+    )
+    {
+        ActionElementMap aem = map.GetFirstActionElementMapByMap(actionId, axisContribution, axisRange);
+
+        return aem?.elementIdentifierName;
+    }
+
     // Return the first bound human readable gamepad template button name
     // https://guavaman.com/projects/rewired/docs/HowTos.html#get-element-name-for-action
     public static ActionElementMap GetFirstActionElementMapByActionName(
@@ -1230,12 +1242,26 @@ public static class Script_Utils
         return mapping;
     }
 
-    public static ActionElementMap GetFirstActionElementMapByMap(this ControllerMap map, int actionId)
+    public static ActionElementMap GetFirstActionElementMapByMap(
+        this ControllerMap map,
+        int actionId,
+        Pole? axisContribution = null,
+        AxisRange? axisRange = null
+    )
     {
         foreach(var actionElementMap in map.ElementMapsWithAction(actionId))
         {
             if (actionElementMap != null)
+            {
+                // Check axisRange if given
+                if (axisContribution != null && actionElementMap.axisContribution != axisContribution)
+                    continue;
+                
+                if (axisRange != null && actionElementMap.axisRange != axisRange)
+                    continue;
+                
                 return actionElementMap;
+            }
         }
 
         return null;
@@ -1270,6 +1296,14 @@ public static class Script_Utils
         Const_KeyCodes.RWMask2 => 6,
         Const_KeyCodes.RWMask3 => 7,
         Const_KeyCodes.RWMask4 => 8,
+        Const_KeyCodes.RWUISubmit => 16,
+        Const_KeyCodes.RWUICancel => 17,
+        Const_KeyCodes.RWHorizontal => 0,
+        Const_KeyCodes.RWVertical => 1,
+        Const_KeyCodes.RWUnknownControllerSettings => 36,
+        Const_KeyCodes.RWBackspace => 30,
+        Const_KeyCodes.RWUIHorizontal => 14,
+        Const_KeyCodes.RWUIVertical => 15,
         _ => 2,
     };
     

@@ -20,8 +20,18 @@ public class Script_UIRebindAction : MonoBehaviour
         HotKey = 3
     }
 
+    public enum InputTypes
+    {
+        Any = 0,
+        Button = 1,
+        Axis = 2,
+    }
+
     [Header("Rewired Settings")]
     [SerializeField] private RWActions myRWAction;
+    [Tooltip("The underlying action to be bound's axis range")]
+    [SerializeField] private AxisRange actionAxisRange = AxisRange.Positive;
+    [SerializeField] private InputTypes inputType = InputTypes.Any;
     
     [Header("Rebind Settings")]
     [SerializeField] private TextMeshProUGUI keyTextTMP;
@@ -37,6 +47,8 @@ public class Script_UIRebindAction : MonoBehaviour
     [SerializeField] private Script_SettingsController settingsController;
 
     public int ActionId => GetRWActionName(myRWAction).RWActionNamesToId();
+    public InputTypes MyInputType => inputType;
+    public AxisRange MyActionAxisRange => actionAxisRange;
     public Player MyPlayer => settingsController.MyPlayer;
 
     void OnEnable()
@@ -76,11 +88,13 @@ public class Script_UIRebindAction : MonoBehaviour
         }
         
         string myAction = GetRWActionName(myRWAction);
+        AxisRange? axisRange = MyActionAxisRange == AxisRange.Full ? AxisRange.Full : null;
         
         string currentBindingInput = settingsController.MyControlsState switch
         {
-            Script_SettingsController.ControlsStates.Joystick => MyPlayer.GetFirstMappingJoystickByActionName(
-                settingsController.MyController, myAction
+            Script_SettingsController.ControlsStates.Joystick => settingsController.MyControllerMap.GetFirstMappingByMap(
+                ActionId,
+                axisRange: axisRange
             ),
             _ => MyPlayer.GetFirstMappingKeyboardByActionName(myAction),
         };
@@ -105,6 +119,8 @@ public class Script_UIRebindAction : MonoBehaviour
         RWActions.Mask2 => Const_KeyCodes.RWMask2,
         RWActions.Mask3 => Const_KeyCodes.RWMask3,
         RWActions.Mask4 => Const_KeyCodes.RWMask4,
+        RWActions.MoveHorizontalAxis => Const_KeyCodes.RWHorizontal,
+        RWActions.MoveVerticalAxis => Const_KeyCodes.RWVertical,
         RWActions.Settings => Const_KeyCodes.RWUnknownControllerSettings,
         _ => Const_KeyCodes.RWInteract,
     };

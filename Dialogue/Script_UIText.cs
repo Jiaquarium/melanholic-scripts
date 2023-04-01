@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-03-22 14:27:03
+// Last created by UI Exporter at 2023-03-31 13:13:15
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1832,6 +1832,14 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 {
+    "controls_type_joystick_warning_unknown",
+    new Model_LanguagesUI
+    {
+        EN = @"Current joystick is of an unknown format.
+Use the keyboard to select a control to begin listening for input."
+    }
+},
+{
     "controls_move_name",
     new Model_LanguagesUI
     {
@@ -1850,6 +1858,13 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Inventory"
+    }
+},
+{
+    "controls_inventory_name_joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Inventory / Cancel"
     }
 },
 {
@@ -1899,6 +1914,90 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"{79}"
+    }
+},
+{
+    "controls_wear-mask-1_name_unknown-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 1 (Axis)"
+    }
+},
+{
+    "controls_wear-mask-2_name_unknown-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 2 (Axis)"
+    }
+},
+{
+    "controls_wear-mask-3_name_unknown-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 3 (Axis)"
+    }
+},
+{
+    "controls_wear-mask-4_name_unknown-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 4 (Axis)"
+    }
+},
+{
+    "controls_move-hz_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Move Left/Right (Axis)"
+    }
+},
+{
+    "controls_move-vert_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Move Up/Down (Axis)"
+    }
+},
+{
+    "controls_move-up_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Move Up (D-pad)"
+    }
+},
+{
+    "controls_move-left_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Move Left (D-pad)"
+    }
+},
+{
+    "controls_move-down_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Move Down (D-pad)"
+    }
+},
+{
+    "controls_move-right_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Move Right (D-pad)"
+    }
+},
+{
+    "controls_settings_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Settings"
+    }
+},
+{
+    "controls_hotkeys_joystick-action",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask"
     }
 },
 {

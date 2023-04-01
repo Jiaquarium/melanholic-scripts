@@ -54,12 +54,15 @@ public class Script_SettingsController : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController controlsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController keyboardControlsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController joystickControlsCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController unknownJoystickControlsCanvasGroup;
     [SerializeField] private Button bottomCommonButton;
     [SerializeField] private Button keyboardLastButton;
     [SerializeField] private Button joystickLastButton;
+    [SerializeField] private Button unknownJoystickLastButton;
     [SerializeField] private Button topCommonButton;
     [SerializeField] private Button keyboardFirstButton;
     [SerializeField] private Button joystickFirstButton;
+    [SerializeField] private Button unknownJoystickFirstButton;
     [SerializeField] private List<Animator> controllerSelectArrows;
     [SerializeField] private TextMeshProUGUI keyboardTMP;
     [SerializeField] private TextMeshProUGUI joystickTMP;
@@ -73,6 +76,7 @@ public class Script_SettingsController : MonoBehaviour
     [Space][Header("Rebind Settings")][Space]
     [SerializeField] private List<Script_UIRebindAction> UIRebindActions;
     [SerializeField] private List<Script_UIRebindAction> UIRebindActionsJoystick;
+    [SerializeField] private List<Script_UIRebindAction> UIRebindActionsUnknownJoystick;
     [SerializeField] private Script_SavedGameSubmenuInputChoice[] resetDefaultsSubmenuChoices;
     [SerializeField] private GameObject resetDefaultsSubmenu;
     [SerializeField] private GameObject onExitResetDefaultsSubmenuActiveObject;
@@ -100,7 +104,7 @@ public class Script_SettingsController : MonoBehaviour
     private bool isInputDisabled;
     
     // Note: When referencing controllerMap or MyController, ALWAYS null check (e.g. call IsControllerConnected)
-    private ControllerMap MyControllerMap
+    public ControllerMap MyControllerMap
     {
         get {
             if (MyController == null)
@@ -383,15 +387,30 @@ public class Script_SettingsController : MonoBehaviour
         {
             case (ControlsStates.Joystick):
                 keyboardControlsCanvasGroup.Close();
-                joystickControlsCanvasGroup.Open();
-                bottomCommonButton.SetNavigation(newSelectOnUp: joystickLastButton);
-                topCommonButton.SetNavigation(newSelectOnDown: joystickFirstButton);
+                
+                // Render either joystick or unknown joystick maps
+                if (MyController == null || MyController.IsJoystickSupported())
+                {
+                    joystickControlsCanvasGroup.Open();
+                    unknownJoystickControlsCanvasGroup.Close();
+                    bottomCommonButton.SetNavigation(newSelectOnUp: joystickLastButton);
+                    topCommonButton.SetNavigation(newSelectOnDown: joystickFirstButton);
+                }
+                else
+                {
+                    joystickControlsCanvasGroup.Close();
+                    unknownJoystickControlsCanvasGroup.Open();
+                    bottomCommonButton.SetNavigation(newSelectOnUp: unknownJoystickLastButton);
+                    topCommonButton.SetNavigation(newSelectOnDown: unknownJoystickFirstButton);
+                }
+                
                 keyboardTMP.gameObject.SetActive(false);
                 joystickTMP.gameObject.SetActive(true);
                 break;
             default:
                 keyboardControlsCanvasGroup.Open();
                 joystickControlsCanvasGroup.Close();
+                unknownJoystickControlsCanvasGroup.Close();
                 bottomCommonButton.SetNavigation(newSelectOnUp: keyboardLastButton);
                 topCommonButton.SetNavigation(newSelectOnDown: keyboardFirstButton);
                 keyboardTMP.gameObject.SetActive(true);
@@ -411,6 +430,10 @@ public class Script_SettingsController : MonoBehaviour
 
         for (var i = 0; i < UIRebindActionsJoystick.Count; i++)
             UIRebindActionsJoystick[i].UpdateBehaviorUIText(isDisplayMessage: i == 0);
+        
+        UIRebindActionsUnknownJoystick.ForEach(rebindKeyUI => {
+            rebindKeyUI.UpdateBehaviorUIText();
+        });
     }
 
     public void OpenResetDefaultsSubmenu()
@@ -424,7 +447,39 @@ public class Script_SettingsController : MonoBehaviour
     public void OnInputFieldClicked(Script_UIRebindAction rebindActionButton)
     {
         Dev_Logger.Debug($"OnInputFieldClicked with rebindActionButton <{rebindActionButton}>");
-        
+
+        ActionElementMap aemToReplace;
+        AxisRange? axisRange = rebindActionButton.MyActionAxisRange == AxisRange.Full
+            ? AxisRange.Full
+            : null;
+
+        if (MyController.type == ControllerType.Keyboard || MyController.IsJoystickSupported())
+            aemToReplace = MyControllerMap.GetFirstActionElementMapByMap(rebindActionButton.ActionId);
+        else
+        {
+            // Handle Full Axes binding on Unknown Controller
+            aemToReplace = MyControllerMap.GetFirstActionElementMapByMap(
+                rebindActionButton.ActionId,
+                axisRange: axisRange
+            );
+        }
+
+        switch (rebindActionButton.MyInputType)
+        {
+            case Script_UIRebindAction.InputTypes.Button:
+                inputMapper.options.allowButtons = true;
+                inputMapper.options.allowAxes = false;
+                break;
+            case Script_UIRebindAction.InputTypes.Axis:
+                inputMapper.options.allowButtons = false;
+                inputMapper.options.allowAxes = true;
+                break;
+            default:
+                inputMapper.options.allowButtons = true;
+                inputMapper.options.allowAxes = true;
+                break;
+        }
+
         SetNavigationEnabled(false);
         
         StartCoroutine(StartListeningDelayed());
@@ -434,14 +489,29 @@ public class Script_SettingsController : MonoBehaviour
             // Need to wait realtime, since Settings_Game Time.scale will be 0
             yield return new WaitForSecondsRealtime(WaitBeforeListeningTime);
 
-            // Automatically protects joystick binds from keyboard input and vice-versa
-            InputMapper.Context context = new InputMapper.Context()
+            InputMapper.Context context;
+            if (axisRange != null && axisRange == AxisRange.Full)
             {
-                actionId = rebindActionButton.ActionId,
-                controllerMap = MyControllerMap,
-                actionElementMapToReplace = MyControllerMap.GetFirstActionElementMapByMap(rebindActionButton.ActionId)
-            };
-            
+                // Automatically protects joystick binds from keyboard input and vice-versa
+                context = new InputMapper.Context()
+                {
+                    actionId = rebindActionButton.ActionId,
+                    controllerMap = MyControllerMap,
+                    actionRange = (AxisRange)axisRange,
+                    actionElementMapToReplace = aemToReplace
+                };
+            }
+            else
+            {
+                // Automatically protects joystick binds from keyboard input and vice-versa
+                context = new InputMapper.Context()
+                {
+                    actionId = rebindActionButton.ActionId,
+                    controllerMap = MyControllerMap,
+                    actionElementMapToReplace = aemToReplace
+                };
+            }
+
             currentRebindActionButton = rebindActionButton;
             inputMapper.Start(context);
         }
@@ -450,10 +520,129 @@ public class Script_SettingsController : MonoBehaviour
     // React to UIRebindAction mapping event
     private void OnInputMapped(InputMapper.InputMappedEventData data)
     {
-        Dev_Logger.Debug($"Mapped {data.actionElementMap.actionDescriptiveName} with {data.actionElementMap.elementIdentifierName}");
+        HandleUIExtraAutoBinds(
+            data.actionElementMap.actionId,
+            data.actionElementMap.controllerMap.controllerType,
+            data.actionElementMap
+        );
 
         Script_SaveSettingsControl.Instance.Save();
         InputMappedSuccessSFX();
+    }
+
+    public void HandleUIExtraAutoBinds(
+        int targetActionId,
+        ControllerType controllerType,
+        ActionElementMap aemToInjectFrom
+    )
+    {
+        try
+        {
+            var playerInputManager = Script_PlayerInputManager.Instance;
+            
+            // If changing Interact, also change UISubmit in UI Extra map
+            if (targetActionId == Const_KeyCodes.RWInteract.RWActionNamesToId())
+            {
+                // Handle keyboard
+                if (controllerType == ControllerType.Keyboard)
+                {
+                    playerInputManager.InjectReplaceKeybindMapping(
+                        Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
+                        MyPlayer.controllers.maps.GetMap<KeyboardMap>(
+                            Script_PlayerInputManager.KeyboardId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+                // Handle joystick
+                else if (controllerType == ControllerType.Joystick)
+                {
+                    playerInputManager.InjectReplaceKeybindMapping(
+                        Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
+                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+            }
+            // If changing Inventory on Joystick, also change UICancel in UI Extra map
+            else if (targetActionId == Const_KeyCodes.RWInventory.RWActionNamesToId())
+            {
+                if (controllerType == ControllerType.Joystick)
+                {
+                    playerInputManager.InjectReplaceKeybindMapping(
+                        Const_KeyCodes.RWUICancel.RWActionNamesToId(),
+                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+
+                    // Handle auto binding Backspace for Unknown Controller
+                    if (playerInputManager.IsUnknownJoystick)
+                    {
+                        playerInputManager.InjectReplaceKeybindMapping(
+                            Const_KeyCodes.RWBackspace.RWActionNamesToId(),
+                            MyPlayer.controllers.maps.GetMap<JoystickMap>(
+                                Script_PlayerInputManager.ControllerId,
+                                Script_PlayerInputManager.UIExtraMapName,
+                                Script_PlayerInputManager.Layout
+                            ),
+                            aemToInjectFrom
+                        );
+                    }
+                }
+            }
+            else if (targetActionId == Const_KeyCodes.RWHorizontal.RWActionNamesToId())
+            {
+                if (
+                    controllerType == ControllerType.Joystick
+                    && playerInputManager.IsUnknownJoystick
+                )
+                {
+                    // Handle auto binding UIHorizontal for Unknown Controller
+                    playerInputManager.InjectReplaceKeybindMapping(
+                        Const_KeyCodes.RWUIHorizontal.RWActionNamesToId(),
+                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+            }
+            else if (targetActionId == Const_KeyCodes.RWVertical.RWActionNamesToId())
+            {
+                if (
+                    controllerType == ControllerType.Joystick
+                    && playerInputManager.IsUnknownJoystick
+                )
+                {
+                    // Handle auto binding UIVertical for Unknown Controller
+                    playerInputManager.InjectReplaceKeybindMapping(
+                        Const_KeyCodes.RWUIVertical.RWActionNamesToId(),
+                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"{name} Failed to also auto rebind actionId {targetActionId} with the following error: \n{e}");
+        }
     }
 
     /// <summary>
@@ -540,7 +729,11 @@ public class Script_SettingsController : MonoBehaviour
     }
 
     // Update keybinding UI
-    public void OnControllerChanged(ControllerStatusChangedEventArgs args)
+    public void OnControllerChanged(
+        ControllerStatusChangedEventArgs args,
+        bool isSwitchedUnknownJoystick,
+        bool didSwitchJoystickLayout
+    )
     {
         // Settings not open
         if (!gameObject.activeInHierarchy)
@@ -552,6 +745,19 @@ public class Script_SettingsController : MonoBehaviour
             Script_SaveSettingsControl.Instance.Load();
 
         RenderControlsUI();
+
+        // If changed from Joystick Known to Unknown or vise versa, set all to default to avoid tangling bindings
+        if (isSwitchedUnknownJoystick)
+            Script_PlayerInputManager.Instance.SetJoystickTemporaryDefaults();
+        
+        // Move back to the top in case Player was in the Joystick buttons and the layout changed either due to switching
+        // between known/unknown or no joystick/unknown joystick. Should only do this if currently on joystick screen.
+        if (didSwitchJoystickLayout)
+        {
+            if (controlsState == ControlsStates.Joystick)
+                EventSystem.current.SetSelectedGameObject(controlsCanvasGroup.firstToSelect.gameObject);
+        }
+
         UpdateControlKeyDisplays();
     }
 

@@ -20,10 +20,16 @@ public static class Const_KeyCodes
     public const string RWMask2 = "Mask 2";
     public const string RWMask3 = "Mask 3";
     public const string RWMask4 = "Mask 4";
+    
     public const string RWHorizontal = "Move Horizontal";
     public const string RWVertical = "Move Vertical";
+    public const string RWUIHorizontal = "UIHorizontal";
+    public const string RWUIVertical = "UIVertical";
+    
     public const string RWUICancel = "UICancel";
     public const string RWUISubmit = "UISubmit";
+    public const string RWUnknownControllerSettings = "Unknown Controller Settings";
+
     public const string RWHotKey1 = "Hot Key 1";
     public const string RWHotKey2 = "Hot Key 2";
     public const string RWHotKey3 = "Hot Key 3";
@@ -33,9 +39,12 @@ public static class Const_KeyCodes
     public const string RWHotKey7 = "Hot Key 7";
     public const string RWHotKey8 = "Hot Key 8";
     public const string RWHotKey9 = "Hot Key 9";
-    public static string RWBackspace = "Backspace";
-    public static string RWKeyboardDownArrow = "Keyboard Down Arrow";
-    public static string RWKeyboardSpace = "Keyboard Space";
+    public const string RWBackspace = "Backspace";
+    public const string RWKeyboardDownArrow = "Keyboard Down Arrow";
+    public const string RWKeyboardSpace = "Keyboard Space";
+    public const string RWKeyboardWasdS = "Keyboard WASD S";
+    public const string RWKeyboardWasdA = "Keyboard WASD A";
+    public const string RWKeyboardWasdD = "Keyboard WASD D";
     
     public static KeyCode KeycodeDownArrow = KeyCode.DownArrow;
     public static KeyCode KeycodeUpArrow = KeyCode.UpArrow;
