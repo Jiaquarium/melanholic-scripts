@@ -351,7 +351,7 @@ public static class Script_Utils
             Script_Names.Ellenia,                       // {12}
             Script_Names.Specter,                       // {13}
             Script_Names.ElleniaPassword,               // {14}
-            Script_Names.Tedmunch,                      // {15}
+            Script_Names.SwitchActiveStickerKeycodesJoystick, // {15}
             Script_Names.Tedwich,                       // {16}
             Script_Names.FlanShort,                     // {17}
             Script_Names.Kelsingor,                     // {18}

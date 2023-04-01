@@ -76,7 +76,7 @@ public class Script_Names: MonoBehaviour
         set => Names._ElleniaPassword = value;
     }  
     
-    public const string Tedmunch                        = "<b>Tedmunch</b>";                    // {15}
+    public const string SwitchActiveStickerKeycodesJoystick = "the <b>Wear Mask 1-4</b> commands";    // {15}
     
     public static string Tedwich                                                                // {16} Updated L11 SavePoint
     {

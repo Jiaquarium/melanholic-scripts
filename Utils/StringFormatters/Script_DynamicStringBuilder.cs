@@ -10,12 +10,21 @@ public class Script_DynamicStringBuilder : MonoBehaviour
 {
     public static Dictionary<string, string> Params = new Dictionary<string, string>();
 
+    // Rebindable
     public static string InventoryKey = "@@InventoryKey";
     public static string SpeedKey = "@@SpeedKey";
     public static string MaskCommandKey = "@@MaskCommandKey";
     public static string DefaultInventoryBinding = "<b>INVENTORY</b>";
     public static string DefaultSpeedBinding = "<b>???</b>";
     public static string DefaultMaskCommandBinding = "<b>MASK COMMAND</b>";
+
+    // Dynamic strings
+    public static string RunKey = "@@Run";
+    public static string CycleCountKey = "@@CycleCount";
+    public static string DDRCurrentTryKey = "@@DDRCurrentTry";
+    public static string WearMaskKey = "@@WearMask";
+    public static string WearMaskValKeyboard = "{82}";
+    public static string WearMaskValJoystick = "{15}";
     
     /// <summary>
     /// Need to be in Start so we have reference to Singletons
@@ -36,13 +45,31 @@ public class Script_DynamicStringBuilder : MonoBehaviour
     {
         Params = new Dictionary<string, string>();
         
-        Params.Add("@@Run", $"<b>{Script_Game.Game?.Run.dayName.FormatRun() ?? "?"}</b>");
-        Params.Add("@@CycleCount", $"<b>{Script_Game.Game?.CycleCount.ToString() ?? "?"}</b>");
+        Params.Add(RunKey, $"<b>{Script_Game.Game?.Run.dayName.FormatRun() ?? "?"}</b>");
+        Params.Add(CycleCountKey, $"<b>{Script_Game.Game?.CycleCount.ToString() ?? "?"}</b>");
         
-        Params.Add("@@DDRCurrentTry", $"<b>{((Script_Game.Game?.IdsRoomBehavior.CurrentTry ?? 1) + 1).ToString() ?? "?"}</b>");
+        Params.Add(DDRCurrentTryKey, $"<b>{((Script_Game.Game?.IdsRoomBehavior.CurrentTry ?? 1) + 1).ToString() ?? "?"}</b>");
+
+        var playerInputManager = Script_PlayerInputManager.Instance;
+        if (playerInputManager != null)
+        {
+            Player rewiredInput = playerInputManager.RewiredInput;
+            Controller lastController = rewiredInput.controllers.GetLastActiveController();
+            var lastControllerType = lastController != null ? lastController.type : ControllerType.Keyboard;
+            SetControllerBasedParams(lastControllerType);
+        }
+        else
+            SetControllerBasedParams(ControllerType.Keyboard);
+
+        // Params that depend on the controller type
+        void SetControllerBasedParams(ControllerType t)
+        {
+            Params.Add(WearMaskKey, t == ControllerType.Joystick ? WearMaskValJoystick : WearMaskValKeyboard);
+        }
     }
 
-    public static void BuildDynamicParam(string paramKey, string actionName)
+    // Must call BuildParams before calling this to build new Params dict and set last controller
+    private static void BuildDynamicParam(string paramKey, string actionName)
     {
         var playerInputManager = Script_PlayerInputManager.Instance;
         
