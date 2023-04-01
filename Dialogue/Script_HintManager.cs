@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+// ARCHIVE
 public class Script_HintManager : MonoBehaviour
 {
     public static Script_HintManager Control;

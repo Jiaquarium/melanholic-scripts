@@ -33,6 +33,7 @@ public class Script_SaveLoadGame : MonoBehaviour
         Dev_Logger.Debug($"level:              {data.gameData.level}");
         Dev_Logger.Debug($"totalPlayTime:      {data.gameData.totalPlayTime}");
         Dev_Logger.Debug($"activeEnding:       {data.gameData.activeEnding}");
+        Dev_Logger.Debug($"faceOffCounter:     {data.gameData.faceOffCounter}");
     }
 
     public void UpdatePlayTime(Model_SaveData data)

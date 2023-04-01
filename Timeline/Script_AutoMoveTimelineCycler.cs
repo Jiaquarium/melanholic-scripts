@@ -37,7 +37,9 @@ public class Script_AutoMoveTimelineCycler : MonoBehaviour
 
     void OnEnable()
     {
-        myDirector.stopped += NextTimeline;
+        if (myDirector != null)
+            myDirector.stopped += NextTimeline;
+
         Script_NPCEventsManager.OnMovingNPCTriggerDialogue += CacheNextTimelineOnDialogue;
         Script_NPCEventsManager.OnMovingNPCEndDialogue += PlayCachedNextTimeline;
   
@@ -55,7 +57,10 @@ public class Script_AutoMoveTimelineCycler : MonoBehaviour
 
     void OnDisable()
     {
-        myDirector.stopped -= NextTimeline;
+        // To prevent error when closing app
+        if (myDirector != null)
+            myDirector.stopped -= NextTimeline;
+        
         Script_NPCEventsManager.OnMovingNPCTriggerDialogue -= CacheNextTimelineOnDialogue;
         Script_NPCEventsManager.OnMovingNPCEndDialogue -= PlayCachedNextTimeline;
         

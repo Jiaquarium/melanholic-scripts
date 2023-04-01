@@ -48,6 +48,8 @@ public class Script_DialogueManager : MonoBehaviour
     public CanvasGroup canvas;
     public AudioSource audioSource;
     public AudioClip dialogueStartSoundFX;
+    public float dialogueStartVolumeScale;
+    public float typingVolumeScale;
 
     public Script_CanvasGroupController activeCanvas;
     public TextMeshProUGUI activeCanvasText;
@@ -111,8 +113,6 @@ public class Script_DialogueManager : MonoBehaviour
     public Queue<Model_DialogueSection> dialogueSections;
     public Queue<string> lines;
     
-    public float typingVolumeScale;
-    public float dialogueStartVolumeScale;
     public Script_DialogueNode currentNode;
     public bool isInputMode = false;
     public bool noContinuationIcon;
@@ -145,6 +145,10 @@ public class Script_DialogueManager : MonoBehaviour
     [SerializeField] private float beforeCantUnderstandReactionWaitTime;
     [SerializeField] private bool shouldCantUnderstandReaction;
     private bool didCantUnderstandReactionDone;
+
+    // ------------------------------------------------------------------
+    // Player Feedback to Hit NPC
+    public bool IsHandlingNPCOnHit { get; set; }
     
     private States State
     {
@@ -1191,6 +1195,12 @@ public class Script_DialogueManager : MonoBehaviour
 
                 IsOnEndUpdateNPCState = false;
             }
+
+            // To stop NPC On Hit reaction dialogue handling
+            if (IsHandlingNPCOnHit)
+            {
+                IsHandlingNPCOnHit = false;
+            }
             
             HandleDialogueNodeAction();
             Script_DialogueEventsManager.DialogueEndEvent();
@@ -1461,6 +1471,11 @@ public class Script_DialogueManager : MonoBehaviour
 
     public void HandleFirstPsychicInteractionNoDuck()
     {
+        // R2 Elder Dialogue Freeze Bug: Don't do this on Act 2, player will have already become accustomed
+        // to using Psychic Duck anyways
+        if (game.RunCycle != Script_RunsManager.Cycle.Weekday)
+            return;
+        
         if (!didCantUnderstandReactionDone)
             shouldCantUnderstandReaction = true;
     }

@@ -273,6 +273,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip PencilEdit;
     [Range(0f, 1f)] public float PencilEditVol;
 
+    public AudioClip PencilEditShort;
+    [Range(0f, 1f)] public float PencilEditShortVol;
+
     public AudioClip PencilExitSubmenu;
     [Range(0f, 1f)] public float PencilExitSubmenuVol;
 

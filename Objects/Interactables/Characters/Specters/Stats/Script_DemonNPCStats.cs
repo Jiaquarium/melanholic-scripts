@@ -25,11 +25,16 @@ public class Script_DemonNPCStats : Script_DemonStats
     {
         if (reactionNode != null)
         {
+            var dialogueManager = Script_DialogueManager.DialogueManager;
+            var demonNPC = GetComponent<Script_DemonNPC>();
+            
+            dialogueManager.IsHandlingNPCOnHit = true;
+            
             Script_DialogueManager.DialogueManager.StartDialogueNode(
                 reactionNode,
                 SFXOn: true,
                 null,
-                GetComponent<Script_DemonNPC>()
+                demonNPC
             );
         }
     }

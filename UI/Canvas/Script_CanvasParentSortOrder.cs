@@ -12,7 +12,7 @@ public class Script_CanvasParentSortOrder : MonoBehaviour
     
     void OnValidate()
     {
-        SetChildrenCanvasesSortingOrder();
+        // SetChildrenCanvasesSortingOrder();
     }
 
     private void SetChildrenCanvasesSortingOrder()

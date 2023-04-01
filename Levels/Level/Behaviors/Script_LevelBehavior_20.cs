@@ -47,6 +47,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     
     [SerializeField] private Script_DemonNPC Kaffe;
     [SerializeField] private Script_DemonNPC Latte;
+    [SerializeField] private GameObject KaffeLatteParent;
     [SerializeField] private Script_DemonNPC PecheMelba;
     [SerializeField] private Script_DemonNPC Suzette;
     [SerializeField] private Script_DemonNPC Moose;
@@ -330,6 +331,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     {
         Kaffe.gameObject.SetActive(isActive);
         Latte.gameObject.SetActive(isActive);
+        KaffeLatteParent.SetActive(isActive);
         PecheMelba.gameObject.SetActive(isActive);
         Suzette.gameObject.SetActive(isActive);
         Moose.gameObject.SetActive(isActive);
