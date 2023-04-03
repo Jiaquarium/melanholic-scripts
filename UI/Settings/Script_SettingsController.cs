@@ -731,34 +731,31 @@ public class Script_SettingsController : MonoBehaviour
     // Update keybinding UI
     public void OnControllerChanged(
         ControllerStatusChangedEventArgs args,
-        bool isSwitchedUnknownJoystick,
         bool didSwitchJoystickLayout
     )
     {
-        // Settings not open
-        if (!gameObject.activeInHierarchy)
-            return;
-
-        inputMapper.Stop();
-        
-        if (Script_SaveSettingsControl.Instance != null)
-            Script_SaveSettingsControl.Instance.Load();
-
-        RenderControlsUI();
-
-        // If changed from Joystick Known to Unknown or vise versa, set all to default to avoid tangling bindings
-        if (isSwitchedUnknownJoystick)
-            Script_PlayerInputManager.Instance.SetJoystickTemporaryDefaults();
-        
-        // Move back to the top in case Player was in the Joystick buttons and the layout changed either due to switching
-        // between known/unknown or no joystick/unknown joystick. Should only do this if currently on joystick screen.
-        if (didSwitchJoystickLayout)
+        // Settings not open or settings not open to controls. (When exitting SettingsController will always
+        // go back to Overview first)
+        if (
+            gameObject.activeInHierarchy
+            && Script_SettingsController.Instance.state == Script_SettingsController.States.Controls
+        )
         {
-            if (controlsState == ControlsStates.Joystick)
-                EventSystem.current.SetSelectedGameObject(controlsCanvasGroup.firstToSelect.gameObject);
+            UpdateControlsUI();
         }
 
-        UpdateControlKeyDisplays();
+        void UpdateControlsUI()
+        {
+            inputMapper.Stop();
+            RenderControlsUI();
+
+            // Move back to the top in case Player was in the Joystick buttons and the layout changed either due to switching
+            // between known/unknown or no joystick/unknown joystick. Should only do this if currently on joystick screen.
+            if (didSwitchJoystickLayout && controlsState == ControlsStates.Joystick && EventSystem.current != null)
+                EventSystem.current.SetSelectedGameObject(controlsCanvasGroup.firstToSelect.gameObject);
+
+            UpdateControlKeyDisplays();
+        }
     }
 
     private void InputMappedSuccessSFX() => Script_SFXManager.SFX.PlayUISuccessEdit();

@@ -511,8 +511,16 @@ public class Script_PlayerInputManager : MonoBehaviour
 
         Dev_Logger.Debug($"ControllerConnectedEvent: JoystickConnected didChange {didChange} new ControllerId {ControllerId}");
 
+        // Load joystick maps
+        if (Script_SaveSettingsControl.Instance != null)
+            Script_SaveSettingsControl.Instance.Load();
+
+        // If changed from Joystick Known to Unknown or vise versa, set all to default to avoid tangling bindings
+        if (isSwitchedUnknownJoystick)
+            Script_PlayerInputManager.Instance.SetJoystickTemporaryDefaults();
+        
         // Update rebinding UI and stop input mapper if it was listening
-        Script_SettingsController.Instance.OnControllerChanged(args, isSwitchedUnknownJoystick, didSwitchJoystickLayout);
+        Script_SettingsController.Instance.OnControllerChanged(args, didSwitchJoystickLayout);
     }
 
     public void SetupRewiredDefaults()
