@@ -46,10 +46,13 @@ public static class Const_Dev
 
     public readonly static bool IsTrailerMode               = false;            // false
     public readonly static bool IsSpecsDisplayOn            = false;            // false
-    public readonly static bool IsPublisherSpecsOn          = false;            // false
+    public readonly static bool IsDevHelperOn               = false;            // false
 
     public readonly static bool IsClockDebug                = false;            // false
     
     // Use when taking screenshots
     public readonly static bool IsClockShowColonsAlways     = false;            // false
+
+    // To force World Painting entrances to always show special intros regardless of face off counter
+    public readonly static bool IsSpecialIntroOnEntrances   = false;            // false              
 }
