@@ -142,22 +142,34 @@ public class Script_PlayerAction : MonoBehaviour
     
     private void HandleStickerSwitch(Directions facingDirection, Vector3 location)
     {
-        if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask1))
+        if (
+            player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask1)
+            || player.RewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerMaskVert)
+        )
         {
             Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask1}");
             stickerEffectsController.Switch(0);
         }
-        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask2))
+        else if (
+            player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask2)
+            || player.RewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerMaskHz)
+        )
         {
             Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask2}");
             stickerEffectsController.Switch(1);
         }
-        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask3))
+        else if (
+            player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask3)
+            || player.RewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWUnknownControllerMaskVert)
+        )
         {
             Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask3}");
             stickerEffectsController.Switch(2);
         }
-        else if (player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask4))
+        else if (
+            player.RewiredInput.GetButtonDown(Const_KeyCodes.RWMask4)
+            || player.RewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWUnknownControllerMaskHz)
+        )
         {
             Dev_Logger.Debug($"Switch to {Const_KeyCodes.RWMask4}");
             stickerEffectsController.Switch(3);

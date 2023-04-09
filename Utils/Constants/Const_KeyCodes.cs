@@ -20,6 +20,8 @@ public static class Const_KeyCodes
     public const string RWMask2 = "Mask 2";
     public const string RWMask3 = "Mask 3";
     public const string RWMask4 = "Mask 4";
+    public const string RWUnknownControllerMaskHz = "Mask Unknown Controller Horizontal";
+    public const string RWUnknownControllerMaskVert = "Mask Unknown Controller Vertical";
     
     public const string RWHorizontal = "Move Horizontal";
     public const string RWVertical = "Move Vertical";

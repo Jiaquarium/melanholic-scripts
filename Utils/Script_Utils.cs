@@ -1226,14 +1226,6 @@ public static class Script_Utils
         int actionId
     )
     {
-        if (controller.type == ControllerType.Joystick)
-        {
-            IGamepadTemplate gamepad = controller.GetTemplate<IGamepadTemplate>();
-
-            if (gamepad == null)
-                return null;
-        }
-
         // Get the first button map with the Action
         ActionElementMap mapping = rewiredInput.controllers.maps.GetFirstElementMapWithAction(
             controller.type, actionId, skipDisabledMaps: false
@@ -1304,7 +1296,26 @@ public static class Script_Utils
         Const_KeyCodes.RWBackspace => 30,
         Const_KeyCodes.RWUIHorizontal => 14,
         Const_KeyCodes.RWUIVertical => 15,
+        Const_KeyCodes.RWUnknownControllerMaskHz => 37,
+        Const_KeyCodes.RWUnknownControllerMaskVert => 38,
         _ => 2,
+    };
+
+    public static string GetRWActionName(this RWActions RWAction) => RWAction switch
+    {
+        RWActions.MaskCommand => Const_KeyCodes.RWMaskCommand,
+        RWActions.Inventory => Const_KeyCodes.RWInventory,
+        RWActions.Speed => Const_KeyCodes.RWSpeed,
+        RWActions.Mask1 => Const_KeyCodes.RWMask1,
+        RWActions.Mask2 => Const_KeyCodes.RWMask2,
+        RWActions.Mask3 => Const_KeyCodes.RWMask3,
+        RWActions.Mask4 => Const_KeyCodes.RWMask4,
+        RWActions.MoveHorizontalAxis => Const_KeyCodes.RWHorizontal,
+        RWActions.MoveVerticalAxis => Const_KeyCodes.RWVertical,
+        RWActions.Settings => Const_KeyCodes.RWUnknownControllerSettings,
+        RWActions.MaskHorizontalAxis => Const_KeyCodes.RWUnknownControllerMaskHz,
+        RWActions.MaskVerticalAxis => Const_KeyCodes.RWUnknownControllerMaskVert,
+        _ => Const_KeyCodes.RWInteract,
     };
     
     // -------------------------------------------------------------------------------------

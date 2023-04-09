@@ -50,7 +50,7 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
     [SerializeField] private Script_TransitionManager transitionManager;
     [SerializeField] private Script_MapNotification mapNotification;
     [SerializeField] private Script_LevelCustomFadeBehavior levelCustomFadeBehavior;
-    public bool IsSpecialIntro => game.faceOffCounter == 1 && !didIntro;
+    public bool IsSpecialIntro => (game.faceOffCounter == 1 || Const_Dev.IsSpecialIntroOnEntrances) && !didIntro;
     private bool isSpecialIntroFraming;
     
     // ------------------------------------------------------------------

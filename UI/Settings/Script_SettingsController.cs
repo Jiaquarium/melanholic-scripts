@@ -32,8 +32,9 @@ public class Script_SettingsController : MonoBehaviour
         Joystick = 1,
     }
     
+    public const float WaitBeforeListeningTime = 0.15f;
     private const float InputTimeout = 5f;
-    private const float WaitBeforeListeningTime = 0.1f;
+    private const int UIInvertCount = 4;
     public static readonly int ClickTrigger = Animator.StringToHash("click");
 
     public static Script_SettingsController Instance;
@@ -77,6 +78,7 @@ public class Script_SettingsController : MonoBehaviour
     [SerializeField] private List<Script_UIRebindAction> UIRebindActions;
     [SerializeField] private List<Script_UIRebindAction> UIRebindActionsJoystick;
     [SerializeField] private List<Script_UIRebindAction> UIRebindActionsUnknownJoystick;
+    [SerializeField] private List<Script_UIInvertAction> UIInvertActionsUnknownJoystick = new List<Script_UIInvertAction>(UIInvertCount);
     [SerializeField] private Script_SavedGameSubmenuInputChoice[] resetDefaultsSubmenuChoices;
     [SerializeField] private GameObject resetDefaultsSubmenu;
     [SerializeField] private GameObject onExitResetDefaultsSubmenuActiveObject;
@@ -187,8 +189,20 @@ public class Script_SettingsController : MonoBehaviour
         
         // Check to see if cursor is on Controller Select
         GameObject currentSelected = settingsEventSystem.currentSelectedGameObject;
-        if (currentSelected != null && currentSelected == topCommonButton.gameObject)
+        
+        if (currentSelected == null)
+            return;
+        
+        if (currentSelected == topCommonButton.gameObject)
             HandleControlsControllerSelect();
+        else if (currentSelected == UIInvertActionsUnknownJoystick[0].MyButton.gameObject)
+            UIInvertActionsUnknownJoystick[0].HandleCurrentSelected();
+        else if (currentSelected == UIInvertActionsUnknownJoystick[1].MyButton.gameObject)
+            UIInvertActionsUnknownJoystick[1].HandleCurrentSelected();
+        else if (currentSelected == UIInvertActionsUnknownJoystick[2].MyButton.gameObject)
+            UIInvertActionsUnknownJoystick[2].HandleCurrentSelected();
+        else if (currentSelected == UIInvertActionsUnknownJoystick[3].MyButton.gameObject)
+            UIInvertActionsUnknownJoystick[3].HandleCurrentSelected();
     }
     
     public void OpenOverview(int firstSelectedIdx)
@@ -424,16 +438,22 @@ public class Script_SettingsController : MonoBehaviour
     /// </summary>
     public void UpdateControlKeyDisplays()
     {
-        UIRebindActions.ForEach(rebindKeyUI => {
-            rebindKeyUI.UpdateBehaviorUIText();
-        });
+        UIRebindActions.ForEach(rebindKeyUI => rebindKeyUI.UpdateBehaviorUIText());
 
         for (var i = 0; i < UIRebindActionsJoystick.Count; i++)
             UIRebindActionsJoystick[i].UpdateBehaviorUIText(isDisplayMessage: i == 0);
         
-        UIRebindActionsUnknownJoystick.ForEach(rebindKeyUI => {
-            rebindKeyUI.UpdateBehaviorUIText();
-        });
+        UIRebindActionsUnknownJoystick.ForEach(rebindKeyUI => rebindKeyUI.UpdateBehaviorUIText());
+        UpdateDependentDisplays();
+    }
+
+    /// <summary>
+    /// These displays may change depending on a keybind input (e.g. once an axis is bound for unknown
+    /// controller, its inversion display should update)
+    /// </summary>
+    private void UpdateDependentDisplays()
+    {
+        UIInvertActionsUnknownJoystick.ForEach(UI => UI.UpdateBehaviorUIText());
     }
 
     public void OpenResetDefaultsSubmenu()
@@ -482,6 +502,14 @@ public class Script_SettingsController : MonoBehaviour
 
         SetNavigationEnabled(false);
         
+        // Set dead zone to input mapping default
+        var playerInputManager = Script_PlayerInputManager.Instance;
+        if (
+            controlsState == ControlsStates.Joystick
+            && playerInputManager.IsUnknownJoystick
+        )
+            Script_PlayerInputManager.Instance.SetupInputMapperUnknownJoystickDeadzones();
+
         StartCoroutine(StartListeningDelayed());
 
         IEnumerator StartListeningDelayed()
@@ -489,10 +517,10 @@ public class Script_SettingsController : MonoBehaviour
             // Need to wait realtime, since Settings_Game Time.scale will be 0
             yield return new WaitForSecondsRealtime(WaitBeforeListeningTime);
 
+            // Automatically protects joystick binds from keyboard input and vice-versa
             InputMapper.Context context;
             if (axisRange != null && axisRange == AxisRange.Full)
             {
-                // Automatically protects joystick binds from keyboard input and vice-versa
                 context = new InputMapper.Context()
                 {
                     actionId = rebindActionButton.ActionId,
@@ -503,7 +531,6 @@ public class Script_SettingsController : MonoBehaviour
             }
             else
             {
-                // Automatically protects joystick binds from keyboard input and vice-versa
                 context = new InputMapper.Context()
                 {
                     actionId = rebindActionButton.ActionId,
@@ -520,7 +547,7 @@ public class Script_SettingsController : MonoBehaviour
     // React to UIRebindAction mapping event
     private void OnInputMapped(InputMapper.InputMappedEventData data)
     {
-        HandleUIExtraAutoBinds(
+        Script_PlayerInputManager.Instance.HandleUIExtraAutoBinds(
             data.actionElementMap.actionId,
             data.actionElementMap.controllerMap.controllerType,
             data.actionElementMap
@@ -528,121 +555,7 @@ public class Script_SettingsController : MonoBehaviour
 
         Script_SaveSettingsControl.Instance.Save();
         InputMappedSuccessSFX();
-    }
-
-    public void HandleUIExtraAutoBinds(
-        int targetActionId,
-        ControllerType controllerType,
-        ActionElementMap aemToInjectFrom
-    )
-    {
-        try
-        {
-            var playerInputManager = Script_PlayerInputManager.Instance;
-            
-            // If changing Interact, also change UISubmit in UI Extra map
-            if (targetActionId == Const_KeyCodes.RWInteract.RWActionNamesToId())
-            {
-                // Handle keyboard
-                if (controllerType == ControllerType.Keyboard)
-                {
-                    playerInputManager.InjectReplaceKeybindMapping(
-                        Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
-                        MyPlayer.controllers.maps.GetMap<KeyboardMap>(
-                            Script_PlayerInputManager.KeyboardId,
-                            Script_PlayerInputManager.UIExtraMapName,
-                            Script_PlayerInputManager.Layout
-                        ),
-                        aemToInjectFrom
-                    );
-                }
-                // Handle joystick
-                else if (controllerType == ControllerType.Joystick)
-                {
-                    playerInputManager.InjectReplaceKeybindMapping(
-                        Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
-                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
-                            Script_PlayerInputManager.ControllerId,
-                            Script_PlayerInputManager.UIExtraMapName,
-                            Script_PlayerInputManager.Layout
-                        ),
-                        aemToInjectFrom
-                    );
-                }
-            }
-            // If changing Inventory on Joystick, also change UICancel in UI Extra map
-            else if (targetActionId == Const_KeyCodes.RWInventory.RWActionNamesToId())
-            {
-                if (controllerType == ControllerType.Joystick)
-                {
-                    playerInputManager.InjectReplaceKeybindMapping(
-                        Const_KeyCodes.RWUICancel.RWActionNamesToId(),
-                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
-                            Script_PlayerInputManager.ControllerId,
-                            Script_PlayerInputManager.UIExtraMapName,
-                            Script_PlayerInputManager.Layout
-                        ),
-                        aemToInjectFrom
-                    );
-
-                    // Handle auto binding Backspace for Unknown Controller
-                    if (playerInputManager.IsUnknownJoystick)
-                    {
-                        playerInputManager.InjectReplaceKeybindMapping(
-                            Const_KeyCodes.RWBackspace.RWActionNamesToId(),
-                            MyPlayer.controllers.maps.GetMap<JoystickMap>(
-                                Script_PlayerInputManager.ControllerId,
-                                Script_PlayerInputManager.UIExtraMapName,
-                                Script_PlayerInputManager.Layout
-                            ),
-                            aemToInjectFrom
-                        );
-                    }
-                }
-            }
-            else if (targetActionId == Const_KeyCodes.RWHorizontal.RWActionNamesToId())
-            {
-                if (
-                    controllerType == ControllerType.Joystick
-                    && playerInputManager.IsUnknownJoystick
-                )
-                {
-                    // Handle auto binding UIHorizontal for Unknown Controller
-                    playerInputManager.InjectReplaceKeybindMapping(
-                        Const_KeyCodes.RWUIHorizontal.RWActionNamesToId(),
-                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
-                            Script_PlayerInputManager.ControllerId,
-                            Script_PlayerInputManager.UIExtraMapName,
-                            Script_PlayerInputManager.Layout
-                        ),
-                        aemToInjectFrom
-                    );
-                }
-            }
-            else if (targetActionId == Const_KeyCodes.RWVertical.RWActionNamesToId())
-            {
-                if (
-                    controllerType == ControllerType.Joystick
-                    && playerInputManager.IsUnknownJoystick
-                )
-                {
-                    // Handle auto binding UIVertical for Unknown Controller
-                    playerInputManager.InjectReplaceKeybindMapping(
-                        Const_KeyCodes.RWUIVertical.RWActionNamesToId(),
-                        MyPlayer.controllers.maps.GetMap<JoystickMap>(
-                            Script_PlayerInputManager.ControllerId,
-                            Script_PlayerInputManager.UIExtraMapName,
-                            Script_PlayerInputManager.Layout
-                        ),
-                        aemToInjectFrom
-                    );
-                }
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"{name} Failed to also auto rebind actionId {targetActionId} with the following error: \n{e}");
-        }
+        UpdateDependentDisplays();
     }
 
     /// <summary>
@@ -711,6 +624,10 @@ public class Script_SettingsController : MonoBehaviour
     private void OnStopped(InputMapper.StoppedEventData data)
     {
         Dev_Logger.Debug($"OnStopped() input mapper stopped");
+        
+        // Reset joystick dead zones to default
+        if (controlsState == ControlsStates.Joystick)
+            Script_PlayerInputManager.Instance.SetupDefaultJoystickDeadzones();
 
         if (currentRebindActionButton != null)
             currentRebindActionButton.RebindCompleted();

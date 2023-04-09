@@ -36,7 +36,10 @@ public static class Const_Dev
     
     public readonly static string Lang                      = "EN";             // "EN"
 
-    public readonly static bool IsDemo                      = false;             // true
+    public readonly static bool IsDemo                      = false;             // false
+
+    // For copies distributed directly, turn this false, Steam should not be required to boot up.  
+    public readonly static bool IsForceSteamRestart         = false;             // false
 
     // ------------------------------------------------------------------
     // Extra Dev Flags

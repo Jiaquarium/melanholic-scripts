@@ -451,8 +451,6 @@ public class Script_AchievementsManager : MonoBehaviour
         {
         	if (EResult.k_EResultOK == pCallback.m_eResult)
             {
-        		Dev_Logger.Debug($"{name} Received stats and achievements from Steam\n");
-
         		m_bStatsValid = true;
 
         		if (Debug.isDebugBuild && Const_Dev.IsDevMode)

@@ -24,6 +24,8 @@ public enum RWActions
     Settings = 8,
     MoveHorizontalAxis = 9,
     MoveVerticalAxis = 10,
+    MaskHorizontalAxis = 11,
+    MaskVerticalAxis = 12
 }
 
 /// <summary>
@@ -45,7 +47,9 @@ public class Script_PlayerInputManager : MonoBehaviour
     /// Note: DefaultJoystickDeadZone must match Default Input Behavior button dead zone (current: 0.25)
     /// Rewired Input Manager for isMoving and handleAnimation checks to work consistently.
     /// </summary>
-    public static float DefaultJoystickDeadZone = 0.25f;
+    public const float DefaultJoystickDeadZone = 0.25f;
+    public const float InputMapperUnknownJoystickDeadZone = 0.05f;
+    public const float WINDOWS_InputMapperJoystickDeadZone = 0.0f;
     
     public const int KeyboardId = 0;
     public static int ControllerId = 0;
@@ -88,14 +92,12 @@ public class Script_PlayerInputManager : MonoBehaviour
         Const_KeyCodes.RWInteract,
         Const_KeyCodes.RWInventory,
         Const_KeyCodes.RWMaskCommand,
-        Const_KeyCodes.RWMask1,
-        Const_KeyCodes.RWMask2,
-        Const_KeyCodes.RWMask3,
-        Const_KeyCodes.RWMask4,
         Const_KeyCodes.RWSpeed,
         Const_KeyCodes.RWHorizontal,
         Const_KeyCodes.RWVertical,
-        Const_KeyCodes.RWUnknownControllerSettings
+        Const_KeyCodes.RWUnknownControllerSettings,
+        Const_KeyCodes.RWUnknownControllerMaskHz,
+        Const_KeyCodes.RWUnknownControllerMaskVert,
     };
 
     // -------------------------------------------------------------------------------------  
@@ -168,20 +170,32 @@ public class Script_PlayerInputManager : MonoBehaviour
                 }
             }
 
-            foreach (JoystickMapSaveData joystickMapSaveData in playerSaveData.joystickMapSaveData)
+            if (IsJoystickConnected)
             {
-                // Only look for Default map (Category Id as shown in Rewired UI, NOT order in list)
-                if (joystickMapSaveData.categoryId == DefaultMapCategoryId)
+                foreach (JoystickMapSaveData joystickMapSaveData in playerSaveData.joystickMapSaveData)
                 {
-                    Dev_Logger.Debug($"Joystick Map Save Data Id: {joystickMapSaveData.categoryId} {joystickMapSaveData}");
-                    settingsData.rewiredJoystickMapDefault = joystickMapSaveData.joystickMap.ToXmlString();
+                    // Only look for Default map (Category Id as shown in Rewired UI, NOT order in list)
+                    if (joystickMapSaveData.categoryId == DefaultMapCategoryId)
+                    {
+                        bool isFirstJoystickSaveData = joystickMapSaveData.joystick == RewiredInput.controllers.Joysticks[0];
+                        Dev_Logger.Debug($"isFirstJoystickSaveData: {isFirstJoystickSaveData}");
 
-                    // Only update if currently using a connected joystick
-                    if (
-                        joystickKnownState == JoystickKnownState.GamepadTemplate
-                        || joystickKnownState == JoystickKnownState.Unknown
-                    )
-                        settingsData.savedJoystickMapKnownState = joystickKnownState;
+                        if (!isFirstJoystickSaveData)
+                        {
+                            Dev_Logger.Debug($"Skipping this controller save data because it is not the first connected");
+                            continue;
+                        }
+                        
+                        Dev_Logger.Debug($"Joystick Map Save Data Id: {joystickMapSaveData.categoryId} {joystickMapSaveData}");
+                        settingsData.rewiredJoystickMapDefault = joystickMapSaveData.joystickMap.ToXmlString();
+
+                        // Only update if currently using a connected joystick
+                        if (
+                            joystickKnownState == JoystickKnownState.GamepadTemplate
+                            || joystickKnownState == JoystickKnownState.Unknown
+                        )
+                            settingsData.savedJoystickMapKnownState = joystickKnownState;
+                    }
                 }
             }
         }
@@ -235,7 +249,7 @@ public class Script_PlayerInputManager : MonoBehaviour
         foreach (string keyboardRebind in KeyboardRebinds)
         {
             int targetActionId = keyboardRebind.RWActionNamesToId();
-            LoadReplaceKeybindMapping(targetActionId, controller, controllerMap);
+            HandleReplaceKeybindMapping(targetActionId, controller, controllerMap);
         }
     }
 
@@ -268,7 +282,7 @@ public class Script_PlayerInputManager : MonoBehaviour
             foreach (string joystickRebind in JoystickRebinds)
             {
                 int targetActionId = joystickRebind.RWActionNamesToId();
-                LoadReplaceKeybindMapping(targetActionId, controller, controllerMap);
+                HandleReplaceKeybindMapping(targetActionId, controller, controllerMap);
             }
         }
         else
@@ -292,7 +306,7 @@ public class Script_PlayerInputManager : MonoBehaviour
                     Category,
                     Layout
                 );
-                LoadCreateKeybindMapping(targetActionId, myControllerMap ,controllerMap);
+                HandleReplaceCreateKeybindMapping(targetActionId, myControllerMap, controllerMap);
             }
         }
 
@@ -300,9 +314,28 @@ public class Script_PlayerInputManager : MonoBehaviour
         {
             SetJoystickTemporaryDefaults();
         }
+
+        void HandleReplaceCreateKeybindMapping(
+            int targetActionId,
+            ControllerMap myControllerMap,
+            ControllerMap loadedControllerMap
+        )
+        {
+            var aemToInjectFrom = loadedControllerMap.GetFirstActionElementMapByMap(targetActionId);
+
+            if (aemToInjectFrom == null)
+                return;
+
+            HandleReplaceCreateAssignment(targetActionId, myControllerMap, aemToInjectFrom);
+            
+            // Handle duplicating keybinds for the UI Extra auto-binds like inputMapper.OnInputMapped does
+            HandleUIExtraAutoBinds(
+                targetActionId, myControllerMap.controllerType, aemToInjectFrom
+            );
+        }
     }
 
-    private void LoadReplaceKeybindMapping(
+    private void HandleReplaceKeybindMapping(
         int targetActionId,
         Controller controller,
         ControllerMap controllerMap
@@ -319,95 +352,36 @@ public class Script_PlayerInputManager : MonoBehaviour
         {
             if (aem.actionId == targetActionId)
             {
-                ElementAssignment assignment = new ElementAssignment(
-                    controllerMap.controllerType,
-                    aem.elementType,
-                    aem.elementIdentifierId,
-                    aem.axisRange,
-                    aem.keyCode,
-                    aem.modifierKeyFlags,
-                    aem.actionId,
-                    aem.axisContribution,
-                    aem.invert
-                );
-
-                // Must declare elementMapId as ActionElementMap's Id you are trying to replace
-                // https://guavaman.com/projects/rewired/docs/api-reference/html/Overload_Rewired_ControllerMap_ReplaceElementMap.htm
-                assignment.elementMapId = aemToReplace.id;
-                bool didReplace = aemToReplace.controllerMap.ReplaceElementMap(assignment, out aemToReplace);
+                ReplaceAssignment(controllerMap.controllerType, aem, aemToReplace, aem.actionId);
                 
-                // If any replacement fails, the whole map should fail. Set maps to default.
-                if (!didReplace)
-                {
-                    throw new Exception($"Keybind for {aem.actionDescriptiveName} failed, setting map to default!");
-                }
-                
-                // If loading Interact rebind for keyboard, also replace UISubmit
-                if (
-                    controller != null && controller.type == ControllerType.Keyboard
-                    && aem.actionId == Const_KeyCodes.RWInteract.RWActionNamesToId()
-                    
-                )
-                {
-                    InjectReplaceKeybindMapping(
-                        Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
-                        RewiredInput.controllers.maps.GetMap<KeyboardMap>(KeyboardId, UIExtraMapName, Layout),
-                        aem
-                    );
-                }
-                else if (
-                    controller != null && controller.type == ControllerType.Joystick
-                    && IsJoystickConnected
-                )
-                {
-                    // If loading Interact rebind for joystick, also replace UISubmit
-                    if (aem.actionId == Const_KeyCodes.RWInteract.RWActionNamesToId())
-                    {
-                        InjectReplaceKeybindMapping(
-                            Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
-                            RewiredInput.controllers.maps.GetMap<JoystickMap>(ControllerId, UIExtraMapName, Layout),
-                            aem
-                        );
-                    }
-                    // If loading Inventory rebind for joystick, also replace UICancel
-                    else if (aem.actionId == Const_KeyCodes.RWInventory.RWActionNamesToId())
-                    {
-                        InjectReplaceKeybindMapping(
-                            Const_KeyCodes.RWUICancel.RWActionNamesToId(),
-                            RewiredInput.controllers.maps.GetMap<JoystickMap>(ControllerId, UIExtraMapName, Layout),
-                            aem
-                        );
-                    }
-                }
-
-                Dev_Logger.Debug($"didReplace {didReplace} {aem.actionDescriptiveName} aemToReplace: {aemToReplace}");
+                // Handle duplicating keybinds for the UI Extra auto-binds like inputMapper.OnInputMapped does
+                HandleUIExtraAutoBinds(targetActionId, controller.type, aem);
                 return;
             }
         }
     }
 
-    private void LoadCreateKeybindMapping(
+    public void SetKeybindMappingInversion(
         int targetActionId,
-        ControllerMap myControllerMap,
-        ControllerMap loadedControllerMap
+        Controller controller,
+        bool invert
     )
     {
-        var aemToInjectFrom = loadedControllerMap.GetFirstActionElementMapByMap(targetActionId);
-
-        if (aemToInjectFrom == null)
+        ActionElementMap aemToReplace = RewiredInput.GetFirstActionElementMapByActionId(controller, targetActionId);
+        
+        if (aemToReplace == null)
             return;
 
-        InjectReplaceKeybindMapping(targetActionId, myControllerMap, aemToInjectFrom);
-        
-        // Handle duplicating keybinds for the UI Extra auto-binds like inputMapper.OnInputMapped does
-        Script_SettingsController.Instance.HandleUIExtraAutoBinds(
-            targetActionId, myControllerMap.controllerType, aemToInjectFrom
-        );
+        ActionElementMap newInvertedAem = new ActionElementMap(aemToReplace);
+        newInvertedAem.invert = invert;
+        ActionElementMap replacedAem = ReplaceAssignment(controller.type, newInvertedAem, aemToReplace, targetActionId);
+
+        HandleUIExtraAutoBinds(targetActionId, controller.type, replacedAem);
     }
 
     // If the targetActionId is found, replace that ActionElementMap; otherwise, create
     // a new one.
-    public void InjectReplaceKeybindMapping(
+    public void HandleReplaceCreateAssignment(
         int targetActionId,
         ControllerMap controllerMap,
         ActionElementMap aemToInjectFrom
@@ -418,54 +392,73 @@ public class Script_PlayerInputManager : MonoBehaviour
 
         if (aemToReplace != null)
         {
-            // Get first AEM with matching ActionId
-            // Replace bindings with aemToInjectFrom's
-            ElementAssignment assignment = new ElementAssignment(
-                controllerMap.controllerType,
-                aemToReplace.elementType,
-                aemToInjectFrom.elementIdentifierId,
-                aemToInjectFrom.axisRange,
-                aemToInjectFrom.keyCode,
-                aemToInjectFrom.modifierKeyFlags,
-                aemToReplace.actionId,
-                aemToInjectFrom.axisContribution,
-                aemToInjectFrom.invert
-            );
-
-            // Must declare elementMapId as ActionElementMap's Id you are trying to replace
-            // https://guavaman.com/projects/rewired/docs/api-reference/html/Overload_Rewired_ControllerMap_ReplaceElementMap.htm
-            assignment.elementMapId = aemToReplace.id;
-            bool didReplace = aemToReplace.controllerMap.ReplaceElementMap(assignment, out aemToReplace);
-            
-            // If any replacement fails, the whole map should fail. Set maps to default.
-            if (!didReplace)
-                throw new Exception($"Inject keybind for {aemToReplace.actionDescriptiveName} failed, setting map to default!");
-            
-            Dev_Logger.Debug($"Inject didReplace {didReplace} {aemToReplace.actionDescriptiveName} aemToReplace: {aemToReplace}");
+            ReplaceAssignment(controllerMap.controllerType, aemToInjectFrom, aemToReplace, targetActionId);
         }
         else
         {
-            // Handle unknown controller when creating a new binding
-            ElementAssignment assignment = new ElementAssignment(
-                controllerMap.controllerType,
-                aemToInjectFrom.elementType,
-                aemToInjectFrom.elementIdentifierId,
-                aemToInjectFrom.axisRange,
-                aemToInjectFrom.keyCode,
-                aemToInjectFrom.modifierKeyFlags,
-                targetActionId,
-                aemToInjectFrom.axisContribution,
-                aemToInjectFrom.invert
-            );
-
-            bool didCreate = controllerMap.CreateElementMap(assignment, out ActionElementMap aemToCreate);
-
-            // If any creation fails, the whole map should fail. Set maps to default.
-            if (!didCreate)
-                throw new Exception($"Create keybind for targetActionId {targetActionId} failed, setting map to default!");
-            
-            Dev_Logger.Debug($"Inject didCreate {didCreate} {aemToCreate.actionDescriptiveName} aemToCreate: {aemToCreate}");
+            CreateAssignment(controllerMap, aemToInjectFrom, targetActionId);
         }
+    }
+
+    private ActionElementMap ReplaceAssignment(
+        ControllerType controllerType,
+        ActionElementMap aemToInjectFrom,
+        ActionElementMap aemToReplace,
+        int targetActionId
+    )
+    {
+        ElementAssignment assignment = new ElementAssignment(
+            controllerType,
+            aemToInjectFrom.elementType,
+            aemToInjectFrom.elementIdentifierId,
+            aemToInjectFrom.axisRange,
+            aemToInjectFrom.keyCode,
+            aemToInjectFrom.modifierKeyFlags,
+            targetActionId,
+            aemToInjectFrom.axisContribution,
+            aemToInjectFrom.invert
+        );
+
+        // Must declare elementMapId as ActionElementMap's Id you are trying to replace
+        // https://guavaman.com/projects/rewired/docs/api-reference/html/Overload_Rewired_ControllerMap_ReplaceElementMap.htm
+        assignment.elementMapId = aemToReplace.id;
+        bool didReplace = aemToReplace.controllerMap.ReplaceElementMap(assignment, out aemToReplace);
+        
+        // If any replacement fails, the whole map should fail. Set maps to default.
+        if (!didReplace)
+            throw new Exception($"Replacing AEM for {aemToReplace.actionDescriptiveName} failed, setting map to default!");
+
+        Dev_Logger.Debug($"ReplaceAssignment didReplace {didReplace} {aemToReplace.actionDescriptiveName} aemToReplace: {aemToReplace}");   
+        return aemToReplace;
+    }
+
+    private ActionElementMap CreateAssignment(
+        ControllerMap controllerMap,
+        ActionElementMap aemToInjectFrom,
+        int targetActionId
+    )
+    {
+        // Handle unknown controller when creating a new binding
+        ElementAssignment assignment = new ElementAssignment(
+            controllerMap.controllerType,
+            aemToInjectFrom.elementType,
+            aemToInjectFrom.elementIdentifierId,
+            aemToInjectFrom.axisRange,
+            aemToInjectFrom.keyCode,
+            aemToInjectFrom.modifierKeyFlags,
+            targetActionId,
+            aemToInjectFrom.axisContribution,
+            aemToInjectFrom.invert
+        );
+
+        bool didCreate = controllerMap.CreateElementMap(assignment, out ActionElementMap aemToCreate);
+
+        // If any creation fails, the whole map should fail. Set maps to default.
+        if (!didCreate)
+            throw new Exception($"Create AEM for targetActionId {targetActionId} failed, setting map to default!");
+        
+        Dev_Logger.Debug($"CreateAssignment didCreate {didCreate} {aemToCreate.actionDescriptiveName} aemToCreate: {aemToCreate}");
+        return aemToCreate;
     }
 
     /// <summary>
@@ -490,6 +483,118 @@ public class Script_PlayerInputManager : MonoBehaviour
         SetJoystickDefaults();
     }
 
+    public void HandleUIExtraAutoBinds(
+        int targetActionId,
+        ControllerType controllerType,
+        ActionElementMap aemToInjectFrom
+    )
+    {
+        try
+        {
+            var playerInputManager = Script_PlayerInputManager.Instance;
+            
+            // If changing Interact, also change UISubmit in UI Extra map
+            if (targetActionId == Const_KeyCodes.RWInteract.RWActionNamesToId())
+            {
+                // Handle keyboard
+                if (controllerType == ControllerType.Keyboard)
+                {
+                    playerInputManager.HandleReplaceCreateAssignment(
+                        Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
+                        RewiredInput.controllers.maps.GetMap<KeyboardMap>(
+                            Script_PlayerInputManager.KeyboardId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+                // Handle joystick
+                else if (controllerType == ControllerType.Joystick)
+                {
+                    playerInputManager.HandleReplaceCreateAssignment(
+                        Const_KeyCodes.RWUISubmit.RWActionNamesToId(),
+                        RewiredInput.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+            }
+            // If changing Inventory on Joystick, also change UICancel in UI Extra map
+            else if (targetActionId == Const_KeyCodes.RWInventory.RWActionNamesToId())
+            {
+                if (controllerType == ControllerType.Joystick)
+                {
+                    playerInputManager.HandleReplaceCreateAssignment(
+                        Const_KeyCodes.RWUICancel.RWActionNamesToId(),
+                        RewiredInput.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+
+                    // Handle auto binding Backspace for both Known and Unknown Joysticks
+                    playerInputManager.HandleReplaceCreateAssignment(
+                        Const_KeyCodes.RWBackspace.RWActionNamesToId(),
+                        RewiredInput.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+            }
+            else if (targetActionId == Const_KeyCodes.RWHorizontal.RWActionNamesToId())
+            {
+                if (
+                    controllerType == ControllerType.Joystick
+                    && playerInputManager.IsUnknownJoystick
+                )
+                {
+                    // Handle auto binding UIHorizontal for Unknown Controller
+                    playerInputManager.HandleReplaceCreateAssignment(
+                        Const_KeyCodes.RWUIHorizontal.RWActionNamesToId(),
+                        RewiredInput.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+            }
+            else if (targetActionId == Const_KeyCodes.RWVertical.RWActionNamesToId())
+            {
+                if (
+                    controllerType == ControllerType.Joystick
+                    && playerInputManager.IsUnknownJoystick
+                )
+                {
+                    // Handle auto binding UIVertical for Unknown Controller
+                    playerInputManager.HandleReplaceCreateAssignment(
+                        Const_KeyCodes.RWUIVertical.RWActionNamesToId(),
+                        RewiredInput.controllers.maps.GetMap<JoystickMap>(
+                            Script_PlayerInputManager.ControllerId,
+                            Script_PlayerInputManager.UIExtraMapName,
+                            Script_PlayerInputManager.Layout
+                        ),
+                        aemToInjectFrom
+                    );
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"{name} Failed to also auto rebind actionId {targetActionId} with the following error: \n{e}");
+        }
+    }
+
     // -------------------------------------------------------------------------------------  
 
     private void SetKeyboardDefaults() => RewiredInput.controllers.maps.LoadDefaultMaps(ControllerType.Keyboard);
@@ -505,7 +610,7 @@ public class Script_PlayerInputManager : MonoBehaviour
 
     private void JoystickConnected(Rewired.ControllerStatusChangedEventArgs args)
     {
-        SetupRewiredDefaults();
+        SetupDefaultJoystickDeadzones();
 
         bool didChange = UpdateControllerId(out bool isSwitchedUnknownJoystick, out bool didSwitchJoystickLayout);
 
@@ -523,36 +628,49 @@ public class Script_PlayerInputManager : MonoBehaviour
         Script_SettingsController.Instance.OnControllerChanged(args, didSwitchJoystickLayout);
     }
 
-    public void SetupRewiredDefaults()
+    public void SetupDefaultJoystickDeadzones()
     {
+        Dev_Logger.Debug($"Setting joystick deadzones to DEFAULT {DefaultJoystickDeadZone}");
         SetJoystickDeadZone(DefaultJoystickDeadZone);
-        
-        /// <summary>
-        /// Based on Rewired/Examples ControlRemapping1
-        /// </summary>
-        void SetJoystickDeadZone(float newDeadZone)
-        {
-            foreach (Joystick joystick in RewiredInput.controllers.Joysticks)
-            {
-                if (joystick == null)
-                    continue;
-                
-                CalibrationMap calibrationMap = joystick.calibrationMap;
+    }
 
-                if (calibrationMap == null)
-                    continue;
+    public void SetupInputMapperUnknownJoystickDeadzones()
+    {
+        Dev_Logger.Debug($"Setting joystick deadzones to INPUTMAPPER {InputMapperUnknownJoystickDeadZone}");
+        SetJoystickDeadZone(InputMapperUnknownJoystickDeadZone);
+    }
+    
+    /// <summary>
+    /// Based on Rewired/Examples ControlRemapping1
+    /// </summary>
+    private void SetJoystickDeadZone(float newDeadZone)
+    {
+        if (RewiredInput == null)
+            return;
+        
+        foreach (Joystick joystick in RewiredInput.controllers.Joysticks)
+        {
+            if (joystick == null)
+            {
+                Dev_Logger.Debug($"Null joystick {joystick}");
+                continue;
+            }
+            
+            CalibrationMap calibrationMap = joystick.calibrationMap;
+
+            if (calibrationMap == null)
+                continue;
+            
+            IList<ControllerElementIdentifier> axisIdentifiers = joystick.AxisElementIdentifiers;
+            for (int i = 0; i < axisIdentifiers.Count; i++)
+            {
+                int axisIndex = joystick.GetAxisIndexById(axisIdentifiers[i].id);
+                AxisCalibration axis = calibrationMap.GetAxis(axisIndex);
+                axis.deadZone = newDeadZone;
                 
-                IList<ControllerElementIdentifier> axisIdentifiers = joystick.AxisElementIdentifiers;
-                for (int i = 0; i < axisIdentifiers.Count; i++)
-                {
-                    int axisIndex = joystick.GetAxisIndexById(axisIdentifiers[i].id);
-                    AxisCalibration axis = calibrationMap.GetAxis(axisIndex);
-                    axis.deadZone = newDeadZone;
-                    
-                    Dev_Logger.Debug($"SET {joystick.name} axisIndex {axisIndex} deadZone to {axis.deadZone}");
-                }
-            }   
-        }
+                Dev_Logger.Debug($"SET {joystick.name} axisIndex {axisIndex} deadZone to {axis.deadZone}");
+            }
+        }   
     }
 
     // Keep controllerId up to date with first joystick only
@@ -611,7 +729,7 @@ public class Script_PlayerInputManager : MonoBehaviour
 
     public void Setup()
     {
-        SetupRewiredDefaults();   
+        SetupDefaultJoystickDeadzones();   
     }
 
 #if UNITY_EDITOR
@@ -630,12 +748,21 @@ public class Script_PlayerInputManager : MonoBehaviour
 
             if (GUILayout.Button("Set Controller Dead Zone 1f"))
             {
-                t.SetupRewiredDefaults();
+                t.SetupDefaultJoystickDeadzones();
             }
 
             if (GUILayout.Button("Set Controller Dead Zone 0f"))
             {
-                t.SetupRewiredDefaults();
+                t.SetupDefaultJoystickDeadzones();
+            }
+
+            if (GUILayout.Button("Set Mask Vert Invert True"))
+            {
+                t.SetKeybindMappingInversion(
+                    Const_KeyCodes.RWVertical.RWActionNamesToId(),
+                    ReInput.controllers.GetController(ControllerType.Joystick, ControllerId),
+                    true
+                );
             }
         }
     }

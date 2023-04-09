@@ -8,9 +8,9 @@ using Rewired;
 
 public class Script_UIRebindAction : MonoBehaviour
 {
-    private const string NoJoystickConnectedText = "No Joystick Connected";
-    private const string UnsupportedJoystickText = "Unsupported Joystick";
-    private const string NoControllerText = "--";
+    private const string TMPIdNoJoystickConnected = "controls_no-joystick";
+    private const string TMPIdUnsupportedJoystick = "controls_unsupported-joystick";
+    public const string TMPIdNoController = "controls_no-text";
 
     public enum ErrorTypes
     {
@@ -46,7 +46,7 @@ public class Script_UIRebindAction : MonoBehaviour
 
     [SerializeField] private Script_SettingsController settingsController;
 
-    public int ActionId => GetRWActionName(myRWAction).RWActionNamesToId();
+    public int ActionId => myRWAction.GetRWActionName().RWActionNamesToId();
     public InputTypes MyInputType => inputType;
     public AxisRange MyActionAxisRange => actionAxisRange;
     public Player MyPlayer => settingsController.MyPlayer;
@@ -68,6 +68,8 @@ public class Script_UIRebindAction : MonoBehaviour
         // If ControlsState:Keyboard state, will always be connected. Need this for ControlsState:Joystick
         if (!settingsController.IsControllerConnectedForState)
         {
+            string formatted;
+            
             // Handle displaying a more specific message for joystick
             if (
                 isDisplayMessage
@@ -77,17 +79,23 @@ public class Script_UIRebindAction : MonoBehaviour
                 bool IsJoystickConnectedNotSupported = MyPlayer.controllers.joystickCount > 0
                     && !MyPlayer.controllers.Joysticks[0].IsJoystickSupported();
                 
-                keyTextTMP.text = (IsJoystickConnectedNotSupported
-                    ? UnsupportedJoystickText
-                    : NoJoystickConnectedText).ToUpper();
+                string Id = IsJoystickConnectedNotSupported
+                    ? TMPIdUnsupportedJoystick
+                    : TMPIdNoJoystickConnected;
+                string unformatted = Script_UIText.Text[Id].EN;
+                formatted = Script_Utils.FormatString(unformatted);
             }
             else
-                keyTextTMP.text = NoControllerText;
+            {
+                string unformatted = Script_UIText.Text[TMPIdNoController].EN;
+                formatted = Script_Utils.FormatString(unformatted);
+            }
 
+            keyTextTMP.text = formatted.ToUpper();
             return;
         }
         
-        string myAction = GetRWActionName(myRWAction);
+        string myAction = myRWAction.GetRWActionName();
         AxisRange? axisRange = MyActionAxisRange == AxisRange.Full ? AxisRange.Full : null;
         
         string currentBindingInput = settingsController.MyControlsState switch
@@ -103,27 +111,14 @@ public class Script_UIRebindAction : MonoBehaviour
 
         if (string.IsNullOrEmpty(currentBindingInput))
         {
-            keyTextTMP.text = NoControllerText;
+            string unformatted = Script_UIText.Text[TMPIdNoController].EN;
+            string formatted = Script_Utils.FormatString(unformatted);
+            keyTextTMP.text = formatted;
             return;
         }
 
         keyTextTMP.text = currentBindingInput.ToUpper();
     }
-
-    private string GetRWActionName(RWActions RWAction) => RWAction switch
-    {
-        RWActions.MaskCommand => Const_KeyCodes.RWMaskCommand,
-        RWActions.Inventory => Const_KeyCodes.RWInventory,
-        RWActions.Speed => Const_KeyCodes.RWSpeed,
-        RWActions.Mask1 => Const_KeyCodes.RWMask1,
-        RWActions.Mask2 => Const_KeyCodes.RWMask2,
-        RWActions.Mask3 => Const_KeyCodes.RWMask3,
-        RWActions.Mask4 => Const_KeyCodes.RWMask4,
-        RWActions.MoveHorizontalAxis => Const_KeyCodes.RWHorizontal,
-        RWActions.MoveVerticalAxis => Const_KeyCodes.RWVertical,
-        RWActions.Settings => Const_KeyCodes.RWUnknownControllerSettings,
-        _ => Const_KeyCodes.RWInteract,
-    };
 
     // ------------------------------------------------------------
     // Controls

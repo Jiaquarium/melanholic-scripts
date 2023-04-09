@@ -68,22 +68,34 @@ public class Script_MenuHotKeyInputManager : MonoBehaviour
         
         var rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
         
-        if (rewiredInput.GetButtonDown(Const_KeyCodes.RWMask1))
+        if (
+            rewiredInput.GetButtonDown(Const_KeyCodes.RWMask1)
+            || rewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerMaskVert)
+        )
         {
             Dev_Logger.Debug($"Joystick Hot Key 1; slotIndex: {slotIndex}");
             HandleHotKey(Const_KeyCodes.RWHotKey1, state, slotIndex);
         }
-        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWMask2))
+        else if (
+            rewiredInput.GetButtonDown(Const_KeyCodes.RWMask2)
+            || rewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerMaskHz)
+        )
         {
             Dev_Logger.Debug($"Joystick Hot Key 2; slotIndex: {slotIndex}");
             HandleHotKey(Const_KeyCodes.RWHotKey2, state, slotIndex);
         }
-        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWMask3))
+        else if (
+            rewiredInput.GetButtonDown(Const_KeyCodes.RWMask3)
+            || rewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWUnknownControllerMaskVert)
+        )
         {
             Dev_Logger.Debug($"Joystick Hot Key 3; slotIndex: {slotIndex}");
             HandleHotKey(Const_KeyCodes.RWHotKey3, state, slotIndex);
         }
-        else if (rewiredInput.GetButtonDown(Const_KeyCodes.RWMask4))
+        else if (
+            rewiredInput.GetButtonDown(Const_KeyCodes.RWMask4)
+            || rewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWUnknownControllerMaskHz)
+        )
         {
             Dev_Logger.Debug($"Joystick Hot Key 4; slotIndex: {slotIndex}");
             HandleHotKey(Const_KeyCodes.RWHotKey4, state, slotIndex);

@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-03-31 13:13:15
+// Last created by UI Exporter at 2023-04-06 23:24:49
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1945,17 +1945,73 @@ Use the keyboard to select a control to begin listening for input."
     }
 },
 {
+    "controls_wear-mask-vert_name_unknown-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 1 / 3 (Axis)"
+    }
+},
+{
+    "controls_wear-mask-hz_name_unknown-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Wear Mask 2 / 4 (Axis)"
+    }
+},
+{
+    "controls_invert_name",
+    new Model_LanguagesUI
+    {
+        EN = @"▲ Invert Axis"
+    }
+},
+{
+    "controls_invert_option_0",
+    new Model_LanguagesUI
+    {
+        EN = @"Yes"
+    }
+},
+{
+    "controls_invert_option_1",
+    new Model_LanguagesUI
+    {
+        EN = @"No"
+    }
+},
+{
+    "controls_no-text",
+    new Model_LanguagesUI
+    {
+        EN = @"--"
+    }
+},
+{
+    "controls_no-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"No Joystick Connected"
+    }
+},
+{
+    "controls_unsupported-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Unsupported Joystick"
+    }
+},
+{
     "controls_move-hz_name",
     new Model_LanguagesUI
     {
-        EN = @"Move Left/Right (Axis)"
+        EN = @"Move Left / Right (Axis)"
     }
 },
 {
     "controls_move-vert_name",
     new Model_LanguagesUI
     {
-        EN = @"Move Up/Down (Axis)"
+        EN = @"Move Up / Down (Axis)"
     }
 },
 {
