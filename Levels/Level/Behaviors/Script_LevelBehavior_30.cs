@@ -26,11 +26,15 @@ public class Script_LevelBehavior_30 : Script_LevelBehavior
 
     protected override void OnEnable()
     {
+        Script_Game.IsCheckForPushables = true;
+
         Script_PuzzlesEventsManager.OnPuzzleSuccess += OnPuzzleComplete;
     }
 
     protected override void OnDisable()
     {
+        Script_Game.IsCheckForPushables = false;
+
         Script_PuzzlesEventsManager.OnPuzzleSuccess -= OnPuzzleComplete;
     }
     

@@ -34,11 +34,13 @@ public class Script_CheckCollisions : MonoBehaviour
             Dev_Logger.Debug($"{name} Interactable Collision at dir {dir}");
             return true;
         }
+
         if (CheckPushableBlocking(dir))
         {
             Dev_Logger.Debug($"{name} Pushable Collision at dir {dir}");
             return true;
         }
+
         if (CheckUniqueBlocking(dir))
         {
             Dev_Logger.Debug($"{name} Unique Collision at dir {dir}");

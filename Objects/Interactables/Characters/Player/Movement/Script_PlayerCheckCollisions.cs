@@ -81,4 +81,11 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
 
         return isStairs;
     }
+
+    public bool HandleOnCollisionIsPushableBlocking(Directions dir)
+    {
+        List<Script_Pushable> pushables = interactionBoxController.GetPushables(dir);
+        
+        return pushables.Count > 0;   
+    }
 }

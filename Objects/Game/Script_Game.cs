@@ -35,9 +35,10 @@ public class Script_Game : MonoBehaviour
     public bool didGoodEnding;
     /* ======================================================================= */
 
-    // Store this separately in state so Player Movement doesn't have to query Game each frame
+    // Store these separately in state so Player Movement doesn't have to query Game each frame
     // for hotel behaviors. Declare this within respective level behaviors.
     public static bool IsRunningDisabled;
+    public static bool IsCheckForPushables;
 
     public Model_Levels Levels;
     public string state;
