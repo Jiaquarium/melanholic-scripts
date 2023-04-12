@@ -44,21 +44,25 @@ public class Script_Pushable : Script_InteractableObject
         if (isMoving)       return;
         if (_isDisabled)    return;
         
-        Vector3 desiredDir = Script_Utils.GetDirectionToVectorDict()[dir];
         // check for collisions
         // if no collisions then able to push, return true
-        GetComponent<Script_InteractionBoxController>().HandleActiveInteractionBox(dir);
-        bool isCollision = GetComponent<Script_CheckCollisions>().CheckCollisions(
-            transform.position, dir, ref desiredDir
-        );
+        bool isCollision = CheckCollisions(dir, out Vector3 desiredDir);
         if (isCollision)
-        {
             return;
-        }
 
         startLocation = transform.position;
         endLocation = transform.position + desiredDir;
         Move();
+    }
+
+    public bool CheckCollisions(Directions dir, out Vector3 desiredDir)
+    {
+        desiredDir = Script_Utils.GetDirectionToVectorDict()[dir];
+
+        GetComponent<Script_InteractionBoxController>().HandleActiveInteractionBox(dir);
+        return GetComponent<Script_CheckCollisions>().CheckCollisions(
+            transform.position, dir, ref desiredDir
+        );
     }
 
     public bool IsDisabled

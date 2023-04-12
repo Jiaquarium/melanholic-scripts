@@ -78,6 +78,9 @@ public class Script_PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Transform grid;
 
+    /// <summary>
+    /// Tracks the actual move made (before isReverse) 
+    /// </summary>
     [SerializeField] private Directions lastMoveInput;
 
     [SerializeField] private Script_LimitedQueue<Directions> inputButtonDownBuffer = new Script_LimitedQueue<Directions>(4);
@@ -186,6 +189,7 @@ public class Script_PlayerMovement : MonoBehaviour
         
         // Fill buffer with any new Button Presses caught during buffer time.
         // Don't buffer on collision (input buffer should be clear throughout the frozen period)
+        if (progress < 1f && !isFreezeOnCollision)
         {
             BufferButtonDownInput();
             return;
@@ -210,16 +214,7 @@ public class Script_PlayerMovement : MonoBehaviour
         // Must occur after passive so wind effects can still work as expected. This also allows buffering.
         if (isFreezeOnCollision)
         {
-            // Set lastMoveInput to allow moving Right or Left while still holding Down or Up after collision.
-            // Here if facing Up or Down, handle setting lastMoveInput
-            if (FacingDirection == Directions.Down || FacingDirection == Directions.Up)
-            {
-                if (MyPlayer.GetButtonDown(Const_KeyCodes.RWHorizontal))
-                    lastMoveInput = Directions.Right;
-                else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
-                    lastMoveInput = Directions.Left;
-            }                                               
-
+            PrioritizeAdjacentMovement();
             return;
         }
 
@@ -270,7 +265,8 @@ public class Script_PlayerMovement : MonoBehaviour
                 ExecuteMove(lastMoveInput, isReversed);
             else
             {
-                // Handle coming out of Collision Freeze
+                // Handle coming out of Collision Freeze (able to move adjacently to the wall with a Button Hold while
+                // still holding the direction into the wall)
                 if (
                     !isMoving
                     && FacingDirection == currentOnCollisionFreezeDir
@@ -281,12 +277,12 @@ public class Script_PlayerMovement : MonoBehaviour
                     return;
                 }
 
-                // TBD For the isMoving change dir case, must find abs value for joystick
-
                 // This handles
-                // (1) isMoving and have changed directions from a button hold
-                // (2) coming from a non-isMoving state (e.g. coming from cut-scene and you are holding
-                // down a direction, it's too late to catch the button down event)
+                // (1)  isMoving and have changed directions from a button hold
+                //      Note: isMoving change directions, should already be handled by Button Down handlers
+                // (2)  coming from a non-isMoving state (e.g. coming from cut-scene and you are holding
+                //      down a direction, it's too late to catch the button down event)
+                if (MyPlayer.GetButton(Const_KeyCodes.RWVertical))
                     ExecuteMove(Directions.Up, isReversed);
                 else if (MyPlayer.GetNegativeButton(Const_KeyCodes.RWVertical))
                     ExecuteMove(Directions.Down, isReversed);
@@ -314,6 +310,28 @@ public class Script_PlayerMovement : MonoBehaviour
                 StopMovingAnimations();
             }
         }
+
+        // Set lastMoveInput to allow moving off of walls with adjacent direction button holds while still holding the
+        // the directon into the wall.
+        void PrioritizeAdjacentMovement()
+        {
+            // Handle when colliding with objects in the Down or Up directions
+            if (FacingDirection == Directions.Down || FacingDirection == Directions.Up)
+            {
+                if (MyPlayer.GetButtonDown(Const_KeyCodes.RWHorizontal))
+                    lastMoveInput = Directions.Right;
+                else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
+                    lastMoveInput = Directions.Left;
+            }
+            // Handle when colliding with objects in the Left or Right directions
+            else if (FacingDirection == Directions.Left || FacingDirection == Directions.Right)
+            {
+                if (MyPlayer.GetButtonDown(Const_KeyCodes.RWVertical))
+                    lastMoveInput = Directions.Up;
+                else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWVertical))
+                    lastMoveInput = Directions.Down;
+            }
+        }
     }
     
     private bool ExecuteMove(Directions dir, bool isReversed)
@@ -332,7 +350,7 @@ public class Script_PlayerMovement : MonoBehaviour
             };
         }
 
-        bool didMove = Move(desiredDir);
+        bool didMove = Move(desiredDir, false, isReversed);
 
         ClearInputBuffer();
 
@@ -361,7 +379,7 @@ public class Script_PlayerMovement : MonoBehaviour
     /// <summary>
     /// Sets new location, preparing Player for the actual movement on the fixed
     /// </summary>
-    public virtual bool Move(Directions dir, bool _isNoInputMoveByWind = false)
+    public virtual bool Move(Directions dir, bool _isNoInputMoveByWind = false, bool isReverse = false)
     {
         isNoInputMoveByWind = _isNoInputMoveByWind;
         
@@ -389,14 +407,15 @@ public class Script_PlayerMovement : MonoBehaviour
         PushPushables(dir);
         HandleNorthWindAdjustment(dir, ref desiredMove);
 
-        if (isCollision)
+        // Interactive Reflection collisions should not trigger Freeze On Collisions
+        if (isCollision || CheckReflectionInteractiveCollisions())
         {
             didTryExit = false;
             return false;
         }
 
         // Last move input should only be recorded on a successful move (+DDR)
-        lastMoveInput = dir;
+        lastMoveInput = isReverse ? Script_Utils.ReverseDirection(dir) : dir;
         currentOnCollisionFreezeDir = Directions.None;
 
         // DDR mode, only changing directions to look like dancing.
@@ -421,7 +440,7 @@ public class Script_PlayerMovement : MonoBehaviour
             // We set a static variable on Game to avoid calling HandleOnCollisionIsPushableBlocking when unecessary
             if (Script_Game.IsCheckForPushables)
             {
-                if (!playerCheckCollisions.HandleOnCollisionIsPushableBlocking(dir))
+                if (playerCheckCollisions.IsFreezeOnCollisionPushable(dir))
                     OnCollisionFreeze();
             }
             else
@@ -442,7 +461,7 @@ public class Script_PlayerMovement : MonoBehaviour
                     var adjustedLocation = new Vector3(player.location.x, player.location.y, player.location.z - 1);
                     
                     if (
-                        // Handle adjusted tile collisions.
+                        // Handle adjusted tile collisions. Note this may break if using wind with Interactive Reflections.
                         CheckCollisions(adjustedLocation, dir, ref desiredMove)
                         // Detect SW & SE collisions.
                         || (dir == Directions.Left && diagonalInteractionBoxes[0].GetInteractablesBlocking().Count > 0)
@@ -604,8 +623,6 @@ public class Script_PlayerMovement : MonoBehaviour
             if (inputButtonDownBuffer.Count > 0)
             {
                 bufferedInput = inputButtonDownBuffer.Peek();
-
-                Dev_Logger.Debug($"Player using Fixed Buffered PRESS Move: {bufferedInput}");
             }
             // If no button down presses buffered, check current axis being held down.
             else
@@ -627,10 +644,10 @@ public class Script_PlayerMovement : MonoBehaviour
                         bufferedInput = HandleRepeatButtonHold(x, y);
                         if (bufferedInput == Directions.None)
                             bufferedInput = HandleNewButtonHold(x, y);
+                    }
 
-                    // Handle repeating the last input. This mirrors Update Clock's handling of last input. We do this
-                    // to avoid the hierarchy here (e.g. allowing you walk U/D and then hold R/L)
-                    // Note: we use the input Vector2 to work better with controllers, otherwise
+                    // Handle repeating the last input. This mirrors Update Clock's handling of last input. We don't use abs
+                    // value here because it causes double moves (e.g. moving R, input Right-Down, will move D then R quickly)
                     Directions HandleRepeatButtonHold(float x, float y)
                     {
                         if (MyPlayer.GetButton(Const_KeyCodes.RWVertical) && lastMoveInput == Directions.Up)
@@ -642,8 +659,12 @@ public class Script_PlayerMovement : MonoBehaviour
                         else if (MyPlayer.GetNegativeButton(Const_KeyCodes.RWHorizontal) && lastMoveInput == Directions.Left)
                             return Directions.Left;
                         else
-                            return Directions.None;
-                        
+                            return Directions.None;    
+                    }
+
+                    // Must handle like this vs. if-else hierarchy; otherwise, for controller, what comes first in the
+                    // if-else hierarchy is heavily favored (e.g. Up & Down) which we don't want when changing dir.
+                    // For joystick, this case rarely occurs because a Buffered Button Down Input will be caught first.
                     Directions HandleNewButtonHold(float x, float y)
                     {
                         // If y magnitude is greater than x, then default to U or D
@@ -662,8 +683,6 @@ public class Script_PlayerMovement : MonoBehaviour
                             else
                                 return Directions.Left;
                         }
-
-                        Dev_Logger.Debug($"Player Fixed Buffered HOLD Move: {bufferedInput}; dirVector ({x}, {y})");
                     }
                 }
             }
@@ -792,14 +811,15 @@ public class Script_PlayerMovement : MonoBehaviour
 
     private bool CheckCollisions(Vector3 location, Directions dir, ref Vector3 desiredMove)
     {   
-        // Do not allow Player to move if Reflection cannot move.
-        if (playerReflection is Script_PlayerReflectionInteractive && playerReflection.gameObject.activeInHierarchy)
-        {
-            if (!playerReflection.GetComponent<Script_PlayerReflectionInteractive>().CanMove())
-                return true;
-        }
-        
         return playerCheckCollisions.CheckCollisions(location, dir, ref desiredMove);
+    }
+
+    // Do not allow Player to move if Reflection cannot move.
+    private bool CheckReflectionInteractiveCollisions()
+    {
+        return playerReflection is Script_PlayerReflectionInteractive
+            && playerReflection.gameObject.activeInHierarchy
+            && !playerReflection.GetComponent<Script_PlayerReflectionInteractive>().CanMove();
     }
 
     private void PushPushables(Directions dir)
