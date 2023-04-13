@@ -401,6 +401,7 @@ public class Script_PlayerMovement : MonoBehaviour
         if (isCollision && game.state == Const_States_Game.Interact && !isNorthWind)
             HandleOnCollisionFreeze();
         
+        // Even OnCollisionFreeze, still need to set player direction, push pushables, and adjust for wind
         if (!isNoInputMoveByWind)
             AnimatorSetDirection(dir);
         
@@ -568,7 +569,7 @@ public class Script_PlayerMovement : MonoBehaviour
         // ------------------------------------------------------------------
         // Smooth Movement Debugging
         
-        if (isMoving && Debug.isDebugBuild && devIsCheckSmoothMovement)
+        if (Debug.isDebugBuild && devIsCheckSmoothMovement && isMoving)
             HandleSmoothMovementDebugMessaging();
 
         // ------------------------------------------------------------------
@@ -1035,7 +1036,7 @@ public class Script_PlayerMovement : MonoBehaviour
         ResetOnCollisionCoroutine();
     }
 
-    public void ResetOnCollisionCoroutine()
+    private void ResetOnCollisionCoroutine()
     {
         if (onCollisionCoroutine != null)
         {

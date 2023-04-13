@@ -76,7 +76,7 @@ public class Script_InteractionBoxController : MonoBehaviour
     /// <summary>
     /// Gets pushables without exposing another box. Uses what is already in colliders.
     /// </summary>
-    public List<Script_Pushable> GetCurrentPushablesCached(Directions dir) => activeBox.GetCurrentPushablesCached();
+    public List<Script_Pushable> GetCurrentPushablesCached() => activeBox.GetCurrentPushablesCached();
 
     public Script_ItemObject GetItem(Directions dir)
     {

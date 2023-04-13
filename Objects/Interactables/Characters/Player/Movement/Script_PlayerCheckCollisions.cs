@@ -91,7 +91,7 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
     /// in the desired direction. False, if a pushable is detected and you are pushing it (continue walking anim)</returns>
     public bool IsFreezeOnCollisionPushable(Directions dir)
     {
-        List<Script_Pushable> pushables = interactionBoxController.GetCurrentPushablesCached(dir);
+        List<Script_Pushable> pushables = interactionBoxController.GetCurrentPushablesCached();
         
         if (pushables.Count == 0)
             return true;
