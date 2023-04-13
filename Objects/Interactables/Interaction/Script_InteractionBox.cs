@@ -84,9 +84,14 @@ public class Script_InteractionBox : MonoBehaviour
     /// </summary>
     public virtual List<Script_Pushable> GetPushables()
     {
-        List<Script_Pushable> pushables = new List<Script_Pushable>();
-        
         ExposeBox();
+        
+        return GetCurrentPushablesCached();
+    }
+
+    public List<Script_Pushable> GetCurrentPushablesCached()
+    {
+        List<Script_Pushable> pushables = new List<Script_Pushable>();
 
         foreach (Collider col in colliders)
         {

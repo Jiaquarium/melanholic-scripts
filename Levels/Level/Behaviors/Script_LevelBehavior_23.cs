@@ -40,6 +40,8 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
     
     protected override void OnEnable()
     {
+        Script_Game.IsCheckForPushables = true;
+        
         // OnPuzzleSuccess is handled in LB24
         if (!LB24.IsCurrentPuzzleComplete)
         {
@@ -54,7 +56,10 @@ public class Script_LevelBehavior_23 : Script_LevelBehavior
         OnEnableLanternSFXReaction();
     }
 
-    protected override void OnDisable() {
+    protected override void OnDisable()
+    {
+        Script_Game.IsCheckForPushables = false;
+
         if (!LB24.IsCurrentPuzzleComplete)
         {
             Script_PuzzlesEventsManager.OnPuzzleProgress -= OnPuzzleProgress;

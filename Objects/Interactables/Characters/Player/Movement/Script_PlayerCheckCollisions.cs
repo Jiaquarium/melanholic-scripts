@@ -7,7 +7,7 @@ using System.Linq;
 public class Script_PlayerCheckCollisions : Script_CheckCollisions
 {
     [SerializeField] private Script_PlayerHandleStairs stairsHandler;
-    
+
     /// <summary>
     /// in addition to checking if on tilemap, player needs to verify
     /// entrance and exits. allow player to go onto exits and entrance tiles
@@ -80,5 +80,24 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
         if (isStairs)   desiredMove = (Vector3)newDesiredMoveWithElevation;
 
         return isStairs;
+    }
+
+    /// <summary>
+    /// Handles if Player Movement should freeze on the pushable or continue with walking animation.
+    /// Gets pushables from colliders stored from the previous call to CheckCollisions.
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns>True, if no pushable is collided OR if pushable is detected but it's colliding with something
+    /// in the desired direction. False, if a pushable is detected and you are pushing it (continue walking anim)</returns>
+    public bool IsFreezeOnCollisionPushable(Directions dir)
+    {
+        List<Script_Pushable> pushables = interactionBoxController.GetCurrentPushablesCached();
+        
+        if (pushables.Count == 0)
+            return true;
+
+        bool isPushableBlocked = pushables[0].CheckCollisions(dir, out Vector3 desiredDir);
+        
+        return isPushableBlocked;
     }
 }

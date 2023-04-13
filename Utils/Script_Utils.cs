@@ -206,7 +206,16 @@ public static class Script_Utils
             default:
                 return false;
         }
-    } 
+    }
+
+    public static Directions ReverseDirection(Directions dir) => dir switch
+    {
+        Directions.Up => Directions.Down,
+        Directions.Down => Directions.Up,
+        Directions.Left => Directions.Right,
+        Directions.Right => Directions.Left,
+        _ => Directions.None
+    };
 
     public static Vector3 MovesToVector(Model_MoveSet moveSet)
     {
