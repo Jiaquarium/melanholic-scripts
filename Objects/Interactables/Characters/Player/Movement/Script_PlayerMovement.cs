@@ -39,7 +39,7 @@ public class Script_PlayerMovement : MonoBehaviour
     public static readonly int LastMoveXAnimatorParam      = Animator.StringToHash("LastMoveX");
     public static readonly int LastMoveZAnimatorParam      = Animator.StringToHash("LastMoveZ");
     
-    private static float OnCollisionPauseTime = 0.08f;
+    private static float OnCollisionPauseTime = 0.04f;
     [SerializeField] protected Animator animator;
     
     public Script_PlayerReflection PlayerReflectionPrefab;
