@@ -41,6 +41,7 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
 
     [Header("Custom Scaling Bounds")]
     [SerializeField] private Script_ScalingBounds bounds;
+    [SerializeField] private GameObject canvasAdjustersParent;
     [SerializeField] private Script_CanvasAdjuster[] canvasAdjusters;
 
     [SerializeField] private MyScenes mySceneBehavior;
@@ -107,6 +108,11 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
         }
     }
 
+    void OnValidate()
+    {
+        PopulateCanvasAdjusters();
+    }
+    
     void Awake()
     {
         SetupCanvasAdjusters();
@@ -290,6 +296,12 @@ public class Script_CanvasConstantPixelScaler : MonoBehaviour
     {
         foreach (var canvasAdjuster in canvasAdjusters)
             canvasAdjuster.Setup();
+    }
+
+    private void PopulateCanvasAdjusters()
+    {
+        if (canvasAdjustersParent != null)
+            canvasAdjusters = canvasAdjustersParent.GetComponentsInChildren<Script_CanvasAdjuster>(true);
     }
 }
 
