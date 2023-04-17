@@ -27,5 +27,10 @@ public class Script_IntroControllerSimple : MonoBehaviour
     {
         gameObject.SetActive(true);
         TimelineController.PlayableDirectorPlayFromTimelines(0, 0);
-    }   
+    }
+
+    public void Stop()
+    {
+        TimelineController.StopAllPlayables();
+    }
 }

@@ -26,6 +26,7 @@ public class Script_StartOverviewController : Script_UIState
     
     [Header("Simple Intro Settings")]
     [SerializeField] private Script_IntroControllerSimple introControllerSimple;
+    [SerializeField] private Script_IntroSimpleInputManager introSimpleInputManager;
     // Match Title Fade In Time (~2s)
     [SerializeField] private float defaultInputDisabledTime;
     [SerializeField] private float waitBeforeFadeInCTATime;
@@ -94,6 +95,7 @@ public class Script_StartOverviewController : Script_UIState
     private bool isCrunchActive;
 
     private bool isInitedSimple;
+    private bool isHandlingCTATitleFadeIn;
     
     void OnEnable()
     {
@@ -129,6 +131,7 @@ public class Script_StartOverviewController : Script_UIState
 
         introController.gameObject.SetActive(false);
         startScreenController.gameObject.SetActive(false);
+        introSimpleInputManager.gameObject.SetActive(false);
         
         introCanvasGroup.gameObject.SetActive(false);
 
@@ -137,7 +140,10 @@ public class Script_StartOverviewController : Script_UIState
         if (isInitedSimple)
             FadeInTitleScreen(withCTA: false);
         else
+        {
             introControllerSimple.Play();
+            introSimpleInputManager.gameObject.SetActive(true);
+        }
 
         isInitedSimple = true;
     }
@@ -216,6 +222,11 @@ public class Script_StartOverviewController : Script_UIState
         controlsCanvasGroup.Close();
     }
 
+    public void StopIntroSimple()
+    {
+        introControllerSimple.Stop();
+    }
+
     // ----------------------------------------------------------------------
     // Timeline Signals
     
@@ -224,7 +235,18 @@ public class Script_StartOverviewController : Script_UIState
     public void FadeInTitleScreen(bool withCTA)
     {
         Dev_Logger.Debug("Fade in Title Screen");
+        introSimpleInputManager.gameObject.SetActive(false);
         
+        // Set isHandlingCTATitleFadeIn to prevent double calls from Input Manager and timeline if Timeline Signal's
+        // call happens on same frame as input manager's
+        if (withCTA)
+        {
+            if (isHandlingCTATitleFadeIn)
+                return;
+
+            isHandlingCTATitleFadeIn = true;
+        }
+
         StartScreenStart(!withCTA);
     }
     
@@ -281,6 +303,7 @@ public class Script_StartOverviewController : Script_UIState
                 }
 
                 Script_Start.startState = Script_Start.StartStates.Start;
+                isHandlingCTATitleFadeIn = false;
             }
             else
             {
@@ -310,7 +333,7 @@ public class Script_StartOverviewController : Script_UIState
             yield return new WaitForSeconds(waitBeforeFadeInCTATime);
 
             Dev_Logger.Debug($"Fading in CTA, isFromBack {isFromBack}");
-                    
+
             startScreenCTA.gameObject.SetActive(true);
             startScreenCTA.StartIntervalFader(isFadeIn: true);
             
@@ -318,6 +341,7 @@ public class Script_StartOverviewController : Script_UIState
                 demoHeader.FadeIn(startScreenCTA.GetComponent<Script_CanvasGroupFadeInterval>().Interval);
             
             startScreenController.gameObject.SetActive(true);
+            isHandlingCTATitleFadeIn = false;
         }
     }
 

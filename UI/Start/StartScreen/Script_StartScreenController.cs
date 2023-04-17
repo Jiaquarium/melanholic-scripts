@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Script_StartScreenInputManager))]
 public class Script_StartScreenController : MonoBehaviour
@@ -35,6 +36,9 @@ public class Script_StartScreenController : MonoBehaviour
     [SerializeField] private Script_EventSystemLastSelected eventSystem;
 
     [SerializeField] private Transform startScreen;
+
+    [Space][Header("Demo")][Space]
+    [SerializeField] private Button wishlistButton;
 
     public float TitleFadeInTime
     {
@@ -82,10 +86,11 @@ public class Script_StartScreenController : MonoBehaviour
     {
         startScreen.gameObject.SetActive(false);
         startOptionsCanvasGroup.Close();
+        wishlistButton.gameObject.SetActive(Const_Dev.IsDemo);
         
         titleCanvasGroup.Setup();
         titleLogo.Setup();
-
+        
         eventSystem.gameObject.SetActive(false);
     }
 }
