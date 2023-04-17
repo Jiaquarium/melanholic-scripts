@@ -279,7 +279,7 @@ public class Script_PlayerMovement : MonoBehaviour
 
                 // This handles
                 // (1)  isMoving and have changed directions from a button hold
-                //      Note: isMoving change directions, should already be handled by Button Down handlers
+                //      Note: this case (isMoving change directions on hold) should already be handled by Button Down handlers
                 // (2)  coming from a non-isMoving state (e.g. coming from cut-scene and you are holding
                 //      down a direction, it's too late to catch the button down event)
                 if (MyPlayer.GetButton(Const_KeyCodes.RWVertical))
@@ -569,7 +569,7 @@ public class Script_PlayerMovement : MonoBehaviour
         // ------------------------------------------------------------------
         // Smooth Movement Debugging
         
-        if (Debug.isDebugBuild && devIsCheckSmoothMovement && isMoving)
+        if (Debug.isDebugBuild && devIsCheckSmoothMovement)
             HandleSmoothMovementDebugMessaging();
 
         // ------------------------------------------------------------------
@@ -651,13 +651,14 @@ public class Script_PlayerMovement : MonoBehaviour
                     // value here because it causes double moves (e.g. moving R, input Right-Down, will move D then R quickly)
                     Directions HandleRepeatButtonHold(float x, float y)
                     {
-                        if (MyPlayer.GetButton(Const_KeyCodes.RWVertical) && lastMoveInput == Directions.Up)
+                        // Faster to check lastMoveInput first vs. polling
+                        if (lastMoveInput == Directions.Up && MyPlayer.GetButton(Const_KeyCodes.RWVertical))
                             return Directions.Up;
-                        else if (MyPlayer.GetNegativeButton(Const_KeyCodes.RWVertical) && lastMoveInput == Directions.Down)
+                        else if (lastMoveInput == Directions.Down && MyPlayer.GetNegativeButton(Const_KeyCodes.RWVertical))
                             return Directions.Down;
-                        else if (MyPlayer.GetButton(Const_KeyCodes.RWHorizontal) && lastMoveInput == Directions.Right)
+                        else if (lastMoveInput == Directions.Right && MyPlayer.GetButton(Const_KeyCodes.RWHorizontal))
                             return Directions.Right;
-                        else if (MyPlayer.GetNegativeButton(Const_KeyCodes.RWHorizontal) && lastMoveInput == Directions.Left)
+                        else if (lastMoveInput == Directions.Left && MyPlayer.GetNegativeButton(Const_KeyCodes.RWHorizontal))
                             return Directions.Left;
                         else
                             return Directions.None;    
