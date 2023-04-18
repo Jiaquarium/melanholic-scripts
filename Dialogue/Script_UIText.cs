@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-04-18 14:45:33
+// Last created by UI Exporter at 2023-04-18 18:00:38
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2433,7 +2433,7 @@ Use the keyboard to select a control to begin listening for input."
     "system_master-volume_current",
     new Model_LanguagesUI
     {
-        EN = @"current volume"
+        EN = @"current volume ▶"
     }
 },
 {
@@ -2447,7 +2447,7 @@ Use the keyboard to select a control to begin listening for input."
     "graphics_resolutions_current",
     new Model_LanguagesUI
     {
-        EN = @"current viewport"
+        EN = @"current viewport ▶"
     }
 },
 {
@@ -2455,6 +2455,48 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Select to set available resolution"
+    }
+},
+{
+    "graphics_fullscreen_title",
+    new Model_LanguagesUI
+    {
+        EN = @"Full-Screen"
+    }
+},
+{
+    "graphics_fullscreen_current",
+    new Model_LanguagesUI
+    {
+        EN = @"current mode ▶"
+    }
+},
+{
+    "graphics_fullscreen_on",
+    new Model_LanguagesUI
+    {
+        EN = @"on"
+    }
+},
+{
+    "graphics_fullscreen_off",
+    new Model_LanguagesUI
+    {
+        EN = @"off"
+    }
+},
+{
+    "graphics_fullscreen_current_on",
+    new Model_LanguagesUI
+    {
+        EN = @"on"
+    }
+},
+{
+    "graphics_fullscreen_current_off",
+    new Model_LanguagesUI
+    {
+        EN = @"off"
     }
 },
 // ------------------------------------------------------------------

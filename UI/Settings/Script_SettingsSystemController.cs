@@ -22,10 +22,19 @@ public class Script_SettingsSystemController : MonoBehaviour
         Overview = 0,
         MasterVolume = 1,
         Resolutions = 2,
+        FullScreenSelect = 3
     }
 
+    public const float WaitAfterFullScreenSwitchTime = 0.4f;
     private const float FillIncrement = 10f;
+    
     public static readonly int ClickTrigger = Script_SettingsController.ClickTrigger;
+    private const string FullScreenOnId = "graphics_fullscreen_current_on";
+    private const string FullScreenOffId = "graphics_fullscreen_current_off";
+    private static string FullScreenOnTextLocalized;
+    private static string FullScreenOffTextLocalized;
+    private const string FullScreenOnFallback = "on";
+    private const string FullScreenOffFallback = "off";
 
     public SystemState systemState;
     
@@ -42,6 +51,10 @@ public class Script_SettingsSystemController : MonoBehaviour
     [SerializeField] private List<Script_SettingsResolutionChoice> resolutions;
     [SerializeField] private TextMeshProUGUI resolutionsHelperText;
     [SerializeField] private TextMeshProUGUI resolutionCurrentText;
+
+    [SerializeField] private GameObject onExitFullScreenSelectFirstSelected;
+    [SerializeField] private List<Script_SettingsFullScreenChoice> fullScreenOptions;
+    [SerializeField] private TextMeshProUGUI fullScreenCurrentText;
     
     [SerializeField] private Script_SettingsController settingsController;
     [SerializeField] private Camera cam;
@@ -65,6 +78,9 @@ public class Script_SettingsSystemController : MonoBehaviour
     {
         // Note: should only reference in Start or later since Player Input singleton is set in Awake
         rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
+
+        FullScreenOnTextLocalized = Script_UIText.Text[FullScreenOnId].GetProp<string>(Const_Dev.Lang) ?? FullScreenOnFallback;
+        FullScreenOffTextLocalized = Script_UIText.Text[FullScreenOffId].GetProp<string>(Const_Dev.Lang) ?? FullScreenOffFallback;
     }
     
     void Update()
@@ -74,6 +90,8 @@ public class Script_SettingsSystemController : MonoBehaviour
         
         if (systemState != SystemState.Resolutions)
             HandleDisabledResolutions();
+        
+        UpdateFullScreenText();
     }
 
     void LateUpdate()
@@ -102,6 +120,12 @@ public class Script_SettingsSystemController : MonoBehaviour
                 systemState = SystemState.Overview;
                 InitialState();
                 EventSystem.current.SetSelectedGameObject(onExitResolutionsFirstSelected);
+                ExitSubmenuSFX();
+                break;
+            case SystemState.FullScreenSelect:
+                systemState = SystemState.Overview;
+                InitialState();
+                EventSystem.current.SetSelectedGameObject(onExitFullScreenSelectFirstSelected);
                 ExitSubmenuSFX();
                 break;
             default:
@@ -174,6 +198,28 @@ public class Script_SettingsSystemController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(masterVolHolder);
         masterVolArrows.ForEach(arrow => arrow.gameObject.SetActive(true));
         EnterSubmenuSFX();
+    }
+
+    public void ToFullScreenSelect()
+    {
+        systemState = SystemState.FullScreenSelect;
+        
+        bool isCurrentlyFullScreen = Screen.fullScreen;
+        var currentFSOption = SelectCurrentFullScreenOption();
+        EventSystem.current.SetSelectedGameObject(currentFSOption.gameObject);
+
+        EnterSubmenuSFX();
+
+        Script_SettingsFullScreenChoice SelectCurrentFullScreenOption()
+        {
+            foreach (var fsOption in fullScreenOptions)
+            {
+                if (fsOption.IsFullScreen == isCurrentlyFullScreen)
+                    return fsOption;
+            }
+
+            return fullScreenOptions[0];
+        }
     }
 
     // ------------------------------------------------------------
@@ -251,6 +297,11 @@ public class Script_SettingsSystemController : MonoBehaviour
         resolutionCurrentText.text = VPText;
     }
 
+    private void UpdateFullScreenText()
+    {
+        fullScreenCurrentText.text = Screen.fullScreen ? FullScreenOnTextLocalized : FullScreenOffTextLocalized;
+    }
+
     // ------------------------------------------------------------
     // Saving & Loading
 
@@ -301,6 +352,11 @@ public class Script_SettingsSystemController : MonoBehaviour
 
     // ------------------------------------------------------------
 
+    public void EnableNavigation(bool isEnabled)
+    {
+        EventSystem.current.sendNavigationEvents = isEnabled;
+    }
+    
     private void EnterSubmenuSFX()
     {
         Script_SFXManager.SFX.PlayEnterSubmenu();
@@ -311,7 +367,7 @@ public class Script_SettingsSystemController : MonoBehaviour
         Script_SFXManager.SFX.PlayExitSubmenuPencil();
     }
 
-    private void SubmitSFX()
+    public void SubmitSFX()
     {
         Script_SFXManager.SFX.PlayUIChoiceSubmit();
     }
