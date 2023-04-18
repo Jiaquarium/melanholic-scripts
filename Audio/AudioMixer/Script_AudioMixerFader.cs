@@ -11,7 +11,8 @@ public class Script_AudioMixerFader : MonoBehaviour
         string exposedParam,
         float fadeTime,
         float targetVol,
-        Action cb
+        Action cb,
+        bool isUnscaledTime = false
     )
     {
         float currentTime = 0;
@@ -22,7 +23,7 @@ public class Script_AudioMixerFader : MonoBehaviour
 
         while (currentTime < fadeTime)
         {
-            currentTime += Time.deltaTime;
+            currentTime += isUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
             float newVol = Mathf.Lerp(currentVol, clampedVol, currentTime / fadeTime);
             
             Dev_Logger.Debug($"New vol: {newVol}");

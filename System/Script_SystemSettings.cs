@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// We default startup with Exclusive Fullscreen (Mac). This will default to Fullscreen Windowed on other OSs.
+/// </summary>
 public class Script_SystemSettings : MonoBehaviour
 {
     [SerializeField] private int vSyncCount = 1;

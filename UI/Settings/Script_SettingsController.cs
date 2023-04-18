@@ -35,6 +35,10 @@ public class Script_SettingsController : MonoBehaviour
     public const float WaitBeforeListeningTime = 0.15f;
     private const float InputTimeout = 5f;
     private const int UIInvertCount = 4;
+    
+    // Should match TransitionManager.onRestartSelectBgmFadeTime & its RestartTimeline & its ToTitleTimeline
+    protected const float SceneTransitionFadeInTime = 1f;
+    
     public static readonly int ClickTrigger = Animator.StringToHash("click");
 
     public static Script_SettingsController Instance;
@@ -361,12 +365,6 @@ public class Script_SettingsController : MonoBehaviour
                 
                 break;
         }
-    }
-
-    public void ToTitleScreen()
-    {
-        Script_TransitionManager.Control.ToTitleScreen();
-        Script_TransitionManager.Control.EnterMenuSFX();
     }
 
     // Controls: Reset All to Defaults
@@ -713,6 +711,8 @@ public class Script_SettingsController : MonoBehaviour
             Script_SFXManager.SFX.OpenCloseBookHeavyVol
         );
     }
+
+    protected void PlaySubmitTransitionCancel() => Script_SFXManager.SFX.PlaySubmitTransitionCancel();
 
     protected void ExitSubmenuSFX() => Script_SFXManager.SFX.PlayExitSubmenuPencil();    
 

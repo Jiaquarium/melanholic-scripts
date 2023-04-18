@@ -36,6 +36,11 @@ public class Script_TransitionManager : MonoBehaviour
         Dream           = 4,
     }
 
+    public const float RestartPlayerFadeInTime = 0.25f;
+    public const float RestartPlayerFadeOutTime = 1f;
+    public const float FadeTimeSlow = 2.0f;
+    public const float UnderDialogueFadeTime = 1.5f;
+
     // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
     // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
     [SerializeField] private float restartGameTimeOnSave;
@@ -59,14 +64,10 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController timelineFaderOver;
     [SerializeField] private Script_CanvasGroupController timelineFaderOverWhite;
     [SerializeField] private Script_CanvasGroupController faderOverWhite;
+    [SerializeField] private Script_CanvasGroupController faderSceneTransition;
 
     [SerializeField] private Script_Game game;
     [SerializeField] private Script_TimeManager timeManager;
-
-    public const float RestartPlayerFadeInTime = 0.25f;
-    public const float RestartPlayerFadeOutTime = 1f;
-    public const float FadeTimeSlow = 2.0f;
-    public const float UnderDialogueFadeTime = 1.5f;
 
     [Header("Good Endings")]
     [SerializeField] private Script_GoodEndingController goodEndingController;
@@ -83,6 +84,7 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private float fadeOutMainMelodyTime;
     [SerializeField] private int thankYouThemeTrue;
     [SerializeField] private Script_CanvasGroupController trueEndingCanvasGroup;
+    [SerializeField] private Script_CreditsController creditsController;
 
     [Header("Bad Ending")]
     [SerializeField] private float dieTimeScale;
@@ -111,9 +113,9 @@ public class Script_TransitionManager : MonoBehaviour
 
     public float ToTitleWaitTime => toTitleWaitTime;
 
-    public IEnumerator FadeIn(float t, Action action)
+    public IEnumerator FadeIn(float t, Action action, bool isUnscaledTime = false)
     {
-        return fader.FadeInCo(t, action);
+        return fader.FadeInCo(t, action, isUnscaledTime: isUnscaledTime);
     }
 
     public Coroutine FadeInCoroutine(float t, Action cb = null)
@@ -183,6 +185,11 @@ public class Script_TransitionManager : MonoBehaviour
         var canvasGroupController = isOver ? timelineFaderOver : timelineFaderUnder;
         
         canvasGroupController.FadeOut(t, action);
+    }
+
+    public void FadeInSceneTransition(float t, Action action)
+    {
+        faderSceneTransition.FadeIn(t, action, isUnscaledTime: true);
     }
 
     public void DieEffects(Script_GameOverController.DeathTypes _deathType)
@@ -603,10 +610,33 @@ public class Script_TransitionManager : MonoBehaviour
     {
         // Fade out BGM as Timeline fades screen out.
         var bgm = Script_BackgroundMusicManager.Control;
-        bgm.FadeOut(null, onRestartSelectBgmFadeTime, Const_AudioMixerParams.ExposedBGVolume);
+        bgm.FadeOut(null, onRestartSelectBgmFadeTime, Const_AudioMixerParams.ExposedMusicVolume, isUnscaledTime: true);
+        bgm.FadeOutExtra(
+            out Coroutine coroutine,
+            null, onRestartSelectBgmFadeTime,
+            Const_AudioMixerParams.ExposedFXVolume,
+            isUnscaledTime: true
+        );
         
         // 1 sec long fade out
         GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 10);
+    }
+
+    // Util for fading out to Title with custom fade time
+    public void ToTitleFadeOut(float t)
+    {
+        // Fade out BGM as Timeline fades screen out.
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.FadeOut(null, t, Const_AudioMixerParams.ExposedMusicVolume, isUnscaledTime: true);
+        bgm.FadeOutExtra(
+            out Coroutine coroutine,
+            null, t,
+            Const_AudioMixerParams.ExposedFXVolume,
+            isUnscaledTime: true
+        );
+
+        faderSceneTransition.InitialState();
+        faderSceneTransition.FadeIn(t, Script_SceneManager.ToTitleScene, isUnscaledTime: true);
     }
 
     // ------------------------------------
@@ -673,6 +703,7 @@ public class Script_TransitionManager : MonoBehaviour
         timelineFaderOver.InitialState();
         timelineFaderOverWhite.InitialState();
         faderOverWhite.InitialState();
+        faderSceneTransition.InitialState();
     }
     
     public void Setup()
@@ -703,51 +734,60 @@ public class Script_TransitionManager : MonoBehaviour
         timelineFaderOver.Close();
         timelineFaderOverWhite.Close();
         faderOverWhite.Close();
+        faderSceneTransition.Close();
+
+        creditsController.Setup();
     }
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Script_TransitionManager))]
-public class Script_TransitionManagerTester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    [CustomEditor(typeof(Script_TransitionManager))]
+    public class Script_TransitionManagerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_TransitionManager t = (Script_TransitionManager)target;
-        if (GUILayout.Button("OnTimesUpPlayableDone()"))
-        {
-            t.OnTimesUpPlayableDone();
-        }
+            Script_TransitionManager t = (Script_TransitionManager)target;
+            if (GUILayout.Button("OnTimesUpPlayableDone()"))
+            {
+                t.OnTimesUpPlayableDone();
+            }
 
-        if (GUILayout.Button("FadeInRestartPrompt()"))
-        {
-            t.FadeInRestartPrompt();
-        }
+            if (GUILayout.Button("FadeInRestartPrompt()"))
+            {
+                t.FadeInRestartPrompt();
+            }
 
-        if (GUILayout.Button("FadeOutRestartPrompt()"))
-        {
-            t.FadeOutRestartPrompt();
-        }
+            if (GUILayout.Button("FadeOutRestartPrompt()"))
+            {
+                t.FadeOutRestartPrompt();
+            }
 
-        if (GUILayout.Button("Final Cut Scene Awakening"))
-        {
-            t.FinalCutSceneAwakening();
-        }
-        
-        if (GUILayout.Button("Bad Ending"))
-        {
-            t.TimesUpEffects();
-        }
+            if (GUILayout.Button("Final Cut Scene Awakening"))
+            {
+                t.FinalCutSceneAwakening();
+            }
+            
+            if (GUILayout.Button("Bad Ending"))
+            {
+                t.TimesUpEffects();
+            }
 
-        if (GUILayout.Button("Good Ending"))
-        {
-            t.StartEndingSequence(Script_TransitionManager.Endings.Good);
-        }
+            if (GUILayout.Button("Good Ending"))
+            {
+                t.StartEndingSequence(Script_TransitionManager.Endings.Good);
+            }
 
-        if (GUILayout.Button("True Ending"))
-        {
-            t.StartEndingSequence(Script_TransitionManager.Endings.True);
+            if (GUILayout.Button("True Ending"))
+            {
+                t.StartEndingSequence(Script_TransitionManager.Endings.True);
+            }
+
+            if (GUILayout.Button("Roll Credits"))
+            {
+                t.game.ChangeStateCutScene();
+                t.RollCredits();
+            }
         }
     }
-}
 #endif
+}

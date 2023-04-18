@@ -33,6 +33,7 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_SceneManager sceneManager;
     [SerializeField] private Script_TimelineController crunchTimelineCtrl;
 
+    [SerializeField] private Script_BackgroundMusicManager bgmManager;
     [SerializeField] private Script_SFXManager SFXManager;
     [SerializeField] private Script_SystemSettings systemSettings;
     [SerializeField] private Script_SettingsController settingsController;
@@ -70,6 +71,7 @@ public class Script_Start : MonoBehaviour
         saveCurseControl.Setup();
         sceneManager.Setup();
         SFXManager.Setup();
+        bgmManager.Setup();
         settingsController.Setup();
         audioConfiguration.Setup();
         

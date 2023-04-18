@@ -320,7 +320,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
-        float targetVolume = 0f
+        float targetVolume = 0f,
+        bool isUnscaledTime = false
     )
     {
         EndCurrentCoroutines();
@@ -332,7 +333,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
                 targetVolume,
                 () => {
                     if (cb != null)     cb();
-                }
+                },
+                isUnscaledTime
             )
         );
     }
@@ -341,7 +343,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
-        float targetVolume = 1f
+        float targetVolume = 1f,
+        bool isUnscaledTime = false
     )
     {
         EndCurrentCoroutines();
@@ -353,7 +356,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
                 targetVolume,
                 () => {
                     if (cb != null)     cb();
-                }
+                },
+                isUnscaledTime
             )
         );
     }
@@ -364,7 +368,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
-        float targetVolume = 0f
+        float targetVolume = 0f,
+        bool isUnscaledTime = false
     )
     {
         coroutine = StartCoroutine(
@@ -375,7 +380,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
                 targetVolume,
                 () => {
                     if (cb != null)     cb();
-                }
+                },
+                isUnscaledTime
             )
         );
     }
@@ -386,7 +392,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,
         string outputMixer = Const_AudioMixerParams.ExposedGameVolume,
-        float targetVolume = 1f
+        float targetVolume = 1f,
+        bool isUnscaledTime = false
     )
     {
         coroutine = StartCoroutine(
@@ -397,7 +404,8 @@ public class Script_BackgroundMusicManager : MonoBehaviour
                 targetVolume,
                 () => {
                     if (cb != null)     cb();
-                }
+                },
+                isUnscaledTime
             )
         );
     }

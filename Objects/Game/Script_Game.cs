@@ -920,7 +920,7 @@ public class Script_Game : MonoBehaviour
 
         IEnumerator WaitToTitleScreen()
         {
-            yield return new WaitForSeconds(transitionManager.ToTitleWaitTime);
+            yield return new WaitForSecondsRealtime(transitionManager.ToTitleWaitTime);
 
             transitionManager.PlayToTitleTimeline();
         }
@@ -1413,14 +1413,19 @@ public class Script_Game : MonoBehaviour
     }
 
     // separate vs. default level fader
-    public IEnumerator TransitionFadeIn(float t, Action action)
+    public IEnumerator TransitionFadeIn(float t, Action action, bool isUnscaledTime = false)
     {
-        return transitionManager.FadeIn(t, action);
+        return transitionManager.FadeIn(t, action, isUnscaledTime);
     }
     
     public IEnumerator TransitionFadeOut(float t, Action action)
     {
         return transitionManager.FadeOut(t, action);
+    }
+
+    public void SceneTransitionFadeIn(float t, Action action)
+    {
+        transitionManager.FadeInSceneTransition(t, action);
     }
 
     public void ManagePlayerViews(string type)

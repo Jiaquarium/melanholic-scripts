@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-04-06 23:24:49
+// Last created by UI Exporter at 2023-04-18 14:45:33
 
 using System.Collections;
 using System.Collections.Generic;
@@ -667,7 +667,7 @@ public class Script_UIText
     "credits_main-staff_role0",
     new Model_LanguagesUI
     {
-        EN = @"ART, DESIGN, WRITING, PROGRAMMING"
+        EN = @"Art & Design, Writing, Programming"
     }
 },
 {
@@ -681,7 +681,7 @@ public class Script_UIText
     "credits_main-staff_role1",
     new Model_LanguagesUI
     {
-        EN = @"ORIGINAL SOUNDTRACK, SOUND DESIGN"
+        EN = @"Music & Sound"
     }
 },
 {
@@ -695,7 +695,7 @@ public class Script_UIText
     "credits_main-staff_role2",
     new Model_LanguagesUI
     {
-        EN = @"CG ART, DESIGN"
+        EN = @"Art & Design"
     }
 },
 {
@@ -706,24 +706,31 @@ public class Script_UIText
     }
 },
 {
+    "credits_special-thanks",
+    new Model_LanguagesUI
+    {
+        EN = @"Special Thanks"
+    }
+},
+{
     "credits_extras_role0",
     new Model_LanguagesUI
     {
-        EN = @"ADDITIONAL SFX"
+        EN = @"Agent"
     }
 },
 {
     "credits_extras_name0",
     new Model_LanguagesUI
     {
-        EN = @"Taira Komori"
+        EN = @"Judah Silver"
     }
 },
 {
     "credits_extras_role1",
     new Model_LanguagesUI
     {
-        EN = @"IDS’ DANCE TRACKS"
+        EN = @"Dance Tracks"
     }
 },
 {
@@ -734,185 +741,451 @@ public class Script_UIText
     }
 },
 {
+    "credits_extras_role2",
+    new Model_LanguagesUI
+    {
+        EN = @"SFX"
+    }
+},
+{
+    "credits_extras_name2",
+    new Model_LanguagesUI
+    {
+        EN = @"Taira Komori"
+    }
+},
+{
+    "credits_extras_role3",
+    new Model_LanguagesUI
+    {
+        EN = @"Script Editing"
+    }
+},
+{
+    "credits_extras_name3",
+    new Model_LanguagesUI
+    {
+        EN = @"Lynette Shen"
+    }
+},
+{
     "credits_playtesters_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"SPECIAL THANKS TO ALL THE PLAYTESTERS."
+        EN = @"And a very special thanks to our playtesters and colleagues."
     }
 },
 {
     "credits_playtesters_thank-you1",
     new Model_LanguagesUI
     {
-        EN = @"THIS WOULDN’T HAVE BEEN POSSIBLE WITHOUT YA’LL."
+        EN = @"This would not have been possible without your feedback, course corrections, and encouragement."
     }
 },
 {
     "credits_main-playtesters_role0",
     new Model_LanguagesUI
     {
-        EN = @"REPEAT PLAYTESTERS"
+        EN = @"Key Playtesters"
     }
 },
 {
     "credits_main-playtesters_name0",
     new Model_LanguagesUI
     {
-        EN = @"Alice"
+        EN = @"Alice Hua"
     }
 },
 {
     "credits_main-playtesters_name1",
     new Model_LanguagesUI
     {
-        EN = @"Daniel"
+        EN = @"Daniel Li"
     }
 },
 {
     "credits_main-playtesters_name2",
     new Model_LanguagesUI
     {
-        EN = @"Estella"
+        EN = @"Estella Xian"
+    }
+},
+{
+    "credits_main-playtesters_name3",
+    new Model_LanguagesUI
+    {
+        EN = @"Nathan Waters"
     }
 },
 {
     "credits_playtesters_role0",
     new Model_LanguagesUI
     {
-        EN = @"PLAYTESTERS"
+        EN = @"Playtesters"
     }
 },
 {
     "credits_playtesters_name0",
     new Model_LanguagesUI
     {
-        EN = @"Ada"
+        EN = @"Ada Lam"
     }
 },
 {
     "credits_playtesters_name1",
     new Model_LanguagesUI
     {
-        EN = @"Arden"
+        EN = @"Arden Zhan"
     }
 },
 {
     "credits_playtesters_name2",
     new Model_LanguagesUI
     {
-        EN = @"Ash"
+        EN = @"Ash Kim"
     }
 },
 {
     "credits_playtesters_name3",
     new Model_LanguagesUI
     {
-        EN = @"David"
-    }
-},
-{
-    "credits_playtesters_role1",
-    new Model_LanguagesUI
-    {
-        EN = @"PLAYTESTERS"
+        EN = @"David Tran"
     }
 },
 {
     "credits_playtesters_name4",
     new Model_LanguagesUI
     {
-        EN = @"Leanna"
+        EN = @"Leanna Leung"
     }
 },
 {
     "credits_playtesters_name5",
     new Model_LanguagesUI
     {
-        EN = @"Lynette"
+        EN = @"Lynette Shen"
     }
 },
 {
     "credits_playtesters_name6",
     new Model_LanguagesUI
     {
-        EN = @"Melos"
+        EN = @"Melos Han-Tani"
     }
 },
 {
     "credits_playtesters_name7",
     new Model_LanguagesUI
     {
-        EN = @"Moe"
-    }
-},
-{
-    "credits_playtesters_role2",
-    new Model_LanguagesUI
-    {
-        EN = @"PLAYTESTERS"
+        EN = @"Moe Zhang"
     }
 },
 {
     "credits_playtesters_name8",
     new Model_LanguagesUI
     {
-        EN = @"Nathan"
+        EN = @"Randy O’ Connor"
     }
 },
 {
     "credits_playtesters_name9",
     new Model_LanguagesUI
     {
-        EN = @"Randy"
+        EN = @"Sayaka Kono"
     }
 },
 {
     "credits_playtesters_name10",
     new Model_LanguagesUI
     {
-        EN = @"Stephen"
+        EN = @"Stephen Zhao"
     }
 },
 {
     "credits_playtesters_name11",
     new Model_LanguagesUI
     {
-        EN = @"Steven"
-    }
-},
-{
-    "credits_playtesters_role3",
-    new Model_LanguagesUI
-    {
-        EN = @"PLAYTESTERS"
+        EN = @"Steven Nguyen"
     }
 },
 {
     "credits_playtesters_name12",
     new Model_LanguagesUI
     {
-        EN = @"Tedmund"
+        EN = @"Tedmund Chua"
     }
 },
 {
     "credits_playtesters_name13",
     new Model_LanguagesUI
     {
-        EN = @"Tim"
+        EN = @"Tim Goco"
+    }
+},
+{
+    "credits_playtesters_name14",
+    new Model_LanguagesUI
+    {
+        EN = @"Yining Zheng"
+    }
+},
+{
+    "credits_publisher_header",
+    new Model_LanguagesUI
+    {
+        EN = @"Publishing Staff - Freedom Games"
+    }
+},
+{
+    "credits_publisher_role0",
+    new Model_LanguagesUI
+    {
+        EN = @"Founders"
+    }
+},
+{
+    "credits_publisher_role1",
+    new Model_LanguagesUI
+    {
+        EN = @"Staff"
+    }
+},
+{
+    "credits_publisher_name0",
+    new Model_LanguagesUI
+    {
+        EN = @"Donovan Duncan"
+    }
+},
+{
+    "credits_publisher_name1",
+    new Model_LanguagesUI
+    {
+        EN = @"Ben Robinson"
+    }
+},
+{
+    "credits_publisher_name2",
+    new Model_LanguagesUI
+    {
+        EN = @"Alexandre Carchano"
+    }
+},
+{
+    "credits_publisher_name3",
+    new Model_LanguagesUI
+    {
+        EN = @"Amanda Hoppe"
+    }
+},
+{
+    "credits_publisher_name4",
+    new Model_LanguagesUI
+    {
+        EN = @"Benjamin Tarsa"
+    }
+},
+{
+    "credits_publisher_name5",
+    new Model_LanguagesUI
+    {
+        EN = @"Brian Borg"
+    }
+},
+{
+    "credits_publisher_name6",
+    new Model_LanguagesUI
+    {
+        EN = @"Bryan Herren"
+    }
+},
+{
+    "credits_publisher_name7",
+    new Model_LanguagesUI
+    {
+        EN = @"Carrol Dufault"
+    }
+},
+{
+    "credits_publisher_name8",
+    new Model_LanguagesUI
+    {
+        EN = @"Danny Ryba"
+    }
+},
+{
+    "credits_publisher_name9",
+    new Model_LanguagesUI
+    {
+        EN = @"Destinee Cleveland"
+    }
+},
+{
+    "credits_publisher_name10",
+    new Model_LanguagesUI
+    {
+        EN = @"Elisabeth Reeve"
+    }
+},
+{
+    "credits_publisher_name11",
+    new Model_LanguagesUI
+    {
+        EN = @"Emmanuel “Manu” Floret"
+    }
+},
+{
+    "credits_publisher_name12",
+    new Model_LanguagesUI
+    {
+        EN = @"Emmanuel Franco"
+    }
+},
+{
+    "credits_publisher_name13",
+    new Model_LanguagesUI
+    {
+        EN = @"Evan Bloyet"
+    }
+},
+{
+    "credits_publisher_name14",
+    new Model_LanguagesUI
+    {
+        EN = @"Evan Bryant"
+    }
+},
+{
+    "credits_publisher_name15",
+    new Model_LanguagesUI
+    {
+        EN = @"Harrison Floyd"
+    }
+},
+{
+    "credits_publisher_name16",
+    new Model_LanguagesUI
+    {
+        EN = @"Ianna Dria Besa"
+    }
+},
+{
+    "credits_publisher_name17",
+    new Model_LanguagesUI
+    {
+        EN = @"John C. Boone II"
+    }
+},
+{
+    "credits_publisher_name18",
+    new Model_LanguagesUI
+    {
+        EN = @"Jordan Kahn"
+    }
+},
+{
+    "credits_publisher_name19",
+    new Model_LanguagesUI
+    {
+        EN = @"Josh Mitchell"
+    }
+},
+{
+    "credits_publisher_name20",
+    new Model_LanguagesUI
+    {
+        EN = @"Katie VanClieaf"
+    }
+},
+{
+    "credits_publisher_name21",
+    new Model_LanguagesUI
+    {
+        EN = @"Kerri King"
+    }
+},
+{
+    "credits_publisher_name22",
+    new Model_LanguagesUI
+    {
+        EN = @"Matthew Schwartz"
+    }
+},
+{
+    "credits_publisher_name23",
+    new Model_LanguagesUI
+    {
+        EN = @"Michel Filipiak"
+    }
+},
+{
+    "credits_publisher_name24",
+    new Model_LanguagesUI
+    {
+        EN = @"Nico Desrochers"
+    }
+},
+{
+    "credits_publisher_name25",
+    new Model_LanguagesUI
+    {
+        EN = @"Paola García"
+    }
+},
+{
+    "credits_publisher_name26",
+    new Model_LanguagesUI
+    {
+        EN = @"Patrick “pcj” Johnston"
+    }
+},
+{
+    "credits_publisher_name27",
+    new Model_LanguagesUI
+    {
+        EN = @"Pendragon Wachtel"
+    }
+},
+{
+    "credits_publisher_name28",
+    new Model_LanguagesUI
+    {
+        EN = @"Veronica Irizarry"
+    }
+},
+{
+    "credits_publisher_name29",
+    new Model_LanguagesUI
+    {
+        EN = @"Victor Valiente"
+    }
+},
+{
+    "credits_publisher_name30",
+    new Model_LanguagesUI
+    {
+        EN = @"Vitor Hugo Moura"
+    }
+},
+{
+    "credits_publisher_name31",
+    new Model_LanguagesUI
+    {
+        EN = @"Vitoria Ama"
     }
 },
 {
     "credits_thank-you_title",
     new Model_LanguagesUI
     {
-        EN = @"And a very special thanks to you."
+        EN = @"Thank you for playing"
     }
 },
 {
     "credits_thank-you_text",
     new Model_LanguagesUI
     {
-        EN = @"See you on the other side."
+        EN = @"See you at Nautical Dawn"
     }
 },
 {
@@ -1677,7 +1950,21 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     "settings_prompt_main-menu",
     new Model_LanguagesUI
     {
-        EN = @"Are you sure? You’ll lose all progress of the current day."
+        EN = @"Are you sure? You’ll lose all progress for the current night."
+    }
+},
+{
+    "settings_end-game",
+    new Model_LanguagesUI
+    {
+        EN = @"Quit to Desktop"
+    }
+},
+{
+    "settings_prompt_end-game",
+    new Model_LanguagesUI
+    {
+        EN = @"Are you sure? You’ll lose all progress for the current night."
     }
 },
 // ------------------------------------------------------------------

@@ -28,6 +28,10 @@ public enum TextStyle
     Cta = 16,
     FileActionBanner = 17,
     NotesHint = 19,
+    CreditsRole = 20,
+    CreditsName = 21,
+    CreditsHeader = 22,
+    CreditsHeaderLarge = 23
 }
 
 public class Script_TextStylesManager : MonoBehaviour
@@ -52,6 +56,10 @@ public class Script_TextStylesManager : MonoBehaviour
     [SerializeField] private Script_TextStyle CtaStyle;
     [SerializeField] private Script_TextStyle FileActionBannerStyle;
     [SerializeField] private Script_TextStyle NotesHintStyle;
+    [SerializeField] private Script_TextStyle CreditsRoleStyle;
+    [SerializeField] private Script_TextStyle CreditsNameStyle;
+    [SerializeField] private Script_TextStyle CreditsHeaderStyle;
+    [SerializeField] private Script_TextStyle CreditsHeaderLargeStyle;
 
     public Script_TextStyle GetTextStyle(TextStyle style) => style switch
     {
@@ -74,6 +82,10 @@ public class Script_TextStylesManager : MonoBehaviour
         TextStyle.Cta => CtaStyle,
         TextStyle.FileActionBanner => FileActionBannerStyle,
         TextStyle.NotesHint => NotesHintStyle,
+        TextStyle.CreditsRole => CreditsRoleStyle,
+        TextStyle.CreditsName => CreditsNameStyle,
+        TextStyle.CreditsHeader => CreditsHeaderStyle,
+        TextStyle.CreditsHeaderLarge => CreditsHeaderLargeStyle,
         _ => DialogueDefaultStyle,
     };
 

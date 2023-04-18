@@ -97,6 +97,14 @@ public class Script_TimelineController : MonoBehaviour
         
         PlayableDirectorPlayFromTimelines(i, j);
     }
+
+    public PlayableDirector PausePlayableDirector(int playableDirectorIdx)
+    {
+        if (playableDirectors[playableDirectorIdx].state == PlayState.Playing)
+            playableDirectors[playableDirectorIdx].Pause();
+
+        return playableDirectors[playableDirectorIdx];
+    }
 }
 
 #if UNITY_EDITOR
