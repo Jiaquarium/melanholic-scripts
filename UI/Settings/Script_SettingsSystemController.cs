@@ -88,9 +88,7 @@ public class Script_SettingsSystemController : MonoBehaviour
         if (systemState == SystemState.MasterVolume)
             HandleMasterVolumeInput();
         
-        if (systemState != SystemState.Resolutions)
-            HandleDisabledResolutions();
-        
+        HandleDisabledResolutions();
         UpdateFullScreenText();
     }
 
@@ -273,12 +271,31 @@ public class Script_SettingsSystemController : MonoBehaviour
     private void HandleDisabledResolutions()
     {
         DisplayInfo currentWindow = Screen.mainWindowDisplayInfo;
+        bool isDisabledResolutionFocused = false;
         
         resolutions.ForEach(res => {
             bool isResolutionTooBig = res.resolution.x > currentWindow.width
                 || res.resolution.y > currentWindow.height;
             res.ButtonHighlighter.Activate(!isResolutionTooBig);
+            
+            // Handle Player has focused a resolution selection that will be deactivated when switching monitors
+            var currentSelected = EventSystem.current?.currentSelectedGameObject;
+            if (isResolutionTooBig && currentSelected != null && res.gameObject == currentSelected)
+                isDisabledResolutionFocused = true;
         });
+
+        // If focused selection is now deactivated, select the next available resolution
+        if (isDisabledResolutionFocused)
+        {
+            foreach (var res in resolutions)
+            {
+                if (res.GetComponent<Button>().enabled)
+                {
+                    EventSystem.current.SetSelectedGameObject(res.gameObject);
+                    break;
+                }
+            }
+        }
     }
 
     private void PopulateResolutionChoices()
