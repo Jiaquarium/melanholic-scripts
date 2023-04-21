@@ -1,29 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Script_SettingsFullScreenChoice : MonoBehaviour
+/// <summary>
+/// Note, this only supports 2 choices, On / Off state
+/// </summary>
+public class Script_SettingsFullScreenChoice : Script_SettingsRadioChoice
 {
     [SerializeField] private bool isFullScreen;
-    [SerializeField] private Script_SettingsSystemController settingsSystemController;
+    [SerializeField] private Script_SettingsFullScreenChoice otherChoice;
 
-    public bool IsFullScreen => isFullScreen;
-
-    // Called from Button OnClick while in Settings > System > Fullscreen
-    public void OnClick()
+    public override void OnSelect(BaseEventData e)
     {
-        settingsSystemController.SubmitSFX();
-        
-        // Change FS mode
-        Screen.fullScreen = IsFullScreen;
+        bool isCurrentlyFullScreen = Screen.fullScreen;
+        if (isCurrentlyFullScreen != isFullScreen)
+        {
+            // Change FS mode
+            Screen.fullScreen = isFullScreen;
 
-        // Disable nav for a bit
-        settingsSystemController.EnableNavigation(false);
-        StartCoroutine(WaitToReenableNavigation());
+            // Disable nav for a bit
+            settingsSystemController.EnableNavigation(false);
+            StartCoroutine(WaitToReenableNavigation());
+        }
 
         IEnumerator WaitToReenableNavigation()
         {
+            yield return null;
+            
+            // Only do SFX if Screen.fullScreen was successfully switched. Otherwise, set active object back to the other button.
+            if (Screen.fullScreen == isFullScreen)
+                settingsSystemController.SubmitSFX();
+            else
+                EventSystem.current.SetSelectedGameObject(otherChoice.gameObject);
+
             yield return new WaitForSecondsRealtime(Script_SettingsSystemController.WaitAfterFullScreenSwitchTime);
+            
             settingsSystemController.EnableNavigation(true);
         }
     }

@@ -88,6 +88,9 @@ public class Script_SFXManager : MonoBehaviour
     
     public AudioClip psychicDuckQuack;
     [Range(0f, 1f)] public float psychicDuckQuackVol;
+
+    public AudioClip bite;
+    [Range(0f, 1f)] public float biteVol;
     
     public AudioClip empty;
     [Range(0f, 1f)] public float emptyVol;

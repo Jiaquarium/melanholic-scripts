@@ -1987,7 +1987,7 @@ public class Script_Game : MonoBehaviour
         StopBgTheme();
     }
 
-        public Script_AudioOneShotSource CreateAudioOneShotSource(Vector3 position)
+    public Script_AudioOneShotSource CreateAudioOneShotSource(Vector3 position)
     {
         Script_AudioOneShotSource a = Instantiate(
             AudioOneShotSourcePrefab,

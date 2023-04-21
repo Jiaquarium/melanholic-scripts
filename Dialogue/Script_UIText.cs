@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-04-18 18:00:38
+// Last created by UI Exporter at 2023-04-20 15:19:45
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1926,6 +1926,13 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 {
+    "settings_sound",
+    new Model_LanguagesUI
+    {
+        EN = @"Sound"
+    }
+},
+{
     "settings_graphics",
     new Model_LanguagesUI
     {
@@ -2414,12 +2421,19 @@ Use the keyboard to select a control to begin listening for input."
     }
 },
 // ------------------------------------------------------------------
-// System
+// Other Settings
 {
     "graphics_title",
     new Model_LanguagesUI
     {
         EN = @"『 System 』"
+    }
+},
+{
+    "sound_title",
+    new Model_LanguagesUI
+    {
+        EN = @"『 Sound 』"
     }
 },
 {
@@ -2434,6 +2448,20 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"current volume ▶"
+    }
+},
+{
+    "system_music-volume_title",
+    new Model_LanguagesUI
+    {
+        EN = @"Music"
+    }
+},
+{
+    "system_sfx-volume_title",
+    new Model_LanguagesUI
+    {
+        EN = @"SFX"
     }
 },
 {
@@ -2494,6 +2522,41 @@ Use the keyboard to select a control to begin listening for input."
 },
 {
     "graphics_fullscreen_current_off",
+    new Model_LanguagesUI
+    {
+        EN = @"off"
+    }
+},
+{
+    "graphics_screenshake_title",
+    new Model_LanguagesUI
+    {
+        EN = @"Screenshake"
+    }
+},
+{
+    "graphics_screenshake_on",
+    new Model_LanguagesUI
+    {
+        EN = @"on"
+    }
+},
+{
+    "graphics_screenshake_off",
+    new Model_LanguagesUI
+    {
+        EN = @"off"
+    }
+},
+{
+    "graphics_screenshake_current_on",
+    new Model_LanguagesUI
+    {
+        EN = @"on"
+    }
+},
+{
+    "graphics_screenshake_current_off",
     new Model_LanguagesUI
     {
         EN = @"off"

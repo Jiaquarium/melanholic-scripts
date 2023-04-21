@@ -16,7 +16,22 @@ public class Script_CameraShake : MonoBehaviour
 
     public void Shake(float duration, float amp, float freq, Action cb)
     {
+        // If disabled, don't shake but still handle waiting to call callback
+        if (Script_SettingsSystemController.IsScreenshakeDisabled)
+        {
+            StartCoroutine(DisabledShakeCoroutine(duration, cb));
+            return;
+        }
+        
         StartCoroutine(ShakeCoroutine(duration, amp, freq, cb));
+    }
+    
+    private IEnumerator DisabledShakeCoroutine(float t, Action cb)
+    {
+        yield return new WaitForSecondsRealtime(t);
+
+        if (cb != null)
+            cb();
     }
     
     private IEnumerator ShakeCoroutine(float duration, float amp, float freq, Action cb)

@@ -15,6 +15,9 @@ using UnityEditor;
 
 /// <summary>
 /// This GameObject should remain active.
+/// 1. Settings are saved on Keybind Cancel / Success
+/// 2. Back from Sound
+/// 3. Back from System
 /// </summary>
 public class Script_SettingsController : MonoBehaviour
 {
@@ -24,6 +27,7 @@ public class Script_SettingsController : MonoBehaviour
         Controls = 1,
         System = 2,
         MainMenu = 3,
+        Sound = 4,
     }
 
     public enum ControlsStates
@@ -73,7 +77,11 @@ public class Script_SettingsController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI joystickTMP;
     
     [Space][Header("Graphics Settings")][Space]
+    // Renamed "System" Settings
     [SerializeField] private Script_CanvasGroupController graphicsCanvasGroup;
+    
+    [Space][Header("Sound Settings")][Space]
+    [SerializeField] private Script_CanvasGroupController soundCanvasGroup;
     
     [Space][Header("System Settings")][Space]
     [SerializeField] private Script_SettingsSystemController systemController;
@@ -215,6 +223,7 @@ public class Script_SettingsController : MonoBehaviour
         overviewCanvasGroup.Open();
         controlsCanvasGroup.Close();
         graphicsCanvasGroup.Close();
+        soundCanvasGroup.Close();
 
         settingsEventSystem.gameObject.SetActive(true);
         settingsInputManager.gameObject.SetActive(true);
@@ -239,6 +248,7 @@ public class Script_SettingsController : MonoBehaviour
         overviewCanvasGroup.Close();
         controlsCanvasGroup.Close();
         graphicsCanvasGroup.Close();
+        soundCanvasGroup.Close();
         
         if (isFade)
             bgCanvasGroup.FadeOut(bgFadeSpeed.GetFadeTime(), cb, isUnscaledTime: true);
@@ -326,6 +336,18 @@ public class Script_SettingsController : MonoBehaviour
         state = States.System;
     }
 
+    // UI Settings Overview: Sound Button
+    public void ToSound()
+    {
+        overviewCanvasGroup.Close();
+        soundCanvasGroup.Open();
+        
+        systemController.ToSound();
+
+        EnterMenuSFX();
+        state = States.Sound;
+    }
+
     // From UI Back Buttons
     public virtual void Back()
     {
@@ -357,8 +379,15 @@ public class Script_SettingsController : MonoBehaviour
                 }
                 
                 break;
-            case (States.System):
+            case (States.Sound):
                 OpenOverview(1);
+                ExitMenuSFX();
+                
+                Script_SaveSettingsControl.Instance.Save();
+                
+                break;
+            case (States.System):
+                OpenOverview(2);
                 ExitMenuSFX();
                 
                 Script_SaveSettingsControl.Instance.Save();

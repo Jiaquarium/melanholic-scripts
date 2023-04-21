@@ -43,7 +43,13 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
     [Tooltip("Set to true to ignore the Event System first selected. Set True if this is on EntryInput component when using letterSelectGrid")]
     [SerializeField] private bool isIgnoreEventSystemFirstSelectedLetterSelect;
 
+    // Pauses OnSelect & OnDeselect handling
     public bool IsPaused { get; set; }
+
+    // Pauses updating highlighted state; usually use with IsPaused
+    public bool IsUpdatePaused { get; set; }
+    
+    public bool IsChangeImageActiveState => isChangeImageActiveState;
     
     /// Ensure initializing comes before OnSelect
     void OnEnable()
@@ -98,8 +104,14 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
 
     public void Select()
     {
-        Dev_Logger.Debug($"Select {name}");
+        Dev_Logger.Debug($"Force Select {name}");
         HighlightOutline(true);
+    }
+
+    public void Deselect()
+    {
+        Dev_Logger.Debug($"Force Deselect {name}");
+        HighlightOutline(false);
     }
 
     public void InitializeState()
@@ -149,9 +161,13 @@ public class Script_ButtonHighlighter : MonoBehaviour, ISelectHandler, IDeselect
 
     /// <summary>
     /// SlowAwakeEventSystem will disable sendNavigationEvents until it is ready to be interacted with
+    /// This also handles highlight state on Update.
     /// </summary>
     private void HandleSlowAwake()
     {
+        if (IsUpdatePaused)
+            return;
+        
         /// Don't show highlight for Slow Awake Event Systems (Choices) 
         if (
             EventSystem.current != null

@@ -13,7 +13,6 @@ using UnityEditor;
 /// <summary>
 /// Main controller for Start Screen UI States
 /// </summary>
-[RequireComponent(typeof(AudioSource))]
 public class Script_StartOverviewController : Script_UIState
 {
     [SerializeField] private int startScreenBgm;
@@ -473,10 +472,8 @@ public class Script_StartOverviewController : Script_UIState
     // Also called from Menu button click handlers.
     public void EnterMenuSFX()
     {
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.OpenCloseBook,
-            Script_SFXManager.SFX.OpenCloseBookVol
-        );
+        var sfxManager = Script_SFXManager.SFX;
+        sfxManager.Play(sfxManager.OpenCloseBook, sfxManager.OpenCloseBookVol);
     }
 
     /// <summary>
@@ -489,10 +486,8 @@ public class Script_StartOverviewController : Script_UIState
 
     public void ExitMenuSFX()
     {
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.OpenCloseBookReverse,
-            Script_SFXManager.SFX.OpenCloseBookReverseVol
-        );
+        var sfxManager = Script_SFXManager.SFX;
+        sfxManager.Play(sfxManager.OpenCloseBookReverse, sfxManager.OpenCloseBookReverseVol);
     }
 
     /// <summary>
@@ -925,10 +920,8 @@ public class Script_StartOverviewController : Script_UIState
     
     private void EnterSubmenuSFX()
     {
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.OpenCloseBookHeavy,
-            Script_SFXManager.SFX.OpenCloseBookHeavyVol
-        );
+        var sfxManager = Script_SFXManager.SFX;
+        sfxManager.Play(sfxManager.OpenCloseBookHeavy, sfxManager.OpenCloseBookHeavyVol);
     }
 
     private void HoldHighlights(bool isHold)
@@ -939,9 +932,8 @@ public class Script_StartOverviewController : Script_UIState
 
     private void ErrorSFX()
     {
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.UIErrorSFX, Script_SFXManager.SFX.UIErrorSFXVol
-        );
+        var sfxManager = Script_SFXManager.SFX;
+        sfxManager.Play(sfxManager.UIErrorSFX, sfxManager.UIErrorSFXVol);
     }
 
     public void InitializeSavedGamesState()

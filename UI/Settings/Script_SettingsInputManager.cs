@@ -22,9 +22,15 @@ public class Script_SettingsInputManager : MonoBehaviour
             || rewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerSettings)
         )
         {
+            // Prevent back input when EventSystem navigation is disabled
+            var currentEventSystem = EventSystem.current;
+            if (currentEventSystem != null && !currentEventSystem.sendNavigationEvents)
+                return;
+            
             switch (settingsController.state)
             {
                 case (Script_SettingsController.States.System):
+                case (Script_SettingsController.States.Sound):
                     systemController.HandleSystemSubmenuEscBack();
                     break;
                 default:

@@ -9,9 +9,9 @@ using UnityEngine;
 public class Script_PlayerAttackEat : Script_Attack
 {
     [SerializeField] private float eatingTime;
-    [SerializeField] private AudioClip crunchSFX;
     [SerializeField] private Script_Player player;
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource audioSource;
 
     private bool didHit;
     private Coroutine eatingCoroutine;
@@ -68,10 +68,8 @@ public class Script_PlayerAttackEat : Script_Attack
 
     protected override void HitSFX()
     {
-        // TODO: don't instantiate this, use audio mixer
-        audioOneShotSource = Script_Game.Game.CreateAudioOneShotSource(transform.position);
-        audioOneShotSource.Setup(crunchSFX);
-        audioOneShotSource.PlayOneShot();
+        var sfxManager = Script_SFXManager.SFX;
+        audioSource.PlayOneShot(sfxManager.bite, sfxManager.biteVol);
     }
 
     public override Model_Stat GetAttackStat()
