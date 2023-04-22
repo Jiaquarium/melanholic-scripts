@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Will only be active when a File Action Submenu is active
+/// </summary>
 public class Script_SavedGameSubmenuInputManager : Script_ExitViewInputManager
 {
-    [SerializeField] Script_StartOverviewController mainController; 
+    [SerializeField] private Script_StartOverviewController mainController; 
     
     void OnEnable()
     {
@@ -24,6 +27,7 @@ public class Script_SavedGameSubmenuInputManager : Script_ExitViewInputManager
         if (Script_PlayerInputManager.Instance.RewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel))
         {
             Dev_Logger.Debug($"SavedGameSubmenuInputManager: Cancel called, firing exitSubmenu event");
+            mainController.OnFileActionsSubmenuShortcutExit();
             Script_StartEventsManager.ExitSubmenu();
         }
     }

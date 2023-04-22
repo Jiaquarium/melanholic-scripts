@@ -19,7 +19,9 @@ public class Script_StartOverviewController : Script_UIState
     [Tooltip("Wait time after crunch transition to stay in UI Disabled state.")]
     [SerializeField] private float transitionWaitTime;
     
+    // State for actions
     [SerializeField] private SavedGameState savedGameState;
+
     [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
     
     
@@ -54,6 +56,8 @@ public class Script_StartOverviewController : Script_UIState
     
     [SerializeField] private CanvasGroup gameOverCanvasGroup;
     
+    [Header("Saved Games")]
+
     [SerializeField] private Script_SavedGameViewController savedGameController;
     [SerializeField] private Script_SavedGameSubmenuController submenuController;
     [SerializeField] private Transform continueSubmenu;
@@ -594,12 +598,17 @@ public class Script_StartOverviewController : Script_UIState
         }
     }
     
+    // ----------------------------------------------------------------------
+    // Saved Games    
+
     /// <summary>
-    /// Enter the saved games selection screen
+    /// Initialization. Enter the saved games selection screen
     /// Called from start game screen, and returning from submenu
     /// </summary>
     public void EnterSavedGamesSelectView()
     {
+        savedGameController.menuState = Script_SavedGameViewController.MenuStates.Overview;
+        
         submenuController.gameObject.SetActive(false);
         savedGameController.gameObject.SetActive(true);
         savedGameController.RehydrateState();
@@ -708,6 +717,7 @@ public class Script_StartOverviewController : Script_UIState
         
         // Must handle highlighting before setting Event System's Selected Object
         HoldHighlights(true);
+        savedGameController.menuState = Script_SavedGameViewController.MenuStates.Submenu;
         
         if (savedGame.isRendered)
         {
@@ -777,6 +787,7 @@ public class Script_StartOverviewController : Script_UIState
             
             choices = deleteGameChoices;
             deleteGameSubmenu.gameObject.SetActive(true);
+            savedGameController.menuState = Script_SavedGameViewController.MenuStates.Submenu;
 
             // Set slot Id in submenu
             foreach (Script_SavedGameSubmenuInputChoice choice in choices)
@@ -833,6 +844,7 @@ public class Script_StartOverviewController : Script_UIState
 
                 choices = pasteGameChoices;
                 pasteGameSubmenu.gameObject.SetActive(true);
+                savedGameController.menuState = Script_SavedGameViewController.MenuStates.Submenu;
 
                 /// Set slot Id in submenu
                 foreach (Script_SavedGameSubmenuInputChoice choice in choices)
@@ -880,11 +892,6 @@ public class Script_StartOverviewController : Script_UIState
         RefreshFileActionBanners();
     }
 
-    private void DisableInput()
-    {
-        EventSystem.current.sendNavigationEvents = false;
-    }
-    
     private bool CheckFullSaveSlots()
     {
         foreach (Transform slot in savedGameController.GetSlots())
@@ -895,6 +902,19 @@ public class Script_StartOverviewController : Script_UIState
             }
         }
         return true;
+    }
+
+    // On canceling via shortcut (not through pressing the No Choice)
+    public void OnFileActionsSubmenuShortcutExit()
+    {
+        savedGameController.LastExitInputFrameCount = Time.frameCount;
+    }
+    
+    // ----------------------------------------------------------------------
+    
+    private void DisableInput()
+    {
+        EventSystem.current.sendNavigationEvents = false;
     }
 
     private void HandleButtonsState()

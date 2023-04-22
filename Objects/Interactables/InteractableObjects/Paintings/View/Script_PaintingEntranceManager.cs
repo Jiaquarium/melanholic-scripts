@@ -9,6 +9,8 @@ public class Script_PaintingEntranceManager : MonoBehaviour
     public Script_DialogueNode disabledPaintingEntranceReactionNode;
     
     [SerializeField] private float beforeDisabledReactionWaitTime;
+    
+    [SerializeField] private Script_PaintingEntranceController paintingEntranceController;
     [SerializeField] private Script_Game game;
     
     public bool DidTryDisabledEntrance { get; set; }
@@ -23,10 +25,20 @@ public class Script_PaintingEntranceManager : MonoBehaviour
         }
 
         paintingEntranceChoiceCanvas.gameObject.SetActive(true);
+        
+        // Set controller ready, but it should still be inactive here / not detecting input
+        paintingEntranceController.IsReady = true;
     }
 
     public void InputChoice(int Id)
     {
+        // Prevent multiple calls if esc and UI select press are on same frame
+        if (!paintingEntranceController.IsReady)
+            return;
+        
+        paintingEntranceController.IsReady = false;
+        paintingEntranceController.gameObject.SetActive(false);
+        
         /// Use NextNodeAction() on "yes" node to handle PaintingEntrance
         EndPrompt();
 
@@ -42,6 +54,7 @@ public class Script_PaintingEntranceManager : MonoBehaviour
         else
         {
             Script_DialogueManager.DialogueManager.NextDialogueNode(Id);
+            PlayPaintingEntranceCancelSFX();
         }
     }
 
@@ -55,16 +68,19 @@ public class Script_PaintingEntranceManager : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Unity Events
+    
+    public void SetPaintingEntranceInputManagerActive()
+    {
+        paintingEntranceController.gameObject.SetActive(true);
+    }
+    
+    // ------------------------------------------------------------------
 
-    // On Choice Cancel (Id: 1)
-    public void PlayPaintingEntranceCancel()
+    private void PlayPaintingEntranceCancelSFX()
     {
         Script_SFXManager.SFX.PlayPaintingEntranceCancel();
     }
     
-    
-    // ------------------------------------------------------------------
-
     private void EndPrompt()
     {
         paintingEntranceChoiceCanvas.gameObject.SetActive(false);
@@ -73,5 +89,7 @@ public class Script_PaintingEntranceManager : MonoBehaviour
     public void Setup()
     {
         paintingEntranceChoiceCanvas.gameObject.SetActive(false);
+        paintingEntranceController.gameObject.SetActive(false);
+        paintingEntranceController.IsReady = false;
     }
 }

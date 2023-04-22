@@ -124,6 +124,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private CanvasGroup ElleniaStabCanvasGroup;
     [SerializeField] private CanvasGroup AwakeningPortraitsCanvasGroup;
     [SerializeField] private CanvasGroup ScarletCipherLastOnesCanvasGroup;
+    [SerializeField] private CanvasGroup ElevatorCanvasGroup;
 
     // ----------------------------------------------------------------------
     // Dev Canvases
@@ -551,6 +552,12 @@ public class Dev_GameHelper : MonoBehaviour
             {
                 Debug.Log($"<color=red>{ScarletCipherLastOnesCanvasGroup.name} should be INACTIVE</color>");
                 ScarletCipherLastOnesCanvasGroup.gameObject.SetActive(false);
+            }
+
+            if (ElevatorCanvasGroup.gameObject.activeInHierarchy)
+            {
+                Debug.Log($"<color=red>{ElevatorCanvasGroup.name} should be INACTIVE</color>");
+                ElevatorCanvasGroup.gameObject.SetActive(false);
             }
         }
     }

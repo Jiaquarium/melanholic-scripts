@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 /// <summary>
 /// Put on event system to disable on Awake()
@@ -12,6 +13,7 @@ using UnityEngine.EventSystems;
 public class Script_SlowAwakeEventSystem : MonoBehaviour
 {
     [SerializeField] private Script_EntryInput entryInput;
+    [SerializeField] private UnityEvent onSlowAwakeEvent;
 
     private static float startUpTime = 0.75f;
     private float timer;
@@ -55,10 +57,11 @@ public class Script_SlowAwakeEventSystem : MonoBehaviour
 
                 // If there is a specified Entry Input, set it active now.
                 if (entryInput != null)
-                {
                     entryInput.ActivateTMPInputField();
-                }
                 
+                // Invoke any events
+                onSlowAwakeEvent.SafeInvoke();
+
                 IsTimerDone = true;
             }
         }

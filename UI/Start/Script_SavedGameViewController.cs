@@ -4,7 +4,21 @@ using UnityEngine;
 
 public class Script_SavedGameViewController : Script_SlotsViewController
 {
+    public enum MenuStates
+    {
+        Overview = 0,
+        Submenu = 1
+    }
+    
+    public MenuStates menuState;
     [SerializeField] private Script_SavedGameTitle[] savedGames;
+
+    /// <summary>
+    /// This should track the last frame an ESC shortcut was pressed for the following cases:
+    ///     - Exiting file action submenu (i.e. new game, continue game, paste prompt, delete prompt)
+    ///     - Exiting file action mode
+    /// </summary>
+    public int LastExitInputFrameCount { get; set; }
     
     public override void UpdateSlots()
     {

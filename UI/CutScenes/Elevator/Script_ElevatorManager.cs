@@ -46,6 +46,7 @@ public class Script_ElevatorManager : MonoBehaviour
     [Space][Header("Last Elevator Effect")][Space]
     [SerializeField] private Script_CanvasGroupController lastElevatorPromptController;
     [SerializeField] private Script_CanvasGroupController lastElevatorPromptChoicesController;
+    [SerializeField] private Script_LastElevatorEffectController lastElevatorEffectController;
     [SerializeField] private float bgmFadeOutTime;
     [SerializeField] private Script_BgThemePlayer droneLoudBgPlayer;
     [SerializeField] private float droneLoudFadeOutTime;
@@ -71,6 +72,8 @@ public class Script_ElevatorManager : MonoBehaviour
         get => isBgmOn;
         set => isBgmOn = value;
     }
+
+    public bool IsFinishingLastElevatorTimeline { get; private set; }
 
     void OnEnable()
     {
@@ -325,7 +328,6 @@ public class Script_ElevatorManager : MonoBehaviour
         IEnumerator WaitToRevealChoices()
         {
             yield return new WaitForSeconds(waitToRevealLastElevatorChoicesTime);
-
             lastElevatorPromptChoicesController.FadeIn(lastElevatorPromptFadeInTime.ToFadeTime());
         }
     }
@@ -333,7 +335,13 @@ public class Script_ElevatorManager : MonoBehaviour
     // LastElevatorPrompt UI Choices: Yes
     public void LastElevatorConfirmedTimeline()
     {
+        // Prevent multiple calls in case button press and escape land on same frame
+        if (IsFinishingLastElevatorTimeline)
+            return;
+        IsFinishingLastElevatorTimeline = true;
+        
         lastElevatorEffectChoicesEventSystem.sendNavigationEvents = false;
+        lastElevatorEffectController.gameObject.SetActive(false);
 
         // Prevent player from being affected by spikes, since this flow should carry player to Day End
         game.GetPlayer().isInvincible = true;
@@ -348,6 +356,7 @@ public class Script_ElevatorManager : MonoBehaviour
             // Remove prompt
             lastElevatorPromptController.Close();
             lastElevatorPromptChoicesController.Close();
+            IsFinishingLastElevatorTimeline = false;
 
             // Remove Fader
             Script_TransitionManager.Control.TimelineFadeOut(FadeSpeeds.Fast.GetFadeTime(), null, isOver: true);
@@ -365,7 +374,13 @@ public class Script_ElevatorManager : MonoBehaviour
     // LastElevatorPrompt UI Choices: No
     public void LastElevatorCanceledTimeline()
     {
+        // Prevent multiple calls in case button press and escape land on same frame
+        if (IsFinishingLastElevatorTimeline)
+            return;
+        IsFinishingLastElevatorTimeline = true;
+        
         lastElevatorEffectChoicesEventSystem.sendNavigationEvents = false;
+        lastElevatorEffectController.gameObject.SetActive(false);
 
         var sfx = Script_SFXManager.SFX;
         interactionUISource.PlayOneShot(sfx.SubmitTransitionNegative, sfx.SubmitTransitionNegativeVol);
@@ -374,6 +389,7 @@ public class Script_ElevatorManager : MonoBehaviour
             // Remove prompt
             lastElevatorPromptController.Close();
             lastElevatorPromptChoicesController.Close();
+            IsFinishingLastElevatorTimeline = false;
 
             // Remove Fader
             Script_TransitionManager.Control.TimelineFadeOut(FadeSpeeds.Fast.GetFadeTime(), null, isOver: true);
@@ -383,6 +399,12 @@ public class Script_ElevatorManager : MonoBehaviour
             // Play No Timeline
             elevatorTimelineController.PlayableDirectorPlayFromTimelines(0, 5);
         }, isOver: true);
+    }
+
+    // Called from Last Elevator Prompt Choices Slow Awake EventSystem
+    public void SetLastElevatorEffectInputManagerActive()
+    {
+        lastElevatorEffectController.gameObject.SetActive(true);
     }
 
     // ------------------------------------------------------------------
@@ -396,9 +418,11 @@ public class Script_ElevatorManager : MonoBehaviour
         if (lastElevatorEffectChoicesEventSystem.gameObject.activeInHierarchy)
             lastElevatorEffectChoicesEventSystem.sendNavigationEvents = false;
 
-        // Remove choice canvas
+        // Remove choice canvas & input manager
         lastElevatorPromptController.Close();
         lastElevatorPromptChoicesController.Close();
+        lastElevatorEffectController.gameObject.SetActive(false);
+        IsFinishingLastElevatorTimeline = false;
 
         // Stop the current timeline
         if (
@@ -455,6 +479,9 @@ public class Script_ElevatorManager : MonoBehaviour
 
         elevatorLeftDefaultPosition = elevatorLeftImage.rectTransform.anchoredPosition;
         elevatorRightDefaultPosition = elevatorRightImage.rectTransform.anchoredPosition;
+
+        lastElevatorEffectController.gameObject.SetActive(false);
+        IsFinishingLastElevatorTimeline = false;
     }
 
 #if UNITY_EDITOR

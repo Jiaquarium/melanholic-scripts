@@ -605,6 +605,8 @@ public class Script_SettingsController : MonoBehaviour
             // ...
 
             // If key was UICancel, cancel and don't display Error; treat as if exiting the input mapper
+            // For controllers, UICancel is under UI Extra, so these keys won't trigger conflicts (since they always
+            // follow a primary key e.g. UICancel should always bind to what Inventory binds to)
             if (MyPlayer.GetButtonDown(Const_KeyCodes.RWUICancel))
                 ExitSubmenuSFX();
             // If move key
