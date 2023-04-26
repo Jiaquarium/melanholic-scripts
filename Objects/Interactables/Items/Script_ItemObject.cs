@@ -26,6 +26,7 @@ public class Script_ItemObject : Script_Interactable
     void Update()
     {
         // Items encased in a Crackable should be "frozen" until the Crackable is removed.
+        // Note, currently does not work with Diagonal Cut Shatter.
         if (myCrackableStats != null)
             animator.enabled = !myCrackableStats.gameObject.activeInHierarchy || myCrackableStats.IsCracked;
     }

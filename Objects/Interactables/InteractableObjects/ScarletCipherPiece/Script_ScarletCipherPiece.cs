@@ -9,6 +9,8 @@ using UnityEditor;
 public class Script_ScarletCipherPiece : Script_InteractableObject
 {
     [SerializeField] private int _scarletCipherId;
+    [SerializeField] private Script_CrackableStats myCrackableStats;
+    [SerializeField] private Animator animator;
     
     public int ScarletCipherId
     {
@@ -16,6 +18,14 @@ public class Script_ScarletCipherPiece : Script_InteractableObject
         private set => _scarletCipherId = value;
     }
 
+    protected override void Update()
+    {
+        // Items encased in a Crackable should be "frozen" until the Crackable is removed (same behavior used in
+        // Script_ItemObject). Note, currently does not work with Diagonal Cut Shatter.
+        if (myCrackableStats != null && animator != null)
+            animator.enabled = !myCrackableStats.gameObject.activeInHierarchy || myCrackableStats.IsCracked;
+    }
+    
     public bool DidPickUp()
     {
         return Script_ScarletCipherManager.Control.ScarletCipherVisibility[ScarletCipherId];

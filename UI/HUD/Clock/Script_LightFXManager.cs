@@ -24,6 +24,8 @@ public class Script_LightFXManager : MonoBehaviour
 
     private float timer;
 
+    public float LightCurvePercent => lightCurve.Evaluate(clockManager.PercentTimeElapsed);
+
     // ------------------------------------------------------------------
     // Trailer Only
     
@@ -115,9 +117,8 @@ public class Script_LightFXManager : MonoBehaviour
             if (l.type != LightType.Directional)
                 return;
 
-            float lightCurvePercent = lightCurve.Evaluate(clockManager.PercentTimeElapsed);
             float intensityDelta = endingIntensity - defaultIntensity;
-            float newIntensity = lightCurvePercent * intensityDelta + defaultIntensity;
+            float newIntensity = LightCurvePercent * intensityDelta + defaultIntensity;
             
             CurrentIntensity = newIntensity;
             
