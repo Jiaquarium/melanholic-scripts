@@ -214,7 +214,7 @@ public class Script_PlayerMovement : MonoBehaviour
         // Must occur after passive so wind effects can still work as expected. This also allows buffering.
         if (isFreezeOnCollision)
         {
-            PrioritizeAdjacentMovement();
+            PrioritizeOtherButtonDownInputs();
             return;
         }
 
@@ -313,23 +313,45 @@ public class Script_PlayerMovement : MonoBehaviour
 
         // Set lastMoveInput to allow moving off of walls with adjacent direction button holds while still holding the
         // the directon into the wall.
-        void PrioritizeAdjacentMovement()
+        void PrioritizeOtherButtonDownInputs()
         {
             // Handle when colliding with objects in the Down or Up directions
-            if (FacingDirection == Directions.Down || FacingDirection == Directions.Up)
+            if (FacingDirection == Directions.Down)
             {
                 if (MyPlayer.GetButtonDown(Const_KeyCodes.RWHorizontal))
                     lastMoveInput = Directions.Right;
                 else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
                     lastMoveInput = Directions.Left;
+                else if (MyPlayer.GetButtonDown(Const_KeyCodes.RWVertical))
+                    lastMoveInput = Directions.Up;
+            }
+            else if (FacingDirection == Directions.Up)
+            {
+                if (MyPlayer.GetButtonDown(Const_KeyCodes.RWHorizontal))
+                    lastMoveInput = Directions.Right;
+                else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
+                    lastMoveInput = Directions.Left;
+                else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWVertical))
+                    lastMoveInput = Directions.Down;
             }
             // Handle when colliding with objects in the Left or Right directions
-            else if (FacingDirection == Directions.Left || FacingDirection == Directions.Right)
+            else if (FacingDirection == Directions.Left)
             {
                 if (MyPlayer.GetButtonDown(Const_KeyCodes.RWVertical))
                     lastMoveInput = Directions.Up;
                 else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWVertical))
                     lastMoveInput = Directions.Down;
+                else if (MyPlayer.GetButtonDown(Const_KeyCodes.RWHorizontal))
+                    lastMoveInput = Directions.Right;
+            }
+            else if (FacingDirection == Directions.Right)
+            {
+                if (MyPlayer.GetButtonDown(Const_KeyCodes.RWVertical))
+                    lastMoveInput = Directions.Up;
+                else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWVertical))
+                    lastMoveInput = Directions.Down;
+                else if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
+                    lastMoveInput = Directions.Left;
             }
         }
     }
@@ -393,20 +415,26 @@ public class Script_PlayerMovement : MonoBehaviour
         if (progress < 1f)
             return false;
         
+        // Set animator before handling collisions
+        if (!isNoInputMoveByWind)
+            AnimatorSetDirection(dir);
+        
         // Prevent animations and movement on collisions
         // (unless inside Wind Zone, e.g. if walking Left/Right towards a bookshelf, the current behavior won't
         // move player back, so still show walking animation to avoid feeling/looking buggy)
         Vector3 desiredMove = directionToVector[dir];
         bool isCollision = CheckCollisions(player.location, dir, ref desiredMove);
         if (isCollision && game.state == Const_States_Game.Interact && !isNorthWind)
-            HandleOnCollisionFreeze();
+            HandleOnCollisionFreeze(dir);
         
-        // Even OnCollisionFreeze, still need to set player direction, push pushables, and adjust for wind
-        if (!isNoInputMoveByWind)
-            AnimatorSetDirection(dir);
-        
+        // Even OnCollisionFreeze, still need to set player direction, push pushables, and adjust for wind.
         PushPushables(dir);
         HandleNorthWindAdjustment(dir, ref desiredMove);
+
+        // Last move input should always be recorded; otherwise, the repeat button hold handler will not catch it.
+        // This will make it impossible to continue colliding into a wall by holding a colliding direction while
+        // holding a direction adjacent to the colliding direction (will always return to adjacent direction).
+        lastMoveInput = isReverse ? Script_Utils.ReverseDirection(dir) : dir;
 
         // Interactive Reflection collisions should not trigger Freeze On Collisions
         if (isCollision || CheckReflectionInteractiveCollisions())
@@ -415,8 +443,6 @@ public class Script_PlayerMovement : MonoBehaviour
             return false;
         }
 
-        // Last move input should only be recorded on a successful move (+DDR)
-        lastMoveInput = isReverse ? Script_Utils.ReverseDirection(dir) : dir;
         currentOnCollisionFreezeDir = Directions.None;
 
         // DDR mode, only changing directions to look like dancing.
@@ -435,17 +461,17 @@ public class Script_PlayerMovement : MonoBehaviour
         return true;
 
         // On Collision, freeze movement for 0.1f so it seems intentional and not look like a glitch.
-        void HandleOnCollisionFreeze()
+        void HandleOnCollisionFreeze(Directions dir)
         {
             // If current level behavior has pushables, handle colliding with it (i.e. still show walk cycle)
             // We set a static variable on Game to avoid calling HandleOnCollisionIsPushableBlocking when unecessary
             if (Script_Game.IsCheckForPushables)
             {
                 if (playerCheckCollisions.IsFreezeOnCollisionPushable(dir))
-                    OnCollisionFreeze();
+                    OnCollisionFreeze(dir);
             }
             else
-                OnCollisionFreeze();
+                OnCollisionFreeze(dir);
         }
         
         // Adjust desiredMove and walk speed to simulate wind resistance.
@@ -495,13 +521,13 @@ public class Script_PlayerMovement : MonoBehaviour
             }
         }
 
-        void OnCollisionFreeze()
+        void OnCollisionFreeze(Directions dir)
         {
             StopMovingAnimations();
             isFreezeOnCollision = true;
             isMoving = false;
             
-            currentOnCollisionFreezeDir = FacingDirection;
+            currentOnCollisionFreezeDir = dir;
 
             ClearInputBuffer();
             onCollisionCoroutine = StartCoroutine(WaitToUnpauseOnCollision());
@@ -552,7 +578,7 @@ public class Script_PlayerMovement : MonoBehaviour
         float roundedFramesPerMove = Mathf.RoundToInt(framesPerMove);
         
         if (!Mathf.Approximately(roundedFramesPerMove, framesPerMove))
-            Debug.LogWarning($"Motion not smooth; frames per move {framesPerMove} floored {roundedFramesPerMove}");
+            Dev_Logger.Debug($"Motion not smooth; frames per move {framesPerMove} floored {roundedFramesPerMove}");
         
         // Adjust animator speed as a fraction of default speed
         var adjustedAnimatorSpeed = adjustedSpeed / defaultSpeed;
@@ -661,7 +687,7 @@ public class Script_PlayerMovement : MonoBehaviour
                         else if (lastMoveInput == Directions.Left && MyPlayer.GetNegativeButton(Const_KeyCodes.RWHorizontal))
                             return Directions.Left;
                         else
-                            return Directions.None;    
+                            return Directions.None;
                     }
 
                     // Must handle like this vs. if-else hierarchy; otherwise, for controller, what comes first in the
