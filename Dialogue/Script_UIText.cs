@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-04-20 15:19:45
+// Last created by UI Exporter at 2023-05-01 22:45:57
 
 using System.Collections;
 using System.Collections.Generic;
@@ -318,7 +318,7 @@ public class Script_UIText
     "good-ending_narrator_monologue17",
     new Model_LanguagesUI
     {
-        EN = @"It’s beautiful."
+        EN = @"I knew it."
     }
 },
 {
@@ -396,6 +396,20 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"A Mirror Who Lost Its Reflection"
+    }
+},
+{
+    "good-ending_transition0",
+    new Model_LanguagesUI
+    {
+        EN = @"No, this isn’t it..."
+    }
+},
+{
+    "good-ending_transition1",
+    new Model_LanguagesUI
+    {
+        EN = @"The portrait is close but it won’t be finished this way."
     }
 },
 // ------------------------------------------------------------------

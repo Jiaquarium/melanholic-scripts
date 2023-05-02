@@ -787,6 +787,11 @@ public class Script_TransitionManager : MonoBehaviour
                 t.game.ChangeStateCutScene();
                 t.RollCredits();
             }
+
+            if (GUILayout.Button("To Title"))
+            {
+                t.PlayToTitleTimeline();
+            }
         }
     }
 #endif

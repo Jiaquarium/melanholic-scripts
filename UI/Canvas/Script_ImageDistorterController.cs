@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Script_ImageDistorterController : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class Script_ImageDistorterController : MonoBehaviour
     [SerializeField] private float intervalDisabledTime;
     [SerializeField] private float intervalActiveTime;
     [SerializeField] private List<Script_TMProRandomizer> TMProRandomizers;
+    [SerializeField] private UnityEvent onActiveIntervalStart;
+    [SerializeField] private UnityEvent onActiveIntervalEnd;
     private float intervalTimer;
     private bool isActiveInterval;
 
@@ -257,6 +260,11 @@ public class Script_ImageDistorterController : MonoBehaviour
         {
             intervalTimer = 0f;
             isActiveInterval = !isActiveInterval;
+
+            if (isActiveInterval)
+                onActiveIntervalStart.SafeInvoke();
+            else
+                onActiveIntervalEnd.SafeInvoke();
 
             if (isActiveInterval)
             {
