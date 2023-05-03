@@ -225,11 +225,6 @@ public class Script_StartOverviewController : Script_UIState
         controlsCanvasGroup.Close();
     }
 
-    public void StopIntroSimple()
-    {
-        introControllerSimple.Stop();
-    }
-
     // ----------------------------------------------------------------------
     // Timeline Signals
     
@@ -240,6 +235,9 @@ public class Script_StartOverviewController : Script_UIState
         Dev_Logger.Debug("Fade in Title Screen");
         introSimpleInputManager.gameObject.SetActive(false);
         
+        // Once title screen fades in, the simple intro will no longer be used.
+        introControllerSimple.isDonePlaying = true;
+
         // Set isHandlingCTATitleFadeIn to prevent double calls from Input Manager and timeline if Timeline Signal's
         // call happens on same frame as input manager's
         if (withCTA)

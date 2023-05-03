@@ -30,14 +30,14 @@ public class Script_TimelineController : MonoBehaviour
         }
     }
 
-    public void StopAllPlayables()
+    public void StopAllPlayables(bool isForceStop = false)
     {
         foreach (PlayableDirector playable in playableDirectors)
         {
             if (playable == null)
                 return;
 
-            if (playable.state == PlayState.Playing)
+            if (playable.state == PlayState.Playing || isForceStop)
             {
                 Dev_Logger.Debug($"playable {playable} is playing, stopping now.");
                 playable.time = 0f;

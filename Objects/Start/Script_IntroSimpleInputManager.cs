@@ -8,6 +8,7 @@ using UnityEngine;
 public class Script_IntroSimpleInputManager : MonoBehaviour
 {
     [SerializeField] private Script_StartOverviewController startOverviewController;
+    [SerializeField] private Script_IntroControllerSimple introControllerSimple;
     private Script_PlayerInputManager playerInputManager;
 
     void Start()
@@ -18,14 +19,16 @@ public class Script_IntroSimpleInputManager : MonoBehaviour
     void Update()
     {
         if (
-            playerInputManager.RewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit)
-            || playerInputManager.RewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerSettings)
+            // Prevent duplicate calls if Intro Simple timeline also ends here
+            !introControllerSimple.isDonePlaying
+            && (
+                playerInputManager.RewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit)
+                || playerInputManager.RewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerSettings)
+            )
         )
         {
             Dev_Logger.Debug("Skip simple intro, first load");
-            
-            startOverviewController.StopIntroSimple();
-            startOverviewController.FadeInTitleScreen(withCTA: true);
+            introControllerSimple.HandleSkip();
         }
     }
 }

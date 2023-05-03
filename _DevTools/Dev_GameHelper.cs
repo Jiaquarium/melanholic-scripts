@@ -180,6 +180,8 @@ public class Dev_GameHelper : MonoBehaviour
             GoodEndingNewState();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.H))
             TrueEndingNewState();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.J))
+            RollCredits();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.B))
 		{
 			if (Script_SaveGameControl.control != null)
@@ -735,6 +737,12 @@ public class Dev_GameHelper : MonoBehaviour
         runsManager.IncrementRun();
 
         Script_Game.Game.StartSundayCycleSaveInitialize();
+    }
+
+    public void RollCredits()
+    {
+        ShowSaveDevCanvas($"{name} GO TO: CREDITS");
+        Script_TransitionManager.Control.RollCredits();
     }
 
     public void StartSundayCycle()

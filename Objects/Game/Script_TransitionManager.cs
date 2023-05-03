@@ -481,6 +481,9 @@ public class Script_TransitionManager : MonoBehaviour
     // After played proper ending cut scene.
     public void RollCredits()
     {
+        // For dev purposes; game should already be in cut scene from True Ending - The End
+        game.ChangeStateCutScene();
+        
         var bgm = Script_BackgroundMusicManager.Control;
         
         // Fade out Ocean SFX
@@ -784,7 +787,6 @@ public class Script_TransitionManager : MonoBehaviour
 
             if (GUILayout.Button("Roll Credits"))
             {
-                t.game.ChangeStateCutScene();
                 t.RollCredits();
             }
 
