@@ -19,6 +19,10 @@ public class Script_GoodEndingController : MonoBehaviour
 
     [SerializeField] private List<Script_CanvasGroupController> slashOverlays;
 
+    [SerializeField] private CanvasGroup theEndCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController symbolsBgCanvasGroup;
+    [SerializeField] private Script_PulseImage symbolsPulse;
+    [SerializeField] private Script_ShakeImage symbolsShake;
     [SerializeField] private Script_Game game;
 
     // ------------------------------------------------------------------
@@ -68,11 +72,13 @@ public class Script_GoodEndingController : MonoBehaviour
     /// <summary>
     /// This image distorter also will control on activation:
     /// - TMPRandomizer on "Good Ending" text
+    /// This currently will be stopped after 1st interval.
     /// </summary>
     public void StartTheEndGlitching()
     {
         TMProRandomizer.DefaultId = newTMProRandomizerId;
         theEndImageDistorter.enabled = true;
+        symbolsBgCanvasGroup.Open();
     }
 
     // ------------------------------------------------------------------
@@ -81,6 +87,15 @@ public class Script_GoodEndingController : MonoBehaviour
     public void InitialState()
     {
         slashOverlays.ForEach(slashOverlay => slashOverlay.Close());
+    }
+
+    public void Setup()
+    {
+        theEndCanvasGroup.gameObject.SetActive(false);
+
+        symbolsBgCanvasGroup.Close();
+        symbolsPulse.Close();
+        symbolsShake.Close();
     }
 
     #if UNITY_EDITOR

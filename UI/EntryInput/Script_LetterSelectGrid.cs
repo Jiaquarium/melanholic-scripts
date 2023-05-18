@@ -80,4 +80,9 @@ public class Script_LetterSelectGrid : MonoBehaviour
 
         return isSelected;
     }
+
+    public void SetNavInteractable(bool isActive)
+    {
+        firstSelected.enabled = isActive;
+    }
 }

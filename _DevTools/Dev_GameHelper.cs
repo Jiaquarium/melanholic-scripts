@@ -796,6 +796,8 @@ public class Dev_GameHelper : MonoBehaviour
 
     private void AfterGrandMirrorToGoodEndingState()
     {
+        woodsBehavior.didStartThoughtSea = true;
+        
         hotelLobbyBehavior.didOpeningThoughtFaceOff0 = true;
         hotelLobbyBehavior.didOpeningThoughtFaceOff1 = true;
         hotelLobbyBehavior.didOpeningThoughtCodeRemains0 = true;

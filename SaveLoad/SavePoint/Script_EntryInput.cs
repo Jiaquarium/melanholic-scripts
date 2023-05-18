@@ -27,7 +27,8 @@ using UnityEditor;
 /// </summary>
 public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
-    private const float WaitTimeAfterAutoNavigate = 0.1f;
+    // Match Rewired Repeat Delay
+    private const float WaitReenableLetterGridOnNavSubmit = 0.225f;
     
     [SerializeField] private Const_InputValidation.Validators entryValidator;
     
@@ -59,6 +60,11 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     [SerializeField] private bool isMoveOnLetterSelect;
     [SerializeField] private Vector3 onLetterSelectPosition;
     [SerializeField] private Vector3 defaultPosition;
+    [Tooltip("Set True and specify eventSystemLastSelected to avoid Select Sound SFX on Letter Select init if occurs")]
+    [SerializeField] private bool isOnDisableForceEventSystemLastSelectedClear;
+    [SerializeField] private Script_EventSystemLastSelected eventSystemLastSelected;
+    private Coroutine navSubmitWaitCoroutine;
+    private bool isDetectingNewButtonNavToLetterGrid;
 
     [Space][Header("Code Select")][Space]
     [SerializeField] private List<Script_FocusArrowsSet> focusArrowSets;
@@ -107,6 +113,9 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         
         HandleFocusArrows(isHideAll: true);
         
+        // Ensure the letter select grid nav is reset to active
+        EndNavToSubmitWaitCoroutine();
+        
         // Handle Letter Select screen state
         if (!IsLetterSelectState)
         {
@@ -130,11 +139,18 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     
     void OnDisable()
     {
+        // Ensure the letter select grid nav is reset to active
+        EndNavToSubmitWaitCoroutine();
+        
         if (cachedTextCoroutine != null)
         {
             StopCoroutine(cachedTextCoroutine);
             cachedTextCoroutine = null;
         }
+
+        // To prevent SFX on init if specifying Select Sound explicit rules
+        if (isOnDisableForceEventSystemLastSelectedClear && eventSystemLastSelected != null)
+            eventSystemLastSelected.InitializeState();
     }
 
     void Awake()
@@ -179,6 +195,9 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     // Note: EntryInput is set before Default time in Script Execution Order
     void Update()
     {
+        if (IsLetterSelectState)
+            HandleCancelLetterGridDisable();
+        
         SetLastController();
         HandleCaretLetterSelectState();
         HandleInputsWhenSelected();
@@ -389,11 +408,19 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void NavToSubmitShortcut()
     {
+        EndNavToSubmitWaitCoroutine();
+
         // Note: on text input and submit shortcut button same frame, the letter will still be
         // inputted along with nav'ing to submit
         EventSystem.current.sendNavigationEvents = false;
+
+        // If Letter Select grid is active, we need to disable it to prevent nav'ing too quickly to it
+        // when nav'ing down from the input field
+        if (IsLetterSelectState)
+            letterSelectGrid.SetNavInteractable(false);
+
         TMPGUI.GetComponent<TMP_InputField>().DeactivateInputField();
-        StartCoroutine(NavigateToSubmitAndWait());
+        navSubmitWaitCoroutine = StartCoroutine(NavigateToSubmitAndWait());
 
         // Wait to prevent consuming the current Down press event for Submit OnSelectDown that would cause nav'ing
         // down into letter grid (when it's active)
@@ -403,13 +430,57 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
             
             // When letter grid is up, wait to prevent down from Submit also reading as Submit's OnSelectDown
             if (IsLetterSelectState)
-                yield return new WaitForSecondsRealtime(WaitTimeAfterAutoNavigate);
+            {
+                // Wait frame to reenable nav events but still prevent consuming down event, so player can still Submit,
+                // etc on the very next frame
+                yield return null;
+                
+                EventSystem.current.sendNavigationEvents = true;
+                // Flag to allow canceling the letter grid throttle (allow press down twice very quickly to nav to grid)
+                isDetectingNewButtonNavToLetterGrid = true;
+                
+                // Then wait longer to avoid nav'ing to grid when holding down (throttle nav'ing to letter grid)
+                yield return new WaitForSecondsRealtime(WaitReenableLetterGridOnNavSubmit);
+                
+                letterSelectGrid.SetNavInteractable(true);
+                isDetectingNewButtonNavToLetterGrid = false;
+            }
             // When letter grid is not active, there is no elemenet for Submit's OnSelectDown so no need to wait
             else
+            {
                 yield return null;
-            
-            EventSystem.current.sendNavigationEvents = true;
+                EventSystem.current.sendNavigationEvents = true;
+            }
         }
+    }
+
+    // If trying to press down from Submit button during Letter Grid being disabled, allow it to override the throttle
+    private void HandleCancelLetterGridDisable()
+    {
+        if (
+            isDetectingNewButtonNavToLetterGrid
+            && EventSystem.current.currentSelectedGameObject == submitButton.gameObject
+            && Script_PlayerInputManager.Instance.RewiredInput.GetNegativeButtonDown(Const_KeyCodes.RWVertical)
+        )
+        {
+            EndNavToSubmitWaitCoroutine();
+            EventSystem.current.SetSelectedGameObject(letterSelectGrid.FirstSelected.gameObject);
+            isDetectingNewButtonNavToLetterGrid = false;
+        }
+    }
+
+    private void EndNavToSubmitWaitCoroutine()
+    {
+        if (navSubmitWaitCoroutine != null)
+        {
+            StopCoroutine(navSubmitWaitCoroutine);
+            navSubmitWaitCoroutine = null;
+        }
+
+        if (IsLetterSelectState)
+            letterSelectGrid.SetNavInteractable(true);
+        
+        isDetectingNewButtonNavToLetterGrid = false;
     }
 
     // Set active focus arrow set that is same index as current caret position

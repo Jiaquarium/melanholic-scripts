@@ -34,6 +34,7 @@ public class Script_ImageDistorterController : MonoBehaviour
     [SerializeField] private float intervalActiveTime;
     [SerializeField] private List<Script_TMProRandomizer> TMProRandomizers;
     [SerializeField] private UnityEvent onActiveIntervalStart;
+    [SerializeField] private UnityEvent onActiveIntervalStartOnce;
     [SerializeField] private UnityEvent onActiveIntervalEnd;
     private float intervalTimer;
     private bool isActiveInterval;
@@ -52,6 +53,8 @@ public class Script_ImageDistorterController : MonoBehaviour
     private int smearCount;
     private float smearForceTimer;
     private int smearForceCount;
+
+    private bool didActiveIntervalEvent;
 
     private Script_CanvasAdjuster canvasAdjusterX;
     private Script_CanvasAdjuster canvasAdjusterY;
@@ -262,7 +265,14 @@ public class Script_ImageDistorterController : MonoBehaviour
             isActiveInterval = !isActiveInterval;
 
             if (isActiveInterval)
+            {
                 onActiveIntervalStart.SafeInvoke();
+
+                if (!didActiveIntervalEvent)
+                    onActiveIntervalStartOnce.SafeInvoke();
+
+                didActiveIntervalEvent = true;
+            }
             else
                 onActiveIntervalEnd.SafeInvoke();
 
@@ -352,6 +362,10 @@ public class Script_ImageDistorterController : MonoBehaviour
         OutlinesInitialState();
 
         intervalTimer = 0f;
+        oscillateXTimer = 0f;
+        oscillateYTimer = 0f;
+
         isActiveInterval = false;
+        didActiveIntervalEvent = false;
     }
 }

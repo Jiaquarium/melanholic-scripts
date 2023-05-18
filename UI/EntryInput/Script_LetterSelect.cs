@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class Script_LetterSelect : MonoBehaviour
 {
     [SerializeField] private Letters letter;
@@ -14,6 +16,7 @@ public class Script_LetterSelect : MonoBehaviour
     [SerializeField] TextMeshProUGUI TMPLetterText;
 
     public Script_LetterSelectGrid LetterSelectGrid => letterSelectGrid;
+    public Button MyButton => GetComponent<Button>();
 
     void OnValidate()
     {

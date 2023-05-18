@@ -834,7 +834,7 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
     /// <summary>
     /// Set Borders back to default
-    /// End of Rin Shocked Timeline
+    /// Before countdown nested timeline (so HUD is placed where it should be in-game)
     /// </summary>
     public void RemoveUIFraming()
     {

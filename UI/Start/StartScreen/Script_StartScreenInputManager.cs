@@ -21,6 +21,8 @@ public class Script_StartScreenInputManager : MonoBehaviour
         
         if (
             playerInputManager.RewiredInput.GetButtonDown(Const_KeyCodes.RWUISubmit)
+            // UICancel allows Known Controller "Start" button to work too
+            || playerInputManager.RewiredInput.GetButtonDown(Const_KeyCodes.RWUICancel)
             || playerInputManager.RewiredInput.GetButtonDown(Const_KeyCodes.RWUnknownControllerSettings)
         )
         {

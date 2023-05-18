@@ -724,6 +724,7 @@ public class Script_TransitionManager : MonoBehaviour
 
         endingsCanvasGroup.gameObject.SetActive(false);
         goodEndingCanvasGroup.gameObject.SetActive(false);
+        goodEndingController.Setup();
         trueEndingCanvasGroup.gameObject.SetActive(false);
         SealingCanvasGroup.gameObject.SetActive(false);
         endingsBgCanvasGroup.gameObject.SetActive(false);
