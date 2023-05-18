@@ -975,7 +975,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             gotBoarNeedle = true;
 
             // For demo, immediately change to cut scene to avoid flash of UI after stash
-            if (Const_Dev.IsDemo)
+            if (Const_Dev.IsDemo && !Const_Dev.IsDemoCutOffLong)
                 game.ChangeStateCutScene();
         }
 
@@ -1580,7 +1580,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     // Called from Boar Needle Object: Next Node Action
     public void ActivateDemoCutOff()
     {
-        if (Const_Dev.IsDemo)
+        if (Const_Dev.IsDemo && !Const_Dev.IsDemoCutOffLong)
         {
             demoNoteController.ActivateDemoText(Script_DemoNoteController.Levels.IdsRoom);
         }
