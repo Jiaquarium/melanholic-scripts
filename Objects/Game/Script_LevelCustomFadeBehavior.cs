@@ -45,6 +45,10 @@ public class Script_LevelCustomFadeBehavior : MonoBehaviour
     private bool IsNotInitialWaitInBlack => isWaitInBlackDone || isOptOutInitial;
     
     public bool IsSpecialCase => isSpecialCase;
+    public bool IsOptOutInitial
+    {
+        set => isOptOutInitial = value;
+    }
     
     public float FadeInTime => IsNotInitialFadeIn ? fadeInTime : fadeInTimeInitial;
     public float WaitInBlackTime => IsNotInitialWaitInBlack ? waitInBlackTime : waitInBlackTimeInitial;

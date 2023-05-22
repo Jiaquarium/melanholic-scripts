@@ -21,6 +21,9 @@ public class Script_SceneManager : MonoBehaviour
     public const string GameScene = "Game";
 
     public const int RemountTryMaxCount = 5;
+
+    private const float FocusedDucksFadeInTime = 0.10f;
+    private const float OnLoadingDoneMusicFadeOutTime = 0.25f;
     
     // To set a limit on simulated errors
     public static int DevMountErrorCount;
@@ -169,15 +172,38 @@ public class Script_SceneManager : MonoBehaviour
                 SM.loadingTextCanvasGroup.Close();
                 SM.completeTextCanvasGroup.Open();
 
-                SM.ducksCanvasFocused.FadeIn(FadeSpeeds.XFast.GetFadeTime(), () => {
-                    SM.CleanUpLoadingCoroutines();
-                    
-                    // Activate the new scene
-                    asyncLoad.allowSceneActivation = true;
-                });
+                SM.ducksCanvasFocused.FadeIn(
+                    FocusedDucksFadeInTime,
+                    () => {
+                        SM.CleanUpLoadingCoroutines();
+                        
+                        // Wait for Bgm to fully fade out until setting flag to start Game scene
+                        SM.StartCoroutine(WaitForBgmStartScene());
+                    },
+                    isUnscaledTime: true
+                );
+
+                // Fade out volume at same time as fading in final Focused Ducks
+                Script_BackgroundMusicManager.Control.FadeOut(
+                    null,
+                    OnLoadingDoneMusicFadeOutTime,
+                    Const_AudioMixerParams.ExposedMusicVolume,
+                    isUnscaledTime: true
+                );
             }
 
             yield return null;
+
+            IEnumerator WaitForBgmStartScene()
+            {
+                // Note: this provides no buffer time for bgm fade out, assumes coroutine clocks will be in sync
+                float waitForBgmTime = Mathf.Max(0f, OnLoadingDoneMusicFadeOutTime - FocusedDucksFadeInTime);
+                yield return new WaitForSecondsRealtime(waitForBgmTime);
+                
+                Dev_Logger.Debug($"waitForBgmTime {waitForBgmTime}");
+
+                asyncLoad.allowSceneActivation = true;
+            }
         }
 
         // Called after new Scene is loaded

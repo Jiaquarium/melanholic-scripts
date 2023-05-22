@@ -466,9 +466,14 @@ public class Script_StartOverviewController : Script_UIState
 
     public void Quit()
     {
+        float fadeOutTime = FadeSpeeds.Med.ToFadeTime();
+        
         DisableInput();
         fader.Close();
-        fader.FadeIn(FadeSpeeds.MedFast.ToFadeTime(), Application.Quit, isUnscaledTime: true);
+        
+        // Note: this provides no buffer time for bgm fade out, assumes coroutine clocks will be in sync
+        fader.FadeIn(fadeOutTime, Application.Quit, isUnscaledTime: true);
+        bgmManager.FadeOut(null, fadeOutTime, Const_AudioMixerParams.ExposedMusicVolume, isUnscaledTime: true);
     }
 
     // Also called from Menu button click handlers.
