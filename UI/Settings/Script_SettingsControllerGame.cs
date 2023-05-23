@@ -155,6 +155,16 @@ public class Script_SettingsControllerGame : Script_SettingsController
             {
                 t.OpenResetDefaultsSubmenu();
             }
+
+            if (GUILayout.Button("Open Reset System Defaults Submenu"))
+            {
+                t.OpenResetSystemDefaultsSubmenu();
+            }
+
+            if (GUILayout.Button("Open Reset Sound Defaults Submenu"))
+            {
+                t.OpenResetSoundDefaultsSubmenu();
+            }
         }
     }
 #endif

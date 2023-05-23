@@ -82,9 +82,17 @@ public class Script_SettingsController : MonoBehaviour
     
     [Space][Header("Sound Settings")][Space]
     [SerializeField] private Script_CanvasGroupController soundCanvasGroup;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] resetSoundDefaultsSubmenuChoices;
+    [SerializeField] private GameObject resetSoundDefaultsSubmenu;
+    [SerializeField] private GameObject onExitResetSoundDefaultsSubmenuActiveObject;
+    private bool isSoundDefaultsSubmenu = false;
     
     [Space][Header("System Settings")][Space]
     [SerializeField] private Script_SettingsSystemController systemController;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] resetSystemDefaultsSubmenuChoices;
+    [SerializeField] private GameObject resetSystemDefaultsSubmenu;
+    [SerializeField] private GameObject onExitResetSystemDefaultsSubmenuActiveObject;
+    private bool isSystemDefaultsSubmenu = false;
 
     [Space][Header("Rebind Settings")][Space]
     [SerializeField] private List<Script_UIRebindAction> UIRebindActions;
@@ -94,6 +102,7 @@ public class Script_SettingsController : MonoBehaviour
     [SerializeField] private Script_SavedGameSubmenuInputChoice[] resetDefaultsSubmenuChoices;
     [SerializeField] private GameObject resetDefaultsSubmenu;
     [SerializeField] private GameObject onExitResetDefaultsSubmenuActiveObject;
+    private bool isRebindSubmenu = false;
 
     [Space][Header("Other")][Space]
     [SerializeField] private Script_CanvasGroupController bgCanvasGroup;
@@ -106,7 +115,6 @@ public class Script_SettingsController : MonoBehaviour
 
     private InputMapper inputMapper = new InputMapper();
     private InputMapper.ConflictFoundEventData conflictData;
-    private bool isRebindSubmenu = false;
 
     private float timer;
 
@@ -370,42 +378,69 @@ public class Script_SettingsController : MonoBehaviour
             case (States.Controls):
                 if (isRebindSubmenu)
                 {
-                    CloseResetDefaultsSubmenu(isSuccess: false);
+                    CloseResetControlsDefaultsSubmenu(isSuccess: false);
                 }
                 else
                 {
                     OpenOverview(0);
                     ExitMenuSFX();
+
+                    // Always save a settings file on exit to Overview for consistent behavior for submenus
+                    Script_SaveSettingsControl.Instance.Save();
                 }
                 
                 break;
             case (States.Sound):
-                OpenOverview(1);
-                ExitMenuSFX();
-                
-                Script_SaveSettingsControl.Instance.Save();
+                if (isSoundDefaultsSubmenu)
+                {
+                    CloseResetSoundDefaultsSubmenu(isSuccess: false);
+                }
+                else
+                {
+                    OpenOverview(1);
+                    ExitMenuSFX();
+                    
+                    Script_SaveSettingsControl.Instance.Save();
+                }
                 
                 break;
             case (States.System):
-                OpenOverview(2);
-                ExitMenuSFX();
-                
-                Script_SaveSettingsControl.Instance.Save();
+                if (isSystemDefaultsSubmenu)
+                {
+                    CloseResetSystemDefaultsSubmenu(isSuccess: false);
+                }
+                else
+                {
+                    OpenOverview(2);
+                    ExitMenuSFX();
+                    
+                    Script_SaveSettingsControl.Instance.Save();
+                }
                 
                 break;
         }
     }
 
-    // Controls: Reset All to Defaults
-    public void ResetDefaults()
+    // UI Setting > Controls > Reset Prompt: Yes
+    // Controls: Reset Controls to Defaults
+    public void ResetControlsDefaults()
     {
-        Script_PlayerInputManager.Instance.SetDefault();
+        Script_PlayerInputManager.Instance.SetControlsDefault();
 
-        CloseResetDefaultsSubmenu(isSuccess: true);
+        CloseResetControlsDefaultsSubmenu(isSuccess: true);
     }
 
-    // Reset Default Submenu
-    public void CloseResetDefaultsSubmenu(bool isSuccess)
+    // UI Setting > Controls > Reset
+    public void OpenResetDefaultsSubmenu()
+    {
+        isRebindSubmenu = true;
+        resetDefaultsSubmenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(resetDefaultsSubmenuChoices[0].gameObject);
+        EnterSubmenuSFX();
+    }
+    
+    // UI Setting > Controls > Reset Prompt: No or Escape
+    public void CloseResetControlsDefaultsSubmenu(bool isSuccess)
     {
         resetDefaultsSubmenu.SetActive(false);
 
@@ -417,6 +452,75 @@ public class Script_SettingsController : MonoBehaviour
             Script_SFXManager.SFX.PlayExitSubmenuPencil();
         
         isRebindSubmenu = false;
+    }
+
+    // UI Setting > Sound > Reset Prompt: Yes
+    // Controls: Reset all to system defaults
+    public void ResetSoundDefaults()
+    {
+        systemController.SoundDefaults();
+
+        CloseResetSoundDefaultsSubmenu(isSuccess: true);
+    }
+
+    public void OpenResetSoundDefaultsSubmenu()
+    {
+        isSoundDefaultsSubmenu = true;
+        resetSoundDefaultsSubmenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(resetSoundDefaultsSubmenuChoices[0].gameObject);
+        EnterSubmenuSFX();
+    }
+    
+    // UI Setting > Controls > Reset Prompt: No or Escape
+    public void CloseResetSoundDefaultsSubmenu(bool isSuccess)
+    {
+        resetSoundDefaultsSubmenu.SetActive(false);
+
+        EventSystem.current.SetSelectedGameObject(onExitResetSoundDefaultsSubmenuActiveObject.gameObject);
+
+        if (isSuccess)
+            Script_SFXManager.SFX.PlayUISuccessEdit();
+        else
+            Script_SFXManager.SFX.PlayExitSubmenuPencil();
+        
+        isSoundDefaultsSubmenu = false;
+    }
+
+    // UI Setting > System > Reset Prompt: Yes
+    // Controls: Reset all to system defaults
+    public void ResetSystemDefaults()
+    {
+        var playerInputManager = Script_PlayerInputManager.Instance;
+        playerInputManager.DeleteSettingsFile();
+        playerInputManager.SetControlsDefault();
+        
+        systemController.SoundDefaults();
+        systemController.ScreenshakeDefaults();
+
+        CloseResetSystemDefaultsSubmenu(isSuccess: true);
+    }
+
+    public void OpenResetSystemDefaultsSubmenu()
+    {
+        isSystemDefaultsSubmenu = true;
+        resetSystemDefaultsSubmenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(resetSystemDefaultsSubmenuChoices[0].gameObject);
+        EnterSubmenuSFX();
+    }
+    
+    // UI Setting > Controls > Reset Prompt: No or Escape
+    public void CloseResetSystemDefaultsSubmenu(bool isSuccess)
+    {
+        resetSystemDefaultsSubmenu.SetActive(false);
+
+        EventSystem.current.SetSelectedGameObject(onExitResetSystemDefaultsSubmenuActiveObject.gameObject);
+
+        if (isSuccess)
+            Script_SFXManager.SFX.PlayUISuccessEdit();
+        else
+            Script_SFXManager.SFX.PlayExitSubmenuPencil();
+        
+        isSystemDefaultsSubmenu = false;
     }
     
     // ------------------------------------------------------------
@@ -481,14 +585,6 @@ public class Script_SettingsController : MonoBehaviour
     private void UpdateDependentDisplays()
     {
         UIInvertActionsUnknownJoystick.ForEach(UI => UI.UpdateBehaviorUIText());
-    }
-
-    public void OpenResetDefaultsSubmenu()
-    {
-        isRebindSubmenu = true;
-        resetDefaultsSubmenu.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(resetDefaultsSubmenuChoices[0].gameObject);
-        EnterSubmenuSFX();
     }
 
     public void OnInputFieldClicked(Script_UIRebindAction rebindActionButton)
@@ -715,9 +811,8 @@ public class Script_SettingsController : MonoBehaviour
         // Set flag to prevent exit handling when input is disabled
         isInputDisabled = !isActive;
     }
-    
+
     // ------------------------------------------------------------
-    
 
     protected void EnterMenuSFX()
     {
@@ -762,6 +857,8 @@ public class Script_SettingsController : MonoBehaviour
     private void InitialState()
     {
         resetDefaultsSubmenu.SetActive(false);
+        resetSystemDefaultsSubmenu.SetActive(false);
+        resetSoundDefaultsSubmenu.SetActive(false);
     }
     
     public virtual void Setup()

@@ -129,6 +129,7 @@ public class Script_StartOverviewController : Script_UIState
         
         settingsController.Close();
         controlsCanvasGroup.Close();
+        introControllerSimple.Setup();
         
         savedGameEventSystem.InitializeState();
 

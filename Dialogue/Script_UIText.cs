@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-05-01 22:45:57
+// Last created by UI Exporter at 2023-05-22 18:46:00
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2389,7 +2389,14 @@ Use the keyboard to select a control to begin listening for input."
     "controls_button_reset",
     new Model_LanguagesUI
     {
-        EN = @"Reset All to Default"
+        EN = @"Reset Controls"
+    }
+},
+{
+    "controls_prompt_reset",
+    new Model_LanguagesUI
+    {
+        EN = @"All controls will be reset to default. Are you sure?"
     }
 },
 {
@@ -2425,13 +2432,6 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Cannot overwrite Hotkeys"
-    }
-},
-{
-    "controls_prompt_reset",
-    new Model_LanguagesUI
-    {
-        EN = @"All controls will be reset to default. Are you sure?"
     }
 },
 // ------------------------------------------------------------------
@@ -2476,6 +2476,20 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"SFX"
+    }
+},
+{
+    "sound_button_reset",
+    new Model_LanguagesUI
+    {
+        EN = @"Reset Sound"
+    }
+},
+{
+    "sound_prompt_reset",
+    new Model_LanguagesUI
+    {
+        EN = @"All sound settings will be reset to default. Are you sure?"
     }
 },
 {
@@ -2574,6 +2588,20 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"off"
+    }
+},
+{
+    "system_button_reset",
+    new Model_LanguagesUI
+    {
+        EN = @"Reset All to Default"
+    }
+},
+{
+    "system_prompt_reset",
+    new Model_LanguagesUI
+    {
+        EN = @"All settings will be reset to default including controls and sound. Are you sure?"
     }
 },
 // ------------------------------------------------------------------

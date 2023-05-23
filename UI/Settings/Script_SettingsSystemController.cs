@@ -386,7 +386,7 @@ public class Script_SettingsSystemController : MonoBehaviour
             if (currentTimebar.Fill > 0f)
             {
                 SetSettingsVolume(currentTimebar.Fill - (1 / FillIncrement), systemState);
-                UpdateMasterVolUI();
+                UpdateVolUIs();
                 SubmitSFX();
                 currentVolArrows[0].SetTrigger(ClickTrigger);
             }
@@ -398,7 +398,7 @@ public class Script_SettingsSystemController : MonoBehaviour
             if (currentTimebar.Fill < 1f)
             {
                 SetSettingsVolume(currentTimebar.Fill + (1 / FillIncrement), systemState);
-                UpdateMasterVolUI();
+                UpdateVolUIs();
                 SubmitSFX();
                 currentVolArrows[1].SetTrigger(ClickTrigger);
             }
@@ -442,16 +442,16 @@ public class Script_SettingsSystemController : MonoBehaviour
         }
     }
     
-    private void UpdateMasterVolUI()
+    private void UpdateVolUIs(bool isInitialState = false)
     {
-        UpdateMasterVolUI();
-        UpdateMusicVolUI();
-        UpdateSfxVolUI();
+        UpdateMasterVolSubmenuUI();
+        UpdateMusicSubmenuUI();
+        UpdateSfxSubmenuUI();
         
-        void UpdateMasterVolUI()
+        void UpdateMasterVolSubmenuUI()
         {
-            float percentFill = AudioListenerMasterVolume;
-        
+            float percentFill = isInitialState ? 1f : AudioListenerMasterVolume;
+
             // Ensure to round to the proper increment
             masterTimebar.Fill = Mathf.Round(percentFill * FillIncrement) / FillIncrement;
 
@@ -459,18 +459,18 @@ public class Script_SettingsSystemController : MonoBehaviour
             masterVolCurrentText.text = $"{Mathf.Round(masterTimebar.Fill * FillIncrement)}";
         }
 
-        void UpdateMusicVolUI()
+        void UpdateMusicSubmenuUI()
         {
-            float percentFill = GetAudioMixerVolume(Const_AudioMixerParams.ExposedMusicSettingVolume, false);
+            float percentFill = isInitialState ? 1f : GetAudioMixerVolume(Const_AudioMixerParams.ExposedMusicSettingVolume, false);
 
             musicTimebar.Fill = Mathf.Round(percentFill * FillIncrement) / FillIncrement;
             musicVolCurrentText.text = $"{Mathf.Round(musicTimebar.Fill * FillIncrement)}";
         }
 
-        void UpdateSfxVolUI()
+        void UpdateSfxSubmenuUI()
         {
-            float percentFill = GetAudioMixerVolume(Const_AudioMixerParams.ExposedFXSettingVolume, false);
-        
+            float percentFill = isInitialState ? 1f : GetAudioMixerVolume(Const_AudioMixerParams.ExposedFXSettingVolume, false);
+
             sfxTimebar.Fill = Mathf.Round(percentFill * FillIncrement) / FillIncrement;
             sfxVolCurrentText.text = $"{Mathf.Round(sfxTimebar.Fill * FillIncrement)}";
         }
@@ -642,6 +642,20 @@ public class Script_SettingsSystemController : MonoBehaviour
         SetSettingsVolume(loadedFxVolumeDecibel.ConvertDecibelToFloat(), SystemState.FXVolume);
     }
 
+    public void SoundDefaults()
+    {
+        SetSettingsVolume(1f, SystemState.MasterVolume);
+        SetSettingsVolume(1f, SystemState.MusicVolume);
+        SetSettingsVolume(1f, SystemState.FXVolume);
+        UpdateVolUIs(isInitialState: true);
+    }
+
+    public void ScreenshakeDefaults()
+    {
+        IsScreenshakeDisabled = false;
+        UpdateScreenshakeUI();
+    }
+
     // ------------------------------------------------------------
 
     public void EnableNavigation(bool isEnabled)
@@ -684,7 +698,7 @@ public class Script_SettingsSystemController : MonoBehaviour
         masterVolArrows.ForEach(arrow => arrow.gameObject.SetActive(false));
         musicVolArrows.ForEach(arrow => arrow.gameObject.SetActive(false));
         sfxVolArrows.ForEach(arrow => arrow.gameObject.SetActive(false));
-        UpdateMasterVolUI();
+        UpdateVolUIs();
         UpdateFullScreenUI(isForceUpdate: true);
         UpdateScreenshakeUI();
     }
@@ -697,6 +711,16 @@ public class Script_SettingsSystemController : MonoBehaviour
             DrawDefaultInspector();
 
             Script_SettingsSystemController t = (Script_SettingsSystemController)target;
+            if (GUILayout.Button("Sound Defaults"))
+            {
+                t.SoundDefaults();
+            }
+
+            if (GUILayout.Button("Screenshake Defaults"))
+            {
+                t.ScreenshakeDefaults();
+            }
+            
             if (GUILayout.Button("Set Master Volume 1f"))
             {
                 t.SetSettingsVolume(1f, SystemState.MasterVolume);

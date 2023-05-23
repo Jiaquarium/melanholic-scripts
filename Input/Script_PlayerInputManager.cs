@@ -462,19 +462,25 @@ public class Script_PlayerInputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// This will delete the settings file, but on Back, a new one will be created, so
-    /// volume data will be kept.
+    /// Reset control defaults. Saving will be handled on Back to overview.
     /// </summary>
-    public void SetDefault()
+    public void SetControlsDefault()
     {
-        // Delete keybindings file
-        if(File.Exists(FilePath))
-            File.Delete(FilePath);
-        
         SetKeyboardDefaults();
         SetJoystickDefaults();
         
         UpdateKeyBindingUIs();
+    }
+
+    /// <summary>
+    /// Reset all to default, ignoring presentation (e.g. full-screen, windowed res).
+    /// Saving will be handled on Back to overview.
+    /// </summary>
+    public void DeleteSettingsFile()
+    {
+        // Delete keybindings file
+        if (File.Exists(FilePath))
+            File.Delete(FilePath);
     }
 
     public void SetJoystickTemporaryDefaults()
@@ -741,9 +747,9 @@ public class Script_PlayerInputManager : MonoBehaviour
 
             Script_PlayerInputManager t = (Script_PlayerInputManager)target;
             
-            if (GUILayout.Button("Set Default"))
+            if (GUILayout.Button("Set Controls Default"))
             {
-                t.SetDefault();
+                t.SetControlsDefault();
             }
 
             if (GUILayout.Button("Set Controller Dead Zone 1f"))

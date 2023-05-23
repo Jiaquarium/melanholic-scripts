@@ -12,6 +12,8 @@ public class Script_IntroControllerSimple : MonoBehaviour
     
     [SerializeField] private Script_StartOverviewController startOverviewController;
     private Script_TimelineController timelineController;
+    [SerializeField] private Script_CanvasGroupController freedomCanvasGroup;
+    [SerializeField] private Script_CanvasGroupController authorsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController contentWarningCanvasGroup;
     [SerializeField] private Image contentWarningContainer;
 
@@ -126,5 +128,12 @@ public class Script_IntroControllerSimple : MonoBehaviour
             isSkipContentWarning = false;
 
         contentWarningContainer.gameObject.SetActive(!isSkipContentWarning);
+    }
+
+    public void Setup()
+    {
+        freedomCanvasGroup.Close();
+        authorsCanvasGroup.Close();
+        contentWarningCanvasGroup.Close();
     }
 }
