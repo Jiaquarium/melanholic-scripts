@@ -61,6 +61,11 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     private bool isSpecialIntroFraming;
     
     // ------------------------------------------------------------------
+    // VCam
+    [Space][Header("V Cam")][Space]
+    [SerializeField] private Script_VCamera distanceVCam;
+
+    // ------------------------------------------------------------------
 
     private bool didMapNotification;
 
@@ -72,6 +77,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp    += OnScarletCipherPickUp;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone   += OnMapNotificationTeletypeDone;
+
+        if (!IsSpecialIntro)
+            SetDistanceVCamActive();
     }
 
     protected override void OnDisable()
@@ -82,6 +90,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         Script_ScarletCipherEventsManager.OnScarletCipherPiecePickUp    -= OnScarletCipherPickUp;
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone   -= OnMapNotificationTeletypeDone;
+
+        SetDistanceCamInactive();
     }
 
     void Start()
@@ -336,6 +346,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
             // Revert priority that was set during Intro Timeline
             introDirector.Stop();
             introZoomOutGameVCam.SetPriority(0);
+
+            SetDistanceVCamActive();
+            game.SnapActiveCam(game.GetPlayer().transform.position);
              
             SetDoorsToSaloonActive(true);
             SetTreeSetsAutumnActive(true);
@@ -373,6 +386,20 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     private void SetTreeSetsAutumnActive(bool isActive)
     {
         treeSetsAutumn.ForEach(treeSet => treeSet.gameObject.SetActive(isActive));
+    }
+
+    private void SetDistanceVCamActive()
+    {
+        var vCamManager = Script_VCamManager.VCamMain;
+        if (vCamManager != null)
+            vCamManager.SetNewVCam(distanceVCam);
+    }
+
+    private void SetDistanceCamInactive()
+    {
+        var vCamManager = Script_VCamManager.VCamMain;
+        if (vCamManager != null)
+            vCamManager.SwitchToMainVCam(distanceVCam);
     }
 
     // ------------------------------------------------------------------

@@ -12,7 +12,7 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// NOTE: Set before Default time Script Execution Order
+/// NOTE: Script Execution Order: Set before Default time, before Pixel Perfect Cinemachine
 /// 
 /// For entry inputs handled by inputManager, use SetValidation to fill in vaidator
 /// Because separate canvas for savePoint, manually assign that

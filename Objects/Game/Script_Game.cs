@@ -79,6 +79,7 @@ public class Script_Game : MonoBehaviour
     public Script_LevelBehavior_34 bayV2Behavior;
     public Script_LevelBehavior_39 UrselksHallBehavior;
     public Script_LevelBehavior_42 WellsWorldBehavior;
+    public Script_LevelBehavior_44 XXXWorldBehavior;
     public Script_LevelBehavior_45 UnderworldBehavior;
     public Script_LevelBehavior_46 GardenLabyrinthBehavior;
     public Script_LevelBehavior_48 grandMirrorRoomBehavior;

@@ -50,6 +50,11 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     private Script_CameraShake activeShakeCamera;
 
     // ------------------------------------------------------------------
+    // VCam
+    [Space][Header("V Cam")][Space]
+    [SerializeField] private Script_VCamera distanceVCam;
+
+    // ------------------------------------------------------------------
 
     // Should not be saved in state because this quest should be repeatable on
     // subsequent runs.
@@ -74,6 +79,13 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
             HandleLanternLightReaction(game.GetPlayer().IsLightOn);
         
         OnEnableLanternSFXReactionSetup();
+
+        var vCamManager = Script_VCamManager.VCamMain;
+        if (vCamManager != null)
+            vCamManager.SetNewVCam(distanceVCam);
+
+        // Set shadow distance longer to account for this farther distance camera
+        Script_GraphicsManager.Control.SetUnderworldShadowDistance(); 
     }
 
     protected override void OnDisable()
@@ -83,6 +95,13 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
 
         Dev_Logger.Debug($"On Disable: Setting IsFinalTrueEndingTimeline {IsFinalTrueEndingTimeline} to false");
         IsFinalTrueEndingTimeline = false;
+
+        var vCamManager = Script_VCamManager.VCamMain;
+        if (vCamManager != null)
+            vCamManager.SwitchToMainVCam(distanceVCam);
+
+        // Revert shadow distance
+        Script_GraphicsManager.Control.SetDefaultShadowDistance();
     }
 
     void Awake()

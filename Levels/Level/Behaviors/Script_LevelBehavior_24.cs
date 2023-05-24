@@ -114,7 +114,9 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
     private void ActivateTriggersAndPillars(bool isActive)
     {
         // set triggers and pillars to active
-        triggersPuzzleController.gameObject.SetActive(isActive);
+        if (triggersPuzzleController != null)
+            triggersPuzzleController.gameObject.SetActive(isActive);
+
         pillarParent.gameObject.SetActive(isActive);
     }
 

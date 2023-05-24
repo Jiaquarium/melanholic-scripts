@@ -376,6 +376,17 @@ public class Script_Exits : MonoBehaviour
             HandleCustomLevelWait(game.levelBehavior);
             yield return new WaitForSeconds(currentWaitToFadeInLevelTime);
 
+            // Snap camera again for LBs where the camera distance has changed, since for unknown reason, when
+            // switching back to the main VCam after the initial snap, the camera changes positions again
+            if (
+                game.LastLevelBehavior == game.UnderworldBehavior
+                || game.LastLevelBehavior == game.XXXWorldBehavior
+            )
+            {
+                game.SnapActiveCam(game.GetPlayer().transform.position);
+                yield return null;
+            }
+
             // Should always be called when changing level, after black screen wait time but before 
             // OnDoneExitingTransition, telling us the level is ready for fade in or wait to init
             Script_GameEventsManager.LevelBlackScreenDone();

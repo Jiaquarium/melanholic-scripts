@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using System;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 using Cinemachine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// For sprites & canvases
@@ -16,6 +22,8 @@ public class Script_GraphicsManager : MonoBehaviour
     public static Script_GraphicsManager Control;
     public const int AssetsPPU = 36;
     public const int CamCanvasPlaneDistance = 20;
+    private const float DefaultShadowDistance = 100f;
+    private const float UnderworldShadowDistance = 150f;
     
     [SerializeField] private float TargetOrthoSize = 7.5f;
 
@@ -121,7 +129,13 @@ public class Script_GraphicsManager : MonoBehaviour
     
     void OnEnable()
     {
-        CalculateZoom();    
+        CalculateZoom();
+        InitialState();
+    }
+
+    void OnDisable()
+    {
+        InitialState();
     }
     
     void LateUpdate()
@@ -129,12 +143,34 @@ public class Script_GraphicsManager : MonoBehaviour
         CalculateZoom();
     }
 
+    public float GetShadowDistance()
+    {
+        UniversalRenderPipelineAsset urp = (UniversalRenderPipelineAsset)GraphicsSettings.currentRenderPipeline;
+        return urp.shadowDistance;
+    }
+    
+    public float SetDefaultShadowDistance() => SetShadowDistance(DefaultShadowDistance);
+    public float SetUnderworldShadowDistance() => SetShadowDistance(UnderworldShadowDistance);
+    
+    private float SetShadowDistance(float shadowDistance)
+    {
+        UniversalRenderPipelineAsset urp = (UniversalRenderPipelineAsset)GraphicsSettings.currentRenderPipeline;
+        urp.shadowDistance = shadowDistance;
+
+        return urp.shadowDistance;
+    }
+    
     private void CalculateZoom()
     {
         // https://github.com/Unity-Technologies/Graphics/blob/c93f57ef7c3f23a377dcd970a604d47448eb2250/com.unity.render-pipelines.universal/Runtime/2D/PixelPerfectCameraInternal.cs#L75
         int horizontalZoom = pixelPerfectCamera.pixelScreenSize.x / pixelPerfectCamera.refResolutionX;
         int verticalZoom = pixelPerfectCamera.pixelScreenSize.y / pixelPerfectCamera.refResolutionY;
         zoom = Math.Max(1, Math.Min(verticalZoom, horizontalZoom));
+    }
+
+    private void InitialState()
+    {
+        SetDefaultShadowDistance();
     }
     
     /// <summary>
@@ -153,4 +189,26 @@ public class Script_GraphicsManager : MonoBehaviour
 
         pixelPerfectCamera = Script_Game.Game.PixelPerfectCamera;
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Script_GraphicsManager))]
+    public class Script_GraphicsManagerTester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
+
+            Script_GraphicsManager t = (Script_GraphicsManager)target;
+            
+            if (GUILayout.Button("Get Shadow Distance"))
+            {
+                t.GetShadowDistance();
+            }
+
+            if (GUILayout.Button("Set Shadow Distance"))
+            {
+                t.SetShadowDistance(150f);
+            }
+        }
+    }
+#endif
 }
