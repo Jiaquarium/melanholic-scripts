@@ -14,6 +14,8 @@ public class Script_CrackableStats : Script_CharacterStats
     
     [SerializeField] private float defaultHideRemainsTime;
     [SerializeField] private bool isIcePersists;
+    [SerializeField] private bool isIceMeltsHide;
+    [SerializeField] private Script_IceMeltController iceMeltController;
 
     [SerializeField] private Sprite defaultImage;
     [SerializeField] private Sprite lowHealthImage;
@@ -62,12 +64,22 @@ public class Script_CrackableStats : Script_CharacterStats
         {
             StopCoroutine(hideIceCoroutine);
             hideIceCoroutine = null;
-            HideIce();
+            HideIce(isOnDisable: true);
+        }
+        // This ensures consistent behavior, since after Ice Melt is done, the crackable will still be active.
+        // Disable the Crackable when leaving the map.
+        else if (
+            isIceMeltsHide
+            && iceMeltController != null
+            && iceMeltController.DidStartMelt
+        )
+        {
+            HideIce(isOnDisable: true);
         }
 
         if (isHideOnDisable)
         {
-            HideIce();
+            HideIce(isOnDisable: true);
             isHideOnDisable = false;
         }
     }
@@ -126,11 +138,17 @@ public class Script_CrackableStats : Script_CharacterStats
         }
     }
 
-    protected virtual void HideIce()
+    protected virtual void HideIce(bool isOnDisable = false)
     {
         Dev_Logger.Debug($"{name} HideIce, isIcePersists: {isIcePersists}");
         if (!isIcePersists)
-            gameObject.SetActive(false);
+        {
+            // On Disable should immediately hide ice
+            if (isIceMeltsHide && !isOnDisable)
+                iceMeltController.StartMelt();
+            else
+                gameObject.SetActive(false);
+        }
     }
 
     private void HandleHurtGraphics(int hp)

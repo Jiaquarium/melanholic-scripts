@@ -30,7 +30,7 @@ public class Script_MeshLightAdjustController : MonoBehaviour
             float aDelta = alphaRange.y - alphaRange.x;
             float currentAlpha = alphaRange.x + (lightFXManager.LightCurvePercent * aDelta);
 
-            SetSharedMaterialAlpha(currentAlpha);
+            SetMaterialAlpha(currentAlpha);
             timer = throttleTimer;
         }
         else
@@ -42,10 +42,10 @@ public class Script_MeshLightAdjustController : MonoBehaviour
         }
     }
     
-    // Note: this will change the material for ALL objects using it
-    private void SetSharedMaterialAlpha(float a)
+    // Note: this modifies just the material instance
+    private void SetMaterialAlpha(float a)
     {
-        rend.sharedMaterial.SetFloat(alphaPropRefName, a);
+        rend.material.SetFloat(alphaPropRefName, a);
     }
 
 #if UNITY_EDITOR
@@ -58,7 +58,7 @@ public class Script_MeshLightAdjustController : MonoBehaviour
             Script_MeshLightAdjustController t = (Script_MeshLightAdjustController)target;
             if (GUILayout.Button("Set Alpha 0.5f"))
             {
-                t.SetSharedMaterialAlpha(0.5f);
+                t.SetMaterialAlpha(0.5f);
             }
         }
     }
