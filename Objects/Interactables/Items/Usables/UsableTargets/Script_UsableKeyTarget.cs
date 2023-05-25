@@ -16,7 +16,7 @@ public class Script_UsableKeyTarget : Script_UsableTarget
     
     public virtual bool Unlock(Script_UsableKey key)
     {
-        Dev_Logger.Debug($"{name}: TRYING TO UNLOCK ME with Key Id {key.id}!!!");
+        Dev_Logger.Debug($"{name}: Unlock via Inventory UI w/ Key Id {key.id}!");
         
         if (key == myKey)
         {
@@ -33,8 +33,6 @@ public class Script_UsableKeyTarget : Script_UsableTarget
 
     protected virtual void OnUnlock(Script_UsableKey key)
     {
-        Dev_Logger.Debug($"YAY UNLOCKED!!!");
-        // unlock animation
         isLocked = false;
         if (myExit != null)
         {

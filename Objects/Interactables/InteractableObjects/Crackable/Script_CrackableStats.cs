@@ -10,9 +10,10 @@ using UnityEditor;
 
 public class Script_CrackableStats : Script_CharacterStats
 {
+    static private float DefaultHideRemainsTime = 5f;
+    
     [SerializeField] private UnityEvent<Script_CrackableStats> crackedAction;
     
-    [SerializeField] private float defaultHideRemainsTime;
     [SerializeField] private bool isIcePersists;
     [SerializeField] private bool isIceMeltsHide;
     [SerializeField] private Script_IceMeltController iceMeltController;
@@ -131,7 +132,7 @@ public class Script_CrackableStats : Script_CharacterStats
         
         IEnumerator WaitToHide()
         {
-            yield return new WaitForSeconds(defaultHideRemainsTime);
+            yield return new WaitForSeconds(DefaultHideRemainsTime);
 
             hideIceCoroutine = null;
             HideIce();

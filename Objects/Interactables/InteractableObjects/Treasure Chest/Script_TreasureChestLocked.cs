@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,10 +10,13 @@ using UnityEditor;
 [RequireComponent(typeof(Script_UsableKeyTarget))]
 public class Script_TreasureChestLocked : Script_TreasureChest
 {
+    static private float WaitForTreasureChestOpenTimelineTime = 2.15f;
+
     [SerializeField] private bool _isLocked = true;
     
     [Tooltip("Dialogue object to react to object when locked.")]
     [SerializeField] private Script_InteractableObjectText objectText;
+    [SerializeField] private PlayableDirector director;
 
     public bool IsLocked
     {
@@ -38,11 +42,13 @@ public class Script_TreasureChestLocked : Script_TreasureChest
         }
     }
 
+    // Via Inventory UI
     public void UnlockWithKey()
     {
         ActionDefault();
     }
 
+    // Via Interact (and Inventory UI)
     protected override void ActionDefault()
     {
         if (CheckDisabledDirections())
@@ -62,14 +68,31 @@ public class Script_TreasureChestLocked : Script_TreasureChest
                 {
                     var sfx = Script_SFXManager.SFX;
                     audioSource.PlayOneShot(sfx.useKey, sfx.useKeyVol);
+                    OnUnlockHandleState();
                 }
                 else
+                {
+                    Script_Game.Game.GetPlayer().SetIsStandby();
+                    StartCoroutine(WaitToShowItemPickUp());
+                }
+
+                IEnumerator WaitToShowItemPickUp()
+                {
+                    director.Play();
+                    
+                    // Must wait at least as long as TreasureChestHalfOpenTimeline
+                    yield return new WaitForSeconds(WaitForTreasureChestOpenTimelineTime);
+
                     Script_Game.Game.HandleItemReceive(item);
+                    OnUnlockHandleState();
+                }
 
-                IsOpen = true;
-                IsLocked = false;
-
-                Script_ItemsEventsManager.Unlock(myKey, myKey.id);
+                void OnUnlockHandleState()
+                {
+                    IsOpen = true;
+                    IsLocked = false;
+                    Script_ItemsEventsManager.Unlock(myKey, myKey.id);
+                }
             }
             else if (!IsOpen && !game.TryUseKey(myKey))
             {
@@ -79,6 +102,7 @@ public class Script_TreasureChestLocked : Script_TreasureChest
 
             return;
         }
+
     }
     
     #if UNITY_EDITOR

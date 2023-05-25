@@ -149,6 +149,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     [SerializeField] private Script_ItemObject smallKey;
     [SerializeField] private Script_ItemObject boarNeedle;
     [SerializeField] private Script_TreasureChest treasureChest;
+    [SerializeField] private Vector3 onPickupScreenShakeVals;
 
     [SerializeField] private Script_InteractableFullArt IdsLeaveMeBeNote;
     [SerializeField] private Script_InteractableObject DeadIds;
@@ -242,6 +243,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         IdsDirector.stopped                             += OnIdsMovesDone;    
         Script_DDREventsManager.OnDDRDone               += OnDDRDone;
         Script_DDREventsManager.OnDDRMusicStart         += OnDDRStartPlayerDanceMusic;
+        Script_ItemsEventsManager.OnItemPickUp          += OnThirdEyePickUp;
         Script_ItemsEventsManager.OnItemStash           += OnItemStash;
 
         InitialStateFireworks();
@@ -255,6 +257,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         IdsDirector.stopped                             -= OnIdsMovesDone;
         Script_DDREventsManager.OnDDRDone               -= OnDDRDone;
         Script_DDREventsManager.OnDDRMusicStart         -= OnDDRStartPlayerDanceMusic;
+        Script_ItemsEventsManager.OnItemPickUp          -= OnThirdEyePickUp;
         Script_ItemsEventsManager.OnItemStash           -= OnItemStash;
         
         InitialStateFireworks();
@@ -1550,6 +1553,17 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
         BGMIdx = clubMusicIdx;
     }
 
+    private void OnThirdEyePickUp(string id)
+    {
+        if (id != boarNeedle.Item.id)
+            return;
+        
+        // Screenshake
+        Script_VCamManager.VCamMain.Shake(
+            onPickupScreenShakeVals.x, onPickupScreenShakeVals.y, onPickupScreenShakeVals.z, null
+        );
+    }
+
     public override void Setup()
     {
         Ids.SetMoveSpeedWalk();
@@ -1587,6 +1601,17 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     }    
 
     // ------------------------------------------------------------------------------------
+    // Dev Only
+
+    private void DevAfterIdsDance()
+    {
+        foreach (Script_Trigger t in triggers)
+            t.gameObject.SetActive(false);
+        
+        Ids.gameObject.SetActive(false);
+        Dev_InventoryTester.Control.AddSuperSmallKey();
+        Script_BackgroundMusicManager.Control.Stop();
+    }
     
     #if UNITY_EDITOR
     [CustomEditor(typeof(Script_LevelBehavior_10))]
@@ -1619,6 +1644,18 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (GUILayout.Button("DDR"))
             {
                 t.WaitToDDR();
+            }
+
+            GUILayout.Label("Treasure Chest Testing");
+
+            if (GUILayout.Button("Dev: After Ids Dance & Add SS Key"))
+            {
+                t.DevAfterIdsDance();
+            }
+
+            if (GUILayout.Button("On Mask Pickup"))
+            {
+                t.OnThirdEyePickUp(Const_Items.BoarNeedleId);
             }
         }
     }

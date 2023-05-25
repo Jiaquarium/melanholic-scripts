@@ -9,7 +9,8 @@ using UnityEditor;
 public class Script_IceMelt : MonoBehaviour
 {
     private static float maxDistance = 25f;
-    private static int FrameSkip = 2;
+    private static int MeltFrameSkip = 2;
+    private static int DistanceFrameSkip = 4;
     
     private bool isMelting;
     private float meltRate;
@@ -40,12 +41,13 @@ public class Script_IceMelt : MonoBehaviour
     void Update()
     {
         // Only update scale every X frames
-        if (isMelting && Time.frameCount % FrameSkip == 0)
+        if (isMelting)
         {
-            Melt();
+            if (Time.frameCount % MeltFrameSkip == 0)
+                Melt();
             
             // For snowy maps, the ice melt rate is extremely slow, so hide the ice if the player gets too far.
-            if (isDistanceHide)
+            if (isDistanceHide && Time.frameCount % DistanceFrameSkip == 0)
                 HandleDistanceHide();
         }
         
@@ -74,7 +76,8 @@ public class Script_IceMelt : MonoBehaviour
 
     private void Melt()
     {
-        var meltAmount = meltRate * Time.deltaTime;
+        // Must adjust back for MeltFrameSkip for skipped frames
+        var meltAmount = meltRate * Time.deltaTime * MeltFrameSkip;
         
         var newXScale = Mathf.Max(transform.localScale.x - meltAmount, 0f);
         var newYScale = Mathf.Max(transform.localScale.y - meltAmount, 0f);

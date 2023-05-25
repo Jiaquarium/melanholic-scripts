@@ -9,8 +9,8 @@ using UnityEditor;
 
 public class Script_IceMeltController : MonoBehaviour
 {
-    public static float MeltRateDefault = 25f;
-    public static float MeltRateSnow = 4f;
+    public static float MeltRateDefault = 10f;
+    public static float MeltRateSnow = 2.5f;
     
     [SerializeField] private List<Script_IceMelt> iceMelts;
     
