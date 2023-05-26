@@ -62,18 +62,7 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
 
     public bool CheckInsidePuppeteerAreaOfEffect()
     {
-        // Check if Player is within the Physics Box
-        List<Script_Player> players = new List<Script_Player>();
-        
-        puppeteerAreaOfEffect.ExposeBox();
-
-        foreach (Collider col in puppeteerAreaOfEffect.Colliders)
-        {
-            if (col != null && col.transform.GetParentRecursive<Script_Player>() != null)
-                players.Add(col.transform.GetParentRecursive<Script_Player>());
-        }
-
-        return players.Count > 0;
+        return puppeteerAreaOfEffect.CheckPlayerOverlap();
     }
 
     // Only switch if they are different nodes. Maintain the talking state.

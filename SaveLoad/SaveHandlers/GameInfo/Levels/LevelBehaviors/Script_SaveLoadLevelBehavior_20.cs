@@ -9,12 +9,15 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
     public override void Save(Model_RunData data)
     {
         Model_LevelBehavior_20 lvlModel = new Model_LevelBehavior_20(
-            LB20.isKingIntroCutSceneDone,
-            LB20.season,
-            LB20.entranceCutSceneDone,
-            LB20.isPuzzleComplete,
-            LB20.didPickUpMasterKey,
-            LB20.didUnlockMasterLock
+            _isKingIntroCutSceneDone: LB20.isKingIntroCutSceneDone,
+            _isMyneR2CutsceneDone: LB20.isMyneR2CutsceneDone,
+            
+            // Archive
+            _season: LB20.season,
+            _entranceCutSceneDone: LB20.entranceCutSceneDone,
+            _isPuzzleComplete: LB20.isPuzzleComplete,
+            _didPickUpMasterKey: LB20.didPickUpMasterKey,
+            _didUnlockMasterLock: LB20.didUnlockMasterLock
         );
         
         data.levelsData.LB20 = lvlModel;
@@ -36,6 +39,9 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
 
         Model_LevelBehavior_20 lvlModel = data.levelsData.LB20;
         LB20.isKingIntroCutSceneDone    = lvlModel.isKingIntroCutSceneDone;
+        LB20.isMyneR2CutsceneDone       = lvlModel.isMyneR2CutsceneDone;
+        
+        // Archive
         LB20.season                     = lvlModel.season;
         LB20.entranceCutSceneDone       = lvlModel.entranceCutSceneDone;
         LB20.isPuzzleComplete           = lvlModel.isPuzzleComplete;

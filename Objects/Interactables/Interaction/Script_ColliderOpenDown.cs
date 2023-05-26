@@ -48,22 +48,7 @@ public class Script_ColliderOpenDown : MonoBehaviour
     // As a safeguard, if Player is overlapping this collider, always remove the collider to allow Player to move
     void HandlePlayerColliding()
     {
-        if (CheckPlayerOverlap())
+        if (blockingArea.CheckPlayerOverlap())
             myCollider.enabled = false;
-
-        bool CheckPlayerOverlap()
-        {
-            // Check if Player is within the Physics Box
-            List<Script_Player> players = new List<Script_Player>();
-            blockingArea.ExposeBox();
-
-            foreach (Collider col in blockingArea.Colliders)
-            {
-                if (col != null && col.transform.GetParentRecursive<Script_Player>() != null)
-                    players.Add(col.transform.GetParentRecursive<Script_Player>());
-            }
-
-            return players.Count > 0;
-        }
     }
 }

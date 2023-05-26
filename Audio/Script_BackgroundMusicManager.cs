@@ -10,7 +10,9 @@ using UnityEditor;
 
 public class Script_BackgroundMusicManager : MonoBehaviour
 {
-    public static Script_BackgroundMusicManager Control;    
+    public static Script_BackgroundMusicManager Control;
+    public static float DefaultBgmFadeInTime = Script_AudioEffectsManager.fadeFastTime;
+    public static string DefaultBgmLevelParam = Const_AudioMixerParams.ExposedBGVolume;
     public AudioSource AudioSource;
     public AudioClip[] AudioClips;
 
@@ -58,7 +60,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void HandleStartLevelBgmNoFade(int bgmIndex, bool isBgmPaused)
     {
         // Set volume back to 1, since it'll be 0 from Fade Out
-        SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+        SetVolume(1f, DefaultBgmLevelParam);
         
         if (game.npcBgThemePlayer != null && game.GetNPCThemeMusicIsPlaying())
             return;
@@ -81,19 +83,17 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     /// </summary>
     public void HandleStartLevelBgmFade(int bgmIndex, bool isBgmPaused)
     {
-        float defaultBgmFadeInTime = Script_AudioEffectsManager.fadeFastTime;
-        
         if (game.npcBgThemePlayer != null && game.GetNPCThemeMusicIsPlaying())
         {
             // Set volume back to 1, since it'll be 0 from Fade Out
-            SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+            SetVolume(1f, DefaultBgmLevelParam);
         }
         // If Bgm Index is silent, a BG Speaker might be present instead, so do default behavior.
         else if (isBgmPaused || bgmIndex == -1)
         {
             Dev_Logger.Debug($"Level {game.Levels.levelsData[game.level]} starting with PAUSED Bgm");
             // Set volume back to 1, since it'll be 0 from Fade Out
-            SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+            SetVolume(1f, DefaultBgmLevelParam);
             Play(-1);
         }
         // If bgm index changed, then fade in start music
@@ -104,14 +104,14 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         else
         {
             // Set volume back to 1, since it'll be 0 from Fade Out
-            SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+            SetVolume(1f, DefaultBgmLevelParam);
             Play(bgmIndex);
         }
 
         void FadeInBgmNextFrame()
         {
             // Log warning if fade in time > level transition time
-            if (defaultBgmFadeInTime > game.exitsHandler.TotalLevelTransitionTime)
+            if (DefaultBgmFadeInTime > game.exitsHandler.TotalLevelTransitionTime)
                 Debug.LogWarning("The time to fade out and in BGM is greater than total level transition time. Audio might break!");
 
             // Set Source's clip immediately and update clip index on the same frame as call
@@ -129,9 +129,9 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             // Wait a frame to give level behavior a chance to cancel BGM Manager Fading / setting volume to 0f.
             yield return null;
 
-            Script_AudioMixerVolume.SetVolume(audioMixer, Const_AudioMixerParams.ExposedBGVolume, 0f);
+            Script_AudioMixerVolume.SetVolume(audioMixer, DefaultBgmLevelParam, 0f);
             Play(bgmIndex, didLoadClip: true);
-            FadeIn(null, defaultBgmFadeInTime, outputMixer: Const_AudioMixerParams.ExposedBGVolume);
+            FadeIn(null, DefaultBgmFadeInTime, outputMixer: DefaultBgmLevelParam);
         }
     }
 
@@ -150,7 +150,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
             return;
         else
         {
-            FadeOut(null, exitsManager.DefaultLevelFadeOutTime, Const_AudioMixerParams.ExposedBGVolume);
+            FadeOut(null, exitsManager.DefaultLevelFadeOutTime, DefaultBgmLevelParam);
             
             if (isFadeBGMUI)
             {
@@ -280,7 +280,7 @@ public class Script_BackgroundMusicManager : MonoBehaviour
     public void PauseBgmOnSetup()
     {
         Pause();
-        SetVolume(1f, Const_AudioMixerParams.ExposedBGVolume);
+        SetVolume(1f, DefaultBgmLevelParam);
     }
 
     public void PauseAll()

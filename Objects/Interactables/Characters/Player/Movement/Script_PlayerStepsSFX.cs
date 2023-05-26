@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Script_PlayerStepsSFX : MonoBehaviour
 {
+    [SerializeField] private bool isDisable;
+    
     [SerializeField] private List<AudioClip> stepSFXs;
     [SerializeField][Range(0f, 1f)] private float stepSFXVol;
     [SerializeField] private List<AudioClip> iceWomanStepSFXs;
@@ -75,7 +77,13 @@ public class Script_PlayerStepsSFX : MonoBehaviour
 
     private void HandleStepSFX(List<AudioClip> clips, float volume)
     {
-        if (clips?.Count == 0)
+#if UNITY_EDITOR
+        // Editor only; no need to compile this code in builds
+        if (Debug.isDebugBuild && !Application.isPlaying)
+            return;
+#endif
+        
+        if (clips?.Count == 0 || isDisable)
             return;
 
         // Don't play Step SFX for mutation, it's impossible to play SFX on intervals

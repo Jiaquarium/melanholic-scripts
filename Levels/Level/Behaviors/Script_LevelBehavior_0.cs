@@ -280,28 +280,12 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         // Ids runs forward & switch VCam back to Main. Handle if player is directly in front Ids.
         // These running out timelines, Ids speed is 5.68 spaces/sec for turn timeline and 5.625 spaces/sec
         // for running straight. Then ~10.9 spaces/sec for running part. 
-        if (CheckIsPlayerInFrontOfIds())
+        if (blockingIdsArea.CheckPlayerOverlap())
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 3);
         else
             GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(1, 4);
         
         Script_VCamManager.VCamMain.SwitchToMainVCam(IdsDay2VCam);
-
-        bool CheckIsPlayerInFrontOfIds()
-        {
-            // Check if Player is within the Physics Box
-            List<Script_Player> players = new List<Script_Player>();
-            
-            blockingIdsArea.ExposeBox();
-
-            foreach (Collider col in blockingIdsArea.Colliders)
-            {
-                if (col != null && col.transform.GetParentRecursive<Script_Player>() != null)
-                    players.Add(col.transform.GetParentRecursive<Script_Player>());
-            }
-
-            return players.Count > 0;
-        }
     }
 
     // ------------------------------------------------------------------

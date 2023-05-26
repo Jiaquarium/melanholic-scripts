@@ -28,6 +28,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         STATE DATA
     ======================================================================= */
     public bool isKingIntroCutSceneDone;
+    public bool isMyneR2CutsceneDone;
+    
+    // Archives
     public Seasons season;
     public bool isPuzzleComplete;
     public bool entranceCutSceneDone;
@@ -55,6 +58,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private PlayableDirector UrsieDirector;
     [SerializeField] private List<TimelineAsset> UrsieWalkPathTimelines;
     [SerializeField] private Script_DemonNPC KingEclaire;
+    [SerializeField] private PlayableDirector MyneDirector;
+    [SerializeField] private Animator MyneNPC;
 
     [SerializeField] private Script_DemonNPC Ids;
 
@@ -72,6 +77,15 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     // -------------------------------------------------------------------------------------
     // Dialogue
     [SerializeField] private Script_DialogueNode selfPortraitThought;
+    
+    // -------------------------------------------------------------------------------------
+    // Myne Cut Scene
+    [SerializeField] private float waitAfterInitToPlayMyneR2CutsceneTime;
+    [Tooltip("Start time to avoid pause at beginning of track")]
+    [SerializeField] private float lostMemoriesStartTime;
+    [SerializeField] private Script_VCamera myneR2CutsceneVCam;
+    [SerializeField] private Script_ExitMetadata celestialGardensExit;
+    private bool isOnInitMyneR2Cutscene;
     
     // -------------------------------------------------------------------------------------
     // Deprecated
@@ -161,7 +175,22 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     
     public void OnLevelInitCompleteEvent()
     {
-        HandlePlayIdsRunAwayTimeline();
+        if (isOnInitMyneR2Cutscene)
+        {
+            game.ChangeStateCutScene();
+            
+            StartCoroutine(WaitToPlayMyneR2Cutscene());
+
+            IEnumerator WaitToPlayMyneR2Cutscene()
+            {
+                yield return new WaitForSecondsRealtime(waitAfterInitToPlayMyneR2CutsceneTime);
+                MyneDirector.Play();
+            }
+
+            isOnInitMyneR2Cutscene = false;
+        }
+        else
+            HandlePlayIdsRunAwayTimeline();
 
         // After Map Notification, Ids should lead the way on Tutorial Run.
         void HandlePlayIdsRunAwayTimeline()
@@ -325,6 +354,46 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         Ids.gameObject.SetActive(false);
     }
 
+    // MyneR2Cutscene Timeline
+    public void PanToMyne()
+    {
+        // Switch VCam to Myne's R2 VCam
+        Script_VCamManager.VCamMain.SetNewVCam(myneR2CutsceneVCam);
+    }
+    
+    // MyneR2Cutscene Timeline
+    public void RevertVCamMyneR2Cutscene()
+    {
+        // Switch back to main VCam (cut)
+        Script_VCamManager.VCamMain.SwitchToMainVCam(myneR2CutsceneVCam);
+        
+        // Only deactivate NPC; we still need Director to be active to finish timeline.
+        MyneNPC.gameObject.SetActive(false);
+    }
+
+    // MyneR2Cutscene Timeline
+    public void PlayFadeInBgm()
+    {
+        var bgm = Script_BackgroundMusicManager.Control;
+        bgm.PlayFadeIn(
+            bgm.CurrentClipIndex,
+            null,
+            forcePlay: true,
+            fadeTime: Script_BackgroundMusicManager.DefaultBgmFadeInTime,
+            outputMixer: Script_BackgroundMusicManager.DefaultBgmLevelParam,
+            startTime: lostMemoriesStartTime,
+            isForceNewStartTime: true
+        );
+    }
+
+    // MyneR2Cutscene Timeline
+    public void OnMyneR2CutsceneDone()
+    {
+        game.ChangeStateInteract();
+        MyneDirector.gameObject.SetActive(false);
+        MyneDirector.Stop();
+    }
+
     // ----------------------------------------------------------------------
 
     private void SetDynamicSpectersActive(bool isActive)
@@ -402,7 +471,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 SetPaintingEntrancesActive(false);
         }
     }
-    
+
     public override void Setup()
     {
         // Ids runs away on tutorial run.
@@ -426,6 +495,32 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         // If Ursie walk path is done, then start off at spawn position, no walk path
         if (Ursie.IsAutoMoveTimelineDone)
             UrsieDirector.playableAsset = null;
+        
+        // If Wells World or XXXWorld is done and Cel Gardens is not done ("R2 Day 2")
+        // Ensure player is not on the Cel Gardens entrance either (since Myne approaches the Cel Gardens painting)
+        bool isImpliedR2Day2 = (game.WellsWorldBehavior.isMooseQuestDone || game.KTVRoom2Behavior.IsPuzzleComplete)
+            && !game.GardenLabyrinthBehavior.IsDone
+            && !isMyneR2CutsceneDone;
+        
+        Vector3 fromCelestialGardensSpawn = celestialGardensExit.data.playerSpawn;
+        Vector3 playerSpawnedPosition = game.GetPlayer().transform.position;
+        bool fromCelGardensDefaultEntrance = fromCelestialGardensSpawn == playerSpawnedPosition;
+        
+        Dev_Logger.Debug($"fromCelGardensDefaultEntrance {fromCelGardensDefaultEntrance} (fromCelestialGardensSpawn {fromCelestialGardensSpawn} playerSpawnedPosition: {playerSpawnedPosition})");
+        
+        if (isImpliedR2Day2 && !fromCelGardensDefaultEntrance)
+        {
+            Script_BackgroundMusicManager.Control.PauseBgmOnSetup();
+            
+            MyneDirector.gameObject.SetActive(true);
+            MyneNPC.gameObject.SetActive(true);
+            isOnInitMyneR2Cutscene = true;
+            isMyneR2CutsceneDone = true;
+        }
+        else
+        {
+            MyneDirector.gameObject.SetActive(false);
+        }
     }
 
     // -------------------------------------------------------------------------------------
@@ -497,25 +592,30 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             }
         }
     }
-}
-
 #if UNITY_EDITOR
-[CustomEditor(typeof(Script_LevelBehavior_20))]
-public class Script_LevelBehavior_20Tester : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+    [CustomEditor(typeof(Script_LevelBehavior_20))]
+    public class Script_LevelBehavior_20Tester : Editor
+    {
+        public override void OnInspectorGUI() {
+            DrawDefaultInspector();
 
-        Script_LevelBehavior_20 lb = (Script_LevelBehavior_20)target;
-        if (GUILayout.Button("Move King Eclaire to Midpoint"))
-        {
-            lb.MoveKingEclaireToMidpoint();
-        }
-        
-        if (GUILayout.Button("King Intro Timeline"))
-        {
-            lb.KingsIntroTimeline();
+            Script_LevelBehavior_20 lb = (Script_LevelBehavior_20)target;
+            if (GUILayout.Button("Move King Eclaire to Midpoint"))
+            {
+                lb.MoveKingEclaireToMidpoint();
+            }
+            
+            if (GUILayout.Button("King Intro Timeline"))
+            {
+                lb.KingsIntroTimeline();
+            }
+
+            if (GUILayout.Button("Reset Map Notification & is Myne R2 Cutscene"))
+            {
+                lb.didMapNotification = false;
+                lb.isMyneR2CutsceneDone = false;
+            }
         }
     }
-}
 #endif
+}

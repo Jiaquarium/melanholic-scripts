@@ -1148,6 +1148,24 @@ public static class Script_Utils
         hitBoxBehavior is Script_HitBoxRestartPlayerBehavior;
 
     // -------------------------------------------------------------------------------------
+    // Physics
+
+    public static bool CheckPlayerOverlap(this Script_PhysicsBox physicsBox)
+    {
+        // Check if Player is within the Physics Box
+        List<Script_Player> players = new List<Script_Player>();
+        physicsBox.ExposeBox();
+
+        foreach (Collider col in physicsBox.Colliders)
+        {
+            if (col != null && col.transform.GetParentRecursive<Script_Player>() != null)
+                players.Add(col.transform.GetParentRecursive<Script_Player>());
+        }
+
+        return players.Count > 0;
+    }
+    
+    // -------------------------------------------------------------------------------------
     // Rewired Helpers
     
     public static bool IsJoystickSupported(this Controller controller)
