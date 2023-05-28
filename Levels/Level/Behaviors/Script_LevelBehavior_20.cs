@@ -499,7 +499,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         // If Wells World or XXXWorld is done and Cel Gardens is not done ("R2 Day 2")
         // Ensure player is not on the Cel Gardens entrance either (since Myne approaches the Cel Gardens painting)
         bool isImpliedR2Day2 = (game.WellsWorldBehavior.isMooseQuestDone || game.KTVRoom2Behavior.IsPuzzleComplete)
-            && !game.GardenLabyrinthBehavior.IsDone
+            && !game.GardenLabyrinthBehavior.isPuzzleComplete
             && !isMyneR2CutsceneDone;
         
         Vector3 fromCelestialGardensSpawn = celestialGardensExit.data.playerSpawn;

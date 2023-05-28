@@ -298,7 +298,7 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
 
             // Must wait at least a frame after stopping timeline to modify its objects
             postProcessingVignette075.gameObject.SetActive(false);
-            postProcessingVignette075.InitialState();
+            postProcessingVignette075.InitialStateWeight();
 
             // Fade black screen out & remove map notification
             var mapNotificationManager = Script_MapNotificationsManager.Control;

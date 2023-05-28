@@ -93,7 +93,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
 
     private bool isInitialized;
 
-    public bool IsDone
+    private bool IsMeetupPuzzleControllerDone
     {
         get => meetupPuzzleController.IsDone;
     }
@@ -607,7 +607,7 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
     
     public override void Setup()
     {
-        if (IsDone)
+        if (IsMeetupPuzzleControllerDone)
         {
             DoneState();
         }

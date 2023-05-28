@@ -320,7 +320,8 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
     {
         // Set Vignette; from testing this should be set on same frame as signal but to be safe,
         // wait 1 frame in timeline to ensure it updates
-        postProcessingSettings.Vignette(true);
+        var vignette = postProcessingSettings.SetVignetteDefault();
+        Script_PostProcessingSettings.SetRefVignetteActive(ref vignette, true);
     }
     
     // SeaVignetteTimeline GlitchOn
@@ -341,7 +342,7 @@ public class Script_LevelBehavior_0 : Script_LevelBehavior
         
         Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.Sea, () => {
             glitchFXManager.SetBlend(0f);
-            postProcessingSettings.Vignette(false);
+            postProcessingSettings.CloseVignette();
 
             game.StartBgMusicNoFade();
             var bgmManager = Script_BackgroundMusicManager.Control;

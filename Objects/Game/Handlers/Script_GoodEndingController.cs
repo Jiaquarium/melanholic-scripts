@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,10 +20,20 @@ public class Script_GoodEndingController : MonoBehaviour
 
     [SerializeField] private List<Script_CanvasGroupController> slashOverlays;
 
+    [Tooltip("Overlay canvas group for The End text and End message UI")]
+    [SerializeField] private Canvas goodEndingOverlaysCanvas;
     [SerializeField] private CanvasGroup theEndCanvasGroup;
     [SerializeField] private Script_CanvasGroupController symbolsBgCanvasGroup;
     [SerializeField] private Script_PulseImage symbolsPulse;
     [SerializeField] private Script_ShakeImage symbolsShake;
+
+    [Space][Header("The End Glitch - Post Processing")][Space]
+    [SerializeField] private float filmGrainEndingIntensity;
+    [Tooltip("Ensure this is less than TheEndCliff CanvasGroup DISTORTER's active interval time")]
+    [SerializeField] private float filmGrainBlendTime;
+    
+    [Space][Header("Managers")][Space]
+    [SerializeField] private Script_PostProcessingManager postProcessingManager;
     [SerializeField] private Script_Game game;
 
     // ------------------------------------------------------------------
@@ -32,9 +43,7 @@ public class Script_GoodEndingController : MonoBehaviour
     public void StartStaticFX()
     {
         // Change canvas to Screen Space - Camera
-        endingsCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-        endingsCanvas.worldCamera = mainCamera;
-        endingsCanvas.planeDistance = Script_GraphicsManager.CamCanvasPlaneDistance;
+        SetRenderModeScreenSpaceCamera(endingsCanvas);
 
         // Start static high screen FX
         glitchFXManager.SetHigh(useCurrentBlend: true);
@@ -45,7 +54,7 @@ public class Script_GoodEndingController : MonoBehaviour
     public void StopStaticFX()
     {
         // Switch Camera render mode back to default
-        endingsCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        SetRenderModeOverlay(endingsCanvas);
         
         glitchFXManager.BlendTo(0f);
     }
@@ -69,6 +78,18 @@ public class Script_GoodEndingController : MonoBehaviour
         transitionManager.FadeOutOceanBgm(fadeOutMainMelodyTime);
     }
 
+    // Good Ending Timeline - GoodEndingTheEnd start
+    public void SetupTheEndCanvases()
+    {
+        postProcessingManager.SetVignetteGoodEndingTheEnd();
+        
+        // EndingsCanvas with Cliff / Sea Bg set to screenspace camera for PostProcessing
+        SetRenderModeScreenSpaceCamera(endingsCanvas);
+
+        // GoodEndingTheEndOverlaysUI canvas set to overlay to be unaffected by PostProcessing
+        SetRenderModeOverlay(goodEndingOverlaysCanvas);
+    }
+    
     /// <summary>
     /// This image distorter also will control on activation:
     /// - TMPRandomizer on "Good Ending" text
@@ -82,8 +103,30 @@ public class Script_GoodEndingController : MonoBehaviour
     }
 
     // ------------------------------------------------------------------
+    // Unity Events
 
-    // Good Ending Timeline Start
+    // TheEndCliff CanvasGroup DISTORTER's OnActiveIntervalStartOnce event
+    // Start blending in the film grain
+    public void StartBlendInFilmGrain()
+    {
+        FilmGrain filmgrain = postProcessingManager.SetFilmGrainGoodEndingTheEnd(0f);
+        postProcessingManager.BlendInFilmGrainIntensity(filmgrain, filmGrainEndingIntensity, filmGrainBlendTime);
+    }
+
+    // ------------------------------------------------------------------
+    
+    private void SetRenderModeScreenSpaceCamera(Canvas canvas)
+    {
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = mainCamera;
+        canvas.planeDistance = Script_GraphicsManager.CamCanvasPlaneDistance;
+    }
+
+    private void SetRenderModeOverlay(Canvas canvas)
+    {
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+    }
+    
     public void InitialState()
     {
         slashOverlays.ForEach(slashOverlay => slashOverlay.Close());

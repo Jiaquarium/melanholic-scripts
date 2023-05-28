@@ -51,10 +51,9 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         Params.Add(DDRCurrentTryKey, $"<b>{((Script_Game.Game?.IdsRoomBehavior.CurrentTry ?? 1) + 1).ToString() ?? "?"}</b>");
 
         var playerInputManager = Script_PlayerInputManager.Instance;
-        if (playerInputManager != null)
+        if (playerInputManager != null && playerInputManager.RewiredInput != null)
         {
-            Player rewiredInput = playerInputManager.RewiredInput;
-            Controller lastController = rewiredInput.controllers.GetLastActiveController();
+            Controller lastController = playerInputManager.RewiredInput.controllers.GetLastActiveController();
             var lastControllerType = lastController != null ? lastController.type : ControllerType.Keyboard;
             SetControllerBasedParams(lastControllerType);
         }

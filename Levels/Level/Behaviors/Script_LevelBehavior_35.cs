@@ -21,6 +21,9 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
     [SerializeField] private Transform MynesMirror;
     [SerializeField] private Transform MynesFinalPainting;
 
+    [SerializeField] private Script_InteractableObjectText goBoardR1;
+    [SerializeField] private Script_InteractableObjectText goBoardR2;
+
     private bool didMapNotification;
     private bool didIdsRun;
 
@@ -110,6 +113,10 @@ public class Script_LevelBehavior_35 : Script_LevelBehavior
         else
             Ids.gameObject.SetActive(false);
         
+        bool isWeekend = game.RunCycle == Script_RunsManager.Cycle.Weekend;
+        goBoardR1.gameObject.SetActive(!isWeekend);
+        goBoardR2.gameObject.SetActive(isWeekend);
+
         MynesMirror.gameObject.SetActive(true);
         MynesFinalPainting.gameObject.SetActive(false);
     }        

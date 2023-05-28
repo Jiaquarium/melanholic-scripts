@@ -78,6 +78,8 @@ public class Script_TransitionManager : MonoBehaviour
     [SerializeField] private Script_CanvasGroupController endingsCanvasGroup;
     [SerializeField] private Script_CanvasGroupController goodEndingCanvasGroup;
     [SerializeField] private Script_CanvasGroupController endingsBgCanvasGroup;
+    [Tooltip("Overlay canvas group for The End text and End message UI")]
+    [SerializeField] private Canvas goodEndingOverlaysCanvas;
 
     [Header("True Ending Only")]
     [SerializeField] private int endingThemeTrue;
@@ -496,6 +498,7 @@ public class Script_TransitionManager : MonoBehaviour
         // Fade Out to black
         TimelineFadeIn(fadeOutEndingTime, () => {
             goodEndingCanvasGroup.gameObject.SetActive(false);
+            goodEndingOverlaysCanvas.gameObject.SetActive(false);
             trueEndingCanvasGroup.gameObject.SetActive(false);
 
             // Set Borders back to Default
@@ -541,6 +544,7 @@ public class Script_TransitionManager : MonoBehaviour
         // Fade Out to black
         TimelineFadeIn(fadeOutEndingTime, () => {
             goodEndingCanvasGroup.gameObject.SetActive(false);
+            goodEndingOverlaysCanvas.gameObject.SetActive(false);
             trueEndingCanvasGroup.gameObject.SetActive(false);
 
             StartCoroutine(NextFrameToTitleScreen());
@@ -724,6 +728,7 @@ public class Script_TransitionManager : MonoBehaviour
 
         endingsCanvasGroup.gameObject.SetActive(false);
         goodEndingCanvasGroup.gameObject.SetActive(false);
+        goodEndingOverlaysCanvas.gameObject.SetActive(false);
         goodEndingController.Setup();
         trueEndingCanvasGroup.gameObject.SetActive(false);
         SealingCanvasGroup.gameObject.SetActive(false);

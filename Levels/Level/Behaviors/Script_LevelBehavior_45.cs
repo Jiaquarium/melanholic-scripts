@@ -44,9 +44,13 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     // ------------------------------------------------------------------
     // Nazca Totem
     [Space][Header("Nazca Totem")][Space]
+    
+    private static string CryTrigger = "Cry";
+    
     [SerializeField] private float totemReactionWaitTime;
     [SerializeField] private Vector3 screenShakeVals;
     [SerializeField] private float totemSFXExtraWaitTime;
+    [SerializeField] private Animator totemAnimator;
     private Script_CameraShake activeShakeCamera;
 
     // ------------------------------------------------------------------
@@ -168,6 +172,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
         {
             yield return new WaitForSeconds(totemReactionWaitTime);
 
+            totemAnimator.SetTrigger(CryTrigger);
             StartScreenShake();
         
             Script_SFXManager.SFX.PlayTotemCry(() => {

@@ -107,6 +107,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private Script_PRCSManager PRCSManager;
     [SerializeField] private Script_ArtFrameManager artFrameManager;
     [SerializeField] private Script_GraphicsManager graphicsManager;
+    [SerializeField] private Script_PostProcessingManager postProcessingManager;
     
     [SerializeField] private Script_ElevatorManager elevatorManager;
     [SerializeField] private Script_ClockManager clockManager;
@@ -505,6 +506,7 @@ public class Script_Game : MonoBehaviour
             ChangeStateToInitiateLevel();
 
             graphicsManager.Setup();
+            postProcessingManager.Setup();
             
             scarletCipherManager.Setup();
             namesManager.Setup();
