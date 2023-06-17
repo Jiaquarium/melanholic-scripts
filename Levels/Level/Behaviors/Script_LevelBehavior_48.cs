@@ -758,6 +758,8 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
 
         PlayMaskRevealTimeline();
     }
+
+    public void DevForcePlayMaskRevealTimeline() => PlayMaskRevealTimeline();
     
     private void PlayMaskRevealTimeline()
     {

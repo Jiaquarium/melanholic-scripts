@@ -166,8 +166,8 @@ public class Dev_GameHelper : MonoBehaviour
 	{
 		if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha1))
             TestCaseKey1();
-        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2))
-        //     TestCaseKey2();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2))
+            TestCaseKey2();
         // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha3))
         //     TestCaseKey3();
         // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha4))
@@ -196,8 +196,8 @@ public class Dev_GameHelper : MonoBehaviour
 		}
 
         //  Replace these with necessary milestone cases
-        void TestCaseKey1() => Day2SaveAndRestart(1);
-        // void TestCaseKey2() => Act2SeaVignette();
+        void TestCaseKey1() => TeleportGrandMirrorR2();
+        void TestCaseKey2() => PlayMaskRevealTimeline();
         // void TestCaseKey3() => SpecialIntroWellsWorld();
         // void TestCaseKey4() => SpecialIntroCelestialGardens();
         // void TestCaseKey5() => SpecialIntroXXXWorld();
@@ -888,6 +888,19 @@ public class Dev_GameHelper : MonoBehaviour
     // ----------------------------------------------------------------------
     // Freedom Milestone States
     // These should not save state.
+    
+    /// <summary>
+    /// Milestone MAY
+    /// </summary>
+    public void TeleportGrandMirrorR2()
+    {
+        ExitToGrandMirrorFrontOfMirrorR2();
+    }
+
+    public void PlayMaskRevealTimeline()
+    {
+        MynesGrandMirrorRoomBehavior.DevForcePlayMaskRevealTimeline();
+    }
     
     /// <summary>
     /// Milestone FEBRUARY

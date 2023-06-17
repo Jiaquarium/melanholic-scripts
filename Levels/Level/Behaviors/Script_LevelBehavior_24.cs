@@ -117,7 +117,8 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
         if (triggersPuzzleController != null)
             triggersPuzzleController.gameObject.SetActive(isActive);
 
-        pillarParent.gameObject.SetActive(isActive);
+        if (pillarParent != null)
+            pillarParent.gameObject.SetActive(isActive);
     }
 
     private void SetPillarsVisibility(bool isOn)

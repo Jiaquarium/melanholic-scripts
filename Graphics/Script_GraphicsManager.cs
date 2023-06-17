@@ -24,6 +24,12 @@ public class Script_GraphicsManager : MonoBehaviour
     public const int CamCanvasPlaneDistance = 20;
     private const float DefaultShadowDistance = 100f;
     private const float UnderworldShadowDistance = 150f;
+
+    private const float WellsWorldSpecialIntroShadowDistance = 120f;
+    // Allows top right shadow on walls to be showing but not be pitch black
+    private const float CelestialGardensSpecialIntroShadowDistance = 150f;
+    // Allows totem shadows to show but not be pitch black
+    private const float XXXWorldSpecialIntroShadowDistance = 105f;
     
     [SerializeField] private float TargetOrthoSize = 7.5f;
 
@@ -151,6 +157,9 @@ public class Script_GraphicsManager : MonoBehaviour
     
     public float SetDefaultShadowDistance() => SetShadowDistance(DefaultShadowDistance);
     public float SetUnderworldShadowDistance() => SetShadowDistance(UnderworldShadowDistance);
+    public float SetWellsWorldSpecialIntroShadowDistance() => SetShadowDistance(WellsWorldSpecialIntroShadowDistance);
+    public float SetCelestialGardensSpecialIntroShadowDistance() => SetShadowDistance(CelestialGardensSpecialIntroShadowDistance);
+    public float SetXXXWorldSpecialIntroShadowDistance() => SetShadowDistance(XXXWorldSpecialIntroShadowDistance);
     
     private float SetShadowDistance(float shadowDistance)
     {

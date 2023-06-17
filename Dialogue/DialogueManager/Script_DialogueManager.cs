@@ -1416,6 +1416,11 @@ public class Script_DialogueManager : MonoBehaviour
             CheckChoices()
             && !(currentNode is Script_DialogueNode_SavePoint)
             && !CheckForInputMode()
+            // TBD: Remove the below check and dialogue model field isForceNoDefaultChoiceCanvas & move EnqueueDialogueSections
+            // after SetupCanvases in NextDialogueNode. This is a brute force fix to not use choice canvas on NextDialogueNode
+            // (since CheckForInputMode will always return false in NextDialogueNode because EnqueueDialogueSections is
+            // called before SetupCanvases unlike in StartDialogue, so dialogueSections.Count will always be > 0)
+            && !currentNode.data.isForceNoDefaultChoiceCanvas
         )
         {
             // don't set continuation for choice canvas section

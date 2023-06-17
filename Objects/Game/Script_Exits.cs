@@ -377,10 +377,12 @@ public class Script_Exits : MonoBehaviour
             yield return new WaitForSeconds(currentWaitToFadeInLevelTime);
 
             // Snap camera again for LBs where the camera distance has changed, since for unknown reason, when
-            // switching back to the main VCam after the initial snap, the camera changes positions again
+            // switching back and forth to main VCam after the initial snap, the camera changes positions again
             if (
                 game.LastLevelBehavior == game.UnderworldBehavior
+                || game.levelBehavior == game.UnderworldBehavior
                 || game.LastLevelBehavior == game.XXXWorldBehavior
+                || game.levelBehavior == game.XXXWorldBehavior
             )
             {
                 game.SnapActiveCam(game.GetPlayer().transform.position);

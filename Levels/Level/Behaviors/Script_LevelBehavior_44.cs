@@ -98,6 +98,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     {
         if (IsSpecialIntro)
         {
+            // Set custom shadow distance for special intro
+            Script_GraphicsManager.Control.SetXXXWorldSpecialIntroShadowDistance();
+            
             Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             game.StopBgMusic();
 
@@ -346,6 +349,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
             // Revert priority that was set during Intro Timeline
             introDirector.Stop();
             introZoomOutGameVCam.SetPriority(0);
+
+            // Revert shadow distance
+            Script_GraphicsManager.Control.SetDefaultShadowDistance();
 
             SetDistanceVCamActive();
             game.SnapActiveCam(game.GetPlayer().transform.position);

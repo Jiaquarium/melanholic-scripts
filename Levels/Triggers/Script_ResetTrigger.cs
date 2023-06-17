@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
 public class Script_ResetTrigger : Script_Trigger
@@ -9,6 +10,9 @@ public class Script_ResetTrigger : Script_Trigger
     [SerializeField] private AudioClip _clip;
     [SerializeField] private Script_LevelBehavior myLevelBehavior;
     [SerializeField] private string completionProperty;
+
+    [SerializeField] private bool isUseUnityEventOnly;
+    [SerializeField] private UnityEvent onResetTriggerEnter;
     
     void OnTriggerEnter(Collider other)
     {
@@ -26,7 +30,11 @@ public class Script_ResetTrigger : Script_Trigger
             }
 
             Dev_Logger.Debug("Reset trigger firing event.");
-            Script_PuzzlesEventsManager.PuzzleReset();
+            
+            if (isUseUnityEventOnly)
+                onResetTriggerEnter.SafeInvoke();
+            else
+                Script_PuzzlesEventsManager.PuzzleReset();
         }
     }
 

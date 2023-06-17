@@ -83,6 +83,9 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
     {
         if (IsSpecialIntro)
         {
+            // Set custom shadow distance for special intro
+            Script_GraphicsManager.Control.SetCelestialGardensSpecialIntroShadowDistance();
+            
             Script_BackgroundMusicManager.Control.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
             game.StopBgMusic();
 
@@ -293,6 +296,9 @@ public class Script_LevelBehavior_43 : Script_LevelBehavior
             // Revert priority that was set during Intro Timeline & ensure to reinit intro volume
             introDirector.Stop();
             introZoomOutGameVCam.SetPriority(0);
+
+            // Revert shadow distance
+            Script_GraphicsManager.Control.SetDefaultShadowDistance();
              
             yield return new WaitForSeconds(blackScreenTimeIntro);
 

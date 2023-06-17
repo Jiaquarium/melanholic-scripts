@@ -424,7 +424,11 @@ public class Script_Player : Script_Character
                 || State == Const_States_Player.PuppeteerNull
                 || State == Const_States_Player.LastElevatorEffect
                 || State == Const_States_Player.MelancholyPiano
-                || Script_Exits.Control.IsHandlingExit;
+                || Script_Exits.Control.IsHandlingExit
+                // Fix bug: walking into elevator with interact, then stutter stepping. Interactable may only change
+                // game state which would allow movement handler to still animate and work. Collision freeze handling
+                // only works if game is Interact state.
+                || game.state != Const_States_Game.Interact;
     }
 
     public void StopMoving()

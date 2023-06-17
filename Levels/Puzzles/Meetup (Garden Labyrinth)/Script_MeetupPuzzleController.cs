@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,23 +17,26 @@ using UnityEditor;
 public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
 {
     [SerializeField] private float WaitToPuzzleTransformTime;
+    [SerializeField] private float ResetTriggerWaitTime;
     
     // MeetupTriggerReliableStay will add players to this List.
     public List<Script_Player> playersOnTrigger;
     
     [SerializeField] private List<Script_Player> targetPlayersOnTrigger;
 
-
     [SerializeField] private Script_Puppet Latte;
     [SerializeField] private Script_Puppet Kaffe;
     [SerializeField] private Script_Marker LatteSpawn;
     [SerializeField] private Script_Marker KaffeSpawn;
 
+    [Tooltip("Specify floor switches on map")]
+    [SerializeField] private List<Script_TriggerReliableStayFloorSwitch> floorSwitches;
     [SerializeField] private Script_VCamera puppeteerVCam;
     
     [SerializeField] private Script_LevelBehavior_46 LB46;
 
     private bool isWallsMoving;
+    private bool isIgnorePhysicsOnReset;
     
     protected override void OnEnable()
     {
@@ -121,10 +125,7 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
     public void FloorSwitchUp(bool isInitialize = false)
     {
         // Avoid calling this On Disable for ReliableStayTriggers.
-        if (!gameObject.activeInHierarchy)
-            return;
-        
-        if (IsDone || isWallsMoving)
+        if (!gameObject.activeInHierarchy || IsDone || isWallsMoving || isIgnorePhysicsOnReset)
             return;
         
         isWallsMoving = true;
@@ -143,10 +144,7 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
     public void FloorSwitch2Up(bool isInitialize = false)
     {
         // Avoid calling this On Disable for ReliableStayTriggers.
-        if (!gameObject.activeInHierarchy)
-            return;
-        
-        if (IsDone || isWallsMoving)
+        if (!gameObject.activeInHierarchy || IsDone || isWallsMoving || isIgnorePhysicsOnReset)
             return;
         
         isWallsMoving = true;
@@ -189,8 +187,6 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
     // Timeline Signals
     public void OnPuzzleTransformDone(bool isInitialize = false)
     {
-        Dev_Logger.Debug("ON PUZZLE TRANSFORM DONE CALLED ON TIMELINE END!!!!!!!");
-        
         isWallsMoving = false;
         
         // If it is the unique blocking cut scene, need to remain in cut scene state.
@@ -231,6 +227,33 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
         Kaffe.SetBuffEffectActive(false);
     }
 
+    // From reset trigger
+    // Note: reset trigger must opt out of using events and will call this directly
+    public void InitialStateResetTrigger()
+    {
+        FloorSwitchUp(true);
+        FloorSwitch2Up(true);
+        
+        game.ChangeStateCutScene();
+
+        // Disable SwitchUp events & the floorSwitch SFXs (to allow Puppets to move off switches without triggering them)
+        isIgnorePhysicsOnReset = true;
+        floorSwitches.ForEach(floorSwitch => floorSwitch.IsSFXDisabled = true);
+        
+        InitialStatePuppets();
+
+        StartCoroutine(WaitToInteract());
+
+        IEnumerator WaitToInteract()
+        {
+            yield return new WaitForSecondsRealtime(ResetTriggerWaitTime);
+
+            isIgnorePhysicsOnReset = false;
+            floorSwitches.ForEach(floorSwitch => floorSwitch.IsSFXDisabled = false);
+            game.ChangeStateInteract();
+        }
+    }
+    
     // ------------------------------------------------------------------
 
     private bool CheckMatchingPlayersOnTrigger()
@@ -247,11 +270,18 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
         return true;
     }
 
+    // Reset puzzle on enable. Moving the puppets in OnEnable prevents unwanted trigger effects (SFX) from occurring
+    // since OnEnable happens before physics.
     public override void InitialState()
     {
         FloorSwitchUp(true);
         FloorSwitch2Up(true);
         
+        InitialStatePuppets();
+    }
+
+    private void InitialStatePuppets()
+    {
         if (!IsDone)
         {
             if (!LB46.IsInitialized)

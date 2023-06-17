@@ -7,34 +7,43 @@ public class Script_HandleSortingExceptions : MonoBehaviour
     static private int interval = 3;
     
     [SerializeField] private Directions directionToPlayer;
-    [UnityEngine.Serialization.FormerlySerializedAs("stencil1Material")]
-    [SerializeField] private Material myStencil;
-    [UnityEngine.Serialization.FormerlySerializedAs("stencil2Material")]
-    [SerializeField] private Material playerStencil;
-    [SerializeField] private Transform myTransform;
-    [SerializeField] private Vector3 myComparisonLoc;
+    [SerializeField] protected Material myStencil;
+    [SerializeField] protected Material playerStencil;
+    [SerializeField] protected Transform myTransform;
+    [Tooltip("Reference object if comparing to transform that is NOT player; otherwise, leave null")]
+    [SerializeField] protected Transform playerOverride;
+    [Tooltip("Reference renderer to change material of if using player override; otherwise, leave null")]
+    [SerializeField] protected Renderer playerOverrideRenderer;
 
     [Tooltip("Define the World Tile to save performance. Only make calls when Player is on the specified World Tile")]
     [SerializeField] private Script_WorldTile worldTile;
+
+    protected Vector3 myComparisonLoc;
+    protected Vector3 playerLocation;
+    protected Vector3 diffVector;
     private bool isMyWorldTile;
     
-    private Material playerDefaultMaterial;
-    private Material myDefaultMaterial;
+    protected Material playerDefaultMaterial;
+    protected Material myDefaultMaterial;
     private Material playerStencilMaterial;
     private Material myStencilMaterial;
     private Dictionary<Directions, Vector3> DirectionsToVectorDict;
-    private Renderer myRenderer;
+    protected Renderer myRenderer;
 
-    private bool isStencils;
+    protected bool isStencils;
 
     void Awake()
     {
         myRenderer = GetComponent<Renderer>();
     }
     
-    void Start()
+    protected virtual void Start()
     {
-        playerDefaultMaterial = Script_Game.Game.GetPlayer().MySharedMaterial;
+        if (playerOverride == null)
+            playerDefaultMaterial = Script_Game.Game.GetPlayer().MySharedMaterial;
+        else
+            playerDefaultMaterial = playerOverrideRenderer.material;
+        
         myDefaultMaterial = myRenderer.sharedMaterial;
         myStencilMaterial = myStencil;
         playerStencilMaterial = playerStencil;
@@ -49,40 +58,66 @@ public class Script_HandleSortingExceptions : MonoBehaviour
             HandleSortingMaterials();
     }
 
-    private void HandleSortingMaterials()
+    protected virtual void HandleSortingMaterials()
     {
         if (directionToPlayer == Directions.None)
             return;
 
-        // Check if current world tile is active to make calls
-        if (worldTile != null)
+        if (!IsOnMyWorldTile())
+            return;
+        
+        Script_Player player = null;
+        
+        if (playerOverride == null)
         {
-            isMyWorldTile = worldTile.WorldTilesController.OriginWorldTile == worldTile;
-            if (!isMyWorldTile)
-                return;
+            player = Script_Game.Game.GetPlayer();
+            playerLocation = player.location;
+        }
+        else
+        {
+            playerLocation = playerOverride.transform.position;
         }
         
-        var player = Script_Game.Game.GetPlayer();
         myComparisonLoc = myTransform.position;
+        diffVector = playerLocation - myComparisonLoc;
+
+        bool isPlayerInDirection = diffVector == DirectionsToVectorDict[directionToPlayer];
         
         // Test if Player is directly in that direction.
-        if (
-            player.location - myComparisonLoc == DirectionsToVectorDict[directionToPlayer]
-            && !isStencils
-        )
+        if (isPlayerInDirection && !isStencils)
         {
             myRenderer.material = myStencilMaterial;
-            player.MyMaterial = playerStencilMaterial;
+            SetPlayerMaterial(playerOverride, player, playerStencilMaterial);
+            
             isStencils = true;
         }
-        else if (
-            player.location - myComparisonLoc != DirectionsToVectorDict[directionToPlayer]
-            && isStencils
-        )
+        else if (!isPlayerInDirection && isStencils)
         {
             myRenderer.material = myDefaultMaterial;
-            player.MyMaterial = playerDefaultMaterial;
+            SetPlayerMaterial(playerOverride, player, playerDefaultMaterial);
+            
             isStencils = false;
         }
+    }
+
+    protected void SetPlayerMaterial(Transform playerOverride, Script_Player player, Material mat)
+    {
+        if (playerOverride == null && player != null)
+            player.MyMaterial = mat;
+        else if (playerOverride != null)
+            playerOverrideRenderer.material = mat;
+    }
+
+    /// <summary>
+    /// If referencing World Tile, save performance by only handling sorting when on current World Tile
+    /// </summary>
+    /// <returns>True if should check sorting, False if should skip checking sorting</returns>
+    protected bool IsOnMyWorldTile()
+    {
+        if (worldTile == null)
+            return true;
+        
+        isMyWorldTile = worldTile.WorldTilesController.OriginWorldTile == worldTile;
+        return isMyWorldTile;
     }
 }

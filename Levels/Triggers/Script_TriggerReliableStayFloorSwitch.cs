@@ -7,6 +7,8 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
     [SerializeField] private Transform switchUpGraphics;
     [SerializeField] private Transform switchDownGraphics;
     [SerializeField] private Light pointLight;
+    
+    public bool IsSFXDisabled { get; set; }
 
     protected override void HandleUpState(bool SFXOn)
     {
@@ -14,9 +16,12 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
         
         base.HandleUpState(SFXOn);
 
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.FloorSwitchUp, Script_SFXManager.SFX.FloorSwitchUpVol
-        );
+        if (!IsSFXDisabled)
+        {
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.FloorSwitchUp, Script_SFXManager.SFX.FloorSwitchUpVol
+            );
+        }
         
         if (switchUpGraphics != null)
             switchUpGraphics.gameObject.SetActive(true);
@@ -29,9 +34,12 @@ public class Script_TriggerReliableStayFloorSwitch : Script_TriggerReliableStay
     {
         base.HandleDownState(SFXOn);
 
-        GetComponent<AudioSource>().PlayOneShot(
-            Script_SFXManager.SFX.FloorSwitchDown, Script_SFXManager.SFX.FloorSwitchDownVol
-        );
+        if (!IsSFXDisabled)
+        {
+            GetComponent<AudioSource>().PlayOneShot(
+                Script_SFXManager.SFX.FloorSwitchDown, Script_SFXManager.SFX.FloorSwitchDownVol
+            );
+        }
         
         if (switchUpGraphics != null)
             switchUpGraphics.gameObject.SetActive(false);
