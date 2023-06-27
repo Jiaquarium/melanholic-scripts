@@ -43,7 +43,8 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
             foreach (var extraTileMap in extraTileMaps)
             {
                 Vector3Int tileLoc = extraTileMap.WorldToCell(tileWorldLocation);
-                if (!IsOutOfBounds(extraTileMap, tileLoc))  return false;
+                if (!IsOutOfBounds(extraTileMap, tileLoc))
+                    return false;
             }
         }
 
@@ -52,6 +53,42 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
         return IsOutOfBounds(tileMap, tileLocation);
     }
 
+    /// <summary>
+    /// Check if the desired position for the attack will land off tilemaps (anywhere player cannot move).
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <param name="currentLocation"></param>
+    /// <returns>True, if attack will land off tilemaps; False, if the attack will land on tilemap</returns>
+    public bool CheckAttackOffTilemap(Directions dir, Vector3 currentLocation)
+    {
+        Script_WorldTile[] worldTileMaps = Script_Game.Game.WorldTiles;
+        Vector3 desiredDirection = Script_Utils.GetDirectionToVectorDict()[dir];
+        Vector3Int tileWorldLocation = (currentLocation + desiredDirection).ToVector3Int();
+
+        // If using World Tiles, there should not be any off tilemap area
+        if (worldTileMaps != null && worldTileMaps.Length > 0)
+        {
+            Script_WorldTile worldTile = GetCurrentWorldTile(worldTileMaps, tileWorldLocation);
+            return worldTile == null;
+        }
+
+        Tilemap currentTileMap = GetCurrentTileMapOn(tileWorldLocation);
+        return currentTileMap == null;
+    }
+
+    public Tilemap GetCurrentTileMapOn(Vector3Int tileWorldLocation)
+    {
+        Tilemap tileMap = GetMainTilemap(Script_Game.Game.TileMap, tileWorldLocation);
+
+        if (tileMap == null)
+            tileMap = GetExtraTilemap(Script_Game.Game.ExtraTileMaps, tileWorldLocation);
+        
+        if (tileMap == null)
+            tileMap = GetStairsTilemap(Script_Game.Game.StairsTileMaps, tileWorldLocation);
+        
+        return tileMap;
+    }
+    
     public Script_WorldTile GetCurrentWorldTile(Script_WorldTile[] worldTileMaps, Vector3Int tileWorldLocation)
     {
         return worldTileMaps.FirstOrDefault(worldTile => {
@@ -63,13 +100,83 @@ public class Script_PlayerCheckCollisions : Script_CheckCollisions
             return !IsOutOfBounds(worldTile.TileMap, tileLoc);
         });
     }
+
+    /// <summary>
+    /// Get the Main Tilemap the location is on.
+    /// </summary>
+    /// <param name="tileMap">Main tilemap (not extra e.g. Ballroom Upper Deck)</param>
+    /// <param name="tileWorldLocation">Location to check on tilemap</param>
+    /// <returns>Main Tilemap (Game) the location is on; null, if not on the Main Tilemap</returns>
+    public Tilemap GetMainTilemap(Tilemap tileMap, Vector3Int tileWorldLocation)
+    {
+        Vector3Int tileLocation = tileMap.WorldToCell(tileWorldLocation);
+        if (!IsOutOfBounds(tileMap, tileLocation))
+            return tileMap;
+        
+        return null;
+    }
+
+    /// <summary>
+    /// Get the Extra Tilemap (e.g. Ballroom Upper Deck) that the location is on.
+    /// </summary>
+    /// <param name="extraTileMaps">Extra tile maps from Game</param>
+    /// <param name="tileWorldLocation">Location to check on tilemap</param>
+    /// <returns>Extra Tilemap the location is on; null, if not on an extra tilemap</returns>
+    public Tilemap GetExtraTilemap(Tilemap[] extraTileMaps, Vector3Int tileWorldLocation)
+    {
+        if (extraTileMaps != null && extraTileMaps.Length > 0)
+        {
+            foreach (var extraTileMap in extraTileMaps)
+            {
+                Vector3Int tileLoc = extraTileMap.WorldToCell(tileWorldLocation);
+                if (!IsOutOfBounds(extraTileMap, tileLoc))
+                    return extraTileMap;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Get the Stairs Tilemap (e.g. Ballroom Stairs) that the location is on.
+    /// </summary>
+    /// <param name="stairsTileMaps">Extra Stairs maps from Game</param>
+    /// <param name="tileWorldLocation">Location to check on tilemap</param>
+    /// <returns>Extra Tilemap the location is on; null, if not on an extra tilemap</returns>
+    public Tilemap GetStairsTilemap(Script_StairsTilemap[] stairs, Vector3Int tileWorldLocation)
+    {
+        if (stairs != null && stairs.Length > 0)
+        {
+            foreach (var stair in stairs)
+            {
+                Tilemap stairTileMap = stair.GetComponent<Tilemap>();
+                Vector3Int tileLoc = stairTileMap.WorldToCell(tileWorldLocation);
+                if (!IsOutOfBounds(stairTileMap, tileLoc))
+                    return stairTileMap;
+            }
+        }
+
+        return null;
+    }
     
+    /// <summary>
+    /// Check if location is on tilemap. Tile map from (xyz) to (xz).
+    /// </summary>
+    /// <param name="tileMap"></param>
+    /// <param name="tileLocation"></param>
+    /// <returns>True if tilemap does not contain tileLocation; False if tilemap contains tileLocation</returns>
     private bool IsOutOfBounds(Tilemap tileMap, Vector3Int tileLocation)
     {
-        // tiles map from (xyz) to (xz)
         return !tileMap.HasTile(tileLocation);
     }
 
+    /// <summary>
+    /// Overrides Check Collisions if handling desired movement onto Stairs.
+    /// </summary>
+    /// <param name="loc"></param>
+    /// <param name="dir"></param>
+    /// <param name="desiredMove"></param>
+    /// <returns>True if using stairs handler for movement</returns>
     protected override bool ModifyElevation(Vector3 loc, Directions dir, ref Vector3 desiredMove)
     {
         Vector3? newDesiredMoveWithElevation = stairsHandler?.CheckStairsTilemaps(

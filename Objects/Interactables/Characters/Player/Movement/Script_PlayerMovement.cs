@@ -151,6 +151,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
     public bool IsEmphasizeWalk { get; set; }
 
+    public Script_PlayerCheckCollisions PlayerCheckCollisions => playerCheckCollisions;
+
     private Player MyPlayer => player.RewiredInput;  
     
     // ------------------------------------------------------------------

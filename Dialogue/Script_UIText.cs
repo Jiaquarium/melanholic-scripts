@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-05-22 18:46:00
+// Last created by UI Exporter at 2023-06-20 14:04:17
 
 using System.Collections;
 using System.Collections.Generic;
@@ -353,7 +353,7 @@ public class Script_UIText
     "good-ending_the-end_type",
     new Model_LanguagesUI
     {
-        EN = @"RĖŇù Ů×ůĉŚū"
+        EN = @"RĖŇù ŮẋůĉŚū"
     }
 },
 {
@@ -367,28 +367,28 @@ public class Script_UIText
     "good-ending_the-end_type_zalgo0",
     new Model_LanguagesUI
     {
-        EN = @"Űţýs ĵ×ûŰĖĜ"
+        EN = @"Űţýs ĵẋûŰĖĜ"
     }
 },
 {
     "good-ending_the-end_type_zalgo1",
     new Model_LanguagesUI
     {
-        EN = @"ġŉŒŢ Ä×ïÈĳĥ"
+        EN = @"ġŉŒŢ ÄẋïÈĳĥ"
     }
 },
 {
     "good-ending_the-end_type_zalgo2",
     new Model_LanguagesUI
     {
-        EN = @"ŖĀŁő s×šças"
+        EN = @"ŖĀŁő sẋšças"
     }
 },
 {
     "good-ending_the-end_type_zalgo3",
     new Model_LanguagesUI
     {
-        EN = @"ăĲÑĢ E×Ďąõà"
+        EN = @"ăĲÑĢ EẋĎąõà"
     }
 },
 {

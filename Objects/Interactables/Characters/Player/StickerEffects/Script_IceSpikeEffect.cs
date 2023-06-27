@@ -6,9 +6,9 @@ using UnityEngine;
 public class Script_IceSpikeEffect : Script_StickerEffect
 {
     [SerializeField] private Script_IceSpikeAttack iceSpikeAttack;
-    [SerializeField] private float shakeTime; 
-    [SerializeField] private float shakeAmp; 
-    [SerializeField] private float shakeFreq;
+    public static float ShakeTime = 0.6f; 
+    public static float ShakeAmp = 2f; 
+    public static float ShakeFreq = 1f;
     
     public override void Effect()
     {
@@ -17,13 +17,6 @@ public class Script_IceSpikeEffect : Script_StickerEffect
         
         // NOTE Ensure the triggered Effect animation time <= time we remain in Effect state.
         player.AnimatorEffectTrigger();
-
-        Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
-            shakeTime,
-            shakeAmp,
-            shakeFreq,
-            null
-        );
     }
 
     protected override void OnEquip()

@@ -12,11 +12,17 @@ public class Script_LevelBehavior : MonoBehaviour
     
     [SerializeField] private bool isNoFadeInBgm;
     [SerializeField] private Script_Snow snowEffect;
+    
+    [SerializeField] protected Script_VCamera distanceVCam;
+    
+    // ARCHIVE
     [SerializeField] private Script_VCamera levelVCam;
 
     [SerializeField] private Script_BoundingVolume boundingVolume;
 
     public bool IsNoFadeInBgm => isNoFadeInBgm;
+    
+    public Script_VCamera DistanceVCam => distanceVCam;
     
     public Script_VCamera LevelVCam
     {

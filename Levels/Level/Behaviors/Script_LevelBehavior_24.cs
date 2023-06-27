@@ -142,7 +142,10 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
             
             // stop heartbeat bg music and stop pulsing animation of pillars
             if (heartBeatBgThemePlayer != null)
-                DestroyBgThemePlayer();
+            {
+                // Fade out bgThemePlayer first to avoid sound click
+                heartBeatBgThemePlayer.FadeOutStop(DestroyBgThemePlayer, FadeSpeeds.XFast.ToFadeTime());
+            }
 
             foreach (Script_Tracker tracker in pillars)
                 tracker.Done();

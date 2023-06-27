@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Script_CutSceneNPCCreator : MonoBehaviour
 {
-    public Script_CutSceneNPC CutSceneNPCPrefab;
-    public Script_CutSceneNPC_Melz CutSceneNPCMelzPrefab;
-    
     public void SetupCutSceneNPC(
         Script_CutSceneNPC cutSceneNPC,
         List<Script_StaticNPC> NPCs,

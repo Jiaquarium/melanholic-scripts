@@ -137,12 +137,24 @@ public class Script_VCamManager : MonoBehaviour
 
     public void Shake(float duration, float amp, float freq, Action cb = null)
     {
-        GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
+        // Check if distance cam is being used
+        Script_VCamera currentDistanceVCam = Script_Game.Game.levelBehavior.DistanceVCam;
+
+        if (currentDistanceVCam != null)
+            currentDistanceVCam.GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
+        else
+            GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
     }
 
     public void StopShake()
     {
-        GetComponent<Script_CameraShake>().InitialState();
+        // Check if distance cam is being used
+        Script_VCamera currentDistanceVCam = Script_Game.Game.levelBehavior.DistanceVCam;
+
+        if (currentDistanceVCam != null)
+            currentDistanceVCam.GetComponent<Script_CameraShake>().InitialState();
+        else
+            GetComponent<Script_CameraShake>().InitialState();
     }
 
     public void SetCinemachineBlendUpdateMethod(CinemachineBrain.BrainUpdateMethod updateMethod)

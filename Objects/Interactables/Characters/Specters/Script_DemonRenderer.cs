@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Script_DemonRenderer : MonoBehaviour
 {
-    [SerializeField] private Script_Demon parent;
+    // [SerializeField] private Script_Demon parent;
 
     /* =============================================================        
         ANIMATION FUNCS BEGIN: called from animation
@@ -12,7 +12,7 @@ public class Script_DemonRenderer : MonoBehaviour
     // called from: Demon_Default_swallowed-heart-ending
     private void FinishSwallowed()
     {
-        parent.FinishSwallowed();
+        // parent.FinishSwallowed();
     }
     /* =============================================================    
         END

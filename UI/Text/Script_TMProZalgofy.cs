@@ -70,6 +70,15 @@ public class Script_TMProZalgofyTester : Editor
         Script_TMProZalgofy t = (Script_TMProZalgofy)target;
         if (GUILayout.Button("Zalgofy"))
             t.Zalgofy();
+        
+        if (GUILayout.Button("Check Glitch Letters"))
+        {
+            foreach (char ch in Script_Utils.glitchLetters)
+            {
+                if (!Char.IsLetterOrDigit(ch))
+                    Dev_Logger.Debug($"Char.IsLetterOrDigit({ch}) {Char.IsLetterOrDigit(ch)}; {ch} is NOT letter or digit");
+            }
+        }
     }
 }
 #endif

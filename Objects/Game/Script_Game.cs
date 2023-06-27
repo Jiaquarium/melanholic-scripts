@@ -52,7 +52,6 @@ public class Script_Game : MonoBehaviour
     public Script_InteractableObjectHandler interactableObjectHandler;
     public Script_InteractableObjectCreator interactableObjectCreator;
     public Script_DemonHandler demonHandler;
-    public Script_DemonCreator demonCreator;
     public Script_MovingNPCCreator movingNPCCreator;
     public Script_CutSceneNPCCreator cutSceneNPCCreator;
     public Script_SavePointCreator savePointCreator;
@@ -201,6 +200,7 @@ public class Script_Game : MonoBehaviour
     [SerializeField] private List<Script_LevelBehavior> wellsWorldLevels;
     [SerializeField] private List<Script_LevelBehavior> celestialGardensWorldLevels;
     [SerializeField] private List<Script_LevelBehavior> xxxWorldLevels;
+    [SerializeField] private List<Script_LevelBehavior> tileMapMetaDataLevels;
     
     // ------------------------------------------------------------------
     // Spawn points
@@ -1002,6 +1002,12 @@ public class Script_Game : MonoBehaviour
         return match != null;
     }
 
+    public bool GetIsTileMapMetaDataMap()
+    {
+        var match = tileMapMetaDataLevels.FirstOrDefault(level => level == levelBehavior);
+        return match != null;
+    }
+
     /* =======================================================================
         _LEVEL MANAGEMENT_
     ======================================================================= */
@@ -1448,11 +1454,6 @@ public class Script_Game : MonoBehaviour
         _NPCs_
     ======================================================================= */
 
-    public void SetupCutSceneNPC(Script_CutSceneNPC cutSceneNPC)
-    {
-        cutSceneNPCCreator.SetupCutSceneNPC(cutSceneNPC, NPCs, cutSceneNPCs);
-    }
-
     public void SetupMovingNPC(Script_MovingNPC movingNPC, bool isInitialize)
     {
         movingNPCCreator.SetupMovingNPC(movingNPC, NPCs, movingNPCs, isInitialize);
@@ -1774,20 +1775,6 @@ public class Script_Game : MonoBehaviour
     /* =======================================================================
         _DEMONS_
     ======================================================================= */
-
-    public void CreateDemons(bool[] spawnState)
-    {
-        demonCreator.CreateDemons(
-            spawnState,
-            Levels.levelsData[level].DemonsData,
-            demons
-        );
-    }
-
-    public void SetupDemons(Transform demonsParent, bool[] demonsState)
-    {
-        demonCreator.SetupDemons(demonsParent, demonsState, demons);
-    }
 
     void DestroyDemons()
     {

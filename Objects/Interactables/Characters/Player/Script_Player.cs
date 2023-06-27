@@ -92,6 +92,8 @@ public class Script_Player : Script_Character
         get => playerMovementHandler.DefaultAnimatorController;
     }
 
+    public Script_PlayerCheckCollisions PlayerCheckCollisions => playerMovementHandler.PlayerCheckCollisions;
+
     public PlayableDirector Director
     {
         get => director;

@@ -14,6 +14,7 @@ public class Script_CameraShake : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
+    // Note: if calling shake from Main Cam, should always check if there's a Distance VCam active first
     public void Shake(float duration, float amp, float freq, Action cb)
     {
         // If disabled, don't shake but still handle waiting to call callback

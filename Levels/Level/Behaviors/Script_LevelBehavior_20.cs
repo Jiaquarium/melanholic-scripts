@@ -496,19 +496,13 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         if (Ursie.IsAutoMoveTimelineDone)
             UrsieDirector.playableAsset = null;
         
-        // If Wells World or XXXWorld is done and Cel Gardens is not done ("R2 Day 2")
-        // Ensure player is not on the Cel Gardens entrance either (since Myne approaches the Cel Gardens painting)
-        bool isImpliedR2Day2 = (game.WellsWorldBehavior.isMooseQuestDone || game.KTVRoom2Behavior.IsPuzzleComplete)
-            && !game.GardenLabyrinthBehavior.isPuzzleComplete
-            && !isMyneR2CutsceneDone;
-        
         Vector3 fromCelestialGardensSpawn = celestialGardensExit.data.playerSpawn;
         Vector3 playerSpawnedPosition = game.GetPlayer().transform.position;
         bool fromCelGardensDefaultEntrance = fromCelestialGardensSpawn == playerSpawnedPosition;
         
         Dev_Logger.Debug($"fromCelGardensDefaultEntrance {fromCelGardensDefaultEntrance} (fromCelestialGardensSpawn {fromCelestialGardensSpawn} playerSpawnedPosition: {playerSpawnedPosition})");
         
-        if (isImpliedR2Day2 && !fromCelGardensDefaultEntrance)
+        if (GetIsImpliedR2Day2() && !fromCelGardensDefaultEntrance)
         {
             Script_BackgroundMusicManager.Control.PauseBgmOnSetup();
             
@@ -520,6 +514,19 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         else
         {
             MyneDirector.gameObject.SetActive(false);
+        }
+
+        // If Wells World or XXXWorld is done (and did not just complete them that day, to prevent playing the cutscene
+        // upon exiting the world after completion) and Cel Gardens is not done ("R2 Day 2").
+        // Also, ensure player not on the Cel Gardens entrance either (since Myne approaches the Cel Gardens painting)
+        bool GetIsImpliedR2Day2()
+        {
+            return (
+                (game.WellsWorldBehavior.isMooseQuestDone && !game.WellsWorldBehavior.isCurrentMooseQuestComplete)
+                || (game.KTVRoom2Behavior.IsPuzzleComplete && !game.KTVRoom2Behavior.IsCurrentPuzzleComplete)
+            )
+            && !game.GardenLabyrinthBehavior.isPuzzleComplete
+            && !isMyneR2CutsceneDone;
         }
     }
 

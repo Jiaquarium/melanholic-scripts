@@ -440,13 +440,19 @@ public class Script_TransitionManager : MonoBehaviour
         {
             case (Endings.Good):
                 goodEndingController.InitialState();
-                GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
+                StartCoroutine(WaitToPlayGoodEndingTimeline());
                 break;
             case (Endings.True):
                 GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 5);
                 break;
             case (Endings.Dream):
                 break;
+        }
+
+        IEnumerator WaitToPlayGoodEndingTimeline()
+        {
+            yield return new WaitForSecondsRealtime(Script_GoodEndingController.WaitToPlayGoodEndingTimeAfterFadeOut);
+            GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 4);
         }
     }
 

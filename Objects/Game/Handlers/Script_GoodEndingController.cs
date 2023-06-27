@@ -9,6 +9,8 @@ using UnityEditor;
 
 public class Script_GoodEndingController : MonoBehaviour
 {
+    public static float WaitToPlayGoodEndingTimeAfterFadeOut = 0.25f;
+    
     [SerializeField] private Canvas endingsCanvas;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Script_GlitchFXManager glitchFXManager;

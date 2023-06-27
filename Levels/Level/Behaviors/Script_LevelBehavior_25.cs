@@ -563,6 +563,9 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         Dev_Logger.Debug("OnEndElleniaHurtCutScene");
 
         didStabCutScene = true;
+        
+        // Set volume before level fades in Bgm to avoid click (Bgm audio mixer should not be used at this point)
+        Script_BackgroundMusicManager.Control.SetVolume(0f, BGMParam);
 
         // Wait in silence before teleporting to Hallway and BGM starting again
         StartCoroutine(WaitToTeleport());

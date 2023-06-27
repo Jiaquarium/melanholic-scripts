@@ -226,12 +226,13 @@ public class Script_CrackableStats : Script_CharacterStats
         
         if (isScreenShakeShatter)
         {
-            Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
+            Script_VCamManager.VCamMain.Shake(
                 shakeTime,
                 shakeAmp,
                 shakeFreq,
                 null
             );
+
             isScreenShakeShatter = false;
         }
 

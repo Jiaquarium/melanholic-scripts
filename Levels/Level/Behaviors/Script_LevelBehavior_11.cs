@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_11 : Script_LevelBehavior
 {
-    public Script_SavePoint sp;
     public bool isInitialize = true;
     [SerializeField] private float waitTimeToLockSFX;
     [SerializeField] private float doorLockTime;
@@ -60,7 +59,6 @@ public class Script_LevelBehavior_11 : Script_LevelBehavior
     public override void Setup()
     {
         game.GetPlayer().SetInvisible(false);
-        game.SetupSavePoint(sp, isInitialize);
         isInitialize = false;
     }
 }

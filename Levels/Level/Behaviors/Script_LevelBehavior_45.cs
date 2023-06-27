@@ -6,6 +6,18 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// For Special Intro (Player comes in with Lantern)
+/// 1.  OnEnable: OnEnableLanternSFXReactionSetup()
+///     This will wait waitAfterOnEnableFadeOutBgmTime (1.5s) and take 0.25s to fade out BGM. Because the custom
+///     special fade is 2s, Bgm will already be set to 0f before OnBlackScreenDone event is fired which sets vol to 0f
+///     and plays Lantern On SFX.
+/// 2.  After level fades in and player is set to interact, OnLevelInitComplete is called, calling HandleLanternSFXReaction
+///     HandleLanternSFXReaction then waits onEntranceWaitBeforeQuestSFXTime to player Quest SFX 
+/// Note:
+///   - For this Special Intro, specialCaseFadeInTime and specialCaseWaitInBlackTime should define the transition times
+///     always regardless if it's initial entrance or not; thus we 
+/// </summary>
 public class Script_LevelBehavior_45 : Script_LevelBehavior
 {
     // ==================================================================
@@ -52,13 +64,6 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
     [SerializeField] private float totemSFXExtraWaitTime;
     [SerializeField] private Animator totemAnimator;
     private Script_CameraShake activeShakeCamera;
-
-    // ------------------------------------------------------------------
-    // VCam
-    [Space][Header("V Cam")][Space]
-    [SerializeField] private Script_VCamera distanceVCam;
-
-    // ------------------------------------------------------------------
 
     // Should not be saved in state because this quest should be repeatable on
     // subsequent runs.
@@ -110,7 +115,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
 
     void Awake()
     {
-        activeShakeCamera = Script_VCamManager.VCamMain.CameraShake;
+        activeShakeCamera = distanceVCam.GetComponent<Script_CameraShake>();
     }
     
     protected override void Update()
@@ -299,6 +304,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
             // Note: MUST SET for custom fade behavior to work properly
             levelCustomFadeBehavior.IsSpecialFadeIn = true;
             levelCustomFadeBehavior.IsOptOutInitial = true;
+            levelCustomFadeBehavior.DidCheckSpecialCaseFadeIn = true;
         }
     }
     
@@ -315,6 +321,7 @@ public class Script_LevelBehavior_45 : Script_LevelBehavior
             // Note: MUST SET for custom fade behavior to work properly
             levelCustomFadeBehavior.IsSpecialWaitInBlack = true;
             levelCustomFadeBehavior.IsOptOutInitial = true;
+            levelCustomFadeBehavior.DidCheckSpecialCaseWaitInBlack = true;
         }
     }
     

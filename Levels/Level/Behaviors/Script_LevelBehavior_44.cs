@@ -57,17 +57,11 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     [SerializeField] private Script_TransitionManager transitionManager;
     [SerializeField] private Script_MapNotification mapNotification;
     [SerializeField] private Script_LevelCustomFadeBehavior levelCustomFadeBehavior;
-    public bool IsSpecialIntro => (game.faceOffCounter == 2 || Const_Dev.IsSpecialIntroOnEntrances) && !didIntro;
-    private bool isSpecialIntroFraming;
     
-    // ------------------------------------------------------------------
-    // VCam
-    [Space][Header("V Cam")][Space]
-    [SerializeField] private Script_VCamera distanceVCam;
-
-    // ------------------------------------------------------------------
-
+    private bool isSpecialIntroFraming;
     private bool didMapNotification;
+    
+    public bool IsSpecialIntro => (game.faceOffCounter == 2 || Const_Dev.IsSpecialIntroOnEntrances) && !didIntro;
 
     protected override void OnEnable()
     {

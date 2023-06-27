@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+// ARCHIVE
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_3 : Script_LevelBehavior
 {
@@ -16,44 +17,44 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
     /* ======================================================================= */
     
     
-    public Transform demonsParent;
-    public Script_MovingNPC Ero;
-    public Script_DialogueNode[] triggerNodes;
-    [SerializeField] private Script_DialogueNode onPRCSTimelineDoneNode;
-    public Script_DialogueManager dm;
-    [SerializeField] private PlayableDirector ErasDirector;
-    [SerializeField] private Script_VCamera VCamLB3;
-    [SerializeField] private Script_PRCSPlayer IntroPlayerPart1;
-    [SerializeField] private Script_PRCSPlayer IntroPlayerPart2;
+    // public Transform demonsParent;
+    // public Script_MovingNPC Ero;
+    // public Script_DialogueNode[] triggerNodes;
+    // [SerializeField] private Script_DialogueNode onPRCSTimelineDoneNode;
+    // public Script_DialogueManager dm;
+    // [SerializeField] private PlayableDirector ErasDirector;
+    // [SerializeField] private Script_VCamera VCamLB3;
+    // [SerializeField] private Script_PRCSPlayer IntroPlayerPart1;
+    // [SerializeField] private Script_PRCSPlayer IntroPlayerPart2;
 
     /// =======================================================================
     /// Ero Intro START
     /// =======================================================================
-    public Transform EroIntroParent;
-    public Transform EroIntroTriggersParent;
+    // public Transform EroIntroParent;
+    // public Transform EroIntroTriggersParent;
     /// Ero Intro END
     /// =======================================================================
 
-    public Script_BgThemePlayer EroBgThemePlayerPrefab;
+    // public Script_BgThemePlayer EroBgThemePlayerPrefab;
     
-    protected override void OnEnable()
-    {
+    // protected override void OnEnable()
+    // {
         // ErasDirector.stopped += OnErasMovesDone;
         // Script_PRCSEventsManager.OnPRCSDone += PRCSDoneReaction;
-    }
+    // }
 
-    protected override void OnDisable()
-    {
+    // protected override void OnDisable()
+    // {
         // ErasDirector.stopped -= OnErasMovesDone;
         // Script_PRCSEventsManager.OnPRCSDone -= PRCSDoneReaction;
-    }
+    // }
     
-    public override void Cleanup() {
+    // public override void Cleanup() {
         // if (isDone)     game.DestroyNPCs();
-    }
+    // }
     
-    public override bool ActivateTrigger(string Id)
-    {
+    // public override bool ActivateTrigger(string Id)
+    // {
         // if (
         //     (
         //         (Id == "room_1" && activeTriggerIndex == 0 )
@@ -85,97 +86,97 @@ public class Script_LevelBehavior_3 : Script_LevelBehavior
         //     return true;
         // }
 
-        return false;
-    }    
+    //     return false;
+    // }    
     
 
     /// <summary>
     /// Set Demon states
     /// </summary>
-    public override void EatDemon(int Id) {
-        demonSpawns[Id] = false;
-    }
+    // public override void EatDemon(int Id) {
+    //     demonSpawns[Id] = false;
+    // }
 
     /// <summary> =============================================================
     /// NextNodeAction(s) START
     /// </summary> ============================================================
     /// Called from NextNodeAction after moving cut scene finishes
-    public void ErasMoveToGuardExitCutScene()
-    {
-        game.ChangeStateCutScene();
-        GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
-    }
+    // public void ErasMoveToGuardExitCutScene()
+    // {
+    //     game.ChangeStateCutScene();
+    //     GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 0);
+    // }
     /// <summary>
     /// (1) Eras finishes farewell dialogue 
     /// </summary>
-    public void DefaultCamera()
-    {
-        Script_VCamManager.VCamMain.SwitchToMainVCam(VCamLB3);
-        game.ChangeStateInteract();
-    }
-    public void PRCSKelsingorIntro()
-    {
-        game.ChangeStateCutScene();
-        IntroPlayerPart1.Play();
-    }
+    // public void DefaultCamera()
+    // {
+    //     Script_VCamManager.VCamMain.SwitchToMainVCam(VCamLB3);
+    //     game.ChangeStateInteract();
+    // }
+    // public void PRCSKelsingorIntro()
+    // {
+    //     game.ChangeStateCutScene();
+    //     IntroPlayerPart1.Play();
+    // }
     // Called from onPRCSTimelineDoneNode NextNodeAction
     // after part2 timeline is done (scrolling to Magic Circle) 
-    public void OnPart2NodeDone()
-    {
-        // Remove PRCS
-        IntroPlayerPart2.Stop();
-    }
+    // public void OnPart2NodeDone()
+    // {
+    //     // Remove PRCS
+    //     IntroPlayerPart2.Stop();
+    // }
     /// NextNodeAction(s) END
     /// ===========================================================================
     
-    private void PRCSDoneReaction(Script_PRCSPlayer PRCSPlayer)
-    {
-        Dev_Logger.Debug("PRCS is Done");
-        // GetComponent<Script_PRCSPlayer>().Stop(() => OnDone());
-        if (PRCSPlayer == IntroPlayerPart1)
-        {
-            Dev_Logger.Debug("PART 1 PRCS DONE!!!");
+    // private void PRCSDoneReaction(Script_PRCSPlayer PRCSPlayer)
+    // {
+    //     Dev_Logger.Debug("PRCS is Done");
+    //     // GetComponent<Script_PRCSPlayer>().Stop(() => OnDone());
+    //     if (PRCSPlayer == IntroPlayerPart1)
+    //     {
+    //         Dev_Logger.Debug("PART 1 PRCS DONE!!!");
 
-            // Play part 2
-            IntroPlayerPart2.Play();
-        }
-        else if (PRCSPlayer == IntroPlayerPart2)
-        {
-            Dev_Logger.Debug("PART 2 PRCS DONE!!!");
+    //         // Play part 2
+    //         IntroPlayerPart2.Play();
+    //     }
+    //     else if (PRCSPlayer == IntroPlayerPart2)
+    //     {
+    //         Dev_Logger.Debug("PART 2 PRCS DONE!!!");
 
-            dm.StartDialogueNode(onPRCSTimelineDoneNode, SFXOn: false);
-        }
-    }
+    //         dm.StartDialogueNode(onPRCSTimelineDoneNode, SFXOn: false);
+    //     }
+    // }
 
-    private void OnErasMovesDone(PlayableDirector aDirector)
-    {
-        Ero.FaceDirection(Directions.Down);
-        DefaultCamera();
-        game.ChangeStateInteract();
-    }
+    // private void OnErasMovesDone(PlayableDirector aDirector)
+    // {
+    //     Ero.FaceDirection(Directions.Down);
+    //     DefaultCamera();
+    //     game.ChangeStateInteract();
+    // }
 
-    public override void Setup()
-    {
-        /// <summary> 
-        /// Demon Handlers: initialize state
-        /// </summary> 
-        if (!isActivated)
-        {
-            demonSpawns = new bool[demonsParent.childCount];
-            for (int i = 0; i < demonSpawns.Length; i++)
-                demonSpawns[i] = true;
-        }
+    // public override void Setup()
+    // {
+    //     /// <summary> 
+    //     /// Demon Handlers: initialize state
+    //     /// </summary> 
+    //     if (!isActivated)
+    //     {
+    //         demonSpawns = new bool[demonsParent.childCount];
+    //         for (int i = 0; i < demonSpawns.Length; i++)
+    //             demonSpawns[i] = true;
+    //     }
         
-        game.SetupDemons(demonsParent, demonSpawns);
+    //     // game.SetupDemons(demonsParent, demonSpawns);
         
-        // game.SetupMovingNPC(Ero, !isActivated);
+    //     // game.SetupMovingNPC(Ero, !isActivated);
         
-        // EroIntroParent.gameObject.SetActive(true);
-        // EroIntroTriggersParent.gameObject.SetActive(true);
+    //     // EroIntroParent.gameObject.SetActive(true);
+    //     // EroIntroTriggersParent.gameObject.SetActive(true);
   
-        EroIntroParent.gameObject.SetActive(false);
-        EroIntroTriggersParent.gameObject.SetActive(false);    
+    //     EroIntroParent.gameObject.SetActive(false);
+    //     EroIntroTriggersParent.gameObject.SetActive(false);    
         
-        isActivated = true;
-    }
+    //     isActivated = true;
+    // }
 }

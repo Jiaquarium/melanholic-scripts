@@ -5,13 +5,19 @@ using System.Linq;
 using UnityEngine.Events;
 
 /// <summary>
-/// Special cases will override any other checks.
-/// Special cases are only checked once on the very first entrance.
-/// They will only occur once per play.
+/// Special Cases Notes:
+/// - Special cases will override any other checks.
+/// - Special cases are only checked once on the very first entrance.
+/// - Special cases will NOT normally override the initial fade; after the special case, the initial fade occurs,
+///   and only then do the default fade times occur.
+/// - They will only occur once per play.
 /// </summary>
 public class Script_LevelCustomFadeBehavior : MonoBehaviour
 {
     [SerializeField] private bool isSpecialCase;
+    [Tooltip("Allow special cases check to always be called. DidCheckSpecialCaseFadeIn can be set by handlers.")]
+    [SerializeField] private bool isAlwaysCheckSpecialCases;
+    [Tooltip("Set to skip initial transition fade times for Level. Useful if Special Cases act as initial fades.")]
     [SerializeField] private bool isOptOutInitial;
     [Tooltip("Set to configure level of transition fade for Level")]
     [SerializeField] private Script_Exits.TransitionFades transitionFade;
@@ -54,10 +60,10 @@ public class Script_LevelCustomFadeBehavior : MonoBehaviour
     public float WaitInBlackTime => IsNotInitialWaitInBlack ? waitInBlackTime : waitInBlackTimeInitial;
 
     public float SpecialCaseFadeInTime { get; set; }
-    public bool DidCheckSpecialCaseFadeIn { get; private set; }
+    public bool DidCheckSpecialCaseFadeIn { get; set; }
     public bool IsSpecialFadeIn { get; set; }
     public float SpecialCaseWaitInBlackTime { get; set; }
-    public bool DidCheckSpecialCaseWaitInBlack { get; private set; }
+    public bool DidCheckSpecialCaseWaitInBlack { get; set; }
     public bool IsSpecialWaitInBlack { get; set; }
     
     void OnValidate()
@@ -141,7 +147,9 @@ public class Script_LevelCustomFadeBehavior : MonoBehaviour
         time = SpecialCaseFadeInTime;
         isSpecial = IsSpecialFadeIn;
 
-        DidCheckSpecialCaseFadeIn = true;
+        if (!isAlwaysCheckSpecialCases)
+            DidCheckSpecialCaseFadeIn = true;
+        
         return hasSpecialCaseSetter;
     }
     
@@ -155,7 +163,9 @@ public class Script_LevelCustomFadeBehavior : MonoBehaviour
         time = SpecialCaseWaitInBlackTime;
         isSpecial = IsSpecialWaitInBlack;
 
-        DidCheckSpecialCaseWaitInBlack = true;
+        if (!isAlwaysCheckSpecialCases)
+            DidCheckSpecialCaseWaitInBlack = true;
+        
         return hasSpecialCaseSetter;
     }
 }

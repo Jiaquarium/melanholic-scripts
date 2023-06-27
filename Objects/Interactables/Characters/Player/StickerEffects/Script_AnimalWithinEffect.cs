@@ -16,7 +16,7 @@ public class Script_AnimalWithinEffect : Script_StickerEffect
 
         eatAttack.Eat(player.FacingDirection);
 
-        Script_VCamManager.VCamMain.GetComponent<Script_CameraShake>().Shake(
+        Script_VCamManager.VCamMain.Shake(
             shakeTime,
             shakeAmp,
             shakeFreq,
