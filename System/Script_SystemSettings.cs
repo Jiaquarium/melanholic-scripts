@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class Script_SystemSettings : MonoBehaviour
 {
-    [SerializeField] private int vSyncCount = 1;
-    [SerializeField] private int targetFrameRate = 60;
+    private static int vSyncCount = 1;
+    private static int targetFrameRate = 60;
     [SerializeField] private FullScreenMode currentScreenMode = 0;
 
     public static void DisableMouse()
@@ -19,6 +19,8 @@ public class Script_SystemSettings : MonoBehaviour
     public void TargetFrameRate()
     {
         QualitySettings.vSyncCount = vSyncCount;
+        
+        // Unity ignores the value of targetFrameRate if you set vSyncCount.
         Application.targetFrameRate = targetFrameRate;
     }
     

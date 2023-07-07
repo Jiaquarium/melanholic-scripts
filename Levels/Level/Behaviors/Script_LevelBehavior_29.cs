@@ -44,8 +44,6 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
     protected override void OnEnable()
     {
         base.OnEnable();
-
-        HandleMelbaFlipX();
     }
 
     protected override void OnDisable() {
@@ -150,6 +148,7 @@ public class Script_LevelBehavior_29 : Script_LevelBehavior
         
         puppetMaster.Setup(puppetMasterStartState.faceDirection, puppetMasterStartState);
         puppetMaster.InitializeOnLevel(puppetMasterStartState, levelGrid.transform);
+        HandleMelbaFlipX();
     }
 
     public override void InitialState()
