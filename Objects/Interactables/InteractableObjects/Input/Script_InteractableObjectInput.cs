@@ -11,12 +11,20 @@ using TMPro;
 /// </summary>
 public class Script_InteractableObjectInput : Script_InteractableObject
 {
+    private enum SfxOnInteract
+    {
+        None = 0,
+        CCTV = 1
+    }
+    
     [SerializeField] private Script_InputManager inputManager;
     [SerializeField] private InputMode inputMode;
     [SerializeField] private TMP_InputField inputField;
     
     [SerializeField] private UnityEvent successAction;
     [SerializeField] private UnityEvent failureAction;
+
+    [SerializeField] private SfxOnInteract sfxOnInteract; 
     
     protected override void ActionDefault()
     {
@@ -31,6 +39,16 @@ public class Script_InteractableObjectInput : Script_InteractableObject
             Script_DialogueManager.DialogueManager.isInputMode = true;
             
             MyAction.SafeInvoke();
+
+            // Handle SFX on interaction
+            switch (sfxOnInteract)
+            {
+                case SfxOnInteract.CCTV:
+                    Script_SFXManager.SFX.PlayCCTVOpen();
+                    break;
+                default:
+                    break;
+            }
             
             // Set input canvas active
             inputManager.Initialize(inputMode, inputField, inputManager.CCTVInputCanvasGroup);

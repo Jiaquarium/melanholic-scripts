@@ -294,6 +294,9 @@ public class Script_SFXManager : MonoBehaviour
     public AudioClip PaintingEntranceCancel;
     [Range(0f, 1f)] public float PaintingEntranceCancelVol;
 
+    public AudioClip CCTVOpen;
+    [Range(0f, 1f)] public float CCTVOpenVol;
+
     private bool isDialogueTypingInProgress;
 
     public void PlayQuestProgress(Action cb = null)
@@ -556,6 +559,11 @@ public class Script_SFXManager : MonoBehaviour
     public void PlayPaintingEntranceCancel()
     {
         SFXSource.PlayOneShot(PaintingEntranceCancel, PaintingEntranceCancelVol);
+    }
+
+    public void PlayCCTVOpen()
+    {
+        SFXSource.PlayOneShot(CCTVOpen, CCTVOpenVol);
     }
     
     // Continuous SFX
