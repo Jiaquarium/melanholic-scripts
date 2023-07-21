@@ -315,6 +315,29 @@ public class Script_TransitionManager : MonoBehaviour
                 bgm.SetVolume(1f);
             });
 
+            // Framing (Thin looks better here, since ConstantDefault covers too much of each scene)
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                isNoAnimation: false,
+                cb: HandleFinalAwakeningNotification
+            );
+
+            if (allQuestsDoneCb != null)
+                onAllPuzzlesDoneCutsceneDone = allQuestsDoneCb;
+            
+            didPlayAllPuzzlesDoneCutScene = true;
+
+            return true;
+        }
+
+        if (defaultCb != null)
+            defaultCb();
+        
+        return false;
+
+        void HandleFinalAwakeningNotification()
+        {
             switch (type)
             {
                 case (FinalNotifications.Ids):
@@ -330,19 +353,7 @@ public class Script_TransitionManager : MonoBehaviour
                     GetComponent<Script_TimelineController>().PlayableDirectorPlayFromTimelines(0, 6);
                     break;
             }
-
-            if (allQuestsDoneCb != null)
-                onAllPuzzlesDoneCutsceneDone = allQuestsDoneCb;
-            
-            didPlayAllPuzzlesDoneCutScene = true;
-
-            return true;
         }
-
-        if (defaultCb != null)
-            defaultCb();
-        
-        return false;
     }
 
     public void FinalCutSceneAwakening()

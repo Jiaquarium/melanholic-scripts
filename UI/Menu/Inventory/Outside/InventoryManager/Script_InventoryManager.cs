@@ -28,6 +28,7 @@ public class Script_InventoryManager : MonoBehaviour
     
     [SerializeField] private Script_SBookOverviewController sBookController;
     [SerializeField] private Script_ItemsController itemsController;
+    [SerializeField] private List<Script_SBookViewController> sBookViewControllers;
     
     [SerializeField] private Script_ItemChoices stickerChoices;
     [SerializeField] private Script_ItemChoices collectibleChoices;
@@ -61,12 +62,14 @@ public class Script_InventoryManager : MonoBehaviour
 
     void OnEnable()
     {
-        Script_CombatEventsManager.OnHitCancelUI += OnHitCancelUI;        
+        Script_CombatEventsManager.OnHitCancelUI += OnHitCancelUI;
+        Script_MenuEventsManager.OnExitMenu += OnExitMenuInitialize;
     }
 
     void OnDisable()
     {
         Script_CombatEventsManager.OnHitCancelUI -= OnHitCancelUI;
+        Script_MenuEventsManager.OnExitMenu -= OnExitMenuInitialize;
     }
     
     // ------------------------------------------------------------------
@@ -275,6 +278,13 @@ public class Script_InventoryManager : MonoBehaviour
             itemDescription.Text = item.Description;
             SetItemDescription(itemDescription, true);
         }
+    }
+
+    // Handle reinit'ing state here, since InventoryManager stays active throughout game 
+    private void OnExitMenuInitialize()
+    {
+        Dev_Logger.Debug($"{name}: Initialize inventory, equipment, items slots");
+        sBookViewControllers.ForEach(controller => controller.InitializeState());
     }
 
     // ------------------------------------------------------------------

@@ -900,7 +900,12 @@ public class Script_LevelBehavior_48 : Script_LevelBehavior
     // onEntranceR2Node
     public void OnEntranceR2DialogueDone()
     {
-        game.ChangeStateInteract();
+        // Remove framing set from TransitionManager:OnCurrentQuestDone for Final Awakening
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: game.ChangeStateInteract
+        );   
     }
 
     public void OnPushBackDoneR2DialogueDone()

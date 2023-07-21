@@ -156,6 +156,11 @@ public class Script_Start : MonoBehaviour
             {
                 t.saveCurseControl.Save();
             }
+
+            if (GUILayout.Button("Crunch Transition"))
+            {
+                t.CrunchTransitionDown();
+            }
         }
     }
     #endif

@@ -82,7 +82,8 @@ public class Script_AutoMoveTimelineCycler : MonoBehaviour
 
     private void WaitToPlayTimeline(int i, Directions waitFaceDir)
     {
-        if (myDirector == null)
+        // Fix bug: Coroutine couldn't be started because the the game object 'LatteDirector' is inactive!
+        if (myDirector == null || !gameObject.activeInHierarchy)
             return;
         
         myDirector.playableAsset = timelines[i];

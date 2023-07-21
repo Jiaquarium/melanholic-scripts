@@ -69,6 +69,16 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         GrandMirror.SetPlayerMutationActive(false);
     }
 
+    public void MyMaskFraming()
+    {
+        // Framing (Thin because ConstantDefault hides too much of scene)
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            isNoAnimation: false
+        );
+    }
+    
     // Mask Effect timeline: very beginning
     public void MyMaskFadeOutBgm()
     {
@@ -111,7 +121,12 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
 
     public void MyMaskEffectTimelineDone()
     {
-        game.ChangeStateInteract();
+        // Remove framing from PlayMyMaskEffect
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+            cb: game.ChangeStateInteract
+        );
     }
 
     // ------------------------------------------------------------------

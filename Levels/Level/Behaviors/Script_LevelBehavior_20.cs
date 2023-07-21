@@ -77,6 +77,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     // -------------------------------------------------------------------------------------
     // Dialogue
     [SerializeField] private Script_DialogueNode selfPortraitThought;
+    [SerializeField] private Script_DialogueNode[] weekendElderPsychicNodes;
     
     // -------------------------------------------------------------------------------------
     // Myne Cut Scene
@@ -443,6 +444,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             
             // Open Painting Entrances.
             SetPaintingEntrancesActive(true);
+
+            SetupElderR2Dialogue();
         }
         else
         {
@@ -459,6 +462,8 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 // (e.g. Grand Mirror Cut Scene Timeline)
                 if (game.levelBehavior == this)
                     Script_BackgroundMusicManager.Control.Play(isGlitchedBGM);
+                
+                SetupElderR2Dialogue();
             }
             else
             {
@@ -470,6 +475,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             if (!game.IsInGrandMirrorRoom())
                 SetPaintingEntrancesActive(false);
         }
+
+        // Elder dialogue after Spike Room and R2 explains the others have returned to their worlds
+        void SetupElderR2Dialogue() => KingEclaire.SwitchPsychicNodes(weekendElderPsychicNodes);
     }
 
     public override void Setup()

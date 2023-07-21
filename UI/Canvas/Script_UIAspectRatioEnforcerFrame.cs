@@ -392,7 +392,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
 
             GUILayout.Label("Constant Framing Size", EditorStyles.boldLabel);
 
-            if (GUILayout.Button("Letter Box (ConstantThin)"))
+            if (GUILayout.Button("Letter Box No Anim (Constant Thin)"))
             {
                 t.EndingsLetterBox(true, framing: Framing.ConstantThin, isNoAnimation: true);
             }
@@ -405,7 +405,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
                 t.EndingsLetterBox(true, framing: Framing.ConstantThin);
             }
 
-            if (GUILayout.Button("Open Letter Box (Default Thin)"))
+            if (GUILayout.Button("Open Letter Box (Constant Default)"))
             {
                 if (!Application.isPlaying)
                     return;
@@ -413,7 +413,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
                 t.EndingsLetterBox(true, framing: Framing.ConstantDefault);
             }
 
-            if (GUILayout.Button("Close Letter Box (Constant Thin)"))
+            if (GUILayout.Button("Close Letter Box (Constant Default)"))
             {
                 if (!Application.isPlaying)
                     return;

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-03-22 18:39:26
+// Last created by Dialogue Exporter at 2023-07-21 11:48:50
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3451,6 +3451,45 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 },
 {
     "ballroom_king-eclaire_psychic3",
+    new Model_Languages
+    {
+        speaker = "{57}",
+        EN = new string[]
+        {
+                @"<b>We will lock our doors and drive out these wicked forces!</b>",
+        },
+        
+    }
+},
+{
+    "ballroom_king-eclaire_psychic_r2",
+    new Model_Languages
+    {
+        speaker = "{57}",
+        EN = new string[]
+        {
+                @"No need for alarm! The residents have all but safely returned to their nightly routines.",
+                @"Mark my words... under my hand we shall all be able to return...",
+        },
+        
+    }
+},
+{
+    "ballroom_king-eclaire_psychic1_r2",
+    new Model_Languages
+    {
+        speaker = "{57}",
+        EN = new string[]
+        {
+                @"We shall witness the {22} firsthand from here!",
+                @"I have already made the preparations.",
+                @"<b>At exactly</b> {49}<b>, it will finally be complete...</b>",
+        },
+        
+    }
+},
+{
+    "ballroom_king-eclaire_psychic2_r2",
     new Model_Languages
     {
         speaker = "{57}",

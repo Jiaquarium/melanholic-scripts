@@ -43,7 +43,7 @@ public class Script_SBookViewController : Script_SlotsViewController
     protected override void HandleExitInput() {
         sBookInputManager.HandleExitInput();
     }
-    
+
     public override void Setup()
     {
         base.Setup();
