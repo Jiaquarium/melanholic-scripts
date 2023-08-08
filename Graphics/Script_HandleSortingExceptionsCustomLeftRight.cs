@@ -19,6 +19,11 @@ public class Script_HandleSortingExceptionsCustomLeftRight : Script_HandleSortin
     [Tooltip("Z bounds when player is left of target (use stencil behind). Positive value means player is farther right.")]
     [SerializeField] private Vector2 playerLeftXBounds;
 
+    // When this is true, only need playerFrontStencil, myBehindStencil, and playerRightBounds, since not checking left
+    // direction, which is the only case that will force sort player behind
+    [Tooltip("Only check for bounds on right side of myTransform. When true, if player on L side, will set to default.")]
+    [SerializeField] private bool isOnlyCheckRight;
+
     bool isPlayerInFront;
     
     // Start is called before the first frame update
@@ -72,14 +77,22 @@ public class Script_HandleSortingExceptionsCustomLeftRight : Script_HandleSortin
         }
         else
         {
-            // Handle player on L
-            bool isZEqualOrApproxPast = diffVector.z >= playerLeftZBounds.x
-                && diffVector.z <= playerLeftZBounds.y;
-            bool isXApproxAdjacent = diffVector.x >= playerLeftXBounds.x
-                && diffVector.x <= playerLeftXBounds.y;
-            
-            isPlayerInDirection = isZEqualOrApproxPast && isXApproxAdjacent;
-            isPlayerInFront = false;
+            if (isOnlyCheckRight)
+            {
+                // If only checking right, handle player on L by ignoring further calcs, use default material
+                isPlayerInDirection = false;
+            }
+            else
+            {
+                // Handle player on L
+                bool isZEqualOrApproxPast = diffVector.z >= playerLeftZBounds.x
+                    && diffVector.z <= playerLeftZBounds.y;
+                bool isXApproxAdjacent = diffVector.x >= playerLeftXBounds.x
+                    && diffVector.x <= playerLeftXBounds.y;
+                
+                isPlayerInDirection = isZEqualOrApproxPast && isXApproxAdjacent;
+                isPlayerInFront = false;
+            }
         }
         
         // Handle if Player is in direction that needs sorting adjustment.

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-07-21 11:48:50
+// Last created by Dialogue Exporter at 2023-08-08 10:43:54
 
 using System.Collections;
 using System.Collections.Generic;
@@ -7402,6 +7402,44 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Wait what is this place?",
                 @"You wouldn’t know, would you?",
                 @"You aren’t going to be much use anymore, are you?",
+        },
+        
+    }
+},
+{
+    "xxx-world_stage_take-a-bow_player_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"Hey, you can do this yourself.",
+                @"Just like your sketches... one line at a time...",
+                @"...but why are you on stage now?",
+                @"Stop kidding around, that’s not you up there...",
+                @"See look,| they’re missing a––",
+        },
+        metadata = new Model_Languages.Metadata[]
+        {
+                null,
+                null,
+                null,
+                null,
+                new Model_Languages.Metadata
+                {
+                    autoNext = true, 
+                },
+        }
+    }
+},
+{
+    "xxx-world_stage_take-a-bow_end_player_thought",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"C’mon...| breathe|.|.|.| that’s not you anymore.",
         },
         
     }

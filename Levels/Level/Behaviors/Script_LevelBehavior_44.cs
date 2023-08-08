@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Rendering.Universal;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,6 +22,7 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
 
     public bool didIntro;
     public bool didDontKnowMeThought;
+    public bool didTakeABow;
     
     // ==================================================================
 
@@ -38,6 +40,14 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     [SerializeField] private float waitBeforeIntroTime;
     [SerializeField] private Script_DialogueNode introNode;
     [SerializeField] private Script_DialogueNode dontKnowMeNode;
+    [SerializeField] private Script_DialogueNode takeABowNode;
+    [SerializeField] private Script_DialogueNode takeABowDoneNode;
+    [SerializeField] private float waitBeforeTakeABowDoneDialogueTime;
+
+    [SerializeField] private float filmGrainEndingIntensity;
+    [SerializeField] private float filmGrainBlendTime;
+    [SerializeField] private Script_PostProcessingManager postProcessingManager;
+    [SerializeField] private Script_PostProcessingSettings postProcessingSettings;
 
     // ------------------------------------------------------------------
     // Intro Only
@@ -242,6 +252,34 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         game.ChangeStateInteract();
     }
 
+    public void StartFilmGrain()
+    {
+        postProcessingManager.InitialState();
+
+        FilmGrain filmgrain = postProcessingManager.SetFilmGrainTakeABow(0f);
+        postProcessingManager.BlendInFilmGrainIntensity(filmgrain, filmGrainEndingIntensity, filmGrainBlendTime);
+    }
+    
+    public void TakeABowPRCS()
+    {
+        var bgmManager = Script_BackgroundMusicManager.Control;
+        bgmManager.FadeOutXFast(bgmManager.Pause, Const_AudioMixerParams.ExposedBGVolume);
+
+        // Take A Bow should only have vignette, no film grain during the cutscene
+        postProcessingSettings.CloseFilmGrain();
+        
+        var vignette = postProcessingSettings.SetVignetteTakeABow();
+        Script_PostProcessingSettings.SetRefVignetteActive(ref vignette, true);
+
+        Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.TakeABow);
+    }
+
+    public void OnTakeABowDoneDialogueDone()
+    {
+        game.ChangeStateInteract();
+        UnlockRaveStageAchievement();
+    }
+
     // ------------------------------------------------------------------
     // Unity Event Triggers
     
@@ -259,7 +297,54 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     // Rave Stage Trigger
     public void HandleRaveAchievement()
     {
-        Script_AchievementsManager.Instance.UnlockRaveStage();
+        // If already did cut scene doublecheck Rave Stage achievement in case Player exited out before achievement 
+        if (didTakeABow)
+            UnlockRaveStageAchievement();
+        else
+        {
+            didTakeABow = true;
+            game.ChangeStateCutScene();
+            Script_DialogueManager.DialogueManager.StartDialogueNode(takeABowNode);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Timeline Signals
+
+    public void OnTakeABowDone()
+    {
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.TakeABow,
+            isNoAnimation: true
+        );
+
+        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.TakeABow, () => {
+            glitchFXManager.SetBlend(0f);
+            
+            // Close Vignette and reset Film Grain props
+            postProcessingManager.InitialState();
+
+            var bgmManager = Script_BackgroundMusicManager.Control;
+            bgmManager.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            bgmManager.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+            bgmManager.UnPause();
+            
+            StartCoroutine(WaitToTakeABowDoneDialogue());
+        });
+
+        IEnumerator WaitToTakeABowDoneDialogue()
+        {
+            yield return new WaitForSeconds(waitBeforeTakeABowDoneDialogueTime);
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(takeABowDoneNode);
+        }
+    }
+
+    public void StartGlitch()
+    {
+        glitchFXManager.SetXHigh();
+        glitchFXManager.SetBlend(1f);
     }
 
     // ------------------------------------------------------------------
@@ -402,6 +487,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
             vCamManager.SwitchToMainVCam(distanceVCam);
     }
 
+    private void UnlockRaveStageAchievement() => Script_AchievementsManager.Instance.UnlockRaveStage();
+
     // ------------------------------------------------------------------
     
     public override void Setup()
@@ -412,3 +499,19 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
             trigger.gameObject.SetActive(!didDontKnowMeThought);
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Script_LevelBehavior_44))]
+public class Script_LevelBehavior_44Tester : Editor
+{
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+
+        Script_LevelBehavior_44 t = (Script_LevelBehavior_44)target;
+        if (GUILayout.Button("Take A Bow PRCS"))
+        {
+            t.TakeABowPRCS();
+        }
+    }
+}
+#endif

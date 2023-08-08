@@ -17,6 +17,11 @@ public class Script_PostProcessingSettings : MonoBehaviour
     private static FilmGrainLookup FilmGrainTypeGoodEndingTheEnd = FilmGrainLookup.Medium2;
     private static float FilmGrainResponseGoodEndingTheEnd = 0.8f;
 
+    // Take a Bow
+    private static float VignetteIntensityTakeABow = 0.42f;
+    private static FilmGrainLookup FilmGrainTypeTakeABow = FilmGrainLookup.Medium3;
+    private static float FilmGrainResponseTakeABow = 0.8f;
+
     private Volume Volume {
         get
         {
@@ -109,6 +114,20 @@ public class Script_PostProcessingSettings : MonoBehaviour
         return vignette;
     }
 
+    public Vignette SetVignetteTakeABow()
+    {
+        Vignette vignette;
+        Volume.profile.TryGet(out vignette);
+        
+        if (vignette != null)
+        {
+            vignette.intensity.value = VignetteIntensityTakeABow;
+            vignette.smoothness.value = VignetteSmoothnessDefault;
+        }
+
+        return vignette;
+    }
+
     public FilmGrain SetFilmGrainGoodEndingTheEnd(float startingIntensity)
     {
         FilmGrain filmgrain;
@@ -119,6 +138,21 @@ public class Script_PostProcessingSettings : MonoBehaviour
             filmgrain.type.value = FilmGrainTypeGoodEndingTheEnd;
             filmgrain.intensity.value = startingIntensity;
             filmgrain.response.value = FilmGrainResponseGoodEndingTheEnd;
+        }
+
+        return filmgrain;
+    }
+
+    public FilmGrain SetFilmGrainTakeABow(float startingIntensity)
+    {
+        FilmGrain filmgrain;
+        Volume.profile.TryGet(out filmgrain);
+
+        if (filmgrain != null)
+        {
+            filmgrain.type.value = FilmGrainTypeTakeABow;
+            filmgrain.intensity.value = startingIntensity;
+            filmgrain.response.value = FilmGrainResponseTakeABow;
         }
 
         return filmgrain;

@@ -47,6 +47,14 @@ public class Script_PostProcessingManager : MonoBehaviour
         return filmgrain;
     }
 
+    public FilmGrain SetFilmGrainTakeABow(float startingIntensity)
+    {
+        FilmGrain filmgrain = globalVolume.SetFilmGrainTakeABow(startingIntensity);
+        Script_PostProcessingSettings.SetRefFilmGrainActive(ref filmgrain, true);
+        
+        return filmgrain;
+    }
+
     public void BlendInFilmGrainIntensity(FilmGrain filmgrain, float endingIntensity, float blendInTime)
     {
         currentFilmGrain = filmgrain;
@@ -66,6 +74,7 @@ public class Script_PostProcessingManager : MonoBehaviour
         Script_PostProcessingSettings.SetRefVignetteActive(ref vignette, false);
         
         globalVolume.CloseFilmGrain();
+        filmGrainTimer = 0f;
     }
 
     public void Setup()

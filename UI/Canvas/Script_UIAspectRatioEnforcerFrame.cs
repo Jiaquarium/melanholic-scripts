@@ -30,7 +30,8 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
         TheSealing = 6,
         ConstantDefault = 7,
         SeaVignette = 8,
-        AwakeningPortraits = 9
+        AwakeningPortraits = 9,
+        TakeABow = 10,
     }
     
     public static Script_UIAspectRatioEnforcerFrame Control;
@@ -56,6 +57,7 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
     [SerializeField] private Script_CanvasConstantPixelScaler IdsDeadCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler seaVignetteCanvasScaler;
     [SerializeField] private Script_CanvasConstantPixelScaler awakeningPortraitsCanvasScaler;
+    [SerializeField] private Script_CanvasConstantPixelScaler takeABowCanvasScaler;
     
     [Tooltip("Border heights as a percent of Rect")]
     [SerializeField] private float minBorderHeight;
@@ -137,6 +139,10 @@ public class Script_UIAspectRatioEnforcerFrame : MonoBehaviour
             case (Framing.AwakeningPortraits):
                 minBorderHeight = minBorderHeightDefault;
                 canvasScaler = awakeningPortraitsCanvasScaler;
+                break;
+            case (Framing.TakeABow):
+                minBorderHeight = minBorderHeightDefault;
+                canvasScaler = takeABowCanvasScaler;
                 break;
             
             // No dynamic sizing needed for framing

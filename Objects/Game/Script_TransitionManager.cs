@@ -564,6 +564,9 @@ public class Script_TransitionManager : MonoBehaviour
             goodEndingOverlaysCanvas.gameObject.SetActive(false);
             trueEndingCanvasGroup.gameObject.SetActive(false);
 
+            // Reset grain & vignette
+            goodEndingController.PostProcessingInitialState();
+
             StartCoroutine(NextFrameToTitleScreen());
         }, isOver: true);
         

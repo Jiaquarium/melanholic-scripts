@@ -28,7 +28,8 @@ public class Script_PRCSManager : MonoBehaviour
         ElleniasHand,
         ToWeekend,
         IdsDead,
-        Sea
+        Sea,
+        TakeABow,
     }
     
     public static Script_PRCSManager Control;
@@ -63,6 +64,7 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_PRCS toWeekendPRCS;
     [SerializeField] private Script_PRCS IdsDeadPRCS;
     [SerializeField] private Script_PRCS seaVignettePRCS;
+    [SerializeField] private Script_PRCS takeABowPRCS;
 
     [SerializeField] private Script_GlitchFXManager glitchManager;
     [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
@@ -246,6 +248,15 @@ public class Script_PRCSManager : MonoBehaviour
                 seaVignettePRCS.PlayTimeline(0);
                 break;
 
+            case CustomTypes.TakeABow:
+                PRCSCanvasGroup.alpha = 1f;
+                PRCSCanvasGroup.gameObject.SetActive(true);
+                
+                takeABowPRCS.Setup();
+                takeABowPRCS.Open();
+                takeABowPRCS.PlayTimeline(0);
+                break;
+
             default:
                 break;
         }
@@ -273,6 +284,10 @@ public class Script_PRCSManager : MonoBehaviour
             
             case CustomTypes.Sea:
                 HidePRCS(seaVignettePRCS, FadeSpeeds.None, cb);
+                break;
+            
+            case CustomTypes.TakeABow:
+                HidePRCS(takeABowPRCS, FadeSpeeds.None, cb);
                 break;
 
             default:

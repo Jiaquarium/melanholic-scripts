@@ -44,7 +44,9 @@ public class Script_LevelBehavior_27 : Script_LevelBehavior
 
         if (game.IsEileensMindQuestDone && game.RunCycle == Script_RunsManager.Cycle.Weekday)
         {
-            Script_GlitchFXManager.Control.SetBlend(1f);
+            var glitchFXManager = Script_GlitchFXManager.Control;
+            glitchFXManager.SetDefault();
+            glitchFXManager.SetBlend(1f);
             isGlitched = true;
         }
 

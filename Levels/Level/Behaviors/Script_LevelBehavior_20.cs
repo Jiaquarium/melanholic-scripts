@@ -455,7 +455,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             {
                 SetDynamicSpectersActive(false);
                 
-                Script_GlitchFXManager.Control.SetBlend(1f);
+                Script_GlitchFXManager glitchFXManager = Script_GlitchFXManager.Control;
+                glitchFXManager.SetDefault();
+                glitchFXManager.SetBlend(1f);
                 isGlitched = true;
                 
                 // Only change Bgm to "disturbing" when actually in this room, not from outside cut scene

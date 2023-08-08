@@ -104,6 +104,11 @@ public class Script_GoodEndingController : MonoBehaviour
         symbolsBgCanvasGroup.Open();
     }
 
+    /// <summary>
+    /// Reset grain and vignette
+    /// </summary>
+    public void PostProcessingInitialState() => postProcessingManager.InitialState();
+
     // ------------------------------------------------------------------
     // Unity Events
 
