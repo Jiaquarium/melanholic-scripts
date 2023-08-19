@@ -40,14 +40,22 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
     [SerializeField] private float waitBeforeIntroTime;
     [SerializeField] private Script_DialogueNode introNode;
     [SerializeField] private Script_DialogueNode dontKnowMeNode;
+
+    // ------------------------------------------------------------------
+    // Take A Bow PRCS
+    
+    [Space][Header("Take A Bow PRCS")][Space]
     [SerializeField] private Script_DialogueNode takeABowNode;
     [SerializeField] private Script_DialogueNode takeABowDoneNode;
     [SerializeField] private float waitBeforeTakeABowDoneDialogueTime;
-
     [SerializeField] private float filmGrainEndingIntensity;
     [SerializeField] private float filmGrainBlendTime;
     [SerializeField] private Script_PostProcessingManager postProcessingManager;
     [SerializeField] private Script_PostProcessingSettings postProcessingSettings;
+    [SerializeField] private float takeABowBgmFadeInTime;
+    [SerializeField] private float takeABowBgmFadeOutTime;
+    [SerializeField] private Script_BgThemePlayer takeABowBgThemePlayer;
+    private Coroutine takeABowFadeOutBgmCoroutine;
 
     // ------------------------------------------------------------------
     // Intro Only
@@ -96,6 +104,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone   -= OnMapNotificationTeletypeDone;
 
         SetDistanceCamInactive();
+        
+        // For safety, reset since modified in Take A Bow PRCS (can be left as not <1f vol if exit out next frame after PRCS)
+        ResetBgm2Extra();
     }
 
     void Start()
@@ -180,6 +191,66 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         }
 
         ballroomPaintingEntrance.DonePainting();
+    }
+
+    // Take a Bow PRCS Timeline
+    public void StartGlitch()
+    {
+        glitchFXManager.SetXHigh();
+        glitchFXManager.SetBlend(1f);
+    }
+
+    // Take a Bow PRCS Timeline
+    public void FadeOutTakeABowBgm()
+    {
+        Script_BackgroundMusicManager.Control.FadeOutExtra(
+           out takeABowFadeOutBgmCoroutine,
+           () => {
+                StartCoroutine(NextFrameResetBgm2());
+           },
+           takeABowBgmFadeOutTime,
+           Const_AudioMixerParams.ExposedBG2Volume,
+           isUnscaledTime: true
+        );
+
+        // Immediately set Bgm vol back to 1 (no fade) for an abrupt cut feel
+        IEnumerator NextFrameResetBgm2()
+        {
+            yield return null;
+            takeABowBgThemePlayer.SoftStop();
+            ResetBgm2Extra();
+        }
+    }
+
+    // Take a Bow PRCS Timeline
+    public void OnTakeABowDone()
+    {
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: false,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.TakeABow,
+            isNoAnimation: true
+        );
+
+        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.TakeABow, () => {
+            glitchFXManager.SetBlend(0f);
+            
+            // Close Vignette and reset Film Grain props
+            postProcessingManager.InitialState();
+
+            var bgmManager = Script_BackgroundMusicManager.Control;
+            bgmManager.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            bgmManager.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
+            bgmManager.UnPause();
+            
+            StartCoroutine(WaitToTakeABowDoneDialogue());
+        });
+
+        IEnumerator WaitToTakeABowDoneDialogue()
+        {
+            yield return new WaitForSeconds(waitBeforeTakeABowDoneDialogueTime);
+            
+            Script_DialogueManager.DialogueManager.StartDialogueNode(takeABowDoneNode);
+        }
     }
 
     // ------------------------------------------------------------------
@@ -272,6 +343,9 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         Script_PostProcessingSettings.SetRefVignetteActive(ref vignette, true);
 
         Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.TakeABow);
+
+        // Play Take A Bow Bgm as level Bgm is fading out for abrupt feel
+        takeABowBgThemePlayer.FadeInPlay(null, takeABowBgmFadeInTime);
     }
 
     public void OnTakeABowDoneDialogueDone()
@@ -306,45 +380,6 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
             game.ChangeStateCutScene();
             Script_DialogueManager.DialogueManager.StartDialogueNode(takeABowNode);
         }
-    }
-
-    // ------------------------------------------------------------------
-    // Timeline Signals
-
-    public void OnTakeABowDone()
-    {
-        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
-            isOpen: false,
-            framing: Script_UIAspectRatioEnforcerFrame.Framing.TakeABow,
-            isNoAnimation: true
-        );
-
-        Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.TakeABow, () => {
-            glitchFXManager.SetBlend(0f);
-            
-            // Close Vignette and reset Film Grain props
-            postProcessingManager.InitialState();
-
-            var bgmManager = Script_BackgroundMusicManager.Control;
-            bgmManager.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
-            bgmManager.FadeInXSlow(null, Const_AudioMixerParams.ExposedBGVolume);
-            bgmManager.UnPause();
-            
-            StartCoroutine(WaitToTakeABowDoneDialogue());
-        });
-
-        IEnumerator WaitToTakeABowDoneDialogue()
-        {
-            yield return new WaitForSeconds(waitBeforeTakeABowDoneDialogueTime);
-            
-            Script_DialogueManager.DialogueManager.StartDialogueNode(takeABowDoneNode);
-        }
-    }
-
-    public void StartGlitch()
-    {
-        glitchFXManager.SetXHigh();
-        glitchFXManager.SetBlend(1f);
     }
 
     // ------------------------------------------------------------------
@@ -463,6 +498,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         }
     }
 
+    // ------------------------------------------------------------------
+
     private void SetDoorsToSaloonActive(bool isActive)
     {
         doorsToSaloon.ForEach(door => door.gameObject.SetActive(isActive));
@@ -489,6 +526,17 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
 
     private void UnlockRaveStageAchievement() => Script_AchievementsManager.Instance.UnlockRaveStage();
 
+    private void ResetBgm2Extra()
+    {
+        Script_BackgroundMusicManager.Control.SetVolumeExtra(1f, Const_AudioMixerParams.ExposedBG2Volume);
+
+        if (takeABowFadeOutBgmCoroutine != null)
+        {
+            StopCoroutine(takeABowFadeOutBgmCoroutine);
+            takeABowFadeOutBgmCoroutine = null;
+        }
+    }
+
     // ------------------------------------------------------------------
     
     public override void Setup()
@@ -497,6 +545,8 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
 
         foreach (var trigger in stageTriggers)
             trigger.gameObject.SetActive(!didDontKnowMeThought);
+        
+        takeABowBgThemePlayer.gameObject.SetActive(false);
     }
 }
 

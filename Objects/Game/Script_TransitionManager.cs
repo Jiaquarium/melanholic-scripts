@@ -547,6 +547,7 @@ public class Script_TransitionManager : MonoBehaviour
         bgm.Play(thankYouThemeTrue);
     }
 
+    // Good Ending Timeline
     public void GoodEndingFadeOutBackToMainMenu()
     {
         var bgm = Script_BackgroundMusicManager.Control;
@@ -567,15 +568,10 @@ public class Script_TransitionManager : MonoBehaviour
             // Reset grain & vignette
             goodEndingController.PostProcessingInitialState();
 
-            StartCoroutine(NextFrameToTitleScreen());
+            // Show black screen text. ~2.25f delay at start of timeline (to match black screen at GoodEnding start).
+            // 2.0-2.5s looks the best to give some breathing room from The End screen.
+            Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.AfterGoodEnding);
         }, isOver: true);
-        
-        IEnumerator NextFrameToTitleScreen()
-        {
-            yield return null;
-            
-            ToTitleScreen();
-        }   
     }
 
     // Sealing Timeline

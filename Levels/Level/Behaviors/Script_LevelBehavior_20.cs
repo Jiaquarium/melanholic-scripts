@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using Cinemachine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,6 +30,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     ======================================================================= */
     public bool isKingIntroCutSceneDone;
     public bool isMyneR2CutsceneDone;
+    public bool isMyneTrueEndingCutsceneDone;
     
     // Archives
     public Seasons season;
@@ -59,7 +61,9 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private List<TimelineAsset> UrsieWalkPathTimelines;
     [SerializeField] private Script_DemonNPC KingEclaire;
     [SerializeField] private PlayableDirector MyneDirector;
+    [SerializeField] private PlayableDirector MyneTrueEndingDirector;
     [SerializeField] private Animator MyneNPC;
+    [SerializeField] private Animator MyneNPCTrueEnding;
 
     [SerializeField] private Script_DemonNPC Ids;
 
@@ -80,13 +84,28 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
     [SerializeField] private Script_DialogueNode[] weekendElderPsychicNodes;
     
     // -------------------------------------------------------------------------------------
-    // Myne Cut Scene
+    // Myne Cut Scene - R2
     [SerializeField] private float waitAfterInitToPlayMyneR2CutsceneTime;
     [Tooltip("Start time to avoid pause at beginning of track")]
     [SerializeField] private float lostMemoriesStartTime;
     [SerializeField] private Script_VCamera myneR2CutsceneVCam;
     [SerializeField] private Script_ExitMetadata celestialGardensExit;
     private bool isOnInitMyneR2Cutscene;
+
+    // -------------------------------------------------------------------------------------
+    // Myne Cut Scene - True Ending
+    [SerializeField] private float waitAfterInitToPlayMyneTrueEndingCutsceneTime;
+    [SerializeField] private Script_VCamera myneTrueEndingCutsceneVCam;
+    [SerializeField] private Script_VCamera myneTrueEndingPart2CutsceneVCam;
+    
+    [SerializeField] private Script_ExitMetadata wellsWorldExit;
+    [SerializeField] private Script_ExitMetadata xxxWorldExit;
+    [SerializeField] private Script_ExitMetadata urselksHallExit;
+
+    [SerializeField] private float myneLastOnesFadeInTime;
+    
+    [SerializeField] private Script_Marker myneTourFocalPoint;
+    private bool isOnInitMyneTrueEndingCutscene;
     
     // -------------------------------------------------------------------------------------
     // Deprecated
@@ -189,6 +208,20 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             }
 
             isOnInitMyneR2Cutscene = false;
+        }
+        else if (isOnInitMyneTrueEndingCutscene)
+        {
+            game.ChangeStateCutScene();
+
+            StartCoroutine(WaitToPlayMyneTrueEndingCutscene());
+
+            IEnumerator WaitToPlayMyneTrueEndingCutscene()
+            {
+                yield return new WaitForSecondsRealtime(waitAfterInitToPlayMyneTrueEndingCutsceneTime);
+                MyneTrueEndingDirector.Play();
+            }
+
+            isOnInitMyneTrueEndingCutscene = false;
         }
         else
             HandlePlayIdsRunAwayTimeline();
@@ -395,6 +428,62 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         MyneDirector.Stop();
     }
 
+    // MyneTrueEndingCutscene Timeline
+    public void PanToMyneTrueEndingTour()
+    {
+        // Set Blend Update Method to avoid jerky movement (default blend cams are set to Fixed Update)
+        // Switch VCam to Myne's True Ending VCam
+        Script_VCamManager.VCamMain.SetCinemachineBlendUpdateMethod(CinemachineBrain.BrainUpdateMethod.LateUpdate);
+        Script_VCamManager.VCamMain.SetNewVCam(myneTrueEndingCutsceneVCam);
+    }
+
+    // MyneTrueEndingCutscene Timeline
+    public void CutToMyneTrueEndingTourPart2()
+    {
+        Script_VCamManager.VCamMain.SwitchBetweenVCams(myneTrueEndingCutsceneVCam, myneTrueEndingPart2CutsceneVCam);
+
+        // Snap to Part2 VCam of Final Tour (walking down right side Ballroom) to avoid "catch up" motion at beginning
+        game.SnapCam(
+            myneTourFocalPoint.transform.position,
+            myneTourFocalPoint.transform,
+            myneTrueEndingPart2CutsceneVCam.CinemachineVirtualCamera
+        );
+    }
+
+    // MyneTrueEndingCutscene Timeline
+    public void FadeInLastOnesOnMyne()
+    {
+        var lastOnes = Script_ScarletCipherManager.Control.ScarletCipherLastOnes;
+
+        lastOnes.StartTrackingTarget(MyneNPCTrueEnding.transform);
+        lastOnes.FadeInOnPosition(
+            MyneNPCTrueEnding.transform.position,
+            myneLastOnesFadeInTime
+        );
+    }
+
+    // MyneTrueEndingCutscene Timeline
+    public void RevertVCamMyneTrueEndingTour()
+    {
+        // Switch back to main VCam (cut)
+        Script_VCamManager.VCamMain.SwitchToMainVCam(myneTrueEndingPart2CutsceneVCam);
+        Script_VCamManager.VCamMain.SetDefaultCinemachineBlendUpdateMethod();
+        
+        // Only deactivate NPC; we still need Director to be active to finish timeline.
+        MyneNPCTrueEnding.gameObject.SetActive(false);
+
+        // Reset Last Ones
+        Script_ScarletCipherManager.Control.ScarletCipherLastOnes.ForceClose();
+    }
+    
+    // MyneTrueEndingCutscene Timeline
+    public void OnMyneTrueEndingTourDone()
+    {
+        game.ChangeStateInteract();
+        MyneTrueEndingDirector.gameObject.SetActive(false);
+        MyneTrueEndingDirector.Stop();
+    }
+
     // ----------------------------------------------------------------------
 
     private void SetDynamicSpectersActive(bool isActive)
@@ -506,9 +595,17 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
         if (Ursie.IsAutoMoveTimelineDone)
             UrsieDirector.playableAsset = null;
         
+        Vector3 fromWellsWorldSpawn = wellsWorldExit.data.playerSpawn;
         Vector3 fromCelestialGardensSpawn = celestialGardensExit.data.playerSpawn;
+        Vector3 fromXxxWorldSpawn = xxxWorldExit.data.playerSpawn;
+        Vector3 fromUrselksHallSpawn = urselksHallExit.data.playerSpawn;
+
         Vector3 playerSpawnedPosition = game.GetPlayer().transform.position;
+        
+        bool fromWellsWorldDefaultEntrace = fromWellsWorldSpawn == playerSpawnedPosition;
         bool fromCelGardensDefaultEntrance = fromCelestialGardensSpawn == playerSpawnedPosition;
+        bool fromXxxWorldDefaultEntrance = fromXxxWorldSpawn == playerSpawnedPosition;
+        bool fromUrselksHallDefaultEntrance = fromUrselksHallSpawn == playerSpawnedPosition;
         
         Dev_Logger.Debug($"fromCelGardensDefaultEntrance {fromCelGardensDefaultEntrance} (fromCelestialGardensSpawn {fromCelestialGardensSpawn} playerSpawnedPosition: {playerSpawnedPosition})");
         
@@ -517,13 +614,35 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             Script_BackgroundMusicManager.Control.PauseBgmOnSetup();
             
             MyneDirector.gameObject.SetActive(true);
+            MyneTrueEndingDirector.gameObject.SetActive(false);
+
             MyneNPC.gameObject.SetActive(true);
             isOnInitMyneR2Cutscene = true;
             isMyneR2CutsceneDone = true;
         }
+        // Avoid activating Final Tour timeline if player first arrives in Ballroom at any of these entrances, since
+        // may appear buggy (Rin shouldn't be able to see Myne)
+        else if (
+            GetIsTrueEndingStart()
+            && !fromWellsWorldDefaultEntrace
+            && !fromCelGardensDefaultEntrance
+            && !fromXxxWorldDefaultEntrance
+            && !fromUrselksHallDefaultEntrance
+        )
+        {
+            Script_BackgroundMusicManager.Control.PauseBgmOnSetup();
+
+            MyneDirector.gameObject.SetActive(false);
+            MyneTrueEndingDirector.gameObject.SetActive(true);
+
+            MyneNPCTrueEnding.gameObject.SetActive(true);
+            isOnInitMyneTrueEndingCutscene = true;
+            isMyneTrueEndingCutsceneDone = true;
+        }
         else
         {
             MyneDirector.gameObject.SetActive(false);
+            MyneTrueEndingDirector.gameObject.SetActive(false);
         }
 
         // If Wells World or XXXWorld is done (and did not just complete them that day, to prevent playing the cutscene
@@ -537,6 +656,11 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
             )
             && !game.GardenLabyrinthBehavior.isPuzzleComplete
             && !isMyneR2CutsceneDone;
+        }
+
+        bool GetIsTrueEndingStart()
+        {
+            return !isMyneTrueEndingCutsceneDone && game.didGoodEnding;
         }
     }
 

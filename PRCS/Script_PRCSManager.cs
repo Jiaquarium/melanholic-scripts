@@ -30,9 +30,11 @@ public class Script_PRCSManager : MonoBehaviour
         IdsDead,
         Sea,
         TakeABow,
+        AfterGoodEnding,
     }
     
     public static Script_PRCSManager Control;
+
     [SerializeField] private CanvasGroup PRCSCanvasGroup;
     [SerializeField] private Canvas PRCSCanvas;
     [SerializeField] private Script_PRCS wellsJustOpenedPRCS;
@@ -65,6 +67,7 @@ public class Script_PRCSManager : MonoBehaviour
     [SerializeField] private Script_PRCS IdsDeadPRCS;
     [SerializeField] private Script_PRCS seaVignettePRCS;
     [SerializeField] private Script_PRCS takeABowPRCS;
+    [SerializeField] private Script_PRCS afterGoodEndingPRCS;
 
     [SerializeField] private Script_GlitchFXManager glitchManager;
     [SerializeField] private Script_MynesMirrorManager mynesMirrorManager;
@@ -256,6 +259,15 @@ public class Script_PRCSManager : MonoBehaviour
                 takeABowPRCS.Open();
                 takeABowPRCS.PlayTimeline(0);
                 break;
+            
+            case CustomTypes.AfterGoodEnding:
+                PRCSCanvasGroup.alpha = 1f;
+                PRCSCanvasGroup.gameObject.SetActive(true);
+                
+                afterGoodEndingPRCS.Setup();
+                afterGoodEndingPRCS.Open();
+                afterGoodEndingPRCS.PlayTimeline(0);
+                break;
 
             default:
                 break;
@@ -288,6 +300,10 @@ public class Script_PRCSManager : MonoBehaviour
             
             case CustomTypes.TakeABow:
                 HidePRCS(takeABowPRCS, FadeSpeeds.None, cb);
+                break;
+            
+            case CustomTypes.AfterGoodEnding:
+                HidePRCS(afterGoodEndingPRCS, FadeSpeeds.None, cb);
                 break;
 
             default:

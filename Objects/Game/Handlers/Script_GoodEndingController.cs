@@ -33,6 +33,10 @@ public class Script_GoodEndingController : MonoBehaviour
     [SerializeField] private float filmGrainEndingIntensity;
     [Tooltip("Ensure this is less than TheEndCliff CanvasGroup DISTORTER's active interval time")]
     [SerializeField] private float filmGrainBlendTime;
+
+    [Space][Header("After Good Ending PRCS")][Space]
+    [SerializeField] private float keepAfterGoodEndingTextUpTime;
+    [SerializeField][Range(0.25f, 1.0f)] private float waitInBlackAfterPRCSFadeOutTime;
     
     [Space][Header("Managers")][Space]
     [SerializeField] private Script_PostProcessingManager postProcessingManager;
@@ -109,6 +113,26 @@ public class Script_GoodEndingController : MonoBehaviour
     /// </summary>
     public void PostProcessingInitialState() => postProcessingManager.InitialState();
 
+    // Good Ending Timeline > AfterGoodEnding Timeline Typing Done
+    public void OnAfterGoodEndingPRCSTypingDone()
+    {
+        StartCoroutine(WaitToTitle());
+
+        IEnumerator WaitToTitle()
+        {
+            yield return new WaitForSecondsRealtime(keepAfterGoodEndingTextUpTime);
+
+            Script_PRCSManager.Control.ClosePRCSCustom(Script_PRCSManager.CustomTypes.AfterGoodEnding);
+            
+            yield return new WaitForSecondsRealtime(waitInBlackAfterPRCSFadeOutTime);
+
+            // Transition Manager's ToTitleScreen includes 1s delay, so instead, call scene change immediately,
+            // so we can define a shorter delay above with waitInBlackAfterPRCSFadeOutTime (0.25-0.5s). Shorter
+            // time feels better to connect the words more with title instead of isolating an entire new scene.
+            game.ToTitleFromTimeline();
+        }
+    }
+    
     // ------------------------------------------------------------------
     // Unity Events
 

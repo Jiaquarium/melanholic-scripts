@@ -11,7 +11,8 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_20 lvlModel = new Model_LevelBehavior_20(
             _isKingIntroCutSceneDone: LB20.isKingIntroCutSceneDone,
             _isMyneR2CutsceneDone: LB20.isMyneR2CutsceneDone,
-            
+            _isMyneTrueEndingCutsceneDone: LB20.isMyneTrueEndingCutsceneDone,
+
             // Archive
             _season: LB20.season,
             _entranceCutSceneDone: LB20.entranceCutSceneDone,
@@ -40,6 +41,7 @@ public class Script_SaveLoadLevelBehavior_20 : Script_SaveLoadLevelBehavior
         Model_LevelBehavior_20 lvlModel = data.levelsData.LB20;
         LB20.isKingIntroCutSceneDone    = lvlModel.isKingIntroCutSceneDone;
         LB20.isMyneR2CutsceneDone       = lvlModel.isMyneR2CutsceneDone;
+        LB20.isMyneTrueEndingCutsceneDone = lvlModel.isMyneTrueEndingCutsceneDone;
         
         // Archive
         LB20.season                     = lvlModel.season;

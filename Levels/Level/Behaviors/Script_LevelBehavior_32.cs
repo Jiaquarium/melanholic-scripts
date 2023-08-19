@@ -124,6 +124,7 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
     // ------------------------------------------------------------------
     // Dev Only TBD DELETE
     public string DEVELOPMENT_CCTVCodeInput;
+    private const float GoodEndingTheEndStartFrame = 2128;
 
     protected override void OnEnable()
     {
@@ -874,6 +875,21 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
         }
     }
 
+    // ------------------------------------------------------------------
+    // Dev Commands
+
+    public void DevPlayGoodEnding()
+    {
+        Script_TransitionManager.Control.StartEndingSequence(Script_TransitionManager.Endings.Good);
+    }
+
+    public void DevFastForwardGoodEndingTheEnd()
+    {
+        var director = Script_TransitionManager.Control.GetComponent<PlayableDirector>();
+        director.time = GoodEndingTheEndStartFrame / ((TimelineAsset)director.playableAsset).editorSettings.frameRate;
+        director.Evaluate();
+    }
+
     #if UNITY_EDITOR
     [CustomEditor(typeof(Script_LevelBehavior_32))]
     public class Script_LevelBehavior_32Tester : Editor
@@ -905,7 +921,12 @@ public class Script_LevelBehavior_32 : Script_LevelBehavior
 
             if (GUILayout.Button("Good Ending"))
             {
-                Script_TransitionManager.Control.StartEndingSequence(Script_TransitionManager.Endings.Good);
+                t.DevPlayGoodEnding();
+            }
+
+            if (GUILayout.Button("Fast Forward Good Ending"))
+            {
+                t.DevFastForwardGoodEndingTheEnd();
             }
         }
     }

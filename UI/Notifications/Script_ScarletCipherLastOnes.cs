@@ -32,12 +32,21 @@ public class Script_ScarletCipherLastOnes : MonoBehaviour
 
     private PlayableDirector playableDirector;
     private Script_CanvasGroupController canvasGroupController;
+
+    private bool IsTrackingTarget { get; set; }
+    private Transform CurrentTrackingTarget { get; set; }
     
     void OnEnable()
     {
         textCanvasGroup.Close();
         UpdateNumbers(Script_ScarletCipherManager.Control.ScarletCipherPublic);
         TeleportToPlayer();
+    }
+
+    void LateUpdate()
+    {
+        if (IsTrackingTarget && CurrentTrackingTarget != null)
+            TeleportToTarget(CurrentTrackingTarget.position);
     }
 
     /// <summary>
@@ -108,12 +117,37 @@ public class Script_ScarletCipherLastOnes : MonoBehaviour
         }
     }
 
+    public void FadeInOnPosition(Vector3 position, float _fadeInTime)
+    {
+        canvasGroupController.Open();
+        TeleportToTarget(position);
+
+        textCanvasGroup.FadeIn(_fadeInTime);
+    }
+
+    public void StartTrackingTarget(Transform target)
+    {
+        CurrentTrackingTarget = target;
+        IsTrackingTarget = true;
+    }
+
+    public void ForceClose()
+    {
+        InitialState();
+    }
+
     private void TeleportToPlayer()
     {
         var playerPosition = game.GetPlayer().transform.position;
 
         transform.position = Vector3.zero;
         worldSpaceCanvas.transform.position = playerPosition + offset;
+    }
+
+    private void TeleportToTarget(Vector3 position)
+    {
+        transform.position = Vector3.zero;
+        worldSpaceCanvas.transform.position = position + offset;
     }
 
     // ------------------------------------------------------------------
@@ -132,6 +166,9 @@ public class Script_ScarletCipherLastOnes : MonoBehaviour
     {
         canvasGroupController.Close();
         textCanvasGroup.Close();
+
+        IsTrackingTarget = false;
+        CurrentTrackingTarget = null;
     }
     
     public void Setup()

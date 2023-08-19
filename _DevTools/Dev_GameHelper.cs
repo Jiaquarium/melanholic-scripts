@@ -168,10 +168,10 @@ public class Dev_GameHelper : MonoBehaviour
             TestCaseKey1();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2))
             TestCaseKey2();
-        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha3))
-        //     TestCaseKey3();
-        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha4))
-        //     TestCaseKey4();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha3))
+            TestCaseKey3();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha4))
+            TestCaseKey4();
         // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha5))
         //     TestCaseKey5();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.F))
@@ -194,12 +194,14 @@ public class Dev_GameHelper : MonoBehaviour
 		{
 			SaveRestartOnLevel();
 		}
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.L))
+            BeforeGrandMirror();
 
         //  Replace these with necessary milestone cases
         void TestCaseKey1() => TeleportGrandMirrorR2();
         void TestCaseKey2() => PlayMaskRevealTimeline();
-        // void TestCaseKey3() => SpecialIntroWellsWorld();
-        // void TestCaseKey4() => SpecialIntroCelestialGardens();
+        void TestCaseKey3() => PlayGoodEnding();
+        void TestCaseKey4() => FastForwardGoodEnding();
         // void TestCaseKey5() => SpecialIntroXXXWorld();
 	}
 
@@ -800,7 +802,7 @@ public class Dev_GameHelper : MonoBehaviour
         
         hotelLobbyBehavior.didOpeningThoughtFaceOff0 = true;
         hotelLobbyBehavior.didOpeningThoughtFaceOff1 = true;
-        hotelLobbyBehavior.didOpeningThoughtCodeRemains0 = true;
+        hotelLobbyBehavior.didOpeningThoughtCodeRemains0 = false;
         hotelLobbyBehavior.didOpeningThoughtCodeRemains1 = true;
         
         MynesGrandMirrorRoomBehavior.IsDone = true;
@@ -889,6 +891,13 @@ public class Dev_GameHelper : MonoBehaviour
     // Freedom Milestone States
     // These should not save state.
     
+    /// <summary>
+    /// Milestone AUGUST
+    /// </summary>
+    public void PlayGoodEnding() => hotelLobbyBehavior.DevPlayGoodEnding();
+
+    public void FastForwardGoodEnding() => hotelLobbyBehavior.DevFastForwardGoodEndingTheEnd();
+
     /// <summary>
     /// Milestone MAY
     /// </summary>

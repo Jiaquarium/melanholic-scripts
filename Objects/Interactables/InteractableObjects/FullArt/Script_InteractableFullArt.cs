@@ -12,11 +12,18 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
     
     [SerializeField] private Script_BgThemePlayer bgThemePlayer;
     [SerializeField] private AudioMixer audioMixer;
+
+    [SerializeField] private bool isFadeFullArtBgThemePlayer;
+    [SerializeField] private FadeSpeeds fullArtBgThemeFadeInSpeed;
+    [SerializeField] private FadeSpeeds onFullArtCloseBgmFadeInSpeed;
     
     // Note: For prompt to work properly, MUST include an empty dialogue node in dialogueNodes,
     // so we can properly reset isPromptDialogueDone at the end of dialogue.
     [SerializeField] private Script_DialogueNode promptDialogueNode;
     [SerializeField] private UnityEvent _preFullArtAction;
+
+    [Tooltip("Use when there is no dialogue node after Full Art that usually would reset isPromptDialogueDone by calling OnMyDialogueEnd")]
+    [SerializeField] private bool forceResetPromptOnFullArtRemoveDone;
     
     private bool isFullArtMode;
     private bool isInputDisabled;
@@ -57,7 +64,7 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
                 RemoveFullArt();
             }
 
-            isPromptDialogueDone = false;
+            ResetPrompt();
         }
     }
     
@@ -201,7 +208,11 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         void PlayBgThemePlayerUntracked()
         {
             bgThemePlayer.isUntrackedSource = true;
-            bgThemePlayer.gameObject.SetActive(true);
+
+            if (isFadeFullArtBgThemePlayer)
+                bgThemePlayer.FadeInPlay(null, fullArtBgThemeFadeInSpeed.GetFadeTime());
+            else
+                bgThemePlayer.gameObject.SetActive(true);
         }
     }
 
@@ -244,6 +255,9 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         isInputDisabled = true;
         var player = game.GetPlayer();
 
+        // Cache paused Bgm; the flag may be re-inited if Full Art fades out (calling InitializeState) before music fades
+        bool didPauseBgmOnThisFullArt = didPauseBgm;
+
         // Dialogue Manager OnEndDialogue may have set Player back to Interact.
         // In that case, Player should be set to Viewing until Full Art is completely removed.
         // fullArtManager will set player back to Interact.
@@ -254,6 +268,10 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
         {
             isFullArtMode = false;
             isInputDisabled = false;
+            
+            if (forceResetPromptOnFullArtRemoveDone)
+                ResetPrompt();
+
             InitializeState();
         });
 
@@ -277,22 +295,38 @@ public class Script_InteractableFullArt : Script_InteractableObjectText
                         // Unpause whatever was playing before
                         game.UnPauseNPCBgTheme();
                         
-                        if (didPauseBgm)
+                        if (didPauseBgmOnThisFullArt)
                         {
                             Dev_Logger.Debug($"{name} Unpause bgm");
                             game.UnPauseBgMusic();
                             didPauseBgm = false;
                         }
                         
-                        Script_AudioMixerVolume.SetVolume(
-                            audioMixer, Const_AudioMixerParams.ExposedBGVolume, 1f
-                        );
+                        if (isFadeFullArtBgThemePlayer)
+                        {
+                            Script_BackgroundMusicManager.Control.FadeInExtra(
+                                out musicFadeCoroutine,
+                                null,
+                                onFullArtCloseBgmFadeInSpeed.GetFadeTime(),
+                                Const_AudioMixerParams.ExposedBGVolume
+                            );
+                        }
+                        else
+                        {
+                            Script_AudioMixerVolume.SetVolume(
+                                audioMixer, Const_AudioMixerParams.ExposedBGVolume, 1f
+                            );
+                        }
                     }
                 )
             );
         }
     }
 
+    private void ResetPrompt()
+    {
+        isPromptDialogueDone = false;
+    }
 
     private void StopBgThemePlayer()
     {

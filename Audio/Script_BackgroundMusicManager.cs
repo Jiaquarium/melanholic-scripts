@@ -316,6 +316,12 @@ public class Script_BackgroundMusicManager : MonoBehaviour
         Script_AudioMixerVolume.SetVolume(audioMixer, outputMixer, newVol);
     }
 
+    // Identical as above, but you must keep track of coroutines (does not automatically stop them)
+    public void SetVolumeExtra(float newVol, string outputMixer = Const_AudioMixerParams.ExposedGameVolume)
+    {
+        Script_AudioMixerVolume.SetVolume(audioMixer, outputMixer, newVol);
+    }
+
     public void FadeOut(
         Action cb,
         float fadeTime = Script_AudioEffectsManager.fadeMedTime,

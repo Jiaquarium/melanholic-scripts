@@ -20,6 +20,7 @@ public class Script_LevelBehavior_19 : Script_LevelBehavior
     [SerializeField] private float lightFadeTime;
     [SerializeField] private Transform coneLight;
     [SerializeField] private Script_FullArtParent fullArtParent;
+    [SerializeField] private Script_BgThemePlayer IdsLetterBgThemePlayer;
 
     private bool shouldInitialize = true;
     
@@ -97,6 +98,7 @@ public class Script_LevelBehavior_19 : Script_LevelBehavior
     {
         Myne.gameObject.SetActive(true);
         game.SetupInteractableFullArt(fullArtParent.transform, shouldInitialize);
+        IdsLetterBgThemePlayer.gameObject.SetActive(false);
 
         shouldInitialize = false;
     }
