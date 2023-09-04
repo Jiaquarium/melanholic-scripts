@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-06-20 14:04:17
+// Last created by UI Exporter at 2023-09-02 17:40:45
 
 using System.Collections;
 using System.Collections.Generic;
@@ -410,6 +410,13 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The portrait is close but it won’t be finished this way."
+    }
+},
+{
+    "good-ending_transition-to-title",
+    new Model_LanguagesUI
+    {
+        EN = @"...there has to be more to you."
     }
 },
 // ------------------------------------------------------------------
@@ -1010,84 +1017,84 @@ public class Script_UIText
     "credits_publisher_name6",
     new Model_LanguagesUI
     {
-        EN = @"Bryan Herren"
+        EN = @"Carrol Dufault"
     }
 },
 {
     "credits_publisher_name7",
     new Model_LanguagesUI
     {
-        EN = @"Carrol Dufault"
+        EN = @"Danny Ryba"
     }
 },
 {
     "credits_publisher_name8",
     new Model_LanguagesUI
     {
-        EN = @"Danny Ryba"
+        EN = @"Destinee Cleveland"
     }
 },
 {
     "credits_publisher_name9",
     new Model_LanguagesUI
     {
-        EN = @"Destinee Cleveland"
+        EN = @"Elisabeth Reeve"
     }
 },
 {
     "credits_publisher_name10",
     new Model_LanguagesUI
     {
-        EN = @"Elisabeth Reeve"
+        EN = @"Emmanuel “Manu” Floret"
     }
 },
 {
     "credits_publisher_name11",
     new Model_LanguagesUI
     {
-        EN = @"Emmanuel “Manu” Floret"
+        EN = @"Emmanuel Franco"
     }
 },
 {
     "credits_publisher_name12",
     new Model_LanguagesUI
     {
-        EN = @"Emmanuel Franco"
+        EN = @"Evan Bloyet"
     }
 },
 {
     "credits_publisher_name13",
     new Model_LanguagesUI
     {
-        EN = @"Evan Bloyet"
+        EN = @"Evan Bryant"
     }
 },
 {
     "credits_publisher_name14",
     new Model_LanguagesUI
     {
-        EN = @"Evan Bryant"
+        EN = @"Harrison Floyd"
     }
 },
 {
     "credits_publisher_name15",
     new Model_LanguagesUI
     {
-        EN = @"Harrison Floyd"
+        EN = @"Ianna Dria Besa"
     }
 },
 {
     "credits_publisher_name16",
     new Model_LanguagesUI
     {
-        EN = @"Ianna Dria Besa"
+        EN = @"John C. Boone II"
     }
 },
 {
     "credits_publisher_name17",
     new Model_LanguagesUI
     {
-        EN = @"John C. Boone II"
+        EN = @"Jonathan Motes"
     }
 },
 {
@@ -1376,6 +1383,47 @@ I already knew
 That at fifteen before dawn
 
 I would hide these tears with blood."
+    }
+},
+{
+    "notes_ids_winter0",
+    new Model_LanguagesUI
+    {
+        EN = @"Dear Myne,
+
+What’s your favorite season?
+Me, personally, I’m into summer,
+I mean it makes my coat all itchy,
+You know us sheepluffs.
+But those lazy afternoons,
+When you kinda just linger..."
+    }
+},
+{
+    "notes_ids_winter1",
+    new Model_LanguagesUI
+    {
+        EN = @"In the shade as the sun hangs
+Lower and lower, along with
+All your worries.
+But the first time I met you,
+You know why I knew you were different?
+Because in your eyes, I could see..."
+    }
+},
+{
+    "notes_ids_winter2",
+    new Model_LanguagesUI
+    {
+        EN = @"You only believe in Winter."
+    }
+},
+{
+    "notes_ids_winter3",
+    new Model_LanguagesUI
+    {
+        EN = @"Yours,
+Ids"
     }
 },
 // ------------------------------------------------------------------
@@ -1846,7 +1894,7 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     "day-notification_title_sun",
     new Model_LanguagesUI
     {
-        EN = @"A New Beginning"
+        EN = @"A New Day"
     }
 },
 {

@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-08-08 10:43:54
+// Last created by Dialogue Exporter at 2023-08-25 16:08:24
 
 using System.Collections;
 using System.Collections.Generic;
@@ -201,8 +201,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         EN = new string[]
         {
                 @"......",
-                @"Why are you even doing this?",
-                @"Maybe you’re right.",
+                @"That familiar voice... it’s becoming difficult to ignore.",
+                @"Maybe you’re right though.",
                 @"Maybe it’s better this way.",
                 @"For everyone.",
         },
@@ -220,7 +220,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"But what are you anyways?",
                 @"A {13}...?",
                 @"When will it all stop...",
-                @"Okay no more overthinking, one more hour...",
+                @"Okay no more overthinking!",
+                @"Pull yourself together, {0}... one last hour...",
         },
         
     }
@@ -232,7 +233,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"I guess you’re really going to make me do it?",
+                @"I guess... you’re really going to... and me?",
         },
         
     }
@@ -6937,7 +6938,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"......",
                 @"The hotel’s day-to-day routine...",
                 @"Maybe it’s still better...",
-                @"Than being lost at sea...",
+                @"Than being completely lost at sea...",
                 @"You rather not talk about it.",
         },
         
@@ -7036,6 +7037,20 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
     }
 },
 // ------------------------------------------------------------------
+//     Fountain
+{
+    "fountain_ids-note_prompt",
+    new Model_Languages
+    {
+        speaker = "{0}",
+        EN = new string[]
+        {
+                @"It’s a handwritten letter. Read it?",
+        },
+        
+    }
+},
+// ------------------------------------------------------------------
 //     Garden Labyrinth
 {
     "garden-labyrinth_puppets_thought",
@@ -7084,8 +7099,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{38}",
         EN = new string[]
         {
-                @"No, I can’t go any further, but I must find {39}.",
-                @"No, it’s much too dangerous on the other side.",
+                @"No, I can’t go any further. It’s much too dangerous on the other side.",
+                @"But I must find {39}...",
         },
         
     }
@@ -7384,7 +7399,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         speaker = "{0}",
         EN = new string[]
         {
-                @"There’s no way you’re thinking about <i>that</i> again.",
+                @"There’s no way you’re talking about <i>that</i> again.",
                 @"That voice! Annoying!",
                 @"Keep it together, {0}!",
                 @"Solid land!",
