@@ -21,6 +21,9 @@ public class Script_GraphicsManager : MonoBehaviour
     /// </summary>
     public static Script_GraphicsManager Control;
     public const int AssetsPPU = 36;
+    public const int PhysicsSolverIterationsDefault = 6;
+    public const int PhysicsSolverIterationsWellsWorld = 3;
+    public const int PhysicsSolverIterationsSpikeRoom = 3;
     public const int CamCanvasPlaneDistance = 20;
     private const float DefaultShadowDistance = 100f;
     private const float UnderworldShadowDistance = 150f;
@@ -167,6 +170,21 @@ public class Script_GraphicsManager : MonoBehaviour
         urp.shadowDistance = shadowDistance;
 
         return urp.shadowDistance;
+    }
+
+    public void SetDefaultPhysics()
+    {
+        Physics.defaultSolverIterations = PhysicsSolverIterationsDefault;
+    }
+
+    public void SetWellsWorldPhysics()
+    {
+        Physics.defaultSolverIterations = PhysicsSolverIterationsWellsWorld;
+    }
+
+    public void SetSpikeRoomPhysics()
+    {
+        Physics.defaultSolverIterations = PhysicsSolverIterationsSpikeRoom;
     }
     
     private void CalculateZoom()

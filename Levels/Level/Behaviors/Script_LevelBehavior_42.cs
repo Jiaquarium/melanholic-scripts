@@ -130,6 +130,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           += OnMapNotificationTeletypeDone;
         Script_TransitionsEventsManager.OnMapNotificationDefaultDone            += HandleOpeningSnowNoSpecial;
+
+        Script_GraphicsManager.Control.SetWellsWorldPhysics();
     }
 
     protected override void OnDisable()
@@ -147,6 +149,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
 
         Script_TransitionsEventsManager.OnMapNotificationTeletypeDone           -= OnMapNotificationTeletypeDone;
         Script_TransitionsEventsManager.OnMapNotificationDefaultDone            -= HandleOpeningSnowNoSpecial;
+
+        Script_GraphicsManager.Control.SetDefaultPhysics();
     }
 
     void Awake()

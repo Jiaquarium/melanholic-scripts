@@ -172,8 +172,8 @@ public class Dev_GameHelper : MonoBehaviour
             TestCaseKey3();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha4))
             TestCaseKey4();
-        // else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha5))
-        //     TestCaseKey5();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha5))
+            TestCaseKey5();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.F))
             Act2NewState();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.G))
@@ -202,7 +202,7 @@ public class Dev_GameHelper : MonoBehaviour
         void TestCaseKey2() => PlayMaskRevealTimeline();
         void TestCaseKey3() => PlayGoodEnding();
         void TestCaseKey4() => FastForwardGoodEnding();
-        // void TestCaseKey5() => SpecialIntroXXXWorld();
+        void TestCaseKey5() => TeleportBallroomDidGoodEnding();
 	}
 
     private void SaveRestartOnLevel()
@@ -897,6 +897,13 @@ public class Dev_GameHelper : MonoBehaviour
     public void PlayGoodEnding() => hotelLobbyBehavior.DevPlayGoodEnding();
 
     public void FastForwardGoodEnding() => hotelLobbyBehavior.DevFastForwardGoodEndingTheEnd();
+
+    // Must fast forward to CCTV Ending first before calling
+    public void TeleportBallroomDidGoodEnding()
+    {
+        Script_Game.Game.didGoodEnding = true;
+        ExitToBallroomFromHMSHall();
+    }
 
     /// <summary>
     /// Milestone MAY

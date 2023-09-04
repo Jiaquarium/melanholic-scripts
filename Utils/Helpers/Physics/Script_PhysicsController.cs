@@ -6,6 +6,9 @@ public class Script_PhysicsController : MonoBehaviour
 {
     [SerializeField] private bool isParent;
     [SerializeField] private List<Rigidbody> rigidBodies;
+
+    [SerializeField] private bool isForceSolverIterations;
+    [SerializeField] private int solverIterations;
     
     public bool IsKinematic
     {
@@ -46,7 +49,12 @@ public class Script_PhysicsController : MonoBehaviour
         if (isParent)
         {
             foreach (var rigidBody in transform.GetComponentsInChildren<Rigidbody>(true))
+            {
                 _rigidBodies.Add(rigidBody);
+
+                if (isForceSolverIterations && solverIterations > 0)
+                    rigidBody.solverIterations = solverIterations;
+            }
         }
 
         rigidBodies = _rigidBodies;

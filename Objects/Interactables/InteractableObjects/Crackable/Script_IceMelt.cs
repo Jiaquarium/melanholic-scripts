@@ -14,7 +14,7 @@ public class Script_IceMelt : MonoBehaviour
     
     private bool isMelting;
     private float meltRate;
-    private Collider myCol;
+    private List<Collider> myCols = new List<Collider>();
     private Rigidbody myRigidBody;
     
     private bool isDistanceHide;
@@ -34,7 +34,7 @@ public class Script_IceMelt : MonoBehaviour
     
     void Awake()
     {
-        myCol = GetComponent<Collider>();
+        GetComponents<Collider>(myCols);
         myRigidBody = GetComponent<Rigidbody>();
     }
     
@@ -68,7 +68,7 @@ public class Script_IceMelt : MonoBehaviour
     // Note: when Player leaves map, CrackableStats will handle deactivating the parent GameObject
     public void Disable()
     {
-        myCol.enabled = false;
+        myCols.ForEach(myCol => myCol.enabled = false);
         myRigidBody.isKinematic = true;
         isMelting = false;
         transform.localScale = Vector3.zero;
