@@ -179,10 +179,12 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
             }
         }
     }
-    
+
+    public override bool IsStaticDepthMasksPresent() => true;
+
     // ------------------------------------------------------------------
     // Timeline Signals
-    
+
     public void FinishQuestPaintings()
     {
         foreach (var painting in paintingEntrances)

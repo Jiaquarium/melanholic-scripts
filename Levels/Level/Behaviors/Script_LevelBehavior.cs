@@ -132,6 +132,9 @@ public class Script_LevelBehavior : MonoBehaviour
     public virtual bool OnLanternEffectOn() { return false; }
     public virtual bool OnLanternEffectOff() { return false; }
 
+    // Override this method to disable Player's ice spike depth masks (e.g. Fountain)
+    public virtual bool IsStaticDepthMasksPresent() { return false; }
+
     public virtual void InitialState() { }
     
     /// <summary>

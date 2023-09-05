@@ -312,6 +312,11 @@ public class Script_StickerEffectsController : MonoBehaviour
     // ------------------------------------------------------------------
     // SFX
 
+    public void SetIceSpikeDepthMasksEnabled(bool isEnabled)
+    {
+        iceSpikeEffect.SetDepthMasksEnabled(isEnabled);
+    }
+    
     private void NullSFX()
     {
         GetComponent<AudioSource>().PlayOneShot(

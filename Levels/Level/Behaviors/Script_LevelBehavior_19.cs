@@ -32,6 +32,8 @@ public class Script_LevelBehavior_19 : Script_LevelBehavior
         game.ForceCutBlend();
     }
 
+    public override bool IsStaticDepthMasksPresent() => true;
+    
     public void DropSpotActivated()
     {
         UndimLights();

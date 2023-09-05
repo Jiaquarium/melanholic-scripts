@@ -11,6 +11,7 @@ public class Script_PianoManager : MonoBehaviour
     public const int NumPianos = 5;
 
     [SerializeField] private Script_Piano[] pianos = new Script_Piano[NumPianos];
+    [SerializeField] private Script_LevelBehavior[] pianoMaps = new Script_LevelBehavior[NumPianos];
     
     [SerializeField] private Script_CanvasGroupController pianosCanvasGroup;
     [SerializeField] private Image choicesR1;
@@ -39,6 +40,8 @@ public class Script_PianoManager : MonoBehaviour
         get => pianos;
         set => pianos = value;
     }
+
+    public Script_LevelBehavior[] PianoMaps => pianoMaps;
     
     void OnEnable()
     {

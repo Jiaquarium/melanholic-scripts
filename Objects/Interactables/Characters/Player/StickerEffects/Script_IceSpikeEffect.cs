@@ -5,10 +5,12 @@ using UnityEngine;
 // aka Ice Princess
 public class Script_IceSpikeEffect : Script_StickerEffect
 {
-    [SerializeField] private Script_IceSpikeAttack iceSpikeAttack;
     public static float ShakeTime = 0.6f; 
     public static float ShakeAmp = 2f; 
     public static float ShakeFreq = 1f;
+    
+    [SerializeField] private Script_IceSpikeAttack iceSpikeAttack;
+    [SerializeField] private List<MeshRenderer> depthMasks;
     
     public override void Effect()
     {
@@ -29,5 +31,10 @@ public class Script_IceSpikeEffect : Script_StickerEffect
     {
         base.OnEquip();
         OnUnequipControllerSynced();
+    }
+
+    public void SetDepthMasksEnabled(bool isActive)
+    {
+        depthMasks.ForEach(renderer => renderer.enabled = isActive);
     }
 }

@@ -457,6 +457,11 @@ public class Script_Player : Script_Character
         playerActionHandler.MyMaskEquipEffectTimeline();
     }
 
+    public void SetIceSpikeDepthMasksEnabled(bool isEnabled)
+    {
+        playerActionHandler.SetIceSpikeDepthMasksEnabled(isEnabled);
+    }
+
     // ------------------------------------------------------------------
     // Combat
     public int FullHeal()

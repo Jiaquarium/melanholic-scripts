@@ -89,12 +89,14 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
         // Player location will always be the destination tile if does Spike mid-move (movement updates player.location 1st)
         Vector3 playerLocation = player.location;
         Script_PlayerCheckCollisions playerCheckCollisions = player.PlayerCheckCollisions;
+        var game = Script_Game.Game;
         
         if (
             // Check tilemaps with isNoSnowWomanSpike flag
-            (Script_Game.Game.GetIsTileMapMetaDataMap() && GetIsNoSnowWomanSpike())
+            (game.GetIsTileMapMetaDataMap() && GetIsNoSnowWomanSpike())
             // Check doing spike off tilemaps
             || playerCheckCollisions.CheckAttackOffTilemap(currentAttackDir, playerLocation)
+            || GetIsPiano()
         )
         {
             StartCoroutine(WaitToEndSnowWomanAnimation());
@@ -135,6 +137,23 @@ public class Script_IceSpikeAttack : Script_EnergySpikeAttack
             }
             
             return isNoSnowWomanSpike;
+        }
+
+        bool GetIsPiano()
+        {
+            if (!game.IsMelancholyPianoRoom)
+                return false;
+            
+            Script_InteractableObject[] objs = player.interactionBoxController
+                .GetInteractableObject(currentAttackDir);
+            
+            foreach (Script_InteractableObject obj in objs)
+            {
+                if (obj is Script_Piano || obj.GetComponent<Script_PianoBack>() != null)
+                    return true;
+            }
+
+            return false;
         }
     }
 
