@@ -22,6 +22,13 @@ public class Script_PostProcessingSettings : MonoBehaviour
     private static FilmGrainLookup FilmGrainTypeTakeABow = FilmGrainLookup.Medium3;
     private static float FilmGrainResponseTakeABow = 0.8f;
 
+    // Puppeteer Vignette Default
+    private const float PuppeteerVignetteIntensityDefault = 0.4f;
+    private const float PuppeteerVignetteSmoothnessDefault = 0.4f;
+    
+    // Puppeteer Vignette Urselks Saloon Hall
+    private const float PuppeteerVignetteIntensitySaloonHallway = 0.35f;
+
     private Volume Volume {
         get
         {
@@ -123,6 +130,34 @@ public class Script_PostProcessingSettings : MonoBehaviour
         {
             vignette.intensity.value = VignetteIntensityTakeABow;
             vignette.smoothness.value = VignetteSmoothnessDefault;
+        }
+
+        return vignette;
+    }
+
+    public Vignette SetVignettePuppeteerDefault()
+    {
+        Vignette vignette;
+        Volume.profile.TryGet(out vignette);
+        
+        if (vignette != null)
+        {
+            vignette.intensity.value = PuppeteerVignetteIntensityDefault;
+            vignette.smoothness.value = PuppeteerVignetteSmoothnessDefault;
+        }
+
+        return vignette;
+    }
+
+    public Vignette SetVignettePuppeteerSaloonHallway()
+    {
+        Vignette vignette;
+        Volume.profile.TryGet(out vignette);
+        
+        if (vignette != null)
+        {
+            vignette.intensity.value = PuppeteerVignetteIntensitySaloonHallway;
+            vignette.smoothness.value = PuppeteerVignetteSmoothnessDefault;
         }
 
         return vignette;

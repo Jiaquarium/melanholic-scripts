@@ -10,6 +10,7 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
 {
     [SerializeField] protected bool isDone;
     [SerializeField] protected List<Script_Puppet> buffPuppets;
+    [SerializeField] private Script_PostProcessingSettings postProcessingPuppeteer;
     
     [SerializeField] protected Script_Game game;
 
@@ -28,6 +29,12 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
 
         Script_PlayerEventsManager.OnPuppeteerActivate      += OnPuppeteerActivate;
         Script_PlayerEventsManager.OnPuppeteerDeactivate    += OnPuppeteerDeactivate;
+
+        // Handle Urselks Saloon Hallway having slightly lighter vignette, since room is already very dark
+        if (game.levelBehavior == game.UrsaSaloonHallwayBehavior)
+            postProcessingPuppeteer.SetVignettePuppeteerSaloonHallway();
+        else
+            postProcessingPuppeteer.SetVignettePuppeteerDefault();
     }
 
     protected override void OnDisable()
@@ -83,8 +90,18 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
     
     public virtual void OnPuppeteerActivateTimelineDone()
     {
-        game.ChangeStateInteract();
         Script_Game.Game.GetPlayer().SetBuffEffectActive(false);
+        
+        // Wait a frame before interacting / must wait at least a frame after stopping timeline to modify its objects
+        StartCoroutine(WaitToInteract());
+        
+        IEnumerator WaitToInteract()
+        {
+            yield return null;
+            
+            game.ChangeStateInteract();
+            PostProcessingInitialize();
+        }
     }
     
     public virtual void PuppeteerDeactivateTimelinePuppetBuffs()
@@ -94,7 +111,22 @@ public class Script_PuppetPuzzleController : Script_PuzzleController
 
     public virtual void OnPuppeteerDeactivateTimelineDone()
     {
-        game.ChangeStateInteract();
         buffPuppets.ForEach(puppet => puppet.SetBuffEffectActive(false));
+        
+        StartCoroutine(WaitToInteract());
+        
+        IEnumerator WaitToInteract()
+        {
+            yield return null;
+            
+            game.ChangeStateInteract();
+            PostProcessingInitialize();
+        }
+    }
+
+    protected void PostProcessingInitialize()
+    {
+        postProcessingPuppeteer.gameObject.SetActive(false);
+        postProcessingPuppeteer.InitialStateWeight();
     }
 }
