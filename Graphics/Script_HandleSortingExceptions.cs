@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Script_HandleSortingExceptions : MonoBehaviour
 {
@@ -49,6 +50,10 @@ public class Script_HandleSortingExceptions : MonoBehaviour
         playerStencilMaterial = playerStencil;
         
         DirectionsToVectorDict = Script_Utils.GetDirectionToVectorDict();
+
+#if UNITY_EDITOR
+        DevCheckGraphics();
+#endif
     }
 
     void LateUpdate()
@@ -120,4 +125,29 @@ public class Script_HandleSortingExceptions : MonoBehaviour
         isMyWorldTile = worldTile.WorldTilesController.OriginWorldTile == worldTile;
         return isMyWorldTile;
     }
+
+#if UNITY_EDITOR
+    protected virtual void DevCheckGraphics()
+    {
+        Script_HandlePlayerGraphicsMaterial playerLevelGraphics = null;
+        if (Script_Game.Game.levelBehavior != null)
+        {
+            playerLevelGraphics = Script_Game.Game.levelBehavior
+                .GetComponent<Script_HandlePlayerGraphicsMaterial>();
+        }
+        
+        bool isLitMaterialMap = playerLevelGraphics != null
+            && playerLevelGraphics.LevelMaterial == Script_PlayerGraphics.Materials.Lit;
+        var mats = isLitMaterialMap ? Script_GraphicsManager.Control.PlayerLitStencils
+            : Script_GraphicsManager.Control.PlayerUnlitShadowsStencils;
+        var materialType = isLitMaterialMap ? Script_PlayerGraphics.Materials.Lit
+            : Script_PlayerGraphics.Materials.UnlitShadows;
+
+        if (!DevCheckStencil(playerStencil, mats))
+            Debug.LogWarning($"{name} Player stencil does not match -- {materialType}");
+    }
+    
+    protected bool DevCheckStencil(Material mat, Material[] mats) => mats
+        .FirstOrDefault(stencil => stencil == mat) != null;
+#endif
 }

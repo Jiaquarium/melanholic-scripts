@@ -7,6 +7,8 @@ public class Script_HandlePlayerGraphicsMaterial : MonoBehaviour
     [SerializeField] private Script_PlayerGraphics.Materials levelMaterial;
     
     private Material startingMaterial;
+
+    public Script_PlayerGraphics.Materials LevelMaterial => levelMaterial;
     
     void OnEnable()
     {

@@ -114,4 +114,29 @@ public class Script_HandleSortingExceptionsCustomLeftRight : Script_HandleSortin
             isStencils = false;
         }
     }
+
+#if UNITY_EDITOR
+    protected override void DevCheckGraphics()
+    {
+        Script_HandlePlayerGraphicsMaterial playerLevelGraphics = null;
+        if (Script_Game.Game.levelBehavior != null)
+        {
+            playerLevelGraphics = Script_Game.Game.levelBehavior
+                .GetComponent<Script_HandlePlayerGraphicsMaterial>();
+        }
+        
+        bool isLitMaterialMap = playerLevelGraphics != null
+            && playerLevelGraphics.LevelMaterial == Script_PlayerGraphics.Materials.Lit;
+        var mats = isLitMaterialMap ? Script_GraphicsManager.Control.PlayerLitStencils
+            : Script_GraphicsManager.Control.PlayerUnlitShadowsStencils;
+        var materialType = isLitMaterialMap ? Script_PlayerGraphics.Materials.Lit
+            : Script_PlayerGraphics.Materials.UnlitShadows;
+        
+        bool isFail = (playerFrontStencil != null && !DevCheckStencil(playerFrontStencil, mats))
+            || (playerBehindStencil != null && !DevCheckStencil(playerBehindStencil, mats));
+
+        if (isFail)
+            Debug.LogWarning($"{name} Player stencil does not match -- {materialType}");
+    }
+#endif
 }

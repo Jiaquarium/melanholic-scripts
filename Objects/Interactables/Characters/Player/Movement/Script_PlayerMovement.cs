@@ -738,7 +738,7 @@ public class Script_PlayerMovement : MonoBehaviour
         bool hasSpeedSealAndIsFormerSelf = game.GetItemsInventoryItem(Const_Items.SpeedSeal, out slot)
             && Script_ActiveStickerManager.Control.ActiveSticker == null;
         
-        bool isDev = Debug.isDebugBuild || Const_Dev.IsDevMode;
+        bool isDev = Debug.isDebugBuild || Const_Dev.IsDevMode || Const_Dev.IsDevHelperOn;
 
         if (Input.GetButton(Const_KeyCodes.Dev) && isDev)
             walkSpeed = Speeds.Dev;
