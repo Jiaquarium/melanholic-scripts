@@ -417,6 +417,11 @@ public class Script_PlayerAction : MonoBehaviour
         stickerEffectsController.MyMaskEquipEffectTimeline();
     }
 
+    public void SetIceSpikeDepthMasksEnabled(bool isEnabled)
+    {
+        stickerEffectsController.SetIceSpikeDepthMasksEnabled(isEnabled);
+    }
+
     public void SwitchMaskSFX()
     {
         stickerEffectsController.SwitchSFX();

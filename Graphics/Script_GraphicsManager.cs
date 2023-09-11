@@ -21,6 +21,9 @@ public class Script_GraphicsManager : MonoBehaviour
     /// </summary>
     public static Script_GraphicsManager Control;
     public const int AssetsPPU = 36;
+    public const int PhysicsSolverIterationsDefault = 6;
+    public const int PhysicsSolverIterationsWellsWorld = 3;
+    public const int PhysicsSolverIterationsSpikeRoom = 3;
     public const int CamCanvasPlaneDistance = 20;
     private const float DefaultShadowDistance = 100f;
     private const float UnderworldShadowDistance = 150f;
@@ -40,6 +43,9 @@ public class Script_GraphicsManager : MonoBehaviour
     [Header("Calculated Camera Properties")]
     [Tooltip("An upscaled zoom that ensures the image scaled only so much that it will remain completely on screen.")]
     [SerializeField] private int zoom = 1;
+
+    [SerializeField] private Material[] playerUnlitShadowsStencils;
+    [SerializeField] private Material[] playerLitStencils;
 
     // The current zoom multiplier used after Cinemachine adjustment.
     public int PixelRatio
@@ -132,6 +138,9 @@ public class Script_GraphicsManager : MonoBehaviour
     {
         get => (PixelScreenSize.y * 0.5f) / (Zoom * AssetsPPU);
     }
+
+    public Material[] PlayerUnlitShadowsStencils => playerUnlitShadowsStencils;
+    public Material[] PlayerLitStencils => playerLitStencils;
     
     void OnEnable()
     {
@@ -167,6 +176,21 @@ public class Script_GraphicsManager : MonoBehaviour
         urp.shadowDistance = shadowDistance;
 
         return urp.shadowDistance;
+    }
+
+    public void SetDefaultPhysics()
+    {
+        Physics.defaultSolverIterations = PhysicsSolverIterationsDefault;
+    }
+
+    public void SetWellsWorldPhysics()
+    {
+        Physics.defaultSolverIterations = PhysicsSolverIterationsWellsWorld;
+    }
+
+    public void SetSpikeRoomPhysics()
+    {
+        Physics.defaultSolverIterations = PhysicsSolverIterationsSpikeRoom;
     }
     
     private void CalculateZoom()

@@ -222,9 +222,18 @@ public class Script_MeetupPuzzleController : Script_PuppetPuzzleController
 
     public override void OnPuppeteerDeactivateTimelineDone()
     {
-        game.ChangeStateInteract();
         Latte.SetBuffEffectActive(false);
         Kaffe.SetBuffEffectActive(false);
+        
+        StartCoroutine(WaitToInteract());
+        
+        IEnumerator WaitToInteract()
+        {
+            yield return null;
+            
+            game.ChangeStateInteract();
+            PostProcessingInitialize();
+        }
     }
 
     // From reset trigger

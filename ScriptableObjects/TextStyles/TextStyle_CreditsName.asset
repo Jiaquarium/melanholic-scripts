@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TextStyle_CreditsName
   m_EditorClassIdentifier: 
   fontAsset: {fileID: 11400000, guid: 2f945cfb23de745e1afb68e9dcac3595, type: 2}
-  fontSize: 24
+  fontSize: 20
   characterSpacing: 0
   lineSpacing: 0
   wordSpacing: 0

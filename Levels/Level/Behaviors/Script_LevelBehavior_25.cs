@@ -155,6 +155,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         }
         else
             elleniaHurtTrigger.gameObject.SetActive(false);
+        
+        Script_GraphicsManager.Control.SetSpikeRoomPhysics();
     }
 
     protected override void OnDisable()
@@ -162,6 +164,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
         ElleniaDirector.stopped                         -= OnElleniaPlayableDone;    
         Script_PRCSEventsManager.OnPRCSDone             -= OnElleniasArtPRCSDone;
         Script_GameEventsManager.OnLevelInitComplete    -= HandleStartCheckingElleniaHurtCutScene;
+
+        Script_GraphicsManager.Control.SetDefaultPhysics();
     }
 
     protected override void Update()

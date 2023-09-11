@@ -385,6 +385,11 @@ public class Script_Game : MonoBehaviour
         get => disabledPianoLevels.FirstOrDefault(lvl => lvl == levelBehavior) != null;
     }
 
+    public bool IsMelancholyPianoRoom
+    {
+        get => pianoManager.PianoMaps.FirstOrDefault(lvl => lvl == levelBehavior) != null;
+    }
+
     public bool IsPsychicRoom
     {
         get => psychicLevels.FirstOrDefault(lvl => lvl == levelBehavior) != null;
@@ -1089,6 +1094,9 @@ public class Script_Game : MonoBehaviour
             playerData.isForceSortingLayer,
             playerData.isForceSortingLayerAxisZ
         );
+
+        // Turn off/on depth masks if static depth masks are present/not present
+        player.SetIceSpikeDepthMasksEnabled(!levelBehavior.IsStaticDepthMasksPresent());
 
         // CameraTargetFollower.MatchPlayer();
 

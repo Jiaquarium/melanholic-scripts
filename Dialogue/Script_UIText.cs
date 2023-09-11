@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-09-02 17:40:45
+// Last created by UI Exporter at 2023-09-04 16:14:13
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1924,7 +1924,7 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     "save-file_day-name_sun",
     new Model_LanguagesUI
     {
-        EN = @"A New Beginning"
+        EN = @"A New Day"
     }
 },
 // ------------------------------------------------------------------
