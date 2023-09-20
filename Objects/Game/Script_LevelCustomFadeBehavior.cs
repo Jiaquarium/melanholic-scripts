@@ -39,6 +39,9 @@ public class Script_LevelCustomFadeBehavior : MonoBehaviour
     [Tooltip("Specify to limit this behavior only when coming from these levels")]
     [SerializeField] private List<Script_LevelBehavior> behaviorsToFadeFrom;
 
+    [Tooltip("Specify to ignore fading when coming from these levels. Overrides behaviorsToFadeFrom.")]
+    [SerializeField] private List<Script_LevelBehavior> behaviorsToIgnoreFadeFrom;
+
     [SerializeField] private UnityEvent specialCaseFadeIn;
     [SerializeField] private UnityEvent specialCaseWaitInBlack;
 
@@ -118,11 +121,19 @@ public class Script_LevelCustomFadeBehavior : MonoBehaviour
     }
     
     /// <summary>
-    /// Use to declare specific fade behaviors for certain exits.
+    /// Use to declare specific fade behaviors only for certain exits.
     /// </summary>
     /// <returns>True, if the exit came from specified Level</returns>
     public bool CheckLastBehavior(Script_LevelBehavior levelBehavior)
     {
+        // Handle ignoring behavior coming from specified maps
+        if (
+            behaviorsToIgnoreFadeFrom != null
+            && behaviorsToIgnoreFadeFrom.FirstOrDefault(lb => lb == levelBehavior) != null
+        )
+            return false;
+
+        // Handle behavior ONLY from specified maps
         if (behaviorsToFadeFrom == null || behaviorsToFadeFrom.Count == 0)
             return true;
         

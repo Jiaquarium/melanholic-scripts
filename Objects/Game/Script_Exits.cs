@@ -291,11 +291,12 @@ public class Script_Exits : MonoBehaviour
             
             bool CheckCustomFadeNonSpecial() => customFadeBehavior.FadeInTime > 0
                 && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior);
-        }
 
-        void DefaultFadeInTime()
-        {
-            currentLevelFadeInTime = defaultLevelFadeInTime;
+            void DefaultFadeInTime()
+            {
+                currentLevelFadeInTime = defaultLevelFadeInTime;
+                Dev_Logger.Debug($@"{behavior.name} using default Fade In: {currentLevelFadeInTime}");
+            }
         }
     }
 
@@ -444,11 +445,12 @@ public class Script_Exits : MonoBehaviour
 
             bool CheckCustomFadeNonSpecial() => customFadeBehavior.WaitInBlackTime > 0
                 && customFadeBehavior.CheckLastBehavior(game.LastLevelBehavior);
-        }
-        
-        void DefaultWaitInBlackTime()
-        {
-            currentWaitToFadeInLevelTime = defaultLevelWaitToFadeInTime;
+            
+            void DefaultWaitInBlackTime()
+            {
+                currentWaitToFadeInLevelTime = defaultLevelWaitToFadeInTime;
+                Dev_Logger.Debug($@"{behavior.name} using default Wait In Black: {currentWaitToFadeInLevelTime}");
+            }
         }
     }
 
