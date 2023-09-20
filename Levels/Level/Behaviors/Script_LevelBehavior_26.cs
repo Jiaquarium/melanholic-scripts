@@ -536,7 +536,8 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                 isTimelineControlled = false;
                 
                 game.ChangeStateInteract();
-            }
+            },
+            waitType: Script_TransitionManager.FinalNotificationWaitTimes.Eileen
         );
     }
 
@@ -642,6 +643,14 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
             if (GUILayout.Button("Fade Out Dramatic Music"))
             {
                 t.FadeOutDramaticMusic();
+            }
+
+            GUILayout.Space(12);
+            
+            if (GUILayout.Button("Setup True Ending On Complete"))
+            {
+                Dev_GameHelper gameHelper = Script_Game.Game.gameObject.GetComponent<Dev_GameHelper>();
+                gameHelper.SetQuestsDoneExplicit(2);
             }
         }
     }

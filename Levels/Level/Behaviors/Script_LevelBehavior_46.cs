@@ -450,7 +450,8 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
                     defaultCb: () =>
                     {
                         HandlePlayFaceOff(OnSuccessDone);
-                    }
+                    },
+                    waitType: Script_TransitionManager.FinalNotificationWaitTimes.CelestialGardens
                 );
             }));
         }
@@ -654,6 +655,14 @@ public class Script_LevelBehavior_46 : Script_LevelBehavior
             if (GUILayout.Button("Teleport Latte to Top FloorSwitch"))
             {
                 t.puppet.Teleport(t.topFloorSwitchLocation.Position);
+            }
+
+            GUILayout.Space(12);
+            
+            if (GUILayout.Button("Setup True Ending On Complete"))
+            {
+                Dev_GameHelper gameHelper = Script_Game.Game.gameObject.GetComponent<Dev_GameHelper>();
+                gameHelper.SetQuestsDoneExplicit(4);
             }
         }
     }

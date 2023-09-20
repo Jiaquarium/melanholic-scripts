@@ -115,9 +115,10 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
     [SerializeField] private float blackScreenBeforeStabTimeShortScene;
 
     // ------------------------------------------------------------------
-    
+    // DEV ONLY
     [SerializeField] private string devPasswordDisplay; // FOR TESTING ONLY
     public Script_LevelBehavior_21 devLB21; // FOR TESTING ONLY
+    // ------------------------------------------------------------------
     
     private bool isElleniaTourWalkRight;
     private bool isElleniaHurtToday;
@@ -942,7 +943,8 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             {
                 HandleDefault();
             },
-            Script_TransitionManager.FinalNotifications.Ellenia
+            type: Script_TransitionManager.FinalNotifications.Ellenia,
+            waitType: Script_TransitionManager.FinalNotificationWaitTimes.Ellenia
         );
 
         void HandleFadeInBgm(Action cb)
@@ -1152,6 +1154,14 @@ public class Script_LevelBehavior_25 : Script_LevelBehavior
             if (GUILayout.Button("Ellenia Stabs Timeline"))
             {
                 lb.PlayElleniaStabsHandTimeline();
+            }
+
+            GUILayout.Space(12);
+            
+            if (GUILayout.Button("Setup True Ending On Complete"))
+            {
+                Dev_GameHelper gameHelper = Script_Game.Game.gameObject.GetComponent<Dev_GameHelper>();
+                gameHelper.SetQuestsDoneExplicit(0);
             }
         }
     }

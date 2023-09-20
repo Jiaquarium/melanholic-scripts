@@ -236,7 +236,8 @@ public class Script_LevelBehavior_24 : Script_LevelBehavior
                     isTimelineControlled = false;
                     
                     HandlePlayFaceOff(OnSuccessDone);
-                }
+                },
+                waitType: Script_TransitionManager.FinalNotificationWaitTimes.XXXWorld
             );
         }
 
@@ -311,6 +312,14 @@ public class Script_LevelBehavior_24Tester : Editor
         if (GUILayout.Button("Puzzle Success"))
         {
             t.OnPuzzleSuccess(null);
+        }
+
+        GUILayout.Space(12);
+            
+        if (GUILayout.Button("Setup True Ending On Complete"))
+        {
+            Dev_GameHelper gameHelper = Script_Game.Game.gameObject.GetComponent<Dev_GameHelper>();
+            gameHelper.SetQuestsDoneExplicit(5);
         }
     }
 }

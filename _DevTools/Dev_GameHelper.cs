@@ -592,6 +592,16 @@ public class Dev_GameHelper : MonoBehaviour
         Script_Game.Game.KTVRoom2Behavior.IsCurrentPuzzleComplete           = XXXWorldPuzzleDone;
     }
 
+    public void SetQuestsDoneExplicit(int questIdx)
+    {
+        Script_Game.Game.ElleniasRoomBehavior.isCurrentPuzzleComplete       = questIdx != 0;
+        Script_Game.Game.IdsRoomBehavior.isCurrentPuzzleComplete            = questIdx != 1;
+        Script_Game.Game.EileensMindBehavior.isCurrentPuzzleComplete        = questIdx != 2;
+        Script_Game.Game.WellsWorldBehavior.isCurrentMooseQuestComplete     = questIdx != 3;
+        Script_Game.Game.GardenLabyrinthBehavior.isCurrentPuzzleComplete    = questIdx != 4;
+        Script_Game.Game.KTVRoom2Behavior.IsCurrentPuzzleComplete           = questIdx != 5;
+    }
+
     public void SetWellsWorldSolved()
     {
         var game = Script_Game.Game;
@@ -911,6 +921,7 @@ public class Dev_GameHelper : MonoBehaviour
     public void TeleportGrandMirrorR2()
     {
         ExitToGrandMirrorFrontOfMirrorR2();
+        HandleGrandMirrorR2Mask();
     }
 
     public void PlayMaskRevealTimeline()
@@ -1286,6 +1297,24 @@ public class Dev_GameHelper : MonoBehaviour
                 {
                     t.SetQuestsDoneDynamic();
                 }
+
+                if (GUILayout.Button("All Quests Done Today Exc Ellenia"))
+                    t.SetQuestsDoneExplicit(0);
+
+                if (GUILayout.Button("All Quests Done Today Exc Ids"))
+                    t.SetQuestsDoneExplicit(1);
+                
+                if (GUILayout.Button("All Quests Done Today Exc Eileen"))
+                    t.SetQuestsDoneExplicit(2);
+                
+                if (GUILayout.Button("All Quests Done Today Exc Wells World"))
+                    t.SetQuestsDoneExplicit(3);
+                
+                if (GUILayout.Button("All Quests Done Today Exc Cel Gardens"))
+                    t.SetQuestsDoneExplicit(4);
+                
+                if (GUILayout.Button("All Quests Done Today Exc XXX World"))
+                    t.SetQuestsDoneExplicit(5);
 
                 if (GUILayout.Button("Solve Wells World & Handle FaceOff"))
                 {

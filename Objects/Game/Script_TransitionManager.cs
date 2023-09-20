@@ -26,6 +26,17 @@ public class Script_TransitionManager : MonoBehaviour
         Ids             = 1,
         Ellenia         = 2
     }
+
+    public enum FinalNotificationWaitTimes
+    {
+        None = 0,
+        Ellenia = 1,
+        Ids = 2,
+        Eileen = 3,
+        WellsWorld = 4,
+        CelestialGardens = 5,
+        XXXWorld = 6
+    }
     
     public enum Endings
     {
@@ -40,6 +51,14 @@ public class Script_TransitionManager : MonoBehaviour
     public const float RestartPlayerFadeOutTime = 1f;
     public const float FadeTimeSlow = 2.0f;
     public const float UnderDialogueFadeTime = 1.5f;
+
+    private const float WaitForFinalFramingElleniaTime = 0.25f;
+    private const float WaitForFinalFramingEileenTime = 0.25f;
+    private const float WaitForFinalFramingIdsTime = 0f;
+    private const float WaitForFinalFramingWellsWorldTime = 0.25f;
+    // 0.25f will put frame up at end of zooming camera out back to default, which looks nice 
+    private const float WaitForFinalFramingCelestialGardensTime = 0.25f;
+    private const float WaitForFinalFramingXXXWorldTime = 0.25f;
 
     // Time to leave save progress message up. Check SaveViewManager.ShowSaveAndRestarMessage's
     // Fade In time, this must be set to a value >= so there is enough time to fade in the message.
@@ -296,7 +315,8 @@ public class Script_TransitionManager : MonoBehaviour
     public bool OnCurrentQuestDone(
         Action allQuestsDoneCb = null,
         Action defaultCb = null,
-        FinalNotifications type = FinalNotifications.Default
+        FinalNotifications type = FinalNotifications.Default,
+        FinalNotificationWaitTimes waitType = FinalNotificationWaitTimes.None
     )
     {
         Dev_Logger.Debug($"{name} Check for All Puzzles Done Cut Scene");
@@ -315,13 +335,7 @@ public class Script_TransitionManager : MonoBehaviour
                 bgm.SetVolume(1f);
             });
 
-            // Framing (Thin looks better here, since ConstantDefault covers too much of each scene)
-            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
-                isOpen: true,
-                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
-                isNoAnimation: false,
-                cb: HandleFinalAwakeningNotification
-            );
+            StartCoroutine(WaitForFraming());
 
             if (allQuestsDoneCb != null)
                 onAllPuzzlesDoneCutsceneDone = allQuestsDoneCb;
@@ -335,6 +349,30 @@ public class Script_TransitionManager : MonoBehaviour
             defaultCb();
         
         return false;
+
+        IEnumerator WaitForFraming()
+        {
+            float waitTime = waitType switch
+            {
+                FinalNotificationWaitTimes.Ellenia => WaitForFinalFramingElleniaTime,
+                FinalNotificationWaitTimes.Eileen => WaitForFinalFramingEileenTime,
+                FinalNotificationWaitTimes.Ids => WaitForFinalFramingIdsTime,
+                FinalNotificationWaitTimes.WellsWorld => WaitForFinalFramingWellsWorldTime,
+                FinalNotificationWaitTimes.CelestialGardens => WaitForFinalFramingCelestialGardensTime,
+                FinalNotificationWaitTimes.XXXWorld => WaitForFinalFramingXXXWorldTime,
+                _ => 0f,
+            };
+            
+            yield return new WaitForSecondsRealtime(waitTime);
+            
+            // Framing (Thin looks better here, since ConstantDefault covers too much of each scene)
+            Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+                isOpen: true,
+                framing: Script_UIAspectRatioEnforcerFrame.Framing.ConstantThin,
+                isNoAnimation: false,
+                cb: HandleFinalAwakeningNotification
+            );
+        }
 
         void HandleFinalAwakeningNotification()
         {

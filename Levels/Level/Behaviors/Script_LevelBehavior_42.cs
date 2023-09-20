@@ -566,7 +566,8 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             defaultCb: () =>
             {
                 HandlePlayFaceOff(OnSuccessDone);
-            }
+            },
+            waitType: Script_TransitionManager.FinalNotificationWaitTimes.WellsWorld
         );
 
         // Face Off is not played if Final Cut Scene Sequence should play.
@@ -904,6 +905,14 @@ public class Script_LevelBehavior_42 : Script_LevelBehavior
             if (GUILayout.Button("Play Intro"))
             {
                 t.PlaySpecialIntro();
+            }
+
+            GUILayout.Space(12);
+            
+            if (GUILayout.Button("Setup True Ending On Complete"))
+            {
+                Dev_GameHelper gameHelper = Script_Game.Game.gameObject.GetComponent<Dev_GameHelper>();
+                gameHelper.SetQuestsDoneExplicit(3);
             }
         }
     }

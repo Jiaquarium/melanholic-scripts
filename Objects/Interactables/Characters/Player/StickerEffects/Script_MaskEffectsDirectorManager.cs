@@ -95,9 +95,12 @@ public class Script_MaskEffectsDirectorManager : MonoBehaviour
         activeZoomCamera.Shake(screenShakeVals.x, screenShakeVals.y, screenShakeVals.z, null);
     }
 
+    // MyMask Effect Timeline on white screen up. Also preemptively return all Ids back to default.
     public void StopScreenShake()
     {
         activeZoomCamera.InitialState();
+
+        Script_NPCEventsManager.NPCRandomAnimatorForceDefault();
     }
 
     // Mask Effect timeline: towards the end

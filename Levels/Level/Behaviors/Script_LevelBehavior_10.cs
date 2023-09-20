@@ -855,7 +855,8 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 
                 game.ChangeStateInteract();
             },
-            Script_TransitionManager.FinalNotifications.Ids
+            type: Script_TransitionManager.FinalNotifications.Ids,
+            waitType: Script_TransitionManager.FinalNotificationWaitTimes.Ids
         );
     }
     
@@ -1623,6 +1624,7 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             Script_LevelBehavior_10 t = (Script_LevelBehavior_10)target;
             if (GUILayout.Button("DDR Quest Done / Give Key"))
             {
+                t.game.StopBgMusic();
                 t.IdsGivesSmallKey();
             }
 
@@ -1656,6 +1658,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
             if (GUILayout.Button("On Mask Pickup"))
             {
                 t.OnThirdEyePickUp(Const_Items.BoarNeedleId);
+            }
+
+            GUILayout.Label("True Ending - Final Awakening Setup");
+            
+            if (GUILayout.Button("Setup True Ending On Complete"))
+            {
+                Dev_GameHelper gameHelper = Script_Game.Game.gameObject.GetComponent<Dev_GameHelper>();
+                gameHelper.SetQuestsDoneExplicit(1);
             }
         }
     }
