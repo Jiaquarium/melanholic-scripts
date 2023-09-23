@@ -77,4 +77,17 @@ public class Script_TrackedPushablesTriggerPuzzleController : Script_TriggerPuzz
     {
         foreach (Script_Trackable t in trackables)  t.Setup();
     }
+    
+    // ------------------------------------------------------------------
+    // DEV ONLY
+    public void DevPlaceTrackersOnTriggers()
+    {
+        for (var i = 0; i < trackers.Length; i++)
+        {
+            trackers[i].Done();
+            trackers[i].transform.position = triggers[i].transform.position;
+        }
+    }
+    // ------------------------------------------------------------------
+
 }

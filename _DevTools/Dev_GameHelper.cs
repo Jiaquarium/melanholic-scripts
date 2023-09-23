@@ -196,6 +196,12 @@ public class Dev_GameHelper : MonoBehaviour
 		}
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.L))
             BeforeGrandMirror();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.E))
+        {
+            EileensRoomBehavior.SetNewElleniaPassword();
+            ShowSaveDevCanvas($"SETUP TRUE ENDING: ELLENIA ({Script_Names.ElleniaPassword})");
+            SetQuestsDoneExplicit(0);
+        }
 
         //  Replace these with necessary milestone cases
         void TestCaseKey1() => TeleportGrandMirrorR2();

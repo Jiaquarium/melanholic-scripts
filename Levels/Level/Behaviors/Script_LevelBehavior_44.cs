@@ -344,6 +344,13 @@ public class Script_LevelBehavior_44 : Script_LevelBehavior
         var vignette = postProcessingSettings.SetVignetteTakeABow();
         Script_PostProcessingSettings.SetRefVignetteActive(ref vignette, true);
 
+        // Apply framing for PRCS
+        Script_UIAspectRatioEnforcerFrame.Control.EndingsLetterBox(
+            isOpen: true,
+            framing: Script_UIAspectRatioEnforcerFrame.Framing.TakeABow,
+            isNoAnimation: true
+        );
+
         Script_PRCSManager.Control.OpenPRCSCustom(Script_PRCSManager.CustomTypes.TakeABow);
 
         // Play Take A Bow Bgm as level Bgm is fading out for abrupt feel

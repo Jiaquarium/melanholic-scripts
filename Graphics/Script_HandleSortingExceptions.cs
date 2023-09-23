@@ -126,7 +126,9 @@ public class Script_HandleSortingExceptions : MonoBehaviour
         return isMyWorldTile;
     }
 
-#if UNITY_EDITOR
+    // ------------------------------------------------------------------
+    // DEV ONLY.
+
     protected virtual void DevCheckGraphics()
     {
         Script_HandlePlayerGraphicsMaterial playerLevelGraphics = null;
@@ -149,5 +151,7 @@ public class Script_HandleSortingExceptions : MonoBehaviour
     
     protected bool DevCheckStencil(Material mat, Material[] mats) => mats
         .FirstOrDefault(stencil => stencil == mat) != null;
-#endif
+    
+    // ------------------------------------------------------------------
+
 }

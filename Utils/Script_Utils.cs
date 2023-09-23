@@ -1350,7 +1350,7 @@ public static class Script_Utils
     // File Path Helpers
     
     /// <summary>
-    /// Version number must be formatted like W.X.Y.Z
+    /// Version number must be formatted like MAJOR.MINOR.PATCH
     /// </summary>
     
     public static string SaveFile(int slot) => $"{Prefix}_savedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
