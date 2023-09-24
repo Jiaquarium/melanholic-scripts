@@ -5,7 +5,7 @@ using System.Linq;
 
 public class Script_HandleSortingExceptions : MonoBehaviour
 {
-    static private int interval = 3;
+    static private int Interval = 3;
     
     [SerializeField] private Directions directionToPlayer;
     [SerializeField] protected Material myStencil;
@@ -18,6 +18,9 @@ public class Script_HandleSortingExceptions : MonoBehaviour
 
     [Tooltip("Define the World Tile to save performance. Only make calls when Player is on the specified World Tile")]
     [SerializeField] private Script_WorldTile worldTile;
+
+    [Tooltip("Set true for tighter sorting; will test sorting on every FixedUpdate frame instead of every Interval frame in LateUpdate")]
+    [SerializeField] private bool isSortEveryFixedUpdateFrame;
 
     protected Vector3 myComparisonLoc;
     protected Vector3 playerLocation;
@@ -37,7 +40,7 @@ public class Script_HandleSortingExceptions : MonoBehaviour
     {
         myRenderer = GetComponent<Renderer>();
     }
-    
+
     protected virtual void Start()
     {
         if (playerOverride == null)
@@ -56,10 +59,22 @@ public class Script_HandleSortingExceptions : MonoBehaviour
 #endif
     }
 
+    // Default behavior, sorting happens every Interval frame in LateUpdate loop.
     void LateUpdate()
     {
+        if (isSortEveryFixedUpdateFrame)
+            return;
+
         // Do only every interval frame
-        if (Time.frameCount % interval == 0)
+        if (Time.frameCount % Interval == 0)
+            HandleSortingMaterials();
+    }
+
+    // Tighter sorting behavior. Sorting happens on every Fixed Update loop.
+    // Note: Only use if only a few instances of this script active to avoid hurting performance
+    void FixedUpdate()
+    {
+        if (isSortEveryFixedUpdateFrame)
             HandleSortingMaterials();
     }
 
