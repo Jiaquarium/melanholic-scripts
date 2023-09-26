@@ -87,7 +87,7 @@ public class Script_PlayerStepsSFX : MonoBehaviour
             return;
 
         // Don't play Step SFX for mutation, it's impossible to play SFX on intervals
-        // with animators being chosen at random.
+        // with animators being chosen at random. Mutation's hidden graphics will handle sfx.
         if (
             (
                 player != null

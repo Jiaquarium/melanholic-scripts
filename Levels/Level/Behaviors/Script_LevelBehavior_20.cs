@@ -350,6 +350,15 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
 
         eldersTragedyBgThemePlayer.FadeOutStop(() => {
             bgm.SetVolume(0f, Const_AudioMixerParams.ExposedBGVolume);
+            
+            // Wait to fade in Bgm next frame to avoid clicking
+            StartCoroutine(WaitNextFrameFadeInBgm());
+        });
+
+        IEnumerator WaitNextFrameFadeInBgm()
+        {
+            yield return null;
+            
             bgm.PlayFadeIn(
                 bgm.CurrentClipIndex,
                 () => {
@@ -362,7 +371,7 @@ public class Script_LevelBehavior_20 : Script_LevelBehavior
                 },
                 outputMixer: Const_AudioMixerParams.ExposedBGVolume
             );
-        });
+        }
 
         void OnRemoveLetterBoxDone()
         {

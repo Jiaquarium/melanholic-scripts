@@ -24,6 +24,7 @@ public class Script_PlayerMutation : MonoBehaviour
     void Update()
     {
         transform.position = player.transform.position;
+        StepsAnimator.speed = player.MyAnimator.speed;
     }
 
     public void HandleAnimatorState(
