@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2023-08-25 16:08:24
+// Last created by Dialogue Exporter at 2023-09-27 14:54:10
 
 using System.Collections;
 using System.Collections.Generic;
@@ -221,7 +221,8 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"A {13}...?",
                 @"When will it all stop...",
                 @"Okay no more overthinking!",
-                @"Pull yourself together, {0}... one last hour...",
+                @"Pull yourself together, {0}... only one...",
+                @"...last hour!",
         },
         
     }
