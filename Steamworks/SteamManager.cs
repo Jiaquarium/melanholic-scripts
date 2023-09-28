@@ -24,11 +24,11 @@ using Steamworks;
 // https://guavaman.com/projects/rewired/docs/Troubleshooting.html#steam-rewired-setup
 [DisallowMultipleComponent]
 public class SteamManager : MonoBehaviour {
-#if !DISABLESTEAMWORKS
-	public const int AppId = 1826060;
-
 	public GameObject rewiredInitializer;
 	public const string EntryPointScene = Script_SceneManager.TitleScene;
+
+#if (!DISABLESTEAMWORKS && !FORCE_DISABLE_STEAMWORKS)
+	public const int AppId = 1826060;
 	
 	protected static bool s_EverInitialized = false;
 
@@ -143,14 +143,6 @@ public class SteamManager : MonoBehaviour {
 		s_EverInitialized = true;
 	}
 
-	private void InitRewired()
-	{
-		// If this is Start Scene (entry point in prod), we need to manually init Rewired so it is inited after Steamworks.
-		// https://guavaman.com/projects/rewired/docs/Troubleshooting.html#steam-rewired-setup
-		if (SceneManager.GetActiveScene().name == EntryPointScene)
-			rewiredInitializer.gameObject.SetActive(true);
-	}
-
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
 	protected virtual void OnEnable() {
 		if (s_instance == null) {
@@ -200,5 +192,19 @@ public class SteamManager : MonoBehaviour {
 			return false;
 		}
 	}
-#endif // !DISABLESTEAMWORKS
+
+	void Awake()
+	{
+		Debug.Log("[Steamworks.NET] Steamworks disabled with FORCE_DISABLE_STEAMWORKS. Initializing Rewired.");
+		InitRewired();
+	}
+#endif // !DISABLESTEAMWORKS && !FORCE_DISABLE_STEAMWORKS
+
+	private void InitRewired()
+	{
+		// If this is Start Scene (entry point in prod), we need to manually init Rewired so it is inited after Steamworks.
+		// https://guavaman.com/projects/rewired/docs/Troubleshooting.html#steam-rewired-setup
+		if (SceneManager.GetActiveScene().name == EntryPointScene)
+			rewiredInitializer.gameObject.SetActive(true);
+	}
 }

@@ -21,6 +21,19 @@ public class Dev_GameHelper : MonoBehaviour
         "UNITY_POST_PROCESSING_STACK_V2",
         "STEAMWORKS_NET"
     };
+
+    public static readonly string[] ScriptingDefineSymbolsDevDisableSteamworks = {
+        "UNITY_POST_PROCESSING_STACK_V2",
+        "STEAMWORKS_NET",
+        "ENABLE_LOGS",
+        "FORCE_DISABLE_STEAMWORKS"
+    };
+
+    public static readonly string[] ScriptingDefineSymbolsProdDisableSteamworks = {
+        "UNITY_POST_PROCESSING_STACK_V2",
+        "STEAMWORKS_NET",
+        "FORCE_DISABLE_STEAMWORKS"
+    };
     
     private static float notificationDuration = 1f;
     
@@ -202,6 +215,8 @@ public class Dev_GameHelper : MonoBehaviour
             ShowSaveDevCanvas($"SETUP TRUE ENDING: ELLENIA ({Script_Names.ElleniaPassword})");
             SetQuestsDoneExplicit(0);
         }
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.X))
+            XXXWorldNewState();
 
         //  Replace these with necessary milestone cases
         void TestCaseKey1() => TeleportGrandMirrorR2();
@@ -441,6 +456,22 @@ public class Dev_GameHelper : MonoBehaviour
         PlayerSettings.SetScriptingDefineSymbols(
             UnityEditor.Build.NamedBuildTarget.Standalone,
             ScriptingDefineSymbolsProd
+        );
+    }
+    
+    public void AddLogsDisableSteamworks()
+    {
+        PlayerSettings.SetScriptingDefineSymbols(
+            UnityEditor.Build.NamedBuildTarget.Standalone,
+            ScriptingDefineSymbolsDevDisableSteamworks
+        );
+    }
+
+    public void RemoveLogsDisableSteamworks()
+    {
+        PlayerSettings.SetScriptingDefineSymbols(
+            UnityEditor.Build.NamedBuildTarget.Standalone,
+            ScriptingDefineSymbolsProdDisableSteamworks
         );
     }
 #endif
@@ -757,6 +788,37 @@ public class Dev_GameHelper : MonoBehaviour
         Script_Game.Game.StartSundayCycleSaveInitialize();
     }
 
+    public void XXXWorldNewState()
+    {
+        Script_TransitionManager.Control.TimelineBlackScreen();
+        ShowSaveDevCanvas($"{name} GO TO: XXX WORLD START");        
+        
+        inventoryTester.WeekendCycle();
+        ToXXXWorldStartAfterAct2State();
+        
+        Act1ScarletCipherState();
+        var scarletCipherManager = Script_ScarletCipherManager.Control;
+        scarletCipherManager.RevealScarletCipherSlot(3);
+        scarletCipherManager.RevealScarletCipherSlot(4);
+        scarletCipherManager.RevealScarletCipherSlot(5);
+        scarletCipherManager.RevealScarletCipherSlot(6);
+        scarletCipherManager.RevealScarletCipherSlot(7);
+
+        Act1PianoStates();
+        Script_PianoManager.Control.Pianos[3].IsRemembered = true;
+        
+        Script_Names.UpdateR1Names();
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        // Set runs manager to weekend, cyclecount 0
+        runsManager.StartWeekendCycle();
+        runsManager.IncrementRun();
+        
+        Script_Game.Game.faceOffCounter = 2;
+
+        Script_Game.Game.NextRunSaveInitialize();
+    }
+
     public void RollCredits()
     {
         ShowSaveDevCanvas($"{name} GO TO: CREDITS");
@@ -816,6 +878,7 @@ public class Dev_GameHelper : MonoBehaviour
     {
         woodsBehavior.didStartThoughtSea = true;
         
+        hotelLobbyBehavior.didCantSwimDialogue = true;
         hotelLobbyBehavior.didOpeningThoughtFaceOff0 = true;
         hotelLobbyBehavior.didOpeningThoughtFaceOff1 = true;
         hotelLobbyBehavior.didOpeningThoughtCodeRemains0 = false;
@@ -842,6 +905,33 @@ public class Dev_GameHelper : MonoBehaviour
         SaloonBehavior.isUrsieCutsceneDone = true;
         KTV2Behavior.IsPuzzleComplete = true;
         KTV2Behavior.didPlayFaceOff = true;
+    }
+
+    private void ToXXXWorldStartAfterAct2State()
+    {
+        woodsBehavior.didStartThoughtSea = true;
+        
+        hotelLobbyBehavior.didCantSwimDialogue = true;
+        hotelLobbyBehavior.didOpeningThoughtFaceOff0 = true;
+        hotelLobbyBehavior.didOpeningThoughtFaceOff1 = false;
+        hotelLobbyBehavior.didOpeningThoughtCodeRemains0 = false;
+        hotelLobbyBehavior.didOpeningThoughtCodeRemains1 = false;
+        
+        MynesGrandMirrorRoomBehavior.IsDone = true;
+
+        WellsWorldBehavior.didPickUpLastWellMap = true;
+        WellsWorldBehavior.didPickUpSpeedSeal = true;
+        WellsWorldBehavior.isMooseQuestDone = true;
+        WellsWorldBehavior.didPlayFaceOff = true;
+        WellsWorldBehavior.didSpecialIntro = true;
+        WellsWorldBehavior.didWellTalkInitialDialogue = true;
+        CatWalk1Behavior.didPickUpLightSticker = true;
+
+        CelGardensBehavior.didIntro = true;
+        RockGardenBehavior.didPickUpPuppeteerSticker = true;
+        CatWalk2Behavior.didActivateDoubts = true;
+        LabyrinthBehavior.isPuzzleComplete = true;
+        LabyrinthBehavior.didPlayFaceOff = true;
     }
 
     public void SetElleniaPuzzleDone()
@@ -1438,7 +1528,9 @@ public class Dev_GameHelper : MonoBehaviour
                     }
                 }
 
-                if (GUILayout.Button("Add Logs (Add ENABLE_LOGS)", GUILayout.Height(32)))
+                EditorGUILayout.LabelField("Steam", EditorStyles.miniLabel);
+
+                if (GUILayout.Button("[DEV] Add ENABLE_LOGS, Remove FORCE_DISABLE_STEAMWORKS", GUILayout.Height(32)))
                 {
                     t.AddLogs();
 
@@ -1449,9 +1541,33 @@ public class Dev_GameHelper : MonoBehaviour
                     }
                 }
 
-                if (GUILayout.Button("Remove Logs (Remove ENABLE_LOGS)", GUILayout.Height(32)))
+                if (GUILayout.Button("[PROD] Remove ENABLE_LOGS, Remove FORCE_DISABLE_STEAMWORKS", GUILayout.Height(56)))
                 {
                     t.RemoveLogs();
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
+                }
+
+                EditorGUILayout.LabelField("GOG & Epic", EditorStyles.miniLabel);
+
+                if (GUILayout.Button("[DEV] Add ENABLE_LOGS, Add FORCE_DISABLE_STEAMWORKS", GUILayout.Height(32)))
+                {
+                    t.AddLogsDisableSteamworks();
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(t);
+                        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
+                    }
+                }
+
+                if (GUILayout.Button("[PROD] Remove ENABLE_LOGS, Add FORCE_DISABLE_STEAMWORKS", GUILayout.Height(56)))
+                {
+                    t.RemoveLogsDisableSteamworks();
 
                     if (GUI.changed)
                     {

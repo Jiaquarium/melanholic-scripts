@@ -15,6 +15,8 @@ using UnityEditor;
 /// 
 /// (e.g. Game is up with Steam not running, achievements will be stored locally but nothing will happen in Steamworks;
 /// then, next time Game is running with Steam, once this Manager's Update() runs, API calls will be made to match local state.)
+/// 
+/// For GOG & Epic, still maintain state for achievements to have data but do not use any Steamworks calls.
 /// </summary>
 public class Script_AchievementsManager : MonoBehaviour
 {
@@ -75,7 +77,12 @@ public class Script_AchievementsManager : MonoBehaviour
 
     void OnEnable()
     {
-		if (!SteamManager.Initialized || Const_Dev.IsDemo)
+#if FORCE_DISABLE_STEAMWORKS
+        Debug.Log($"{name} SteamManager is disabled with FORCE_DISABLE_STEAMWORKS");
+        return;
+#endif
+
+        if (!SteamManager.Initialized || Const_Dev.IsDemo)
         {
             Debug.LogWarning($"{name} SteamManager is not inited");
 			return;
@@ -92,6 +99,10 @@ public class Script_AchievementsManager : MonoBehaviour
 
     void Update()
     {
+#if FORCE_DISABLE_STEAMWORKS
+        return;
+#endif
+        
         if (!SteamManager.Initialized || Const_Dev.IsDemo)
 			return;
 
@@ -442,7 +453,13 @@ public class Script_AchievementsManager : MonoBehaviour
         m_bStoreStats = true;
     }
 
-    private void OnUserStatsReceived(UserStatsReceived_t pCallback) {
+    private void OnUserStatsReceived(UserStatsReceived_t pCallback)
+    {
+#if FORCE_DISABLE_STEAMWORKS
+        Dev_Logger.Debug("OnUserStatsReceived disabled with FORCE_DISABLE_STEAMWORKS");
+        return;
+#endif
+
         if (!SteamManager.Initialized || Const_Dev.IsDemo)
         	return;
 
@@ -481,7 +498,12 @@ public class Script_AchievementsManager : MonoBehaviour
     // Dev only
     private void OnAchievementStored(UserAchievementStored_t pCallback)
     {
-		if (!Debug.isDebugBuild)
+#if FORCE_DISABLE_STEAMWORKS
+        Dev_Logger.Debug("OnAchievementStored disabled with FORCE_DISABLE_STEAMWORKS");
+        return;
+#endif
+
+        if (!Debug.isDebugBuild)
             return;
         
         if (!SteamManager.Initialized || Const_Dev.IsDemo)
@@ -501,6 +523,11 @@ public class Script_AchievementsManager : MonoBehaviour
     // Dev only
     private void ResetSteamStatsAndAchievements()
     {
+#if FORCE_DISABLE_STEAMWORKS
+        Dev_Logger.Debug("ResetSteamStatsAndAchievements disabled with FORCE_DISABLE_STEAMWORKS");
+        return;
+#endif
+        
         if (!SteamManager.Initialized || Const_Dev.IsDemo)
         	return;
         
@@ -568,8 +595,22 @@ public class Script_AchievementsManager : MonoBehaviour
             if (GUILayout.Button("Unlock ACH_SEALING"))
                 t.UnlockSealing();
             
-            if (GUILayout.Button("Unlock ACH_SADIST"))
-                t.UnlockSadist();
+            // if (GUILayout.Button("Unlock ACH_SADIST"))
+            //     t.UnlockSadist();
+            
+            EditorGUILayout.LabelField("Sadist Achievement Req", EditorStyles.miniLabel);
+
+            if (GUILayout.Button("Unlock Cursed Elder"))
+                t.UpdateCursedCutScene(CursedCutScenes.ElderEclaire);
+            
+            if (GUILayout.Button("Unlock Cursed Ids"))
+                t.UpdateCursedCutScene(CursedCutScenes.Ids);
+            
+            if (GUILayout.Button("Unlock Cursed Ellenia"))
+                t.UpdateCursedCutScene(CursedCutScenes.Ellenia);
+            
+            if (GUILayout.Button("Unlock Cursed Eileen"))
+                t.UpdateCursedCutScene(CursedCutScenes.Eileen);
             
             EditorGUILayout.LabelField("Other", EditorStyles.miniLabel);
 
