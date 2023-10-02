@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-09-04 16:14:13
+// Last created by UI Exporter at 2023-10-01 18:26:38
 
 using System.Collections;
 using System.Collections.Generic;
@@ -793,7 +793,8 @@ public class Script_UIText
     "credits_playtesters_thank-you",
     new Model_LanguagesUI
     {
-        EN = @"And a very special thanks to our playtesters and colleagues."
+        EN = @"To our playtesters and colleagues,
+This would not have been possible without your feedback, course corrections, and encouragement."
     }
 },
 {
@@ -1199,7 +1200,7 @@ public class Script_UIText
     "credits_thank-you_title",
     new Model_LanguagesUI
     {
-        EN = @"Thank you for playing"
+        EN = @"Thank you for sharing in this journey"
     }
 },
 {

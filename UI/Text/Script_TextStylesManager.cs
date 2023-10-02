@@ -32,7 +32,9 @@ public enum TextStyle
     CreditsName = 21,
     CreditsHeader = 22,
     CreditsHeaderLarge = 23,
-    SymbolsGlitch = 24
+    SymbolsGlitch = 24,
+    CreditsEndingHeader = 25,
+    CreditsEndingHeader2 = 26,
 }
 
 public class Script_TextStylesManager : MonoBehaviour
@@ -62,6 +64,8 @@ public class Script_TextStylesManager : MonoBehaviour
     [SerializeField] private Script_TextStyle CreditsHeaderStyle;
     [SerializeField] private Script_TextStyle CreditsHeaderLargeStyle;
     [SerializeField] private Script_TextStyle SymbolsGlitchStyle;
+    [SerializeField] private Script_TextStyle CreditsEndingHeaderStyle;
+    [SerializeField] private Script_TextStyle CreditsEndingHeader2Style;
 
     public Script_TextStyle GetTextStyle(TextStyle style) => style switch
     {
@@ -89,6 +93,8 @@ public class Script_TextStylesManager : MonoBehaviour
         TextStyle.CreditsHeader => CreditsHeaderStyle,
         TextStyle.CreditsHeaderLarge => CreditsHeaderLargeStyle,
         TextStyle.SymbolsGlitch => SymbolsGlitchStyle,
+        TextStyle.CreditsEndingHeader => CreditsEndingHeaderStyle,
+        TextStyle.CreditsEndingHeader2 => CreditsEndingHeader2Style,
         _ => DialogueDefaultStyle,
     };
 
