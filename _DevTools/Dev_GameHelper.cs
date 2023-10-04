@@ -217,6 +217,13 @@ public class Dev_GameHelper : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.X))
             XXXWorldNewState();
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.D))
+        {
+            int mistakesAllowed = 99;
+            ShowSaveDevCanvas($"SET DDR MISTAKES ALLOWED: {mistakesAllowed}");
+            IdsRoomBehavior.IsForceSetMistakesAllowed = true;
+            IdsRoomBehavior.ForceMistakesAllowed = mistakesAllowed;
+        }
 
         //  Replace these with necessary milestone cases
         void TestCaseKey1() => TeleportGrandMirrorR2();

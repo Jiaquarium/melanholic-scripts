@@ -222,6 +222,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
     public int BGMIdx { get; set; }
 
     public int CurrentTry { get => currentTry; }
+
+    public int ForceMistakesAllowed { get; set; }
+    public bool IsForceSetMistakesAllowed { get; set; }
     
     private Script_DialogueNode IntroNode
     {
@@ -443,6 +446,9 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 
                 if (!Const_Dev.IsDevMode)
                     currentMistakesAlloted = Mathf.Min(currentMistakesAlloted, maxMistakesAllowed);
+                
+                if (Const_Dev.IsDevHelperOn && IsForceSetMistakesAllowed)
+                    currentMistakesAlloted = ForceMistakesAllowed;
 
                 Dev_Logger.Debug($"currentTry {currentTry}; currentMistakesAlloted {currentMistakesAlloted}; extraMistakesAllowed {extraMistakesAllowed }");
 
