@@ -163,6 +163,7 @@ public class Script_Game : MonoBehaviour
 
     public Script_VCamera VCam;
     public Script_VCamera VCamDramaticZoom;
+    [SerializeField] private List<Script_DistanceVCamera> distanceVCameras;
     public Transform playerContainer;
     public Transform bgThemeSpeakersContainer;
     public Transform tmpTargetsContainer;
@@ -431,6 +432,9 @@ public class Script_Game : MonoBehaviour
         get => GetComponent<Camera>().orthographicSize;
     }
 
+    public List<Script_DistanceVCamera> DistanceVCameras => distanceVCameras;
+
+    // ------------------------------------------------------------------
     /// <summary>
     /// (DEV): Sets all levels to inactive from Dev'ing
     /// to avoid errors when a level is active on load where their GameObjects's
@@ -1078,6 +1082,10 @@ public class Script_Game : MonoBehaviour
         VCam.SetFollow();
         VCamDramaticZoom.SetFollow();
         VCamDramaticZoom.gameObject.SetActive(true);
+        distanceVCameras.ForEach(distanceVCam => {
+            distanceVCam.VCamera.SetFollow();
+            distanceVCam.VCamera.SetPriority(0);
+        });
     }
 
     public void SetupPlayerOnLevel()
@@ -1097,8 +1105,6 @@ public class Script_Game : MonoBehaviour
 
         // Turn off/on depth masks if static depth masks are present/not present
         player.SetIceSpikeDepthMasksEnabled(!levelBehavior.IsStaticDepthMasksPresent());
-
-        // CameraTargetFollower.MatchPlayer();
 
         Dev_Logger.Debug("---- ---- PLAYER SETUP ON LEVEL EVENT ---- ----");
         Script_GameEventsManager.PlayerSetupOnLevel();   

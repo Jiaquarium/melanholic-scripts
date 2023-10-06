@@ -91,7 +91,7 @@ public class Script_ScreenFXManager : MonoBehaviour
             
             isScreenShaking = false;
 
-            // In the case Player exits level during shake, Script_CameraShake will not end it.
+            // In the case Script_CameraShake's coroutine was ended, ensure shaking still stops.
             Script_VCamManager.VCamMain.StopShake();
         }
     }

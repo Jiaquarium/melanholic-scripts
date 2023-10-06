@@ -124,6 +124,8 @@ public class Script_PlayerMovement : MonoBehaviour
         get => progress;
     }
 
+    public float CurrentAdjustedWalkSpeed { get; private set; }
+
     public Directions FacingDirection
     {
         get => player.FacingDirection;
@@ -150,6 +152,10 @@ public class Script_PlayerMovement : MonoBehaviour
     public bool IsPassive { get; set; }
 
     public bool IsEmphasizeWalk { get; set; }
+    public bool IsActuallyRunning
+    {
+        get => CurrentAdjustedWalkSpeed > defaultSpeed;
+    }
 
     public Script_PlayerCheckCollisions PlayerCheckCollisions => playerCheckCollisions;
 
@@ -575,17 +581,20 @@ public class Script_PlayerMovement : MonoBehaviour
             adjustedSpeed = speed * windAdjustment;
         else
             adjustedSpeed = speed * maskMultiplier;
-        
+
+        // Adjust animator speed as a fraction of default speed
+        var adjustedAnimatorSpeed = adjustedSpeed / defaultSpeed;
+        if (animator.speed != adjustedAnimatorSpeed)
+            animator.speed = adjustedAnimatorSpeed;
+
+        // Remove the below in builds; only used in dev to check for smooth movement
+#if UNITY_EDITOR
         float framesPerMove = 1f / (Time.fixedDeltaTime * adjustedSpeed);
         float roundedFramesPerMove = Mathf.RoundToInt(framesPerMove);
         
         if (!Mathf.Approximately(roundedFramesPerMove, framesPerMove))
             Dev_Logger.Debug($"Motion not smooth; frames per move {framesPerMove} floored {roundedFramesPerMove}");
-        
-        // Adjust animator speed as a fraction of default speed
-        var adjustedAnimatorSpeed = adjustedSpeed / defaultSpeed;
-        if (animator.speed != adjustedAnimatorSpeed)
-            animator.speed = adjustedAnimatorSpeed;
+#endif
 
         return adjustedSpeed;
     }
@@ -630,7 +639,8 @@ public class Script_PlayerMovement : MonoBehaviour
 
         void MoveTransform()
         {
-            progress += WalkSpeed(Script_ActiveStickerManager.Control.ActiveSticker?.id) * Time.fixedDeltaTime;
+            float adjustedWalkSpeed = WalkSpeed(Script_ActiveStickerManager.Control.ActiveSticker?.id);
+            progress += adjustedWalkSpeed * Time.fixedDeltaTime;
             
             if (progress > 1f)
                 progress = 1f;
@@ -642,6 +652,8 @@ public class Script_PlayerMovement : MonoBehaviour
             );    
             transform.position = newPosition;
             isMoving = true;
+            
+            CurrentAdjustedWalkSpeed = adjustedWalkSpeed;
         }
 
         void HandleBufferedMoveOnFixedClock()

@@ -161,6 +161,17 @@ public class Script_Player : Script_Character
         set => playerMovementHandler.IsEmphasizeWalk = value;
     }
 
+    public bool IsActuallyRunning
+    {
+        get
+        {
+            if (playerMovementHandler != null)
+                return playerMovementHandler.IsActuallyRunning;
+
+            return false;
+        }
+    }
+
     public Directions LastMove
     {
         get => playerMovementHandler.LastMove;
@@ -692,7 +703,7 @@ public class Script_Player : Script_Character
         Script_PlayerGraphics.Materials material = (Script_PlayerGraphics.Materials)materialIdx;
         playerGraphics.ChangeMaterial(material);
     }
-    
+
     // ------------------------------------------------------------------
     // Spawning
 

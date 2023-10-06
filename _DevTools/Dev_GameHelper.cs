@@ -84,6 +84,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Dev_InventoryTester inventoryTester;
 
     [SerializeField] private Script_RunsManager runsManager;
+    [SerializeField] private Script_ScreenFXManager screenFXManager;
 
     // ----------------------------------------------------------------------
     // Level Behaviors
@@ -223,6 +224,10 @@ public class Dev_GameHelper : MonoBehaviour
             ShowSaveDevCanvas($"SET DDR MISTAKES ALLOWED: {mistakesAllowed}");
             IdsRoomBehavior.IsForceSetMistakesAllowed = true;
             IdsRoomBehavior.ForceMistakesAllowed = mistakesAllowed;
+        }
+        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.S))
+        {
+            screenFXManager.ShakeScreen();
         }
 
         //  Replace these with necessary milestone cases
@@ -801,6 +806,7 @@ public class Dev_GameHelper : MonoBehaviour
         ShowSaveDevCanvas($"{name} GO TO: XXX WORLD START");        
         
         inventoryTester.WeekendCycle();
+        inventoryTester.AddLetThereBeLight();
         ToXXXWorldStartAfterAct2State();
         
         Act1ScarletCipherState();

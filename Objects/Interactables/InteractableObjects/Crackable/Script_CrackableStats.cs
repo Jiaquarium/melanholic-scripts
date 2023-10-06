@@ -11,6 +11,8 @@ using UnityEditor;
 public class Script_CrackableStats : Script_CharacterStats
 {
     static private float DefaultHideRemainsTime = 5f;
+    [SerializeField] private bool isOverrideHideRemainsTime;
+    [SerializeField] private float overrideHideRemainsTime = 0f;
     
     [SerializeField] private UnityEvent<Script_CrackableStats> crackedAction;
     
@@ -132,7 +134,12 @@ public class Script_CrackableStats : Script_CharacterStats
         
         IEnumerator WaitToHide()
         {
-            yield return new WaitForSeconds(DefaultHideRemainsTime);
+            float hideRemainsTime = DefaultHideRemainsTime;
+
+            if (isOverrideHideRemainsTime && overrideHideRemainsTime > 0f)
+                hideRemainsTime = overrideHideRemainsTime;
+            
+            yield return new WaitForSeconds(hideRemainsTime);
 
             hideIceCoroutine = null;
             HideIce();

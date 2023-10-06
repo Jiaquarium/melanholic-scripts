@@ -135,26 +135,20 @@ public class Script_VCamManager : MonoBehaviour
         vCam1.SetPriority(0);
     }
 
+    // Shake all follow player cameras so screenshake is consistent
     public void Shake(float duration, float amp, float freq, Action cb = null)
     {
-        // Check if distance cam is being used
-        Script_VCamera currentDistanceVCam = Script_Game.Game.levelBehavior.DistanceVCam;
-
-        if (currentDistanceVCam != null)
-            currentDistanceVCam.GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
-        else
-            GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
+        Script_Game.Game.DistanceVCameras.ForEach(
+            distVCam => distVCam.CameraShake.Shake(duration, amp, freq, cb)
+        );
+        GetComponent<Script_CameraShake>().Shake(duration, amp, freq, cb);
     }
 
+    // Stop shake for all follow player cameras so screenshake is consistent
     public void StopShake()
     {
-        // Check if distance cam is being used
-        Script_VCamera currentDistanceVCam = Script_Game.Game.levelBehavior.DistanceVCam;
-
-        if (currentDistanceVCam != null)
-            currentDistanceVCam.GetComponent<Script_CameraShake>().InitialState();
-        else
-            GetComponent<Script_CameraShake>().InitialState();
+        Script_Game.Game.DistanceVCameras.ForEach(distVCam => distVCam.CameraShake.InitialState());
+        GetComponent<Script_CameraShake>().InitialState();
     }
 
     public void SetCinemachineBlendUpdateMethod(CinemachineBrain.BrainUpdateMethod updateMethod)

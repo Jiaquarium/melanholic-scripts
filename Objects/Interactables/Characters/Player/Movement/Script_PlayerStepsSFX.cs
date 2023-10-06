@@ -5,10 +5,12 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Script_PlayerStepsSFX : MonoBehaviour
 {
+    [SerializeField] private bool isPlayerProps;
     [SerializeField] private bool isDisable;
     
     [SerializeField] private List<AudioClip> stepSFXs;
     [SerializeField][Range(0f, 1f)] private float stepSFXVol;
+    [SerializeField][Range(0f, 1f)] private float runningStepSFXVol;
     [SerializeField] private List<AudioClip> iceWomanStepSFXs;
     [SerializeField][Range(0f, 1f)] private float iceWomanStepSFXVol;
     [SerializeField] private List<AudioClip> animalWithinStepSFXs;
@@ -35,7 +37,12 @@ public class Script_PlayerStepsSFX : MonoBehaviour
     // - Default Player Graphics Controller
     private void Step()
     {
-        HandleStepSFX(stepSFXs, stepSFXVol);
+        float currentStepsSFXVol = stepSFXVol;
+
+        if (isPlayerProps && player != null && player.IsActuallyRunning)
+            currentStepsSFXVol = runningStepSFXVol;
+        
+        HandleStepSFX(stepSFXs, currentStepsSFXVol);
     }
 
     // - Snow Woman Player Graphics Controller
