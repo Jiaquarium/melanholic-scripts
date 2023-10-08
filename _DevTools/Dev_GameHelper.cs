@@ -211,11 +211,36 @@ public class Dev_GameHelper : MonoBehaviour
 		}
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.L))
             BeforeGrandMirror();
-        else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKey(KeyCode.Comma) && Input.GetKeyDown(KeyCode.E))
         {
             EileensRoomBehavior.SetNewElleniaPassword();
             ShowSaveDevCanvas($"SETUP TRUE ENDING: ELLENIA ({Script_Names.ElleniaPassword})");
             SetQuestsDoneExplicit(0);
+        }
+        else if (Input.GetKey(KeyCode.Comma) && Input.GetKeyDown(KeyCode.I))
+        {
+            ShowSaveDevCanvas($"SETUP TRUE ENDING: IDS");
+            SetQuestsDoneExplicit(1);
+        }
+        else if (Input.GetKey(KeyCode.Comma) && Input.GetKeyDown(KeyCode.L))
+        {
+            ShowSaveDevCanvas($"SETUP TRUE ENDING: EILEEN");
+            SetQuestsDoneExplicit(2);
+        }
+        else if (Input.GetKey(KeyCode.Comma) && Input.GetKeyDown(KeyCode.W))
+        {
+            ShowSaveDevCanvas($"SETUP TRUE ENDING: Wells");
+            SetQuestsDoneExplicit(3);
+        }
+        else if (Input.GetKey(KeyCode.Comma) && Input.GetKeyDown(KeyCode.C))
+        {
+            ShowSaveDevCanvas($"SETUP TRUE ENDING: Cel Gardens");
+            SetQuestsDoneExplicit(4);
+        }
+        else if (Input.GetKey(KeyCode.Comma) && Input.GetKeyDown(KeyCode.X))
+        {
+            ShowSaveDevCanvas($"SETUP TRUE ENDING: XXX");
+            SetQuestsDoneExplicit(5);
         }
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.X))
             XXXWorldNewState();
