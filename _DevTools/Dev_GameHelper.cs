@@ -246,10 +246,8 @@ public class Dev_GameHelper : MonoBehaviour
             XXXWorldNewState();
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.D))
         {
-            int mistakesAllowed = 99;
-            ShowSaveDevCanvas($"SET DDR MISTAKES ALLOWED: {mistakesAllowed}");
+            ShowSaveDevCanvas($"SET DDR MAX MISTAKES ALLOWED");
             IdsRoomBehavior.IsForceSetMistakesAllowed = true;
-            IdsRoomBehavior.ForceMistakesAllowed = mistakesAllowed;
         }
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.S))
         {

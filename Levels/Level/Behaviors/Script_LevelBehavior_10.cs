@@ -223,7 +223,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
     public int CurrentTry { get => currentTry; }
 
-    public int ForceMistakesAllowed { get; set; }
     public bool IsForceSetMistakesAllowed { get; set; }
     
     private Script_DialogueNode IntroNode
@@ -418,11 +417,6 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
 
         void StartDDR()
         {
-            if (DDRManager.MistakeCrossesLength != maxMistakesAllowed)
-            {
-                Debug.LogError("Max mistakes need to equal total number of mistake crosses available");
-            }
-            
             int currentMistakesAllowed = GetMistakesAllowed();
             
             DDRManager.Activate(
@@ -444,12 +438,14 @@ public class Script_LevelBehavior_10 : Script_LevelBehavior
                 int extraMistakesAllowed = Mathf.FloorToInt(currentTry / increaseAllotmentInterval);
                 var currentMistakesAlloted = mistakesAllowed + extraMistakesAllowed;
                 
-                if (!Const_Dev.IsDevMode)
-                    currentMistakesAlloted = Mathf.Min(currentMistakesAlloted, maxMistakesAllowed);
+                if (
+                    (Const_Dev.IsDevHelperOn || Debug.isDebugBuild)
+                    && IsForceSetMistakesAllowed
+                )
+                    currentMistakesAlloted = maxMistakesAllowed;
                 
-                if (Const_Dev.IsDevHelperOn && IsForceSetMistakesAllowed)
-                    currentMistakesAlloted = ForceMistakesAllowed;
-
+                currentMistakesAlloted = Mathf.Min(currentMistakesAlloted, maxMistakesAllowed);
+                
                 Dev_Logger.Debug($"currentTry {currentTry}; currentMistakesAlloted {currentMistakesAlloted}; extraMistakesAllowed {extraMistakesAllowed }");
 
                 return currentMistakesAlloted;
