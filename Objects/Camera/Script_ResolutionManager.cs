@@ -38,17 +38,13 @@ public class Script_ResolutionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-#if UNITY_STANDALONE_WIN
-        // Windows startup can wait until Update() to handle fixing; ensure to do it on first frame, and
-        // can then throttle after. Mac startup does this call in Start() via InitializeIntroSimple
+        // Ensure to do fullscreen resolution fix on first frame and can then throttle after
         if (!isRanOnFirstAvailableFrame)
         {
             HandleFixingFullScreenResolution();
             isRanOnFirstAvailableFrame = true;
             return;
         }
-#endif
         
         // Then throttle after, since these calls can be expensive
         if (Time.frameCount % Interval != 0)
@@ -58,7 +54,7 @@ public class Script_ResolutionManager : MonoBehaviour
     }
 
     // Fix if maximized at a wrong resolution due to varying OS maximizing behaviors
-    public void HandleFixingFullScreenResolution()
+    private void HandleFixingFullScreenResolution()
     {
         if (Screen.fullScreen && !isFullScreen)
         {
