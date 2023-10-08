@@ -89,6 +89,9 @@ public class Script_StartOverviewController : Script_UIState
     [SerializeField] private float toLoadingBgBlackFadeInTime = 0.5f;
     [SerializeField] private float toLoadingSubmenuFadeOutTime = 0.75f;
     [SerializeField] private float waitBlackScreenBeforeLoadingScreenTime = 0.5f;
+
+    [Header("Managers")]
+    [SerializeField] private Script_ResolutionManager resolutionManager;
     
     private Script_DeathByScreen activeDeathByScreen;
     private Script_SavedGameSubmenuInputChoice[] choices;
@@ -147,6 +150,11 @@ public class Script_StartOverviewController : Script_UIState
         {
             introControllerSimple.Play();
             introSimpleInputManager.gameObject.SetActive(true);
+
+#if UNITY_STANDALONE_OSX
+            // Mac needs to do this handling earlier or can see flash on screen
+            resolutionManager.HandleFixingFullScreenResolution();
+#endif
         }
 
         isInitedSimple = true;

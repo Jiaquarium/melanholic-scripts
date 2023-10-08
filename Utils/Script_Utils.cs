@@ -1130,6 +1130,83 @@ public static class Script_Utils
         return displayInfos.IndexOf(Screen.mainWindowDisplayInfo);
     }
 
+    // Windows needs to first set max resolution before going to full screen; otherwise,
+    // if currently on a forced windowed resolution, it will upscale from there.
+    public static void SetFullScreenOnWindows(bool isAlreadyFullScreen = false)
+    {
+        // Set to max resolution of the display the app is on
+        DisplayInfo displayInfo = Screen.mainWindowDisplayInfo;
+
+        if (isAlreadyFullScreen)
+        {
+            // If already in full screen mode, don't override the fullscreen mode, only change res.
+            Screen.SetResolution(displayInfo.width, displayInfo.height, Screen.fullScreenMode);
+        }
+        else
+        {
+            // "fullscreen: true" defaults to Fullscreen Window
+            Screen.SetResolution(displayInfo.width, displayInfo.height, fullscreen: true);
+        }
+    }
+
+    // Mac needs to first set the exact max pixel perfect rect resolution, or else it will letterbox
+    // and scale the image, ruining the Pixel Perfectness. Setting to just DisplayInfo will result in this
+    // unlike windows. The below algorithm works with all fullScreenMode and screen sizes.
+    public static void SetFullScreenOnMac(double targetAspect, bool isAlreadyFullScreen = false)
+    {
+        DisplayInfo displayInfo = Screen.mainWindowDisplayInfo;
+        Vector2Int pixelScreenSize = GetAspectEnforcedRect(displayInfo, targetAspect);
+
+        if (isAlreadyFullScreen)
+        {
+            // If already in full screen mode, don't override the fullscreen mode, only change res.
+            Screen.SetResolution(pixelScreenSize.x, pixelScreenSize.y, Screen.fullScreenMode);
+        }
+        else
+        {
+            // "fullscreen: true" defaults to Fullscreen Window
+            Screen.SetResolution(pixelScreenSize.x, pixelScreenSize.y, fullscreen: true);
+        }
+    }
+
+    /// <summary>
+    /// Copied algorithm from custom implementation of Graphics/...PixelPerfectCamera
+    /// </summary>
+    public static Vector2Int GetAspectEnforcedRect(DisplayInfo displayInfo, double targetAspect)
+    {
+        double displayAspect = (double)displayInfo.width / (double)displayInfo.height;
+
+        // Current display height should be scaled by this amount.
+        double scaleHeight = displayAspect / targetAspect;
+
+        int pixelHeight;
+        int pixelWidth;
+
+        // Letterbox
+        if (scaleHeight < 1.0d)
+        {
+            double rawPixelHeight = scaleHeight * (double)displayInfo.height;
+            pixelHeight = (int)Math.Round(rawPixelHeight, MidpointRounding.AwayFromZero);
+            pixelWidth = displayInfo.width;
+        }
+        // Pillarbox
+        else if (scaleHeight > 1.0d)
+        {
+            double scaleWidth = 1.0d / scaleHeight;
+            pixelHeight = displayInfo.height;
+            double rawPixelWidth = scaleWidth * (double)displayInfo.width;
+            pixelWidth = (int)Math.Round(rawPixelWidth, MidpointRounding.AwayFromZero);
+        }
+        // No Cropping Necessary
+        else
+        {
+            pixelWidth = displayInfo.width;
+            pixelHeight = displayInfo.height;
+        }
+
+        return new Vector2Int(pixelWidth, pixelHeight);
+    }
+
     // -------------------------------------------------------------------------------------
     // Conversions
 

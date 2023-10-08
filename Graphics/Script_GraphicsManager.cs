@@ -33,6 +33,11 @@ public class Script_GraphicsManager : MonoBehaviour
     private const float CelestialGardensSpecialIntroShadowDistance = 150f;
     // Allows totem shadows to show but not be pitch black
     private const float XXXWorldSpecialIntroShadowDistance = 105f;
+
+    // Ensure these are always in sync with Pixel Perfect Camera's definition.
+    // Use these when we don't have access to Pixel Perfect Camera's object.
+    private static readonly double TargetAspectWidth = 16d;
+    private static readonly double TargetAspectHeight = 9d;
     
     [SerializeField] private float TargetOrthoSize = 7.5f;
 
@@ -124,6 +129,11 @@ public class Script_GraphicsManager : MonoBehaviour
     public double TargetAspect
     {
         get => pixelPerfectCamera.TargetAspect;
+    }
+
+    public static double TargetAspectStatic
+    {
+        get => TargetAspectWidth / TargetAspectHeight;
     }
 
     public float MinOrthoSizeCameraConfinement

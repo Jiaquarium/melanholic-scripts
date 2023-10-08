@@ -9,7 +9,6 @@ public class Script_SystemSettings : MonoBehaviour
 {
     private static int vSyncCount = 1;
     private static int targetFrameRate = 60;
-    [SerializeField] private FullScreenMode currentScreenMode = 0;
 
     public static void DisableMouse()
     {
@@ -31,16 +30,6 @@ public class Script_SystemSettings : MonoBehaviour
 
     void Update()
     {
-        if (!Const_Dev.IsDevMode)
-            return;
-        
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            currentScreenMode += 1;
-            if (!FullScreenMode.IsDefined(typeof(FullScreenMode), currentScreenMode))
-                currentScreenMode = 0;
-            
-            Screen.fullScreenMode = currentScreenMode;
-        }
+
     }
 }

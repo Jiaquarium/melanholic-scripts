@@ -137,6 +137,7 @@ public class Script_Start : MonoBehaviour
     
     /// <summary>
     /// - Simple Intro Timeline
+    /// Note: will get called again on Simple Intro as a precaution
     /// </summary>
     public void CloseInitFader()
     {

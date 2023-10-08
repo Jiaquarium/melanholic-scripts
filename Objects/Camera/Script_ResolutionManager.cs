@@ -2,11 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Resolution Manager will not run until:
+///     1. WINDOWS: A few frames into Simple Intro Timeline; MAC: on play Simple Intro Timeline
+///     2. Skipping the Simple Intro Timeline
+///     3. Immediately on Game scene
+///     4. Immediately upon returning back to Start from Game scene
+/// </summary>
 public class Script_ResolutionManager : MonoBehaviour
 {
+    static private int Interval = 4;
+    
     [SerializeField] private int displayIdx;
     private bool isFullScreen;
     
+    private bool isRanOnFirstAvailableFrame;
+
     void OnApplicationQuit()
     {
         
@@ -26,6 +37,28 @@ public class Script_ResolutionManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+
+#if UNITY_STANDALONE_WIN
+        // Windows startup can wait until Update() to handle fixing; ensure to do it on first frame, and
+        // can then throttle after. Mac startup does this call in Start() via InitializeIntroSimple
+        if (!isRanOnFirstAvailableFrame)
+        {
+            HandleFixingFullScreenResolution();
+            isRanOnFirstAvailableFrame = true;
+            return;
+        }
+#endif
+        
+        // Then throttle after, since these calls can be expensive
+        if (Time.frameCount % Interval != 0)
+            return;
+        
+        HandleFixingFullScreenResolution();
+    }
+
+    // Fix if maximized at a wrong resolution due to varying OS maximizing behaviors
+    public void HandleFixingFullScreenResolution()
     {
         if (Screen.fullScreen && !isFullScreen)
         {
@@ -50,8 +83,15 @@ public class Script_ResolutionManager : MonoBehaviour
     // current display.
     private void SetFullScreenResolution()
     {
-        DisplayInfo displayInfo = Screen.mainWindowDisplayInfo;
-        Screen.SetResolution(displayInfo.width, displayInfo.height, fullscreen: true);
+#if UNITY_STANDALONE_WIN
+        Script_Utils.SetFullScreenOnWindows(isAlreadyFullScreen: true);
+#endif
+
+#if UNITY_STANDALONE_OSX
+        Script_Utils.SetFullScreenOnMac(
+            Script_GraphicsManager.TargetAspectStatic, isAlreadyFullScreen: true
+        );
+#endif
     }
 
     // If full screen and changed displays, then update new fullscreen resolution.

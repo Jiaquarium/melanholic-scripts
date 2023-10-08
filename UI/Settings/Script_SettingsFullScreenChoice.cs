@@ -16,8 +16,28 @@ public class Script_SettingsFullScreenChoice : Script_SettingsRadioChoice
         bool isCurrentlyFullScreen = Screen.fullScreen;
         if (isCurrentlyFullScreen != isFullScreen)
         {
-            // Change FS mode
-            Screen.fullScreen = isFullScreen;
+
+#if UNITY_STANDALONE_WIN
+            if (isFullScreen)
+            {
+                Script_Utils.SetFullScreenOnWindows();    
+            }
+            else
+            {
+                Screen.fullScreen = false;
+            }
+#endif
+
+#if UNITY_STANDALONE_OSX
+            if (isFullScreen)
+            {
+                Script_Utils.SetFullScreenOnMac(Script_GraphicsManager.TargetAspectStatic);
+            }
+            else
+            {
+                Screen.fullScreen = false;
+            }
+#endif
 
             // Disable nav for a bit
             settingsSystemController.EnableNavigation(false);

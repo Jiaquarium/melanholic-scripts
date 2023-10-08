@@ -85,6 +85,7 @@ public class Dev_GameHelper : MonoBehaviour
 
     [SerializeField] private Script_RunsManager runsManager;
     [SerializeField] private Script_ScreenFXManager screenFXManager;
+    [SerializeField] private Script_GraphicsManager graphicsManager;
 
     // ----------------------------------------------------------------------
     // Level Behaviors
@@ -228,6 +229,26 @@ public class Dev_GameHelper : MonoBehaviour
         else if (Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.S))
         {
             screenFXManager.ShakeScreen();
+        }
+        else if (Input.GetKey(KeyCode.Period) && Input.GetKey(KeyCode.O))
+        {
+            // Full screen for Macs needs to get the exact 16:9 rect
+            Script_GraphicsManager gManager = Script_GraphicsManager.Control;
+            Script_Utils.SetFullScreenOnMac(Script_GraphicsManager.TargetAspectStatic);
+            
+            string msg = $"{Screen.width}x{Screen.height} {Screen.fullScreenMode}";
+            ShowSaveDevCanvas(msg);
+            Debug.Log(msg);
+        }
+        else if (Input.GetKey(KeyCode.Period) && Input.GetKey(KeyCode.W))
+        {
+            // Full screen for Windows can just use displayInfo
+            Script_Utils.SetFullScreenOnWindows();
+            
+            DisplayInfo displayInfo = Screen.mainWindowDisplayInfo;
+            string msg = $"{displayInfo.width}x{displayInfo.height} {Screen.fullScreenMode}";
+            ShowSaveDevCanvas(msg);
+            Debug.Log(msg);
         }
 
         //  Replace these with necessary milestone cases
@@ -516,6 +537,11 @@ public class Dev_GameHelper : MonoBehaviour
                 isAllXXXWorldActive = false;
         });
 
+        // Check Target Aspect Ratios are in sync
+        bool isTargetAspectRatiosSynced = true;
+        if (graphicsManager.TargetAspect != Script_GraphicsManager.TargetAspectStatic)
+            isTargetAspectRatiosSynced = false;
+
         if (!isAllWellWorldActive)
             Debug.LogWarning($"<color=orange>NOT ALL WELLS WORLD TILES ARE ACTIVE</color>");
         
@@ -524,6 +550,9 @@ public class Dev_GameHelper : MonoBehaviour
         
         if (!isAllXXXWorldActive)
             Debug.LogWarning($"<color=orange>NOT ALL XXX WORLD TILES ARE ACTIVE</color>");
+        
+        if (!isTargetAspectRatiosSynced)
+            Debug.LogWarning($"<color=orange>TARGET ASPECT RATIOS DO NOT MATCH {graphicsManager.TargetAspect} vs. {Script_GraphicsManager.TargetAspectStatic}</color>");
 
         void SetCanvasStates()
         {
