@@ -117,5 +117,7 @@ public class Script_MovingNPCMatchPlayer : MonoBehaviour
             npc.FaceDefaultDirection();
         else
             Script_Utils.AnimatorSetDirection(npc.MyAnimator, dir);
+        
+        npc.MyAnimator.SetBool(Script_MovingNPC.NPCMoving, isMoving);
     }
 }
