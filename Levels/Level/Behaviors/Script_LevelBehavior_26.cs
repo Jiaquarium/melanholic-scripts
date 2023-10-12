@@ -81,6 +81,9 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
     [Space][Header("Other")][Space]
     [SerializeField] private Script_CrackableStats giantFinalIce;
+
+    [Space][Header("Achievements")][Space]
+    [SerializeField] private float waitToHandleAchievementTime;
     
     // Dev Only
     [SerializeField] private Script_Marker devHalfTriggerHalfSpikesLocation;
@@ -245,7 +248,7 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
                 isDramaDoneTriggerOff = true;
                 FadeOutDramaticMusic();
 
-                HandleSpikePerfectAchievement();                
+                StartCoroutine(HandleSpikePerfectAchievement());
             }
 
             return false;
@@ -288,9 +291,13 @@ public class Script_LevelBehavior_26 : Script_LevelBehavior
 
         return false;
 
-        void HandleSpikePerfectAchievement()
+        // Need to wait a moment before checking for achievement because could be hit at the same
+        // time as landing on end trigger. On hit, isDramaDoneTriggerOff is turned to false
+        IEnumerator HandleSpikePerfectAchievement()
         {
-            if (HitCounter == 0)
+            yield return new WaitForSecondsRealtime(waitToHandleAchievementTime);
+            
+            if (HitCounter == 0 && isDramaDoneTriggerOff)
                 Script_AchievementsManager.Instance.UnlockSpikePerfect();
         }
     }

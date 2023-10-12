@@ -967,7 +967,7 @@ public class Dev_GameHelper : MonoBehaviour
 
         XXXWorldBehavior.didIntro = true;
         XXXWorldBehavior.didDontKnowMeThought = true;
-        SaloonBehavior.isUrsieCutsceneDone = true;
+        // SaloonBehavior.isUrsieCutsceneDone = true;
         KTV2Behavior.IsPuzzleComplete = true;
         KTV2Behavior.didPlayFaceOff = true;
     }
