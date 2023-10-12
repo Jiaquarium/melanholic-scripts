@@ -203,7 +203,7 @@ public class Script_LevelBehavior_22 : Script_LevelBehavior
 
         bool FinishedQuest()
         {
-            return LB24.IsCurrentPuzzleComplete && !isUrsieCutsceneDone;
+            return LB24.IsCurrentPuzzleComplete;
         }
     }
 }
