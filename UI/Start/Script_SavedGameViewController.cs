@@ -12,6 +12,7 @@ public class Script_SavedGameViewController : Script_SlotsViewController
     
     public MenuStates menuState;
     [SerializeField] private Script_SavedGameTitle[] savedGames;
+    [SerializeField] private Script_SavedGameBackInputManager savedGameBackInputManager;
 
     /// <summary>
     /// This should track the last frame an ESC shortcut was pressed for the following cases:
@@ -43,6 +44,8 @@ public class Script_SavedGameViewController : Script_SlotsViewController
         {
             savedGame.Setup();
         }
+
+        savedGameBackInputManager.InitialState();
 
         base.Setup();
     }
