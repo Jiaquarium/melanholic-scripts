@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2023-10-01 18:26:38
+// Last created by UI Exporter at 2023-10-23 23:10:32
 
 using System.Collections;
 using System.Collections.Generic;
@@ -920,32 +920,39 @@ This would not have been possible without your feedback, course corrections, and
     "credits_playtesters_name10",
     new Model_LanguagesUI
     {
-        EN = @"Stephen Zhao"
+        EN = @"Segyero Yoon"
     }
 },
 {
     "credits_playtesters_name11",
     new Model_LanguagesUI
     {
-        EN = @"Steven Nguyen"
+        EN = @"Stephen Zhao"
     }
 },
 {
     "credits_playtesters_name12",
     new Model_LanguagesUI
     {
-        EN = @"Tedmund Chua"
+        EN = @"Steven Nguyen"
     }
 },
 {
     "credits_playtesters_name13",
     new Model_LanguagesUI
     {
-        EN = @"Tim Goco"
+        EN = @"Tedmund Chua"
     }
 },
 {
     "credits_playtesters_name14",
+    new Model_LanguagesUI
+    {
+        EN = @"Tim Goco"
+    }
+},
+{
+    "credits_playtesters_name15",
     new Model_LanguagesUI
     {
         EN = @"Yining Zheng"
