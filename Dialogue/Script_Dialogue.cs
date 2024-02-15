@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2024-02-15 16:53:35
+// Last created by Dialogue Exporter at 2024-02-15 16:55:34
 
 using System.Collections;
 using System.Collections.Generic;
@@ -856,7 +856,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Well you know what they say?",
         },
         choiceText = "Not too sure myself.",
-        choiceText = "Not too sure myself.",
+        choiceTextCN = "Not too sure myself.",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -882,7 +882,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"But you know what they say?",
         },
         choiceText = "None of your business.",
-        choiceText = "None of your business.",
+        choiceTextCN = "None of your business.",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -1597,7 +1597,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "Who are you?",
-        choiceText = "Who are you?",
+        choiceTextCN = "Who are you?",
         
     }
 },
@@ -1617,7 +1617,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Perhaps <b>you</b> could be seeing things again? Have you been up all night?",
         },
         choiceText = "What were those outside?",
-        choiceText = "What were those outside?",
+        choiceTextCN = "What were those outside?",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -1775,7 +1775,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "A sheep. It’s telling me to follow it.",
-        choiceText = "A sheep. It’s telling me to follow it.",
+        choiceTextCN = "A sheep. It’s telling me to follow it.",
         
     }
 },
@@ -1793,7 +1793,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "I can’t sleep.",
-        choiceText = "I can’t sleep.",
+        choiceTextCN = "I can’t sleep.",
         
     }
 },
@@ -2043,7 +2043,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"It is simple, my dear. At {49} our doors will close.",
         },
         choiceText = "The {22}? What do you know about it?",
-        choiceText = "The {22}? What do you know about it?",
+        choiceTextCN = "The {22}? What do you know about it?",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -2805,7 +2805,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"I know, this might all sound crazy but|.|.|.",
         },
         choiceText = "I met him, {10}.",
-        choiceText = "I met him, {10}.",
+        choiceTextCN = "I met him, {10}.",
         metadata = new Model_Languages.Metadata[]
         {
                 null,
@@ -2854,7 +2854,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"In any case...... this might sound crazy but|.|.|.",
         },
         choiceText = "(Don’t mention anything.)",
-        choiceText = "(Don’t mention anything.)",
+        choiceTextCN = "(Don’t mention anything.)",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -3071,7 +3071,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Yay. Let’s go go go, move that body!",
         },
         choiceText = "Yes",
-        choiceText = "Yes",
+        choiceTextCN = "Yes",
         
     }
 },
@@ -3089,7 +3089,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Why must you tease me, hmph.",
         },
         choiceText = "No",
-        choiceText = "No",
+        choiceTextCN = "No",
         
     }
 },
@@ -3183,7 +3183,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Strange of you to come all the way down here for that but ha, suit yourself.| It was fun while it lasted.",
         },
         choiceText = "Just passing by.",
-        choiceText = "Just passing by.",
+        choiceTextCN = "Just passing by.",
         
     }
 },
@@ -3221,7 +3221,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"But hey thanks for asking, kiddo.",
         },
         choiceText = "Want to dance?",
-        choiceText = "Want to dance?",
+        choiceTextCN = "Want to dance?",
         
     }
 },
@@ -3293,7 +3293,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Strange of you to come all the way down here for that but ha, suit yourself.| It was fun while it lasted.",
         },
         choiceText = "Just passing by.",
-        choiceText = "Just passing by.",
+        choiceTextCN = "Just passing by.",
         
     }
 },
@@ -3333,7 +3333,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Everything’s all mixed up.",
         },
         choiceText = "Want to dance?",
-        choiceText = "Want to dance?",
+        choiceTextCN = "Want to dance?",
         
     }
 },
@@ -3475,7 +3475,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"What’s the point of all this anymore?",
         },
         choiceText = "No, it’s nothing.",
-        choiceText = "No, it’s nothing.",
+        choiceTextCN = "No, it’s nothing.",
         metadata = new Model_Languages.Metadata[]
         {
                 null,
@@ -3533,7 +3533,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"If it was any other––",
         },
         choiceText = "Want to dance?",
-        choiceText = "Want to dance?",
+        choiceTextCN = "Want to dance?",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -3789,7 +3789,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Yep, that’d be something huh?",
         },
         choiceText = "No, it’s nothing.",
-        choiceText = "No, it’s nothing.",
+        choiceTextCN = "No, it’s nothing.",
         metadata = new Model_Languages.Metadata[]
         {
                 null,
@@ -5293,7 +5293,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Ahem, well you see, that wouldn’t solve anything...",
         },
         choiceText = "Why don’t you get moving and just leave already?",
-        choiceText = "Why don’t you get moving and just leave already?",
+        choiceTextCN = "Why don’t you get moving and just leave already?",
         
     }
 },
@@ -5317,7 +5317,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Why am I even telling you all this...?",
         },
         choiceText = "Where did these spikes come from?",
-        choiceText = "Where did these spikes come from?",
+        choiceTextCN = "Where did these spikes come from?",
         
     }
 },
@@ -5496,7 +5496,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Sigh... What am I even saying...",
         },
         choiceText = "What do you mean...?",
-        choiceText = "What do you mean...?",
+        choiceTextCN = "What do you mean...?",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -5550,7 +5550,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Sigh... Maybe you’re right, what am I even saying...",
         },
         choiceText = "Could this all be in your head?",
-        choiceText = "Could this all be in your head?",
+        choiceTextCN = "Could this all be in your head?",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -6080,7 +6080,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Simpletons like you wouldn’t understand, okay?",
         },
         choiceText = "Why did you choose that subject?",
-        choiceText = "Why did you choose that subject?",
+        choiceTextCN = "Why did you choose that subject?",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -6116,7 +6116,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Simpletons like you wouldn’t understand, okay?",
         },
         choiceText = "You’ve seen the {8}?",
-        choiceText = "You’ve seen the {8}?",
+        choiceTextCN = "You’ve seen the {8}?",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -7605,7 +7605,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Allow me to demonstrate.",
         },
         choiceText = "Yes",
-        choiceText = "Yes",
+        choiceTextCN = "Yes",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -7637,7 +7637,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"Now allow me to demonstrate.",
         },
         choiceText = "No",
-        choiceText = "No",
+        choiceTextCN = "No",
         metadata = new Model_Languages.Metadata[]
         {
                 new Model_Languages.Metadata
@@ -8506,7 +8506,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "I have what you’re looking for.",
-        choiceText = "I have what you’re looking for.",
+        choiceTextCN = "I have what you’re looking for.",
         
     }
 },
@@ -8528,7 +8528,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"So close. Precisely.",
         },
         choiceText = "Please forget about the spell, you should really just get out of here.",
-        choiceText = "Please forget about the spell, you should really just get out of here.",
+        choiceTextCN = "Please forget about the spell, you should really just get out of here.",
         
     }
 },
@@ -10245,7 +10245,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "Sure.",
-        choiceText = "Sure.",
+        choiceTextCN = "Sure.",
         
     }
 },
@@ -10345,7 +10345,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "Sorry, I’m a little busy right now!",
-        choiceText = "Sorry, I’m a little busy right now!",
+        choiceTextCN = "Sorry, I’m a little busy right now!",
         
     }
 },
@@ -11681,7 +11681,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "Yes",
-        choiceText = "Yes",
+        choiceTextCN = "Yes",
         
     }
 },
@@ -11699,7 +11699,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "No",
-        choiceText = "No",
+        choiceTextCN = "No",
         
     }
 },
@@ -11717,7 +11717,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
 
         },
         choiceText = "Yes!",
-        choiceText = "Yes!",
+        choiceTextCN = "Yes!",
         
     }
 },
