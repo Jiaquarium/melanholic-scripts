@@ -329,6 +329,8 @@ public class Script_DialogueManager : MonoBehaviour
             fullArtManager.ShowFullArt(
                 currentFullArt,
                 currentNode.data.fadeIn, () => {
+                    // Ensure node sections & choice text are localized versions
+                    currentNode.Refresh();
                     StartDialogue(currentNode.data.dialogue, currentType, SFXOn);
                 },
                 Script_FullArtManager.FullArtState.DialogueManager
@@ -340,6 +342,8 @@ public class Script_DialogueManager : MonoBehaviour
             string currentType = type ?? currentNode.data.type;
             HandlePlayerState(currentType);
 
+            // Ensure node sections & choice text are localized versions
+            currentNode.Refresh();
             StartDialogue(currentNode.data.dialogue, currentType, SFXOn);
         }
 
@@ -403,6 +407,9 @@ public class Script_DialogueManager : MonoBehaviour
 
         currentNode = currentNode.data.children[childIdx];
 
+        // Ensure new node sections & choice text are localized versions
+        currentNode.Refresh();
+        
         /// Current node is empty
         if (currentNode.data.dialogue.sections.Length == 0)
         {
@@ -774,7 +781,10 @@ public class Script_DialogueManager : MonoBehaviour
         coroutine = TeletypeRevealLine(
             sentence,
             activeCanvasText,
-            OnTeletypeRevealLineDone
+            OnTeletypeRevealLineDone,
+            // Only do special localization formatting if not zalgofied; SkipTypingSentence()
+            // will follow same behavior
+            isLocalizationSpecialFormatting: !isZalgofyNode
         );
         StartCoroutine(coroutine);
 
@@ -812,7 +822,8 @@ public class Script_DialogueManager : MonoBehaviour
         Action cb,
         bool silenceOverride = false,
         bool isGlitchText = false,
-        AudioClip sfxOverride = null
+        AudioClip sfxOverride = null,
+        bool isLocalizationSpecialFormatting = true
     )
     {   
         if (isGlitchText)
@@ -826,6 +837,11 @@ public class Script_DialogueManager : MonoBehaviour
             PauseTextCommand.ToString(),
             $"<size=0>{PauseTextCommand.ToString()}</size>"
         );
+
+        // When called via HandleTeletypeReveal, must pass in isZalgofyNode to match behavior
+        // in SkipTypingSentence, where only non-zalgo text is Special Formatted per language
+        if (isLocalizationSpecialFormatting)
+            HandleSpecialFormattingCN(ref formattedSentence);
 
         // First initialize the canvas with text and hide all text.
         textUI.text = formattedSentence;
@@ -1311,6 +1327,9 @@ public class Script_DialogueManager : MonoBehaviour
                     // Remove pause indicators
                     _formattedLine = _formattedLine.Replace("|", string.Empty);
 
+                    // Special CN formatting will only be done with non-zalgofied text
+                    HandleSpecialFormattingCN(ref _formattedLine);
+
                     activeCanvasText.text = _formattedLine;
                 }
                 
@@ -1483,6 +1502,13 @@ public class Script_DialogueManager : MonoBehaviour
         
         if (!didCantUnderstandReactionDone)
             shouldCantUnderstandReaction = true;
+    }
+
+    private static void HandleSpecialFormattingCN(ref string formattedSentence)
+    {
+        // Special case formatter for CN to switch periods to different font
+        if (Script_LocalizationUtils.IsFormatPeriodsCN && Script_Game.Lang == Const_Languages.CN)
+            formattedSentence = formattedSentence.FormatPeriodsCN();
     }
 
     public void InitialState()

@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Script_LevelBehavior_39 : Script_LevelBehavior
 {
-    public const string MapName = Script_Names.DarkDarkHall;
+    public static string MapName = Script_Names.DarkDarkHall;
     
     /* =======================================================================
         STATE DATA

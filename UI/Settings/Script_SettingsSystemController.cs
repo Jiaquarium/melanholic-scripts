@@ -45,6 +45,8 @@ public class Script_SettingsSystemController : MonoBehaviour
     private const string OnFallback = "on";
     private const string OffFallback = "off";
 
+    public static bool DidDeleteLanguagePreference = false;
+
     public SystemState systemState;
     
     [UnityEngine.Serialization.FormerlySerializedAs("firstSelected")]
@@ -99,6 +101,11 @@ public class Script_SettingsSystemController : MonoBehaviour
     private static string ScreenshakeOnTextLocalized;
     private static string ScreenshakeOffTextLocalized;
     
+    [Space][Header("---- Language Preference ----")][Space]
+    [SerializeField] private Button langPrefButton;
+    [SerializeField] private Button langPrefButtonAbove;
+    [SerializeField] private Button langPrefButtonBelow;
+    
     [Space][Header("---- General ----")][Space]
     [SerializeField] private Script_SettingsController settingsController;
     [SerializeField] private Camera cam;
@@ -120,17 +127,14 @@ public class Script_SettingsSystemController : MonoBehaviour
     void OnEnable()
     {
         InitialState();
+
+        UpdateLocalizedText();
     }
 
     void Start()
     {
         // Note: should only reference in Start or later since Player Input singleton is set in Awake
         rewiredInput = Script_PlayerInputManager.Instance.RewiredInput;
-
-        FullScreenOnTextLocalized = Script_UIText.Text[FullScreenOnId].GetProp<string>(Const_Dev.Lang) ?? OnFallback;
-        FullScreenOffTextLocalized = Script_UIText.Text[FullScreenOffId].GetProp<string>(Const_Dev.Lang) ?? OffFallback;
-        ScreenshakeOnTextLocalized = Script_UIText.Text[ScreenshakeOnId].GetProp<string>(Const_Dev.Lang) ?? OnFallback;
-        ScreenshakeOffTextLocalized = Script_UIText.Text[ScreenshakeOffId].GetProp<string>(Const_Dev.Lang) ?? OffFallback;
     }
     
     void Update()
@@ -663,6 +667,41 @@ public class Script_SettingsSystemController : MonoBehaviour
         EventSystem.current.sendNavigationEvents = isEnabled;
     }
 
+    private void HandleSetLangPrefButtonActive(bool isActive)
+    {
+        // ------------------------------------------------------------
+        // TBD Remove for v1.2.0; only used for v1.1.0 SteamDeck Verification because localization is WIP
+        if (Script_LocalizationUtils.IsDisabled)
+        {
+            langPrefButton.gameObject.SetActive(false);
+            SetDisableLangPrefNav();
+        }
+        
+        // ------------------------------------------------------------
+        // TBD Add back only below for v1.2.0
+        // langPrefButton.GetComponent<Script_ButtonHighlighter>().Activate(isActive);
+
+        // if (isActive)
+        //     SetDefaultLangPrefNav();
+        // else
+        //     SetDisableLangPrefNav();
+    }
+
+    private void SetDisableLangPrefNav()
+    {
+        langPrefButtonAbove.SetNavigation(null, null, langPrefButtonBelow, null);
+        langPrefButtonBelow.SetNavigation(langPrefButtonAbove, null, null, null);
+    }
+
+    private void SetDefaultLangPrefNav()
+    {
+        langPrefButtonAbove.SetNavigation(null, null, langPrefButton, null);
+        langPrefButtonBelow.SetNavigation(langPrefButton, null, null, null);
+    }
+
+    public void UpdateLangPrefNavigation() =>
+        HandleSetLangPrefButtonActive(!DidDeleteLanguagePreference);
+
     private float GetAudioMixerVolume(string audioParam, bool isDecibel)
     {
         float vol = 1f;
@@ -689,6 +728,14 @@ public class Script_SettingsSystemController : MonoBehaviour
     {
         Script_SFXManager.SFX.PlayDullError();
     }
+    
+    private void UpdateLocalizedText()
+    {
+        FullScreenOnTextLocalized = Script_UIText.Text[FullScreenOnId].GetProp<string>(Script_Game.Lang) ?? OnFallback;
+        FullScreenOffTextLocalized = Script_UIText.Text[FullScreenOffId].GetProp<string>(Script_Game.Lang) ?? OffFallback;
+        ScreenshakeOnTextLocalized = Script_UIText.Text[ScreenshakeOnId].GetProp<string>(Script_Game.Lang) ?? OnFallback;
+        ScreenshakeOffTextLocalized = Script_UIText.Text[ScreenshakeOffId].GetProp<string>(Script_Game.Lang) ?? OffFallback;
+    }
 
     private void InitialState()
     {
@@ -701,6 +748,7 @@ public class Script_SettingsSystemController : MonoBehaviour
         UpdateVolUIs();
         UpdateFullScreenUI(isForceUpdate: true);
         UpdateScreenshakeUI();
+        UpdateLangPrefNavigation();
     }
 
     #if UNITY_EDITOR
@@ -739,6 +787,16 @@ public class Script_SettingsSystemController : MonoBehaviour
             if (GUILayout.Button("Print Master Volume (Float)"))
             {
                 Dev_Logger.Debug($"{t.AudioListenerMasterVolume}");
+            }
+
+            if (GUILayout.Button("Set Lang Pref Button: Enabled"))
+            {
+                t.HandleSetLangPrefButtonActive(true);
+            }
+
+            if (GUILayout.Button("Set Lang Pref Button: Disabled"))
+            {
+                t.HandleSetLangPrefButtonActive(false);
             }
         }
     }

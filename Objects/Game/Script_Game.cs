@@ -17,6 +17,14 @@ using UnityEngine.SceneManagement;
 public class Script_Game : MonoBehaviour
 {
     public static Script_Game Game;
+    public static string Lang
+    {
+        get => _Lang;
+        private set => _Lang = value;
+    }
+
+    private static string _Lang = Const_Languages.EN;
+
     private const int SpawnLevelNo = 32;
 
     /* =======================================================================
@@ -134,6 +142,7 @@ public class Script_Game : MonoBehaviour
     
     [SerializeField] private Script_SaveGameControl saveGameControl;
     [SerializeField] private Script_SaveCurseControl saveCurseControl;
+    [SerializeField] private Script_SaveLanguagePreferenceControl saveLangPrefControl;
     [SerializeField] private Script_EventCycleManager eventCycleManager;
 
     [SerializeField] private Script_MapNotificationsManager mapNotificationsManager;
@@ -464,7 +473,30 @@ public class Script_Game : MonoBehaviour
             lvl.gameObject.SetActive(false);
         }
     }
+
+    public static void ChangeLangToEN()
+    {
+        Lang = Const_Languages.EN;
+        OnChangeLanguage(Lang);
+    }
     
+    public static void ChangeLangToCN()
+    {
+        Lang = Const_Languages.CN;
+        OnChangeLanguage(Lang);
+    }
+
+    public static void ChangeLangToJP()
+    {
+        Lang = Const_Languages.JP;
+        OnChangeLanguage(Lang);
+    }
+
+    private static void OnChangeLanguage(string lang)
+    {
+        Script_ItemStringBuilder.BuildParams(lang);
+    }
+
     void OnEnable()
     {
         Script_ClockEventsManager.OnTimesUp += TimesUpEffects;
@@ -504,6 +536,7 @@ public class Script_Game : MonoBehaviour
             // Setup Singletons, Dicts, Managers and Canvases
             saveGameControl.Setup();
             saveCurseControl.Setup();
+            saveLangPrefControl.Setup();
             saveSettingsControl.Setup();
 
             Script_SystemSettings.DisableMouse();

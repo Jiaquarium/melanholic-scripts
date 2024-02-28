@@ -23,7 +23,7 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_32 : Script_LevelBehavior
 {
-    public const string MapName = Script_Names.HotelLobby;
+    public static string MapName = Script_Names.HotelLobby;
     private static string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
     
     /* =======================================================================

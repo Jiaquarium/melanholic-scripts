@@ -16,9 +16,9 @@ MonoBehaviour:
   focusedSprite: {fileID: 276814819640733396, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: -5948282585747812326, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: 
   isDroppable: 0
   _isSpecial: 1
+  localizedName: '@@LastWellMap'
   fullArtId: fullart_last-well-map
   fadeInSpeed: 0
   fadeOutSpeed: 0

@@ -1434,6 +1434,7 @@ public static class Script_Utils
     public static string SaveTitleDataFile(int slot) => $"{Prefix}_titlesavedata_v{GetMajorVersion(Application.version)}_s{slot}.dat";
     public static string SettingsFile => $"{Prefix}_settings_v{GetMajorVersion(Application.version)}.dat";
     public static string CurseFile => $"{Prefix}_curse_v{GetMajorVersion(Application.version)}.dat";
+    public static string LangPrefFile => $"{Prefix}_lang_v{GetMajorVersion(Application.version)}.dat";
     public static string Prefix => Const_Dev.IsDemo ? "nld" : "nl";
 
     // Will remove last "." and anything after it.

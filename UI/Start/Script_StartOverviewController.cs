@@ -24,6 +24,10 @@ public class Script_StartOverviewController : Script_UIState
 
     [SerializeField] private Script_EventSystemLastSelected savedGameEventSystem;
     
+    [Header("Language Preference")]
+    [SerializeField] private float waitAfterLanguageSelectTime;
+    [SerializeField] private Script_CanvasGroupController languageChoicesCanvasGroup;
+    [SerializeField] private EventSystem languageChoicesEventSystem;
     
     [Header("Simple Intro Settings")]
     [SerializeField] private Script_IntroControllerSimple introControllerSimple;
@@ -142,17 +146,90 @@ public class Script_StartOverviewController : Script_UIState
         
         introCanvasGroup.gameObject.SetActive(false);
 
+        languageChoicesCanvasGroup.Close();
+        languageChoicesEventSystem.gameObject.SetActive(false);
+
         bgmManager.SetDefault(Const_AudioMixerParams.ExposedBGVolume);
 
         if (isInitedSimple)
+        {
+            // Entry point that is not initial startup
             FadeInTitleScreen(withCTA: false);
+        }
+        // Entry point that is very first startup, includes all splash screens, etc.
         else
+        {
+            // If language pref loaded/switched, resume intro simple as normal
+            if (
+                // TBD Remove for v1.2.0; only used for v1.1.0 SteamDeck Verification because localization is WIP
+                Script_LocalizationUtils.IsDisabled
+                || (
+                    Script_SaveLanguagePreferenceControl.Instance.Load()
+                    && !Const_Dev.IsDevHelperOn
+                )
+            )
+            {
+                ResumeIntroSimple();
+            }
+            else
+            {
+                StartLanguageChoices();   
+            }
+        }
+
+        isInitedSimple = true;
+
+        void StartLanguageChoices()
+        {
+            // If no lang pref file found, open Language Choices canvas
+            languageChoicesCanvasGroup.Open();
+            languageChoicesEventSystem.gameObject.SetActive(true);
+            
+            // Hide Init Fader preemptively; will need to show again before starting Simple Intro
+            Script_Start.Main.CloseInitFader();
+        }
+    }
+
+    // Save Language Preference for first time/no file found
+    public void HandleNewLangStartup(Script_LocalizationUtils.LangEnum langEnum)
+    {
+        Script_LocalizationUtils.SwitchGameLangByLang(langEnum.LangEnumToLang());
+        Script_SaveLanguagePreferenceControl.Instance.Save();
+        
+        ResumeIntroSimple(waitAfterLanguageSelectTime);
+    }
+    
+    private void ResumeIntroSimple(float waitTime = 0f)
+    {
+        // Open again to allow Intro Simple to handle its state
+        Script_Start.Main.OpenInitFader();
+
+        languageChoicesEventSystem.gameObject.SetActive(false);
+        languageChoicesCanvasGroup.Close();
+        
+        if (waitTime <= 0f)
+        {
+            Dev_Logger.Debug("Not waiting to resume Intro Simple");
+            PlayIntroSimple();
+        }
+        else
+        {
+            Dev_Logger.Debug($"Waiting {waitTime}s to resume Intro Simple");
+            StartCoroutine(WaitToResumeIntroSimple());
+        }
+
+        void PlayIntroSimple()
         {
             introControllerSimple.Play();
             introSimpleInputManager.gameObject.SetActive(true);
         }
-
-        isInitedSimple = true;
+        
+        IEnumerator WaitToResumeIntroSimple()
+        {
+            yield return new WaitForSecondsRealtime(waitTime);
+            
+            PlayIntroSimple();
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -945,16 +1022,16 @@ public class Script_StartOverviewController : Script_UIState
         }
     }
     
-    private void EnterSubmenuSFX()
-    {
-        var sfxManager = Script_SFXManager.SFX;
-        sfxManager.Play(sfxManager.OpenCloseBookHeavy, sfxManager.OpenCloseBookHeavyVol);
-    }
-
     private void HoldHighlights(bool isHold)
     {
         Dev_Logger.Debug("On Enter Submenu Hold Highlights");
         savedGameController.HoldHighlights(isHold);
+    }
+
+    private void EnterSubmenuSFX()
+    {
+        var sfxManager = Script_SFXManager.SFX;
+        sfxManager.Play(sfxManager.OpenCloseBookHeavy, sfxManager.OpenCloseBookHeavyVol);
     }
 
     private void ErrorSFX()

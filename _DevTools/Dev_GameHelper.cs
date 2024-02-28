@@ -273,6 +273,25 @@ public class Dev_GameHelper : MonoBehaviour
             ShowSaveDevCanvas(msg);
             Debug.Log(msg);
         }
+        // Localization
+        else if (Input.GetKey(KeyCode.RightShift) && Input.GetKey(KeyCode.Alpha0))
+        {
+            Script_Game.ChangeLangToEN();
+            string msg = $"LANG -> {Script_Game.Lang}";
+            ShowSaveDevCanvas(msg);
+        }
+        else if (Input.GetKey(KeyCode.RightShift) && Input.GetKey(KeyCode.Alpha1))
+        {
+            Script_Game.ChangeLangToCN();
+            string msg = $"LANG -> {Script_Game.Lang}";
+            ShowSaveDevCanvas(msg);
+        }
+        else if (Input.GetKey(KeyCode.RightShift) && Input.GetKey(KeyCode.Alpha2))
+        {
+            Script_Game.ChangeLangToJP();
+            string msg = $"LANG -> {Script_Game.Lang}";
+            ShowSaveDevCanvas(msg);
+        }
 
         //  Replace these with necessary milestone cases
         void TestCaseKey1() => TeleportGrandMirrorR2();
@@ -1248,7 +1267,8 @@ public class Dev_GameHelper : MonoBehaviour
         private static bool showLightSettings;
         private static bool showUISettings;
         private static bool showQAChecks;
-        
+        private static bool showLocalizationTests;
+
         public override void OnInspectorGUI() {
             DrawDefaultInspector();
 
@@ -1679,6 +1699,35 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Check Animators Root Motion"))
                 {
                     t.CheckAnimatorsNotRootMotion();
+                }
+            }
+
+            showLocalizationTests = EditorGUILayout.Foldout(showLocalizationTests, "Localization", style);
+            if (showLocalizationTests)
+            {
+                if (GUILayout.Button("Change Language to EN"))
+                {
+                    Script_Game.ChangeLangToEN();
+                }
+
+                if (GUILayout.Button("Change Language to CN"))
+                {
+                    Script_Game.ChangeLangToCN();
+                }
+
+                if (GUILayout.Button("Change Language to JP"))
+                {
+                    Script_Game.ChangeLangToJP();
+                }
+                
+                if (GUILayout.Button("Build Item Strings - EN"))
+                {
+                    Script_ItemStringBuilder.BuildParams(Const_Languages.EN);
+                }
+
+                if (GUILayout.Button("Build Item Strings - CN"))
+                {
+                    Script_ItemStringBuilder.BuildParams(Const_Languages.CN);
                 }
             }
         }

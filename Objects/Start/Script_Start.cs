@@ -47,6 +47,9 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_TMProPopulator startTMProPopulator;
     [SerializeField] private Script_TMProRandomizer TMProRandomizer;
     [SerializeField] private Script_ImageDistorterController TMProRandomizerController;
+
+    [Space][Header("Language Preference")][Space]
+    [SerializeField] private Script_SaveLanguagePreferenceControl saveLangPrefControl;
     
     public Script_GraphicsManager StartGraphicsManager => startGraphicsManager;
 
@@ -64,11 +67,12 @@ public class Script_Start : MonoBehaviour
         }
 
         // To cover red bars on opening on mac.
-        initFader.Open();
+        OpenInitFader();
 
         savedGameTitleControl.Setup();
         saveSettingsControl.Setup();
         saveCurseControl.Setup();
+        saveLangPrefControl.Setup();
         sceneManager.Setup();
         SFXManager.Setup();
         bgmManager.Setup();
@@ -121,6 +125,8 @@ public class Script_Start : MonoBehaviour
     {
         crunchTimelineCtrl.PlayableDirectorPlayFromTimelines(0, 1);
     }
+
+    public void OpenInitFader() => initFader.Open();
 
     private void HandleCurse()
     {

@@ -18,6 +18,7 @@ MonoBehaviour:
   sprite: {fileID: -3998773593875168313, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
   isDroppable: 0
   _isSpecial: 1
+  localizedName: '@@SpeedSeal'
   fullArtId: 
   fadeInSpeed: 0
   fadeOutSpeed: 0

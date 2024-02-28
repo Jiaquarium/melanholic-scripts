@@ -111,7 +111,8 @@ public class Script_UIRebindAction : MonoBehaviour
 
         if (string.IsNullOrEmpty(currentBindingInput))
         {
-            string unformatted = Script_UIText.Text[TMPIdNoController].EN;
+            Model_LanguagesUI uiText = Script_UIText.Text[TMPIdNoController];
+            string unformatted = uiText.GetProp<string>(Script_Game.Lang);
             string formatted = Script_Utils.FormatString(unformatted);
             keyTextTMP.text = formatted;
             return;

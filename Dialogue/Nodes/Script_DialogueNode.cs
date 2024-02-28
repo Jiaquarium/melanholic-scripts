@@ -8,11 +8,36 @@ public class Script_DialogueNode : MonoBehaviour
     public string Id;
     public Model_DialogueNode data;
 
+    private string LastUpdatedLang;
+    private bool didFirstLoad;
+
+#if UNITY_EDITOR
+    // Revert any state changes back to default EN to clean up Editor View
+    void OnApplicationQuit()
+    {
+        Script_Game.ChangeLangToEN();
+        Refresh(isForce: true);
+    }   
+#endif
+    
     void OnValidate()
     {
-        HandlePopulateById();
+        Refresh(isForce: true);
     }
 
+    public void Refresh(bool isForce = false) {
+        if (
+            !didFirstLoad
+            || isForce
+            || LastUpdatedLang != Script_Game.Lang
+        )
+        {
+            HandlePopulateById();
+            LastUpdatedLang = Script_Game.Lang;
+            didFirstLoad = true;
+        }
+    }
+    
     private void HandlePopulateById()
     {
         if (!String.IsNullOrEmpty(Id))
@@ -20,11 +45,14 @@ public class Script_DialogueNode : MonoBehaviour
             Model_Languages languages = Script_Dialogue.Dialogue[Id];
             string[] sections;
             
-            // Get Sections in respective language.
-            if (!languages.HasProp(Const_Dev.Lang))    return;
+            // Get Sections in respective language. Handle using an unsupported language code.
+            if (!languages.HasProp(Script_Game.Lang))
+                return;
             
-            sections = languages.GetProp<string[]>(Const_Dev.Lang);
-
+            // Sections will always be populated because in dialogue-exporter.py we fall back
+            // to English if the localized line is empty
+            sections = languages.GetProp<string[]>(Script_Game.Lang);
+            
             // Populate node with language data.
             // Speaker
             data.dialogue.name = languages.speaker;
@@ -81,15 +109,16 @@ public class Script_DialogueNode : MonoBehaviour
                 }
             }
 
-            // Choice Text
-            if (!String.IsNullOrEmpty(languages.choiceText))
-            {
-                data.choiceText = languages.choiceText;
-            }
-            else
-            {
-                data.choiceText = string.Empty;
-            }
+            string choiceTextLocalized = Script_LocalizationUtils.SwitchTextOnLang(
+                languages.choiceText,
+                languages.choiceTextCN
+            );
+
+            // if choice text is undefined it will return null (e.g. languages.choiceText == null)
+            if (String.IsNullOrEmpty(choiceTextLocalized))
+                choiceTextLocalized = string.Empty;
+            
+            data.choiceText = choiceTextLocalized;
         }
     }
 }

@@ -13,7 +13,7 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_26 : Script_LevelBehavior
 {
-    public const string MapName = Script_Names.InsideAPainting;
+    public static string MapName = Script_Names.InsideAPainting;
     private const string BGMParam = Const_AudioMixerParams.ExposedBGVolume;
     
     private const string MyneChallenge0 = "myne-challenge_0";

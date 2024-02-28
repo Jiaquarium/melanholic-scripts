@@ -273,8 +273,11 @@ public class Script_InventoryManager : MonoBehaviour
             }
             
             bool isNotPersistent = type == Types.Items && !item.IsSpecial;
-
-            itemDescription.Name = isNotPersistent ? FormatImpermanentItem(item.name) : item.name;
+            string itemName = String.IsNullOrEmpty(item.localizedName)
+                ? item.name
+                : item.localizedName;
+            
+            itemDescription.Name = isNotPersistent ? FormatImpermanentItem(itemName) : itemName;
             itemDescription.Text = item.Description;
             SetItemDescription(itemDescription, true);
         }

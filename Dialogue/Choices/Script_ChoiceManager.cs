@@ -43,7 +43,12 @@ public class Script_ChoiceManager : MonoBehaviour
                 activeChoices[i].gameObject,
                 Const_Tags.DialogueChoice
             );
-            string unformattedText = node.data.children[i].data.choiceText;
+            Script_DialogueNode childNode = node.data.children[i];
+
+            // Ensure choice text is updated for language change
+            childNode.Refresh();
+
+            string unformattedText = childNode.data.choiceText;
             text.text = Script_Utils.FormatString(unformattedText);
 
             // show choice buttons with data

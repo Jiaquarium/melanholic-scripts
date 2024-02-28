@@ -72,6 +72,8 @@ public class Script_IceMelt : MonoBehaviour
         myRigidBody.isKinematic = true;
         isMelting = false;
         transform.localScale = Vector3.zero;
+
+        gameObject.SetActive(false);
     }
 
     private void Melt()

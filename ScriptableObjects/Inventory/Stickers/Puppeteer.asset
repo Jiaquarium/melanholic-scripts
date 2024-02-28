@@ -16,6 +16,6 @@ MonoBehaviour:
   focusedSprite: {fileID: 5717860663560468995, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: -3202966353781376089, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: use the @@Puppeteer sticker to control {73}. not too shabby.
   isDroppable: 0
   _isSpecial: 0
+  localizedName: '@@Puppeteer'

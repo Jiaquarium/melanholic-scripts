@@ -16,9 +16,9 @@ MonoBehaviour:
   focusedSprite: {fileID: 184947299614187853, guid: db7ee588e0d764e038da855479f5e03a,
     type: 3}
   sprite: {fileID: -267251719090833575, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
-  description: i promise this is the last time.
   isDroppable: 0
   _isSpecial: 0
+  localizedName: '@@LastSpellRecipeBook'
   fullArtId: 
   fadeInSpeed: 0
   fadeOutSpeed: 0

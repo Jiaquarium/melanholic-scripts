@@ -18,3 +18,4 @@ MonoBehaviour:
   sprite: {fileID: -3571245019227250870, guid: db7ee588e0d764e038da855479f5e03a, type: 3}
   isDroppable: 0
   _isSpecial: 0
+  localizedName: '@@MelancholyPiano'

@@ -13,7 +13,7 @@ using UnityEditor;
 [RequireComponent(typeof(Script_TimelineController))]
 public class Script_LevelBehavior_29 : Script_LevelBehavior
 {
-    public const string MapName = Script_Names.UrsaSaloonHallway;
+    public static string MapName = Script_Names.UrsaSaloonHallway;
     
     [SerializeField] private Script_PuppetMaster puppetMaster;
     [SerializeField] private Script_Marker puppetMasterSpawn;

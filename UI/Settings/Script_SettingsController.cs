@@ -93,6 +93,11 @@ public class Script_SettingsController : MonoBehaviour
     [SerializeField] private GameObject resetSystemDefaultsSubmenu;
     [SerializeField] private GameObject onExitResetSystemDefaultsSubmenuActiveObject;
     private bool isSystemDefaultsSubmenu = false;
+    [SerializeField] private Script_SavedGameSubmenuInputChoice[] resetLangPrefSubmenuChoices;
+    [SerializeField] private GameObject resetLangPrefSubmenu;
+    [SerializeField] private GameObject onExitResetLangPrefSubmenuActiveObject;
+    [SerializeField] private GameObject onExitResetLangPrefSubmenuActiveObjectSuccess;
+    private bool isResetLangPrefSubmenu = false;
 
     [Space][Header("Rebind Settings")][Space]
     [SerializeField] private List<Script_UIRebindAction> UIRebindActions;
@@ -409,6 +414,10 @@ public class Script_SettingsController : MonoBehaviour
                 {
                     CloseResetSystemDefaultsSubmenu(isSuccess: false);
                 }
+                else if (isResetLangPrefSubmenu)
+                {
+                    CloseResetLanguagePreferenceSubmenu(isSuccess: false);
+                }
                 else
                 {
                     OpenOverview(2);
@@ -486,8 +495,51 @@ public class Script_SettingsController : MonoBehaviour
         isSoundDefaultsSubmenu = false;
     }
 
+    // UI Setting > System > Reset Language Preference Prompt: Yes
+    public void ResetLanguagePreference()
+    {
+        HandleDeleteLangPrefAndNav();
+        CloseResetLanguagePreferenceSubmenu(isSuccess: true);
+    }
+
+    // UI Setting > System > Reset Language Preference Button
+    public void OpenResetLangPrefSubmenu()
+    {
+        isResetLangPrefSubmenu = true;
+        resetLangPrefSubmenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(resetLangPrefSubmenuChoices[0].gameObject);
+        EnterSubmenuSFX();
+    }
+
+    private void HandleDeleteLangPrefAndNav()
+    {
+        Script_SaveLanguagePreferenceControl.Instance.Delete();
+        
+        Script_SettingsSystemController.DidDeleteLanguagePreference = true;
+        systemController.UpdateLangPrefNavigation();
+    }
+
+    // UI Setting > System > Reset Prompt: No or Escape
+    public void CloseResetLanguagePreferenceSubmenu(bool isSuccess)
+    {
+        resetLangPrefSubmenu.SetActive(false);
+
+        if (isSuccess)
+        {
+            EventSystem.current.SetSelectedGameObject(onExitResetLangPrefSubmenuActiveObjectSuccess);
+            Script_SFXManager.SFX.PlayUISuccessEdit();
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(onExitResetLangPrefSubmenuActiveObject);
+            Script_SFXManager.SFX.PlayExitSubmenuPencil();
+        }
+        
+        isResetLangPrefSubmenu = false;
+    }
+    
     // UI Setting > System > Reset Prompt: Yes
-    // Controls: Reset all to system defaults
+    // System: Reset all to system defaults
     public void ResetSystemDefaults()
     {
         var playerInputManager = Script_PlayerInputManager.Instance;
@@ -497,9 +549,13 @@ public class Script_SettingsController : MonoBehaviour
         systemController.SoundDefaults();
         systemController.ScreenshakeDefaults();
 
+        if (!Script_LocalizationUtils.IsDisabled)
+            HandleDeleteLangPrefAndNav();
+
         CloseResetSystemDefaultsSubmenu(isSuccess: true);
     }
 
+    // UI Setting > Setting > Reset System Defaults Button
     public void OpenResetSystemDefaultsSubmenu()
     {
         isSystemDefaultsSubmenu = true;
@@ -858,6 +914,7 @@ public class Script_SettingsController : MonoBehaviour
     {
         resetDefaultsSubmenu.SetActive(false);
         resetSystemDefaultsSubmenu.SetActive(false);
+        resetLangPrefSubmenu.SetActive(false);
         resetSoundDefaultsSubmenu.SetActive(false);
     }
     

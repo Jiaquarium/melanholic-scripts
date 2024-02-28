@@ -10,6 +10,7 @@ public class Script_Item : ScriptableObject
     public bool isDroppable;
     [Tooltip("Items that will be persistent after leaving Kelsingor. Stickers by default are special.")]
     public bool _isSpecial;
+    public string localizedName;
 
     public bool IsSpecial
     {
@@ -18,6 +19,6 @@ public class Script_Item : ScriptableObject
 
     public string Description
     {
-        get => Script_UIText.Text[id].GetProp<string>(Const_Dev.Lang) ?? string.Empty;
+        get => Script_UIText.Text[id].GetProp<string>(Script_Game.Lang) ?? string.Empty;
     }
 }

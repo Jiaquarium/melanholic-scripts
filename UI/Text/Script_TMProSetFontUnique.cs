@@ -14,6 +14,21 @@ public class Script_TMProSetFontUnique : MonoBehaviour
     {
         get => font;
     }
+
+#if UNITY_EDITOR
+    // Revert any state changes back to default EN to clean up Editor View
+    void OnApplicationQuit()
+    {
+        Script_Game.ChangeLangToEN();
+        SetFontAttributes();
+    }   
+#endif
+    
+    // Also call OnEnable to ensure localization data is up to date
+    void OnEnable()
+    {
+        SetFontAttributes();
+    }
     
     protected virtual void OnValidate()
     {

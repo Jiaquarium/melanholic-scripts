@@ -26,6 +26,7 @@ public class Dev_StartHelper : MonoBehaviour
     public class Dev_StartHelperTester : Editor
     {
         private static bool showBuildSettings;
+        private static bool showLocalizationTests;
 
         public override void OnInspectorGUI()
         {
@@ -47,6 +48,25 @@ public class Dev_StartHelper : MonoBehaviour
                         EditorUtility.SetDirty(t);
                         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(t.gameObject.scene);
                     }
+                }
+            }
+
+            showLocalizationTests = EditorGUILayout.Foldout(showLocalizationTests, "Localization", style);
+            if (showLocalizationTests)
+            {
+                if (GUILayout.Button("Change Language to EN"))
+                {
+                    Script_Game.ChangeLangToEN();
+                }
+
+                if (GUILayout.Button("Change Language to CN"))
+                {
+                    Script_Game.ChangeLangToCN();
+                }
+
+                if (GUILayout.Button("Change Language to JP"))
+                {
+                    Script_Game.ChangeLangToJP();
                 }
             }
         }

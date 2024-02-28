@@ -20,7 +20,7 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 public class Script_LevelBehavior_42 : Script_LevelBehavior
 {
-    public const string MapName = Script_Names.WellsWorld;
+    public static string MapName = Script_Names.WellsWorld;
     
     // ==================================================================
     // State Data

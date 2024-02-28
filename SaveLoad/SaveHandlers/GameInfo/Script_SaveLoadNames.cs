@@ -8,21 +8,21 @@ public class Script_SaveLoadNames : MonoBehaviour
     {
         Model_Names names = new Model_Names(
             _Player:                    Script_Names.PlayerUnbold,
-            _Ids:                       Script_Names.Ids,
+            _Ids:                       Script_Names.IdsNameStateEN(),
             _Ero:                       Script_Names.Ero,
-            _Myne:                      Script_Names.Myne,
-            _Eileen:                    Script_Names.Eileen,
-            _Ellenia:                   Script_Names.Ellenia,
+            _Myne:                      Script_Names.MyneNameStateEN(),
+            _Eileen:                    Script_Names.EileenNameStateEN(),
+            _Ellenia:                   Script_Names.ElleniaNameStateEN(),
             _Tedwich:                   Script_Names.Tedwich,
-            _Ursie:                     Script_Names.Ursie,
-            _Kaffe:                     Script_Names.Kaffe,
-            _Latte:                     Script_Names.Latte,
-            _KingEclaire:               Script_Names.KingEclaire,
-            _Suzette:                   Script_Names.Suzette,
-            _Peche:                     Script_Names.Peche,
-            _Melba:                     Script_Names.Melba,
-            _Moose:                     Script_Names.Moose,
-            _Flan:                      Script_Names.Flan
+            _Ursie:                     Script_Names.UrsieNameStateEN(),
+            _Kaffe:                     Script_Names.KaffeNameStateEN(),
+            _Latte:                     Script_Names.LatteNameStateEN(),
+            _KingEclaire:               Script_Names.KingEclaireNameStateEN(),
+            _Suzette:                   Script_Names.SuzetteNameStateEN(),
+            _Peche:                     Script_Names.PecheNameStateEN(),
+            _Melba:                     Script_Names.MelbaNameStateEN(),
+            _Moose:                     Script_Names.MooseNameStateEN(),
+            _Flan:                      Script_Names.FlanNameStateEN()
         );
         data.namesData = names;
     }

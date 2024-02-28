@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb79a1b4b32d4d79b5df154bd705754, type: 3}
+  m_Name: TextStyle_FileActionBanner_CN
+  m_EditorClassIdentifier: 
+  fontAsset: {fileID: 11400000, guid: 2f945cfb23de745e1afb68e9dcac3595, type: 2}
+  fontSize: 14
+  characterSpacing: 0
+  lineSpacing: 0
+  wordSpacing: 0

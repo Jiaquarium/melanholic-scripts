@@ -19,7 +19,7 @@ using UnityEditor;
 
 public class Script_LevelBehavior_43 : Script_LevelBehavior
 {
-    public const string MapName = Script_Names.CelestialGardensWorld;
+    public static string MapName = Script_Names.CelestialGardensWorld;
     
     // ==================================================================
     // State Data

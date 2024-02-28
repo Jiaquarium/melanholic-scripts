@@ -153,11 +153,11 @@ public class Script_RunsManager : MonoBehaviour
     {
         Script_Run.DayId.mon
         or Script_Run.DayId.tue
-        or Script_Run.DayId.wed => Script_UIText.Text[SaveFileDayNameSatId].GetProp<string>(Const_Dev.Lang) ?? string.Empty,
+        or Script_Run.DayId.wed => Script_UIText.Text[SaveFileDayNameSatId].GetProp<string>(Script_Game.Lang) ?? string.Empty,
         Script_Run.DayId.thu
         or Script_Run.DayId.fri
-        or Script_Run.DayId.sat => Script_UIText.Text[SaveFileDayNameSatR2Id].GetProp<string>(Const_Dev.Lang) ?? string.Empty,
-        Script_Run.DayId.sun => Script_UIText.Text[SaveFileDayNameSunId].GetProp<string>(Const_Dev.Lang) ?? string.Empty,
+        or Script_Run.DayId.sat => Script_UIText.Text[SaveFileDayNameSatR2Id].GetProp<string>(Script_Game.Lang) ?? string.Empty,
+        Script_Run.DayId.sun => Script_UIText.Text[SaveFileDayNameSunId].GetProp<string>(Script_Game.Lang) ?? string.Empty,
         _ => String.Empty
     };
 
