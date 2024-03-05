@@ -1422,6 +1422,20 @@ public static class Script_Utils
         RWActions.MaskVerticalAxis => Const_KeyCodes.RWUnknownControllerMaskVert,
         _ => Const_KeyCodes.RWInteract,
     };
+
+    public static bool IsLastControllerGamepad(Script_PlayerInputManager playerInputManager)
+    {
+        var lastController = playerInputManager.GetLastActiveController;
+        return lastController != null && lastController.type == ControllerType.Joystick;
+    }
+
+    public static bool IsSteamDeck()
+    {
+        if (!SteamManager.Initialized)
+            return false;
+        
+        return Steamworks.SteamUtils.IsSteamRunningOnSteamDeck();
+    }
     
     // -------------------------------------------------------------------------------------
     // File Path Helpers

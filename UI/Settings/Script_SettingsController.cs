@@ -73,6 +73,8 @@ public class Script_SettingsController : MonoBehaviour
     [SerializeField] private Button joystickFirstButton;
     [SerializeField] private Button unknownJoystickFirstButton;
     [SerializeField] private List<Animator> controllerSelectArrows;
+    [SerializeField] private List<Image> controllerSelectArrowsDisabled;
+    [SerializeField] private Image controllerSelectFocusOutline;
     [SerializeField] private TextMeshProUGUI keyboardTMP;
     [SerializeField] private TextMeshProUGUI joystickTMP;
     
@@ -296,10 +298,36 @@ public class Script_SettingsController : MonoBehaviour
         EnterMenuSFX();
 
         state = States.Controls;
+
+        // v1.1.0 Handle Steam Deck
+        if (Script_Utils.IsSteamDeck() && lastControllerType == ControllerType.Joystick)
+            SteamDeckGamepadControllerSelectUI();
+        else
+            DefaultControllerSelectUI();
     }
 
     private void HandleControlsControllerSelect()
     {
+        // -------------------------------------------------------------------------------------
+        // v1.1.0 Handle Steam Deck
+        // Required for Steam Deck Compat: If on Steam Deck and last input was from a gamepad,
+        // change to Steam Deck UI where L, R arrows are disabled & focus outline used instead
+        if (Script_Utils.IsSteamDeck() && Script_Utils.IsLastControllerGamepad(Script_PlayerInputManager.Instance))
+        {
+            SteamDeckGamepadControllerSelectUI();
+            
+            // If State is Joystick, functionality should be disabled and play Dull Error; if is Keyboard,
+            // State should still run rest of function to handle the switch to Joystick State
+            if (controlsState == ControlsStates.Joystick)
+            {
+                HandleDisabledHzMoveInput();
+                return;
+            }
+        }
+        else
+            DefaultControllerSelectUI();
+        // -------------------------------------------------------------------------------------
+        
         if (MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal))
         {
             controllerSelectArrows[0].SetTrigger(ClickTrigger);
@@ -335,6 +363,51 @@ public class Script_SettingsController : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(controlsCanvasGroup.firstToSelect.gameObject);
             SetNavigationEnabled(true);
         }
+    }
+
+    private void SteamDeckGamepadControllerSelectUI() =>
+        SetControlsControllerSelectUI(
+            isSelectArrowsActive: false,
+            isDisabledArrowsActive: true,
+            isFocusOutlineActive: true
+        );
+
+    private void DefaultControllerSelectUI() =>
+        SetControlsControllerSelectUI(
+            isSelectArrowsActive: true,
+            isDisabledArrowsActive: false,
+            isFocusOutlineActive: false
+        );
+    
+    private void SetControlsControllerSelectUI(
+        bool isSelectArrowsActive,
+        bool isDisabledArrowsActive,
+        bool isFocusOutlineActive
+    )
+    {
+        if (controllerSelectArrows[0].gameObject.activeSelf != isSelectArrowsActive)
+            controllerSelectArrows[0].gameObject.SetActive(isSelectArrowsActive);
+        
+        if (controllerSelectArrows[1].gameObject.activeSelf != isSelectArrowsActive)
+            controllerSelectArrows[1].gameObject.SetActive(isSelectArrowsActive);
+
+        if (controllerSelectArrowsDisabled[0].gameObject.activeSelf != isDisabledArrowsActive)
+            controllerSelectArrowsDisabled[0].gameObject.SetActive(isDisabledArrowsActive);
+
+        if (controllerSelectArrowsDisabled[1].gameObject.activeSelf != isDisabledArrowsActive)
+             controllerSelectArrowsDisabled[1].gameObject.SetActive(isDisabledArrowsActive);
+
+        if (controllerSelectFocusOutline.gameObject.activeSelf != isFocusOutlineActive)
+            controllerSelectFocusOutline.gameObject.SetActive(isFocusOutlineActive);
+    }
+
+    private void HandleDisabledHzMoveInput()
+    {
+        if (
+            MyPlayer.GetNegativeButtonDown(Const_KeyCodes.RWHorizontal)
+            || MyPlayer.GetButtonDown(Const_KeyCodes.RWHorizontal)
+        )
+            DullErrorSFX();
     }
 
     // UI Settings Overview: Graphics Button
