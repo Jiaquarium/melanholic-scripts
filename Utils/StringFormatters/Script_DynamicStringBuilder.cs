@@ -73,7 +73,7 @@ public class Script_DynamicStringBuilder : MonoBehaviour
     private static void BuildDynamicParam(
         string paramKey,
         string actionName,
-        bool isForceControllerIdBuild
+        bool isForceGamepadParamsWhenConnected
     )
     {
         var playerInputManager = Script_PlayerInputManager.Instance;
@@ -81,7 +81,7 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         if (playerInputManager != null)
         {
             Player rewiredInput = playerInputManager.RewiredInput;
-            Controller controller = isForceControllerIdBuild
+            Controller controller = isForceGamepadParamsWhenConnected
                 && playerInputManager.IsJoystickConnected
                     ? ReInput.controllers.GetController(
                         ControllerType.Joystick, Script_PlayerInputManager.ControllerId
@@ -107,32 +107,32 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         BuildDefaultDynamicKeys();
     }
     
-    public static void BuildInventoryParam(bool isForceControllerIdBuild)
+    public static void BuildInventoryParam(bool isForceGamepadParamsWhenConnected)
         => BuildDynamicParam(
             InventoryKey,
             Const_KeyCodes.RWInventory,
-            isForceControllerIdBuild: isForceControllerIdBuild
+            isForceGamepadParamsWhenConnected: isForceGamepadParamsWhenConnected
         );
 
-    public static void BuildSpeedParam(bool isForceControllerIdBuild)
+    public static void BuildSpeedParam(bool isForceGamepadParamsWhenConnected)
         => BuildDynamicParam(
             SpeedKey,
             Const_KeyCodes.RWSpeed,
-            isForceControllerIdBuild: isForceControllerIdBuild
+            isForceGamepadParamsWhenConnected: isForceGamepadParamsWhenConnected
         );
 
-    public static void BuildMaskCommandParam(bool isForceControllerIdBuild)
+    public static void BuildMaskCommandParam(bool isForceGamepadParamsWhenConnected)
         => BuildDynamicParam(
             MaskCommandKey,
             Const_KeyCodes.RWMaskCommand,
-            isForceControllerIdBuild: isForceControllerIdBuild
+            isForceGamepadParamsWhenConnected: isForceGamepadParamsWhenConnected
         );
     
-    public static void BuildInteractParam(bool isForceControllerIdBuild)
+    public static void BuildInteractParam(bool isForceGamepadParamsWhenConnected)
         => BuildDynamicParam(
             InteractKey,
             Const_KeyCodes.RWInteract,
-            isForceControllerIdBuild: isForceControllerIdBuild
+            isForceGamepadParamsWhenConnected: isForceGamepadParamsWhenConnected
         );
 
     private static void BuildDefaultDynamicKeys()

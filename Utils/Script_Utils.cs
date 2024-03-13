@@ -312,7 +312,7 @@ public static class Script_Utils
         bool isFormatSpeedKey = false,
         bool isFormatMaskCommandKey = false,
         bool isFormatInteractKey = false,
-        bool isForceControllerIdBuild = false
+        bool isForceGamepadParamsWhenConnected = false
     )
     {
         string itemFormattedStr = ReplaceParams(
@@ -328,16 +328,16 @@ public static class Script_Utils
             // Opt into these params because they are very slow to fetch
             // due to InputControlPath.ToHumanReadableString
             if (isFormatInventoryKey)
-                Script_DynamicStringBuilder.BuildInventoryParam(isForceControllerIdBuild);
+                Script_DynamicStringBuilder.BuildInventoryParam(isForceGamepadParamsWhenConnected);
             
             if (isFormatSpeedKey)
-                Script_DynamicStringBuilder.BuildSpeedParam(isForceControllerIdBuild);
+                Script_DynamicStringBuilder.BuildSpeedParam(isForceGamepadParamsWhenConnected);
             
             if (isFormatMaskCommandKey)
-                Script_DynamicStringBuilder.BuildMaskCommandParam(isForceControllerIdBuild);
+                Script_DynamicStringBuilder.BuildMaskCommandParam(isForceGamepadParamsWhenConnected);
             
             if (isFormatInteractKey)
-                Script_DynamicStringBuilder.BuildInteractParam(isForceControllerIdBuild);
+                Script_DynamicStringBuilder.BuildInteractParam(isForceGamepadParamsWhenConnected);
 
             itemAndDynamicFormattedStr = ReplaceParams(
                 itemFormattedStr,

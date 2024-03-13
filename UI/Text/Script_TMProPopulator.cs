@@ -59,7 +59,7 @@ public class Script_TMProPopulator : MonoBehaviour
     private void HandlePopulateById()
     {
         var myId = Id;
-        var isForceControllerIdBuild = false;
+        var isForceGamepadParamsWhenConnected = false;
 
         // Handle alt Text ID to switch to if gamepad is connected
         if (isAltTextGamepadConnected && !String.IsNullOrEmpty(altIdGamepadConnected))
@@ -69,7 +69,7 @@ public class Script_TMProPopulator : MonoBehaviour
             if (playerInput != null && playerInput.IsJoystickConnected)
             {
                 myId = altIdGamepadConnected;
-                isForceControllerIdBuild = true;
+                isForceGamepadParamsWhenConnected = true;
             }
         }
         
@@ -99,7 +99,7 @@ public class Script_TMProPopulator : MonoBehaviour
                 isFormatSpeedKey: isFormatSpeedKey,
                 isFormatMaskCommandKey: isFormatMaskCommandKey,
                 isFormatInteractKey: isFormatInteractKey,
-                isForceControllerIdBuild: isForceControllerIdBuild
+                isForceGamepadParamsWhenConnected: isForceGamepadParamsWhenConnected
             );
             
             GetComponent<TextMeshProUGUI>().text = formatted;
