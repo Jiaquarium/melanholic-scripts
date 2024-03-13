@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2024-02-15 16:55:34
+// Last created by Dialogue Exporter at 2024-03-12 12:35:56
 
 using System.Collections;
 using System.Collections.Generic;
@@ -102,11 +102,11 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         },
         CN = new string[]
         {
-                @"您和<b>酒店</b> {8} 之前曾讨论过<b>今晚</b>将是您的<b>最后一次</b>轮班。",
-                @"终于在{49}结束了...只剩下一个小时了...",
-                @"如果你能坚持到那时的话...",
-                @"之后一切都会好起来的。",
-                @"你确信这一点。",
+                @"You and the <b>hotel</b> {8} had previously discussed that <b>tonight</b> would be your <b>last</b> shift.",
+                @"It’s finally over at {49}.. Only one more hour...",
+                @"If you can just make it until then...",
+                @"Everything will be okay after that.",
+                @"You’re sure of it.",
         },
         metadata = new Model_Languages.Metadata[]
         {

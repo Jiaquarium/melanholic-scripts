@@ -25,6 +25,8 @@ public class Script_Game : MonoBehaviour
 
     private static string _Lang = Const_Languages.EN;
 
+    public static bool IsSteamRunningOnSteamDeck = false;
+
     private const int SpawnLevelNo = 32;
 
     /* =======================================================================

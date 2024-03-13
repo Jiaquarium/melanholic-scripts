@@ -40,6 +40,7 @@ public enum TextStyle
 public class Script_TextStylesManager : MonoBehaviour
 {
     [SerializeField] private Script_TextStyle DialogueDefaultStyle;
+    [SerializeField] private Script_TextStyle DialogueDefaultStyle_SteamDeck;
     [SerializeField] private Script_TextStyle CN_DialogueDefaultStyle;
     [SerializeField] private Script_TextStyle JP_DialogueDefaultStyle;
     [Space]
@@ -76,10 +77,12 @@ public class Script_TextStylesManager : MonoBehaviour
     [SerializeField] private Script_TextStyle JP_MenuTopNavStyle;
     [Space]
     [SerializeField] private Script_TextStyle MenuItemNameStyle;
+    [SerializeField] private Script_TextStyle MenuItemNameStyle_SteamDeck;
     [SerializeField] private Script_TextStyle CN_MenuItemNameStyle;
     [SerializeField] private Script_TextStyle JP_MenuItemNameStyle;
     [Space]
     [SerializeField] private Script_TextStyle MenuItemDescriptionStyle;
+    [SerializeField] private Script_TextStyle MenuItemDescriptionStyle_SteamDeck;
     [SerializeField] private Script_TextStyle CN_MenuItemDescriptionStyle;
     [SerializeField] private Script_TextStyle JP_MenuItemDescriptionStyle;
     [Space]
@@ -190,12 +193,16 @@ public class Script_TextStylesManager : MonoBehaviour
             JP_MenuTopNavStyle
         ),
         TextStyle.MenuItemName => GetLocalized(
-            MenuItemNameStyle,
+            Script_Game.IsSteamRunningOnSteamDeck
+                ? MenuItemNameStyle_SteamDeck
+                : MenuItemNameStyle,
             CN_MenuItemNameStyle,
             JP_MenuItemNameStyle
         ),
         TextStyle.MenuItemDescription => GetLocalized(
-            MenuItemDescriptionStyle,
+            Script_Game.IsSteamRunningOnSteamDeck
+                ? MenuItemDescriptionStyle_SteamDeck
+                : MenuItemDescriptionStyle,
             CN_MenuItemDescriptionStyle,
             JP_MenuItemDescriptionStyle
         ),
@@ -280,7 +287,9 @@ public class Script_TextStylesManager : MonoBehaviour
             JP_CreditsEndingHeader2Style
         ),
         _ => GetLocalized(
-            DialogueDefaultStyle,
+            Script_Game.IsSteamRunningOnSteamDeck
+                ? DialogueDefaultStyle_SteamDeck
+                : DialogueDefaultStyle,
             CN_DialogueDefaultStyle,
             JP_DialogueDefaultStyle
         )

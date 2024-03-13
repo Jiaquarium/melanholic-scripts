@@ -766,7 +766,8 @@ public class Script_DialogueManager : MonoBehaviour
             unformattedLine,
             isFormatInventoryKey: currentNode.data.isFormatInventoryKey,
             isFormatSpeedKey: currentNode.data.isFormatSpeedKey,
-            isFormatMaskCommandKey: currentNode.data.isFormatMaskCommandKey
+            isFormatMaskCommandKey: currentNode.data.isFormatMaskCommandKey,
+            isFormatInteractKey: currentNode.data.isFormatInteractKey
         );
 
         HandleTeletypeReveal(formattedLine, activeCanvasText);
@@ -1321,7 +1322,8 @@ public class Script_DialogueManager : MonoBehaviour
                         unformattedLine,
                         isFormatInventoryKey: currentNode.data.isFormatInventoryKey,
                         isFormatSpeedKey: currentNode.data.isFormatSpeedKey,
-                        isFormatMaskCommandKey: currentNode.data.isFormatMaskCommandKey
+                        isFormatMaskCommandKey: currentNode.data.isFormatMaskCommandKey,
+                        isFormatInteractKey: currentNode.data.isFormatInteractKey
                     );
                     
                     // Remove pause indicators

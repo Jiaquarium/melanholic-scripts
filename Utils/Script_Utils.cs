@@ -310,7 +310,9 @@ public static class Script_Utils
         this string unformattedString,
         bool isFormatInventoryKey = false,
         bool isFormatSpeedKey = false,
-        bool isFormatMaskCommandKey = false
+        bool isFormatMaskCommandKey = false,
+        bool isFormatInteractKey = false,
+        bool isForceControllerIdBuild = false
     )
     {
         string itemFormattedStr = ReplaceParams(
@@ -326,13 +328,16 @@ public static class Script_Utils
             // Opt into these params because they are very slow to fetch
             // due to InputControlPath.ToHumanReadableString
             if (isFormatInventoryKey)
-                Script_DynamicStringBuilder.BuildInventoryParam();
+                Script_DynamicStringBuilder.BuildInventoryParam(isForceControllerIdBuild);
             
             if (isFormatSpeedKey)
-                Script_DynamicStringBuilder.BuildSpeedParam();
+                Script_DynamicStringBuilder.BuildSpeedParam(isForceControllerIdBuild);
             
             if (isFormatMaskCommandKey)
-                Script_DynamicStringBuilder.BuildMaskCommandParam();
+                Script_DynamicStringBuilder.BuildMaskCommandParam(isForceControllerIdBuild);
+            
+            if (isFormatInteractKey)
+                Script_DynamicStringBuilder.BuildInteractParam(isForceControllerIdBuild);
 
             itemAndDynamicFormattedStr = ReplaceParams(
                 itemFormattedStr,
@@ -902,7 +907,7 @@ public static class Script_Utils
             name,
             BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
         );
-        Debug.Log ($"invoking with MethodInfo: {method}");
+        Dev_Logger.Debug($"invoking with MethodInfo: {method}");
         
         method.Invoke(obj, null);
     }

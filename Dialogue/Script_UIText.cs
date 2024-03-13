@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2024-02-16 15:52:45
+// Last created by UI Exporter at 2024-03-12 12:53:49
 
 using System.Collections;
 using System.Collections.Generic;
@@ -2272,11 +2272,19 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     }
 },
 {
+    "start_cta_press_dynamic_gamepad",
+    new Model_LanguagesUI
+    {
+        EN = @"Press @@InteractKey",
+        CN = @"Press @@InteractKey"
+    }
+},
+{
     "start_options_start",
     new Model_LanguagesUI
     {
         EN = @"Start",
-        CN = @"开始"
+        CN = @"Start"
     }
 },
 {

@@ -14,9 +14,11 @@ public class Script_DynamicStringBuilder : MonoBehaviour
     public static string InventoryKey = "@@InventoryKey";
     public static string SpeedKey = "@@SpeedKey";
     public static string MaskCommandKey = "@@MaskCommandKey";
+    public static string InteractKey = "@@InteractKey";
     public static string DefaultInventoryBinding = "<b>INVENTORY</b>";
     public static string DefaultSpeedBinding = "<b>???</b>";
     public static string DefaultMaskCommandBinding = "<b>MASK COMMAND</b>";
+    public static string DefaultInteractBinding = "<b>INTERACT</b>";
 
     // Dynamic strings
     public static string RunKey = "@@Run";
@@ -68,14 +70,22 @@ public class Script_DynamicStringBuilder : MonoBehaviour
     }
 
     // Must call BuildParams before calling this to build new Params dict and set last controller
-    private static void BuildDynamicParam(string paramKey, string actionName)
+    private static void BuildDynamicParam(
+        string paramKey,
+        string actionName,
+        bool isForceControllerIdBuild
+    )
     {
         var playerInputManager = Script_PlayerInputManager.Instance;
         
         if (playerInputManager != null)
         {
             Player rewiredInput = playerInputManager.RewiredInput;
-            Controller controller = rewiredInput.controllers.GetLastActiveController();
+            Controller controller = isForceControllerIdBuild
+                && playerInputManager.IsJoystickConnected
+                    ? ReInput.controllers.GetController(
+                        ControllerType.Joystick, Script_PlayerInputManager.ControllerId
+                    ) : rewiredInput.controllers.GetLastActiveController();
             
             string firstBoundKey = null;
             
@@ -97,17 +107,40 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         BuildDefaultDynamicKeys();
     }
     
-    public static void BuildInventoryParam() => BuildDynamicParam(InventoryKey, Const_KeyCodes.RWInventory);
+    public static void BuildInventoryParam(bool isForceControllerIdBuild)
+        => BuildDynamicParam(
+            InventoryKey,
+            Const_KeyCodes.RWInventory,
+            isForceControllerIdBuild: isForceControllerIdBuild
+        );
 
-    public static void BuildSpeedParam() => BuildDynamicParam(SpeedKey, Const_KeyCodes.RWSpeed);
+    public static void BuildSpeedParam(bool isForceControllerIdBuild)
+        => BuildDynamicParam(
+            SpeedKey,
+            Const_KeyCodes.RWSpeed,
+            isForceControllerIdBuild: isForceControllerIdBuild
+        );
 
-    public static void BuildMaskCommandParam() => BuildDynamicParam(MaskCommandKey, Const_KeyCodes.RWMaskCommand);
+    public static void BuildMaskCommandParam(bool isForceControllerIdBuild)
+        => BuildDynamicParam(
+            MaskCommandKey,
+            Const_KeyCodes.RWMaskCommand,
+            isForceControllerIdBuild: isForceControllerIdBuild
+        );
+    
+    public static void BuildInteractParam(bool isForceControllerIdBuild)
+        => BuildDynamicParam(
+            InteractKey,
+            Const_KeyCodes.RWInteract,
+            isForceControllerIdBuild: isForceControllerIdBuild
+        );
 
     private static void BuildDefaultDynamicKeys()
     {
         string inventoryOutput;
         string speedOutput;
         string maskOutput;
+        string interactOutput;
 
         if (!Params.TryGetValue(InventoryKey, out inventoryOutput))
             Params.Add(InventoryKey, DefaultInventoryBinding);
@@ -117,5 +150,8 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         
         if (!Params.TryGetValue(MaskCommandKey, out maskOutput))
             Params.Add(MaskCommandKey, DefaultMaskCommandBinding);
+
+        if (!Params.TryGetValue(InteractKey, out interactOutput))
+            Params.Add(InteractKey, DefaultInteractBinding);
     }
 }

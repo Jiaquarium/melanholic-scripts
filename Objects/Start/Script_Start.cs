@@ -112,6 +112,10 @@ public class Script_Start : MonoBehaviour
                 Dev_Logger.Debug("Default Start Screeen");
                 // Simple Intro Timeline will handle closing InitFader
                 mainController.InitializeIntroSimple();
+                
+                // Set Steam Deck state after initing intro to lessen startup time;
+                // Steam Deck is an exceptional case.
+                Script_Game.IsSteamRunningOnSteamDeck = Script_Utils.IsSteamDeck();
                 break;
         }
     }
