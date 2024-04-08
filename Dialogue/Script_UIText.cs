@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2024-03-12 12:53:49
+// Last created by UI Exporter at 2024-04-06 17:45:25
 
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ public class Model_LanguagesUI
 {
     public string EN { get; set; }
     public string CN { get; set; }
+    public string JP { get; set; }
 }
 
 public class Script_UIText
@@ -24,7 +25,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"By",
-        CN = @"By"
+        CN = @"By",
+        JP = @"By"
     }
 },
 {
@@ -32,7 +34,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Jiaquarium",
-        CN = @"Jiaquarium"
+        CN = @"Jiaquarium",
+        JP = @"Jiaquarium"
     }
 },
 {
@@ -40,7 +43,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Original Soundtrack By",
-        CN = @"Original Soundtrack By"
+        CN = @"Original Soundtrack By",
+        JP = @"Original Soundtrack By"
     }
 },
 {
@@ -48,7 +52,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"s3-z",
-        CN = @"s3-z"
+        CN = @"s3-z",
+        JP = @"s3-z"
     }
 },
 {
@@ -56,7 +61,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I work at the front desk of a hotel right by the sea.",
-        CN = @"I work at the front desk of a hotel right by the sea."
+        CN = @"I work at the front desk of a hotel right by the sea.",
+        JP = @"I work at the front desk of a hotel right by the sea."
     }
 },
 {
@@ -64,7 +70,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"It’s usually pretty slow in the winter season, so the hotel owner and I worked out a pretty neat deal,",
-        CN = @"It’s usually pretty slow in the winter season, so the hotel owner and I worked out a pretty neat deal,"
+        CN = @"It’s usually pretty slow in the winter season, so the hotel owner and I worked out a pretty neat deal,",
+        JP = @"It’s usually pretty slow in the winter season, so the hotel owner and I worked out a pretty neat deal,"
     }
 },
 {
@@ -72,7 +79,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I can just use one of the unoccupied rooms whenever I’m off.",
-        CN = @"I can just use one of the unoccupied rooms whenever I’m off."
+        CN = @"I can just use one of the unoccupied rooms whenever I’m off.",
+        JP = @"I can just use one of the unoccupied rooms whenever I’m off."
     }
 },
 {
@@ -80,7 +88,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"But actually now that I think about it...",
-        CN = @"But actually now that I think about it..."
+        CN = @"But actually now that I think about it...",
+        JP = @"But actually now that I think about it..."
     }
 },
 {
@@ -88,7 +97,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I’m not quite sure how long it’s been since I’ve left here.",
-        CN = @"I’m not quite sure how long it’s been since I’ve left here."
+        CN = @"I’m not quite sure how long it’s been since I’ve left here.",
+        JP = @"I’m not quite sure how long it’s been since I’ve left here."
     }
 },
 {
@@ -96,7 +106,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Hm, what else do you want to know?",
-        CN = @"Hm, what else do you want to know?"
+        CN = @"Hm, what else do you want to know?",
+        JP = @"Hm, what else do you want to know?"
     }
 },
 {
@@ -104,7 +115,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"What it’s like working the night shift?",
-        CN = @"What it’s like working the night shift?"
+        CN = @"What it’s like working the night shift?",
+        JP = @"What it’s like working the night shift?"
     }
 },
 {
@@ -112,7 +124,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"This game is not suitable for children or those who may be easily disturbed.",
-        CN = @"This game is not suitable for children or those who may be easily disturbed."
+        CN = @"This game is not suitable for children or those who may be easily disturbed.",
+        JP = @"このゲームは、子供や心が傷つきやすい方には適していません。"
     }
 },
 // ------------------------------------------------------------------
@@ -122,7 +135,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"This was my last day at the seaside hotel.",
-        CN = @"This was my last day at the seaside hotel."
+        CN = @"This was my last day at the seaside hotel.",
+        JP = @"これが、海辺のホテル最後の一日。"
     }
 },
 {
@@ -130,7 +144,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"How are one of these notes supposed to go anyways?",
-        CN = @"How are one of these notes supposed to go anyways?"
+        CN = @"How are one of these notes supposed to go anyways?",
+        JP = @"とにかく、こんなノートどうすればいいんだろう？"
     }
 },
 {
@@ -138,7 +153,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Needless to say, I’ll never see {18} ever again.",
-        CN = @"Needless to say, I’ll never see {18} ever again."
+        CN = @"Needless to say, I’ll never see {18} ever again.",
+        JP = @"言うまでもなく、もう二度と{18}を見ることはないはず。"
     }
 },
 {
@@ -146,7 +162,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I never imagined it to all go like this...",
-        CN = @"I never imagined it to all go like this..."
+        CN = @"I never imagined it to all go like this...",
+        JP = @"こんな風になるなんて、思いもしなかった……"
     }
 },
 {
@@ -154,7 +171,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"My life revolved around that place for so long.",
-        CN = @"My life revolved around that place for so long."
+        CN = @"My life revolved around that place for so long.",
+        JP = @"私の人生はずっと、そこを中心に回っていた。"
     }
 },
 {
@@ -162,7 +180,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"And now, it’ll just be another fading memory.",
-        CN = @"And now, it’ll just be another fading memory."
+        CN = @"And now, it’ll just be another fading memory.",
+        JP = @"だけどもう、記憶は薄れていくばかり。"
     }
 },
 {
@@ -170,7 +189,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"To be locked away like the rest.",
-        CN = @"To be locked away like the rest."
+        CN = @"To be locked away like the rest.",
+        JP = @"他の思い出とともに、しまわれて。"
     }
 },
 {
@@ -178,7 +198,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"......",
-        CN = @"......"
+        CN = @"......",
+        JP = @"…………"
     }
 },
 {
@@ -186,7 +207,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Looking at the sea now...",
-        CN = @"Looking at the sea now..."
+        CN = @"Looking at the sea now...",
+        JP = @"こうして海を見ていると……"
     }
 },
 {
@@ -194,7 +216,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Was I being naïve?",
-        CN = @"Was I being naïve?"
+        CN = @"Was I being naïve?",
+        JP = @"甘く考えてたのかな？"
     }
 },
 {
@@ -202,7 +225,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"To think I could actually escape...",
-        CN = @"To think I could actually escape..."
+        CN = @"To think I could actually escape...",
+        JP = @"本当に逃げ出せると思うなんて……"
     }
 },
 {
@@ -210,7 +234,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"......",
-        CN = @"......"
+        CN = @"......",
+        JP = @"…………"
     }
 },
 {
@@ -218,7 +243,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Were they all just in my head?",
-        CN = @"Were they all just in my head?"
+        CN = @"Were they all just in my head?",
+        JP = @"なにかもみんな、頭の中の出来事だったんだろうか？"
     }
 },
 {
@@ -226,7 +252,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Unfinished paintings...",
-        CN = @"Unfinished paintings..."
+        CN = @"Unfinished paintings...",
+        JP = @"未完成の絵……"
     }
 },
 {
@@ -234,7 +261,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"You and <i>him</i>.",
-        CN = @"You and <i>him</i>."
+        CN = @"You and <i>him</i>.",
+        JP = @"君と、<b>彼</b>"
     }
 },
 {
@@ -242,7 +270,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"A self-portrait.",
-        CN = @"A self-portrait."
+        CN = @"A self-portrait.",
+        JP = @"自画像。"
     }
 },
 {
@@ -250,7 +279,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Am I really losing it?",
-        CN = @"Am I really losing it?"
+        CN = @"Am I really losing it?",
+        JP = @"私、本当におかしくなっている？"
     }
 },
 {
@@ -258,7 +288,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Maybe some questions are better left alone.",
-        CN = @"Maybe some questions are better left alone."
+        CN = @"Maybe some questions are better left alone.",
+        JP = @"いくつかの疑問は忘れたほうがいいのかも。"
     }
 },
 {
@@ -266,7 +297,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The most important thing though,",
-        CN = @"The most important thing though,"
+        CN = @"The most important thing though,",
+        JP = @"なんにせよ、大事なことはひとつ。"
     }
 },
 {
@@ -274,7 +306,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Is that I finally have an end to this chapter of my life.",
-        CN = @"Is that I finally have an end to this chapter of my life."
+        CN = @"Is that I finally have an end to this chapter of my life.",
+        JP = @"私の人生の、この章がついに終わるということ。"
     }
 },
 {
@@ -282,7 +315,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I’ve been at the bottom of a well for far too long now.",
-        CN = @"I’ve been at the bottom of a well for far too long now."
+        CN = @"I’ve been at the bottom of a well for far too long now.",
+        JP = @"あまりに長いこと、井戸の底にいすぎていた。"
     }
 },
 {
@@ -290,7 +324,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I know you’re just trying to help,",
-        CN = @"I know you’re just trying to help,"
+        CN = @"I know you’re just trying to help,",
+        JP = @"君が助けてくれようとしてたって、わかってるよ。"
     }
 },
 {
@@ -298,7 +333,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Y̵o̴u̴ ̵k̸e̴p̶t̶ ̸t̵a̶k̷i̶n̸g̵ ̴m̶e̸ ̵d̴o̶w̶n̸ ̷t̵h̵e̸r̷e̴ ̷a̵n̷d̷ ̵f̴o̵r̴ ̶w̵h̶a̷t̵?̴",
-        CN = @"Y̵o̴u̴ ̵k̸e̴p̶t̶ ̸t̵a̶k̷i̶n̸g̵ ̴m̶e̸ ̵d̴o̶w̶n̸ ̷t̵h̵e̸r̷e̴ ̷a̵n̷d̷ ̵f̴o̵r̴ ̶w̵h̶a̷t̵?̴"
+        CN = @"Y̵o̴u̴ ̵k̸e̴p̶t̶ ̸t̵a̶k̷i̶n̸g̵ ̴m̶e̸ ̵d̴o̶w̶n̸ ̷t̵h̵e̸r̷e̴ ̷a̵n̷d̷ ̵f̴o̵r̴ ̶w̵h̶a̷t̵?̴",
+        JP = @"҉な҉̵҉ん҉̶҉҉҉の҉̶҉た҉̴҉̵҉め҉̵҉̷҉に҉҈҉、҉̵҉あ҉҉҉そ҉̶҉̵҉こ҉҉҉̸҉ま҉̶҉で҉҈҉連҉̷҉れ҉҉҉҈҉て҉҉҉行҉̶҉̷҉っ҉҉҉て҉̷҉く҉̸҉̵҉れ҉҈҉̴҉た҉̵҉の҉̵҉？҉̶҉̸҉"
     }
 },
 {
@@ -306,7 +342,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I don’t blame you.",
-        CN = @"I don’t blame you."
+        CN = @"I don’t blame you.",
+        JP = @"君を責めてるわけじゃない。"
     }
 },
 {
@@ -314,7 +351,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"There’s nothing you could do.",
-        CN = @"There’s nothing you could do."
+        CN = @"There’s nothing you could do.",
+        JP = @"君にできることはなかったから。"
     }
 },
 {
@@ -322,7 +360,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"||This weight on my shoulders...",
-        CN = @"||This weight on my shoulders..."
+        CN = @"||This weight on my shoulders...",
+        JP = @"||肩に感じるこの重み……"
     }
 },
 {
@@ -330,7 +369,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Everyone gets what they wanted this way.",
-        CN = @"Everyone gets what they wanted this way."
+        CN = @"Everyone gets what they wanted this way.",
+        JP = @"みんな、こうして望むものを手に入れるんだ。"
     }
 },
 {
@@ -338,7 +378,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"No more halfway.",
-        CN = @"No more halfway."
+        CN = @"No more halfway.",
+        JP = @"もう半端者じゃない。"
     }
 },
 {
@@ -346,7 +387,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"My eyes... they feel incredibly heavy.",
-        CN = @"My eyes... they feel incredibly heavy."
+        CN = @"My eyes... they feel incredibly heavy.",
+        JP = @"目が……ものすごく重たい。"
     }
 },
 {
@@ -354,7 +396,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"<b>It’s {49}</b>",
-        CN = @"<b>It’s {49}</b>"
+        CN = @"<b>It’s {49}</b>",
+        JP = @"<b>{49}だ。</b>"
     }
 },
 {
@@ -362,7 +405,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Look,",
-        CN = @"Look,"
+        CN = @"Look,",
+        JP = @"見て。"
     }
 },
 {
@@ -370,7 +414,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I knew it.",
-        CN = @"I knew it."
+        CN = @"I knew it.",
+        JP = @"やっぱり。"
     }
 },
 {
@@ -378,7 +423,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The sky is separating from the sea.",
-        CN = @"The sky is separating from the sea."
+        CN = @"The sky is separating from the sea.",
+        JP = @"空と海とが、離れていく。"
     }
 },
 {
@@ -386,7 +432,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"......",
-        CN = @"......"
+        CN = @"......",
+        JP = @"......"
     }
 },
 {
@@ -394,7 +441,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Finally, no more pain.",
-        CN = @"Finally, no more pain."
+        CN = @"Finally, no more pain.",
+        JP = @"やっと、痛みがなくなった。"
     }
 },
 {
@@ -402,7 +450,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The End",
-        CN = @"The End"
+        CN = @"The End",
+        JP = @"The End"
     }
 },
 {
@@ -410,7 +459,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"RĖŇù ŮẋůĉŚū",
-        CN = @"RĖŇù ŮẋůĉŚū"
+        CN = @"RĖŇù ŮẋůĉŚū",
+        JP = @"RĖŇù ŮẋůĉŚū"
     }
 },
 {
@@ -418,7 +468,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I TRUSTED YOU",
-        CN = @"I TRUSTED YOU"
+        CN = @"I TRUSTED YOU",
+        JP = @"私は信じてたよ、君を"
     }
 },
 {
@@ -426,7 +477,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Űţýs ĵẋûŰĖĜ",
-        CN = @"Űţýs ĵẋûŰĖĜ"
+        CN = @"Űţýs ĵẋûŰĖĜ",
+        JP = @"Űţýs ĵẋûŰĖĜ"
     }
 },
 {
@@ -434,7 +486,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"ġŉŒŢ ÄẋïÈĳĥ",
-        CN = @"ġŉŒŢ ÄẋïÈĳĥ"
+        CN = @"ġŉŒŢ ÄẋïÈĳĥ",
+        JP = @"ġŉŒŢ ÄẋïÈĳĥ"
     }
 },
 {
@@ -442,7 +495,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"ŖĀŁő sẋšças",
-        CN = @"ŖĀŁő sẋšças"
+        CN = @"ŖĀŁő sẋšças",
+        JP = @"ŖĀŁő sẋšças"
     }
 },
 {
@@ -450,7 +504,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"ăĲÑĢ EẋĎąõà",
-        CN = @"ăĲÑĢ EẋĎąõà"
+        CN = @"ăĲÑĢ EẋĎąõà",
+        JP = @"ăĲÑĢ EẋĎąõà"
     }
 },
 {
@@ -458,7 +513,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"A Mirror Who Lost Its Reflection",
-        CN = @"A Mirror Who Lost Its Reflection"
+        CN = @"A Mirror Who Lost Its Reflection",
+        JP = @"A Mirror Who Lost Its Reflection"
     }
 },
 {
@@ -466,7 +522,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"No, this isn’t it...",
-        CN = @"No, this isn’t it..."
+        CN = @"No, this isn’t it...",
+        JP = @"No, this isn’t it..."
     }
 },
 {
@@ -474,7 +531,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The portrait is close but it won’t be finished this way.",
-        CN = @"The portrait is close but it won’t be finished this way."
+        CN = @"The portrait is close but it won’t be finished this way.",
+        JP = @"The portrait is close but it won’t be finished this way."
     }
 },
 {
@@ -482,7 +540,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"...there has to be more to you.",
-        CN = @"...there has to be more to you."
+        CN = @"...there has to be more to you.",
+        JP = @"……君ならもっとできるはず。"
     }
 },
 // ------------------------------------------------------------------
@@ -492,7 +551,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"This was my last day at the seaside hotel.",
-        CN = @"This was my last day at the seaside hotel."
+        CN = @"This was my last day at the seaside hotel.",
+        JP = @"これが、海辺のホテル最後の一日。"
     }
 },
 {
@@ -500,7 +560,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Needless to say, I’ll never see {18} ever again.",
-        CN = @"Needless to say, I’ll never see {18} ever again."
+        CN = @"Needless to say, I’ll never see {18} ever again.",
+        JP = @"言うまでもなく、もう二度と{18}を見ることはないはず。"
     }
 },
 {
@@ -508,7 +569,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"It’s strange to think now,",
-        CN = @"It’s strange to think now,"
+        CN = @"It’s strange to think now,",
+        JP = @"いま考えると奇妙な感じだ。"
     }
 },
 {
@@ -516,7 +578,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"That every decision I made, every thought I had,",
-        CN = @"That every decision I made, every thought I had,"
+        CN = @"That every decision I made, every thought I had,",
+        JP = @"私の決意も、思考も、どれもぜんぶ。"
     }
 },
 {
@@ -524,7 +587,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Revolved around that place for so long.",
-        CN = @"Revolved around that place for so long."
+        CN = @"Revolved around that place for so long.",
+        JP = @"ずっと、あの場所を中心に回っていた。"
     }
 },
 {
@@ -532,7 +596,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"......",
-        CN = @"......"
+        CN = @"......",
+        JP = @"…………"
     }
 },
 {
@@ -540,7 +605,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I guess over time, it really did begin to change me,",
-        CN = @"I guess over time, it really did begin to change me,"
+        CN = @"I guess over time, it really did begin to change me,",
+        JP = @"時間が経つにつれて、私は大きく変わっていったんだと思う。"
     }
 },
 {
@@ -548,7 +614,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Spending so many nights in there.",
-        CN = @"Spending so many nights in there."
+        CN = @"Spending so many nights in there.",
+        JP = @"あそこで、数え切れないほどの夜を過ごしたから。"
     }
 },
 {
@@ -556,7 +623,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The only thing I could do was numb myself to it all...",
-        CN = @"The only thing I could do was numb myself to it all..."
+        CN = @"The only thing I could do was numb myself to it all...",
+        JP = @"私にできるのは、すっかり麻痺するだけだった……"
     }
 },
 {
@@ -564,7 +632,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"As I looked out from a face that wasn’t even mine.",
-        CN = @"As I looked out from a face that wasn’t even mine."
+        CN = @"As I looked out from a face that wasn’t even mine.",
+        JP = @"自分自身の顔で、外を見ようとしていなかったから。"
     }
 },
 {
@@ -572,7 +641,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"......",
-        CN = @"......"
+        CN = @"......",
+        JP = @"…………"
     }
 },
 {
@@ -580,7 +650,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Looking at the sea now, it’s becoming a bit clearer...",
-        CN = @"Looking at the sea now, it’s becoming a bit clearer..."
+        CN = @"Looking at the sea now, it’s becoming a bit clearer...",
+        JP = @"こうして海を見ていると、少しはっきりしてきた……"
     }
 },
 {
@@ -588,7 +659,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"My feelings in purgatory I was helplessly dragging around.",
-        CN = @"My feelings in purgatory I was helplessly dragging around."
+        CN = @"My feelings in purgatory I was helplessly dragging around.",
+        JP = @"どうしようもなく引きずっていた、煉獄の感情。"
     }
 },
 {
@@ -596,7 +668,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"In the past, I would’ve locked them away.",
-        CN = @"In the past, I would’ve locked them away."
+        CN = @"In the past, I would’ve locked them away.",
+        JP = @"昔は、閉じ込めて見ないようにしていた。"
     }
 },
 {
@@ -604,7 +677,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I’ve always feared becoming <i>only them</i>...",
-        CN = @"I’ve always feared becoming <i>only them</i>..."
+        CN = @"I’ve always feared becoming <i>only them</i>...",
+        JP = @"<b>あんな風</b>になってしまうのが、ずっと怖かった……"
     }
 },
 {
@@ -612,7 +686,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The same hour on a winter night.",
-        CN = @"The same hour on a winter night."
+        CN = @"The same hour on a winter night.",
+        JP = @"冬の夜、こんな時間に。"
     }
 },
 {
@@ -620,7 +695,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I’ve paid my visits.",
-        CN = @"I’ve paid my visits."
+        CN = @"I’ve paid my visits.",
+        JP = @"もう堂々巡りはおしまい。"
     }
 },
 {
@@ -628,7 +704,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"<b>I’m not just them.</b>",
-        CN = @"<b>I’m not just them.</b>"
+        CN = @"<b>I’m not just them.</b>",
+        JP = @"<b>私は、あんな風じゃない。</b>"
     }
 },
 {
@@ -636,7 +713,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I’m not running anymore.",
-        CN = @"I’m not running anymore."
+        CN = @"I’m not running anymore.",
+        JP = @"もう、逃げたりなんてしない。"
     }
 },
 {
@@ -644,7 +722,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I’m ready for what’s next.",
-        CN = @"I’m ready for what’s next."
+        CN = @"I’m ready for what’s next.",
+        JP = @"もう、未来を受け入れられる。"
     }
 },
 {
@@ -652,7 +731,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"I hope you’ll understand.",
-        CN = @"I hope you’ll understand."
+        CN = @"I hope you’ll understand.",
+        JP = @"君がわかってくれるといいな。"
     }
 },
 {
@@ -660,7 +740,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Hey, Ids, look,",
-        CN = @"Hey, Ids, look,"
+        CN = @"Hey, Ids, look,",
+        JP = @"ねえ、イデス、ほら。"
     }
 },
 {
@@ -668,7 +749,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The sun is coming up.",
-        CN = @"The sun is coming up."
+        CN = @"The sun is coming up.",
+        JP = @"日が昇るよ。"
     }
 },
 {
@@ -676,7 +758,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"<b>It’s {49}</b>",
-        CN = @"<b>It’s {49}</b>"
+        CN = @"<b>It’s {49}</b>",
+        JP = @"<b>{49}だ。</b>"
     }
 },
 {
@@ -684,7 +767,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"......",
-        CN = @"......"
+        CN = @"......",
+        JP = @"…………"
     }
 },
 {
@@ -692,7 +776,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Finally, I don’t feel like sleeping anymore.",
-        CN = @"Finally, I don’t feel like sleeping anymore."
+        CN = @"Finally, I don’t feel like sleeping anymore.",
+        JP = @"やっと、もう眠たくならずにすむ。"
     }
 },
 {
@@ -700,7 +785,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"autical Dawn",
-        CN = @"autical Dawn"
+        CN = @"autical Dawn",
+        JP = @"航海薄明"
     }
 },
 {
@@ -708,7 +794,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"n",
-        CN = @"n"
+        CN = @"n",
+        JP = @"n"
     }
 },
 {
@@ -716,7 +803,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"A True Ending",
-        CN = @"A True Ending"
+        CN = @"A True Ending",
+        JP = @"A True Ending"
     }
 },
 // ------------------------------------------------------------------
@@ -726,7 +814,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"『 THE SEALING HAS COMMENCED 』",
-        CN = @"『 THE SEALING HAS COMMENCED 』"
+        CN = @"『 THE SEALING HAS COMMENCED 』",
+        JP = @"『封印開始』"
     }
 },
 {
@@ -734,7 +823,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"As the clock",
-        CN = @"As the clock"
+        CN = @"As the clock",
+        JP = @"時計が"
     }
 },
 {
@@ -742,7 +832,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"struck {49} the ancient spell of the {22} was cast.",
-        CN = @"struck {49} the ancient spell of the {22} was cast."
+        CN = @"struck {49} the ancient spell of the {22} was cast.",
+        JP = @"{49}を刻んだ瞬間、{22}の古代呪文が唱えられた。"
     }
 },
 {
@@ -750,7 +841,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"It is said that {18} along with all those inside were locked away,<br>permanently losing touch with the outside world.",
-        CN = @"It is said that {18} along with all those inside were locked away,<br>permanently losing touch with the outside world."
+        CN = @"It is said that {18} along with all those inside were locked away,<br>permanently losing touch with the outside world.",
+        JP = @"{18}中の者すべてが閉じ込められ、<br>外界との接点を永久に失ったと言われている。"
     }
 },
 {
@@ -758,7 +850,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"The Sealing",
-        CN = @"The Sealing"
+        CN = @"The Sealing",
+        JP = @"封印"
     }
 },
 {
@@ -766,7 +859,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"What to do, what to do...",
-        CN = @"What to do, what to do..."
+        CN = @"What to do, what to do...",
+        JP = @"どうしよう……どうしよう……"
     }
 },
 {
@@ -774,7 +868,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Try this night again",
-        CN = @"Try this night again"
+        CN = @"Try this night again",
+        JP = @"あの夜にもどる"
     }
 },
 {
@@ -782,7 +877,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Go to main menu",
-        CN = @"Go to main menu"
+        CN = @"Go to main menu",
+        JP = @"メインメニュー"
     }
 },
 // ------------------------------------------------------------------
@@ -792,7 +888,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Art & Design, Writing, Programming",
-        CN = @"Art & Design, Writing, Programming"
+        CN = @"Art & Design, Writing, Programming",
+        JP = @"Art & Design, Writing, Programming"
     }
 },
 {
@@ -800,7 +897,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Jiaquarium",
-        CN = @"Jiaquarium"
+        CN = @"Jiaquarium",
+        JP = @"Jiaquarium"
     }
 },
 {
@@ -808,7 +906,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Music & Sound",
-        CN = @"Music & Sound"
+        CN = @"Music & Sound",
+        JP = @"Music & Sound"
     }
 },
 {
@@ -816,7 +915,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"s3-z",
-        CN = @"s3-z"
+        CN = @"s3-z",
+        JP = @"s3-z"
     }
 },
 {
@@ -824,7 +924,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Art & Design",
-        CN = @"Art & Design"
+        CN = @"Art & Design",
+        JP = @"Art & Design"
     }
 },
 {
@@ -832,7 +933,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Estella",
-        CN = @"Estella"
+        CN = @"Estella",
+        JP = @"Estella"
     }
 },
 {
@@ -840,7 +942,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Special Thanks",
-        CN = @"Special Thanks"
+        CN = @"Special Thanks",
+        JP = @"Special Thanks"
     }
 },
 {
@@ -848,7 +951,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Agent",
-        CN = @"Agent"
+        CN = @"Agent",
+        JP = @"Agent"
     }
 },
 {
@@ -856,7 +960,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Judah Silver",
-        CN = @"Judah Silver"
+        CN = @"Judah Silver",
+        JP = @"Judah Silver"
     }
 },
 {
@@ -864,7 +969,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Dance Tracks",
-        CN = @"Dance Tracks"
+        CN = @"Dance Tracks",
+        JP = @"Dance Tracks"
     }
 },
 {
@@ -872,7 +978,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Patricia Taxxon",
-        CN = @"Patricia Taxxon"
+        CN = @"Patricia Taxxon",
+        JP = @"Patricia Taxxon"
     }
 },
 {
@@ -880,7 +987,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"SFX",
-        CN = @"SFX"
+        CN = @"SFX",
+        JP = @"SFX"
     }
 },
 {
@@ -888,7 +996,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Taira Komori",
-        CN = @"Taira Komori"
+        CN = @"Taira Komori",
+        JP = @"Taira Komori"
     }
 },
 {
@@ -896,7 +1005,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Script Editing",
-        CN = @"Script Editing"
+        CN = @"Script Editing",
+        JP = @"Script Editing"
     }
 },
 {
@@ -904,7 +1014,8 @@ public class Script_UIText
     new Model_LanguagesUI
     {
         EN = @"Lynette Shen",
-        CN = @"Lynette Shen"
+        CN = @"Lynette Shen",
+        JP = @"Lynette Shen"
     }
 },
 {
@@ -914,7 +1025,9 @@ public class Script_UIText
         EN = @"To our playtesters and colleagues,
 This would not have been possible without your feedback, course corrections, and encouragement.",
         CN = @"To our playtesters and colleagues,
-This would not have been possible without your feedback, course corrections, and encouragement."
+This would not have been possible without your feedback, course corrections, and encouragement.",
+        JP = @"テストプレイヤーのみなさんと、仲間たちへ。
+みなさんからのフィードバック、軌道修正、励ましなしにこのゲームは実現しませんでした。"
     }
 },
 {
@@ -922,7 +1035,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"This would not have been possible without your feedback, course corrections, and encouragement.",
-        CN = @"This would not have been possible without your feedback, course corrections, and encouragement."
+        CN = @"This would not have been possible without your feedback, course corrections, and encouragement.",
+        JP = @"みなさんからのフィードバック、軌道修正、励ましなしにこのゲームは実現しませんでした。"
     }
 },
 {
@@ -930,7 +1044,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Key Playtesters",
-        CN = @"Key Playtesters"
+        CN = @"Key Playtesters",
+        JP = @"Key Playtesters"
     }
 },
 {
@@ -938,7 +1053,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Alice Hua",
-        CN = @"Alice Hua"
+        CN = @"Alice Hua",
+        JP = @"Alice Hua"
     }
 },
 {
@@ -946,7 +1062,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Daniel Li",
-        CN = @"Daniel Li"
+        CN = @"Daniel Li",
+        JP = @"Daniel Li"
     }
 },
 {
@@ -954,7 +1071,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Estella Xian",
-        CN = @"Estella Xian"
+        CN = @"Estella Xian",
+        JP = @"Estella Xian"
     }
 },
 {
@@ -962,7 +1080,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Nathan Waters",
-        CN = @"Nathan Waters"
+        CN = @"Nathan Waters",
+        JP = @"Nathan Waters"
     }
 },
 {
@@ -970,7 +1089,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Playtesters",
-        CN = @"Playtesters"
+        CN = @"Playtesters",
+        JP = @"Playtesters"
     }
 },
 {
@@ -978,7 +1098,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Ada Lam",
-        CN = @"Ada Lam"
+        CN = @"Ada Lam",
+        JP = @"Ada Lam"
     }
 },
 {
@@ -986,7 +1107,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Arden Zhan",
-        CN = @"Arden Zhan"
+        CN = @"Arden Zhan",
+        JP = @"Arden Zhan"
     }
 },
 {
@@ -994,7 +1116,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Ash Kim",
-        CN = @"Ash Kim"
+        CN = @"Ash Kim",
+        JP = @"Ash Kim"
     }
 },
 {
@@ -1002,7 +1125,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"David Tran",
-        CN = @"David Tran"
+        CN = @"David Tran",
+        JP = @"David Tran"
     }
 },
 {
@@ -1010,7 +1134,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Leanna Leung",
-        CN = @"Leanna Leung"
+        CN = @"Leanna Leung",
+        JP = @"Leanna Leung"
     }
 },
 {
@@ -1018,7 +1143,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Lynette Shen",
-        CN = @"Lynette Shen"
+        CN = @"Lynette Shen",
+        JP = @"Lynette Shen"
     }
 },
 {
@@ -1026,7 +1152,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Melos Han-Tani",
-        CN = @"Melos Han-Tani"
+        CN = @"Melos Han-Tani",
+        JP = @"Melos Han-Tani"
     }
 },
 {
@@ -1034,7 +1161,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Moe Zhang",
-        CN = @"Moe Zhang"
+        CN = @"Moe Zhang",
+        JP = @"Moe Zhang"
     }
 },
 {
@@ -1042,7 +1170,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Randy O’ Connor",
-        CN = @"Randy O’ Connor"
+        CN = @"Randy O’ Connor",
+        JP = @"Randy O’ Connor"
     }
 },
 {
@@ -1050,7 +1179,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Sayaka Kono",
-        CN = @"Sayaka Kono"
+        CN = @"Sayaka Kono",
+        JP = @"Sayaka Kono"
     }
 },
 {
@@ -1058,7 +1188,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Segyero Yoon",
-        CN = @"Segyero Yoon"
+        CN = @"Segyero Yoon",
+        JP = @"Segyero Yoon"
     }
 },
 {
@@ -1066,7 +1197,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Stephen Zhao",
-        CN = @"Stephen Zhao"
+        CN = @"Stephen Zhao",
+        JP = @"Stephen Zhao"
     }
 },
 {
@@ -1074,7 +1206,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Steven Nguyen",
-        CN = @"Steven Nguyen"
+        CN = @"Steven Nguyen",
+        JP = @"Steven Nguyen"
     }
 },
 {
@@ -1082,7 +1215,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Tedmund Chua",
-        CN = @"Tedmund Chua"
+        CN = @"Tedmund Chua",
+        JP = @"Tedmund Chua"
     }
 },
 {
@@ -1090,7 +1224,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Tim Goco",
-        CN = @"Tim Goco"
+        CN = @"Tim Goco",
+        JP = @"Tim Goco"
     }
 },
 {
@@ -1098,7 +1233,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Yining Zheng",
-        CN = @"Yining Zheng"
+        CN = @"Yining Zheng",
+        JP = @"Yining Zheng"
     }
 },
 {
@@ -1106,7 +1242,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Publishing Staff - Freedom Games",
-        CN = @"Publishing Staff - Freedom Games"
+        CN = @"Publishing Staff - Freedom Games",
+        JP = @"Publishing Staff - Freedom Games"
     }
 },
 {
@@ -1114,7 +1251,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Founders",
-        CN = @"Founders"
+        CN = @"Founders",
+        JP = @"Founders"
     }
 },
 {
@@ -1122,7 +1260,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Staff",
-        CN = @"Staff"
+        CN = @"Staff",
+        JP = @"Staff"
     }
 },
 {
@@ -1130,7 +1269,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Donovan Duncan",
-        CN = @"Donovan Duncan"
+        CN = @"Donovan Duncan",
+        JP = @"Donovan Duncan"
     }
 },
 {
@@ -1138,7 +1278,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Ben Robinson",
-        CN = @"Ben Robinson"
+        CN = @"Ben Robinson",
+        JP = @"Ben Robinson"
     }
 },
 {
@@ -1146,7 +1287,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Alexandre Carchano",
-        CN = @"Alexandre Carchano"
+        CN = @"Alexandre Carchano",
+        JP = @"Alexandre Carchano"
     }
 },
 {
@@ -1154,7 +1296,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Amanda Hoppe",
-        CN = @"Amanda Hoppe"
+        CN = @"Amanda Hoppe",
+        JP = @"Amanda Hoppe"
     }
 },
 {
@@ -1162,7 +1305,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Benjamin Tarsa",
-        CN = @"Benjamin Tarsa"
+        CN = @"Benjamin Tarsa",
+        JP = @"Benjamin Tarsa"
     }
 },
 {
@@ -1170,215 +1314,251 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Brian Borg",
-        CN = @"Brian Borg"
+        CN = @"Brian Borg",
+        JP = @"Brian Borg"
     }
 },
 {
     "credits_publisher_name6",
     new Model_LanguagesUI
     {
-        EN = @"Carrol Dufault",
-        CN = @"Carrol Dufault"
+        EN = @"Bryan Herren",
+        CN = @"Bryan Herren",
+        JP = @"Bryan Herren"
     }
 },
 {
     "credits_publisher_name7",
     new Model_LanguagesUI
     {
-        EN = @"Danny Ryba",
-        CN = @"Danny Ryba"
+        EN = @"Carrol Dufault",
+        CN = @"Carrol Dufault",
+        JP = @"Carrol Dufault"
     }
 },
 {
     "credits_publisher_name8",
     new Model_LanguagesUI
     {
-        EN = @"Destinee Cleveland",
-        CN = @"Destinee Cleveland"
+        EN = @"Danny Ryba",
+        CN = @"Danny Ryba",
+        JP = @"Danny Ryba"
     }
 },
 {
     "credits_publisher_name9",
     new Model_LanguagesUI
     {
-        EN = @"Elisabeth Reeve",
-        CN = @"Elisabeth Reeve"
+        EN = @"Destinee Cleveland",
+        CN = @"Destinee Cleveland",
+        JP = @"Destinee Cleveland"
     }
 },
 {
     "credits_publisher_name10",
     new Model_LanguagesUI
     {
-        EN = @"Emmanuel “Manu” Floret",
-        CN = @"Emmanuel “Manu” Floret"
+        EN = @"Elisabeth Reeve",
+        CN = @"Elisabeth Reeve",
+        JP = @"Elisabeth Reeve"
     }
 },
 {
     "credits_publisher_name11",
     new Model_LanguagesUI
     {
-        EN = @"Emmanuel Franco",
-        CN = @"Emmanuel Franco"
+        EN = @"Emmanuel “Manu” Floret",
+        CN = @"Emmanuel “Manu” Floret",
+        JP = @"Emmanuel “Manu” Floret"
     }
 },
 {
     "credits_publisher_name12",
     new Model_LanguagesUI
     {
-        EN = @"Evan Bloyet",
-        CN = @"Evan Bloyet"
+        EN = @"Emmanuel Franco",
+        CN = @"Emmanuel Franco",
+        JP = @"Emmanuel Franco"
     }
 },
 {
     "credits_publisher_name13",
     new Model_LanguagesUI
     {
-        EN = @"Evan Bryant",
-        CN = @"Evan Bryant"
+        EN = @"Evan Bloyet",
+        CN = @"Evan Bloyet",
+        JP = @"Evan Bloyet"
     }
 },
 {
     "credits_publisher_name14",
     new Model_LanguagesUI
     {
-        EN = @"Harrison Floyd",
-        CN = @"Harrison Floyd"
+        EN = @"Evan Bryant",
+        CN = @"Evan Bryant",
+        JP = @"Evan Bryant"
     }
 },
 {
     "credits_publisher_name15",
     new Model_LanguagesUI
     {
-        EN = @"Ianna Dria Besa",
-        CN = @"Ianna Dria Besa"
+        EN = @"Harrison Floyd",
+        CN = @"Harrison Floyd",
+        JP = @"Harrison Floyd"
     }
 },
 {
     "credits_publisher_name16",
     new Model_LanguagesUI
     {
-        EN = @"John C. Boone II",
-        CN = @"John C. Boone II"
+        EN = @"Ianna Dria Besa",
+        CN = @"Ianna Dria Besa",
+        JP = @"Ianna Dria Besa"
     }
 },
 {
     "credits_publisher_name17",
     new Model_LanguagesUI
     {
-        EN = @"Jonathan Motes",
-        CN = @"Jonathan Motes"
+        EN = @"John C. Boone II",
+        CN = @"John C. Boone II",
+        JP = @"John C. Boone II"
     }
 },
 {
     "credits_publisher_name18",
     new Model_LanguagesUI
     {
-        EN = @"Jordan Kahn",
-        CN = @"Jordan Kahn"
+        EN = @"Jonathan Motes",
+        CN = @"Jonathan Motes",
+        JP = @"Jonathan Motes"
     }
 },
 {
     "credits_publisher_name19",
     new Model_LanguagesUI
     {
-        EN = @"Josh Mitchell",
-        CN = @"Josh Mitchell"
+        EN = @"Jordan Kahn",
+        CN = @"Jordan Kahn",
+        JP = @"Jordan Kahn"
     }
 },
 {
     "credits_publisher_name20",
     new Model_LanguagesUI
     {
-        EN = @"Katie VanClieaf",
-        CN = @"Katie VanClieaf"
+        EN = @"Josh Mitchell",
+        CN = @"Josh Mitchell",
+        JP = @"Josh Mitchell"
     }
 },
 {
     "credits_publisher_name21",
     new Model_LanguagesUI
     {
-        EN = @"Kerri King",
-        CN = @"Kerri King"
+        EN = @"Katie VanClieaf",
+        CN = @"Katie VanClieaf",
+        JP = @"Katie VanClieaf"
     }
 },
 {
     "credits_publisher_name22",
     new Model_LanguagesUI
     {
-        EN = @"Matthew Schwartz",
-        CN = @"Matthew Schwartz"
+        EN = @"Kerri King",
+        CN = @"Kerri King",
+        JP = @"Kerri King"
     }
 },
 {
     "credits_publisher_name23",
     new Model_LanguagesUI
     {
-        EN = @"Michel Filipiak",
-        CN = @"Michel Filipiak"
+        EN = @"Matthew Schwartz",
+        CN = @"Matthew Schwartz",
+        JP = @"Matthew Schwartz"
     }
 },
 {
     "credits_publisher_name24",
     new Model_LanguagesUI
     {
-        EN = @"Nico Desrochers",
-        CN = @"Nico Desrochers"
+        EN = @"Michel Filipiak",
+        CN = @"Michel Filipiak",
+        JP = @"Michel Filipiak"
     }
 },
 {
     "credits_publisher_name25",
     new Model_LanguagesUI
     {
-        EN = @"Paola García",
-        CN = @"Paola García"
+        EN = @"Nico Desrochers",
+        CN = @"Nico Desrochers",
+        JP = @"Nico Desrochers"
     }
 },
 {
     "credits_publisher_name26",
     new Model_LanguagesUI
     {
-        EN = @"Patrick “pcj” Johnston",
-        CN = @"Patrick “pcj” Johnston"
+        EN = @"Paola García",
+        CN = @"Paola García",
+        JP = @"Paola García"
     }
 },
 {
     "credits_publisher_name27",
     new Model_LanguagesUI
     {
-        EN = @"Pendragon Wachtel",
-        CN = @"Pendragon Wachtel"
+        EN = @"Patrick “pcj” Johnston",
+        CN = @"Patrick “pcj” Johnston",
+        JP = @"Patrick “pcj” Johnston"
     }
 },
 {
     "credits_publisher_name28",
     new Model_LanguagesUI
     {
-        EN = @"Veronica Irizarry",
-        CN = @"Veronica Irizarry"
+        EN = @"Pendragon Wachtel",
+        CN = @"Pendragon Wachtel",
+        JP = @"Pendragon Wachtel"
     }
 },
 {
     "credits_publisher_name29",
     new Model_LanguagesUI
     {
-        EN = @"Victor Valiente",
-        CN = @"Victor Valiente"
+        EN = @"Veronica Irizarry",
+        CN = @"Veronica Irizarry",
+        JP = @"Veronica Irizarry"
     }
 },
 {
     "credits_publisher_name30",
     new Model_LanguagesUI
     {
-        EN = @"Vitor Hugo Moura",
-        CN = @"Vitor Hugo Moura"
+        EN = @"Victor Valiente",
+        CN = @"Victor Valiente",
+        JP = @"Victor Valiente"
     }
 },
 {
     "credits_publisher_name31",
     new Model_LanguagesUI
     {
+        EN = @"Vitor Hugo Moura",
+        CN = @"Vitor Hugo Moura",
+        JP = @"Vitor Hugo Moura"
+    }
+},
+{
+    "credits_publisher_name32",
+    new Model_LanguagesUI
+    {
         EN = @"Vitoria Ama",
-        CN = @"Vitoria Ama"
+        CN = @"Vitoria Ama",
+        JP = @"Vitoria Ama"
     }
 },
 {
@@ -1386,7 +1566,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Thank you for sharing in this journey",
-        CN = @"Thank you for sharing in this journey"
+        CN = @"Thank you for sharing in this journey",
+        JP = @"この旅へのお付き合い、ありがとうございます。"
     }
 },
 {
@@ -1394,7 +1575,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"See you at Nautical Dawn",
-        CN = @"See you at Nautical Dawn"
+        CN = @"See you at Nautical Dawn",
+        JP = @"航海薄明で会いましょう。"
     }
 },
 {
@@ -1402,7 +1584,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"“There’s a shiteater in all of us.”",
-        CN = @"“There’s a shiteater in all of us.”"
+        CN = @"“There’s a shiteater in all of us.”",
+        JP = @"“There’s a shiteater in all of us.”"
     }
 },
 {
@@ -1410,7 +1593,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Chinese Translation",
-        CN = @"Chinese Translation"
+        CN = @"Chinese Translation",
+        JP = @"Chinese Translation"
     }
 },
 {
@@ -1418,7 +1602,26 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Japanese Translation",
-        CN = @"Japanese Translation"
+        CN = @"Japanese Translation",
+        JP = @"Japanese Translation"
+    }
+},
+{
+    "credits_extras_translation_cn_name",
+    new Model_LanguagesUI
+    {
+        EN = @"Kakihara MasO",
+        CN = @"Kakihara MasO",
+        JP = @"Kakihara MasO"
+    }
+},
+{
+    "credits_extras_translation_jp_name",
+    new Model_LanguagesUI
+    {
+        EN = @"nicolith",
+        CN = @"nicolith",
+        JP = @"nicolith"
     }
 },
 // ------------------------------------------------------------------
@@ -1428,7 +1631,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. Go to your {32} to try it out!<br><br>Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to engage with {19} in conversation.",
-        CN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. Go to your {32} to try it out!<br><br>Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to engage with {19} in conversation."
+        CN = @"<b>@@Stickers_NoBold can be stuck onto your</b> {5} to give you <b>special abilities</b>. Go to your {32} to try it out!<br><br>Once switched to your {65}, the @@PsychicDuck @@Sticker_NoBold allows you to engage with {19} in conversation.",
+        JP = @"<b>@@Stickers_NoBoldを着用</b>すると、<b>特殊能力</b>が使用可能。{32}で試してみましょう！<br><br>{65}を切り替えると、@@PsychicDuckの@@Sticker_NoBoldで{19}と会話できるようになります。"
     }
 },
 {
@@ -1436,7 +1640,17 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Wearing the @@PsychicDuck @@Sticker_Bold allows you to converse with {19}. @@Stickers_Bold can be worn after preparing them. Passive {68} will work as long as you are wearing the @@Sticker_Bold.",
-        CN = @"Wearing the @@PsychicDuck @@Sticker_Bold allows you to converse with {19}. @@Stickers_Bold can be worn after preparing them. Passive {68} will work as long as you are wearing the @@Sticker_Bold."
+        CN = @"Wearing the @@PsychicDuck @@Sticker_Bold allows you to converse with {19}. @@Stickers_Bold can be worn after preparing them. Passive {68} will work as long as you are wearing the @@Sticker_Bold.",
+        JP = @"@@PsychicDuckの@@Sticker_Boldを着用すると、{19}と会話できる。@@Sticker_Boldは装備すると、着用可能に。常時{68}は@@Sticker_Bold着用するだけで発動。"
+    }
+},
+{
+    "sticker_psychic-duck_steam-deck",
+    new Model_LanguagesUI
+    {
+        EN = @"Wearing this @@Sticker_Bold allows you to converse with {19}. @@Stickers_Bold can be worn after preparing them. Passive {68} will work as long as you are wearing the @@Sticker_Bold.",
+        CN = @"Wearing this @@Sticker_Bold allows you to converse with {19}. @@Stickers_Bold can be worn after preparing them. Passive {68} will work as long as you are wearing the @@Sticker_Bold.",
+        JP = @"Wearing this @@Sticker_Bold allows you to converse with {19}. @@Stickers_Bold can be worn after preparing them. Passive {68} will work as long as you are wearing the @@Sticker_Bold."
     }
 },
 {
@@ -1444,7 +1658,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Use its {79} (@@MaskCommandKey) to chomp away edible obstacles.",
-        CN = @"Use its {79} (@@MaskCommandKey) to chomp away edible obstacles."
+        CN = @"Use its {79} (@@MaskCommandKey) to chomp away edible obstacles.",
+        JP = @"{79}（@@MaskCommandKey）で食べられる障害物を噛み砕く。"
     }
 },
 {
@@ -1452,7 +1667,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Allows you to enter paintings that have a doormat. Use its {79} when face-to-face with a painting that has a doormat.",
-        CN = @"Allows you to enter paintings that have a doormat. Use its {79} when face-to-face with a painting that has a doormat."
+        CN = @"Allows you to enter paintings that have a doormat. Use its {79} when face-to-face with a painting that has a doormat.",
+        JP = @"ドアマットのある絵に入れる。ドアマットのある絵の前で{79}で使用可能。"
     }
 },
 {
@@ -1460,7 +1676,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Summon a spike from the dark spirits of the underworld. Useful for cracking brittle objects that haunted one’s past.",
-        CN = @"Summon a spike from the dark spirits of the underworld. Useful for cracking brittle objects that haunted one’s past."
+        CN = @"Summon a spike from the dark spirits of the underworld. Useful for cracking brittle objects that haunted one’s past.",
+        JP = @"冥界から、闇のトゲを召喚。過去にとらわれた壊れ物を砕くのに役立つ。"
     }
 },
 {
@@ -1468,7 +1685,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Follow the chords of your heart to any previously <b>remembered piano</b>.",
-        CN = @"Follow the chords of your heart to any previously <b>remembered piano</b>."
+        CN = @"Follow the chords of your heart to any previously <b>remembered piano</b>.",
+        JP = @"に残っている和音に導かれ、<b>記憶しているピアノ</b>へもどれる。"
     }
 },
 {
@@ -1476,7 +1694,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Can be used anywhere inside {18} to take the {66} back to the {72}.",
-        CN = @"Can be used anywhere inside {18} to take the {66} back to the {72}."
+        CN = @"Can be used anywhere inside {18} to take the {66} back to the {72}.",
+        JP = @"{18}内のどこでも{72}にもどって{66}に乗れる。"
     }
 },
 {
@@ -1484,7 +1703,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Illuminate dark areas. Certain areas will light up better than others.",
-        CN = @"Illuminate dark areas. Certain areas will light up better than others."
+        CN = @"Illuminate dark areas. Certain areas will light up better than others.",
+        JP = @"真っ暗な領域を照らせる。周囲ほど明るくなる。"
     }
 },
 {
@@ -1492,7 +1712,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Gain control of {73}. Your control will not be perfect though.",
-        CN = @"Gain control of {73}. Your control will not be perfect though."
+        CN = @"Gain control of {73}. Your control will not be perfect though.",
+        JP = @"{73}を操れる。ただし、完璧に制御できるわけではない。"
     }
 },
 {
@@ -1500,7 +1721,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"A mysterious @@Sticker_Bold birthed from spirits inside and outside of {18}. It emanates a powerful aura, a feeling only its original owner can harness.",
-        CN = @"A mysterious @@Sticker_Bold birthed from spirits inside and outside of {18}. It emanates a powerful aura, a feeling only its original owner can harness."
+        CN = @"A mysterious @@Sticker_Bold birthed from spirits inside and outside of {18}. It emanates a powerful aura, a feeling only its original owner can harness.",
+        JP = @"{18}内外の霊によって生み出された、不思議な@@Sticker_Bold。強いオーラを放出でき、その力を引き出せるのはもとの持ち主のみ。"
     }
 },
 // ------------------------------------------------------------------
@@ -1510,7 +1732,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"A key specifically made for regular sized keyholes. {9} <b>items</b> have a knack for fading away.",
-        CN = @"A key specifically made for regular sized keyholes. {9} <b>items</b> have a knack for fading away."
+        CN = @"A key specifically made for regular sized keyholes. {9} <b>items</b> have a knack for fading away.",
+        JP = @"通常サイズの鍵穴用のキー。{9}<b></b>は、どこかへ消えていく性質がある。"
     }
 },
 // ------------------------------------------------------------------
@@ -1520,7 +1743,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"It seems to be a treasure map of sorts.",
-        CN = @"It seems to be a treasure map of sorts."
+        CN = @"It seems to be a treasure map of sorts.",
+        JP = @"宝の地図みたいなもの。"
     }
 },
 {
@@ -1528,7 +1752,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Does there have to be a last one?",
-        CN = @"Does there have to be a last one?"
+        CN = @"Does there have to be a last one?",
+        JP = @"最後じゃなきゃいけないのかな？"
     }
 },
 {
@@ -1536,7 +1761,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"The spirits within this seal give you haste. Hold @@SpeedKey to run. Its effects only work when you are not wearing a @@Sticker_Bold (your former self).",
-        CN = @"The spirits within this seal give you haste. Hold @@SpeedKey to run. Its effects only work when you are not wearing a @@Sticker_Bold (your former self)."
+        CN = @"The spirits within this seal give you haste. Hold @@SpeedKey to run. Its effects only work when you are not wearing a @@Sticker_Bold (your former self).",
+        JP = @"これに封じられている精霊の力で加速できる。@@SpeedKeyで加速。@@Sticker_Boldを着けていないときのみ効果発揮。"
     }
 },
 // ------------------------------------------------------------------
@@ -1546,7 +1772,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"【IMPERMANENT】",
-        CN = @"【IMPERMANENT】"
+        CN = @"【IMPERMANENT】",
+        JP = @"【消費済み】"
     }
 },
 // ------------------------------------------------------------------
@@ -1556,7 +1783,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Chapter <size=40>1</size>: {84}",
-        CN = @"Chapter <size=40>1</size>: {84}"
+        CN = @"Chapter <size=40>1</size>: {84}",
+        JP = @"第<size=40>１</size>章<br>{84}"
     }
 },
 {
@@ -1564,7 +1792,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Chapter <size=40>2</size>:<br>{85}",
-        CN = @"Chapter <size=40>2</size>:<br>{85}"
+        CN = @"Chapter <size=40>2</size>:<br>{85}",
+        JP = @"第<size=40>２</size>章<br>{85}"
     }
 },
 {
@@ -1572,7 +1801,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Chapter <size=40>3</size>: {75}",
-        CN = @"Chapter <size=40>3</size>: {75}"
+        CN = @"Chapter <size=40>3</size>: {75}",
+        JP = @"第<size=40>３</size>章<br>{75}"
     }
 },
 // ------------------------------------------------------------------
@@ -1582,7 +1812,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Some in shadow, some in light,<br>Choose the switches left and right.",
-        CN = @"Some in shadow, some in light,<br>Choose the switches left and right."
+        CN = @"Some in shadow, some in light,<br>Choose the switches left and right.",
+        JP = @"あるものは影に、<br>あるものは光に、<br>左右のスイッチを選べ。"
     }
 },
 // ------------------------------------------------------------------
@@ -1592,7 +1823,8 @@ This would not have been possible without your feedback, course corrections, and
     new Model_LanguagesUI
     {
         EN = @"Hiya!<br><br>If you’re reading this I’m most likely dancin’ this very moment. Care to join? You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!",
-        CN = @"Hiya!<br><br>If you’re reading this I’m most likely dancin’ this very moment. Care to join? You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!"
+        CN = @"Hiya!<br><br>If you’re reading this I’m most likely dancin’ this very moment. Care to join? You know what they say, a dance move a day keeps the {42} away.<br><br>Please don’t miss me too much!",
+        JP = @"やあ！<br><br>これを読んでるなら、僕はいま踊ってるんじゃないかな。一緒に踊らない？よく言うよね、一日一度のダンスで{42}いらず、って。<br><br>あんまり寂しがらないでね！"
     }
 },
 {
@@ -1616,7 +1848,16 @@ I already knew
 
 That at fifteen before dawn
 
-I would hide these tears with blood."
+I would hide these tears with blood.",
+        JP = @"５：３０に
+
+罪の荒野で彼を見かけたんだ。
+
+知ってたよ。
+
+夜明け前の十五分間
+
+この涙を血で隠すことになるって。"
     }
 },
 {
@@ -1638,7 +1879,15 @@ Me, personally, I’m into summer,
 I mean it makes my coat all itchy,
 You know us sheepluffs.
 But those lazy afternoons,
-When you kinda just linger..."
+When you kinda just linger...",
+        JP = @"マインへ
+
+好きな季節はいつ？
+僕は、個人的には、夏かな。
+まあ、毛皮はかゆくなっちゃうよ。
+ボクらモフモフヒツジだしね。
+でも、のんびした午後、
+ただぼんやり過ごしてると……"
     }
 },
 {
@@ -1656,7 +1905,13 @@ Lower and lower, along with
 All your worries.
 But the first time I met you,
 You know why I knew you were different?
-Because in your eyes, I could see..."
+Because in your eyes, I could see...",
+        JP = @"日陰から眺めていると、
+太陽がどんどん沈んでいく。
+キミの悩みなんかもぜんぶ一緒に。
+だけど、はじめてキミと会ったとき、
+ボクとは違うと気付いたのは、なんでだと思う？
+それは、キミの目に、ボクには見えたんだ……"
     }
 },
 {
@@ -1664,7 +1919,8 @@ Because in your eyes, I could see..."
     new Model_LanguagesUI
     {
         EN = @"You only believe in Winter.",
-        CN = @"You only believe in Winter."
+        CN = @"You only believe in Winter.",
+        JP = @"キミは、冬しか信じない。"
     }
 },
 {
@@ -1674,7 +1930,8 @@ Because in your eyes, I could see..."
         EN = @"Yours,
 Ids",
         CN = @"Yours,
-Ids"
+Ids",
+        JP = @"親愛なるイデスより"
     }
 },
 // ------------------------------------------------------------------
@@ -1704,7 +1961,12 @@ continue to punish myself?
 What’s the point of keeping a promise
 that my past self made to my past self?
 It’s about time I give myself permission to
-move on..."
+move on...",
+        JP = @"よう、{0}
+
+ずいぶんかかったが、やっと気づいたんだ。<b>{18}</b>で自分を証明したって、なんの意味もない。なんで自分を責め続けなきゃならない？
+
+昔の俺が、昔の俺に誓った約束を守る意味なんてあるか？自分を許し、前に進んでもいい頃合いだ……"
     }
 },
 {
@@ -1726,7 +1988,10 @@ there for us to fry.
 Thank you for assisting us even at
 such lows. I’m not sure how I’ll repay you,
 how about we name a cocktail after you.
-How’s the <b>{0}</b> <b>Spritz</b> sound?"
+How’s the <b>{0}</b> <b>Spritz</b> sound?",
+        JP = @"{61}と{62}、そして俺は、古くホコリまみれの道を歩いてきた。向こう側には、焼くのにうってつけの大魚があるんだ。
+
+こんなつらい時期に、助けてくれて感謝する。どう礼していいかわからないが、お前の名にちなんだカクテルを作るよ。<b>{0}</b>・<b>スピリッツ</b>ってのはどうだ？"
     }
 },
 {
@@ -1736,7 +2001,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
         EN = @"Sincerely,
 {33}",
         CN = @"Sincerely,
-{33}"
+{33}",
+        JP = @"またな、{33}"
     }
 },
 // ------------------------------------------------------------------
@@ -1746,7 +2012,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"To whomever might read this,<br><br>I’m not sure why, but I felt like I should write even if this never gets read. It seems the spikes have stopped for a bit. And although I know it won’t be forever, I can think a bit clearer now.<br><br>I wanted to let you know, I’ve finally decided to leave this place. I mean, for me at least, I know it’ll never be all sunshine and roses...",
-        CN = @"To whomever might read this,<br><br>I’m not sure why, but I felt like I should write even if this never gets read. It seems the spikes have stopped for a bit. And although I know it won’t be forever, I can think a bit clearer now.<br><br>I wanted to let you know, I’ve finally decided to leave this place. I mean, for me at least, I know it’ll never be all sunshine and roses..."
+        CN = @"To whomever might read this,<br><br>I’m not sure why, but I felt like I should write even if this never gets read. It seems the spikes have stopped for a bit. And although I know it won’t be forever, I can think a bit clearer now.<br><br>I wanted to let you know, I’ve finally decided to leave this place. I mean, for me at least, I know it’ll never be all sunshine and roses...",
+        JP = @"誰がこれを読むかわかりませんが、<br><br>なぜだか、誰にも読まれないとしても、書きたくなりました。ちょっとの間、トゲが止まったみたいです。永遠に続くわけじゃないでしょうが、いまは少し頭がすっきりしています。<br><br>私が伝えたいのは、ここを離れる決意がようやくついたんです。つまり、少なくとも私にとっては、ここが日の光やバラで満たされることはありませんから……"
     }
 },
 {
@@ -1754,7 +2021,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"But I’ve slowly come to the realization perhaps what I’m experiencing in here is just a fraction of the things I still need to see out there. You know the walls in here don’t change much.<br><br>Anyways, see you on the other side.",
-        CN = @"But I’ve slowly come to the realization perhaps what I’m experiencing in here is just a fraction of the things I still need to see out there. You know the walls in here don’t change much.<br><br>Anyways, see you on the other side."
+        CN = @"But I’ve slowly come to the realization perhaps what I’m experiencing in here is just a fraction of the things I still need to see out there. You know the walls in here don’t change much.<br><br>Anyways, see you on the other side.",
+        JP = @"しかし、ゆっくりと理解しはじめてきました。私がここに期待しているものは、外で出会うものの、ほんの一部に過ぎないのかもしれません。ここの壁は、ずっと変わってませんから。<br><br>なんであれ、向こう側で会いましょう。"
     }
 },
 {
@@ -1762,7 +2030,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Bye,<br>{11}",
-        CN = @"Bye,<br>{11}"
+        CN = @"Bye,<br>{11}",
+        JP = @"では<br>{11}"
     }
 },
 // ------------------------------------------------------------------
@@ -1772,7 +2041,9 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Have come to trust the seasons<br>they always go in order.",
-        CN = @"Have come to trust the seasons<br>they always go in order."
+        CN = @"Have come to trust the seasons<br>they always go in order.",
+        JP = @"季節を信頼するんだ<br>
+順番通り来る季節を"
     }
 },
 {
@@ -1780,7 +2051,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"<b>Start in Spring</b> as your soul quietly thaws,",
-        CN = @"<b>Start in Spring</b> as your soul quietly thaws,"
+        CN = @"<b>Start in Spring</b> as your soul quietly thaws,",
+        JP = @"<b>春ははじまり</b>、心が静かに解けていく。"
     }
 },
 {
@@ -1788,7 +2060,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"<b>End in Winter</b> before it freezes again.",
-        CN = @"<b>End in Winter</b> before it freezes again."
+        CN = @"<b>End in Winter</b> before it freezes again.",
+        JP = @"<b>冬はおわり</b>、心が再び凍りつく。"
     }
 },
 // ------------------------------------------------------------------
@@ -1798,7 +2071,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"FINAL NIGHT",
-        CN = @"FINAL NIGHT"
+        CN = @"FINAL NIGHT",
+        JP = @"最終夜"
     }
 },
 {
@@ -1806,7 +2080,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"F̶̥̊Ȋ̴̗N̴͉̑A̶̫͠Ḽ̸͝ ̸͈̐N̴͈͊Ì̶̙G̵̕ͅH̵̖̎T̸̼́",
-        CN = @"F̶̥̊Ȋ̴̗N̴͉̑A̶̫͠Ḽ̸͝ ̸͈̐N̴͈͊Ì̶̙G̵̕ͅH̵̖̎T̸̼́"
+        CN = @"F̶̥̊Ȋ̴̗N̴͉̑A̶̫͠Ḽ̸͝ ̸͈̐N̴͈͊Ì̶̙G̵̕ͅH̵̖̎T̸̼́",
+        JP = @"最҉̧͍̟͕̬̣͙̫̝̞̥͖͉終҈̨̫̤̝̬͖͍̤̤̤̰̫̗͖ͅ夜҉̢̗̳͔̞̘̰̜̟͍̥̣ͅ"
     }
 },
 {
@@ -1814,7 +2089,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"NAUTICAL DAWN",
-        CN = @"NAUTICAL DAWN"
+        CN = @"NAUTICAL DAWN",
+        JP = @"航海薄明"
     }
 },
 // ------------------------------------------------------------------
@@ -1824,7 +2100,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Masks",
-        CN = @"Masks"
+        CN = @"Masks",
+        JP = @"仮面"
     }
 },
 {
@@ -1832,7 +2109,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Items",
-        CN = @"Items"
+        CN = @"Items",
+        JP = @"アイテム"
     }
 },
 {
@@ -1840,7 +2118,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Notes ♪",
-        CN = @"Notes ♪"
+        CN = @"Notes ♪",
+        JP = @"音符 ♪"
     }
 },
 {
@@ -1848,7 +2127,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Prepped Masks",
-        CN = @"Prepped Masks"
+        CN = @"Prepped Masks",
+        JP = @"装備済み仮面"
     }
 },
 {
@@ -1856,7 +2136,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Prepare",
-        CN = @"Prepare"
+        CN = @"Prepare",
+        JP = @"装備"
     }
 },
 {
@@ -1864,7 +2145,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Examine",
-        CN = @"Examine"
+        CN = @"Examine",
+        JP = @"調べる"
     }
 },
 {
@@ -1872,7 +2154,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Cancel",
-        CN = @"Cancel"
+        CN = @"Cancel",
+        JP = @"やめる"
     }
 },
 {
@@ -1880,7 +2163,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Drop",
-        CN = @"Drop"
+        CN = @"Drop",
+        JP = @"落とす"
     }
 },
 {
@@ -1888,7 +2172,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Use",
-        CN = @"Use"
+        CN = @"Use",
+        JP = @"使う"
     }
 },
 // ------------------------------------------------------------------
@@ -1898,7 +2183,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"A wild sheep chase",
-        CN = @"A wild sheep chase"
+        CN = @"A wild sheep chase",
+        JP = @"野羊追跡"
     }
 },
 {
@@ -1906,7 +2192,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"A word that lost its image",
-        CN = @"A word that lost its image"
+        CN = @"A word that lost its image",
+        JP = @"イメージなき言葉"
     }
 },
 {
@@ -1914,7 +2201,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Nom nom chomp!",
-        CN = @"Nom nom chomp!"
+        CN = @"Nom nom chomp!",
+        JP = @"むしゃむしゃガブッ！"
     }
 },
 {
@@ -1922,7 +2210,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"To know it can hurt you but to know it won’t",
-        CN = @"To know it can hurt you but to know it won’t"
+        CN = @"To know it can hurt you but to know it won’t",
+        JP = @"傷つけるけれど、傷つけないもの"
     }
 },
 {
@@ -1930,7 +2219,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Back to the elevator of sin",
-        CN = @"Back to the elevator of sin"
+        CN = @"Back to the elevator of sin",
+        JP = @"罪のエレベーターへの帰還"
     }
 },
 {
@@ -1938,7 +2228,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Beginnings of a portrait",
-        CN = @"Beginnings of a portrait"
+        CN = @"Beginnings of a portrait",
+        JP = @"肖像画のはじまり"
     }
 },
 {
@@ -1946,7 +2237,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Don't turn me invisible again.",
-        CN = @"Don't turn me invisible again."
+        CN = @"Don't turn me invisible again.",
+        JP = @"もう見えなくならないで"
     }
 },
 {
@@ -1954,7 +2246,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"From the bottom of a well",
-        CN = @"From the bottom of a well"
+        CN = @"From the bottom of a well",
+        JP = @"井戸の底から"
     }
 },
 {
@@ -1962,7 +2255,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Having let go down there again",
-        CN = @"Having let go down there again"
+        CN = @"Having let go down there again",
+        JP = @"また下ろう"
     }
 },
 {
@@ -1970,7 +2264,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Gotta take control!",
-        CN = @"Gotta take control!"
+        CN = @"Gotta take control!",
+        JP = @"操らなくっちゃ！"
     }
 },
 {
@@ -1978,7 +2273,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Found a way back from sea",
-        CN = @"Found a way back from sea"
+        CN = @"Found a way back from sea",
+        JP = @"海へもどる道を求めて"
     }
 },
 {
@@ -1986,7 +2282,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"A desert longing for its oasis",
-        CN = @"A desert longing for its oasis"
+        CN = @"A desert longing for its oasis",
+        JP = @"砂は水を求める"
     }
 },
 {
@@ -1994,7 +2291,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"No more mirages",
-        CN = @"No more mirages"
+        CN = @"No more mirages",
+        JP = @"さよなら幻影"
     }
 },
 {
@@ -2002,7 +2300,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Permanence",
-        CN = @"Permanence"
+        CN = @"Permanence",
+        JP = @"永劫"
     }
 },
 {
@@ -2010,7 +2309,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Tonight look at me",
-        CN = @"Tonight look at me"
+        CN = @"Tonight look at me",
+        JP = @"今夜は私を見て"
     }
 },
 {
@@ -2018,7 +2318,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Dawn of a new day",
-        CN = @"Dawn of a new day"
+        CN = @"Dawn of a new day",
+        JP = @"新しき日の夜明け"
     }
 },
 // ------------------------------------------------------------------
@@ -2028,7 +2329,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Found:",
-        CN = @"Found:"
+        CN = @"Found:",
+        JP = @"発見済み："
     }
 },
 // ------------------------------------------------------------------
@@ -2038,7 +2340,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Submit",
-        CN = @"Submit"
+        CN = @"Submit",
+        JP = @"決定"
     }
 },
 {
@@ -2046,7 +2349,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Cancel",
-        CN = @"Cancel"
+        CN = @"Cancel",
+        JP = @"キャンセル"
     }
 },
 {
@@ -2054,7 +2358,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"『 DISARM SURVEILLANCE SYSTEM 』",
-        CN = @"『 DISARM SURVEILLANCE SYSTEM 』"
+        CN = @"『 DISARM SURVEILLANCE SYSTEM 』",
+        JP = @"『 監視システム解除 』"
     }
 },
 // ------------------------------------------------------------------
@@ -2064,7 +2369,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Yes",
-        CN = @"Yes"
+        CN = @"Yes",
+        JP = @"はい"
     }
 },
 {
@@ -2072,7 +2378,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"No",
-        CN = @"No"
+        CN = @"No",
+        JP = @"いいえ"
     }
 },
 // ------------------------------------------------------------------
@@ -2082,7 +2389,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Yes",
-        CN = @"Yes"
+        CN = @"Yes",
+        JP = @"Yes"
     }
 },
 {
@@ -2090,7 +2398,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"No",
-        CN = @"No"
+        CN = @"No",
+        JP = @"No"
     }
 },
 // ------------------------------------------------------------------
@@ -2100,7 +2409,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"SAVING GAME... Please do not turn off power.",
-        CN = @"SAVING GAME... Please do not turn off power."
+        CN = @"SAVING GAME... Please do not turn off power.",
+        JP = @"セーブ中……電源を消さないでください"
     }
 },
 {
@@ -2108,7 +2418,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"SAVING GAME... Please do not turn off power.",
-        CN = @"SAVING GAME... Please do not turn off power."
+        CN = @"SAVING GAME... Please do not turn off power.",
+        JP = @"セーブ中……電源を消さないでください"
     }
 },
 {
@@ -2116,7 +2427,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"SAVING PROGRESS",
-        CN = @"SAVING PROGRESS"
+        CN = @"SAVING PROGRESS",
+        JP = @"セーブ中"
     }
 },
 {
@@ -2124,7 +2436,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"SAVING PROGRESS.",
-        CN = @"SAVING PROGRESS."
+        CN = @"SAVING PROGRESS.",
+        JP = @"セーブ中…"
     }
 },
 {
@@ -2132,7 +2445,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"SAVING PROGRESS..",
-        CN = @"SAVING PROGRESS.."
+        CN = @"SAVING PROGRESS..",
+        JP = @"セーブ中……"
     }
 },
 {
@@ -2140,7 +2454,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"SAVING PROGRESS...",
-        CN = @"SAVING PROGRESS..."
+        CN = @"SAVING PROGRESS...",
+        JP = @"セーブ中………"
     }
 },
 {
@@ -2148,7 +2463,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"SAVED GAME",
-        CN = @"SAVED GAME"
+        CN = @"SAVED GAME",
+        JP = @"セーブ完了"
     }
 },
 // ------------------------------------------------------------------
@@ -2158,7 +2474,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"『 Take the Last Elevator? 』",
-        CN = @"『 Take the Last Elevator? 』"
+        CN = @"『 Take the Last Elevator? 』",
+        JP = @"『 最終エレベーターに乗りますか？ 』"
     }
 },
 // ------------------------------------------------------------------
@@ -2168,7 +2485,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"5:00am",
-        CN = @"5:00am"
+        CN = @"5:00am",
+        JP = @"午前5時"
     }
 },
 {
@@ -2176,7 +2494,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"The Final Night",
-        CN = @"The Final Night"
+        CN = @"The Final Night",
+        JP = @"最終夜"
     }
 },
 {
@@ -2184,7 +2503,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"1 Hour Remains",
-        CN = @"1 Hour Remains"
+        CN = @"1 Hour Remains",
+        JP = @"残り1時間"
     }
 },
 {
@@ -2192,7 +2512,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"5̵̮̆:̸̥̚0̸̩̆0̵̢͒a̸̢͆m̶͎̈",
-        CN = @"5̵̮̆:̸̥̚0̸̩̆0̵̢͒a̸̢͆m̶͎̈"
+        CN = @"5̵̮̆:̸̥̚0̸̩̆0̵̢͒a̸̢͆m̶͎̈",
+        JP = @"午҉͇̥̦̳̫̯͖̠͔̫͎̣̫̫̎͑͂̓̑̈͋̒̓̏͌̋̓̎́̿̌́̽́̊͂̚ͅ前҉͙͕̜̣͎͔̗͖̰͔̝͓͈̲̅͌͋̂̊͛͂̋̐̓̾͛5̶̲̭̘̩̭̱̰̩͙͈̳̖͎̩̣̲͕͙̑̒̀̇͛̍̑̇̈́̽̐̒時"
     }
 },
 {
@@ -2200,7 +2521,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"T̷h̷e̷ ̸F̶i̶n̵a̷l̸ ̴N̷i̷g̵h̸t̶",
-        CN = @"T̷h̷e̷ ̸F̶i̶n̵a̷l̸ ̴N̷i̷g̵h̸t̶"
+        CN = @"T̷h̷e̷ ̸F̶i̶n̵a̷l̸ ̴N̷i̷g̵h̸t̶",
+        JP = @"最҉̧͍̟͕̬̣͙̫̝̞̥͖͉終҈̨̫̤̝̬͖͍̤̤̤̰̫̗͖ͅ夜҉̢̗̳͔̞̘̰̜̟͍̥̣ͅ"
     }
 },
 {
@@ -2208,7 +2530,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"1̷̪̓ ̴͕̕H̶̗̽o̵̱͠u̶͓͝ȓ̶͎ ̴̼̽R̸̤͒e̷̖̚m̶͙̐a̶̞̿i̸̲͑ñ̶̞s̶̱̉",
-        CN = @"1̷̪̓ ̴͕̕H̶̗̽o̵̱͠u̶͓͝ȓ̶͎ ̴̼̽R̸̤͒e̷̖̚m̶͙̐a̶̞̿i̸̲͑ñ̶̞s̶̱̉"
+        CN = @"1̷̪̓ ̴͕̕H̶̗̽o̵̱͠u̶͓͝ȓ̶͎ ̴̼̽R̸̤͒e̷̖̚m̶͙̐a̶̞̿i̸̲͑ñ̶̞s̶̱̉",
+        JP = @"残҈̦͍̬̟̩͚͈̘̲͚͚̞̗͜ͅり҉̧͕̮̲͈͔͚̥͈̗1̵̧̣͉͚̟̳͇̯̗̞̠̲̣͕̳͓時҉̡͖̠̙̰̫̱͙̥̩̞̩͚̮͕間҉̥̠̖̱̤͍̟̘͚͙̖̱͜ͅͅ"
     }
 },
 {
@@ -2216,7 +2539,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"6:00am",
-        CN = @"6:00am"
+        CN = @"6:00am",
+        JP = @"午前6時"
     }
 },
 {
@@ -2224,7 +2548,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"A New Day",
-        CN = @"A New Day"
+        CN = @"A New Day",
+        JP = @"新しき一日"
     }
 },
 {
@@ -2232,7 +2557,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Nautical Dawn",
-        CN = @"Nautical Dawn"
+        CN = @"Nautical Dawn",
+        JP = @"航海薄明"
     }
 },
 // ------------------------------------------------------------------
@@ -2242,7 +2568,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"The Final Night",
-        CN = @"The Final Night"
+        CN = @"The Final Night",
+        JP = @"最終夜"
     }
 },
 {
@@ -2250,7 +2577,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Ṫ̷̻̙h̴̖̲̒ẽ̸̡̐ ̸̨̍F̵̟͊i̶̫͊̿n̵̖̘͌a̴̜̺͒l̶͎̟̒̏ ̵͚̻̑͆N̸͉̗̔ï̴̻ğ̸̝̟h̵̥̦̽̀ť̵̡͋",
-        CN = @"Ṫ̷̻̙h̴̖̲̒ẽ̸̡̐ ̸̨̍F̵̟͊i̶̫͊̿n̵̖̘͌a̴̜̺͒l̶͎̟̒̏ ̵͚̻̑͆N̸͉̗̔ï̴̻ğ̸̝̟h̵̥̦̽̀ť̵̡͋"
+        CN = @"Ṫ̷̻̙h̴̖̲̒ẽ̸̡̐ ̸̨̍F̵̟͊i̶̫͊̿n̵̖̘͌a̴̜̺͒l̶͎̟̒̏ ̵͚̻̑͆N̸͉̗̔ï̴̻ğ̸̝̟h̵̥̦̽̀ť̵̡͋",
+        JP = @"最҉̧͍̟͕̬̣͙̫̝̞̥͖͉終҈̨̫̤̝̬͖͍̤̤̤̰̫̗͖ͅ夜҉̢̗̳͔̞̘̰̜̟͍̥̣ͅ"
     }
 },
 {
@@ -2258,7 +2586,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"A New Day",
-        CN = @"A New Day"
+        CN = @"A New Day",
+        JP = @"新しき一日"
     }
 },
 // ------------------------------------------------------------------
@@ -2268,7 +2597,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Press Enter or Space",
-        CN = @"Press Enter or Space"
+        CN = @"Press Enter or Space",
+        JP = @"Enter か Space"
     }
 },
 {
@@ -2276,7 +2606,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Press @@InteractKey",
-        CN = @"Press @@InteractKey"
+        CN = @"Press @@InteractKey",
+        JP = @"Press @@InteractKey"
     }
 },
 {
@@ -2284,7 +2615,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Start",
-        CN = @"Start"
+        CN = @"Start",
+        JP = @"開始"
     }
 },
 {
@@ -2292,7 +2624,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"S̶͚͗t̴̹̉a̸͎̅r̴̙̐t̴̢͗",
-        CN = @"S̶͚͗t̴̹̉a̸͎̅r̴̙̐t̴̢͗"
+        CN = @"S̶͚͗t̴̹̉a̸͎̅r̴̙̐t̴̢͗",
+        JP = @"҉開҉̶҉̵҉始҉̸҉"
     }
 },
 {
@@ -2300,7 +2633,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Settings",
-        CN = @"Settings"
+        CN = @"Settings",
+        JP = @"設定"
     }
 },
 {
@@ -2308,7 +2642,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"End",
-        CN = @"End"
+        CN = @"End",
+        JP = @"終了"
     }
 },
 {
@@ -2316,7 +2651,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"The Demo Vers",
-        CN = @"The Demo Vers"
+        CN = @"The Demo Vers",
+        JP = @"The Demo Vers"
     }
 },
 // ------------------------------------------------------------------
@@ -2326,7 +2662,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"『 Settings 』",
-        CN = @"『 Settings 』"
+        CN = @"『 Settings 』",
+        JP = @"『設定』"
     }
 },
 {
@@ -2334,7 +2671,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Controls",
-        CN = @"Controls"
+        CN = @"Controls",
+        JP = @"操作"
     }
 },
 {
@@ -2342,7 +2680,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Sound",
-        CN = @"Sound"
+        CN = @"Sound",
+        JP = @"音量"
     }
 },
 {
@@ -2350,7 +2689,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"System",
-        CN = @"System"
+        CN = @"System",
+        JP = @"システム"
     }
 },
 {
@@ -2358,7 +2698,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Back",
-        CN = @"Back"
+        CN = @"Back",
+        JP = @"もどる"
     }
 },
 {
@@ -2366,7 +2707,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Quit to Main Menu",
-        CN = @"Quit to Main Menu"
+        CN = @"Quit to Main Menu",
+        JP = @"メインメニューへもどる"
     }
 },
 {
@@ -2374,7 +2716,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Are you sure? You’ll lose all progress for the current night.",
-        CN = @"Are you sure? You’ll lose all progress for the current night."
+        CN = @"Are you sure? You’ll lose all progress for the current night.",
+        JP = @"本当にもどりますか？今夜の進行状況はすべて失われます"
     }
 },
 {
@@ -2382,7 +2725,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Quit to Desktop",
-        CN = @"Quit to Desktop"
+        CN = @"Quit to Desktop",
+        JP = @"デスクトップへもどる"
     }
 },
 {
@@ -2390,7 +2734,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Are you sure? You’ll lose all progress for the current night.",
-        CN = @"Are you sure? You’ll lose all progress for the current night."
+        CN = @"Are you sure? You’ll lose all progress for the current night.",
+        JP = @"本当にもどりますか？今夜の進行状況はすべて失われます"
     }
 },
 // ------------------------------------------------------------------
@@ -2400,7 +2745,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Back",
-        CN = @"Back"
+        CN = @"Back",
+        JP = @"もどる"
     }
 },
 {
@@ -2408,7 +2754,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Copy",
-        CN = @"Copy"
+        CN = @"Copy",
+        JP = @"コピー"
     }
 },
 {
@@ -2416,7 +2763,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Delete",
-        CN = @"Delete"
+        CN = @"Delete",
+        JP = @"削除"
     }
 },
 {
@@ -2424,7 +2772,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Select a file to copy.",
-        CN = @"Select a file to copy."
+        CN = @"Select a file to copy.",
+        JP = @"コピーするファイルを選んでください"
     }
 },
 {
@@ -2432,7 +2781,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Copy to which slot?",
-        CN = @"Copy to which slot?"
+        CN = @"Copy to which slot?",
+        JP = @"どのスロットへコピーしますか？"
     }
 },
 {
@@ -2440,7 +2790,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Select a file to delete.",
-        CN = @"Select a file to delete."
+        CN = @"Select a file to delete.",
+        JP = @"削除するファイルを選んでください"
     }
 },
 {
@@ -2448,7 +2799,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Open this file?",
-        CN = @"Open this file?"
+        CN = @"Open this file?",
+        JP = @"どのファイルを開きますか？"
     }
 },
 {
@@ -2456,7 +2808,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Begin a new adventure?",
-        CN = @"Begin a new adventure?"
+        CN = @"Begin a new adventure?",
+        JP = @"新しく冒険をはじめますか？"
     }
 },
 {
@@ -2464,7 +2817,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"This adventure will be permanently lost, okay?",
-        CN = @"This adventure will be permanently lost, okay?"
+        CN = @"This adventure will be permanently lost, okay?",
+        JP = @"この冒険は永久に失われますが、構いませんか？"
     }
 },
 {
@@ -2472,7 +2826,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Overwrite this existing file? The previous adventure will be permanently lost.",
-        CN = @"Overwrite this existing file? The previous adventure will be permanently lost."
+        CN = @"Overwrite this existing file? The previous adventure will be permanently lost.",
+        JP = @"すでに存在するファイルを上書きしますか？以前の冒険は永久に失われます"
     }
 },
 {
@@ -2480,7 +2835,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"『 Empty 』",
-        CN = @"『 Empty 』"
+        CN = @"『 Empty 』",
+        JP = @"『からっぽ』"
     }
 },
 {
@@ -2488,7 +2844,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Masks",
-        CN = @"Masks"
+        CN = @"Masks",
+        JP = @"仮面"
     }
 },
 {
@@ -2496,7 +2853,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Notes",
-        CN = @"Notes"
+        CN = @"Notes",
+        JP = @"音符"
     }
 },
 {
@@ -2504,7 +2862,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Last played",
-        CN = @"Last played"
+        CN = @"Last played",
+        JP = @"最終プレイ"
     }
 },
 {
@@ -2512,7 +2871,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Total time",
-        CN = @"Total time"
+        CN = @"Total time",
+        JP = @"総プレイ時間"
     }
 },
 {
@@ -2520,7 +2880,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Loading",
-        CN = @"Loading"
+        CN = @"Loading",
+        JP = @"ロード中"
     }
 },
 {
@@ -2528,7 +2889,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Loading.",
-        CN = @"Loading."
+        CN = @"Loading.",
+        JP = @"ロード中…"
     }
 },
 {
@@ -2536,7 +2898,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Loading..",
-        CN = @"Loading.."
+        CN = @"Loading..",
+        JP = @"ロード中……"
     }
 },
 {
@@ -2544,7 +2907,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Loading...",
-        CN = @"Loading..."
+        CN = @"Loading...",
+        JP = @"ロード中………"
     }
 },
 {
@@ -2552,7 +2916,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"♥",
-        CN = @"♥"
+        CN = @"♥",
+        JP = @"♥"
     }
 },
 {
@@ -2560,7 +2925,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Working... please wait...<br>Loading time is a bit longer than usual.",
-        CN = @"Working... please wait...<br>Loading time is a bit longer than usual."
+        CN = @"Working... please wait...<br>Loading time is a bit longer than usual.",
+        JP = @"ロード中……お待ちください……<br>ロードに通常より時間がかかっています"
     }
 },
 // ------------------------------------------------------------------
@@ -2570,7 +2936,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"『 Controls 』",
-        CN = @"『 Controls 』"
+        CN = @"『 Controls 』",
+        JP = @"『操作』"
     }
 },
 {
@@ -2578,7 +2945,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"Controller",
-        CN = @"Controller"
+        CN = @"Controller",
+        JP = @"コントローラー"
     }
 },
 {
@@ -2586,7 +2954,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"KEYBOARD",
-        CN = @"KEYBOARD"
+        CN = @"KEYBOARD",
+        JP = @"キーボード"
     }
 },
 {
@@ -2594,7 +2963,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
     new Model_LanguagesUI
     {
         EN = @"JOYSTICK",
-        CN = @"JOYSTICK"
+        CN = @"JOYSTICK",
+        JP = @"ジョイスティック"
     }
 },
 {
@@ -2604,7 +2974,8 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?"
         EN = @"Current joystick is of an unknown format.
 Use the keyboard to select a control to begin listening for input.",
         CN = @"Current joystick is of an unknown format.
-Use the keyboard to select a control to begin listening for input."
+Use the keyboard to select a control to begin listening for input.",
+        JP = @"現在のジョイスティックは不明なフォーマットです。キーボードを使用し、入力方式を選択してください。"
     }
 },
 {
@@ -2612,7 +2983,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Move",
-        CN = @"Move"
+        CN = @"Move",
+        JP = @"移動"
     }
 },
 {
@@ -2620,7 +2992,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Interact / Confirm",
-        CN = @"Interact / Confirm"
+        CN = @"Interact / Confirm",
+        JP = @"インタラクト / 決定"
     }
 },
 {
@@ -2628,7 +3001,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Inventory",
-        CN = @"Inventory"
+        CN = @"Inventory",
+        JP = @"インベントリ"
     }
 },
 {
@@ -2636,7 +3010,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Inventory / Cancel",
-        CN = @"Inventory / Cancel"
+        CN = @"Inventory / Cancel",
+        JP = @"インベントリ / キャンセル"
     }
 },
 {
@@ -2644,7 +3019,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 1",
-        CN = @"Wear Mask 1"
+        CN = @"Wear Mask 1",
+        JP = @"仮面１着用"
     }
 },
 {
@@ -2652,7 +3028,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 2",
-        CN = @"Wear Mask 2"
+        CN = @"Wear Mask 2",
+        JP = @"仮面２着用"
     }
 },
 {
@@ -2660,7 +3037,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 3",
-        CN = @"Wear Mask 3"
+        CN = @"Wear Mask 3",
+        JP = @"仮面３着用"
     }
 },
 {
@@ -2668,7 +3046,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 4",
-        CN = @"Wear Mask 4"
+        CN = @"Wear Mask 4",
+        JP = @"仮面４着用"
     }
 },
 {
@@ -2676,7 +3055,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"???",
-        CN = @"???"
+        CN = @"???",
+        JP = @"？？？"
     }
 },
 {
@@ -2684,7 +3064,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"{80}",
-        CN = @"{80}"
+        CN = @"{80}",
+        JP = @"{80}"
     }
 },
 {
@@ -2692,7 +3073,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"{79}",
-        CN = @"{79}"
+        CN = @"{79}",
+        JP = @"{79}"
     }
 },
 {
@@ -2700,7 +3082,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 1 (Axis)",
-        CN = @"Wear Mask 1 (Axis)"
+        CN = @"Wear Mask 1 (Axis)",
+        JP = @"仮面１着用（スティック）"
     }
 },
 {
@@ -2708,7 +3091,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 2 (Axis)",
-        CN = @"Wear Mask 2 (Axis)"
+        CN = @"Wear Mask 2 (Axis)",
+        JP = @"仮面２着用（スティック）"
     }
 },
 {
@@ -2716,7 +3100,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 3 (Axis)",
-        CN = @"Wear Mask 3 (Axis)"
+        CN = @"Wear Mask 3 (Axis)",
+        JP = @"仮面３着用（スティック）"
     }
 },
 {
@@ -2724,7 +3109,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 4 (Axis)",
-        CN = @"Wear Mask 4 (Axis)"
+        CN = @"Wear Mask 4 (Axis)",
+        JP = @"仮面４着用（スティック）"
     }
 },
 {
@@ -2732,7 +3118,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 1 / 3 (Axis)",
-        CN = @"Wear Mask 1 / 3 (Axis)"
+        CN = @"Wear Mask 1 / 3 (Axis)",
+        JP = @"仮面１/３着用（スティック）"
     }
 },
 {
@@ -2740,7 +3127,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask 2 / 4 (Axis)",
-        CN = @"Wear Mask 2 / 4 (Axis)"
+        CN = @"Wear Mask 2 / 4 (Axis)",
+        JP = @"仮面２/４着用（スティック）"
     }
 },
 {
@@ -2748,7 +3136,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"▲ Invert Axis",
-        CN = @"▲ Invert Axis"
+        CN = @"▲ Invert Axis",
+        JP = @"▲ 軸反転"
     }
 },
 {
@@ -2756,7 +3145,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Yes",
-        CN = @"Yes"
+        CN = @"Yes",
+        JP = @"オン"
     }
 },
 {
@@ -2764,7 +3154,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"No",
-        CN = @"No"
+        CN = @"No",
+        JP = @"オフ"
     }
 },
 {
@@ -2772,7 +3163,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"--",
-        CN = @"--"
+        CN = @"--",
+        JP = @"--"
     }
 },
 {
@@ -2780,7 +3172,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"No Joystick Connected",
-        CN = @"No Joystick Connected"
+        CN = @"No Joystick Connected",
+        JP = @"ジョイスティックが接続されていません"
     }
 },
 {
@@ -2788,7 +3181,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Unsupported Joystick",
-        CN = @"Unsupported Joystick"
+        CN = @"Unsupported Joystick",
+        JP = @"サポートされていないジョイスティックです"
     }
 },
 {
@@ -2796,7 +3190,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Move Left / Right (Axis)",
-        CN = @"Move Left / Right (Axis)"
+        CN = @"Move Left / Right (Axis)",
+        JP = @"左右移動（スティック）"
     }
 },
 {
@@ -2804,7 +3199,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Move Up / Down (Axis)",
-        CN = @"Move Up / Down (Axis)"
+        CN = @"Move Up / Down (Axis)",
+        JP = @"上下移動（スティック）"
     }
 },
 {
@@ -2812,7 +3208,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Move Up (D-pad)",
-        CN = @"Move Up (D-pad)"
+        CN = @"Move Up (D-pad)",
+        JP = @"上（十字キー）"
     }
 },
 {
@@ -2820,7 +3217,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Move Left (D-pad)",
-        CN = @"Move Left (D-pad)"
+        CN = @"Move Left (D-pad)",
+        JP = @"左（十字キー）"
     }
 },
 {
@@ -2828,7 +3226,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Move Down (D-pad)",
-        CN = @"Move Down (D-pad)"
+        CN = @"Move Down (D-pad)",
+        JP = @"下（十字キー）"
     }
 },
 {
@@ -2836,7 +3235,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Move Right (D-pad)",
-        CN = @"Move Right (D-pad)"
+        CN = @"Move Right (D-pad)",
+        JP = @"右（十字キー）"
     }
 },
 {
@@ -2844,7 +3244,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Settings",
-        CN = @"Settings"
+        CN = @"Settings",
+        JP = @"設定"
     }
 },
 {
@@ -2852,7 +3253,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Wear Mask",
-        CN = @"Wear Mask"
+        CN = @"Wear Mask",
+        JP = @"仮面着用"
     }
 },
 {
@@ -2860,7 +3262,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"《 Inventory Shortcuts 》",
-        CN = @"《 Inventory Shortcuts 》"
+        CN = @"《 Inventory Shortcuts 》",
+        JP = @"《 インベントリ・ショートカット 》"
     }
 },
 {
@@ -2868,7 +3271,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"〈 Press key while hovering over Mask inside Inventory 〉",
-        CN = @"〈 Press key while hovering over Mask inside Inventory 〉"
+        CN = @"〈 Press key while hovering over Mask inside Inventory 〉",
+        JP = @"〈インベントリ内の仮面にカーソルを合わせてキーを押してください〉"
     }
 },
 {
@@ -2876,7 +3280,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Inventory Hotkeys",
-        CN = @"Inventory Hotkeys"
+        CN = @"Inventory Hotkeys",
+        JP = @"インベントリ・ホットキー"
     }
 },
 {
@@ -2884,7 +3289,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Reset Controls",
-        CN = @"Reset Controls"
+        CN = @"Reset Controls",
+        JP = @"操作リセット"
     }
 },
 {
@@ -2892,7 +3298,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"All controls will be reset to default. Are you sure?",
-        CN = @"All controls will be reset to default. Are you sure?"
+        CN = @"All controls will be reset to default. Are you sure?",
+        JP = @"すべての操作がデフォルトにリセットされますが、よろしいですか？"
     }
 },
 {
@@ -2900,7 +3307,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Detecting input...",
-        CN = @"Detecting input..."
+        CN = @"Detecting input...",
+        JP = @"入力検出中……"
     }
 },
 {
@@ -2908,7 +3316,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Cannot overwrite move keys",
-        CN = @"Cannot overwrite move keys"
+        CN = @"Cannot overwrite move keys",
+        JP = @"移動キー上書き不可"
     }
 },
 {
@@ -2916,7 +3325,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Key is taken",
-        CN = @"Key is taken"
+        CN = @"Key is taken",
+        JP = @"キー使用済み"
     }
 },
 {
@@ -2924,7 +3334,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Cannot overwrite menu keys",
-        CN = @"Cannot overwrite menu keys"
+        CN = @"Cannot overwrite menu keys",
+        JP = @"メニューキーは上書きできません"
     }
 },
 {
@@ -2932,7 +3343,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Cannot overwrite Hotkeys",
-        CN = @"Cannot overwrite Hotkeys"
+        CN = @"Cannot overwrite Hotkeys",
+        JP = @"ホットキーは上書きできません"
     }
 },
 // ------------------------------------------------------------------
@@ -2942,7 +3354,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"『 System 』",
-        CN = @"『 System 』"
+        CN = @"『 System 』",
+        JP = @"『システム』"
     }
 },
 {
@@ -2950,7 +3363,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"『 Sound 』",
-        CN = @"『 Sound 』"
+        CN = @"『 Sound 』",
+        JP = @"『音量』"
     }
 },
 {
@@ -2958,7 +3372,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Master Volume",
-        CN = @"Master Volume"
+        CN = @"Master Volume",
+        JP = @"主音量"
     }
 },
 {
@@ -2966,7 +3381,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"current volume ▶",
-        CN = @"current volume ▶"
+        CN = @"current volume ▶",
+        JP = @"現在の音量 ▶"
     }
 },
 {
@@ -2974,7 +3390,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Music",
-        CN = @"Music"
+        CN = @"Music",
+        JP = @"音楽"
     }
 },
 {
@@ -2982,7 +3399,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"SFX",
-        CN = @"SFX"
+        CN = @"SFX",
+        JP = @"効果音"
     }
 },
 {
@@ -2990,7 +3408,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Reset Sound",
-        CN = @"Reset Sound"
+        CN = @"Reset Sound",
+        JP = @"音量リセット"
     }
 },
 {
@@ -2998,7 +3417,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"All sound settings will be reset to default. Are you sure?",
-        CN = @"All sound settings will be reset to default. Are you sure?"
+        CN = @"All sound settings will be reset to default. Are you sure?",
+        JP = @"すべての音量設定がデフォルトにリセットされますが、よろしいですか？"
     }
 },
 {
@@ -3006,7 +3426,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Force Windowed Resolution",
-        CN = @"Force Windowed Resolution"
+        CN = @"Force Windowed Resolution",
+        JP = @"ウィンドウモード解像度強制"
     }
 },
 {
@@ -3014,7 +3435,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"current viewport ▶",
-        CN = @"current viewport ▶"
+        CN = @"current viewport ▶",
+        JP = @"現在の表示領域 ▶"
     }
 },
 {
@@ -3022,7 +3444,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Select to set available resolution",
-        CN = @"Select to set available resolution"
+        CN = @"Select to set available resolution",
+        JP = @"利用可能な解像度を選んでください"
     }
 },
 {
@@ -3030,7 +3453,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Full-Screen",
-        CN = @"Full-Screen"
+        CN = @"Full-Screen",
+        JP = @"全画面"
     }
 },
 {
@@ -3038,7 +3462,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"current mode ▶",
-        CN = @"current mode ▶"
+        CN = @"current mode ▶",
+        JP = @"現在の設定 ▶"
     }
 },
 {
@@ -3046,7 +3471,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"on",
-        CN = @"on"
+        CN = @"on",
+        JP = @"オン"
     }
 },
 {
@@ -3054,7 +3480,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"off",
-        CN = @"off"
+        CN = @"off",
+        JP = @"オフ"
     }
 },
 {
@@ -3062,7 +3489,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"on",
-        CN = @"on"
+        CN = @"on",
+        JP = @"オン"
     }
 },
 {
@@ -3070,7 +3498,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"off",
-        CN = @"off"
+        CN = @"off",
+        JP = @"オフ"
     }
 },
 {
@@ -3078,7 +3507,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Screenshake",
-        CN = @"Screenshake"
+        CN = @"Screenshake",
+        JP = @"画面のゆれ"
     }
 },
 {
@@ -3086,7 +3516,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"on",
-        CN = @"on"
+        CN = @"on",
+        JP = @"オン"
     }
 },
 {
@@ -3094,7 +3525,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"off",
-        CN = @"off"
+        CN = @"off",
+        JP = @"オフ"
     }
 },
 {
@@ -3102,7 +3534,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"on",
-        CN = @"on"
+        CN = @"on",
+        JP = @"オン"
     }
 },
 {
@@ -3110,7 +3543,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"off",
-        CN = @"off"
+        CN = @"off",
+        JP = @"オフ"
     }
 },
 {
@@ -3118,7 +3552,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Reset All to Default",
-        CN = @"Reset All to Default"
+        CN = @"Reset All to Default",
+        JP = @"すべてデフォルトへリセット"
     }
 },
 {
@@ -3126,7 +3561,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"All settings will be reset to default including controls and sound. Are you sure?",
-        CN = @"All settings will be reset to default including controls and sound. Are you sure?"
+        CN = @"All settings will be reset to default including controls and sound. Are you sure?",
+        JP = @"操作および音量の全設定がデフォルトへリセットされますが、よろしいですか？"
     }
 },
 {
@@ -3134,7 +3570,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Reset Language",
-        CN = @"Reset Language"
+        CN = @"Reset Language",
+        JP = @"言語設定リセット"
     }
 },
 {
@@ -3142,7 +3579,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Language preference will be reset on the next game restart. Are you sure?",
-        CN = @"Language preference will be reset on the next game restart. Are you sure?"
+        CN = @"Language preference will be reset on the next game restart. Are you sure?",
+        JP = @"ゲームを再起動すると言語設定がリセットされますが、よろしいですか？"
     }
 },
 // ------------------------------------------------------------------
@@ -3152,7 +3590,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"S̶t̶o̴p̷!̵ ̸T̴h̴e̶r̷e̷’̴s̷ ̸n̴o̵ ̴c̷h̴a̷n̴c̴e̶ ̸y̸o̷u̶ ̸w̴i̶l̸l̷ ̷m̶a̸k̴e̴ ̷i̴t̷ ̷i̵n̷ ̵t̷i̵m̴e̵!̵ ̶I̷t̵’̶s̵ ̶f̷o̷r̵ ̶y̵o̶u̷r̷ ̴o̶w̴n̷ ̵g̵o̵o̶d̶.̸",
-        CN = @"S̶t̶o̴p̷!̵ ̸T̴h̴e̶r̷e̷’̴s̷ ̸n̴o̵ ̴c̷h̴a̷n̴c̴e̶ ̸y̸o̷u̶ ̸w̴i̶l̸l̷ ̷m̶a̸k̴e̴ ̷i̴t̷ ̷i̵n̷ ̵t̷i̵m̴e̵!̵ ̶I̷t̵’̶s̵ ̶f̷o̷r̵ ̶y̵o̶u̷r̷ ̴o̶w̴n̷ ̵g̵o̵o̶d̶.̸"
+        CN = @"S̶t̶o̴p̷!̵ ̸T̴h̴e̶r̷e̷’̴s̷ ̸n̴o̵ ̴c̷h̴a̷n̴c̴e̶ ̸y̸o̷u̶ ̸w̴i̶l̸l̷ ̷m̶a̸k̴e̴ ̷i̴t̷ ̷i̵n̷ ̵t̷i̵m̴e̵!̵ ̶I̷t̵’̶s̵ ̶f̷o̷r̵ ̶y̵o̶u̷r̷ ̴o̶w̴n̷ ̵g̵o̵o̶d̶.̸",
+        JP = @"҉や҉҈҉め҉̵҉ろ҉̷҉̶҉間҉̵҉に҉̴҉合҉̴҉̶҉い҉̵҉̴҉っ҉̴҉こ҉̶҉な҉̶҉い҉̴҉そ҉҉҉̷҉れ҉̵҉̴҉が҉҈҉҈҉身҉̵҉の҉̴҉た҉̴҉め҉̵҉だ҉҉҉"
     }
 },
 {
@@ -3160,7 +3599,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Y̶o̶u̵’̷r̶e̵ ̸g̵o̷i̶n̶g̵ ̶t̸o̶ ̵h̴u̶r̶t̴ ̴y̶o̵u̴r̵s̸e̸l̵f̷,̶ ̷c̶a̵n̸'̶t̵ ̸y̴o̸u̷ ̷s̴e̷e̵?̴!̷",
-        CN = @"Y̶o̶u̵’̷r̶e̵ ̸g̵o̷i̶n̶g̵ ̶t̸o̶ ̵h̴u̶r̶t̴ ̴y̶o̵u̴r̵s̸e̸l̵f̷,̶ ̷c̶a̵n̸'̶t̵ ̸y̴o̸u̷ ̷s̴e̷e̵?̴!̷"
+        CN = @"Y̶o̶u̵’̷r̶e̵ ̸g̵o̷i̶n̶g̵ ̶t̸o̶ ̵h̴u̶r̶t̴ ̴y̶o̵u̴r̵s̸e̸l̵f̷,̶ ̷c̶a̵n̸'̶t̵ ̸y̴o̸u̷ ̷s̴e̷e̵?̴!̷",
+        JP = @"҉自҉҉҉分҉̸҉̸҉で҉̸҉̵҉自҉̵҉分҉̷҉̵҉を҉̴҉傷҉҉҉҉҉つ҉̴҉̸҉け҉̷҉҉҉る҉̴҉̸҉つ҉̴҉も҉̸҉り҉҈҉な҉̴҉҉҉の҉̷҉か҉̷҉"
     }
 },
 {
@@ -3168,7 +3608,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Y̵o̸u̸ ̷i̴m̷b̵e̶c̵i̷l̷e̵!̷ ̸P̶u̴t̸ ̴a̶ ̴s̷t̸o̵p̸ ̴t̷o̴ ̴t̶h̸i̴s̶ ̴r̷i̶g̸h̶t̶ ̷n̸o̸w̵!̶",
-        CN = @"Y̵o̸u̸ ̷i̴m̷b̵e̶c̵i̷l̷e̵!̷ ̸P̶u̴t̸ ̴a̶ ̴s̷t̸o̵p̸ ̴t̷o̴ ̴t̶h̸i̴s̶ ̴r̷i̶g̸h̶t̶ ̷n̸o̸w̵!̶"
+        CN = @"Y̵o̸u̸ ̷i̴m̷b̵e̶c̵i̷l̷e̵!̷ ̸P̶u̴t̸ ̴a̶ ̴s̷t̸o̵p̸ ̴t̷o̴ ̴t̶h̸i̴s̶ ̴r̷i̶g̸h̶t̶ ̷n̸o̸w̵!̶",
+        JP = @"҉マ҉̵҉ヌ҉̸҉ケ҉̸҉い҉҈҉҉҉ま҉̷҉す҉̶҉̷҉ぐ҉҉҉や҉̶҉̸҉め҉҉҉҈҉ろ҉̴҉̵҉"
     }
 },
 {
@@ -3176,7 +3617,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"Y̴o̷u̴ ̷w̵i̴l̵l̴ ̷p̸a̷y̴ ̷f̶o̸r̵ ̴t̵h̷i̸s̴,̸ ̴m̶a̵r̴k̵ ̴m̷y̸ ̵w̴o̵r̵d̴s̸!̵",
-        CN = @"Y̴o̷u̴ ̷w̵i̴l̵l̴ ̷p̸a̷y̴ ̷f̶o̸r̵ ̴t̵h̷i̸s̴,̸ ̴m̶a̵r̴k̵ ̴m̷y̸ ̵w̴o̵r̵d̴s̸!̵"
+        CN = @"Y̴o̷u̴ ̷w̵i̴l̵l̴ ̷p̸a̷y̴ ̷f̶o̸r̵ ̴t̵h̷i̸s̴,̸ ̴m̶a̵r̴k̵ ̴m̷y̸ ̵w̴o̵r̵d̴s̸!̵",
+        JP = @"҉こ҉̴҉の҉҈҉代҉҈҉̷҉償҉̵҉̶҉は҉̵҉高҉̷҉く҉̵҉҈҉つ҉̵҉く҉̴҉̵҉ぞ҉҉҉҈҉警҉̷҉告҉҉҉し҉̸҉̴҉た҉̸҉か҉̴҉ら҉̴҉҉҉な҉̶҉"
     }
 },
 {
@@ -3184,7 +3626,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"I CAN DO IT",
-        CN = @"I CAN DO IT"
+        CN = @"I CAN DO IT",
+        JP = @"私はできるんだ"
     }
 },
 {
@@ -3192,7 +3635,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"《 IF I BELIEVE 》",
-        CN = @"《 IF I BELIEVE 》"
+        CN = @"《 IF I BELIEVE 》",
+        JP = @"《私が信じれば》"
     }
 },
 {
@@ -3200,7 +3644,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Maybe I can I mean",
-        CN = @"* Maybe I can I mean"
+        CN = @"* Maybe I can I mean",
+        JP = @"＊もしかしたら、できるかもしれないけど"
     }
 },
 {
@@ -3208,7 +3653,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Actually chances aren’t too great",
-        CN = @"* Actually chances aren’t too great"
+        CN = @"* Actually chances aren’t too great",
+        JP = @"＊実際、大して可能性はなさそう"
     }
 },
 {
@@ -3216,7 +3662,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* I’m not too sure about this anymore",
-        CN = @"* I’m not too sure about this anymore"
+        CN = @"* I’m not too sure about this anymore",
+        JP = @"＊全然まるで自信がないや"
     }
 },
 {
@@ -3224,7 +3671,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Hmm you know what? Yeah maybe today’s not the day",
-        CN = @"* Hmm you know what? Yeah maybe today’s not the day"
+        CN = @"* Hmm you know what? Yeah maybe today’s not the day",
+        JP = @"＊ううん、どうしよう？よし、今日はやめとこうかな"
     }
 },
 {
@@ -3232,7 +3680,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Hey there’s always tomorrow right!",
-        CN = @"* Hey there’s always tomorrow right!"
+        CN = @"* Hey there’s always tomorrow right!",
+        JP = @"＊まあ、明日やればいいって！"
     }
 },
 {
@@ -3240,7 +3689,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Ehhhhhh -_-”",
-        CN = @"* Ehhhhhh -_-”"
+        CN = @"* Ehhhhhh -_-”",
+        JP = @"＊えええええぇぇぇ-_-”"
     }
 },
 {
@@ -3248,7 +3698,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* How did I get mixed up in all this?",
-        CN = @"* How did I get mixed up in all this?"
+        CN = @"* How did I get mixed up in all this?",
+        JP = @"＊なんでこんなことに巻き込まれちゃったんだろう？"
     }
 },
 {
@@ -3256,7 +3707,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* What was I thinking, this isn’t a good idea!",
-        CN = @"* What was I thinking, this isn’t a good idea!"
+        CN = @"* What was I thinking, this isn’t a good idea!",
+        JP = @"＊なに考えてんだか、こんな考えよくない！"
     }
 },
 {
@@ -3264,7 +3716,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Why does it always end up like this?",
-        CN = @"* Why does it always end up like this?"
+        CN = @"* Why does it always end up like this?",
+        JP = @"＊なんでいつもこうなっちゃうのかな？"
     }
 },
 {
@@ -3272,7 +3725,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Okay deep breaths, deep breaths",
-        CN = @"* Okay deep breaths, deep breaths"
+        CN = @"* Okay deep breaths, deep breaths",
+        JP = @"＊よし、深呼吸、深呼吸"
     }
 },
 {
@@ -3280,7 +3734,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* Wait how do you breathe again?!? *gasp*",
-        CN = @"* Wait how do you breathe again?!? *gasp*"
+        CN = @"* Wait how do you breathe again?!? *gasp*",
+        JP = @"＊あれ、深呼吸ってどうすんだっけ！？"
     }
 },
 {
@@ -3288,7 +3743,8 @@ Use the keyboard to select a control to begin listening for input."
     new Model_LanguagesUI
     {
         EN = @"* OH NO OH NO OH NO",
-        CN = @"* OH NO OH NO OH NO"
+        CN = @"* OH NO OH NO OH NO",
+        JP = @"＊ああ、ダメダメダメダメ"
     }
 },
 // ------------------------------------------------------------------
@@ -3312,6 +3768,14 @@ You’ve reached the end of the demo, and with that, you’ve put an end to the 
 If you liked what you saw, please consider wishlisting “Night Loops” on Steam :). I hope you enjoy the full version of the game, see you then!
 
 Sincerely,
+Jiaquarium",
+        JP = @"Dear {2},
+
+You’ve reached the end of the demo, and with that, you’ve put an end to the Night Loops...... for now. Thank you so much for playing! I’m hard at work putting the final touches on the full version, which will be released soon.
+
+If you liked what you saw, please consider wishlisting “Night Loops” on Steam :). I hope you enjoy the full version of the game, see you then!
+
+Sincerely,
 Jiaquarium"
     }
 },
@@ -3320,7 +3784,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Return to Main Menu",
-        CN = @"Return to Main Menu"
+        CN = @"Return to Main Menu",
+        JP = @"Return to Main Menu"
     }
 },
 {
@@ -3328,7 +3793,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Quit to Desktop",
-        CN = @"Quit to Desktop"
+        CN = @"Quit to Desktop",
+        JP = @"Quit to Desktop"
     }
 },
 {
@@ -3336,7 +3802,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Wishlist on Steam",
-        CN = @"Wishlist on Steam"
+        CN = @"Wishlist on Steam",
+        JP = @"Wishlist on Steam"
     }
 },
 // ------------------------------------------------------------------
@@ -3346,7 +3813,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"O̷w̷n̶ ̵p̴r̸o̷b̴l̴e̶m̶s̸.̷ ̶O̵w̷n̶ ̷p̸r̵o̸b̵l̸e̶m̶s̸.̴ ̷I̴t̵'̶s̸ ̵M̷y̶ ̷o̴w̵n̴ ̶p̷r̷o̴b̷l̸e̷m̴s̶.̵",
-        CN = @"O̷w̷n̶ ̵p̴r̸o̷b̴l̴e̶m̶s̸.̷ ̶O̵w̷n̶ ̷p̸r̵o̸b̵l̸e̶m̶s̸.̴ ̷I̴t̵'̶s̸ ̵M̷y̶ ̷o̴w̵n̴ ̶p̷r̷o̴b̷l̸e̷m̴s̶.̵"
+        CN = @"O̷w̷n̶ ̵p̴r̸o̷b̴l̴e̶m̶s̸.̷ ̶O̵w̷n̶ ̷p̸r̵o̸b̵l̸e̶m̶s̸.̴ ̷I̴t̵'̶s̸ ̵M̷y̶ ̷o̴w̵n̴ ̶p̷r̷o̴b̷l̸e̷m̴s̶.̵",
+        JP = @"҉自҉̸҉͡҉̧҉分҉̵҉͞҉̨҉の҉҈҉͞҉̧҉問҉҉҉͡҉̧҉題҉҉҉̛҉̧҉自҉̴҉̛҉͢҉分҉̸҉̛҉̧҉の҉̷҉̛҉̧҉問҉̴҉҇҉̧҉題҉̶҉͠҉̧҉私҉̶҉͞҉͢҉自҉҉҉̛҉̢҉信҉̶҉͞҉̨҉の҉̵҉͡҉͜҉問҉̵҉҇҉͜҉題҉҈҉̛҉̢҉"
     }
 },
 {
@@ -3354,7 +3822,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"N̵e̴v̸e̷r̵ ̴h̴a̴d̴ ̴t̷o̸ ̸c̵a̷r̵e̵ ̶f̶o̴r̴ ̷a̷n̷y̷o̷n̵e̷ ̴N̶e̸v̷e̴r̷ ̶e̸l̴s̵e̶?̶ ̴Y̵o̷u̴ ̷r̶e̴a̵l̶l̸y̷ ̶t̵h̶i̸n̴k̵ ̵M̵e̴?̴",
-        CN = @"N̵e̴v̸e̷r̵ ̴h̴a̴d̴ ̴t̷o̸ ̸c̵a̷r̵e̵ ̶f̶o̴r̴ ̷a̷n̷y̷o̷n̵e̷ ̴N̶e̸v̷e̴r̷ ̶e̸l̴s̵e̶?̶ ̴Y̵o̷u̴ ̷r̶e̴a̵l̶l̸y̷ ̶t̵h̶i̸n̴k̵ ̵M̵e̴?̴"
+        CN = @"N̵e̴v̸e̷r̵ ̴h̴a̴d̴ ̴t̷o̸ ̸c̵a̷r̵e̵ ̶f̶o̴r̴ ̷a̷n̷y̷o̷n̵e̷ ̴N̶e̸v̷e̴r̷ ̶e̸l̴s̵e̶?̶ ̴Y̵o̷u̴ ̷r̶e̴a̵l̶l̸y̷ ̶t̵h̶i̸n̴k̵ ̵M̵e̴?̴",
+        JP = @"҉誰҉̷҉̕҉͜҉の҉̷҉̛҉̨҉こ҉̶҉͝҉̡҉と҉҉҉͞҉͜҉も҉҉҉̕҉̨҉全҉҉҉͞҉̢҉く҉̵҉͝҉̧҉気҉̷҉͝҉̨҉に҉̸҉͠҉͢҉し҉҉҉͠҉̢҉た҉҈҉̕҉͢҉こ҉̶҉͡҉͜҉と҉̴҉͞҉̨҉な҉̶҉͝҉̨҉い҉̴҉͞҉̨҉っ҉҉҉̛҉̢҉て҉̵҉͠҉̧҉本҉҉҉̕҉̨҉当҉̶҉̛҉̡҉に҉̵҉̕҉͢҉私҉҈҉͠҉̢҉が҉̵҉͡҉͜҉そ҉҈҉͡҉͜҉ん҉̸҉̕҉̢҉な҉̴҉͝҉̢҉人҉҈҉̕҉̡҉間҉҉҉̕҉̨҉だ҉̴҉͞҉̢҉っ҉̸҉̕҉̨҉て҉̵҉̛҉̨҉"
     }
 },
 {
@@ -3362,7 +3831,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"I̸t̶ ̵m̶a̷k̷e̶s̶ ̷m̶e̸ ̶s̶i̸c̸k̷.̶ ̵I̶t̴ ̷m̷a̸k̸e̶s̷ ̶m̵e̷ ̵s̴i̸c̸k̵.̴ ̸I̵t̸ ̶m̴a̸k̷e̵s̷ ̴m̵e̸ ̶s̷i̶c̴k̵.̵",
-        CN = @"I̸t̶ ̵m̶a̷k̷e̶s̶ ̷m̶e̸ ̶s̶i̸c̸k̷.̶ ̵I̶t̴ ̷m̷a̸k̸e̶s̷ ̶m̵e̷ ̵s̴i̸c̸k̵.̴ ̸I̵t̸ ̶m̴a̸k̷e̵s̷ ̴m̵e̸ ̶s̷i̶c̴k̵.̵"
+        CN = @"I̸t̶ ̵m̶a̷k̷e̶s̶ ̷m̶e̸ ̶s̶i̸c̸k̷.̶ ̵I̶t̴ ̷m̷a̸k̸e̶s̷ ̶m̵e̷ ̵s̴i̸c̸k̵.̴ ̸I̵t̸ ̶m̴a̸k̷e̵s̷ ̴m̵e̸ ̶s̷i̶c̴k̵.̵",
+        JP = @"҉気҉̸҉͞҉̧҉持҉҉҉͝҉͜҉ち҉҈҉̛҉̡҉悪҉̸҉͞҉̡҉い҉҉҉͡҉̨҉気҉̵҉͠҉̡҉持҉҉҉͝҉͢҉ち҉̶҉͝҉͢҉悪҉̵҉͝҉͢҉い҉̷҉͡҉̢҉気҉҈҉҇҉͢҉持҉̷҉͞҉͜҉ち҉̸҉҇҉̧҉悪҉̴҉̕҉̨҉い҉̵҉̛҉͢҉"
     }
 },
 // ------------------------------------------------------------------
@@ -3372,7 +3842,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"At that moment,| something began to well up inside me.",
-        CN = @"At that moment,| something began to well up inside me."
+        CN = @"At that moment,| something began to well up inside me.",
+        JP = @"その瞬間、|私の中でなにかが沸きあがりはじめた。"
     }
 },
 {
@@ -3380,7 +3851,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance.",
-        CN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance."
+        CN = @"The folds of what seemed like my brain slowly filled with a syrupy, dark substance.",
+        JP = @"脳のヒダみたいなものが、シロップのような暗黒物質でゆっくり満たされる。"
     }
 },
 {
@@ -3388,7 +3860,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Why do I feel like I’ve been retracing a memory?",
-        CN = @"Why do I feel like I’ve been retracing a memory?"
+        CN = @"Why do I feel like I’ve been retracing a memory?",
+        JP = @"どうして記憶をたどってるような感じなんだろう？"
     }
 },
 {
@@ -3396,7 +3869,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"A slippery image of a portrait...",
-        CN = @"A slippery image of a portrait..."
+        CN = @"A slippery image of a portrait...",
+        JP = @"手応えのない肖像画のイメージ……"
     }
 },
 {
@@ -3404,7 +3878,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"What if I|| <i>can’t</i>?",
-        CN = @"What if I|| <i>can’t</i>?"
+        CN = @"What if I|| <i>can’t</i>?",
+        JP = @"もし、||<b>できなかったら？</b>"
     }
 },
 {
@@ -3412,7 +3887,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Okay. I’ll talk...",
-        CN = @"Okay. I’ll talk..."
+        CN = @"Okay. I’ll talk...",
+        JP = @"よし、話そう……"
     }
 },
 // ------------------------------------------------------------------
@@ -3422,7 +3898,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You said you’d talk, dear, so let’s talk.",
-        CN = @"You said you’d talk, dear, so let’s talk."
+        CN = @"You said you’d talk, dear, so let’s talk.",
+        JP = @"あなたが話したいのであれば、お話ししましょう。"
     }
 },
 {
@@ -3430,7 +3907,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"{0}, I’m only doing this because it’s in <i>our</i> best interest.",
-        CN = @"{0}, I’m only doing this because it’s in <i>our</i> best interest."
+        CN = @"{0}, I’m only doing this because it’s in <i>our</i> best interest.",
+        JP = @"{0}さん、私がこうする理由は、これが私達にとって<b>最善</b>だからです。"
     }
 },
 {
@@ -3438,7 +3916,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"So don’t you go around acting like a saint.",
-        CN = @"So don’t you go around acting like a saint."
+        CN = @"So don’t you go around acting like a saint.",
+        JP = @"だから、あなたは聖者のように振る舞わないでください。"
     }
 },
 {
@@ -3446,7 +3925,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You’re not saving anyone down here, no.",
-        CN = @"You’re not saving anyone down here, no."
+        CN = @"You’re not saving anyone down here, no.",
+        JP = @"あなたは、ここで誰かを救うつもりなどありませんよね。"
     }
 },
 {
@@ -3454,7 +3934,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"On the contrary, dear, you’re hurting <i>us</i> all.",
-        CN = @"On the contrary, dear, you’re hurting <i>us</i> all."
+        CN = @"On the contrary, dear, you’re hurting <i>us</i> all.",
+        JP = @"むしろ、あなたは<b>私達</b>を傷つけているだけです。"
     }
 },
 {
@@ -3462,7 +3943,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Including yourself.",
-        CN = @"Including yourself."
+        CN = @"Including yourself.",
+        JP = @"あなた自身をも。"
     }
 },
 {
@@ -3470,7 +3952,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"But I get it. You’ve always liked hurting others.",
-        CN = @"But I get it. You’ve always liked hurting others."
+        CN = @"But I get it. You’ve always liked hurting others.",
+        JP = @"ただ、承知しています。あなた、いつも他人を傷つけるのを好んでいますから。"
     }
 },
 {
@@ -3478,7 +3961,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"It’s just like you.",
-        CN = @"It’s just like you."
+        CN = @"It’s just like you.",
+        JP = @"それでこそ、あなたです。"
     }
 },
 {
@@ -3486,7 +3970,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"In the end, you’ll end up hurting everyone around you, dear.",
-        CN = @"In the end, you’ll end up hurting everyone around you, dear."
+        CN = @"In the end, you’ll end up hurting everyone around you, dear.",
+        JP = @"どうあがいても、あなたは周囲の誰も彼もを傷つけるしかないのです。"
     }
 },
 {
@@ -3494,7 +3979,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"It’s the same as me.",
-        CN = @"It’s the same as me."
+        CN = @"It’s the same as me.",
+        JP = @"私と同じく。"
     }
 },
 {
@@ -3502,7 +3988,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"He-he, you think you’re any different than me?",
-        CN = @"He-he, you think you’re any different than me?"
+        CN = @"He-he, you think you’re any different than me?",
+        JP = @"ふふっ。あなたと私に、違いがあるとお思いですか？"
     }
 },
 {
@@ -3510,7 +3997,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Without me, there is no you.",
-        CN = @"Without me, there is no you."
+        CN = @"Without me, there is no you.",
+        JP = @"私がいなければ、あなたもいないのです。"
     }
 },
 {
@@ -3518,7 +4006,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You were summoned here for one purpose| – to assist| <i>u|s</i>|,",
-        CN = @"You were summoned here for one purpose| – to assist| <i>u|s</i>|,"
+        CN = @"You were summoned here for one purpose| – to assist| <i>u|s</i>|,",
+        JP = @"あなたがここに召喚された理由はただひとつ、|<b>私|達</b>|の|手伝い。"
     }
 },
 {
@@ -3526,7 +4015,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"But you are well past expired now, dear.",
-        CN = @"But you are well past expired now, dear."
+        CN = @"But you are well past expired now, dear.",
+        JP = @"でも、あなたはもう用済みです。"
     }
 },
 {
@@ -3534,7 +4024,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"So why don’t you do us all a favor,",
-        CN = @"So why don’t you do us all a favor,"
+        CN = @"So why don’t you do us all a favor,",
+        JP = @"ですから、私達の願いを聞いていただけませんか？"
     }
 },
 {
@@ -3542,7 +4033,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Take your useless self out of <i>my</i> mansion.",
-        CN = @"Take your useless self out of <i>my</i> mansion."
+        CN = @"Take your useless self out of <i>my</i> mansion.",
+        JP = @"<b>私</b>の館から、役立たずのあなた自身を追い出してもらえませんか？"
     }
 },
 {
@@ -3550,7 +4042,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Our world is better off without you.",
-        CN = @"Our world is better off without you."
+        CN = @"Our world is better off without you.",
+        JP = @"私達の世界は、あなたがいなければより良くなるのです。"
     }
 },
 // ------------------------------------------------------------------
@@ -3560,7 +4053,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"{0}, dear, you really understand nothing!",
-        CN = @"{0}, dear, you really understand nothing!"
+        CN = @"{0}, dear, you really understand nothing!",
+        JP = @"{0}さん、なにひとつ全く理解していないのですね！"
     }
 },
 {
@@ -3568,7 +4062,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Don’t you get it?",
-        CN = @"Don’t you get it?"
+        CN = @"Don’t you get it?",
+        JP = @"どうしてわかっていただけないのですか？"
     }
 },
 {
@@ -3576,7 +4071,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"<b>You are the intruder here.</b>",
-        CN = @"<b>You are the intruder here.</b>"
+        CN = @"<b>You are the intruder here.</b>",
+        JP = @"<b>ここにとって、あなたこそ侵入者なんです。</b>"
     }
 },
 {
@@ -3584,7 +4080,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Someone like you could never understand.",
-        CN = @"Someone like you could never understand."
+        CN = @"Someone like you could never understand.",
+        JP = @"あなたのような方には、決して理解できないでしょう。"
     }
 },
 {
@@ -3592,7 +4089,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Someone who’s never had to care about anyone but themselves.",
-        CN = @"Someone who’s never had to care about anyone but themselves."
+        CN = @"Someone who’s never had to care about anyone but themselves.",
+        JP = @"自分以外、誰のことも気にかけたことのない人間には。"
     }
 },
 {
@@ -3600,7 +4098,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"It makes me sick.",
-        CN = @"It makes me sick."
+        CN = @"It makes me sick.",
+        JP = @"気分が悪くなります。"
     }
 },
 {
@@ -3608,7 +4107,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"I can’t stop thinking about you no matter how hard I try.",
-        CN = @"I can’t stop thinking about you no matter how hard I try."
+        CN = @"I can’t stop thinking about you no matter how hard I try.",
+        JP = @"どれだけやめようとしても、あなたのことを考えずにはいられません。"
     }
 },
 {
@@ -3616,7 +4116,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You really have no clue, do you, dear?",
-        CN = @"You really have no clue, do you, dear?"
+        CN = @"You really have no clue, do you, dear?",
+        JP = @"あなた、まるでなにもわかってないんですね？"
     }
 },
 {
@@ -3624,7 +4125,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You waltz in here, making us suffer again and again...",
-        CN = @"You waltz in here, making us suffer again and again..."
+        CN = @"You waltz in here, making us suffer again and again...",
+        JP = @"ここでワルツを繰り返して、何度も何度も私達を苦しめて……"
     }
 },
 {
@@ -3632,7 +4134,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"They’re just <i><b>your little visits</b></i>, aren’t they?",
-        CN = @"They’re just <i><b>your little visits</b></i>, aren’t they?"
+        CN = @"They’re just <i><b>your little visits</b></i>, aren’t they?",
+        JP = @"<b>あなたには些細な巡り</b>に過ぎないんでしょうがね？"
     }
 },
 {
@@ -3640,7 +4143,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"I think about you when I xxxxx xxxxxx. I know you do too.",
-        CN = @"I think about you when I xxxxx xxxxxx. I know you do too."
+        CN = @"I think about you when I xxxxx xxxxxx. I know you do too.",
+        JP = @"私は■■■■■■■■とき、あなたを思います。あなたもそうでしょう。"
     }
 },
 {
@@ -3648,7 +4152,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"B̸u̸t̵ ̴ ŝa̵Ŷ’̵Þ ̴you s̴e̷e̸?̷ ̶ Ī Ĳu̴ ̵need m̸e̵ ̵t̷o̶ ̸ s̶ěĠøÛÊý.",
-        CN = @"B̸u̸t̵ ̴ ŝa̵Ŷ’̵Þ ̴you s̴e̷e̸?̷ ̶ Ī Ĳu̴ ̵need m̸e̵ ̵t̷o̶ ̸ s̶ěĠøÛÊý."
+        CN = @"B̸u̸t̵ ̴ ŝa̵Ŷ’̵Þ ̴you s̴e̷e̸?̷ ̶ Ī Ĳu̴ ̵need m̸e̵ ̵t̷o̶ ̸ s̶ěĠøÛÊý.",
+        JP = @"҉で҉̶҉͡҉͢҉も҉̵҉̛҉͜҉あ҉̶҉͠҉̧҉な҉̵҉͡҉̢҉た҉̷҉͞҉̢҉は҉҈҉͞҉̨҉…҉҈҉҇҉͜҉…҉҈҉҇҉̧҉私҉̴҉͞҉͢҉を҉̵҉͞҉̧҉必҉̶҉͝҉͜҉要҉̶҉͡҉̢҉と҉̸҉͝҉͢҉し҉̷҉͡҉̡҉て҉҈҉̕҉̡҉…҉҈҉҇҉̧҉…҉҉҉͡҉̢҉"
     }
 },
 {
@@ -3656,7 +4161,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"I know you better than you know yourself, dear.",
-        CN = @"I know you better than you know yourself, dear."
+        CN = @"I know you better than you know yourself, dear.",
+        JP = @"あなた自身以上に、私はあなたを知っていますよ。"
     }
 },
 {
@@ -3664,7 +4170,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You’ve always been one to self sabotage.",
-        CN = @"You’ve always been one to self sabotage."
+        CN = @"You’ve always been one to self sabotage.",
+        JP = @"あなたはいつだって、自己破壊するのです。"
     }
 },
 {
@@ -3672,7 +4179,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You’ll take us all down with you soon enough.",
-        CN = @"You’ll take us all down with you soon enough."
+        CN = @"You’ll take us all down with you soon enough.",
+        JP = @"あなたはすぐにでも、私達を巻き込むでしょう。"
     }
 },
 {
@@ -3680,7 +4188,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"How about you go back up to your floor before that happens.",
-        CN = @"How about you go back up to your floor before that happens."
+        CN = @"How about you go back up to your floor before that happens.",
+        JP = @"そうなる前に、自分の階へもどってはいかがですか？"
     }
 },
 {
@@ -3688,7 +4197,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"And we can forget about all of this.",
-        CN = @"And we can forget about all of this."
+        CN = @"And we can forget about all of this.",
+        JP = @"そうすれば、私達もすべて忘れますので。"
     }
 },
 {
@@ -3696,7 +4206,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"I hate you and I hate that I need you.",
-        CN = @"I hate you and I hate that I need you."
+        CN = @"I hate you and I hate that I need you.",
+        JP = @"私はあなたを嫌悪します。私があなたを必要とすることを嫌悪します。"
     }
 },
 {
@@ -3704,7 +4215,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Remember...",
-        CN = @"Remember..."
+        CN = @"Remember...",
+        JP = @"覚えておいてください……"
     }
 },
 {
@@ -3712,7 +4224,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"<b>I</b> am the one who built this place.",
-        CN = @"<b>I</b> am the one who built this place."
+        CN = @"<b>I</b> am the one who built this place.",
+        JP = @"この場所を作り上げたのは、<b>私</b>です。"
     }
 },
 {
@@ -3720,7 +4233,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"<b>You are nobody.</b>",
-        CN = @"<b>You are nobody.</b>"
+        CN = @"<b>You are nobody.</b>",
+        JP = @"<b>あなたは何者でもありません</b>。"
     }
 },
 // ------------------------------------------------------------------
@@ -3730,7 +4244,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Please, I beg you...",
-        CN = @"Please, I beg you..."
+        CN = @"Please, I beg you...",
+        JP = @"どうか、お願いします……"
     }
 },
 {
@@ -3738,7 +4253,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Just leave...",
-        CN = @"Just leave..."
+        CN = @"Just leave...",
+        JP = @"ただちに立ち去ってください……"
     }
 },
 {
@@ -3746,7 +4262,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"What can I do at this point?",
-        CN = @"What can I do at this point?"
+        CN = @"What can I do at this point?",
+        JP = @"いまさら、私にどうしろと？"
     }
 },
 {
@@ -3754,7 +4271,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Just tell me, what is it that you want?",
-        CN = @"Just tell me, what is it that you want?"
+        CN = @"Just tell me, what is it that you want?",
+        JP = @"教えてください。あなたの望みはなんなのですか？"
     }
 },
 {
@@ -3762,7 +4280,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Please, just leave.",
-        CN = @"Please, just leave."
+        CN = @"Please, just leave.",
+        JP = @"どうか、立ち去ってください。"
     }
 },
 {
@@ -3770,7 +4289,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝",
-        CN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝"
+        CN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝",
+        JP = @"҉私҉̷҉͠҉̧҉は҉̸҉͝҉̢҉あ҉҈҉͠҉̧҉な҉̵҉͠҉̢҉た҉̶҉̛҉̧҉に҉̸҉͞҉͢҉会҉̶҉͡҉͜҉い҉̶҉͞҉̧҉た҉̸҉͠҉̧҉い҉̵҉͠҉͜҉で҉̵҉̛҉̢҉す҉҈҉͡҉̨҉。҉̵҉͞҉͢҉"
     }
 },
 {
@@ -3778,7 +4298,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Stop hurting yourself.",
-        CN = @"Stop hurting yourself."
+        CN = @"Stop hurting yourself.",
+        JP = @"自分自身を傷つけるのはやめてください。"
     }
 },
 {
@@ -3786,7 +4307,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝",
-        CN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝"
+        CN = @"Í̶̻ ̴̖̑w̴͙̎a̵̡͋n̸̛̪ț̴̄ ̶̥͑t̵̜̾ó̸̻ ̸͍̒ṃ̵́ẽ̴͜e̵̹̋ẗ̴͓ ̵̛͎y̸̞͗ö̶̭ȕ̶̳.̸̩͝",
+        JP = @"҉私҉̷҉͠҉̧҉は҉̸҉͝҉̢҉あ҉҈҉͠҉̧҉な҉̵҉͠҉̢҉た҉̶҉̛҉̧҉に҉̸҉͞҉͢҉会҉̶҉͡҉͜҉い҉̶҉͞҉̧҉た҉̸҉͠҉̧҉い҉̵҉͠҉͜҉で҉̵҉̛҉̢҉す҉҈҉͡҉̨҉。҉̵҉͞҉͢҉"
     }
 },
 {
@@ -3794,7 +4316,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"I need things to stay how they are.",
-        CN = @"I need things to stay how they are."
+        CN = @"I need things to stay how they are.",
+        JP = @"なにもかも、このままでなくては。"
     }
 },
 // ------------------------------------------------------------------
@@ -3804,7 +4327,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"I’m beginning to understand.",
-        CN = @"I’m beginning to understand."
+        CN = @"I’m beginning to understand.",
+        JP = @"やっと、わかってきた。"
     }
 },
 {
@@ -3812,7 +4336,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"These paintings.",
-        CN = @"These paintings."
+        CN = @"These paintings.",
+        JP = @"この絵のこと。"
     }
 },
 {
@@ -3820,7 +4345,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"This mansion.",
-        CN = @"This mansion."
+        CN = @"This mansion.",
+        JP = @"この館のこと。"
     }
 },
 {
@@ -3828,7 +4354,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"You and I.",
-        CN = @"You and I."
+        CN = @"You and I.",
+        JP = @"君と私のこと。"
     }
 },
 // ------------------------------------------------------------------
@@ -3838,7 +4365,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"EXCELLENT",
-        CN = @"EXCELLENT"
+        CN = @"EXCELLENT",
+        JP = @"EXCELLENT"
     }
 },
 {
@@ -3846,7 +4374,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"DECENT",
-        CN = @"DECENT"
+        CN = @"DECENT",
+        JP = @"DECENT"
     }
 },
 {
@@ -3854,7 +4383,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"Reconsider your life decisions...",
-        CN = @"Reconsider your life decisions..."
+        CN = @"Reconsider your life decisions...",
+        JP = @"人生を考え直しな……"
     }
 },
 // ------------------------------------------------------------------
@@ -3864,7 +4394,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"『 B.A.D. 』",
-        CN = @"『 B.A.D. 』"
+        CN = @"『 B.A.D. 』",
+        JP = @"『 B.A.D. 』"
     }
 },
 // ------------------------------------------------------------------
@@ -3874,7 +4405,8 @@ Jiaquarium"
     new Model_LanguagesUI
     {
         EN = @"LAST MOVES! GET READY!",
-        CN = @"LAST MOVES! GET READY!"
+        CN = @"LAST MOVES! GET READY!",
+        JP = @"LAST MOVES! GET READY!"
     }
 },
 
