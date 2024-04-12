@@ -39,6 +39,7 @@ public class Script_Start : MonoBehaviour
     [SerializeField] private Script_SettingsController settingsController;
     [SerializeField] private Script_SaveSettingsControl saveSettingsControl;
     [SerializeField] private Script_AudioConfiguration audioConfiguration;
+
     [SerializeField] private Script_CanvasGroupController initFader;
     [SerializeField] private Script_GraphicsManager startGraphicsManager;
     

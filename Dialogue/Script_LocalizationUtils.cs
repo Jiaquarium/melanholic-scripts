@@ -13,11 +13,12 @@ public static class Script_LocalizationUtils
     {
         Default = 0,
         CN = 1,
-        JP = 2
+        JP = 2,
+        EN = 9
     }
 
     // TBD Remove for v1.2.0; only used for v1.1.0 SteamDeck Verification because localization is WIP
-    public static bool IsDisabled = true;
+    public static bool IsDisabled = false;
     public static bool IsFormatPeriodsCN = false;
     const char PeriodSymbol = '.';
     // Font must be under TextMesh Pro/Resources/Fonts & Materials
@@ -28,6 +29,7 @@ public static class Script_LocalizationUtils
         LangEnum.Default => Const_Languages.EN,
         LangEnum.CN => Const_Languages.CN,
         LangEnum.JP => Const_Languages.JP,
+        LangEnum.EN => Const_Languages.EN,
         _ => Const_Languages.EN
     };
 
@@ -53,18 +55,21 @@ public static class Script_LocalizationUtils
     // When switching text
     public static string SwitchTextOnLang(
         string EN_text,
-        string CN_text
+        string CN_text,
+        string JP_text
      ) => Script_Game.Lang switch
     {
         Const_Languages.EN => EN_text,
         Const_Languages.CN => CN_text,
+        Const_Languages.JP => JP_text,
         _ => EN_text
     };
 
     // When switching function call
     public static void SwitchActionOnLang(
         Action EN_action,
-        Action CN_action
+        Action CN_action,
+        Action JP_action
     )
     {
         switch (Script_Game.Lang)
@@ -75,6 +80,9 @@ public static class Script_LocalizationUtils
             case Const_Languages.CN:
                 CN_action();
                 break;
+            case Const_Languages.JP:
+                JP_action();
+                break;
             default:
                 EN_action();
                 break;
@@ -83,11 +91,13 @@ public static class Script_LocalizationUtils
 
     public static void ActionForEachLang(
         Action EN_action,
-        Action CN_action
+        Action CN_action,
+        Action JP_action
     )
     {
         EN_action();
         CN_action();
+        JP_action();
     }
 
     public static Script_TextStyle SwitchTextStyleOnLang(

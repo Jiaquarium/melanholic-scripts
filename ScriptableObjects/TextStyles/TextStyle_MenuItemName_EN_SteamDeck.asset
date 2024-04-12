@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TextStyle_MenuItemName_EN_SteamDeck
   m_EditorClassIdentifier: 
   fontAsset: {fileID: 11400000, guid: 2f945cfb23de745e1afb68e9dcac3595, type: 2}
-  fontSize: 16
+  fontSize: 21
   characterSpacing: 0
   lineSpacing: 0
   wordSpacing: 0

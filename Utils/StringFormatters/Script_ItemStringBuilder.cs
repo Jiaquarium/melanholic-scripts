@@ -29,7 +29,8 @@ public class Script_ItemStringBuilder : MonoBehaviour
         
         Script_LocalizationUtils.SwitchActionOnLang(
             BuildEN,
-            BuildCN
+            BuildCN,
+            BuildJP
         );
         
         void BuildEN()
@@ -88,6 +89,35 @@ public class Script_ItemStringBuilder : MonoBehaviour
             Params.Add("@@LastWellMap",             "<b>Last Well Map是</b>");
             Params.Add("@@LastSpellRecipeBook",     "<b>Last Spell Recipe Book是</b>");
             Params.Add("@@SpeedSeal",               "<b>Speed Seal是</b>");
+        }
+
+        void BuildJP()
+        {
+            Params.Add("@@Sticker_Bold",            "<b>仮面</b>");
+            Params.Add("@@Sticker_NoBold",          "仮面");
+            Params.Add("@@Stickers_Bold",           "<b>仮面</b>");
+            Params.Add("@@Stickers_NoBold",         "仮面");
+            
+            Params.Add("@@PsychicDuck",             "<b>サイコダック</b>");
+            Params.Add("@@BoarNeedle",              "<b>三つ目</b>");
+            Params.Add("@@AnimalWithin",            "<b>内なる獣</b>");
+            Params.Add("@@IceSpike",                "<b>雪女</b>");
+            Params.Add("@@MelancholyPiano",         "<b>憂鬱ピアノ</b>");
+            Params.Add("@@LastElevator",            "<b>最終エレベーター</b>");
+            Params.Add("@@LetThereBeLight",         "<b>ランタン</b>");
+            Params.Add("@@Puppeteer",               "<b>人形使い</b>");
+            Params.Add("@@MyMask",                  "<b>自己召喚</b>");
+            
+            Params.Add("@@MasterKey",               "<b>マスターキー</b>");
+            Params.Add("@@SuperSmallKey",           "<b>小さな小さなキー</b>");
+
+            Params.Add("@@WinterStone",             "<b>冬石</b>");
+            Params.Add("@@AutumnStone",             "<b>秋石</b>");
+            Params.Add("@@SummerStone",             "<b>夏石</b>");
+            Params.Add("@@SpringStone",             "<b>春石</b>");
+            Params.Add("@@LastWellMap",             "<b>最終井戸の地図</b>");
+            Params.Add("@@LastSpellRecipeBook",     "<b>最終呪文のレシピ</b>");
+            Params.Add("@@SpeedSeal",               "<b>加速札</b>");
         }
     }
 }

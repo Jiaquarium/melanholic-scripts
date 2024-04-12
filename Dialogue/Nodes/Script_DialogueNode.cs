@@ -111,7 +111,8 @@ public class Script_DialogueNode : MonoBehaviour
 
             string choiceTextLocalized = Script_LocalizationUtils.SwitchTextOnLang(
                 languages.choiceText,
-                languages.choiceTextCN
+                languages.choiceTextCN,
+                languages.choiceTextJP
             );
 
             // if choice text is undefined it will return null (e.g. languages.choiceText == null)

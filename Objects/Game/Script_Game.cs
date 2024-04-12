@@ -287,7 +287,7 @@ public class Script_Game : MonoBehaviour
 
     public string GetPlayerDisplayDayName
     {
-        get => runsManager.GetPlayerDisplayDayName(Run);
+        get => runsManager.GetDisplayDayNameEN(Run);
     }
 
     // ------------------------------------------------------------------

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb79a1b4b32d4d79b5df154bd705754, type: 3}
   m_Name: TextStyle_MapNotification_JP
   m_EditorClassIdentifier: 
-  fontAsset: {fileID: 11400000, guid: b74192f8bfa61420e9766ee2d0400ba5, type: 2}
+  fontAsset: {fileID: 11400000, guid: c68ada32928704da49094d6e1d16ebdb, type: 2}
   fontSize: 16
   characterSpacing: 0
   lineSpacing: 0
   wordSpacing: 0
+  isForceFontStyle: 0
+  fontStyle: 0

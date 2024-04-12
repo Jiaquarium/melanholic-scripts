@@ -38,6 +38,15 @@ public class Script_SavedGameViewController : Script_SlotsViewController
             savedGame.HoldHighlight(isHold);
     }
 
+    public void RenderInitedLangTexts()
+    {
+        foreach (Script_SavedGameTitle savedGame in savedGames)
+        {
+            if (savedGame.isRendered)
+                savedGame.RenderInitedLangTexts();
+        }
+    }
+    
     public override void Setup()
     {
         foreach (Script_SavedGameTitle savedGame in savedGames)

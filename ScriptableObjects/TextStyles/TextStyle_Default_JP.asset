@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb79a1b4b32d4d79b5df154bd705754, type: 3}
   m_Name: TextStyle_Default_JP
   m_EditorClassIdentifier: 
-  fontAsset: {fileID: 11400000, guid: 36e2e41f632f9480c958dd9dc08d1ef3, type: 2}
+  fontAsset: {fileID: 11400000, guid: ebb1547bd914d4ce6b278bfce2f2f0a7, type: 2}
   fontSize: 14
-  lineSpacing: 24
-  wordSpacing: 6
+  characterSpacing: 0
+  lineSpacing: -42
+  wordSpacing: 0

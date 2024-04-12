@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb79a1b4b32d4d79b5df154bd705754, type: 3}
   m_Name: TextStyle_UI_JP
   m_EditorClassIdentifier: 
-  fontAsset: {fileID: 11400000, guid: 2f945cfb23de745e1afb68e9dcac3595, type: 2}
+  fontAsset: {fileID: 11400000, guid: c68ada32928704da49094d6e1d16ebdb, type: 2}
   fontSize: 14
   characterSpacing: 0
-  lineSpacing: 0
+  lineSpacing: -21
   wordSpacing: 0
+  isForceFontStyle: 0
+  fontStyle: 0

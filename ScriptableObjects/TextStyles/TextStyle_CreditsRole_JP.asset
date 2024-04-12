@@ -17,3 +17,5 @@ MonoBehaviour:
   characterSpacing: 0
   lineSpacing: 0
   wordSpacing: 0
+  isForceFontStyle: 0
+  fontStyle: 0

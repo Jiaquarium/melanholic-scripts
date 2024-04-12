@@ -86,7 +86,8 @@ public class Script_TMProPopulator : MonoBehaviour
             {
                 unformatted = Script_LocalizationUtils.SwitchTextOnLang(
                     EN_text: Script_UIText.Text[myId].EN,
-                    CN_text: Script_UIText.Text[myId].CN
+                    CN_text: Script_UIText.Text[myId].CN,
+                    JP_text: Script_UIText.Text[myId].JP
                 );
             }
             

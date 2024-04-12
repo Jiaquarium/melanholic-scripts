@@ -26,7 +26,8 @@ public class Script_TMProLocalizationActivator : MonoBehaviour
     {
         Script_LocalizationUtils.SwitchActionOnLang(
             EN_action: EN_SetActive,
-            CN_action: CN_SetActive
+            CN_action: CN_SetActive,
+            JP_action: JP_SetActive
         );
         
         void EN_SetActive() => SetObjectsActive(
@@ -41,11 +42,11 @@ public class Script_TMProLocalizationActivator : MonoBehaviour
             false
         );
 
-        // void JP_SetActive() => SetObjectsActive(
-        //     false,
-        //     false,
-        //     true
-        // );
+        void JP_SetActive() => SetObjectsActive(
+            false,
+            false,
+            true
+        );
 
         void SetObjectsActive(
             bool EN_isActive,

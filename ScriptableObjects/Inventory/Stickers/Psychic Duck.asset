@@ -18,3 +18,4 @@ MonoBehaviour:
   isDroppable: 0
   _isSpecial: 0
   localizedName: '@@PsychicDuck'
+  altSteamDeckDescriptionId: sticker_psychic-duck_steam-deck

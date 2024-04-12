@@ -1,4 +1,4 @@
-// Last created by Dialogue Exporter at 2024-04-08 03:36:59
+// Last created by Dialogue Exporter at 2024-04-09 01:14:59
 
 using System.Collections;
 using System.Collections.Generic;
@@ -6976,7 +6976,7 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         },
         JP = new string[]
         {
-                @"いつも思うんです、ある意味、あの子は形作っていると……<b>{14}</b><b>{14}</b>を。",
+                @"いつも思うんです、ある意味、あの子は形作っていると……<b>{14}</b>を。",
                 @"私達２人は、もう口をきくこともありません。思うに、多分あの子は……",
                 @"ただ、私と正反対になりたいんです。",
         },
@@ -13802,14 +13802,14 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You got the @@PsychicDuck @@Sticker_Bold!|<br>The @@Sticker_Bold contains the sealed spirit of a {13}.",
                 @"@@Stickers_Bold allow you to inhabit the body of the mask’s original owner.",
                 @"Press @@InventoryKey to open your {32} and set it to @@WearMask by selecting it in the @@Stickers_Bold Screen.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@PsychicDuck @@Sticker_Bold!|<br>The @@Sticker_Bold contains the sealed spirit of a {13}.",
                 @"@@Stickers_Bold allow you to inhabit the body of the mask’s original owner.",
                 @"Press @@InventoryKey to open your {32} and set it to @@WearMask by selecting it in the @@Stickers_Bold Screen.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -13848,13 +13848,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@AnimalWithin @@Sticker_Bold!|<br>Its original owner had a penchant for eating souls.",
                 @"Use its {79} by pressing @@MaskCommandKey while wearing the @@Sticker_Bold to chomp through edible obstacles.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@AnimalWithin @@Sticker_Bold!|<br>Its original owner had a penchant for eating souls.",
                 @"Use its {79} by pressing @@MaskCommandKey while wearing the @@Sticker_Bold to chomp through edible obstacles.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -13888,13 +13888,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@BoarNeedle @@Sticker_Bold!|<br>Its original owner desired to see what was invisible.",
                 @"The @@BoarNeedle @@Sticker_Bold allows you to enter paintings that have a doormat.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@BoarNeedle @@Sticker_Bold!|<br>Its original owner desired to see what was invisible.",
                 @"The @@BoarNeedle @@Sticker_Bold allows you to enter paintings that have a doormat.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -13928,13 +13928,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@IceSpike @@Sticker_Bold!|<br>Its original owner was said to have been caught in a snowstorm.",
                 @"The @@IceSpike @@Sticker_Bold can summon a dark spike so powerful it can crack open just about anything.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@IceSpike @@Sticker_Bold!|<br>Its original owner was said to have been caught in a snowstorm.",
                 @"The @@IceSpike @@Sticker_Bold can summon a dark spike so powerful it can crack open just about anything.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -13968,13 +13968,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@MelancholyPiano @@Sticker_Bold!|<br>Its original owner played a melancholic tune.",
                 @"Use the @@MelancholyPiano @@Sticker_Bold to follow the chords of your heart to any previously <b>remembered piano</b>.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@MelancholyPiano @@Sticker_Bold!|<br>Its original owner played a melancholic tune.",
                 @"Use the @@MelancholyPiano @@Sticker_Bold to follow the chords of your heart to any previously <b>remembered piano</b>.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -14009,14 +14009,14 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
                 @"You returned to the conscious world wearing a mask.",
                 @"You got the @@LastElevator @@Sticker_Bold!|<br>Not much is known of its original owner.",
                 @"If you are ever <b>lost</b>, the @@LastElevator @@Sticker_Bold can be used anywhere inside {18} to take the {66} back to the {72}.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You returned to the conscious world wearing a mask.",
                 @"You got the @@LastElevator @@Sticker_Bold!|<br>Not much is known of its original owner.",
                 @"If you are ever <b>lost</b>, the @@LastElevator @@Sticker_Bold can be used anywhere inside {18} to take the {66} back to the {72}.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -14055,13 +14055,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@LetThereBeLight @@Sticker_Bold!|<br>Its original owner constructed the lighting within {18}.",
                 @"The @@LetThereBeLight @@Sticker_Bold will illuminate certain dark areas.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@LetThereBeLight @@Sticker_Bold!|<br>Its original owner constructed the lighting within {18}.",
                 @"The @@LetThereBeLight @@Sticker_Bold will illuminate certain dark areas.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -14095,13 +14095,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@Puppeteer @@Sticker_Bold!|<br>Its original owner spent each waking moment trying to bring life to handmade puppets.",
                 @"Use the @@Puppeteer @@Sticker_Bold to control {73}.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@Puppeteer @@Sticker_Bold!|<br>Its original owner spent each waking moment trying to bring life to handmade puppets.",
                 @"Use the @@Puppeteer @@Sticker_Bold to control {73}.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {
@@ -14161,13 +14161,13 @@ public static Dictionary<string, Model_Languages> Dialogue = new Dictionary<stri
         {
                 @"You got the @@MyMask @@Sticker_Bold!|<br>It has been longing for its original owner.",
                 @"The @@MyMask @@Sticker_Bold emanates a powerful aura but its uses are unknown.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         CN = new string[]
         {
                 @"You got the @@MyMask @@Sticker_Bold!|<br>It has been longing for its original owner.",
                 @"The @@MyMask @@Sticker_Bold emanates a powerful aura but its uses are unknown.",
-                @"Wear the @@Sticker_Bold with @@WearMask. Press @@WearMask again to return to your former self.",
+                @"Wear the @@Sticker_Bold with @@WearMask. Use @@WearMask again to return to your former self.",
         },
         JP = new string[]
         {

@@ -9,6 +9,9 @@ using TMPro;
 [RequireComponent(typeof(Script_Slot))]
 public class Script_SavedGameTitle : MonoBehaviour
 {
+    public const string TotalTimeId = "save-files_saved-game_total-time";
+    public const string LastPlayedId = "save-files_saved-game_last-played";
+    
     private static string hiddenScarletCipherDigit = "X";
     
     [SerializeField] private Script_StartOverviewController mainController;
@@ -26,6 +29,10 @@ public class Script_SavedGameTitle : MonoBehaviour
     [SerializeField] private Transform newGameSubmenu;
 
     [SerializeField] private Script_ButtonHighlighter buttonHighlighter;
+
+    private string run;
+    private DateTime dateTime;
+    private float playTime;
     
     public bool isRendered { get; private set; }
     
@@ -66,14 +73,13 @@ public class Script_SavedGameTitle : MonoBehaviour
 
     private void Render(Model_SavedGameTitleData savedGame)
     {
-        string run              = savedGame.run;
+        run                     = savedGame.run;
         float clockTime         = savedGame.clockTime;
         string name             = savedGame.name;
         string headline         = savedGame.headline;
-        DateTime dateTime       = DateTime.FromBinary(savedGame.date);
-        float playTime          = savedGame.playTime;
+        dateTime                = DateTime.FromBinary(savedGame.date);
+        playTime                = savedGame.playTime;
 
-        runText.text            = run.FormatRun();
         clockTimeText.text      = clockTime.FormatSecondsClock(isClose: false);
         nameText.text           = name;
         
@@ -85,13 +91,24 @@ public class Script_SavedGameTitle : MonoBehaviour
             scarletCipherCodeTexts[i].text = digit < 0 ? hiddenScarletCipherDigit : digit.ToString();
         }
         
-        dateText.text           = dateTime.FormatLastPlayedDateTime();
-        playTimeText.text       = playTime.FormatTotalPlayTime();
+        // Must set isRendered state before rendering lang texts
+        isRendered = true;
+        RenderInitedLangTexts();
         
         savedState.gameObject.SetActive(true);
         emptyState.gameObject.SetActive(false);
+    }
 
-        isRendered = true;
+    // Render text that is not updated on OnEnable
+    // Because these texts are setup before Lang is set in Start; must call this to update them again
+    public void RenderInitedLangTexts()
+    {
+        if (isRendered)
+        {
+            runText.text            = run.FormatDisplayDayName();
+            dateText.text           = dateTime.FormatLastPlayedDateTime();
+            playTimeText.text       = playTime.FormatTotalPlayTime();
+        }
     }
 
     public void InitializeState()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using System;
 
 /// <summary>
 /// To Store Dynamically Updated names
@@ -27,6 +28,9 @@ public class Script_DynamicStringBuilder : MonoBehaviour
     public static string WearMaskKey = "@@WearMask";
     public static string WearMaskValKeyboard = "{82}";
     public static string WearMaskValJoystick = "{15}";
+
+    // Static strings
+    public static string WearMaskValJoystickId = "controls_names_right-joystick";
     
     /// <summary>
     /// Need to be in Start so we have reference to Singletons
@@ -65,7 +69,21 @@ public class Script_DynamicStringBuilder : MonoBehaviour
         // Params that depend on the controller type
         void SetControllerBasedParams(ControllerType t)
         {
-            Params.Add(WearMaskKey, t == ControllerType.Joystick ? WearMaskValJoystick : WearMaskValKeyboard);
+            string wearMaskParam;
+
+            if (t == ControllerType.Joystick)
+            {
+                string articleEN = Script_Game.Lang == Const_Languages.EN ? "the " : String.Empty;
+                wearMaskParam = Script_Game.IsSteamRunningOnSteamDeck
+                    ? $"{articleEN}<b>{Script_UIText.Text[WearMaskValJoystickId].GetProp<string>(Script_Game.Lang)}</b>"
+                    : WearMaskValJoystick;
+            }
+            else
+            {
+                wearMaskParam = WearMaskValKeyboard;
+            }
+            
+            Params.Add(WearMaskKey, wearMaskParam);
         }
     }
 

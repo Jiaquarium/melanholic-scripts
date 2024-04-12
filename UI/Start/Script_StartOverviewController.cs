@@ -163,10 +163,7 @@ public class Script_StartOverviewController : Script_UIState
             if (
                 // TBD Remove for v1.2.0; only used for v1.1.0 SteamDeck Verification because localization is WIP
                 Script_LocalizationUtils.IsDisabled
-                || (
-                    Script_SaveLanguagePreferenceControl.Instance.Load()
-                    && !Const_Dev.IsDevHelperOn
-                )
+                || Script_SaveLanguagePreferenceControl.Instance.Load()
             )
             {
                 ResumeIntroSimple();
@@ -201,6 +198,9 @@ public class Script_StartOverviewController : Script_UIState
     
     private void ResumeIntroSimple(float waitTime = 0f)
     {
+        // Render text that was inited before lang was set
+        savedGameController.RenderInitedLangTexts();
+        
         // Open again to allow Intro Simple to handle its state
         Script_Start.Main.OpenInitFader();
 

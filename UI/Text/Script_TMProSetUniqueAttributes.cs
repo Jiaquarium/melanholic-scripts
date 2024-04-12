@@ -14,29 +14,46 @@ public class Script_TMProSetUniqueAttributes : MonoBehaviour
     [SerializeField] private bool isUniquePositions;
     [SerializeField] private Vector2 EN_position;
     [SerializeField] private Vector2 CN_position;
+    [SerializeField] private Vector2 JP_position;
     [Space]
     [SerializeField] private bool isUniqueAlignment;
     [SerializeField] private TextAlignmentOptions EN_alignment;
     [SerializeField] private TextAlignmentOptions CN_alignment;
+    [SerializeField] private TextAlignmentOptions JP_alignment;
+    [Space]
+    [SerializeField] private bool isUniqueMargins;
+    [SerializeField] private Vector4 EN_margin;
+    [SerializeField] private Vector4 CN_margin;
+    [SerializeField] private Vector4 JP_margin;
 
     // Set attributes based on the specific needs of that object
     public void SetUniqueAttributes(TextMeshProUGUI text)
     {
         Script_LocalizationUtils.SwitchActionOnLang(
             EN_action: EN_SetUniqueAttributes,
-            CN_action: CN_SetUniqueAttributes
+            CN_action: CN_SetUniqueAttributes,
+            JP_action: JP_SetUniqueAttributes
         );
 
         void EN_SetUniqueAttributes()
         {
             SetPosition(EN_position);
             SetAlignment(EN_alignment);
+            SetMargins(EN_margin);
         }
 
         void CN_SetUniqueAttributes()
         {
             SetPosition(CN_position);
             SetAlignment(CN_alignment);
+            SetMargins(CN_margin);
+        }
+
+        void JP_SetUniqueAttributes()
+        {
+            SetPosition(JP_position);
+            SetAlignment(JP_alignment);
+            SetMargins(JP_margin);
         }
 
         void SetPosition(Vector2 newPosition)
@@ -49,6 +66,12 @@ public class Script_TMProSetUniqueAttributes : MonoBehaviour
         {
             if (isUniqueAlignment)
                 text.alignment = textAlignmentOption;
+        }
+
+        void SetMargins(Vector4 newMargin)
+        {
+            if (isUniqueMargins)
+                text.margin = newMargin;
         }
     }
 
@@ -66,7 +89,8 @@ public class Script_TMProSetUniqueAttributes : MonoBehaviour
             {
                 Script_LocalizationUtils.ActionForEachLang(
                     EN_action: () => EN_attributesToInspector(text),
-                    CN_action: () => CN_attributesToInspector(text)
+                    CN_action: () => CN_attributesToInspector(text),
+                    JP_action: () => JP_attributesToInspector(text)
                 );
 
                 return;
@@ -79,12 +103,21 @@ public class Script_TMProSetUniqueAttributes : MonoBehaviour
         {
             EN_position = text.rectTransform.anchoredPosition;
             EN_alignment = text.alignment;
+            EN_margin = text.margin;
         }
 
         void CN_attributesToInspector(TextMeshProUGUI text)
         {
             CN_position = text.rectTransform.anchoredPosition;
             CN_alignment = text.alignment;
+            CN_margin = text.margin;
+        }
+
+        void JP_attributesToInspector(TextMeshProUGUI text)
+        {
+            JP_position = text.rectTransform.anchoredPosition;
+            JP_alignment = text.alignment;
+            JP_margin = text.margin;
         }
     }
 

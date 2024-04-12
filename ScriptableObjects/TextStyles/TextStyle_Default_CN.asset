@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb79a1b4b32d4d79b5df154bd705754, type: 3}
   m_Name: TextStyle_Default_CN
   m_EditorClassIdentifier: 
-  fontAsset: {fileID: 11400000, guid: 742378ee3ec17472f812c85a9dbd253a, type: 2}
-  fontSize: 14
-  characterSpacing: 0
+  fontAsset: {fileID: 11400000, guid: 13407ba378d6f4be0bb07fcc127f506a, type: 2}
+  fontSize: 16
+  characterSpacing: 2
   lineSpacing: 24
   wordSpacing: 6

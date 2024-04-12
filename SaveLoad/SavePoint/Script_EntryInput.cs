@@ -693,7 +693,7 @@ public class Script_EntryInput : MonoBehaviour, ISelectHandler, IDeselectHandler
         
         input.text = string.IsNullOrEmpty(defaultValue)
             ? string.Empty
-            : defaultValue;
+            : defaultValue.FormatString();
     }
 
     public void ActivateTMPInputField()

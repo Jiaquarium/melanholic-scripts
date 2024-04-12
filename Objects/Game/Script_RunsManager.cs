@@ -20,9 +20,9 @@ public class Script_RunsManager : MonoBehaviour
         Sunday = 2
     }
 
-    private const string SaveFileDayNameSatId = "save-file_day-name_sat";
-    private const string SaveFileDayNameSatR2Id = "save-file_day-name_sat_R2";
-    private const string SaveFileDayNameSunId = "save-file_day-name_sun";
+    public const string SaveFileDayNameSatId = "save-file_day-name_sat";
+    public const string SaveFileDayNameSatR2Id = "save-file_day-name_sat_R2";
+    public const string SaveFileDayNameSunId = "save-file_day-name_sun";
     private const string SatId = "HUD_days_today";
     private const string SatR2Id = "HUD_days_today_R2";
     private const string SunId = "HUD_days_tomorrow";
@@ -149,15 +149,15 @@ public class Script_RunsManager : MonoBehaviour
         RunCycle = GetCycleByRunIds(RunIdx);
     }
 
-    public string GetPlayerDisplayDayName(Script_Run run) => run.dayId switch
+    public string GetDisplayDayNameEN(Script_Run run) => run.dayId switch
     {
         Script_Run.DayId.mon
         or Script_Run.DayId.tue
-        or Script_Run.DayId.wed => Script_UIText.Text[SaveFileDayNameSatId].GetProp<string>(Script_Game.Lang) ?? string.Empty,
+        or Script_Run.DayId.wed => Script_UIText.Text[SaveFileDayNameSatId].GetProp<string>(Const_Languages.EN) ?? string.Empty,
         Script_Run.DayId.thu
         or Script_Run.DayId.fri
-        or Script_Run.DayId.sat => Script_UIText.Text[SaveFileDayNameSatR2Id].GetProp<string>(Script_Game.Lang) ?? string.Empty,
-        Script_Run.DayId.sun => Script_UIText.Text[SaveFileDayNameSunId].GetProp<string>(Script_Game.Lang) ?? string.Empty,
+        or Script_Run.DayId.sat => Script_UIText.Text[SaveFileDayNameSatR2Id].GetProp<string>(Const_Languages.EN) ?? string.Empty,
+        Script_Run.DayId.sun => Script_UIText.Text[SaveFileDayNameSunId].GetProp<string>(Const_Languages.EN) ?? string.Empty,
         _ => String.Empty
     };
 

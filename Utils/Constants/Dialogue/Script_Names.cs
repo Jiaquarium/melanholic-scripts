@@ -31,12 +31,14 @@ public class Script_Names: MonoBehaviour
         set { Names._Player = value; }
     }
     
-    public static string Mask                           = GetLocalized(
+    public static string Mask                           => GetLocalized(
         MaskEN,
-        MaskCN
+        MaskCN,
+        MaskJP
     );         // {1}
     public const string MaskEN                          = "<b>mask</b>";
     public const string MaskCN                          = "<b>面具</b>";
+    public const string MaskJP                          = "<b>仮面</b>";
 
     public static string PlayerUnbold                                                           // {2}
     {
@@ -48,7 +50,8 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Ids,
             IdsEN,
-            IdsCN
+            IdsCN,
+            IdsJP
         );
         set => Names._Ids = value;
     }
@@ -59,47 +62,58 @@ public class Script_Names: MonoBehaviour
         set => Names._Ero = value;
     }
 
-    public static string PreppedMasks                   = GetLocalized(
+    public static string PreppedMasks                   => GetLocalized(
         PreppedMasksEN,
-        PreppedMasksCN
+        PreppedMasksCN,
+        PreppedMasksJP
     );               // {5}
     public const string PreppedMasksEN                  = "<b>Prepped Masks</b>";
     public const string PreppedMasksCN                  = "<b>Prepped Masks</b>";
+    public const string PreppedMasksJP                  = "<b>装備済み仮面</b>";
 
-    public static string Urselk                         = GetLocalized(
+    public static string Urselk                         => GetLocalized(
         UrselkEN,
-        UrselkCN
+        UrselkCN,
+        UrselkJP
     );                      // {6}
     public const string UrselkEN                        = "<b>Urselk</b>";
     public const string UrselkCN                        = "<b>Urselk</b>";
+    public const string UrselkJP                        = "<b>ウルスラ</b>";
 
-    public static string Urselks                        = GetLocalized(
+    public static string Urselks                        => GetLocalized(
         UrselksEN,
-        UrselksCN
+        UrselksCN,
+        UrselksJP
     );                     // {7}
     public const string UrselksEN                       = "<b>Urselks</b>";
     public const string UrselksCN                       = "<b>Urselks</b>";
+    public const string UrselksJP                        = "<b>ウルスラ</b>";
 
-    public static string Owner                          = GetLocalized(
+    public static string Owner                          => GetLocalized(
         OwnerEN,
-        OwnerCN
+        OwnerCN,
+        OwnerJP
     );                       // {8}
     public const string OwnerEN                         = "<b>owner</b>";
     public const string OwnerCN                         = "<b>owner</b>";
+    public const string OwnerJP                         = "<b>オーナー</b>";
 
-    public static string ImpermanentUpper               = GetLocalized(
+    public static string ImpermanentUpper               => GetLocalized(
         ImpermanentUpperEN,
-        ImpermanentUpperCN
+        ImpermanentUpperCN,
+        ImpermanentUpperJP
     );                          // {9}
     public const string ImpermanentUpperEN              = "<b>Impermanent</b>";
     public const string ImpermanentUpperCN              = "<b>Impermanent</b>";
+    public const string ImpermanentUpperJP              = "<b>消費</b>";
     
     public static string Myne                                                                    // {10}
     {
         get => GetLocalizedName(
             Names?._Myne,
             MyneEN,
-            MyneCN
+            MyneCN,
+            MyneJP
         );
         set => Names._Myne = value;
     }
@@ -109,7 +123,8 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Eileen,
             EileenEN,
-            EileenCN
+            EileenCN,
+            EileenJP
         );
         set => Names._Eileen = value;
     }                     
@@ -119,17 +134,20 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Ellenia,
             ElleniaEN,
-            ElleniaCN
+            ElleniaCN,
+            ElleniaJP
         );
         set => Names._Ellenia = value;
     }
     
-    public static string Specter                        = GetLocalized(
+    public static string Specter                        => GetLocalized(
         SpecterEN,
-        SpecterCN
+        SpecterCN,
+        SpecterJP
     );                     // {13}
     public const string SpecterEN                       = "<b>Specter</b>";
     public const string SpecterCN                       = "<b>Specter</b>";
+    public const string SpecterJP                       = "<b>亡霊</b>";
     
     public static string ElleniaPassword                                                        // {14} Updated in Eileen Room (L21)
     {
@@ -137,12 +155,14 @@ public class Script_Names: MonoBehaviour
         set => Names._ElleniaPassword = value;
     }  
     
-    public static string SwitchActiveStickerKeycodesJoystick = GetLocalized(
+    public static string SwitchActiveStickerKeycodesJoystick => GetLocalized(
         SwitchActiveStickerKeycodesJoystickEN,
-        SwitchActiveStickerKeycodesJoystickCN
+        SwitchActiveStickerKeycodesJoystickCN,
+        SwitchActiveStickerKeycodesJoystickJP
     );    // {15}
     public const string SwitchActiveStickerKeycodesJoystickEN = "the <b>Wear Mask 1-4</b> commands";
     public const string SwitchActiveStickerKeycodesJoystickCN = "the <b>Wear Mask 1-4</b> commands";
+    public const string SwitchActiveStickerKeycodesJoystickJP = "<b>仮面着用 １-４</b>コマンド";
 
     public static string Tedwich                                                                // {16} Updated L11 SavePoint
     {
@@ -150,47 +170,59 @@ public class Script_Names: MonoBehaviour
         set => Names._Tedwich = value;
     }
     
-    public static string FlanShort                       = GetLocalized(
+    public static string FlanShort                       => GetLocalized(
         FlanShortEN,
-        FlanShortCN
+        FlanShortCN,
+        FlanShortJP
     ); // {17}
     public const string FlanShortEN                       = "<b>Flan</b>";
     public const string FlanShortCN                       = "<b>Flan</b>";
+    public const string FlanShortJP                       = "<b>フラン</b>";
     
-    public static string Kelsingor                       = GetLocalized(
+    public static string Kelsingor                       => GetLocalized(
         KelsingorEN,
-        KelsingorCN
+        KelsingorCN,
+        KelsingorJP
     ); // {18}
     public const string KelsingorEN                       = "<b>Kelsingør</b>";
     public const string KelsingorCN                       = "<b>Kelsingør</b>";
+    public const string KelsingorJP                       = "<b>ケルシンゲル</b>";
     
-    public static string Specters                        = GetLocalized(
+    public static string Specters                        => GetLocalized(
         SpectersEN,
-        SpectersCN
+        SpectersCN,
+        SpectersJP
     );                    // {19}
     public const string SpectersEN                        = "<b>Specters</b>";
     public const string SpectersCN                        = "<b>Specters</b>";
+    public const string SpectersJP                        = "<b>亡霊</b>";
 
-    public static string CatwalkInTheSky                 = GetLocalized(
+    public static string CatwalkInTheSky                 => GetLocalized(
         CatwalkInTheSkyEN,
-        CatwalkInTheSkyCN
+        CatwalkInTheSkyCN,
+        CatwalkInTheSkyJP
     );          // {20}
     public const string CatwalkInTheSkyEN                 = "<b>Catwalk in the Sky</b>";
     public const string CatwalkInTheSkyCN                 = "<b>Catwalk in the Sky</b>";
+    public const string CatwalkInTheSkyJP                 = "<b>天空散歩道</b>";
 
-    public static string Sheepluff                       = GetLocalized(
+    public static string Sheepluff                       => GetLocalized(
         SheepluffEN,
-        SheepluffCN
+        SheepluffCN,
+        SheepluffJP
     );                   // {21}
     public const string SheepluffEN                       = "<b>Sheepluff</b>";
     public const string SheepluffCN                       = "<b>Sheepluff</b>";
+    public const string SheepluffJP                       = "<b>モフモフヒツジ</b>";
 
-    public static string Sealing                         = GetLocalized(
+    public static string Sealing                         => GetLocalized(
         SealingEN,
-        SealingCN
+        SealingCN,
+        SealingJP
     );                     // {22}
     public const string SealingEN                         = "<b>Sealing</b>";
     public const string SealingCN                         = "<b>Sealing</b>";
+    public const string SealingJP                         = "<b>封印</b>";
 
     public const string Action1                         = "<b><i>SPACE or ENTER</i></b>";       // {23}
     public const string Action2                         = "<b><i>X or RIGHT-SHIFT-KEY</i></b>"; // {24}
@@ -199,68 +231,82 @@ public class Script_Names: MonoBehaviour
     public const string Escape                          = "<b><i>ESC</i></b>";                  // {27}
     public const string Skip                            = "<b><i>SPACE or ENTER</i></b>";       // {28}
     
-    public static string UrsaSaloonHallway               = GetLocalized(
+    public static string UrsaSaloonHallway               => GetLocalized(
         UrsaSaloonHallwayEN,
-        UrsaSaloonHallwayCN
+        UrsaSaloonHallwayCN,
+        UrsaSaloonHallwayJP
     );         // {29}
     public const string UrsaSaloonHallwayEN               = "<b>Ursa Saloon Hallway</b>";
     public const string UrsaSaloonHallwayCN               = "<b>Ursa Saloon Hallway</b>";
+    public const string UrsaSaloonHallwayJP               = "<b>メスグマ亭廊下</b>";
     
     public const string Sieve                           = "<b>Sieve</b>";                       // {30}
     
-    public static string Master                          = GetLocalized(
+    public static string Master                          => GetLocalized(
         MasterEN,
-        MasterCN
+        MasterCN,
+        MasterJP
     );                      // {31}
     public const string MasterEN                          = "<b>Master</b>";
     public const string MasterCN                          = "<b>Master</b>";
+    public const string MasterJP                          = "<b>マスター</b>";
     
-    public static string Inventory                       = GetLocalized(
+    public static string Inventory                       => GetLocalized(
         InventoryEN,
-        InventoryCN
+        InventoryCN,
+        InventoryJP
     );                   // {32}
     public const string InventoryEN                       = "<b>Inventory</b>";
     public const string InventoryCN                       = "<b>Inventory</b>";
+    public const string InventoryJP                       = "<b>インベントリ</b>";
     
     public static string Ursie                                                                  // {33}
     {
         get => GetLocalizedName(
             Names?._Ursie,
             UrsieEN,
-            UrsieCN
+            UrsieCN,
+            UrsieJP
         );
         set => Names._Ursie = value;
     }
     
     public const string UrselkHouse                     = "<b>Urselk House</b>";                // {34}
     
-    public static string UrsaSaloon                      = GetLocalized(
+    public static string UrsaSaloon                      => GetLocalized(
         UrsaSaloonEN,
-        UrsaSaloonCN
+        UrsaSaloonCN,
+        UrsaSaloonJP
     );                 // {35}
     public const string UrsaSaloonEN                      = "<b>Ursa Saloon</b>";
     public const string UrsaSaloonCN                      = "<b>Ursa Saloon</b>";
+    public const string UrsaSaloonJP                      = "<b>メスグマ亭</b>";
 
-    public static string Ballroom                        = GetLocalized(
+    public static string Ballroom                        => GetLocalized(
         BallroomEN,
-        BallroomCN
+        BallroomCN,
+        BallroomJP
     );                    // {36}
     public const string BallroomEN                        = "<b>Ballroom</b>";
     public const string BallroomCN                        = "<b>Ballroom</b>";
+    public const string BallroomJP                        = "<b>宴会場</b>";
 
-    public static string KelsingorMansion                = GetLocalized(
+    public static string KelsingorMansion                => GetLocalized(
         KelsingorMansionEN,
-        KelsingorMansionCN
+        KelsingorMansionCN,
+        KelsingorMansionJP
     );           // {37}
     public const string KelsingorMansionEN                = "<b>Kelsingør Mansion</b>";
     public const string KelsingorMansionCN                = "<b>Kelsingør Mansion</b>";
+    public const string KelsingorMansionJP                = "<b>ケルシンゲル邸</b>";
     
     public static string Kaffe                                                                  // {38}
     {
         get => GetLocalizedName(
             Names?._Kaffe,
             KaffeEN,
-            KaffeCN
+            KaffeCN,
+            KaffeJP
         );
         set => Names._Kaffe = value;
     }
@@ -270,40 +316,49 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Latte,
             LatteEN,
-            LatteCN
+            LatteCN,
+            LatteJP
         );
         set => Names._Latte = value;
     }
     
     public const string MagicCircle                     = "<b>Magic Circle</b>";                // {40}
     
-    public static string Menu                            = GetLocalized(
+    public static string Menu                            => GetLocalized(
         MenuEN,
-        MenuCN
+        MenuCN,
+        MenuJP
     );                        // {41}
     public const string MenuEN                            = "<b>Menu</b>";
     public const string MenuCN                            = "<b>Menu</b>";
+    public const string MenuJP                            = "<b>メニュー</b>";
     
-    public static string CursedOnes                      = GetLocalized(
+    public static string CursedOnes                      => GetLocalized(
         CursedOnesEN,
-        CursedOnesCN
+        CursedOnesCN,
+        CursedOnesJP
     );             // {42}
     public const string CursedOnesEN                      = "<b>Cursed Specters</b>";
     public const string CursedOnesCN                      = "<b>Cursed Specters</b>";
+    public const string CursedOnesJP                      = "<b>呪われし亡霊</b>";
 
-    public static string CursedOne                       = GetLocalized(
+    public static string CursedOne                       => GetLocalized(
         CursedOneEN,
-        CursedOneCN
+        CursedOneCN,
+        CursedOneJP
     );              // {43}
     public const string CursedOneEN                       = "<b>Cursed Specter</b>";
     public const string CursedOneCN                       = "<b>Cursed Specter</b>";
+    public const string CursedOneJP                       = "<b>呪われし亡霊</b>";
 
-    public static string Notes                           = GetLocalized(
+    public static string Notes                           => GetLocalized(
         NotesEN,
-        NotesCN
+        NotesCN,
+        NotesJP
     );                       // {44}
     public const string NotesEN                           = "<b>Notes</b>";
     public const string NotesCN                           = "<b>Notes</b>";
+    public const string NotesJP                           = "<b>音符</b>";
 
     public const string Thoughts                        = "<b>Thoughts</b>";                    // {45}
     public const string HeartsCapacity                  = "<b>Hearts Capacity</b>";             // {46}
@@ -323,7 +378,8 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._KingEclaire,
             KingEclaireEN,
-            KingEclaireCN
+            KingEclaireCN,
+            KingEclaireJP
         );
         set => Names._KingEclaire = value;
     }
@@ -333,31 +389,37 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Suzette,
             SuzetteEN,
-            SuzetteCN
+            SuzetteCN,
+            SuzetteJP
         );
         set => Names._Suzette = value;
     }
     
-    public static string Shiteater                       = GetLocalized(
+    public static string Shiteater                       => GetLocalized(
         ShiteaterEN,
-        ShiteaterCN
+        ShiteaterCN,
+        ShiteaterJP
     );                   // {59}
     public const string ShiteaterEN                       = "<b>shiteater</b>";
     public const string ShiteaterCN                       = "<b>shiteater</b>";
+    public const string ShiteaterJP                       = "<b>クソ野郎</b>";
 
-    public static string Shiteaters                      = GetLocalized(
+    public static string Shiteaters                      => GetLocalized(
         ShiteatersEN,
-        ShiteatersCN
+        ShiteatersCN,
+        ShiteatersJP
     );                  // {60}
     public const string ShiteatersEN                      = "<b>shiteaters</b>";
     public const string ShiteatersCN                      = "<b>shiteaters</b>";
+    public const string ShiteatersJP                      = "<b>クソ野郎</b>";
     
     public static string Peche                                                                  // {61}
     {
         get => GetLocalizedName(
             Names?._Peche,
             PecheEN,
-            PecheCN
+            PecheCN,
+            PecheJP
         );
         set => Names._Peche = value;
     }
@@ -367,7 +429,8 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Melba,
             MelbaEN,
-            MelbaCN
+            MelbaCN,
+            MelbaJP
         );
         set => Names._Melba = value;
     }
@@ -377,7 +440,8 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Moose,
             MooseEN,
-            MooseCN
+            MooseCN,
+            MooseJP
         );
         set => Names._Moose = value;
     }
@@ -387,193 +451,252 @@ public class Script_Names: MonoBehaviour
         get => GetLocalizedName(
             Names?._Flan,
             FlanEN,
-            FlanCN
+            FlanCN,
+            FlanJP
         );
         set => Names._Flan = value;
     }
     
-    public static string ActionSticker                   = GetLocalized(
+    public static string ActionSticker                   => GetLocalized(
         ActionStickerEN,
-        ActionStickerCN
+        ActionStickerCN,
+        ActionStickerJP
     );                 // {65}
     public const string ActionStickerEN                   = "<b>Active Mask</b>";
     public const string ActionStickerCN                   = "<b>Active Mask</b>";
+    public const string ActionStickerJP                   = "<b>着用中仮面</b>";
 
-    public static string LastElevator                    = GetLocalized(
+    public static string LastElevator                    => GetLocalized(
         LastElevatorEN,
-        LastElevatorCN
+        LastElevatorCN,
+        LastElevatorJP
     );               // {66}
     public const string LastElevatorEN                    = "<b>Last Elevator</b>";
     public const string LastElevatorCN                    = "<b>Last Elevator</b>";
+    public const string LastElevatorJP                    = "<b>最終エレベーター</b>";
     
     // These refer to Passive Effects.
-    public static string StickerSkill                    = GetLocalized(
+    public static string StickerSkill                    => GetLocalized(
         StickerSkillEN,
-        StickerSkillCN
+        StickerSkillCN,
+        StickerSkillJP
     );                 // {67}
     public const string StickerSkillEN                    = "<b>Mask Effect</b>";
     public const string StickerSkillCN                    = "<b>Mask Effect</b>";
+    public const string StickerSkillJP                    = "<b>仮面効果</b>";
     
-    public static string StickerSkills                   = GetLocalized(
+    public static string StickerSkills                   => GetLocalized(
         StickerSkillsEN,
-        StickerSkillsCN
+        StickerSkillsCN,
+        StickerSkillsJP
     );                // {68}
     public const string StickerSkillsEN                   = "<b>Mask Effects</b>";
     public const string StickerSkillsCN                   = "<b>Mask Effects</b>";
+    public const string StickerSkillsJP                   = "<b>仮面効果</b>";
 
     public const string Coconut                         = "<b>Coconut</b>";                     // {69}
     public const string WeekdayShift                    = "<b>Weekday Shift</b>";               // {70}
     public const string WeekendShift                    = "<b>Weekend Shift</b>";               // {71}
     
-    public static string ElevatorBay                     = GetLocalized(
+    public static string ElevatorBay                     => GetLocalized(
         ElevatorBayEN,
-        ElevatorBayCN
+        ElevatorBayCN,
+        ElevatorBayJP
     );                // {72}
     public const string ElevatorBayEN                     = "<b>Elevator Bay</b>";
     public const string ElevatorBayCN                     = "<b>Elevator Bay</b>";
+    public const string ElevatorBayJP                     = "<b>エレベーター前</b>";
     
-    public static string ControllableSpecters            = GetLocalized(
+    public static string ControllableSpecters            => GetLocalized(
         ControllableSpectersEN,
-        ControllableSpectersCN
+        ControllableSpectersCN,
+        ControllableSpectersJP
     );       // {73}
     public const string ControllableSpectersEN            = "<b>Controllable Specters</b>";
     public const string ControllableSpectersCN            = "<b>Controllable Specters</b>";   
-    
+    public const string ControllableSpectersJP            = "<b>操作可能な亡霊</b>";   
+
     public const string Unknown                         = "<b>???</b>";                         // {74}
 
-    public static string XXXWorld                        = GetLocalized(
+    public static string XXXWorld                        => GetLocalized(
         XXXWorldEN,
-        XXXWorldCN
+        XXXWorldCN,
+        XXXWorldJP
     );                   // {75}
     public const string XXXWorldEN                        = "<b>XXX World</b>";
     public const string XXXWorldCN                        = "<b>XXX World</b>";
+    public const string XXXWorldJP                        = "<b>XXX世界</b>";
 
-    public static string OtherSide                       = GetLocalized(
+    public static string OtherSide                       => GetLocalized(
         OtherSideEN,
-        OtherSideCN
+        OtherSideCN,
+        OtherSideJP
     );                  // {76}
     public const string OtherSideEN                       = "<b>other side</b>";
     public const string OtherSideCN                       = "<b>other side</b>";
+    public const string OtherSideJP                       = "<b>異界</b>";
 
-    public static string NauticalDawn                    = GetLocalized(
+    public static string NauticalDawn                    => GetLocalized(
         NauticalDawnEN,
-        NauticalDawnCN
+        NauticalDawnCN,
+        NauticalDawnJP
     );               // {77}
     public const string NauticalDawnEN                    = "<b>Nautical Dawn</b>";
     public const string NauticalDawnCN                    = "<b>Nautical Dawn</b>";
+    public const string NauticalDawnJP                    = "<b>航海薄明</b>";
 
-    public static string DarkDarkHall                    = GetLocalized(
+    public static string DarkDarkHall                    => GetLocalized(
         DarkDarkHallEN,
-        DarkDarkHallCN
+        DarkDarkHallCN,
+        DarkDarkHallJP
     );              // {78}
     public const string DarkDarkHallEN                    = "<b>Dark Dark Hall</b>";
     public const string DarkDarkHallCN                    = "<b>Dark Dark Hall</b>";
+    public const string DarkDarkHallJP                    = "<b>闇々の間</b>";
     
     // The Active Mask Command.
-    public static string ActiveStickerCommand            = GetLocalized(
+    public static string ActiveStickerCommand            => GetLocalized(
         ActiveStickerCommandEN,
-        ActiveStickerCommandCN
+        ActiveStickerCommandCN,
+        ActiveStickerCommandJP
     );                // {79}
     public const string ActiveStickerCommandEN            = "<b>Mask Command</b>";
     public const string ActiveStickerCommandCN            = "<b>Mask Command</b>";
+    public const string ActiveStickerCommandJP            = "<b>仮面能力</b>";
 
-    public static string SwitchActiveSticker             = GetLocalized(
+    public static string SwitchActiveSticker             => GetLocalized(
         SwitchActiveStickerEN,
-        SwitchActiveStickerCN
+        SwitchActiveStickerCN,
+        SwitchActiveStickerJP
     );                   // {80}
     public const string SwitchActiveStickerEN             = "<b>Wear Mask</b>";
     public const string SwitchActiveStickerCN             = "<b>Wear Mask</b>";
+    public const string SwitchActiveStickerJP             = "<b>仮面着用</b>";
 
-    public static string Prep                            = GetLocalized(
+    public static string Prep                            => GetLocalized(
         PrepEN,
-        PrepCN
+        PrepCN,
+        PrepJP
     );                        // {81}
     public const string PrepEN                            = "<b>Prep</b>";
     public const string PrepCN                            = "<b>Prep</b>";
+    public const string PrepJP                            = "<b>準備</b>";
 
     public const string SwitchActiveStickerKeyCodes     = "<b>1, 2, 3, 4</b>";                  // {82}
     
-    public static string Elder                           = GetLocalized(
+    public static string Elder                           => GetLocalized(
         ElderEN,
-        ElderCN
+        ElderCN,
+        ElderJP
     );                       // {83}
     public const string ElderEN                           = "<b>Elder</b>";
     public const string ElderCN                           = "<b>Elder</b>";
+    public const string ElderJP                           = "<b>長老</b>";
 
-    public static string WellsWorld                      = GetLocalized(
+    public static string WellsWorld                      => GetLocalized(
         WellsWorldEN,
-        WellsWorldCN
+        WellsWorldCN,
+        WellsWorldJP
     );                 // {84}
     public const string WellsWorldEN                      = "<b>Wells World</b>";
     public const string WellsWorldCN                      = "<b>Wells World</b>";
+    public const string WellsWorldJP                      = "<b>井戸世界</b>";
 
-    public static string CelestialGardensWorld           = GetLocalized(
+    public static string CelestialGardensWorld           => GetLocalized(
         CelestialGardensWorldEN,
-        CelestialGardensWorldCN
+        CelestialGardensWorldCN,
+        CelestialGardensWorldJP
     );     // {85}
     public const string CelestialGardensWorldEN           = "<b>Celestial Gardens World</b>";
     public const string CelestialGardensWorldCN           = "<b>Celestial Gardens World</b>";
+    public const string CelestialGardensWorldJP           = "<b>天空庭園世界</b>";
 
-    public static string OwnerPlain                      = GetLocalized(
+    public static string OwnerPlain                      => GetLocalized(
         OwnerPlainEN,
-        OwnerPlainCN
+        OwnerPlainCN,
+        OwnerPlainJP
     );                              // {86}
     public const string OwnerPlainEN                      = "owner";
     public const string OwnerPlainCN                      = "owner";
+    public const string OwnerPlainJP                      = "オーナー";
 
-    public static string RockGarden                      = GetLocalized(
+    public static string RockGarden                      => GetLocalized(
         RockGardenEN,
-        RockGardenCN
+        RockGardenCN,
+        RockGardenJP
     );         // {87}
     public const string RockGardenEN                      = "<b>Hidden Field of Sin</b>";
     public const string RockGardenCN                      = "<b>Hidden Field of Sin</b>";
+    public const string RockGardenJP                      = "<b>罪の隠れ野</b>";
     
-    public static string MirrorHalls                     = GetLocalized(
+    public static string MirrorHalls                     => GetLocalized(
         MirrorHallsEN,
-        MirrorHallsCN
+        MirrorHallsCN,
+        MirrorHallsJP
     ); // {88}
     public const string MirrorHallsEN                     = "<b>Mirror Halls</b>";
     public const string MirrorHallsCN                     = "<b>Mirror Halls</b>";
+    public const string MirrorHallsJP                     = "<b>鏡の間</b>";
 
-    public static string HallwayToBasement               = GetLocalized(
+    public static string HallwayToBasement               => GetLocalized(
         HallwayToBasementEN,
-        HallwayToBasementCN
+        HallwayToBasementCN,
+        HallwayToBasementJP
     ); // {89}
     public const string HallwayToBasementEN               = "<b>Passage to the Depths</b>";
     public const string HallwayToBasementCN               = "<b>Passage to the Depths</b>";
+    public const string HallwayToBasementJP               = "<b>深淵への道</b>";
     
     // Ids will be introduced at this point (beginning of Day 2)    
-    public static string Basement                        = GetLocalized(
+    public static string Basement                        => GetLocalized(
         BasementEN,
-        BasementCN
+        BasementCN,
+        BasementJP
     ); // {90}
     public const string BasementEN                        = "<b>Ids’ Vault</b>";
     public const string BasementCN                        = "<b>Ids’ Vault</b>";
+    public const string BasementJP                        = "<b>イデスの金庫</b>";
 
-    public static string InsideAPainting                 = GetLocalized(
+    public static string InsideAPainting                 => GetLocalized(
         InsideAPaintingEN,
-        InsideAPaintingCN
+        InsideAPaintingCN,
+        InsideAPaintingJP
     ); // {91}
     public const string InsideAPaintingEN                 = "<b>Inside a Painting</b>";
     public const string InsideAPaintingCN                 = "<b>Inside a Painting</b>";
+    public const string InsideAPaintingJP                 = "<b>絵画の内側</b>";
     
     // Specify Room bc first room to encounter, sets stage
-    public static string DiningRoom                      = GetLocalized(
+    public static string DiningRoom                      => GetLocalized(
         DiningRoomEN,
-        DiningRoomCN
+        DiningRoomCN,
+        DiningRoomJP
     ); // {92}
     public const string DiningRoomEN                      = "<b>Parlor Room</b>";
     public const string DiningRoomCN                      = "<b>Parlor Room</b>";
+    public const string DiningRoomJP                      = "<b>客間</b>";
 
     public const string R2CursedTime                    = "<b>5:30 a.m.</b>"; // {93}
     public const string IdsDeadTime                     = "<b>5:45 a.m.</b>"; // {94}
     
-    public static string HotelLobby                      = GetLocalized(
+    public static string HotelLobby                      => GetLocalized(
         HotelLobbyEN,
-        HotelLobbyCN
+        HotelLobbyCN,
+        HotelLobbyJP
     ); // {95}
     public const string HotelLobbyEN                      = "<b>Hotel Lobby</b>";
     public const string HotelLobbyCN                      = "<b>Hotel Lobby</b>";
+    public const string HotelLobbyJP                      = "<b>ロビー</b>";
+
+    // Used by new game Name input default value
+    public static string RinPlain                      => GetLocalized(
+        RinPlainEN,
+        RinPlainCN,
+        RinPlainJP
+    ); // {96}
+    public const string RinPlainEN                      = "Rin";
+    public const string RinPlainCN                      = "Rin";
+    public const string RinPlainJP                      = "リン";
 
 
     // ------------------------------------------------------------------
@@ -603,6 +726,7 @@ public class Script_Names: MonoBehaviour
     public static void UpdateIds() { Ids                                        = IdsEN; }
     public const string IdsEN                                                   = "<b>Ids</b>";
     public const string IdsCN                                                   = "<b>第四</b>";
+    public const string IdsJP                                                   = "<b>イデス</b>";
     public static string IdsNameStateEN() => GetStateNameEN(Names?._Ids, IdsEN);
     
     public static void UpdateEro() { Ero                                        = "<b>Ero</b>"; }
@@ -611,18 +735,21 @@ public class Script_Names: MonoBehaviour
     public static void UpdateMyne() { Myne                                      = MyneEN; }
     public const string MyneEN                                                  = "<b>Myne</b>";
     public const string MyneCN                                                  = "<b>我是</b>";
+    public const string MyneJP                                                  = "<b>マイン</b>";
     public static string MyneNameStateEN() => GetStateNameEN(Names?._Myne, MyneEN);
 
     // Refs: (1) Eileen's room via UpdateSisters in Level Behavior
     public static void UpdateEileen() { Eileen                                  = EileenEN; }
     public const string EileenEN                                                = "<b>Eileen</b>";
     public const string EileenCN                                                = "<b>我是</b>";
+    public const string EileenJP                                                = "<b>エイリーン</b>";
     public static string EileenNameStateEN() => GetStateNameEN(Names?._Eileen, EileenEN);
     
     // Refs: (1) Eileen's room via UpdateSisters in Level Behavior
     public static void UpdateEllenia() { Ellenia                                = ElleniaEN; }
     public const string ElleniaEN                                               = "<b>Ellenia</b>";
     public const string ElleniaCN                                               = "<b>我是</b>";
+    public const string ElleniaJP                                               = "<b>エレニア</b>";
     public static string ElleniaNameStateEN() => GetStateNameEN(Names?._Ellenia, ElleniaEN);
     
     // Refs: (1) Eileen's room
@@ -637,54 +764,63 @@ public class Script_Names: MonoBehaviour
     public static void UpdateUrsie() { Ursie                                    = UrsieEN; }
     public const string UrsieEN                                                 = "<b>Ursie</b>";
     public const string UrsieCN                                                 = "<b>我是</b>";
+    public const string UrsieJP                                                 = "<b>ウルシー</b>";
     public static string UrsieNameStateEN() => GetStateNameEN(Names?._Ursie, UrsieEN);
     
     // Refs: (1) Kaffe & Latte's Dialogue in Ballroom
     public static void UpdateKaffe() { Kaffe                                    = KaffeEN; }
     public const string KaffeEN                                                 = "<b>Kaffe</b>";
     public const string KaffeCN                                                 = "<b>我是</b>";
+    public const string KaffeJP                                                 = "<b>カフェ</b>";
     public static string KaffeNameStateEN() => GetStateNameEN(Names?._Kaffe, KaffeEN);
     
     // Refs: (1) Kaffe & Latte's Dialogue in Ballroom
     public static void UpdateLatte() { Latte                                    = LatteEN; }
     public const string LatteEN                                                 = "<b>Latte</b>";
     public const string LatteCN                                                 = "<b>我是</b>";
+    public const string LatteJP                                                 = "<b>ラテ</b>";
     public static string LatteNameStateEN() => GetStateNameEN(Names?._Latte, LatteEN);
     
     // Refs: (1) King's Dialogue in Ballroom
     public static void UpdateKingEclaire() { KingEclaire                        = KingEclaireEN; }
     public const string KingEclaireEN                                           = "<b>Elder Eclaire</b>";
     public const string KingEclaireCN                                           = "<b>我是</b>";
+    public const string KingEclaireJP                                           = "<b>長老エクレア</b>";
     public static string KingEclaireNameStateEN() => GetStateNameEN(Names?._KingEclaire, KingEclaireEN);
     
     // Refs: (1) Suzette's Dialogue in Ballroom
     public static void UpdateSuzette() { Suzette                                = SuzetteEN; }
     public const string SuzetteEN                                               = "<b>Suzette</b>";
     public const string SuzetteCN                                               = "<b>我是</b>";
+    public const string SuzetteJP                                               = "<b>シュゼット</b>";
     public static string SuzetteNameStateEN() => GetStateNameEN(Names?._Suzette, SuzetteEN);
     
     // Refs: (1) Peche & Melba's Dialogue in Ballroom
     public static void UpdatePeche() { Peche                                    = PecheEN; }
     public const string PecheEN                                                 = "<b>Peche</b>";
     public const string PecheCN                                                 = "<b>我是</b>";
+    public const string PecheJP                                                 = "<b>ペーシェ</b>";
     public static string PecheNameStateEN() => GetStateNameEN(Names?._Peche, PecheEN);
     
     // Refs: (1) Peche & Melba's Dialogue in Ballroom
     public static void UpdateMelba() { Melba                                    = MelbaEN; }
     public const string MelbaEN                                                 = "<b>Melba</b>";
     public const string MelbaCN                                                 = "<b>我是</b>";
+    public const string MelbaJP                                                 = "<b>メルバ</b>";
     public static string MelbaNameStateEN() => GetStateNameEN(Names?._Melba, MelbaEN);
 
     // Refs: (1) After completing Moose quest in Wells World
     public static void UpdateMoose() { Moose                                    = MooseEN; }
     public const string MooseEN                                                 = "<b>Moose</b>";
     public const string MooseCN                                                 = "<b>我是</b>";
+    public const string MooseJP                                                 = "<b>ムース</b>";
     public static string MooseNameStateEN() => GetStateNameEN(Names?._Moose, MooseEN);
 
     // Refs: (1) After Flan unblocks Hallway
     public static void UpdateFlan() { Flan                                      = FlanEN; }
     public const string FlanEN                                                  = "<b>Flan the Guard</b>";
     public const string FlanCN                                                  = "<b>我是</b>";
+    public const string FlanJP                                                  = "<b>フラン</b>";
     public static string FlanNameStateEN() => GetStateNameEN(Names?._Flan, FlanEN);
 
     // ------------------------------------------------------------------
@@ -725,30 +861,35 @@ public class Script_Names: MonoBehaviour
         UpdatePeche();
         UpdateMelba();
         UpdateFlan();
+        UpdateMoose();
     }
 
     private static string GetLocalizedName
     (
         string name,
         string EN,
-        string CN
+        string CN,
+        string JP
     )
     {
         return name == null || name.Contains(TripleQuestionMark)
             ? UnknownName
             : GetLocalized(
                 EN,
-                CN
+                CN,
+                JP
             );
     }
 
     private static string GetLocalized
     (
         string EN,
-        string CN
+        string CN,
+        string JP
     ) => Script_LocalizationUtils.SwitchTextOnLang(
         EN,
-        CN
+        CN,
+        JP
     );
 
     private static string GetStateNameEN(string name, string EN)

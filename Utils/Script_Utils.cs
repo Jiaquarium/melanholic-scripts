@@ -445,7 +445,9 @@ public static class Script_Utils
             Script_Names.InsideAPainting,               // {91}
             Script_Names.DiningRoom,                    // {92}
             Script_Names.R2CursedTime,                  // {93}
-            Script_Names.IdsDeadTime                    // {94}
+            Script_Names.IdsDeadTime,                   // {94}
+            Script_Names.HotelLobby,                    // {95}
+            Script_Names.RinPlain                       // {96}
         );
     }
 
@@ -697,7 +699,13 @@ public static class Script_Utils
 
     public static string FormatTotalPlayTime(this float t)
     {
-        return $"Total time: {t.FormatSecondsHrMinSec()}";
+        string totalTimeText = Script_LocalizationUtils.SwitchTextOnLang(
+            EN_text: Script_UIText.Text[Script_SavedGameTitle.TotalTimeId].EN,
+            CN_text: Script_UIText.Text[Script_SavedGameTitle.TotalTimeId].CN,
+            JP_text: Script_UIText.Text[Script_SavedGameTitle.TotalTimeId].JP
+        );
+        
+        return $"{totalTimeText}: {t.FormatSecondsHrMinSec()}";
     }
 
     public static string FormatSecondsClock(this float t, bool isClose, bool hideColons = false)
@@ -741,12 +749,67 @@ public static class Script_Utils
 
     public static string FormatLastPlayedDateTime(this DateTime date)
     {
-        return $"Last played: {date.FormatDateTime()}";
+        string lastPlayedText = Script_LocalizationUtils.SwitchTextOnLang(
+            EN_text: Script_UIText.Text[Script_SavedGameTitle.LastPlayedId].EN,
+            CN_text: Script_UIText.Text[Script_SavedGameTitle.LastPlayedId].CN,
+            JP_text: Script_UIText.Text[Script_SavedGameTitle.LastPlayedId].JP
+        );
+        
+        return $"{lastPlayedText}: {date.FormatDateTime()}";
     }
 
     public static string FormatRun(this string run)
     {
         return $"{run.ToString()}";
+    }
+
+    /// <summary>
+    /// Checks displayDayName with EN options to determine the corresponding ID. Then, use this ID
+    /// to return the corresponding localized string.
+    /// </summary>
+    /// <param name="displayDayName">
+    /// Current day/cycle name for Saved Game Title UI (e.g. Final Night) in EN. Always saved in EN.
+    /// </param>
+    /// <returns>The corresponding localized string for day/cycle for Saved Game Title UI</returns>
+    public static string FormatDisplayDayName(this string displayDayName)
+    {
+        var trimmedDayName = displayDayName.Trim();
+        string id;
+
+        if (trimmedDayName == (
+                Script_UIText.Text[Script_RunsManager.SaveFileDayNameSatId]
+                    .GetProp<string>(Const_Languages.EN) ?? string.Empty).Trim()
+        )
+        {
+            id = Script_RunsManager.SaveFileDayNameSatId;
+        }
+        else if (trimmedDayName == (
+            Script_UIText.Text[Script_RunsManager.SaveFileDayNameSatR2Id]
+                .GetProp<string>(Const_Languages.EN) ?? string.Empty).Trim()
+        )
+        {
+            id = Script_RunsManager.SaveFileDayNameSatR2Id;
+        }
+        else if (trimmedDayName == (
+            Script_UIText.Text[Script_RunsManager.SaveFileDayNameSunId]
+                .GetProp<string>(Const_Languages.EN) ?? string.Empty).Trim()
+        )
+        {
+            id = Script_RunsManager.SaveFileDayNameSunId;
+        }
+        else
+        {
+            // In case the display name is corrupted data
+            id = Script_RunsManager.SaveFileDayNameSatId;
+        }
+
+        var localizedDisplayDayName = Script_LocalizationUtils.SwitchTextOnLang(
+            Script_UIText.Text[id].GetProp<string>(Const_Languages.EN) ?? string.Empty,
+            Script_UIText.Text[id].GetProp<string>(Const_Languages.CN) ?? string.Empty,
+            Script_UIText.Text[id].GetProp<string>(Const_Languages.JP) ?? string.Empty
+        );
+
+        return localizedDisplayDayName;
     }
 
     public static string FormatCycleCount(this int count)
@@ -1436,6 +1499,10 @@ public static class Script_Utils
 
     public static bool IsSteamDeck()
     {
+#if FORCE_DISABLE_STEAMWORKS
+        return false;
+#endif
+        
         if (!SteamManager.Initialized)
             return false;
         

@@ -13,18 +13,29 @@ public class Script_TMProSetFontUniqueStyle : Script_TMProSetFontUnique
     [SerializeField] private TextStyle textStyle;
     private Script_TextStyle myTextStyle;
     [SerializeField] private Script_TMProSetUniqueAttributes uniqueAttributes;
+    [Space]
+    [SerializeField] private bool isForceTextOverride;
+    [SerializeField] private Script_TextStyle ENOverride;
+    [SerializeField] private Script_TextStyle CNOverride;
+    [SerializeField] private Script_TextStyle JPOverride;
 
     public Script_TextStylesManager TextStylesManager { get => textStylesManager; }
     
     public override void SetFontAttributes()
     {
         // To prevent editor prefab errors
-        if (textStylesManager == null)
+        if (textStylesManager == null && !isForceTextOverride)
             return;
         
         text = GetComponent<TextMeshProUGUI>();
 
-        myTextStyle = textStylesManager.GetTextStyle(textStyle);
+        myTextStyle = isForceTextOverride
+            ? Script_LocalizationUtils.SwitchTextStyleOnLang(
+                ENOverride,
+                CNOverride,
+                JPOverride
+            )
+            : textStylesManager.GetTextStyle(textStyle);
 
         font = myTextStyle.fontAsset;
         text.font = font;
@@ -34,12 +45,16 @@ public class Script_TMProSetFontUniqueStyle : Script_TMProSetFontUnique
         text.lineSpacing = myTextStyle.lineSpacing;
         text.wordSpacing = myTextStyle.wordSpacing;
 
+        if (myTextStyle.isForceFontStyle)
+            text.fontStyle = myTextStyle.fontStyle;
+
         if (uniqueAttributes != null)
             uniqueAttributes.SetUniqueAttributes(text);
     }
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Script_TMProSetFontUniqueStyle))]
+    [CanEditMultipleObjects]
     public class Script_TMProSetFontUniqueStyleTester : Editor
     {
         public override void OnInspectorGUI() {

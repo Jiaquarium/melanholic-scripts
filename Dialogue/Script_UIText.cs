@@ -1,4 +1,4 @@
-// Last created by UI Exporter at 2024-04-06 17:45:25
+// Last created by UI Exporter at 2024-04-11 16:01:02
 
 using System.Collections;
 using System.Collections.Generic;
@@ -1802,7 +1802,7 @@ This would not have been possible without your feedback, course corrections, and
     {
         EN = @"Chapter <size=40>3</size>: {75}",
         CN = @"Chapter <size=40>3</size>: {75}",
-        JP = @"第<size=40>３</size>章<br>{75}"
+        JP = @"第<size=40>３</size>章 {75}"
     }
 },
 // ------------------------------------------------------------------
@@ -2390,7 +2390,7 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?",
     {
         EN = @"Yes",
         CN = @"Yes",
-        JP = @"Yes"
+        JP = @"はい"
     }
 },
 {
@@ -2399,7 +2399,7 @@ How’s the <b>{0}</b> <b>Spritz</b> sound?",
     {
         EN = @"No",
         CN = @"No",
-        JP = @"No"
+        JP = @"いいえ"
     }
 },
 // ------------------------------------------------------------------
@@ -3345,6 +3345,15 @@ Use the keyboard to select a control to begin listening for input.",
         EN = @"Cannot overwrite Hotkeys",
         CN = @"Cannot overwrite Hotkeys",
         JP = @"ホットキーは上書きできません"
+    }
+},
+{
+    "controls_names_right-joystick",
+    new Model_LanguagesUI
+    {
+        EN = @"Right Joystick",
+        CN = @"Right Joystick",
+        JP = @"Right Joystick"
     }
 },
 // ------------------------------------------------------------------

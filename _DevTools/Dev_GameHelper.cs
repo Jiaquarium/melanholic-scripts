@@ -74,6 +74,7 @@ public class Dev_GameHelper : MonoBehaviour
     [SerializeField] private Script_ExitMetadataObject CatWalkEntrance;
     [SerializeField] private Script_ExitMetadataObject UnderworldEntrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorEntrance;
+    [SerializeField] private Script_ExitMetadataObject GrandMirrorR2Entrance;
     [SerializeField] private Script_ExitMetadataObject GrandMirrorFrontOfMirror;
     [SerializeField] private Script_ExitMetadataObject CelestialGardensEntrance;
     [SerializeField] private Script_ExitMetadataObject RockGardenEntrance;
@@ -473,6 +474,12 @@ public class Dev_GameHelper : MonoBehaviour
     public void ExitToGrandMirrorFrontOfMirror()
     {
         Teleport(GrandMirrorFrontOfMirror);
+    }
+
+    public void ExitToGrandMirrorR2Entrance()
+    {
+        Script_Game.Game.grandMirrorRoomBehavior.IsFinalRound = true;
+        Teleport(GrandMirrorR2Entrance);
     }
 
     public void ExitToGrandMirrorFrontOfMirrorR2()
@@ -1100,7 +1107,7 @@ public class Dev_GameHelper : MonoBehaviour
     /// </summary>
     public void TeleportGrandMirrorR2()
     {
-        ExitToGrandMirrorFrontOfMirrorR2();
+        ExitToGrandMirrorR2Entrance();
         HandleGrandMirrorR2Mask();
     }
 
@@ -1230,6 +1237,148 @@ public class Dev_GameHelper : MonoBehaviour
 
             saveDevCanvas.Close();
         }
+    }
+
+    // ----------------------------------------------------------------------
+    // Localization
+
+    private void UpdateAllCharacterNames()
+    {
+        Script_Names.UpdateR1Names();
+    }
+    
+    private void PrintCharacterNames()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.Log("<color=red>This method only works in Play Mode</color>");
+            return;
+        }
+        
+        var color = "white";
+        var characterNames = "-------- CHARACTER NAMES --------\n"
+            + $"Rin: <color={color}>{{0}}</color>\n"
+            + $"Ids: <color={color}>{{3}}</color>\n"
+            + $"Myne: <color={color}>{{10}}</color>\n"
+            + $"Eileen: <color={color}>{{11}}</color>\n"
+            + $"Ellenia: <color={color}>{{12}}</color>\n"
+            + $"Flan: <color={color}>{{64}}</color>\n"
+            + $"Ursie: <color={color}>{{33}}</color>\n"
+            + $"Kaffe: <color={color}>{{38}}</color>\n"
+            + $"Latte: <color={color}>{{39}}</color>\n"
+            + $"Elder Eclaire: <color={color}>{{57}}</color>\n"
+            + $"Suzette: <color={color}>{{58}}</color>\n"
+            + $"Peche: <color={color}>{{61}}</color>\n"
+            + $"Melba: <color={color}>{{62}}</color>\n"
+            + $"Moose: <color={color}>{{63}}</color>\n"
+            + $"???: <color={color}>{{74}}</color>\n";
+
+        Debug.Log(characterNames.FormatString());
+    }
+
+    private void PrintOtherNames()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.Log("<color=red>This method only works in Play Mode</color>");
+            return;
+        }
+        
+        var color = "white";
+        var otherNames = $"-------- MAP NAMES - {Script_Game.Lang} --------\n"
+            + $"XXX World: <color={color}>{{75}}</color>\n"
+            + $"Wells World: <color={color}>{{84}}</color>\n"
+            + $"Celestial Gardens World: <color={color}>{{85}}</color>\n"
+            + "\n"
+            + $"Elevator Bay: <color={color}>{{72}}</color>\n"
+            + $"Dark Dark Hall: <color={color}>{{78}}</color>\n"
+            + $"Catwalk in the Sky: <color={color}>{{20}}</color>\n"
+            + $"Ursa Saloon: <color={color}>{{35}}</color>\n"
+            + $"Ursa Saloon Hallway: <color={color}>{{29}}</color>\n"
+            + $"Ballroom: <color={color}>{{36}}</color>\n"
+            + $"Hidden Field of Sin: <color={color}>{{87}}</color>\n"
+            + $"Mirror Halls: <color={color}>{{88}}</color>\n"
+            + $"Passage to the Depths: <color={color}>{{89}}</color>\n"
+            + $"Ids' Vault: <color={color}>{{90}}</color>\n"
+            + $"Inside a Painting: <color={color}>{{91}}</color>\n"
+            + $"Parlor Room: <color={color}>{{92}}</color>\n"
+            + $"Hotel Lobby: <color={color}>{{95}}</color>\n"
+            + "\n-------- LORE --------\n"
+            + $"Urselk: <color={color}>{{6}}</color>\n"
+            + $"Urselks: <color={color}>{{7}}</color>\n"
+            + $"<b>owner</b>: <color={color}>{{8}}</color>\n"
+            + $"owner: <color={color}>{{86}}</color>\n"
+            + $"Specter: <color={color}>{{13}}</color>\n"
+            + $"Specters: <color={color}>{{19}}</color>\n"
+            + $"Cursed Specter: <color={color}>{{43}}</color>\n"
+            + $"Cursed Specters: <color={color}>{{42}}</color>\n"
+            + $"Controllable Specters: <color={color}>{{73}}</color>\n"
+            + $"Kelsingør: <color={color}>{{18}}</color>\n"
+            + $"Kelsingør Mansion: <color={color}>{{37}}</color>\n"
+            + $"Sheepluff: <color={color}>{{21}}</color>\n"
+            + $"Sealing: <color={color}>{{22}}</color>\n"
+            + $"Master: <color={color}>{{31}}</color>\n"
+            + $"shiteater: <color={color}>{{59}}</color>\n"
+            + $"shiteaters: <color={color}>{{60}}</color>\n"
+            + $"Elder: <color={color}>{{83}}</color>\n"
+            + $"Last Elevator: <color={color}>{{66}}</color>\n"
+            + $"other side: <color={color}>{{76}}</color>\n"
+            + $"Nautical Dawn: <color={color}>{{77}}</color>\n"
+            + "\n-------- UI --------\n"
+            + $"mask: <color={color}>{{1}}</color>\n"
+            + $"Prepped Masks: <color={color}>{{5}}</color>\n"
+            + $"Impermanent: <color={color}>{{9}}</color>\n"
+            + $"the <b>Wear Mask 1-4</b> commands: <color={color}>{{15}}</color>\n"
+            + $"Inventory: <color={color}>{{32}}</color>\n"
+            + $"Menu: <color={color}>{{41}}</color>\n"
+            + $"Notes: <color={color}>{{44}}</color>\n"
+            + $"Active Mask: <color={color}>{{65}}</color>\n"
+            + $"Mask Effect: <color={color}>{{67}}</color>\n"
+            + $"Mask Effects: <color={color}>{{68}}</color>\n"
+            + $"Mask Command: <color={color}>{{79}}</color>\n"
+            + $"Wear Mask: <color={color}>{{80}}</color>\n"
+            + $"Prep: <color={color}>{{81}}</color>\n";
+        
+        Debug.Log(otherNames.FormatString());
+    }
+
+    private void PrintItems()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.Log("<color=red>This method only works in Play Mode</color>");
+            return;
+        }
+
+        var color = "white";
+        var itemNames = "-------- ITEM NAMES --------\n"
+            + $"<b>Mask</b>: <color={color}>@@Sticker_Bold</color>\n"
+            + $"Mask: <color={color}>@@Sticker_NoBold</color>\n"
+            + $"<b>Masks</b>: <color={color}>@@Stickers_Bold</color>\n"
+            + $"Masks: <color={color}>@@Stickers_NoBold</color>\n"
+            + "\n"
+            + $"Psychic Duck: <color={color}>@@PsychicDuck</color>\n"
+            + $"Third Eye: <color={color}>@@BoarNeedle</color>\n"
+            + $"Animal Within: <color={color}>@@AnimalWithin</color>\n"
+            + $"Snow Woman: <color={color}>@@IceSpike</color>\n"
+            + $"Melancholy Piano: <color={color}>@@MelancholyPiano</color>\n"
+            + $"Last Elevator: <color={color}>@@LastElevator</color>\n"
+            + $"Lantern: <color={color}>@@LetThereBeLight</color>\n"
+            + $"Puppeteer: <color={color}>@@Puppeteer</color>\n"
+            + $"Summoner of Self: <color={color}>@@MyMask</color>\n"
+            + "\n"
+            + $"Master Key: <color={color}>@@MasterKey</color>\n"
+            + $"Super Small Key: <color={color}>@@SuperSmallKey</color>\n"
+            + "\n"
+            + $"Winter Stone: <color={color}>@@WinterStone</color>\n"
+            + $"Autumn Stone: <color={color}>@@AutumnStone</color>\n"
+            + $"Summer Stone: <color={color}>@@SummerStone</color>\n"
+            + $"Spring Stone: <color={color}>@@SpringStone</color>\n"
+            + $"Last Well Map: <color={color}>@@LastWellMap</color>\n"
+            + $"Last Spell Recipe Book: <color={color}>@@LastSpellRecipeBook</color>\n"
+            + $"Speed Seal: <color={color}>@@SpeedSeal</color>\n";
+        
+        Debug.Log(itemNames.FormatString());
     }
 
     // ----------------------------------------------------------------------
@@ -1682,6 +1831,12 @@ public class Dev_GameHelper : MonoBehaviour
             showUISettings = EditorGUILayout.Foldout(showUISettings, "UI Settings", style);
             if (showUISettings)
             {
+                if (GUILayout.Button("Game.IsSteamRunningOnSteamDeck = true"))
+                {
+                    Script_Game.IsSteamRunningOnSteamDeck = true;
+                    Debug.Log($"Set Script_Game.IsSteamRunningOnSteamDeck to {Script_Game.IsSteamRunningOnSteamDeck}");
+                }
+                
                 if (GUILayout.Button("Hide UI / Pause Clock"))
                 {
                     t.SetUIActive(false);
@@ -1728,6 +1883,28 @@ public class Dev_GameHelper : MonoBehaviour
                 if (GUILayout.Button("Build Item Strings - CN"))
                 {
                     Script_ItemStringBuilder.BuildParams(Const_Languages.CN);
+                }
+                
+                EditorGUILayout.LabelField("Names", EditorStyles.miniLabel);
+
+                if (GUILayout.Button("Update All Character Names"))
+                {
+                    t.UpdateAllCharacterNames();
+                }
+                
+                if (GUILayout.Button("Print Character Names"))
+                {
+                    t.PrintCharacterNames();
+                }
+
+                if (GUILayout.Button("Print Other Names"))
+                {
+                    t.PrintOtherNames();   
+                }
+
+                if (GUILayout.Button("Print Items"))
+                {
+                    t.PrintItems();   
                 }
             }
         }

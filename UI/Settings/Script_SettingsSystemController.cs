@@ -105,6 +105,7 @@ public class Script_SettingsSystemController : MonoBehaviour
     [SerializeField] private Button langPrefButton;
     [SerializeField] private Button langPrefButtonAbove;
     [SerializeField] private Button langPrefButtonBelow;
+    [SerializeField] private RectTransform langPrefSpace;
     
     [Space][Header("---- General ----")][Space]
     [SerializeField] private Script_SettingsController settingsController;
@@ -676,6 +677,8 @@ public class Script_SettingsSystemController : MonoBehaviour
             langPrefButton.gameObject.SetActive(false);
             SetDisableLangPrefNav();
         }
+        else
+            langPrefSpace.gameObject.SetActive(false);
         
         // ------------------------------------------------------------
         // TBD Add back only below for v1.2.0

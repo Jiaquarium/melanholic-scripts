@@ -11,4 +11,7 @@ public class Script_TextStyle : ScriptableObject
     public float characterSpacing;
     public float lineSpacing;
     public float wordSpacing;
+    [Space]
+    public bool isForceFontStyle;
+    public FontStyles fontStyle;
 }
