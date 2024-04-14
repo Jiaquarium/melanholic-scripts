@@ -70,6 +70,7 @@ public enum TextStyle
     EileensMindDoubtTitle0 = 59,
     EileensMindDoubtTitle1 = 60,
     EileensMindDoubtAsterisk = 61,
+    SettingsKeyItalic = 62,
 }
 
 public class Script_TextStylesManager : MonoBehaviour
@@ -190,6 +191,10 @@ public class Script_TextStylesManager : MonoBehaviour
     [SerializeField] private Script_TextStyle SettingsKeyUpperStyle;
     [SerializeField] private Script_TextStyle CN_SettingsKeyUpperStyle;
     [SerializeField] private Script_TextStyle JP_SettingsKeyUpperStyle;
+    [Space]
+    [SerializeField] private Script_TextStyle SettingsKeyItalicStyle;
+    [SerializeField] private Script_TextStyle CN_SettingsKeyItalicStyle;
+    [SerializeField] private Script_TextStyle JP_SettingsKeyItalicStyle;
     [Space]
     [SerializeField] private Script_TextStyle SettingsWarningStyle;
     [SerializeField] private Script_TextStyle CN_SettingsWarningStyle;
@@ -637,6 +642,11 @@ public class Script_TextStylesManager : MonoBehaviour
             EileensMindDoubtAsteriskStyle,
             CN_EileensMindDoubtAsteriskStyle,
             JP_EileensMindDoubtAsteriskStyle
+        ),
+        TextStyle.SettingsKeyItalic => GetLocalized(
+            SettingsKeyItalicStyle,
+            CN_SettingsKeyItalicStyle,
+            JP_SettingsKeyItalicStyle
         ),
         _ => GetLocalized(
             Script_Game.IsSteamRunningOnSteamDeck
